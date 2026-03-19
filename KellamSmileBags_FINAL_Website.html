@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kellam Smile Bags — Kellam High School</title><style>
+
+  
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Arial,sans-serif;background:#F7F5F0;color:#1A1A2E;overflow-x:hidden}
+
+  /* HERO */
+  .hero{position:relative;overflow:visible;
+    background:#1A1A2E;
+    background-image:
+      radial-gradient(ellipse 60% 80% at 80% 50%,rgba(27,122,120,.35) 0%,transparent 70%),
+      radial-gradient(ellipse 40% 60% at 10% 80%,rgba(181,68,110,.25) 0%,transparent 60%),
+      radial-gradient(ellipse 30% 40% at 50% 10%,rgba(107,63,158,.2) 0%,transparent 60%);
+    padding:72px 40px 64px;
+    text-align:center;
+  }
+  .hero-tag{
+    display:inline-block;
+    font-family:'Courier New',monospace;font-size:12px;letter-spacing:.25em;text-transform:uppercase;
+    color:#fff;background:rgba(255,255,255,.13);padding:6px 18px;border-radius:20px;
+    border:1px solid rgba(255,255,255,.28);margin-bottom:32px;
+  }
+  .hero h1{
+    font-family:Georgia,serif;font-size:clamp(52px,7vw,96px);font-weight:900;
+    line-height:1;color:#fff;margin-bottom:20px;
+  }
+  .hero h1 em{font-style:italic;color:#D6EEEE}
+  .hero-sub{
+    font-size:17px;font-weight:300;color:rgba(255,255,255,.65);
+    max-width:540px;margin:0 auto 48px;line-height:1.7;
+  }
+  .hero-meta{
+    display:flex;justify-content:center;
+    border-top:1px solid rgba(255,255,255,.12);padding-top:36px;
+    max-width:800px;margin:0 auto;
+  }
+  .hero-meta-item{
+    flex:1;display:flex;flex-direction:column;gap:6px;
+    padding:0 20px;border-right:1px solid rgba(255,255,255,.1);
+  }
+  .hero-meta-item:last-child{border-right:none}
+  .hero-meta-label{font-family:'Courier New',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+  .hero-meta-value{font-size:16px;font-weight:600;color:rgba(255,255,255,.9)}
+
+  /* MISSION */
+  .mission{background:#1B7A78;padding:28px 60px;display:flex;align-items:center;gap:20px}
+  .mission-icon{font-size:28px;flex-shrink:0}
+  .mission p{font-size:15px;color:rgba(255,255,255,.9);line-height:1.6;font-weight:300}
+  .mission strong{font-weight:600;color:#fff}
+
+  /* MAIN */
+  .main{max-width:1100px;margin:0 auto;padding:64px 40px 100px}
+  .section-label{font-family:'Courier New',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#8A8070;margin-bottom:12px;text-align:center}
+  .section-title{font-family:Georgia,serif;font-size:36px;font-weight:700;color:#1A1A2E;margin-bottom:8px;text-align:center}
+  .section-intro{font-size:16px;color:#8A8070;font-weight:300;line-height:1.7;max-width:580px;margin-bottom:48px;text-align:center;margin-left:auto;margin-right:auto}
+
+  /* CARDS */
+  .cards{display:flex;flex-direction:column;gap:24px}
+  .card{background:#fff;border-radius:16px;overflow:hidden;display:grid;grid-template-columns:8px 1fr;box-shadow:0 2px 16px rgba(26,26,46,.06);transition:box-shadow .25s,transform .25s}
+  .card:hover{box-shadow:0 8px 32px rgba(26,26,46,.12);transform:translateY(-2px)}
+  .card-body{padding:32px 36px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start}
+  .card-class-tag{display:inline-flex;align-items:center;gap:8px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;padding:5px 12px;border-radius:20px;margin-bottom:14px}
+  .card h2{font-family:Georgia,serif;font-size:26px;font-weight:700;line-height:1.2;margin-bottom:8px;color:#1A1A2E}
+  .card-teacher{font-size:13px;color:#8A8070;font-weight:400;margin-bottom:16px;font-family:'Courier New',monospace;letter-spacing:.05em}
+  .card-desc{font-size:15px;color:#4A4A5A;line-height:1.7;font-weight:300;margin-bottom:20px}
+  .card-contribution{display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:500;padding:8px 16px;border-radius:8px}
+  .card-links{display:flex;flex-direction:column;gap:10px;min-width:240px}
+  .card-links-label{font-family:'Courier New',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#8A8070;margin-bottom:4px}
+  .doc-link{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;border:1.5px solid #EBEBEB;text-decoration:none;color:#1A1A2E;font-size:13px;font-weight:500;transition:all .2s;background:#F7F5F0}
+  .doc-link:hover{background:#fff}
+  .doc-link-icon{font-size:16px;flex-shrink:0}
+  .doc-link-text{line-height:1.3}
+  .doc-link-type{display:block;font-family:'Courier New',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;opacity:.5;font-weight:400;margin-top:1px}
+
+  /* THEMES */
+  .theme-teal .card-accent{background:#1B7A78} .theme-teal .card-class-tag{background:#D6EEEE;color:#0F4F4E} .theme-teal .card-contribution{background:#D6EEEE;color:#0F4F4E} .theme-teal .doc-link:hover{color:#1B7A78;border-color:#1B7A78}
+  .theme-teal2 .card-accent{background:#0F4F4E} .theme-teal2 .card-class-tag{background:#D6EEEE;color:#0F4F4E} .theme-teal2 .card-contribution{background:#D6EEEE;color:#0F4F4E} .theme-teal2 .doc-link:hover{color:#0F4F4E;border-color:#0F4F4E}
+  .theme-pink .card-accent{background:#B5446E} .theme-pink .card-class-tag{background:#FDE8EF;color:#B5446E} .theme-pink .card-contribution{background:#FDE8EF;color:#B5446E} .theme-pink .doc-link:hover{color:#B5446E;border-color:#B5446E}
+  .theme-gold .card-accent{background:#C8860A} .theme-gold .card-class-tag{background:#FFF3D6;color:#C8860A} .theme-gold .card-contribution{background:#FFF3D6;color:#C8860A} .theme-gold .doc-link:hover{color:#C8860A;border-color:#C8860A}
+  .theme-purple .card-accent{background:#6B3F9E} .theme-purple .card-class-tag{background:#EDE4F7;color:#6B3F9E} .theme-purple .card-contribution{background:#EDE4F7;color:#6B3F9E} .theme-purple .doc-link:hover{color:#6B3F9E;border-color:#6B3F9E}
+
+  /* FOOTER */
+  .footer{background:#1A1A2E;padding:40px 60px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+  .footer-left p{font-family:Georgia,serif;font-size:20px;color:#fff;font-weight:700;margin-bottom:4px}
+  .footer-left span{font-size:13px;color:rgba(255,255,255,.4);font-weight:300}
+  .footer-dots{display:flex;gap:8px}
+  .footer-dot{width:12px;height:12px;border-radius:50%}
+
+  /* ANIMATIONS */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+  .hero{position:relative;overflow:visible;animation:fadeUp .6s ease both}
+  .mission{animation:fadeUp .6s .1s ease both}
+  .card{animation:fadeUp .5s ease both}
+  .card:nth-child(1){animation-delay:.15s} .card:nth-child(2){animation-delay:.25s}
+  .card:nth-child(3){animation-delay:.35s} .card:nth-child(4){animation-delay:.45s}
+  .card:nth-child(5){animation-delay:.55s}
+
+  @media(max-width:720px){
+    .hero{position:relative;overflow:visible;padding:52px 24px 48px}
+    .hero-meta{flex-direction:column;gap:20px}
+    .hero-meta-item{border-right:none;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:16px}
+    .mission{padding:24px 28px}
+    .main{padding:48px 24px 80px}
+    .card-body{grid-template-columns:1fr}
+    .card-links{min-width:unset}
+    .footer{padding:32px 28px}
+  }
+
+  .mission-statement{background:linear-gradient(135deg,#1B3A4B 0%,#1B7A78 60%,#1A6B3A 100%);padding:64px 24px;text-align:center}
+  .mission-inner{max-width:760px;margin:0 auto}
+  .mission-title{font-family:Georgia,serif;font-size:36px;color:#fff;margin-bottom:4px}
+  .mission-body{font-size:17px;color:rgba(255,255,255,.85);line-height:1.85;margin-bottom:16px;font-family:Arial,sans-serif}
+  .mission-tagline{font-family:Georgia,serif;font-size:22px;color:#A8E6E4;margin-top:28px;font-style:italic}
+
+  .submit-section{background:#fff;padding:64px 24px;text-align:center;border-top:1px solid #f0ede8}
+  .submit-inner{max-width:600px;margin:0 auto}
+  .submit-icon{font-size:52px;margin-bottom:16px}
+  .submit-title{font-family:Georgia,serif;font-size:32px;color:#0F4F4E;margin-bottom:16px}
+  .submit-body{font-size:15px;color:#555;line-height:1.75;max-width:540px;margin:0 auto}
+  .submit-btn{display:inline-block;margin-top:28px;padding:16px 48px;background:linear-gradient(135deg,#0F4F4E,#1B7A78);color:#fff;border-radius:50px;font-family:Georgia,serif;font-size:20px;text-decoration:none;box-shadow:0 6px 24px rgba(27,122,120,.25);transition:all .2s}
+  .submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(27,122,120,.35)}
+  .submit-meta{margin-top:14px;font-size:12px;color:#aaa;letter-spacing:.5px}
+
+  .hero-mascot-left{
+    position:absolute;
+    left:-20px;
+    bottom:0;
+    width:280px;
+    pointer-events:none;
+    filter:drop-shadow(0 8px 32px rgba(0,0,0,.35));
+    z-index:2;
+  }
+  .hero-mascot-right{
+    position:absolute;
+    right:-20px;
+    bottom:0;
+    width:280px;
+    pointer-events:none;
+    filter:drop-shadow(0 8px 32px rgba(0,0,0,.35));
+    z-index:2;
+  }
+  @media(max-width:900px){
+    .hero-mascot-left,.hero-mascot-right{width:160px;}
+  }
+  @media(max-width:600px){
+    .hero-mascot-left{display:none;}
+    .hero-mascot-right{width:120px;right:0;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <img class="hero-mascot-left" src="https://lhhowell.github.io/kellamsmilebags/kellam_mascot_left.png" alt="Kellam Smile Bag mascot thumbs up"/>
+  <img class="hero-mascot-right" src="https://lhhowell.github.io/kellamsmilebags/kellam_mascot_right.png" alt="Kellam Smile Bag mascot peace sign"/>
+  <div class="hero-tag">Kellam High School · Virginia Beach</div>
+  <h1>Kellam<br><em>Smile Bags.</em></h1>
+  <p class="hero-sub">A cross-curricular service-learning project connecting Kellam students to elementary, middle, and high school students in our community who need a smile.</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><span class="hero-meta-label">Classes</span><span class="hero-meta-value">14 Participating</span></div>
+    <div class="hero-meta-item"><span class="hero-meta-label">Student Contributions</span><span class="hero-meta-value">10 Unique Items</span></div>
+    <div class="hero-meta-item"><span class="hero-meta-label">Launch</span><span class="hero-meta-value">March 2026</span></div>
+    <div class="hero-meta-item"><span class="hero-meta-label">Shared Word</span><span class="hero-meta-value">25 OneWords</span></div>
+    <div class="hero-meta-item"><span class="hero-meta-label">Clubs</span><span class="hero-meta-value">2 Participating</span></div>
+  </div>
+</header>
+
+<div class="mission">
+  <span class="mission-icon">🌍</span>
+  <p>Each smile bag contains items handmade by Kellam students — <strong>one item per class, one word connecting them all.</strong> The child who receives a BLOOM bookmark also receives the BLOOM coloring book page, written for them by a Kellam student. The 25 OneWord vocabulary words were selected because each carries two meanings — a science meaning rooted in VBCPS Environmental Science standards, and a human meaning grounded in social-emotional awareness, written directly for a child who is healing.</p>
+</div>
+
+<main class="main">
+  <div class="section-label">Participating Classes</div>
+  <h2 class="section-title">Who's Building the Bags</h2>
+  <p class="section-intro">Each participating class and club contributes at least one student-made item to every smile bag — some contribute more. Document packages will be available for viewing after the project is completed in Spring 2026.</p>
+
+  <div style="background:#FFF3D6;border-left:5px solid #C8860A;border-radius:12px;padding:24px 32px;margin-bottom:40px;max-width:860px;margin-left:auto;margin-right:auto;">
+    <div style="font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#C8860A;margin-bottom:10px;">Smile Bag Guidelines</div>
+    <p style="font-size:15px;color:#2A2A2A;line-height:1.7;font-weight:400;margin-bottom:8px;">All smile bag items must be <strong>student-made</strong>. The only acceptable purchased items are <strong>crayons, colored pencils, paint kits, and Play-Doh</strong> — these may be included to accompany the student-made coloring book page.</p>
+    <p style="font-size:14px;color:#8A8070;line-height:1.6;font-weight:300;"></p>
+    <p style="font-size:13px;color:#C8860A;font-weight:500;margin-top:12px;font-family:'Courier New',monospace;letter-spacing:0.05em;">✦ New items will be added as we bring on more participants.</p>
+  </div>
+          <div class="card" style="background:#fff;border-radius:16px;overflow:hidden;display:grid;grid-template-columns:8px 1fr;box-shadow:0 2px 16px rgba(26,26,46,.06);transition:box-shadow .25s,transform .25s;"><div class="card-accent" style="background:#1A1A1A;"></div><div class="card-body"><div class="card-left"><div class="card-class-tag" style="background:#FFF3D6;color:#C8860A;">● Instructional Technology &amp; Art</div><h2>Project Logo, Mascot Sticker &amp; Hidden Picture Activities</h2><div class="card-teacher">Collaborative contribution · ITS &amp; Art Teacher · Kellam Smile Bags Signature Design</div><p class="card-desc">The Instructional Technology Specialist and the Art Teacher collaborated to design the official Kellam Smile Bags mascot, cartoon mascot sticker, and 25 OneWord hidden picture activities — one for each of the project's 25 shared words. The logo and mascot serve as the signature identity of the Kellam Smile Bags project, appearing on documents, the project website, and as a sticker placed in every smile bag. The 25 hidden picture puzzles — each themed around a OneWord — provide an interactive activity for the children who receive the bags.</p><div class="card-contribution" style="background:#FFF3D6;color:#C8860A;display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:500;padding:8px 16px;border-radius:8px;"><span>🎨</span> Contribution: Signature project logo · Cartoon mascot sticker · 25 OneWord hidden picture activities</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">Logo Design Guide<span class="doc-link-type">Design Guide · DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">Mascot Sticker Guide<span class="doc-link-type">Design Guide · DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">🌐</span><span class="doc-link-text">Hidden Picture Activities — 25 OneWords<span class="doc-link-type">Interactive HTML · Coming Soon</span></span></a></div></div></div>
+    <div class="card" style="background:#fff;border-radius:16px;overflow:hidden;display:grid;grid-template-columns:8px 1fr;box-shadow:0 2px 16px rgba(26,26,46,.06);transition:box-shadow .25s,transform .25s;"><div class="card-accent" style="background:#1A237E;"></div><div class="card-body"><div class="card-left"><div class="card-class-tag" style="background:#E8EAF6;color:#1A237E;">● AP Research</div><h2>Did You Know? Research Bookmark</h2><div class="card-teacher">Abbie McGee · AP Research course framework · Science Supply Bar · Bookmark Builder Kiosk</div><p class="card-desc">AP Research students translate a year of research thinking into a 'Did You Know?' bookmark for a student in our community. Each student selects their OneWord, browses the <strong>Science Supply Bar</strong> — choosing 1–3 hands-on supplies based on their own scientific reasoning — and builds their bookmark using the digital Bookmark Builder Kiosk. The bookmark features a research fact, a student-designed activity using their chosen supplies, and a personal message signed <em>Your Kellam Scientist</em>. This is inquiry-based, differentiated, and authentic — every bookmark is genuinely different because every scientist thinks differently. Future Ready attributes: <strong>Thinkers &amp; Inquirers</strong> — selecting tools based on scientific hypothesis and reasoning; <strong>Personally &amp; Socially Responsible</strong> — applying research expertise in direct service of a student who needs a smile.</p><div class="card-contribution" style="background:#E8EAF6;color:#1A237E;display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:500;padding:8px 16px;border-radius:8px;"><span>🔬</span> Contribution: Research bookmark + science supplies · printed on cardstock · laminated</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">AP Research Bookmark Guidelines<span class="doc-link-type">Student Guide · DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">🌐</span><span class="doc-link-text">Science Supply Bar Sign<span class="doc-link-type">Printable Sign · HTML</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">🌐</span><span class="doc-link-text">Bookmark Builder Kiosk<span class="doc-link-type">Interactive Kiosk · Google Apps Script</span></span></a></div></div></div>
+  
+
+
+  <div class="
+    <div class="card theme-teal2"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">● AP Environmental Science</div><h2>Smile Disc &amp; 3D Print Unit</h2><div class="card-teacher">Teacher package · VBCPS Env.1–Env.12 Standards</div><p class="card-desc">After AP Testing, students take on passion projects of their choosing. This group digs into the real-world environmental connections behind Operation Smiles — the causes of cleft conditions, 3D printing filament lifecycle, and acrylic mirror materials analysis — before contributing to the smile bag assembly. Future Ready attributes: <strong>Thinkers &amp; Inquirers</strong> — investigating environmental threads behind cleft conditions, materials, and lifecycle; <strong>Personally &amp; Socially Responsible</strong> — applying their expertise toward a humanitarian contribution.</p><div class="card-contribution"><span>💿</span> Contribution: 3D printed smile disc with acrylic mirror</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">APES Unit Plan<span class="doc-link-type">Teacher Guide · DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">3D Print Supplement<span class="doc-link-type">Student Guide · DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">Portfolio Reflection<span class="doc-link-type">Portrait of a Graduate · DOCX</span></span></a></div></div></div>
+    <div class="card theme-teal"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">● Environmental Science</div><h2>OneWord 3D Keychain</h2><div class="card-teacher">Teacher package · VBCPS Env.1–Env.12 Standards</div><p class="card-desc">Students use the OneWord interactive kiosk to research one of 25 environmental science words, write an encouragement message for a child in recovery, and design a 3D printed keychain in Tinkercad. Printed on the Bambu Lab printer in a student-chosen color from the approved palette. Future Ready attributes: <strong>Knowledgeable</strong> — researching environmental science concepts connected to real-world health impacts; <strong>Problem Solvers &amp; Value Creators</strong> — designing and fabricating a 3D object using Tinkercad.</p><div class="card-contribution"><span>🔖</span> Contribution: 3D printed OneWord keychain</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">Lesson Plan<span class="doc-link-type">Teacher Guide · DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">OneWord Bookmark Supplement<span class="doc-link-type">Student Worksheet · DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">🌐</span><span class="doc-link-text">OneWord Interactive Kiosk<span class="doc-link-type">Web App · Google Apps Script</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">🌐</span><span class="doc-link-text">Interactive OneWord Lesson<span class="doc-link-type">Web App · Google Apps Script</span></span></a></div></div></div>
+    <div class="card theme-pink"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">● English 9</div><h2>OneWord Coloring Book</h2><div class="card-teacher">Teacher package · Virginia SOL 9.5 / 9.6 / 9.7</div><p class="card-desc">English 9 students complete a literary analysis one-pager connecting their assigned word to required reading — their graded reflection aligned to Virginia SOL standards. From that foundation, students write an original short story or poem for a child recovering from surgery, illustrated as a coloring page in Canva, Google Drawings, or Adobe Express — their Future Ready piece reflecting <strong>Balanced Communicators &amp; Collaborators</strong> and <strong>Personally &amp; Socially Responsible</strong>. Each page features one of the 25 shared OneWord words.</p><div class="card-contribution"><span>🎨</span> Contribution: Illustrated coloring book page</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">English 9 Lesson Plan<span class="doc-link-type">Teacher Guide · DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">Literary Analysis — Teacher Guide<span class="doc-link-type">Teacher Guide · DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">🤖</span><span class="doc-link-text">Writing Coach Gemini Gem Setup &amp; Tutor<span class="doc-link-type">AI Tutor Setup · DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">Literary Analysis — Student Sheet<span class="doc-link-type">Student Assignment · DOCX</span></span></a></div></div></div>
+    <div class="card theme-purple"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">● Physics</div><h2>Spinning Top Design</h2><div class="card-teacher">Student guidelines · Virginia SOL PH.3 / PH.4 · Tinkercad + Bambu Lab</div><p class="card-desc">Students design an original spinning top in Tinkercad, applying physics concepts including rotational inertia, angular momentum, and center of mass to their design decisions — directly connecting Virginia SOL PH.3 (forces and Newton's laws) and PH.4 (conservation laws including momentum). Printed on the Bambu Lab printer in a student-chosen color from the approved palette. Future Ready attributes: <strong>Problem Solvers &amp; Value Creators</strong> — applying physics principles to functional design decisions; <strong>Knowledgeable</strong> — demonstrating physics content through a fabricated object.</p><div class="card-contribution"><span>🌀</span> Contribution: 3D printed spinning top</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">Spinning Top Design Guidelines<span class="doc-link-type">Student Guide · DOCX</span></span></a></div></div></div>
+    <div class="card theme-gold"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">● SPED — STEP</div><h2>OneWord Bookmark</h2><div class="card-teacher">Teacher package · Adapted curriculum</div><p class="card-desc">Students work with an adapted set of curated OneWord words and manipulate code with guided instruction in the MakerWorld Model Maker to design a personalized bookmark with their word and a chosen emoji. Printed in two colors using the Bambu AMS system. Future Ready attributes: <strong>Resilient Learners</strong> — taking on a new challenge by manipulating code; <strong>Balanced Communicators &amp; Collaborators</strong> — designing a personal message for a child they will never meet.</p><div class="card-contribution"><span>🔖</span> Contribution: Two-color 3D printed bookmark</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">SPED Adaptation Guide<span class="doc-link-type">Teacher Guide · DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">🤖</span><span class="doc-link-text">Adapted Gemini Gem Setup<span class="doc-link-type">AI Tutor Setup · DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">MakerWorld Model Maker Guidelines<span class="doc-link-type">Student Guide · DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">OneWord Choice Board<span class="doc-link-type">Student Printable · DOCX</span></span></a></div></div></div>
+    <div class="card theme-teal2"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">● SPED — Inclusion/Resource</div><h2>OneWord 3D Keychain</h2><div class="card-teacher">Teacher package · Accommodated · Virginia SOL aligned</div><p class="card-desc">Senior inclusion and resource students participate in the same OneWord keychain activity as the Environmental Science class — same 25 words, same Tinkercad design, same Bambu Lab printer. Three accommodations are built in: structured sentence frames, a pre-built Tinkercad base template, and access to the Gemini Writing Coach Gem. Future Ready attributes: <strong>Knowledgeable</strong> — researching environmental science concepts with scaffolded support; <strong>Personally &amp; Socially Responsible</strong> — designing a meaningful gift for a child in need.</p><div class="card-contribution"><span>🔑</span> Contribution: 3D printed OneWord keychain</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">Inclusion/Resource Accommodation Guide<span class="doc-link-type">Teacher Guide · DOCX</span></span></a></div></div></div>
+    <div class="card" style="background:#fff;border-radius:16px;overflow:hidden;display:grid;grid-template-columns:8px 1fr;box-shadow:0 2px 16px rgba(26,26,46,.06);transition:box-shadow .25s,transform .25s;"><div class="card-accent" style="background:#B52020;"></div><div class="card-body"><div class="card-left"><div class="card-class-tag" style="background:#FAE4E4;color:#B52020;">● Culinary Arts</div><h2>OneWord Cookie Cutter</h2><div class="card-teacher">Student guidelines · WRS 1 / WRS 5 / WRS 14 · Tinkercad + Bambu Lab</div><p class="card-desc">Culinary students design an original cookie cutter shape in Tinkercad inspired by their assigned OneWord — a student with BLOOM designs a flower, a student with FLOW designs a wave. Printed in red PLA on the Bambu Lab printer. A small container of Play-Doh accompanies each cutter in the smile bag. Cutters are for Play-Doh use only. Future Ready attributes: <strong>Problem Solvers &amp; Value Creators</strong> — translating a word's meaning into a functional 3D design; <strong>Balanced Communicators &amp; Collaborators</strong> — designing a playful gift that speaks directly to a child.</p><div class="card-contribution" style="background:#FAE4E4;color:#B52020;display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:500;padding:8px 16px;border-radius:8px;"><span>🍪</span> Contribution: 3D printed cookie cutter + Play-Doh</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link" style=" <strong>Thinkers &amp; Inquirers</strong> — selecting a molecule that carries both scientific and human meaning.</p><div class="card-contribution"><span>🧩</span> Contribution: 9-piece framed molecule puzzle — cut with Scan N Cut or Cricut</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">Molecule Puzzle Design Guidelines<span class="doc-link-type">Student Guide · DOCX</span></span></a></div></div></div>
+    <div class="card" style="background:#fff;border-radius:16px;overflow:hidden;display:grid;grid-template-columns:8px 1fr;box-shadow:0 2px 16px rgba(26,26,46,.06);"><div class="card-accent" style="background:#B55A00;"></div><div class="card-body"><div class="card-left"><div class="card-class-tag" style="background:#FDECD9;color:#B55A00;">● Introduction to Engineering (8540)</div><h2>3D Printed Assembly Kit</h2><div class="card-teacher">Student guidelines · Virginia CTE Introduction to Engineering (8540) · WRS 1 / WRS 5 / WRS 14 · OnShape CAD + Bambu Lab</div><p class="card-desc">Introduction to Engineering (8540) students design a 5–8 piece snap-fit assembly kit in Tinkercad — no glue, no tools, pieces click together. Students choose from four model categories: simple vehicles (car, boat, airplane, helicopter), mechanical items (gear set, windmill, lever, pulley), or nature-inspired models (butterfly, turtle, fish, gecko). An optional OneWord connection is encouraged but not required. Printed in orange PLA on the Bambu Lab printer. Future Ready attributes: <strong>Problem Solvers &amp; Value Creators</strong> — applying engineering design thinking to fabricate a functional multi-part object; <strong>Thinkers &amp; Inquirers</strong> — investigating snap-fit tolerances and design iteration.</p><div class="card-contribution" style="background:#FDECD9;color:#B55A00;display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:500;padding:8px 16px;border-radius:8px;"><span>🔧</span> Contribution: 3D printed snap-fit assembly kit (5–8 pieces)</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">Assembly Kit Design Guidelines<span class="doc-link-type">Student Guide · DOCX</span></span></a></div></div></div>
+    <div class="card" style="background:#fff;border-radius:16px;overflow:hidden;display:grid;grid-template-columns:8px 1fr;box-shadow:0 2px 16px rgba(26,26,46,.06);transition:box-shadow .25s,transform .25s;"><div class="card-accent" style="background:#1A6B3A;"></div><div class="card-body"><div class="card-left"><div class="card-class-tag" style="background:#DFF2E8;color:#1A6B3A;">● Advanced Entrepreneurship</div><h2>OneWord Sticker Design</h2><div class="card-teacher">Student guidelines · Virginia CTE Entrepreneurship · WRS 1 / WRS 5 / WRS 14 · Canva · Adobe Express · Google Slides · Cricut Design Space</div><p class="card-desc">Advanced Entrepreneurship students apply design thinking and entrepreneurial principles to create a OneWord sticker for a student in our community. Each student selects one of the 25 shared OneWords and designs a sticker in their tool of choice — Canva, Adobe Express, Google Slides, or Cricut Design Space. Designs are uploaded to Cricut Design Space and printed on adhesive sticker paper in two size options: <strong>2.0 inch round</strong> or <strong>2.5 inch square</strong>. Students connect branding, customer focus, and value creation to a real product with a real purpose. Future Ready attributes: <strong>Problem Solvers &amp; Value Creators</strong> — designing a product that serves a real customer need; <strong>Personally &amp; Socially Responsible</strong> — putting entrepreneurial skills to work for the greater good.</p><div class="card-contribution" style="background:#DFF2E8;color:#1A6B3A;display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:500;padding:8px 16px;border-radius:8px;"><span>🏷️</span> Contribution: OneWord sticker — 2.0 inch round or 2.5 inch square · printed on adhesive sticker paper</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">OneWord Sticker Design Guidelines<span class="doc-link-type">Student Guide · DOCX</span></span></a></div></div></div>
+    <div class="card theme-teal"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">● Virginia Teachers for Tomorrow</div><h2>Student Contribution — Coming Soon</h2><div class="card-teacher">Teacher package · Details coming soon</div><p class="card-desc">Virginia Teachers for Tomorrow students will be contributing to Kellam Smile Bags. Details about their specific contribution, activity, and standards alignment are coming soon. Check back for updates! Future Ready attributes: <strong>Personally &amp; Socially Responsible</strong> — [placeholder: to be updated]; <strong>Balanced Communicators &amp; Collaborators</strong> — [placeholder: to be updated].</p><div class="card-contribution"><span>🍎</span> Contribution: Coming soon</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">Teacher Guide — Coming Soon<span class="doc-link-type">Details pending</span></span></a></div></div></div>
+    <div class="card theme-pink"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">● English 12</div><h2>Student Contribution — Coming Soon</h2><div class="card-teacher">Teacher package · Details coming soon</div><p class="card-desc">English 12 students will be contributing to Kellam Smile Bags. Details about their specific contribution, activity, and standards alignment are coming soon. Check back for updates! Future Ready attributes: <strong>Balanced Communicators &amp; Collaborators</strong> — [placeholder: to be updated]; <strong>Personally &amp; Socially Responsible</strong> — [placeholder: to be updated].</p><div class="card-contribution"><span>📝</span> Contribution: Coming soon</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">Teacher Guide — Coming Soon<span class="doc-link-type">Details pending</span></span></a></div></div></div>
+
+
+  <div class="section-label">Student Clubs</div>
+  <h2 class="section-title">Club Participants</h2>
+  <p class="section-intro">Two Kellam student clubs are contributing to Kellam Smile Bags alongside the academic classes.</p>
+
+
+  <div class="section-label">Student Clubs</div>
+  <h2 class="section-title">Club Participants</h2>
+  <p class="section-intro">Two Kellam student clubs are contributing to Kellam Smile Bags alongside the academic classes.</p>
+
+          <div class="card theme-pink"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">● Student Club</div><h2>Operation Smiles Club</h2><div class="card-teacher">Club sponsor · Service-learning coordination</div><p class="card-desc">The Operation Smiles student club leads the smile bag assembly and coordinates contributions from all participating classes. Club members connect the project to the broader Operation Smiles mission and serve as the organizing heart of the effort at Kellam. Future Ready attributes: <strong>Personally &amp; Socially Responsible</strong> — leading the assembly and coordination of a humanitarian project; <strong>Balanced Communicators &amp; Collaborators</strong> — connecting multiple classes toward one shared goal.</p><div class="card-contribution"><span>💛</span> Role: Smile bag assembly &amp; project coordination</div></div><div class="card-links"><div class="card-links-label">Resources</div><a href="#" class="doc-link"><span class="doc-link-icon">🌐</span><span class="doc-link-text">Operation Smiles Organization<span class="doc-link-type">External Link</span></span></a></div></div></div>
+    <div class="card theme-teal"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">● Student Club</div><h2>Environmental Science Club</h2><div class="card-teacher">Club sponsor · Environmental advocacy</div><p class="card-desc">The Environmental Science Club supports the Operation Smiles Club in the smile bag assembly and project coordination efforts. More details on their specific contribution coming soon. Future Ready attributes: <strong>Personally &amp; Socially Responsible</strong> — [placeholder: to be updated when contribution is confirmed]; <strong>Knowledgeable</strong> — [placeholder: to be updated when contribution is confirmed].</p><div class="card-contribution"><span>🌿</span> Role: Supporting the Operation Smiles Club</div></div><div class="card-links"><div class="card-links-label">Resources</div><a href="#" class="doc-link"><span class="doc-link-icon">📄</span><span class="doc-link-text">Environmental Science Planning Guide<span class="doc-link-type">VBCPS Standards · DOCX</span></span></a></div></div></div>
+  
+
+
+  <section class="submit-section">
+    <div class="submit-inner">
+      <div class="submit-icon">🎒</div>
+      <h2 class="submit-title">Submit Your Design</h2>
+      <p class="submit-body">Students — once your design is complete and sharing is set to <strong>"Anyone with the link can view,"</strong> submit your link here. Class participants will work with their teacher to finalize their contribution. Independent students should visit the Design Lab for fabrication support.</p>
+      <p class="submit-body" style="margin-top:12px">Teachers — interested in joining Kellam Smile Bags? Submit your participation details or request a conversation by clicking the button below.</p>
+      <a class="submit-btn" href="https://script.google.com/macros/s/AKfycbz92O2M_kZTua9ncIZmBc619DqB4in-qG7PG1Yr8FOVZEsgDSiWDiJf-1XJ7Fg0Kwqt/exec" target="_blank">Submit My Design →</a>
+      <p class="submit-meta">Opens in a new tab · Kellam High School · Spring 2026</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-left">
+    <p>Kellam Smile Bags</p>
+    <span>Virginia Beach City Public Schools · Spring 2026</span>
+  </div>
+  <div class="footer-dots">
+    <div class="footer-dot" style="background:#1B7A78"></div>
+    <div class="footer-dot" style="background:#B5446E"></div>
+    <div class="footer-dot" style="background:#C8860A"></div>
+    <div class="footer-dot" style="background:#6B3F9E"></div>
+    <div class="footer-dot" style="background:#0F4F4E"></div>
+  </div>
+</footer>
+
+</body>
+</html>
