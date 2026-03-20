@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Kellam Smile Bags — Science Supply Bar</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#1A237E;min-height:100vh;padding:32px 24px;display:flex;flex-direction:column;align-items:center;gap:24px}
+
+.sign{background:#fff;border-radius:24px;width:100%;max-width:900px;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,.3)}
+
+/* Header */
+.sign-header{background:linear-gradient(135deg,#1A237E 0%,#283593 50%,#1A237E 100%);padding:28px 36px 24px;text-align:center;position:relative;overflow:hidden}
+.sign-header::before{content:'🔬';position:absolute;left:24px;top:50%;transform:translateY(-50%);font-size:48px;opacity:.3}
+.sign-header::after{content:'🧪';position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:48px;opacity:.3}
+.sign-title{font-family:'Fredoka One',cursive;font-size:48px;color:#C8860A;letter-spacing:3px;text-shadow:2px 2px 0 rgba(0,0,0,.3)}
+.sign-subtitle{font-family:'Fredoka One',cursive;font-size:20px;color:rgba(255,255,255,.85);margin-top:4px;letter-spacing:1px}
+.sign-brand{font-size:13px;color:rgba(255,255,255,.5);margin-top:6px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+
+/* Philosophy strip */
+.philosophy{background:#FFF3D6;padding:18px 32px;border-bottom:3px solid #C8860A}
+.philosophy-title{font-family:'Fredoka One',cursive;font-size:16px;color:#C8860A;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;text-align:center}
+.philosophy-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.phil-item{background:#fff;border-radius:10px;padding:10px 12px;border:2px solid #FFD740;text-align:center}
+.phil-icon{font-size:22px;margin-bottom:4px}
+.phil-label{font-family:'Fredoka One',cursive;font-size:12px;color:#1A237E;letter-spacing:.5px}
+.phil-desc{font-size:10px;color:#666;line-height:1.5;margin-top:3px}
+
+/* Supply grid */
+.supply-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid #eee}
+.supply-item{padding:18px 16px;border-right:1px solid #eee;border-bottom:1px solid #eee;display:flex;flex-direction:column;align-items:center;gap:8px;transition:background .2s}
+.supply-item:nth-child(3n){border-right:none}
+.supply-item:nth-last-child(-n+3){border-bottom:none}
+.supply-emoji{font-size:44px;line-height:1}
+.supply-name{font-family:'Fredoka One',cursive;font-size:15px;color:#1A237E;text-align:center;letter-spacing:.5px}
+.supply-cost{background:#FFF3D6;color:#C8860A;font-size:11px;font-weight:800;padding:2px 10px;border-radius:12px;letter-spacing:.5px}
+.supply-words{font-size:10px;color:#666;text-align:center;line-height:1.5;max-width:200px}
+
+/* Rule box */
+.rule-box{background:linear-gradient(135deg,#1A237E,#283593);padding:20px 32px;text-align:center}
+.rule-text{font-family:'Fredoka One',cursive;font-size:18px;color:#C8860A;letter-spacing:1px}
+.rule-sub{font-size:13px;color:rgba(255,255,255,.8);margin-top:6px;font-weight:700;line-height:1.7}
+.rule-q{font-size:15px;color:#FFD740;margin-top:10px;font-style:italic;font-weight:700}
+
+/* Print button */
+.print-btn{background:#C8860A;color:#fff;border:none;padding:14px 40px;border-radius:30px;font-family:'Fredoka One',cursive;font-size:16px;cursor:pointer;letter-spacing:1px;box-shadow:0 6px 20px rgba(200,134,10,.4);transition:all .2s}
+.print-btn:hover{background:#A06A00;transform:translateY(-2px)}
+
+@media print{
+  body{background:#fff;padding:8px}
+  .print-btn{display:none}
+  .sign{box-shadow:none;max-width:100%;border-radius:8px}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<div class="sign">
+
+  <!-- HEADER -->
+  <div class="sign-header">
+    <div class="sign-title">Science Supply Bar</div>
+    <div class="sign-subtitle">Browse · Select · Justify Your Choice</div>
+    <div class="sign-brand">Kellam Smile Bags · AP Research</div>
+  </div>
+
+  <!-- PHILOSOPHY -->
+  <div class="philosophy">
+    <div class="philosophy-title">Why You Choose — Not Us</div>
+    <div class="philosophy-grid">
+      <div class="phil-item">
+        <div class="phil-icon">🔬</div>
+        <div class="phil-label">Inquiry-Based</div>
+        <div class="phil-desc">You make a scientific choice — not follow a recipe</div>
+      </div>
+      <div class="phil-item">
+        <div class="phil-icon">🧠</div>
+        <div class="phil-label">Research Thinking</div>
+        <div class="phil-desc">Select tools based on a hypothesis about what will work</div>
+      </div>
+      <div class="phil-item">
+        <div class="phil-icon">🌿</div>
+        <div class="phil-label">Differentiated</div>
+        <div class="phil-desc">FILTER picks differently than RISE — and that is the point</div>
+      </div>
+      <div class="phil-item">
+        <div class="phil-icon">💛</div>
+        <div class="phil-label">Ownership</div>
+        <div class="phil-desc">Your "What You Need" section is yours because YOU chose it</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUPPLY GRID -->
+  <div class="supply-grid">
+
+    <div class="supply-item">
+      <div class="supply-emoji">🔍</div>
+      <div class="supply-name">Mini Magnifying Glass</div>
+      <div class="supply-cost">~$1.00</div>
+      <div class="supply-words">Almost any word — observe seeds, leaves, soil, skin cells up close</div>
+    </div>
+
+    <div class="supply-item">
+      <div class="supply-emoji">🌱</div>
+      <div class="supply-name">Seed Packet</div>
+      <div class="supply-cost">~$0.50</div>
+      <div class="supply-words">GROW · BLOOM · RENEW · ROOT · THRIVE · SUSTAIN · EMERGE</div>
+    </div>
+
+    <div class="supply-item">
+      <div class="supply-emoji">🪨</div>
+      <div class="supply-name">Small Smooth Stone</div>
+      <div class="supply-cost">~$0.10</div>
+      <div class="supply-words">ANCHOR · PERSIST · ROOT · BALANCE · SUSTAIN</div>
+    </div>
+
+    <div class="supply-item">
+      <div class="supply-emoji">📏</div>
+      <div class="supply-name">Mini Ruler</div>
+      <div class="supply-cost">~$0.50</div>
+      <div class="supply-words">GROW · RISE · CYCLE · TRANSFORM · measure anything</div>
+    </div>
+
+    <div class="supply-item">
+      <div class="supply-emoji">🧵</div>
+      <div class="supply-name">Length of String (12")</div>
+      <div class="supply-cost">~$0.05</div>
+      <div class="supply-words">CONNECT · FLOW · CYCLE · ANCHOR · BALANCE · measure</div>
+    </div>
+
+    <div class="supply-item">
+      <div class="supply-emoji">🌿</div>
+      <div class="supply-name">Pressed / Dried Leaf</div>
+      <div class="supply-cost">~$0.00</div>
+      <div class="supply-words">BREATHE · BLOOM · RESTORE · FILTER · ABSORB · CYCLE</div>
+    </div>
+
+    <div class="supply-item">
+      <div class="supply-emoji">🫧</div>
+      <div class="supply-name">Small Bubble Wand</div>
+      <div class="supply-cost">~$0.50</div>
+      <div class="supply-words">BREATHE · FLOW · CLEAR · RISE · EMERGE · TRANSFORM</div>
+    </div>
+
+    <div class="supply-item">
+      <div class="supply-emoji">🧪</div>
+      <div class="supply-name">Litmus Paper Strip (2)</div>
+      <div class="supply-cost">~$0.10</div>
+      <div class="supply-words">FILTER · CLEAR · RESTORE · BALANCE · ADAPT</div>
+    </div>
+
+    <div class="supply-item">
+      <div class="supply-emoji">🪬</div>
+      <div class="supply-name">Mini Pinwheel</div>
+      <div class="supply-cost">~$0.50</div>
+      <div class="supply-words">FLOW · RISE · BREATHE · RENEW · SUSTAIN</div>
+    </div>
+
+    <div class="supply-item">
+      <div class="supply-emoji">☕</div>
+      <div class="supply-name">Coffee Filter</div>
+      <div class="supply-cost">~$0.05</div>
+      <div class="supply-words">FILTER · CLEAR · ABSORB · RESTORE · FLOW</div>
+    </div>
+
+    <div class="supply-item">
+      <div class="supply-emoji">🎲</div>
+      <div class="supply-name">Foam Die</div>
+      <div class="supply-cost">~$0.25</div>
+      <div class="supply-words">BALANCE · CYCLE · ADAPT · CONNECT · TRANSFORM</div>
+    </div>
+
+    <div class="supply-item">
+      <div class="supply-emoji">🔵</div>
+      <div class="supply-name">Glass Pebble / Gem</div>
+      <div class="supply-cost">~$0.10</div>
+      <div class="supply-words">CLEAR · SHINE · FLOW · BALANCE · REFLECT</div>
+    </div>
+
+  </div>
+
+  <!-- RULE BOX -->
+  <div class="rule-box">
+    <div class="rule-text">Choose 1–3 items · More is not better · The right tool is better</div>
+    <div class="rule-sub">Your selected supplies go physically into the smile bag alongside your bookmark.<br/>
+    After you choose, update the "What You Need" section in the Bookmark Builder Kiosk.</div>
+    <div class="rule-q">"How does this supply help a student explore or experience my OneWord?"</div>
+  </div>
+
+</div>
+
+<button class="print-btn" onclick="window.print()">🖨️ Print This Sign</button>
+
+</body>
+</html>
