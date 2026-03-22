@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Kellam Smile Bags — Doll Kiosk Directions</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#FDE8EF 0%,#FFF0F5 60%,#FFF8E1 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 0 60px;}
+.page-header{background:linear-gradient(135deg,#B5446E,#E57399);width:100%;padding:20px 28px;text-align:center;}
+.page-header h1{font-family:'Fredoka One',cursive;font-size:24px;color:#fff;letter-spacing:1px;}
+.page-header p{font-size:13px;color:rgba(255,255,255,.85);margin-top:4px;}
+.container{max-width:900px;width:100%;padding:28px 24px;display:flex;flex-direction:column;gap:28px;}
+
+/* TABS */
+.tabs{display:flex;gap:8px;background:#fff;border-radius:50px;padding:5px;box-shadow:0 2px 12px rgba(0,0,0,.08);align-self:center;}
+.tab{padding:10px 28px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;border:none;background:transparent;color:#888;transition:all .2s;}
+.tab.active{background:linear-gradient(135deg,#B5446E,#E57399);color:#fff;box-shadow:0 2px 8px rgba(181,68,110,.3);}
+.panel{display:none;flex-direction:column;gap:24px;}
+.panel.active{display:flex;}
+
+/* SECTIONS */
+.section-title{font-family:'Fredoka One',cursive;font-size:20px;color:#B5446E;padding-bottom:8px;border-bottom:3px solid #F4C0D1;margin-bottom:4px;}
+.section-title.teal{color:#0F4F4E;border-bottom-color:#D6EEEE;}
+
+/* INFO BOX */
+.info-box{border-radius:12px;padding:16px 20px;border-left:5px solid;}
+.info-box.pink{background:#FDE8EF;border-color:#B5446E;}
+.info-box.teal{background:#D6EEEE;border-color:#0F4F4E;}
+.info-box.gold{background:#FFF3D6;border-color:#C8860A;}
+.info-box.green{background:#E8F5E9;border-color:#2E7D32;}
+.info-box-label{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+.info-box.pink .info-box-label{color:#B5446E;}
+.info-box.teal .info-box-label{color:#0F4F4E;}
+.info-box.gold .info-box-label{color:#C8860A;}
+.info-box.green .info-box-label{color:#2E7D32;}
+.info-box p{font-size:14px;color:#555;line-height:1.75;}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:10px;}
+.step-row{display:grid;grid-template-columns:44px 1fr;gap:0;border-radius:12px;overflow:hidden;}
+.step-num{background:#B5446E;color:#fff;font-family:'Fredoka One',cursive;font-size:20px;display:flex;align-items:center;justify-content:center;}
+.step-num.teal{background:#0F4F4E;}
+.step-body{background:#FDE8EF;padding:12px 16px;}
+.step-body.teal{background:#D6EEEE;}
+.step-title{font-family:'Fredoka One',cursive;font-size:14px;color:#B5446E;margin-bottom:4px;}
+.step-title.teal{color:#0F4F4E;}
+.step-desc{font-size:13px;color:#555;line-height:1.65;}
+
+/* TABLE */
+.dir-table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden;}
+.dir-table th{background:#B5446E;color:#fff;font-family:'Fredoka One',cursive;font-size:13px;padding:10px 14px;text-align:left;letter-spacing:.5px;}
+.dir-table th.teal{background:#0F4F4E;}
+.dir-table td{padding:10px 14px;font-size:13px;color:#444;line-height:1.65;border-bottom:1px solid #F4C0D1;vertical-align:top;}
+.dir-table tr:last-child td{border-bottom:none;}
+.dir-table tr:nth-child(even) td{background:#FFF5F8;}
+.dir-table tr:nth-child(even).teal td{background:#F0FAF9;}
+.dir-table td strong{color:#B5446E;}
+.dir-table td strong.teal{color:#0F4F4E;}
+
+body p{font-size:14px;color:#555;line-height:1.75;}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Fashion Marketing Doll Kiosk — Directions</h1>
+  <p>Kellam Smile Bags · Cindy Miller · Kellam High School · Spring 2026</p>
+</div>
+
+<div class="container">
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('student',this)">Student Directions</button>
+    <button class="tab" onclick="switchTab('teacher',this)">Teacher Guide</button>
+  </div>
+
+  <!-- STUDENT PANEL -->
+  <div class="panel active" id="panel-student">
+
+    <div class="info-box pink">
+      <div class="info-box-label">What You Are Doing</div>
+      <p>You are designing a paper doll outfit for a child in our community who needs a smile. You will use the Doll Kiosk to choose a doll and outfits that connect to your OneWord — then print a black and white sheet the child can color, cut out, and play with.</p>
+    </div>
+
+    <div>
+      <div class="section-title">How to Use the Kiosk — Step by Step</div>
+      <div class="steps">
+        <div class="step-row"><div class="step-num">1</div><div class="step-body"><div class="step-title">Choose Your OneWord</div><div class="step-desc">Find your assigned word in the grid and click it. Read the meaning — every decision you make should connect back to this word.</div></div></div>
+        <div class="step-row"><div class="step-num">2</div><div class="step-body"><div class="step-title">Read Your Fashion Reference Card</div><div class="step-desc">A Reference Card appears showing the color palette, silhouette, style notes, and feeling for your word. Read it carefully before you touch anything else — this card was made to guide your design.</div></div></div>
+        <div class="step-row"><div class="step-num">3</div><div class="step-body"><div class="step-title">Choose Your Doll</div><div class="step-desc">Select the doll that feels right for your design. Think about who might receive this bag and choose with them in mind.</div></div></div>
+        <div class="step-row"><div class="step-num">4</div><div class="step-body"><div class="step-title">Open the Closet</div><div class="step-desc">The closet shows outfits curated for your OneWord. Select one or more outfits that best reflect your word's meaning. The child can mix and match!</div></div></div>
+        <div class="step-row"><div class="step-num">5</div><div class="step-body"><div class="step-title">Write Your Designer Statement</div><div class="step-desc">Write 3–5 sentences connecting your design choices to your OneWord. See the section below for exactly what to include.</div></div></div>
+        <div class="step-row"><div class="step-num">6</div><div class="step-body"><div class="step-title">Print Your Design Sheet</div><div class="step-desc">Click Print My Design Sheet. Your doll, outfits, and statement print as a full-page layout — ready to color, cut, and go into a Kellam Smile Bag.</div></div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-title">Connecting Your Outfit to Your OneWord</div>
+      <p style="margin-bottom:12px;">A great designer tells a story. Use these lenses to think through your choices:</p>
+      <table class="dir-table">
+        <tr><th>Lens</th><th>What to Think About</th></tr>
+        <tr><td><strong>Color</strong></td><td>What colors feel like your word? Use your Reference Card's color palette as a guide. Don't just pick your favorite color — pick the color that belongs to your word.</td></tr>
+        <tr><td><strong>Silhouette</strong></td><td>Does the shape of the outfit reflect your word? FLOW needs something fluid. ANCHOR needs something structured. BLOOM needs something that opens outward. Match the shape to the meaning.</td></tr>
+        <tr><td><strong>Style</strong></td><td>Is your word energetic (THRIVE)? Calm (HEAL)? Bold (PERSIST)? The style should carry the same energy as the word. Check your Reference Card's Style Notes.</td></tr>
+        <tr><td><strong>Feeling</strong></td><td>Imagine the child opening the bag and seeing your doll. What do you want them to feel? Design backward from that feeling.</td></tr>
+      </table>
+    </div>
+
+    <div>
+      <div class="section-title">Writing Your Designer Statement</div>
+      <p style="margin-bottom:12px;">Your statement prints at the bottom of your paper doll sheet. Include all four of these:</p>
+      <div class="steps">
+        <div class="step-row"><div class="step-num">1</div><div class="step-body"><div class="step-title">Your OneWord and its meaning</div><div class="step-desc">In your own words — not just the kiosk definition. What does this word mean to you?</div></div></div>
+        <div class="step-row"><div class="step-num">2</div><div class="step-body"><div class="step-title">Your outfit choices and why</div><div class="step-desc">Specific connection to the word's meaning. Not "I chose it because it's cute" — tell us WHY this outfit belongs to this word.</div></div></div>
+        <div class="step-row"><div class="step-num">3</div><div class="step-body"><div class="step-title">Your color story</div><div class="step-desc">Which colors did you choose and why do they fit your word? Name them specifically.</div></div></div>
+        <div class="step-row"><div class="step-num">4</div><div class="step-body"><div class="step-title">Designed for the child</div><div class="step-desc">Who are you designing for and what feeling do you want to create? End with them — this is a gift.</div></div></div>
+      </div>
+    </div>
+
+    <div class="info-box pink">
+      <div class="info-box-label">Sample Statement — BLOOM</div>
+      <p><em>"My OneWord is BLOOM, which means opening up to something beautiful. I chose the floral dress because the full skirt mirrors how a flower opens — spreading outward from a center. The soft pink and cream palette reflects the gentle, hopeful energy of something just beginning to unfold. I designed this for a child who needs to know that beautiful things are still ahead — and I want them to feel that the moment they open this bag."</em></p>
+    </div>
+
+    <div>
+      <div class="section-title">How Your Design Gets Added to the Closet</div>
+      <p style="margin-bottom:12px;">When your paper doll is complete and approved, it doesn't disappear — it gets added to the kiosk's closet, tagged to your OneWord. The next student who gets your word will see <strong>your design</strong> in the closet. Over time, the closet grows into a student-created fashion archive — every outfit made by a real Kellam student for a real child.</p>
+      <div class="info-box green">
+        <div class="info-box-label">To have your design added</div>
+        <p>Your teacher will submit your approved design to the Instructional Technology Specialist, who will add it to the kiosk tagged to your OneWord. Future students will see your name credited next to your design.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TEACHER PANEL -->
+  <div class="panel" id="panel-teacher">
+
+    <div class="info-box teal">
+      <div class="info-box-label">The Vision</div>
+      <p>The Fashion Marketing Doll Kiosk is a living, growing digital experience. Students design paper doll outfits inspired by their OneWord, print them for a child in our community, and — over time — their designs are added back to the kiosk so future students can choose from a library of student-created fashion. Every class leaves something behind for the next one.</p>
+    </div>
+
+    <div>
+      <div class="section-title teal">The Kiosk — Step by Step</div>
+      <div class="steps">
+        <div class="step-row"><div class="step-num teal">1</div><div class="step-body teal"><div class="step-title teal">Select OneWord</div><div class="step-desc">Student finds their assigned word in a 25-word grid. Each card shows the word and its human meaning.</div></div></div>
+        <div class="step-row"><div class="step-num teal">2</div><div class="step-body teal"><div class="step-title teal">Fashion Reference Card</div><div class="step-desc">Immediately after selecting, a full-color reference card appears — color palette, silhouette guidance, style notes, feeling, and a designer statement starter. Students read before touching the closet.</div></div></div>
+        <div class="step-row"><div class="step-num teal">3</div><div class="step-body teal"><div class="step-title teal">Choose a Doll</div><div class="step-desc">Four options: Braided Hair, Curly Hair, Short Hair, Curly Hair Boy.</div></div></div>
+        <div class="step-row"><div class="step-num teal">4</div><div class="step-body teal"><div class="step-title teal">Open the Closet</div><div class="step-desc">Outfits curated for the student's OneWord. As students add designs each semester, this closet grows into a student-created archive.</div></div></div>
+        <div class="step-row"><div class="step-num teal">5</div><div class="step-body teal"><div class="step-title teal">Write Designer Statement</div><div class="step-desc">Student writes 3-5 sentences. The kiosk prompts with a word-specific question and sample starter.</div></div></div>
+        <div class="step-row"><div class="step-num teal">6</div><div class="step-body teal"><div class="step-title teal">Print</div><div class="step-desc">Full-page B&W layout — doll left, outfits right, statement bottom. Print on cardstock for best results.</div></div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-title teal">Conferencing Questions</div>
+      <p style="margin-bottom:12px;">As students work, use these to deepen their thinking:</p>
+      <table class="dir-table">
+        <tr><th class="teal">Question</th><th class="teal">What You're Listening For</th></tr>
+        <tr><td>"What colors feel like your word? Walk me through your color story."</td><td>Intentional connection between palette and meaning — not just favorite colors.</td></tr>
+        <tr><td>"How does the shape of this outfit reflect the meaning of your word?"</td><td>Structural thinking — silhouette as vocabulary.</td></tr>
+        <tr><td>"If the child doesn't know your word, what will the outfit tell them?"</td><td>Design as communication — empathy for the recipient.</td></tr>
+        <tr><td>"Is the energy of this outfit matching the energy of your word?"</td><td>Emotional alignment between design and meaning.</td></tr>
+        <tr><td>"What do you want the child to feel when they open this bag?"</td><td>Purpose-driven design — starting from the recipient's experience.</td></tr>
+      </table>
+    </div>
+
+    <div>
+      <div class="section-title teal">The Designer Statement</div>
+      <p style="margin-bottom:12px;">This is the graded writing component. A strong statement includes:</p>
+      <table class="dir-table">
+        <tr><th class="teal">Element</th><th class="teal">What It Looks Like</th></tr>
+        <tr><td><strong class="teal">OneWord + meaning</strong></td><td>In student's own words — not the kiosk definition.</td></tr>
+        <tr><td><strong class="teal">Outfit choices + why</strong></td><td>Specific connection to the word's meaning. Not "it's pretty" — why does this outfit belong to this word?</td></tr>
+        <tr><td><strong class="teal">Color story</strong></td><td>Named colors with reasoning connected to the word.</td></tr>
+        <tr><td><strong class="teal">Designed for the child</strong></td><td>Who they're designing for and the feeling they want to create.</td></tr>
+      </table>
+    </div>
+
+    <div>
+      <div class="section-title teal">How Student Designs Get Added to the Closet</div>
+      <p style="margin-bottom:12px;">This is what makes the kiosk grow over time. Here is the process:</p>
+      <div class="steps">
+        <div class="step-row"><div class="step-num teal">1</div><div class="step-body teal"><div class="step-title teal">Student completes & gets approval</div><div class="step-desc">Teacher reviews the paper doll sheet and designer statement for quality and word connection.</div></div></div>
+        <div class="step-row"><div class="step-num teal">2</div><div class="step-body teal"><div class="step-title teal">Teacher submits to ITS</div><div class="step-desc">Send the approved design (physical or digital) to Ms. Howell with the student's name and their OneWord.</div></div></div>
+        <div class="step-row"><div class="step-num teal">3</div><div class="step-body teal"><div class="step-title teal">ITS processes the image</div><div class="step-desc">Ms. Howell photographs, crops, converts to B&W, and adds the outfit to the kiosk tagged to the student's OneWord.</div></div></div>
+        <div class="step-row"><div class="step-num teal">4</div><div class="step-body teal"><div class="step-title teal">Design appears in the closet</div><div class="step-desc">On the next kiosk update, the student's design appears in the closet — credited by name — for future students to select.</div></div></div>
+      </div>
+    </div>
+
+    <div class="info-box teal">
+      <div class="info-box-label">The Long-Term Vision</div>
+      <p>Each semester the closet grows. By year three, a student assigned BLOOM opens the closet and finds 15–20 BLOOM outfits — all designed by Kellam Fashion Marketing students. They choose from a real student-created fashion archive. The project becomes self-sustaining, culturally rich, and genuinely owned by students.</p>
+    </div>
+
+    <div>
+      <div class="section-title teal">Suggested Timeline</div>
+      <table class="dir-table">
+        <tr><th class="teal">Day</th><th class="teal">Activity</th></tr>
+        <tr><td><strong class="teal">Day 1</strong></td><td>Introduce the project. Assign OneWords. Show the kiosk. Walk through the Reference Card for one word as a class. Discuss what makes a strong designer statement.</td></tr>
+        <tr><td><strong class="teal">Day 2</strong></td><td>Students work independently in the kiosk. Teacher conferences using the prompts above. Focus: Does this outfit tell the story of your word?</td></tr>
+        <tr><td><strong class="teal">Day 3</strong></td><td>Print design sheets. Students color their doll and outfits, or leave for the child to color. Collect finished sheets. Begin closet submission process.</td></tr>
+      </table>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function switchTab(tab, btn){
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('panel-'+tab).classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
