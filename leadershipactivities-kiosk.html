@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Kellam Smile Bags — Leadership Activity Kiosk</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#F7F3EE;min-height:100vh;padding-bottom:60px;}
+:root{--accent:#2D5016;--light:#F1F8E9;}
+
+/* HEADER */
+.kiosk-header{background:linear-gradient(135deg,#2D5016,#4A7C2F);padding:20px 32px;text-align:center;}
+.kiosk-header h1{font-family:'Fredoka One',cursive;font-size:22px;color:#fff;letter-spacing:1px;}
+.kiosk-header p{font-size:12px;color:rgba(255,255,255,.8);margin-top:3px;}
+
+/* STATUS BAR */
+.status-bar{padding:10px 20px;background:#fff;border-bottom:2px solid #E8E0D5;display:none;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;}
+.status-bar.visible{display:flex;}
+.status-pill{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:16px;color:#fff;}
+.status-age{display:inline-flex;align-items:center;gap:6px;padding:7px 18px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:14px;color:#fff;}
+.status-divider{color:#ccc;font-size:18px;}
+.change-btn{padding:5px 14px;border-radius:20px;border:2px solid #ddd;background:#fff;font-family:'Fredoka One',cursive;font-size:11px;color:#888;cursor:pointer;}
+
+/* SCREENS */
+.screen{display:none;max-width:880px;margin:0 auto;padding:28px 20px;}
+.screen.active{display:block;}
+
+/* STEP BOXES */
+.step-box{background:#fff;border-radius:20px;padding:32px;box-shadow:0 4px 24px rgba(0,0,0,.08);margin-bottom:20px;}
+.step-box h2{font-family:'Fredoka One',cursive;font-size:26px;color:#2D5016;margin-bottom:6px;}
+.step-box .sub{font-size:14px;color:#888;margin-bottom:22px;}
+
+/* WORD GRID */
+.word-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:22px;}
+.wchip{background:#F1F8E9;border:2px solid #C8E6B0;border-radius:10px;padding:8px 4px;cursor:pointer;text-align:center;transition:all .2s;}
+.wchip:hover{transform:translateY(-2px);border-color:#4A7C2F;}
+.wchip.active{color:#fff;border-color:transparent;}
+.wchip .wn{font-family:'Fredoka One',cursive;font-size:12px;display:block;}
+.wchip .wm{font-size:9px;color:#aaa;display:block;margin-top:2px;line-height:1.2;}
+.wchip.active .wm{color:rgba(255,255,255,.8);}
+
+/* AGE CARDS */
+.age-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:22px;}
+.age-card{border-radius:16px;padding:24px;cursor:pointer;border:3px solid transparent;transition:all .2s;text-align:center;}
+.age-card:hover{transform:translateY(-3px);}
+.age-card.active{border-color:#1A1A2E;box-shadow:0 6px 24px rgba(0,0,0,.15);}
+.age-card .age-emoji{font-size:40px;margin-bottom:10px;}
+.age-card .age-label{font-family:'Fredoka One',cursive;font-size:18px;color:#fff;}
+.age-card .age-grades{font-size:12px;color:rgba(255,255,255,.85);margin-top:4px;}
+.age-card .age-desc{font-size:11px;margin-top:8px;line-height:1.5;color:rgba(255,255,255,.8);}
+
+/* STEP BUTTON */
+.step-btn{padding:14px 28px;border:none;border-radius:12px;font-family:'Fredoka One',cursive;font-size:16px;cursor:pointer;color:#fff;transition:all .2s;background:linear-gradient(135deg,#2D5016,#4A7C2F);}
+.step-btn:hover{transform:translateY(-2px);}
+.step-btn-row{display:flex;gap:10px;justify-content:flex-end;}
+.back-btn{padding:14px 20px;border:2px solid #ddd;border-radius:12px;font-family:'Fredoka One',cursive;font-size:14px;cursor:pointer;color:#888;background:#fff;}
+
+/* ACTIVITY SCREEN */
+.act-tabs{display:flex;gap:0;background:#fff;border-bottom:3px solid #E8E0D5;overflow-x:auto;padding:0 12px;justify-content:center;flex-wrap:wrap;}
+.act-tab{padding:11px 13px;font-family:'Fredoka One',cursive;font-size:11px;border:none;background:transparent;cursor:pointer;color:#aaa;border-bottom:3px solid transparent;margin-bottom:-3px;white-space:nowrap;transition:all .2s;letter-spacing:.3px;}
+.act-tab.act-active{border-bottom-color:#2D5016;color:#2D5016;}
+
+/* PANELS */
+.act-panel{display:none;padding:22px 20px;max-width:880px;margin:0 auto;}
+.act-panel.act-visible{display:block;}
+
+/* MODE TOGGLE */
+.mode-toggle{display:flex;gap:6px;background:#F1F8E9;border-radius:50px;padding:4px;margin-bottom:18px;width:fit-content;}
+.mode-btn{padding:8px 20px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:12px;cursor:pointer;border:none;background:transparent;color:#888;transition:all .2s;}
+.mode-btn.mode-active{background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.1);}
+
+/* CARDS */
+.white-card{background:#fff;border-radius:16px;padding:22px;box-shadow:0 3px 14px rgba(0,0,0,.07);margin-bottom:14px;}
+.act-header{border-radius:14px;padding:20px;margin-bottom:18px;position:relative;overflow:hidden;}
+.act-header h2{font-family:'Fredoka One',cursive;font-size:22px;color:#fff;}
+.act-header .ah-sub{font-size:13px;color:rgba(255,255,255,.9);margin-top:5px;}
+.act-header .wmark{position:absolute;right:-8px;top:-8px;font-family:'Fredoka One',cursive;font-size:72px;color:rgba(255,255,255,.1);pointer-events:none;}
+
+/* FRIENDSHIP */
+.f-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.f-card{padding:16px;border-radius:12px;border-left:5px solid;background:#FAFAFA;}
+.f-card .fn{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;}
+.f-card h3{font-size:14px;font-weight:800;color:#333;margin-bottom:5px;}
+.f-card p{font-size:12px;color:#666;line-height:1.5;}
+.f-card .ft{display:inline-block;margin-top:7px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;}
+
+/* PUZZLE */
+.pq{font-size:17px;font-weight:800;color:#333;line-height:1.4;margin-bottom:12px;}
+.rev-btn{padding:10px 20px;border:none;border-radius:30px;font-size:13px;font-weight:700;cursor:pointer;color:#fff;font-family:'Nunito',sans-serif;transition:all .2s;}
+.ans-box{display:none;margin-top:12px;padding:14px 16px;border-radius:12px;font-size:13px;color:#444;line-height:1.7;}
+.ans-box.show{display:block;}
+.puzzle-extra{margin-top:10px;font-size:12px;color:#888;font-style:italic;}
+
+/* COUPONS */
+.coupons{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.coupon{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.08);}
+.c-strip{height:5px;}
+.c-top{padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.c-emoji{font-size:26px;}
+.c-text h3{font-size:13px;font-weight:800;color:#333;}
+.c-text p{font-size:11px;color:#888;margin-top:2px;line-height:1.4;}
+.c-bot{padding:7px 14px;display:flex;justify-content:space-between;border-top:2px dashed #eee;}
+.c-to{font-size:10px;color:#aaa;font-style:italic;}
+.c-from{font-size:10px;font-weight:700;}
+
+/* BREATHING */
+.breath-center{text-align:center;padding:20px;}
+.bc{width:100px;height:100px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:32px;transition:transform 4s ease-in-out;}
+.bc.inhale{transform:scale(1.45);}
+.bl{font-family:'Fredoka One',cursive;font-size:20px;margin-bottom:5px;}
+.bd{font-size:13px;color:#888;margin-bottom:12px;}
+.b-btns{display:flex;gap:8px;justify-content:center;}
+.b-btn{padding:9px 20px;border:none;border-radius:30px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
+.breath-extra{background:#F8F8F8;border-radius:10px;padding:12px 16px;margin-top:12px;font-size:12px;color:#666;font-style:italic;line-height:1.6;}
+
+/* JAR */
+.jar-form{display:flex;flex-direction:column;gap:12px;}
+.jf label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;display:block;}
+.jf input,.jf textarea{width:100%;padding:10px 13px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+.jar-result{border-radius:12px;padding:16px;display:none;margin-top:12px;}
+.jar-result.show{display:block;}
+.jar-result h4{font-family:'Fredoka One',cursive;font-size:15px;margin-bottom:8px;}
+.jar-result p{font-size:13px;color:#444;line-height:1.8;}
+
+/* PLANNER */
+.pl-sec{border:2px solid #eee;border-radius:12px;overflow:hidden;margin-bottom:10px;}
+.pl-hd{padding:10px 14px;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:.5px;display:flex;align-items:center;gap:6px;}
+.pl-bd{padding:12px 14px;}
+.pl-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.pl-field label{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;display:block;color:#666;}
+.pl-field input,.pl-field textarea{width:100%;padding:8px 11px;border:2px solid #eee;border-radius:8px;font-family:'Nunito',sans-serif;font-size:13px;outline:none;}
+.steps-list{display:flex;flex-direction:column;gap:7px;}
+.step-row{display:flex;align-items:center;gap:8px;}
+.sbadge{width:25px;height:25px;border-radius:50%;color:#fff;font-family:'Fredoka One',cursive;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sinput{flex:1;padding:8px 11px;border:2px solid #eee;border-radius:8px;font-family:'Nunito',sans-serif;font-size:13px;outline:none;}
+
+/* YOURS FORMS */
+.yours-field label{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;display:block;color:#666;}
+.yours-field input,.yours-field textarea{width:100%;padding:11px 14px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;transition:border-color .2s;margin-bottom:12px;}
+
+/* COMMON */
+.slabel{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;display:block;}
+.print-bar{text-align:center;margin-top:18px;}
+.print-btn{padding:12px 26px;border:none;border-radius:30px;font-family:'Fredoka One',cursive;font-size:14px;cursor:pointer;color:#fff;transition:all .2s;}
+.print-btn:hover{transform:translateY(-2px);}
+.add-step-btn{padding:7px 14px;border:2px solid #eee;background:#fafafa;border-radius:20px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;color:#666;cursor:pointer;margin-top:6px;}
+.form-submit{padding:12px 20px;border:none;border-radius:12px;font-family:'Fredoka One',cursive;font-size:14px;cursor:pointer;color:#fff;width:100%;margin-top:6px;transition:all .2s;}
+.name-inp{width:100%;padding:13px 16px;border:2px solid #C8E6B0;border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;outline:none;margin-bottom:18px;}
+.name-inp:focus{border-color:#4A7C2F;}
+
+
+/* LETTER */
+.letter-page{border:8px solid;border-radius:16px;padding:32px;position:relative;font-family:'Nunito',sans-serif;}
+.letter-corner{position:absolute;font-size:28px;line-height:1;}
+.letter-corner.tl{top:10px;left:10px;}
+.letter-corner.tr{top:10px;right:10px;}
+.letter-corner.bl{bottom:10px;left:10px;}
+.letter-corner.br{bottom:10px;right:10px;}
+.letter-word-badge{display:inline-block;padding:6px 18px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:16px;color:#fff;margin-bottom:16px;}
+.letter-greeting{font-family:'Fredoka One',cursive;font-size:22px;margin-bottom:12px;}
+.letter-body{font-size:15px;line-height:1.9;color:#333;white-space:pre-wrap;}
+.letter-sig{font-family:'Fredoka One',cursive;font-size:16px;margin-top:20px;}
+.letter-footer{text-align:center;margin-top:16px;font-size:11px;color:#aaa;letter-spacing:1px;font-family:'Fredoka One',cursive;}
+.letter-border-row{display:flex;justify-content:space-between;margin-bottom:2px;font-size:14px;letter-spacing:3px;}
+
+@media print{
+  .kiosk-header,.status-bar,.act-tabs,.mode-toggle,.print-bar,.b-btns,.add-step-btn,.form-submit,.change-btn,.step-btn,.back-btn{display:none!important;}
+  .act-panel{display:block!important;padding:8px;}
+  .act-panel:not(.act-visible){display:none!important;}
+  .act-panel .act-mode{display:block!important;}
+  .white-card{box-shadow:none;border:1px solid #eee;}
+  body{background:#fff;}
+}
+</style>
+</head>
+<body>
+<div class="kiosk-header">
+  <h1>Kellam Smile Bags — Leadership Activity Kiosk</h1>
+  <p>Kellam High School · Leadership · Spring 2026</p>
+</div>
+
+<div class="status-bar" id="statusBar">
+  <div class="status-pill" id="statusWord">BLOOM</div>
+  <div class="status-divider">·</div>
+  <div class="status-age" id="statusAge">Elementary</div>
+  <button class="change-btn" onclick="goScreen(0)">Start Over</button>
+</div>
+
+<!-- SCREEN 0: WORD -->
+<div class="screen active" id="screen0">
+  <div class="step-box">
+    <h2>Step 1 — Choose Your OneWord</h2>
+    <p class="sub">Select the word that was assigned to you. Everything will be built around this word!</p>
+    <input class="name-inp" id="studentName" type="text" placeholder="Your name (optional)..."/>
+    <div class="word-grid" id="wordGrid"></div>
+    <div class="step-btn-row">
+      <button class="step-btn" onclick="goScreen(1)">Next — Choose Age Group →</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 1: AGE GROUP -->
+<div class="screen" id="screen1">
+  <div class="step-box">
+    <h2>Step 2 — Who is this for?</h2>
+    <p class="sub">Choose the age group of the child who will receive your activity in the Kellam Smile Bag.</p>
+    <div class="age-grid" id="ageGrid"></div>
+    <div class="step-btn-row">
+      <button class="back-btn" onclick="goScreen(0)">← Back</button>
+      <button class="step-btn" onclick="goScreen(2)">Create My Activities →</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 2: ACTIVITIES -->
+<div class="screen" id="screen2">
+  <div class="act-tabs">
+    <button class="act-tab act-active" onclick="switchAct(0,this)">01 · Friendship</button>
+    <button class="act-tab" onclick="switchAct(1,this)">02 · Puzzle</button>
+    <button class="act-tab" onclick="switchAct(2,this)">03 · Coupons</button>
+    <button class="act-tab" onclick="switchAct(3,this)">04 · Calm Down</button>
+    <button class="act-tab" onclick="switchAct(4,this)">05 · Dream Jar</button>
+    <button class="act-tab" onclick="switchAct(5,this)">06 · Big Idea</button>
+    <button class="act-tab" onclick="switchAct(6,this)">07 · Letter ✉️</button>
+  </div>
+
+  <!-- ACTIVITY 1 -->
+  <div class="act-panel act-visible" id="act0">
+    <div class="mode-toggle">
+      <button class="mode-btn mode-active" onclick="setMode(0,'ex',this)">📖 See the Example</button>
+      <button class="mode-btn" onclick="setMode(0,'yo',this)">✏️ Make Your Own</button>
+    </div>
+    <div id="act0-ex">
+      <div class="act-header" id="fc-hdr"><div class="wmark" id="fc-wm"></div><h2 id="fc-title"></h2><div class="ah-sub" id="fc-sub"></div></div>
+      <div class="f-grid" id="fc-cards"></div>
+    </div>
+    <div id="act0-yo" style="display:none;">
+      <div class="white-card">
+        <span class="slabel" id="fc-yo-lbl">Create Your Own Friendship Challenge</span>
+        <div class="yours-field"><label>Challenge Name</label><input type="text" id="fc-y-title" placeholder="Name your challenge..."/></div>
+        <div class="yours-field"><label>What do you do?</label><textarea id="fc-y-desc" rows="3" placeholder="Describe the challenge..."></textarea></div>
+        <div class="yours-field"><label>How does it connect to your OneWord?</label><textarea id="fc-y-why" rows="2" placeholder="This connects to my word because..."></textarea></div>
+      </div>
+    </div>
+    <div class="print-bar"><button class="print-btn" id="fc-pb" onclick="window.print()">Print Friendship Cards 🖨️</button></div>
+  </div>
+
+  <!-- ACTIVITY 2 -->
+  <div class="act-panel" id="act1">
+    <div class="mode-toggle">
+      <button class="mode-btn mode-active" onclick="setMode(1,'ex',this)">📖 See the Example</button>
+      <button class="mode-btn" onclick="setMode(1,'yo',this)">✏️ Make Your Own</button>
+    </div>
+    <div id="act1-ex">
+      <div class="white-card">
+        <span class="slabel" id="pz-lbl">Riddle</span>
+        <p class="puzzle-extra" id="pz-intro"></p>
+        <div class="pq" id="pz-q" style="margin-top:10px;"></div>
+        <button class="rev-btn" id="pz-btn" onclick="revealPuzzle()">Reveal the Answer 💡</button>
+        <div class="ans-box" id="pz-ans"></div>
+        <p class="puzzle-extra" id="pz-suffix" style="margin-top:10px;"></p>
+      </div>
+    </div>
+    <div id="act1-yo" style="display:none;">
+      <div class="white-card">
+        <span class="slabel" id="pz-yo-lbl">Write Your Own Puzzle</span>
+        <div class="yours-field"><label>My Riddle</label><textarea id="pz-y-q" rows="4" placeholder="Write your riddle... (Try starting with 'I am...' or 'What am I?')"></textarea></div>
+        <div class="yours-field"><label>The Answer</label><input type="text" id="pz-y-a" placeholder="The answer is..."/></div>
+        <div class="yours-field"><label>What lesson does this teach?</label><textarea id="pz-y-l" rows="2" placeholder="This teaches us..."></textarea></div>
+      </div>
+    </div>
+    <div class="print-bar"><button class="print-btn" id="pz-pb" onclick="window.print()">Print Puzzle 🖨️</button></div>
+  </div>
+
+  <!-- ACTIVITY 3 -->
+  <div class="act-panel" id="act2">
+    <div class="mode-toggle">
+      <button class="mode-btn mode-active" onclick="setMode(2,'ex',this)">📖 See the Example</button>
+      <button class="mode-btn" onclick="setMode(2,'yo',this)">✏️ Make Your Own</button>
+    </div>
+    <div id="act2-ex">
+      <div class="white-card">
+        <span class="slabel" id="cp-lbl">Kindness Coupons</span>
+        <p style="font-size:13px;color:#888;margin-bottom:14px;" id="cp-intro"></p>
+        <div class="coupons" id="cp-coupons"></div>
+      </div>
+    </div>
+    <div id="act2-yo" style="display:none;">
+      <div class="white-card">
+        <span class="slabel" id="cp-yo-lbl">Create Your Own Kindness Coupons</span>
+        <p style="font-size:13px;color:#888;margin-bottom:14px;">Write 4 kindness coupons inspired by your OneWord!</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div style="padding:12px;border:2px solid #eee;border-radius:10px;"><div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#666;margin-bottom:6px;">Coupon 1 🎁</div><input type="text" placeholder="This coupon is good for..." style="width:100%;padding:8px;border:1px solid #eee;border-radius:7px;font-family:Nunito,sans-serif;font-size:13px;outline:none;"/></div>
+          <div style="padding:12px;border:2px solid #eee;border-radius:10px;"><div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#666;margin-bottom:6px;">Coupon 2 💝</div><input type="text" placeholder="This coupon is good for..." style="width:100%;padding:8px;border:1px solid #eee;border-radius:7px;font-family:Nunito,sans-serif;font-size:13px;outline:none;"/></div>
+          <div style="padding:12px;border:2px solid #eee;border-radius:10px;"><div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#666;margin-bottom:6px;">Coupon 3 🌟</div><input type="text" placeholder="This coupon is good for..." style="width:100%;padding:8px;border:1px solid #eee;border-radius:7px;font-family:Nunito,sans-serif;font-size:13px;outline:none;"/></div>
+          <div style="padding:12px;border:2px solid #eee;border-radius:10px;"><div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#666;margin-bottom:6px;">Coupon 4 ✨</div><input type="text" placeholder="This coupon is good for..." style="width:100%;padding:8px;border:1px solid #eee;border-radius:7px;font-family:Nunito,sans-serif;font-size:13px;outline:none;"/></div>
+        </div>
+      </div>
+    </div>
+    <div class="print-bar"><button class="print-btn" id="cp-pb" onclick="window.print()">Print & Cut Coupons 🖨️</button></div>
+  </div>
+
+  <!-- ACTIVITY 4 -->
+  <div class="act-panel" id="act3">
+    <div class="mode-toggle">
+      <button class="mode-btn mode-active" onclick="setMode(3,'ex',this)">📖 See the Example</button>
+      <button class="mode-btn" onclick="setMode(3,'yo',this)">✏️ Make Your Own</button>
+    </div>
+    <div id="act3-ex">
+      <div class="white-card">
+        <div class="breath-center">
+          <div class="bl" id="br-lbl">Ready?</div>
+          <div class="bc" id="br-circle">🫧</div>
+          <div class="bd" id="br-desc"></div>
+          <div class="b-btns">
+            <button class="b-btn" id="br-start" style="color:#fff;" onclick="startBreath()">Start ▶</button>
+            <button class="b-btn" style="background:#f0f0f0;color:#666;" onclick="stopBreath()">Stop ■</button>
+          </div>
+        </div>
+        <div class="breath-extra" id="br-extra"></div>
+      </div>
+    </div>
+    <div id="act3-yo" style="display:none;">
+      <div class="white-card">
+        <span class="slabel" id="br-yo-lbl">Design Your Own Calm-Down Card</span>
+        <div class="yours-field"><label>Name Your Technique</label><input type="text" id="br-y-name" placeholder="e.g. River Breath, Star Breath..."/></div>
+        <div class="yours-field"><label>Step by Step Instructions</label><textarea id="br-y-steps" rows="5" placeholder="Step 1: ...&#10;Step 2: ...&#10;Step 3: ..."></textarea></div>
+        <div class="yours-field"><label>How does this connect to your OneWord?</label><input type="text" id="br-y-why" placeholder="This connects because..."/></div>
+      </div>
+    </div>
+    <div class="print-bar"><button class="print-btn" id="br-pb" onclick="window.print()">Print Calm-Down Card 🖨️</button></div>
+  </div>
+
+  <!-- ACTIVITY 5 -->
+  <div class="act-panel" id="act4">
+    <div class="mode-toggle">
+      <button class="mode-btn mode-active" onclick="setMode(4,'ex',this)">📖 See the Example</button>
+      <button class="mode-btn" onclick="setMode(4,'yo',this)">✏️ Make Your Own</button>
+    </div>
+    <div id="act4-ex">
+      <div class="white-card" id="dj-ex-card">
+        <span class="slabel" id="dj-ex-lbl">Example Dream Jar</span>
+        <div id="dj-ex-content"></div>
+      </div>
+    </div>
+    <div id="act4-yo" style="display:none;">
+      <div class="white-card">
+        <span class="slabel" id="dj-yo-lbl">Fill Your Dream Jar</span>
+        <div class="jar-form">
+          <div class="jf"><label id="dj-l1">My OneWord</label><input type="text" id="dj-word" readonly/></div>
+          <div class="jf"><label>What this word means to me</label><textarea id="dj-meaning" rows="2" placeholder="In my own words..."></textarea></div>
+          <div class="jf"><label id="dj-l2">My Dream</label><input type="text" id="dj-dream" placeholder="Someday I want to..."/></div>
+          <div class="jf"><label id="dj-l3">My Goal</label><input type="text" id="dj-goal" placeholder="This week I will..."/></div>
+          <div class="jf"><label id="dj-l4">Message for the child</label><textarea id="dj-msg" rows="2" placeholder="Dear friend..."></textarea></div>
+          <button class="form-submit" id="dj-submit" onclick="fillJar()">✨ Fill My Jar!</button>
+        </div>
+        <div class="jar-result" id="dj-result">
+          <h4>🫙 My Dream Jar</h4>
+          <p id="dj-result-text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="print-bar"><button class="print-btn" id="dj-pb" onclick="window.print()">Print My Dream Jar 🖨️</button></div>
+  </div>
+
+  <!-- ACTIVITY 6 -->
+  <div class="act-panel" id="act5">
+    <div class="mode-toggle">
+      <button class="mode-btn mode-active" onclick="setMode(5,'ex',this)">📖 See the Example</button>
+      <button class="mode-btn" onclick="setMode(5,'yo',this)">✏️ Make Your Own</button>
+    </div>
+    <div id="act5-ex">
+      <div class="white-card" id="pl-ex-card">
+        <span class="slabel" id="pl-ex-lbl">Example Big Idea Planner</span>
+        <div id="pl-ex-content"></div>
+      </div>
+    </div>
+    <div id="act5-yo" style="display:none;">
+      <div class="white-card">
+        <span class="slabel" id="pl-yo-lbl">My Big Idea Planner</span>
+        <div style="margin-bottom:12px;"><label style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#666;display:block;margin-bottom:4px;">Project Name</label>
+        <input type="text" id="pl-name" placeholder="Give your big idea a name!" style="width:100%;padding:11px 14px;border:2px solid #eee;border-radius:10px;font-family:Nunito,sans-serif;font-size:15px;font-weight:700;outline:none;"/></div>
+        <div class="pl-sec" id="pl-s1"><div class="pl-hd" id="pl-h1">🎯 <span id="pl-h1t">The Basics</span></div><div class="pl-bd"><div class="pl-row"><div class="pl-field"><label id="pl-l1a">What is my idea?</label><textarea id="pl-idea" rows="2" placeholder="I want to..."></textarea></div><div class="pl-field"><label id="pl-l1b">Why does this matter?</label><textarea id="pl-why" rows="2" placeholder="This matters because..."></textarea></div></div></div></div>
+        <div class="pl-sec" id="pl-s2"><div class="pl-hd" id="pl-h2">📋 <span id="pl-h2t">My Steps</span></div><div class="pl-bd"><div class="steps-list" id="pl-steps"></div><button class="add-step-btn" onclick="addStep()">+ Add Step</button></div></div>
+        <div class="pl-sec" id="pl-s3"><div class="pl-hd" id="pl-h3">🛠️ <span id="pl-h3t">What I Need</span></div><div class="pl-bd"><div class="pl-row"><div class="pl-field"><label id="pl-l3a">Supplies / materials</label><textarea rows="2" placeholder="I'll need..."></textarea></div><div class="pl-field"><label id="pl-l3b">People who can help</label><textarea rows="2" placeholder="I can ask..."></textarea></div></div></div></div>
+      </div>
+    </div>
+    <div class="print-bar"><button class="print-btn" id="pl-pb" onclick="window.print()">Print My Planner 🖨️</button></div>
+  </div>
+  <!-- ACTIVITY 7: LETTER TO THE CHILD -->
+  <div class="act-panel" id="act6">
+    <div class="mode-toggle">
+      <button class="mode-btn mode-active" onclick="setMode(6,'ex',this)">📖 See the Example</button>
+      <button class="mode-btn" onclick="setMode(6,'yo',this)">✏️ Write Your Own</button>
+    </div>
+    <div id="act6-ex">
+      <div class="white-card" id="lt-ex-card">
+        <span class="slabel" id="lt-ex-lbl">Example Letter</span>
+        <div id="lt-ex-content"></div>
+      </div>
+    </div>
+    <div id="act6-yo" style="display:none;">
+      <div class="white-card">
+        <span class="slabel" id="lt-yo-lbl">Write Your Letter</span>
+        <p style="font-size:13px;color:#888;margin-bottom:16px;" id="lt-yo-sub">Write a warm, personal letter to the child who will receive your Smile Bag. This will be printed on a decorative sheet they can color!</p>
+        <div class="yours-field"><label id="lt-l1">Dear Friend,</label>
+        <textarea id="lt-body" rows="8" placeholder="Write your letter here... Tell them who made this, why you chose your word, and what you want them to know."></textarea></div>
+        <div class="yours-field"><label>Sign your letter</label>
+        <input type="text" id="lt-sig" placeholder="With love, [your name or just 'A Kellam Student']"/></div>
+        <button class="form-submit" id="lt-submit" onclick="previewLetter()">✉️ Preview My Letter</button>
+      </div>
+      <div class="white-card" id="lt-preview" style="display:none;">
+        <span class="slabel" id="lt-prev-lbl">Your Letter — Ready to Print!</span>
+        <div id="lt-preview-content"></div>
+        <p style="font-size:12px;color:#aaa;margin-top:12px;font-style:italic;">✨ After printing, decorate the border with colored pencils, stickers, or drawings!</p>
+      </div>
+    </div>
+    <div class="print-bar"><button class="print-btn" id="lt-pb" onclick="window.print()">Print Letter ✉️ 🖨️</button></div>
+  </div>
+
+</div>
+
+<script>
+var WORDS = [{"word": "ABSORB", "meaning": "Taking in everything around you", "accent": "#0D5C8C", "light": "#E3F0FA", "fc": {"title": "Absorb Challenge", "challenge1": "Sit quietly for 2 minutes and absorb everything around you. Write down 5 things you see, 3 you hear, and 1 you feel.", "challenge2": "Pick one person near you and really absorb what they're saying without interrupting. Then repeat back what they said!", "coupon_word": "I'll really listen and absorb everything you say \u2014 no distractions!", "puzzle": "I take in everything around me but keep none of it for myself. Rain fills me but I am not a bucket. What am I?", "puzzle_answer": "A sponge! \ud83e\uddfd A sponge absorbs everything it touches \u2014 just like a great learner absorbs new ideas every day.", "breath_name": "Ocean Breath", "breath_desc": "Breathe in slowly like a wave rolling in, absorbing the shore. Breathe out like the wave pulling back.", "dream_prompt": "One thing I want to absorb and learn this year is...", "goal_prompt": "This week I will absorb something new by...", "plan_name": "My Learning Project", "plan_why": "Because absorbing new things helps me grow every day"}}, {"word": "ADAPT", "meaning": "Changing to meet a new challenge", "accent": "#2E7D32", "light": "#E8F5E9", "fc": {"title": "Adapt Challenge", "challenge1": "Someone changed the rules of your favorite game! Play it anyway with the new rules and see if you can adapt and still have fun.", "challenge2": "Build something using only your non-dominant hand. Adapt to the challenge!", "coupon_word": "When things change, I'll adapt right alongside you \u2014 I've got you!", "puzzle": "I am a master of change. I never stay the same color. I blend in wherever I go. What am I?", "puzzle_answer": "A chameleon! \ud83e\udd8e Chameleons adapt their color to their surroundings \u2014 a superpower for survival!", "breath_name": "Change Breath", "breath_desc": "With each breath in, imagine yourself changing shape like water. With each breath out, settle into your new form.", "dream_prompt": "One new challenge I want to adapt to is...", "goal_prompt": "This week I will practice adapting by...", "plan_name": "My Adapt Challenge", "plan_why": "Because adapting helps me handle anything life throws at me"}}, {"word": "ANCHOR", "meaning": "Knowing where you belong", "accent": "#1A237E", "light": "#E8EAF6", "fc": {"title": "Anchor Challenge", "challenge1": "Name 3 people who are your anchors \u2014 people who keep you grounded. Write them each a note saying why they matter to you.", "challenge2": "Create a 'home base' in your room \u2014 a special spot that feels like YOU. Describe what makes it your anchor place.", "coupon_word": "Whenever you feel lost, I'm your anchor. I'll always be here to help you find your way back.", "puzzle": "I hold things in place without moving myself. The bigger the storm, the more important I become. What am I?", "puzzle_answer": "An anchor! \u2693 Anchors keep ships from drifting away in storms \u2014 just like the people who love us keep us grounded when life gets hard.", "breath_name": "Anchor Breath", "breath_desc": "Feel your feet on the floor. You are anchored to the earth. Breathe in, feeling that connection. Breathe out, feeling safe.", "dream_prompt": "The place where I feel most like myself is...", "goal_prompt": "This week I will strengthen my anchor by...", "plan_name": "My Belonging Project", "plan_why": "Because knowing where I belong gives me strength for everything else"}}, {"word": "BALANCE", "meaning": "Finding steadiness between two things", "accent": "#6A1B9A", "light": "#F3E5F5", "fc": {"title": "Balance Challenge", "challenge1": "Stand on one foot for 30 seconds. Then try it with your eyes closed! Talk about what helps you find balance.", "challenge2": "Make a list of 5 things you love and 5 things that are hard. Find one way each 'hard' thing could become easier.", "coupon_word": "When things tip one way, I'll help you find your balance. One free problem-solving session, anytime!", "puzzle": "I have two sides but I am not a coin. I keep things fair but I am not a judge. I make sure nothing is too much or too little. What am I?", "puzzle_answer": "A scale! \u2696\ufe0f Scales keep things balanced and fair \u2014 just like finding balance in life means making sure no one thing takes over everything else.", "breath_name": "Balance Breath", "breath_desc": "Breathe in for 4 counts. Hold for 4 counts. Breathe out for 4 counts. Hold for 4 counts. Equal on all sides \u2014 balanced!", "dream_prompt": "The two things I most want to balance in my life are...", "goal_prompt": "This week I will find more balance by...", "plan_name": "My Balance Plan", "plan_why": "Because balance helps me be my best self without burning out"}}, {"word": "BLOOM", "meaning": "Opening up to something beautiful", "accent": "#B5446E", "light": "#FDE8EF", "fc": {"title": "Bloom Challenge", "challenge1": "Plant something \u2014 a seed, a bulb, or even just draw a flower. Write what conditions it needs to bloom. Then write what conditions YOU need to bloom.", "challenge2": "Share one thing about yourself that you've been keeping hidden. Let it bloom!", "coupon_word": "You are blooming every day. This coupon is good for one reminder of how far you've come!", "puzzle": "I start as something tiny and closed, then open up when the time is right. I need light, water, and care to become my most beautiful self. What am I?", "puzzle_answer": "A flower! \ud83c\udf38 Flowers bloom when they have what they need \u2014 and people bloom when they have love, support, and the right conditions too!", "breath_name": "Flower Breath", "breath_desc": "Breathe in slowly like a flower opening petal by petal. Breathe out gently like petals releasing into the breeze.", "dream_prompt": "One beautiful thing I am opening up to this year is...", "goal_prompt": "This week I will help myself bloom by...", "plan_name": "My Bloom Project", "plan_why": "Because blooming means becoming the most beautiful version of myself"}}, {"word": "BREATHE", "meaning": "Finding calm in a hard moment", "accent": "#0277BD", "light": "#E1F5FE", "fc": {"title": "Breathe Challenge", "challenge1": "Teach someone the 4-7-8 breathing technique: breathe in for 4, hold for 7, out for 8. Practice it together 3 times.", "challenge2": "The next time something frustrates you today, stop and take 3 deep breaths before responding. Notice what changes.", "coupon_word": "When everything feels like too much, use this coupon. I will sit with you and breathe until things feel better.", "puzzle": "I am always with you but you rarely notice me. When you pay attention to me, everything slows down. I am free and I am yours. What am I?", "puzzle_answer": "Your breath! \ud83c\udf2c\ufe0f Your breath is always there \u2014 and when you focus on it, it can calm your whole body and mind in seconds.", "breath_name": "The Classic", "breath_desc": "The original calm-down: breathe in slowly for 4 counts, hold for 4, breathe out for 4. Feel your whole body relax.", "dream_prompt": "One situation where I want to remember to breathe is...", "goal_prompt": "This week when things get hard, I will breathe by...", "plan_name": "My Calm Plan", "plan_why": "Because breathing is a superpower I always have with me"}}, {"word": "CLEAR", "meaning": "Finding clarity after confusion", "accent": "#006064", "light": "#E0F7FA", "fc": {"title": "Clear Challenge", "challenge1": "Write down one thing that's been confusing you. Then explain it out loud as simply as you can \u2014 like you're explaining it to a 5-year-old. See if it becomes clearer!", "challenge2": "Clean and organize one small space. Notice how clearing your space clears your mind.", "coupon_word": "When things feel foggy and confusing, use this coupon. I will help you think it through until it becomes clear.", "puzzle": "I am what happens after rain. I am what you feel after a good cry. I am what happens when you finally understand something. What am I?", "puzzle_answer": "Clarity! \ud83c\udf24\ufe0f After rain comes clear skies. After confusion comes understanding. After hard work comes clarity \u2014 the moment everything finally makes sense.", "breath_name": "Clear Mind Breath", "breath_desc": "Breathe in imagining fog entering your mind. Breathe out imagining that fog clearing away, leaving bright open sky.", "dream_prompt": "One thing I want to understand more clearly this year is...", "goal_prompt": "This week I will find clarity by...", "plan_name": "My Clarity Project", "plan_why": "Because clear thinking helps me make better decisions"}}, {"word": "CONNECT", "meaning": "Building bridges between things and people", "accent": "#4E342E", "light": "#EFEBE9", "fc": {"title": "Connect Challenge", "challenge1": "Find something in common with someone very different from you. Ask them 3 questions and listen carefully. What unexpected connection did you find?", "challenge2": "Draw a web connecting everyone who has helped you become who you are. How many connections can you find?", "coupon_word": "This coupon is good for one genuine conversation \u2014 no phones, no distractions. Just us, connecting for real.", "puzzle": "I am invisible but I hold people together. I am strongest when used most. I grow longer the more you share. What am I?", "puzzle_answer": "A relationship! \ud83e\udd1d Connections between people are invisible but incredibly strong \u2014 and the more you invest in them, the stronger they become!", "breath_name": "Heart Breath", "breath_desc": "Place one hand on your heart. Breathe in warmth. Breathe out that warmth toward someone you love. Feel the connection.", "dream_prompt": "One relationship I want to build or strengthen is...", "goal_prompt": "This week I will connect with someone by...", "plan_name": "My Connection Project", "plan_why": "Because strong connections make everything in life better"}}, {"word": "CYCLE", "meaning": "Everything returning and beginning again", "accent": "#1B5E20", "light": "#E8F5E9", "fc": {"title": "Cycle Challenge", "challenge1": "Track one cycle in nature today \u2014 the sun moving across the sky, clouds forming, or a plant growing. Draw what you observe at 3 different times.", "challenge2": "Think of a hard time in your past that eventually got better. How does knowing cycles repeat help you now?", "coupon_word": "When things feel like they'll never change, use this coupon. I'll remind you that cycles always turn \u2014 better days are coming.", "puzzle": "I have no beginning and no end. I never travel in a straight line. The seasons follow me. The moon follows me. What am I?", "puzzle_answer": "A circle! \u2b55 Everything in nature moves in cycles \u2014 seasons, moon phases, day and night. And just like nature, hard times cycle into better times too!", "breath_name": "Cycle Breath", "breath_desc": "Breathe in a full circle \u2014 imagine breath flowing up your spine and over your head. Breathe out flowing back down. A complete cycle.", "dream_prompt": "One cycle in my life I'm grateful is coming back around is...", "goal_prompt": "This week I will honor the cycle by...", "plan_name": "My Cycle Project", "plan_why": "Because understanding cycles helps me trust that things always come back around"}}, {"word": "EMERGE", "meaning": "Coming out into something new", "accent": "#6A1B9A", "light": "#F3E5F5", "fc": {"title": "Emerge Challenge", "challenge1": "Try one thing today that you've never done before. Something small is fine! Write about how it felt to emerge into something new.", "challenge2": "Think of a way you have changed in the last year. Write a letter from your old self to your new self.", "coupon_word": "When you're ready to try something new and scary, use this coupon. I'll be right beside you as you emerge!", "puzzle": "I start in the dark and silent. I struggle and push. Then suddenly I break through into light. What am I?", "puzzle_answer": "A chick hatching from an egg! \ud83d\udc23 Breaking out of a shell takes effort \u2014 but what emerges is something completely new and full of possibility!", "breath_name": "Emerge Breath", "breath_desc": "Breathe in deeply as if you're gathering all your courage. Breathe out as you emerge \u2014 pushing forward into something new and bright.", "dream_prompt": "One new version of myself I want to emerge into is...", "goal_prompt": "This week I will take one step to emerge by...", "plan_name": "My Emergence Project", "plan_why": "Because emerging into something new means I am always growing"}}, {"word": "FILTER", "meaning": "Letting through only what matters", "accent": "#1565C0", "light": "#E3F2FD", "fc": {"title": "Filter Challenge", "challenge1": "Write down 10 things on your mind right now. Then filter: circle only the 3 that truly matter. Let the rest go.", "challenge2": "Spend 30 minutes with no phone, no screens. Filter out the noise and notice what you think about naturally.", "coupon_word": "When your mind feels crowded and noisy, use this coupon. I'll help you filter out what doesn't matter and focus on what does.", "puzzle": "Water passes through me but I keep the dirt behind. Information passes through me but I keep the bad stuff out. What am I?", "puzzle_answer": "A filter! \ud83e\uded9 Filters let through what's good and hold back what's harmful \u2014 just like learning to filter what we let into our minds helps us stay clear and focused.", "breath_name": "Filter Breath", "breath_desc": "Breathe in everything \u2014 the noise, the worry, the clutter. Breathe out only what doesn't serve you. Keep only the good.", "dream_prompt": "One thing I want to filter out of my life to make room for what matters is...", "goal_prompt": "This week I will filter my time by saying no to...", "plan_name": "My Filter Project", "plan_why": "Because filtering my focus helps me put energy where it truly matters"}}, {"word": "FLOW", "meaning": "Moving forward, even slowly", "accent": "#0D47A1", "light": "#E3F2FD", "fc": {"title": "Flow Challenge", "challenge1": "Try to stay in 'flow state' \u2014 completely focused on one activity for 15 minutes straight. No interruptions. Notice what it feels like when time disappears.", "challenge2": "Think of a time when you kept going even when it was hard. How did moving forward feel different from stopping?", "coupon_word": "When you feel stuck and can't move forward, use this coupon. I'll flow alongside you until you find your momentum again.", "puzzle": "I move without legs. I find a way around every obstacle. I never stop \u2014 I just change direction. I always reach my destination eventually. What am I?", "puzzle_answer": "Water! \ud83d\udca7 Water always finds a way to flow forward \u2014 around rocks, through cracks, over ledges. No matter what's in the way, it keeps moving!", "breath_name": "River Breath", "breath_desc": "Breathe in like a stream gathering strength. Breathe out flowing forward, around every obstacle, always moving. Keep flowing.", "dream_prompt": "One area of my life where I want to flow more freely is...", "goal_prompt": "This week I will keep flowing even when it's hard by...", "plan_name": "My Flow Project", "plan_why": "Because flowing forward \u2014 even slowly \u2014 always gets me somewhere"}}, {"word": "GROW", "meaning": "Becoming more than you were", "accent": "#33691E", "light": "#F1F8E9", "fc": {"title": "Grow Challenge", "challenge1": "Learn one new thing today \u2014 a word, a skill, a fact. Write it down and teach it to someone else. Growing means sharing!", "challenge2": "Name one way you've grown in the last 6 months that surprised you. Growth doesn't always look the way we expect!", "coupon_word": "This coupon is good for one honest conversation about how far you've grown. I'll remind you how much you've changed!", "puzzle": "I start smaller than your thumb but can grow taller than a house. I need darkness before I can reach the light. The more I grow, the stronger I become. What am I?", "puzzle_answer": "A tree! \ud83c\udf33 Trees start as tiny seeds in the dark soil \u2014 just like people often do their best growing through challenges before emerging stronger than ever!", "breath_name": "Growing Breath", "breath_desc": "Start with a tiny breath \u2014 just a trickle. Then each breath, grow it bigger. By breath 5, your lungs are completely full. Feel yourself expand.", "dream_prompt": "One area where I most want to grow this year is...", "goal_prompt": "This week I will grow by...", "plan_name": "My Growth Project", "plan_why": "Because growing means I am never done becoming who I'm meant to be"}}, {"word": "HEAL", "meaning": "Getting better, inside and out", "accent": "#00695C", "light": "#E0F2F1", "fc": {"title": "Heal Challenge", "challenge1": "Write a letter to yourself from someone who loves you unconditionally. What would they say to help you heal from something hard?", "challenge2": "Think of one small hurt \u2014 physical or emotional \u2014 and do one kind thing for yourself today to help it heal.", "coupon_word": "This coupon is good for one no-questions-asked hug whenever you need to heal from anything at all.", "puzzle": "I cannot be seen but I can be felt. I take time and cannot be rushed. I need gentleness, not force. I make things stronger than they were before. What am I?", "puzzle_answer": "Healing! \ud83c\udf3f Healing is invisible but real \u2014 it happens slowly, with care and gentleness, and often makes us stronger and wiser than we were before we were hurt.", "breath_name": "Healing Breath", "breath_desc": "Breathe in golden, warm light. Imagine it flowing to anywhere that hurts \u2014 inside or outside. Breathe out grey, releasing pain.", "dream_prompt": "One thing I am healing from and feeling stronger because of is...", "goal_prompt": "This week I will take care of myself by...", "plan_name": "My Healing Project", "plan_why": "Because healing is not weakness \u2014 it's one of the bravest things I can do"}}, {"word": "MIGRATE", "meaning": "Moving to where you need to be", "accent": "#BF360C", "light": "#FBE9E7", "fc": {"title": "Migrate Challenge", "challenge1": "Pack a small bag with 5 things that are most important to you. Imagine you had to leave and could only take these. What do they say about you?", "challenge2": "Interview someone who has moved to a new place \u2014 school, city, or country. What did they leave behind? What did they find?", "coupon_word": "When you're finding your way somewhere new and scary, use this coupon. I'll help you navigate!", "puzzle": "I travel thousands of miles without a map. I always know when it's time to leave and where I'm going. I follow something invisible. What am I?", "puzzle_answer": "A migrating bird! \ud83d\udc26 Birds migrate using instinct \u2014 an invisible inner compass that tells them exactly where they need to be. You have one too!", "breath_name": "Journey Breath", "breath_desc": "Breathe in the courage for the journey ahead. Breathe out what you're leaving behind. Each breath takes you where you need to be.", "dream_prompt": "One place \u2014 physical or in my life \u2014 I am moving toward is...", "goal_prompt": "This week I will take one step toward where I need to be by...", "plan_name": "My Journey Project", "plan_why": "Because moving toward where I need to be is always worth the trip"}}, {"word": "PERSIST", "meaning": "Keeping going when things are hard", "accent": "#B71C1C", "light": "#FFEBEE", "fc": {"title": "Persist Challenge", "challenge1": "Try something hard 3 times even after failing. Write down what you learned from each attempt. That's persistence!", "challenge2": "Think of someone who persisted through something difficult. What kept them going? What can you borrow from their story?", "coupon_word": "When you want to give up, use this coupon. I'll sit with you and remind you why you started \u2014 and that you can keep going.", "puzzle": "I cannot be beaten, only abandoned. The more you use me, the stronger I get. I have carried people through impossible things. What am I?", "puzzle_answer": "Persistence! \ud83d\udcaa Persistence is the one quality that makes everything else possible \u2014 it can't be defeated, only given up. And the more you use it, the easier it gets!", "breath_name": "Strong Breath", "breath_desc": "Breathe in deeply like you're gathering all your strength. Hold it \u2014 feel that power. Breathe out slowly, steady and strong. You can keep going.", "dream_prompt": "One thing I am going to persist at even when it gets hard is...", "goal_prompt": "This week when I want to give up I will persist by...", "plan_name": "My Persistence Project", "plan_why": "Because the only way to fail is to stop \u2014 and I'm not stopping"}}, {"word": "RENEW", "meaning": "Starting fresh and becoming new again", "accent": "#1B5E20", "light": "#E8F5E9", "fc": {"title": "Renew Challenge", "challenge1": "Pick one habit or routine that isn't working and renew it \u2014 redesign it from scratch. What does the fresh version look like?", "challenge2": "Write a 'fresh start' letter to yourself. Forget the past \u2014 what does your renewed self want to begin today?", "coupon_word": "This coupon is good for one fresh start. Whatever happened before doesn't count. Today we begin again together!", "puzzle": "Every morning I return without being called. After the darkest night, I always come back. I make everything look new again. What am I?", "puzzle_answer": "The sunrise! \ud83c\udf05 Every sunrise is a renewal \u2014 proof that no matter how dark things get, a fresh start is always coming. Every single day!", "breath_name": "Fresh Start Breath", "breath_desc": "Breathe out everything from yesterday \u2014 mistakes, worries, old feelings. Breathe in fresh air, a new moment, a clean start.", "dream_prompt": "One thing I want to renew and make fresh in my life is...", "goal_prompt": "This week my fresh start will be...", "plan_name": "My Renewal Project", "plan_why": "Because I can always begin again \u2014 every single day"}}, {"word": "RESTORE", "meaning": "Bringing something back to life", "accent": "#004D40", "light": "#E0F2F1", "fc": {"title": "Restore Challenge", "challenge1": "Find something that needs fixing \u2014 a relationship, an object, or a habit. Make one small step toward restoring it today.", "challenge2": "Think of a tradition or activity you used to love but stopped doing. Restore it this week!", "coupon_word": "This coupon is good for restoring something important between us. Whatever got broken \u2014 let's fix it together.", "puzzle": "I make old things new. I bring faded colors back to brightness. I take what was broken and make it whole again. What am I?", "puzzle_answer": "Restoration! \ud83d\udd27 Restoration is the art of bringing things back to life \u2014 whether it's a relationship, a painting, a friendship, or your own sense of self!", "breath_name": "Restore Breath", "breath_desc": "Breathe in like you're breathing life back into something. Breathe out gently, giving it care. Feel something being restored with each breath.", "dream_prompt": "One thing I want to restore and bring back to life is...", "goal_prompt": "This week I will restore something by...", "plan_name": "My Restoration Project", "plan_why": "Because some things are worth bringing back to life"}}, {"word": "RETURN", "meaning": "Coming back to where you started, changed", "accent": "#1A237E", "light": "#E8EAF6", "fc": {"title": "Return Challenge", "challenge1": "Revisit something you did a year ago \u2014 a drawing, a story, a photo. How have you changed since then? Write a reflection.", "challenge2": "Return to a place that matters to you \u2014 a park, a room, a neighborhood. What looks different now that you've changed?", "coupon_word": "This coupon is good for one conversation about where we started and how far we've both come. Returns are worth celebrating!", "puzzle": "I am a journey that ends where it began, but everything is different at the end. I am proof that you have grown. What am I?", "puzzle_answer": "A return! \ud83d\udd04 When you return somewhere after a journey, you see it differently because YOU have changed. The place is the same \u2014 but you are not!", "breath_name": "Return Breath", "breath_desc": "With each breath in, remember where you began. With each breath out, feel how far you've come. Every breath is a return and a new beginning.", "dream_prompt": "One place or person I want to return to, bringing my changed self, is...", "goal_prompt": "This week I will reflect on how I've changed by...", "plan_name": "My Return Project", "plan_why": "Because looking back at where I started shows me how far I've come"}}, {"word": "RISE", "meaning": "Moving upward toward something greater", "accent": "#1A237E", "light": "#E8EAF6", "fc": {"title": "Rise Challenge", "challenge1": "Set one goal that feels just out of reach. Write the first 3 steps to rise toward it. Then take step one TODAY.", "challenge2": "Name one thing that has tried to hold you down. Write one way you will rise above it this week.", "coupon_word": "This coupon is good for one pep talk whenever you need to rise up. I believe in how high you can go!", "puzzle": "I happen every morning without fail. I cannot be stopped. Darkness cannot hold me down for long. I always come back stronger. What am I?", "puzzle_answer": "The sun rising! \u2600\ufe0f The sun rises every single morning \u2014 no matter what. It is never permanently held down by darkness. And neither are you!", "breath_name": "Rising Breath", "breath_desc": "Start with a small breath near your belly. Each inhale, feel the breath rise higher in your chest. Rise, rise, rise until you are full of light.", "dream_prompt": "One thing I am rising toward this year is...", "goal_prompt": "This week I will rise by taking the step of...", "plan_name": "My Rise Project", "plan_why": "Because I was made to rise and I'm not stopping until I get there"}}, {"word": "SHINE", "meaning": "Sharing your light with others", "accent": "#F57F17", "light": "#FFF9C4", "fc": {"title": "Shine Challenge", "challenge1": "Do one kind thing today without anyone knowing it was you. Anonymous kindness \u2014 your light shines even when no one sees it!", "challenge2": "Name 3 people in your life who shine brightly. Tell one of them today exactly how their light affects you.", "coupon_word": "This coupon is good for one reminder that you shine \u2014 even when you can't feel it. I'll tell you exactly how your light touches others.", "puzzle": "I give away everything I have and never run out. The more I give, the more others have. I cannot be owned \u2014 only shared. What am I?", "puzzle_answer": "Light! \u2728 Light is the only thing that multiplies by giving \u2014 a candle can light a thousand other candles and still burn just as bright. That's what sharing your shine does!", "breath_name": "Shine Breath", "breath_desc": "Breathe in, filling yourself with golden light. When you breathe out, imagine that light radiating outward \u2014 touching everyone around you.", "dream_prompt": "One way I want to share my light with the world this year is...", "goal_prompt": "This week I will shine by...", "plan_name": "My Shine Project", "plan_why": "Because sharing my light doesn't dim it \u2014 it multiplies it"}}, {"word": "SUSTAIN", "meaning": "Keeping something going over time", "accent": "#33691E", "light": "#F1F8E9", "fc": {"title": "Sustain Challenge", "challenge1": "Pick one good habit and commit to doing it for 7 days straight. Track it. Sustaining something small builds the muscle for sustaining big things.", "challenge2": "Think of something important \u2014 a friendship, a project, the environment. What does it need to be sustained? What is your role?", "coupon_word": "This coupon is good for one check-in about something important to you. I'll help you think about how to keep it going strong.", "puzzle": "I am not a sprint. I am not a burst of energy. I am steady, consistent, and patient. I outlast everything that burns too bright too fast. What am I?", "puzzle_answer": "Sustainability! \ud83c\udf31 A small, steady flame outlasts a big burst of fire every time. Sustaining something means caring for it consistently \u2014 not perfectly, but persistently.", "breath_name": "Steady Breath", "breath_desc": "Breathe in slowly and evenly. Breathe out at the same steady pace. No rushing, no forcing. Feel the rhythm \u2014 even, consistent, sustained.", "dream_prompt": "One important thing I want to sustain and keep going is...", "goal_prompt": "This week I will sustain something by consistently...", "plan_name": "My Sustain Project", "plan_why": "Because the things worth having are the things worth keeping going"}}, {"word": "THRIVE", "meaning": "Growing strong and flourishing", "accent": "#E65100", "light": "#FFF3E0", "fc": {"title": "Thrive Challenge", "challenge1": "List everything that makes you feel most alive. Then identify which conditions \u2014 people, places, activities \u2014 let you thrive. How can you get more of those?", "challenge2": "Do one thing today that makes you feel STRONG. Describe what thriving feels like in your body.", "coupon_word": "This coupon is good for one celebration of YOU \u2014 because you are thriving and I see it!", "puzzle": "I need sunlight, water, and good soil. When I have what I need, I don't just survive \u2014 I explode with color and life. What am I?", "puzzle_answer": "A flourishing plant! \ud83c\udf3a When plants have what they need, they don't just survive \u2014 they thrive, bursting with color and growth. People thrive when they have love, purpose, and the right conditions!", "breath_name": "Thriving Breath", "breath_desc": "Breathe in deeply, filling every corner of your lungs. Feel yourself expand. Breathe out with energy \u2014 the breath of someone who is fully, completely alive!", "dream_prompt": "The conditions I need to truly thrive are...", "goal_prompt": "This week I will help myself thrive by...", "plan_name": "My Thriving Project", "plan_why": "Because I deserve to do more than survive \u2014 I am meant to thrive"}}, {"word": "TRANSFORM", "meaning": "Becoming something completely different", "accent": "#4A148C", "light": "#F3E5F5", "fc": {"title": "Transform Challenge", "challenge1": "Take an ordinary object \u2014 a cardboard box, an old jar \u2014 and transform it into something completely different. Describe how transformation requires seeing possibility.", "challenge2": "Think of a belief you used to have that has completely transformed. What changed it? What does transformation from the inside feel like?", "coupon_word": "When you're in the middle of a transformation and it feels uncomfortable, use this coupon. I'll remind you that becoming something new is supposed to feel strange!", "puzzle": "I go in as one thing and come out as something completely different. I need darkness and time before I am ready to emerge. What am I?", "puzzle_answer": "A caterpillar becoming a butterfly! \ud83e\udd8b The caterpillar completely dissolves inside its chrysalis \u2014 it becomes something formless before becoming something extraordinary. Transformation often feels like falling apart before becoming!", "breath_name": "Transform Breath", "breath_desc": "Breathe in as who you are right now. Hold \u2014 feel yourself shifting. Breathe out as who you are becoming. Each breath is a small transformation.", "dream_prompt": "One transformation I am in the middle of right now is...", "goal_prompt": "This week I will embrace my transformation by...", "plan_name": "My Transformation Project", "plan_why": "Because I am not who I was and I am not yet who I will be \u2014 and that is beautiful"}}];
+var AGES = {"elem": {"label": "Elementary", "grades": "Grades 3\u20135", "emoji": "\ud83c\udf31", "color": "#E65100", "light": "#FFF3E0", "tone": "fun, simple, encouraging", "puzzle": {"intro": "Can you solve this riddle?", "suffix": "Great thinking! \ud83c\udf1f"}, "coupon": {"intro": "Cut these out and give them to someone you love!", "c2": "One free smile \u2014 good for any day you need one! \ud83d\ude0a", "c3": "Good for one silly dance party together \u2014 anytime, anywhere! \ud83d\udc83", "c4": "I will play your favorite game with you \u2014 no complaints! \ud83c\udfae", "titles": ["My Word Gift", "Smile Coupon", "Dance Party!", "Let's Play!"], "emojis": ["\ud83d\udc9d", "\ud83d\ude0a", "\ud83d\udc83", "\ud83c\udfae"]}, "breath": {"intro": "Let's breathe together! Follow along with the circle.", "extra": "Try this when you feel worried, angry, or upset. It really works!"}, "jar": {"label1": "My OneWord", "label2": "My Biggest Dream", "label3": "One thing I can do THIS WEEK", "label4": "A message for the child getting this bag", "p2": "When I grow up I want to...", "p3": "This week I will try to...", "p4": "Hey friend, I made this for you because...", "ex_dream": "When I grow up I want to help people and be really kind.", "ex_goal": "This week I will say something nice to someone every day.", "ex_msg": "Hey friend! I made this just for you. You are amazing!"}, "plan": {"steps": 3, "sec1": "What's My Idea?", "sec2": "My Steps", "sec3": "What Do I Need?", "p1a": "I want to...", "p1b": "I think this is cool because...", "p3a": "Things I need...", "p3b": "People who can help me..."}, "fc": {"intro": "Do these fun challenges with a friend or family member!", "types": ["Fun Challenge", "Partner Challenge", "Word Challenge", "Kindness Challenge"], "timer": ["5 minutes", "3 minutes", "No limit!", "Your choice!"], "c3_template": "Draw a picture that shows what {word} means to you. Share it with someone!", "c4_template": "Do one kind thing for someone today that shows {word}. Tell them why you did it!"}}, "middle": {"label": "Middle School", "grades": "Grades 6\u20138", "emoji": "\ud83c\udf3f", "color": "#1565C0", "light": "#E3F2FD", "tone": "engaging, relatable, growth-focused", "puzzle": {"intro": "Think carefully \u2014 this one requires some lateral thinking!", "suffix": "Connection: how does this connect to your own life?"}, "coupon": {"intro": "Create coupons that mean something real \u2014 give them to people who matter.", "c2": "Good for one real conversation \u2014 phones away, actually listening. \ud83d\udc42", "c3": "I'll back you up when it counts \u2014 one coupon for real support. \ud83d\udcaa", "c4": "Good for one honest, kind piece of feedback on something you're working on. \ud83d\udcdd", "titles": ["My Word Gift", "Real Talk Coupon", "I've Got You", "Honest Feedback"], "emojis": ["\ud83d\udc9d", "\ud83d\udc42", "\ud83d\udcaa", "\ud83d\udcdd"]}, "breath": {"intro": "Use this breathing technique before a test, a hard conversation, or when you feel overwhelmed.", "extra": "Science fact: slow breathing activates your parasympathetic nervous system \u2014 your body's built-in calm switch."}, "jar": {"label1": "My OneWord", "label2": "My Big Goal", "label3": "One Action I'll Take This Week", "label4": "What I want the child receiving this to know", "p2": "Something I'm working toward is...", "p3": "This week I will take the specific step of...", "p4": "I created this activity for you because...", "ex_dream": "Something I'm working toward is becoming someone who makes a real difference in my community.", "ex_goal": "This week I will reach out to one person I've been meaning to connect with.", "ex_msg": "I made this activity thinking about you. I don't know your story but I know you matter."}, "plan": {"steps": 4, "sec1": "The Big Picture", "sec2": "My Action Steps", "sec3": "Resources & Support", "p1a": "My project idea is...", "p1b": "This matters because...", "p3a": "Resources I need...", "p3b": "People who can support me..."}, "fc": {"intro": "Try these challenges with a friend, classmate, or someone you trust.", "types": ["Team Challenge", "Reflection Challenge", "Word Challenge", "Empathy Challenge"], "timer": ["10 minutes", "7 minutes", "No limit!", "5 minutes"], "c3_template": "Write 3 sentences about how {word} shows up in your everyday life. Share with a partner.", "c4_template": "Find someone who seems to need {word} today. Do something specific for them \u2014 then reflect on how it felt."}}, "high": {"label": "High School", "grades": "Grades 9\u201312", "emoji": "\ud83c\udf33", "color": "#2D5016", "light": "#F1F8E9", "tone": "reflective, purposeful, leadership-focused", "puzzle": {"intro": "Solve the riddle, then go deeper \u2014 consider the philosophical implication.", "suffix": "Deeper question: What does this tell us about human nature?"}, "coupon": {"intro": "Design coupons that represent genuine service \u2014 things you will actually do.", "c2": "Good for one hour of my full attention on something that matters to you. \ud83c\udfaf", "c3": "I will advocate for you when you're not in the room \u2014 one genuine act of allyship. \ud83d\ude4b", "c4": "Good for one honest, constructive conversation about something you're navigating. \ud83e\udded", "titles": ["My Word Gift", "Full Presence", "I'll Advocate for You", "Let's Navigate This"], "emojis": ["\ud83d\udc9d", "\ud83c\udfaf", "\ud83d\ude4b", "\ud83e\udded"]}, "breath": {"intro": "Use this before high-stakes moments \u2014 presentations, hard conversations, important decisions.", "extra": "Research shows: 4-7-8 breathing reduces cortisol levels and activates the prefrontal cortex \u2014 your rational decision-making center."}, "jar": {"label1": "My OneWord", "label2": "My Long-Term Vision", "label3": "One Concrete Step This Week", "label4": "Message to the child receiving this", "p2": "In 5 years, I want to...", "p3": "The specific action I will take this week is...", "p4": "I created this for you because I believe...", "ex_dream": "In 5 years, I want to be in a position to create real change in my community \u2014 starting now.", "ex_goal": "The specific action I will take this week is scheduling one conversation I've been avoiding.", "ex_msg": "I created this for you because I believe every person deserves tools for their inner life \u2014 not just their outer one."}, "plan": {"steps": 5, "sec1": "Vision & Purpose", "sec2": "Strategic Steps", "sec3": "Resources, Allies & Obstacles", "p1a": "My vision for this project is...", "p1b": "The impact I intend to create is...", "p3a": "Resources and tools I need...", "p3b": "Allies, mentors, and stakeholders..."}, "fc": {"intro": "Challenge yourself and someone else \u2014 these activities are designed to go deeper.", "types": ["Leadership Challenge", "Community Challenge", "Word Challenge", "Service Challenge"], "timer": ["15 minutes", "10 minutes", "No limit!", "Your choice"], "c3_template": "Reflect in writing: How does {word} apply to leadership? Give two real examples from your own life or from history.", "c4_template": "Identify one way your community needs {word}. Design a small action you could actually take \u2014 and do it."}}};
+var selWord = null;
+var selAge = null;
+var stepCount = 3;
+var bTimer = null, bPhase = 0, bCount = 0;
+var AGE_KEYS = ['elem','middle','high'];
+var AGE_LABELS = ['Elementary 3-5','Middle 6-8','High 9-12'];
+var AGE_COLORS = ['#E65100','#1565C0','#2D5016'];
+var AGE_EMOJIS = ['🌱','🌿','🌳'];
+var AGE_DESCS = [
+  'Grades 3–5 · Fun, playful activities with simple language',
+  'Grades 6–8 · Engaging challenges with deeper reflection',
+  'Grades 9–12 · Leadership-focused with purposeful thinking'
+];
+
+// WORD GRID
+var wg = document.getElementById('wordGrid');
+WORDS.forEach(function(w,i){
+  var c = document.createElement('div');
+  c.className='wchip'; c.id='wc'+i;
+  c.innerHTML='<span class="wn">'+w.word+'</span><span class="wm">'+w.meaning+'</span>';
+  c.onclick=function(){
+    document.querySelectorAll('.wchip').forEach(function(x){x.classList.remove('active');x.style.background='';x.style.borderColor='';});
+    c.classList.add('active'); c.style.background=w.accent; c.style.borderColor=w.accent;
+    selWord=w;
+  };
+  wg.appendChild(c);
+});
+
+// AGE GRID
+var ag = document.getElementById('ageGrid');
+AGE_KEYS.forEach(function(k,i){
+  var c = document.createElement('div');
+  c.className='age-card'; c.id='ac'+i;
+  c.style.background='linear-gradient(135deg,'+AGE_COLORS[i]+','+AGE_COLORS[i]+'CC)';
+  c.innerHTML='<div class="age-emoji">'+AGE_EMOJIS[i]+'</div><div class="age-label">'+AGE_LABELS[i]+'</div><div class="age-desc">'+AGE_DESCS[i]+'</div>';
+  c.onclick=function(){
+    document.querySelectorAll('.age-card').forEach(function(x){x.classList.remove('active');});
+    c.classList.add('active'); selAge=k;
+  };
+  ag.appendChild(c);
+});
+
+function goScreen(n){
+  if(n===1&&!selWord){alert('Please choose your OneWord first!');return;}
+  if(n===2&&!selAge){alert('Please choose an age group!');return;}
+  if(n===2){buildActivities();updateStatus();}
+  document.querySelectorAll('.screen').forEach(function(s,i){s.classList.toggle('active',i===n);});
+  window.scrollTo(0,0);
+}
+
+function updateStatus(){
+  var pill=document.getElementById('statusWord');
+  pill.style.background=selWord.accent; pill.textContent=selWord.word;
+  var agePill=document.getElementById('statusAge');
+  var idx=AGE_KEYS.indexOf(selAge);
+  agePill.style.background=AGE_COLORS[idx]; agePill.textContent=AGE_LABELS[idx];
+  document.getElementById('statusBar').classList.add('visible');
+}
+
+function buildActivities(){
+  var w=selWord, a=AGES[selAge], ak=selAge;
+  var acc=w.accent, lt=w.light;
+  var aidx=AGE_KEYS.indexOf(selAge);
+  var acol=AGE_COLORS[aidx];
+
+  // Color all print buttons
+  ['fc-pb','pz-pb','cp-pb','br-pb','dj-pb','pl-pb'].forEach(function(id){
+    document.getElementById(id).style.background='linear-gradient(135deg,'+acc+','+acc+'BB)';
+  });
+  // Color slabels
+  ['fc-yo-lbl','pz-yo-lbl','cp-yo-lbl','br-yo-lbl','dj-yo-lbl','pl-yo-lbl'].forEach(function(id){
+    document.getElementById(id).style.color=acc;
+  });
+
+  // ACT 1: FRIENDSHIP
+  var fhdr=document.getElementById('fc-hdr');
+  fhdr.style.background='linear-gradient(135deg,'+acc+','+acc+'CC)';
+  document.getElementById('fc-wm').textContent=w.word;
+  document.getElementById('fc-title').textContent='🤝 '+w.fc.title;
+  document.getElementById('fc-sub').textContent=a.fc.intro+' — '+w.word+': '+w.meaning;
+  var fcols=['#FF6B6B','#10B981','#A855F7','#F7971E'];
+  var c3=a.fc.c3_template.replace('{word}',w.word);
+  var c4=a.fc.c4_template.replace('{word}',w.word);
+  var challenges=[w.fc.challenge1,w.fc.challenge2,c3,c4];
+  var ctypes=a.fc.types;
+  var ctimers=a.fc.timer;
+  var fcDiv=document.getElementById('fc-cards'); fcDiv.innerHTML='';
+  for(var i=0;i<4;i++){
+    fcDiv.innerHTML+='<div class="f-card" style="border-color:'+fcols[i]+'"><div class="fn" style="color:'+fcols[i]+'">Challenge 0'+(i+1)+'</div><h3>'+ctypes[i]+'</h3><p>'+challenges[i]+'</p><span class="ft" style="background:'+lt+';color:'+acc+'">⏱ '+ctimers[i]+'</span></div>';
+  }
+
+  // ACT 2: PUZZLE
+  document.getElementById('pz-lbl').style.color=acc;
+  document.getElementById('pz-intro').textContent=a.puzzle.intro;
+  document.getElementById('pz-q').textContent=w.fc.puzzle;
+  document.getElementById('pz-btn').style.background=acc;
+  document.getElementById('pz-ans').style.background=lt;
+  document.getElementById('pz-ans').textContent=w.fc.puzzle_answer;
+  document.getElementById('pz-suffix').textContent=a.puzzle.suffix;
+
+  // ACT 3: COUPONS
+  document.getElementById('cp-lbl').style.color=acc;
+  document.getElementById('cp-intro').textContent=a.coupon.intro;
+  var ctitles=a.coupon.titles;
+  var cemojis=a.coupon.emojis;
+  var ctexts=[w.fc.coupon_word,a.coupon.c2,a.coupon.c3,a.coupon.c4];
+  var cpDiv=document.getElementById('cp-coupons'); cpDiv.innerHTML='';
+  for(var j=0;j<4;j++){
+    cpDiv.innerHTML+='<div class="coupon"><div class="c-strip" style="background:'+acc+'"></div><div class="c-top"><div class="c-emoji">'+cemojis[j]+'</div><div class="c-text"><h3>'+ctitles[j]+'</h3><p>'+ctexts[j]+'</p></div></div><div class="c-bot"><span class="c-to">To: ___________</span><span class="c-from" style="color:'+acc+'">From: ❤️</span></div></div>';
+  }
+
+  // ACT 4: BREATHING
+  document.getElementById('br-lbl').textContent=w.fc.breath_name;
+  document.getElementById('br-desc').textContent=w.fc.breath_desc;
+  document.getElementById('br-extra').textContent=a.breath.intro+' '+a.breath.extra;
+  document.getElementById('br-circle').style.background='linear-gradient(135deg,'+acc+','+acc+'AA)';
+  document.getElementById('br-start').style.background=acc;
+
+  // ACT 5: DREAM JAR
+  document.getElementById('dj-ex-lbl').style.color=acc;
+  document.getElementById('dj-ex-card').style.borderTop='4px solid '+acc;
+  document.getElementById('dj-ex-content').innerHTML='<div style="background:'+lt+';border-radius:12px;padding:16px;"><div style="font-family:Fredoka One,cursive;font-size:20px;color:'+acc+';margin-bottom:8px;">🫙 '+w.word+' Dream Jar</div><p style="font-size:14px;color:#555;line-height:1.85;"><strong style="color:'+acc+'">OneWord:</strong> '+w.word+' — '+w.meaning+'<br/><strong style="color:'+acc+'">'+a.jar.label2+':</strong> '+a.jar.ex_dream+'<br/><strong style="color:'+acc+'">'+a.jar.label3+':</strong> '+a.jar.ex_goal+'<br/><strong style="color:'+acc+'">Message:</strong> '+a.jar.ex_msg+'</p></div>';
+  document.getElementById('dj-word').value=w.word;
+  document.getElementById('dj-word').style.background=lt;
+  document.getElementById('dj-l1').style.color=acc;
+  document.getElementById('dj-l2').textContent=a.jar.label2;
+  document.getElementById('dj-l2').style.color=acc;
+  document.getElementById('dj-l3').textContent=a.jar.label3;
+  document.getElementById('dj-l3').style.color=acc;
+  document.getElementById('dj-l4').textContent=a.jar.label4;
+  document.getElementById('dj-l4').style.color=acc;
+  document.getElementById('dj-dream').placeholder=a.jar.p2;
+  document.getElementById('dj-goal').placeholder=a.jar.p3;
+  document.getElementById('dj-msg').placeholder=a.jar.p4;
+  document.getElementById('dj-submit').style.background=acc;
+  document.getElementById('dj-result').style.background=lt;
+  document.getElementById('dj-yo-lbl').style.color=acc;
+
+  // ACT 6: PLANNER
+  document.getElementById('pl-ex-lbl').style.color=acc;
+  document.getElementById('pl-ex-card').style.borderTop='4px solid '+acc;
+  var psteps='<strong style="color:'+acc+'">Step 1:</strong> Research and gather ideas<br/><strong style="color:'+acc+'">Step 2:</strong> Make a plan and get what I need<br/><strong style="color:'+acc+'">Step 3:</strong> Put it into action!'+(a.plan.steps>3?'<br/><strong style="color:'+acc+'">Step 4:</strong> Review and adjust':'')+( a.plan.steps>4?'<br/><strong style="color:'+acc+'">Step 5:</strong> Share and celebrate!':'');
+  document.getElementById('pl-ex-content').innerHTML='<div style="border-radius:12px;overflow:hidden;border:2px solid '+acc+'33;"><div style="background:'+acc+';padding:12px 16px;"><span style="font-family:Fredoka One,cursive;font-size:16px;color:#fff;">'+w.fc.plan_name+'</span></div><div style="padding:14px;"><p style="font-size:13px;color:#555;line-height:1.85;"><strong style="color:'+acc+'">My idea:</strong> '+w.fc.plan_name+'<br/><strong style="color:'+acc+'">Why it matters:</strong> '+w.fc.plan_why+'<br/>'+psteps+'</p></div></div>';
+  // Update planner labels
+  document.getElementById('pl-h1t').textContent=a.plan.sec1;
+  document.getElementById('pl-h2t').textContent=a.plan.sec2;
+  document.getElementById('pl-h3t').textContent=a.plan.sec3;
+  document.getElementById('pl-l1a').textContent=a.plan.p1a.replace('{}','');
+  document.getElementById('pl-l1b').textContent=a.plan.p1b.replace('{}','');
+  document.getElementById('pl-l3a').textContent=a.plan.p3a;
+  document.getElementById('pl-l3b').textContent=a.plan.p3b;
+  [document.getElementById('pl-h1'),document.getElementById('pl-h2'),document.getElementById('pl-h3')].forEach(function(el){el.style.background=lt;el.style.color=acc;});
+  // Build steps
+  stepCount=a.plan.steps;
+  var stepsDiv=document.getElementById('pl-steps'); stepsDiv.innerHTML='';
+  var placeholders=['First I will...','Then I will...','After that...','Next...','Finally...'];
+  for(var s=0;s<a.plan.steps;s++){
+    var row=document.createElement('div'); row.className='step-row';
+    var badge=document.createElement('div'); badge.className='sbadge'; badge.style.background=acc; badge.textContent=(s+1);
+    var inp=document.createElement('input'); inp.className='sinput'; inp.type='text'; inp.placeholder=placeholders[s]||'Then...';
+    row.appendChild(badge); row.appendChild(inp);
+    stepsDiv.appendChild(row);
+  }
+  document.getElementById('pl-pb').style.background='linear-gradient(135deg,'+acc+','+acc+'BB)';
+
+  // LETTER
+  buildLetterActivity(w, a, selAge);
+  document.getElementById('pl-yo-lbl').style.color=acc;
+}
+
+function switchAct(idx,btn){
+  document.querySelectorAll('.act-panel').forEach(function(p,i){p.classList.toggle('act-visible',i===idx);});
+  document.querySelectorAll('.act-tab').forEach(function(b){b.classList.remove('act-active');});
+  btn.classList.add('act-active');
+  stopBreath(); window.scrollTo(0,0);
+}
+
+function setMode(ai,mode,btn){
+  var p=document.getElementById('act'+ai);
+  p.querySelectorAll('.act-mode,div[id^="act'+ai+'-"]').forEach(function(m){m.style.display='none';});
+  document.getElementById('act'+ai+'-'+mode).style.display='block';
+  p.querySelectorAll('.mode-btn').forEach(function(b){b.classList.remove('mode-active');});
+  btn.classList.add('mode-active');
+}
+
+function revealPuzzle(){
+  var ans=document.getElementById('pz-ans');
+  ans.classList.toggle('show');
+  document.getElementById('pz-btn').textContent=ans.classList.contains('show')?'Hide Answer 🙈':'Reveal the Answer 💡';
+}
+
+function startBreath(){
+  stopBreath(); bPhase=0; bCount=0; runBreathPhase();
+}
+function runBreathPhase(){
+  var phases=['Breathe In... 🌬️','Hold... ✨','Breathe Out... 💨','Hold... 🌟'];
+  var dur=[4000,4000,4000,4000];
+  document.getElementById('br-lbl').textContent=phases[bPhase];
+  var c=document.getElementById('br-circle');
+  c.className='bc'+(bPhase===0?' inhale':bPhase===2?'':' ');
+  bTimer=setTimeout(function(){bPhase=(bPhase+1)%4;bCount++;if(bCount<16)runBreathPhase();else{stopBreath();document.getElementById('br-lbl').textContent='Great job! 🌟';}},dur[bPhase]);
+}
+function stopBreath(){
+  if(bTimer)clearTimeout(bTimer);bTimer=null;
+  document.getElementById('br-circle').className='bc';
+  if(selWord)document.getElementById('br-lbl').textContent=selWord.fc.breath_name;
+}
+
+function fillJar(){
+  var meaning=document.getElementById('dj-meaning').value||selWord.meaning;
+  var dream=document.getElementById('dj-dream').value||'something great';
+  var goal=document.getElementById('dj-goal').value||'take one step';
+  var msg=document.getElementById('dj-msg').value||'You matter!';
+  var acc=selWord.accent;
+  document.getElementById('dj-result-text').innerHTML=
+    '<strong style="color:'+acc+'">My OneWord:</strong> '+selWord.word+'<br/>'+
+    '<strong style="color:'+acc+'">What it means to me:</strong> '+meaning+'<br/>'+
+    '<strong style="color:'+acc+'">'+AGES[selAge].jar.label2+':</strong> '+dream+'<br/>'+
+    '<strong style="color:'+acc+'">'+AGES[selAge].jar.label3+':</strong> '+goal+'<br/>'+
+    '<strong style="color:'+acc+'">Message:</strong> '+msg;
+  document.getElementById('dj-result').classList.add('show');
+}
+
+
+// LETTER EXAMPLES per age
+var LETTER_EXAMPLES = {
+  elem: {
+    greeting: "Dear Friend,",
+    body: "Hi! My name doesn't matter — what matters is that I made these activities just for you.\n\nI chose the word {word} for you. It means {meaning}.\n\nI made these fun activities because I wanted you to have something special. I hope the puzzles make you smile, the coupons make someone you love feel happy, and the Dream Jar reminds you that big dreams are allowed.\n\nYou are amazing. I believe that even though we've never met.\n\nEvery activity in this bag was made just for you. ❤️",
+    sig: "From a Kellam High School student who thinks you're awesome 🌟"
+  },
+  middle: {
+    greeting: "Dear Friend,",
+    body: "I don't know your name, but I made this for you.\n\nI'm a student at Kellam High School, and I chose the word {word} — which means {meaning} — as the theme for everything in this bag.\n\nI picked this word because I think it says something true about life. I hope the activities inside feel useful. I hope the kindness coupons remind you that there are people who care about you, even strangers.\n\nThe Dream Jar is my favorite part. Fill it with something real — a real dream, a real goal, something that belongs to you.\n\nYou matter more than you know.",
+    sig: "With genuine care, a Kellam High School student ✨"
+  },
+  high: {
+    greeting: "Dear Friend,",
+    body: "I created this Smile Bag for you as part of a project called Kellam Smile Bags. But I want you to know — this wasn't just an assignment to me.\n\nI chose the word {word}, which means {meaning}. I chose it because I believe it describes something important about being human — and I wanted you to have it.\n\nEvery activity in this bag was designed with your age and your world in mind. The puzzles are meant to challenge you. The breathing card is real — use it. The Dream Jar is yours to fill with something true.\n\nI don't know what you're going through right now. But I know this: you are worth the time it took to make these for you. That is not a small thing.\n\nKeep going.",
+    sig: "With respect and hope, a Kellam High School student 🌿"
+  }
+};
+
+function buildLetterActivity(w, a, ak) {
+  var acc = w.accent, lt = w.light;
+  document.getElementById('lt-ex-lbl').style.color = acc;
+  document.getElementById('lt-ex-card').style.borderTop = '4px solid ' + acc;
+  document.getElementById('lt-yo-lbl').style.color = acc;
+  document.getElementById('lt-pb').style.background = 'linear-gradient(135deg,' + acc + ',' + acc + 'BB)';
+  document.getElementById('lt-submit').style.background = acc;
+
+  var ex = LETTER_EXAMPLES[ak];
+  var body = ex.body.replace('{word}', w.word).replace('{meaning}', w.meaning);
+  var emojiMap = {elem:'🌱🌸⭐💫🌈🦋', middle:'🌿✨💙🌟🙌🌱', high:'🌳💚🌿✨🙏🌱'};
+  var emojis = emojiMap[ak].split('');
+
+  document.getElementById('lt-ex-content').innerHTML = buildLetterHTML(w, ex.greeting, body, ex.sig, acc, lt, emojis);
+}
+
+function buildLetterHTML(w, greeting, body, sig, acc, lt, emojis) {
+  return '<div class="letter-page" style="border-color:' + acc + ';background:' + lt + '20;">' +
+    '<div class="letter-corner tl">' + (emojis[0]||'✨') + '</div>' +
+    '<div class="letter-corner tr">' + (emojis[1]||'✨') + '</div>' +
+    '<div class="letter-corner bl">' + (emojis[2]||'✨') + '</div>' +
+    '<div class="letter-corner br">' + (emojis[3]||'✨') + '</div>' +
+    '<div style="text-align:center;margin-bottom:16px;">' +
+      '<span class="letter-word-badge" style="background:' + acc + '">' + w.word + ' — ' + w.meaning + '</span>' +
+    '</div>' +
+    '<div class="letter-greeting" style="color:' + acc + '">' + greeting + '</div>' +
+    '<div class="letter-body">' + body + '</div>' +
+    '<div class="letter-sig" style="color:' + acc + '">' + sig + '</div>' +
+    '<div class="letter-footer">Kellam Smile Bags · Kellam High School · Leadership · Spring 2026</div>' +
+    '</div>';
+}
+
+function previewLetter() {
+  var body = document.getElementById('lt-body').value;
+  var sig = document.getElementById('lt-sig').value || 'With love, A Kellam Student';
+  if (!body.trim()) { alert('Please write your letter first!'); return; }
+  var w = selWord;
+  var emojiMap = {elem:'🌱🌸⭐💫', middle:'🌿✨💙🌟', high:'🌳💚🌿✨'};
+  var emojis = (emojiMap[selAge]||'✨✨✨✨').split('');
+  document.getElementById('lt-preview-content').innerHTML = buildLetterHTML(w, 'Dear Friend,', body, sig, w.accent, w.light, emojis);
+  document.getElementById('lt-preview').style.display = 'block';
+  document.getElementById('lt-prev-lbl').style.color = w.accent;
+}
+
+function addStep(){
+  stepCount++;
+  var row=document.createElement('div'); row.className='step-row';
+  var badge=document.createElement('div'); badge.className='sbadge';
+  badge.style.background=selWord?selWord.accent:'#2D5016'; badge.textContent=stepCount;
+  var inp=document.createElement('input'); inp.className='sinput'; inp.type='text'; inp.placeholder='Next I will...';
+  row.appendChild(badge); row.appendChild(inp);
+  document.getElementById('pl-steps').appendChild(row);
+}
+</script>
+</body>
+</html>
