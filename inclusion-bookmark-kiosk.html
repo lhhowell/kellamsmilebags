@@ -332,106 +332,84 @@ function updateBanner(bid, titleId, encId) {
 }
 
 // ── BOOKMARK SVG ────────────────────────────────────────
-// Matches actual print: two overlapping circles at top + rectangular stem below
+// Top: one large circle (Color 1) filled by the emoji
+// Bottom: rectangular stem with word running vertically
 function buildBookmarkSVG(c1, c2, word, emoji, small) {
+  var VW = 180;
+  var VH = small ? 300 : 490;
   var W  = small ? 110 : 180;
-  var H  = small ? 310 : 500;
+  var H  = small ? 165 : 490;
 
-  // ViewBox is always 180 wide, H/s tall
-  var s  = W / 180;
-  var VH = H / s;  // viewBox height
+  // ── CIRCLE (top) ──────────────────────────────────────
+  var cr  = 62;          // circle radius — wide enough to match stem
+  var cx  = VW / 2;      // centered horizontally = 90
+  var cy  = cr + 6;      // top padding
 
-  // ── TWO CIRCLES (top shape) ───────────────────────────
-  // Circles sit side-by-side, overlapping ~30% in center
-  // Each circle radius
-  var cr = 46;
-  // Centers: left circle cx = 90 - cr*0.62, right circle cx = 90 + cr*0.62
-  var lcx = 90 - cr * 0.62;  // ≈ 61.5
-  var rcx = 90 + cr * 0.62;  // ≈ 118.5
-  var cy  = cr + 6;           // top of viewBox + padding
-
-  // Bottom of circle cluster = cy + cr
   var circleBottom = cy + cr;
 
-  // ── STEM ─────────────────────────────────────────────
-  var stemW  = 96;
-  var stemX  = (180 - stemW) / 2;  // = 42
-  var stemTop = circleBottom - 6;  // slight overlap into circle bottom
-  var stemBot = VH - 6;
-  var stemR  = 12;
+  // ── STEM ──────────────────────────────────────────────
+  var stemW   = 90;
+  var stemX   = (VW - stemW) / 2;  // = 45
+  var stemTop = circleBottom - 10; // slight overlap
+  var stemBot = VH - 8;
+  var stemR   = 14;
 
-  // ── Word font sizing ──────────────────────────────────
-  var stemAvailH = stemBot - stemTop - 24;
-  var maxFS = 40;
-  var estW  = word.length * 0.65 * maxFS;
-  var fontSize = (estW > stemAvailH)
-    ? Math.max(14, Math.floor(stemAvailH / (word.length * 0.65)))
-    : maxFS;
-  fontSize = Math.min(fontSize, 44);
+  // ── WORD FONT SIZE ─────────────────────────────────────
+  var stemH    = stemBot - stemTop;
+  var maxFS    = 40;
+  var fontSize = Math.min(maxFS, Math.floor(stemH / (word.length * 0.65)));
+  fontSize     = Math.max(fontSize, 13);
+  fontSize     = Math.min(fontSize, stemW - 14);
 
-  var stemCx = 90;
-  var stemCy = (stemTop + stemBot) / 2;
+  var stemCx = VW / 2;
+  var stemCy = stemTop + stemH / 2;
 
-  // ── BUILD SVG ─────────────────────────────────────────
-  var svg = '<svg width="' + W + '" height="' + H + '" viewBox="0 0 180 ' + VH + '" xmlns="http://www.w3.org/2000/svg">';
+  // ── SVG ────────────────────────────────────────────────
+  var svg = '<svg width="' + W + '" height="' + H + '"'
+    + ' viewBox="0 0 ' + VW + ' ' + VH + '"'
+    + ' xmlns="http://www.w3.org/2000/svg">';
 
-  // Drop shadow filter
-  svg += '<defs><filter id="ds" x="-15%" y="-10%" width="140%" height="130%">' +
-    '<feDropShadow dx="2" dy="4" stdDeviation="5" flood-color="rgba(0,0,0,0.22)"/>' +
-    '</filter></defs>';
+  svg += '<defs><filter id="ds" x="-20%" y="-10%" width="150%" height="130%">'
+    + '<feDropShadow dx="2" dy="4" stdDeviation="5" flood-color="rgba(0,0,0,0.22)"/>'
+    + '</filter></defs>';
 
-  // ── STEM (Color 1) ────────────────────────────────────
-  svg += '<rect x="' + stemX + '" y="' + stemTop + '" width="' + stemW + '" height="' + (stemBot - stemTop) + '"' +
-    ' rx="' + stemR + '" ry="' + stemR + '" fill="' + c1 + '" filter="url(#ds)"/>';
+  // Stem (Color 1)
+  svg += '<rect'
+    + ' x="' + stemX + '" y="' + stemTop + '"'
+    + ' width="' + stemW + '" height="' + (stemBot - stemTop) + '"'
+    + ' rx="' + stemR + '" ry="' + stemR + '"'
+    + ' fill="' + c1 + '" filter="url(#ds)"/>';
 
-  // ── LEFT CIRCLE body (Color 1) ────────────────────────
-  svg += '<circle cx="' + lcx + '" cy="' + cy + '" r="' + cr + '" fill="' + c1 + '" filter="url(#ds)"/>';
+  // Circle body (Color 1)
+  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + cr + '"'
+    + ' fill="' + c1 + '" filter="url(#ds)"/>';
 
-  // ── RIGHT CIRCLE body (Color 1) ───────────────────────
-  svg += '<circle cx="' + rcx + '" cy="' + cy + '" r="' + cr + '" fill="' + c1 + '" filter="url(#ds)"/>';
+  // Circle ring outline (Color 2)
+  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + (cr - 8) + '"'
+    + ' fill="none" stroke="' + c2 + '" stroke-width="5" opacity="0.9"/>';
 
-  // ── LEFT CIRCLE outline ring (Color 2) ───────────────
-  svg += '<circle cx="' + lcx + '" cy="' + cy + '" r="' + (cr - 6) + '" fill="none" stroke="' + c2 + '" stroke-width="5" opacity="0.85"/>';
+  // Emoji — large, fills the circle
+  var emojiFS = small ? 58 : 88;
+  svg += '<text'
+    + ' x="' + cx + '" y="' + (cy + 6) + '"'
+    + ' font-size="' + emojiFS + '"'
+    + ' text-anchor="middle" dominant-baseline="middle"'
+    + ' style="font-family: Apple Color Emoji, Segoe UI Emoji, sans-serif;">'
+    + emoji + '</text>';
 
-  // ── RIGHT CIRCLE outline ring (Color 2) ──────────────
-  svg += '<circle cx="' + rcx + '" cy="' + cy + '" r="' + (cr - 6) + '" fill="none" stroke="' + c2 + '" stroke-width="5" opacity="0.85"/>';
-
-  // ── EMOJI — centered between circles ─────────────────
-  var emojiSize = small ? 30 : 44;
-  svg += '<text x="90" y="' + (cy + 5) + '" font-size="' + emojiSize + '"' +
-    ' text-anchor="middle" dominant-baseline="middle">' + emoji + '</text>';
-
-  // ── WORD — vertical along stem ────────────────────────
-  svg += '<text transform="rotate(-90,' + stemCx + ',' + stemCy + ')"' +
-    ' x="' + stemCx + '" y="' + stemCy + '"' +
-    ' font-family="Arial Black,Arial" font-weight="900" font-size="' + fontSize + '"' +
-    ' fill="' + c2 + '" text-anchor="middle" dominant-baseline="middle" letter-spacing="3">' +
-    word + '</text>';
+  // Word — vertical along stem
+  svg += '<text'
+    + ' transform="rotate(-90 ' + stemCx + ' ' + stemCy + ')"'
+    + ' x="' + stemCx + '" y="' + stemCy + '"'
+    + ' font-family="Arial Black, Arial" font-weight="900"'
+    + ' font-size="' + fontSize + '"'
+    + ' fill="' + c2 + '"'
+    + ' text-anchor="middle" dominant-baseline="middle"'
+    + ' letter-spacing="3">'
+    + word + '</text>';
 
   svg += '</svg>';
   return svg;
-}
-
-// ── BUILD PREVIEW ───────────────────────────────────────
-function buildPreview() {
-  var c1 = selColor1 ? selColor1.hex : "#2D5016";
-  var c2 = selColor2 ? selColor2.hex : "#FFFFFF";
-  var word = selWord ? selWord.word : "BLOOM";
-  var emoji = selEmoji ? selEmoji.e : "\u2728";
-  var name = studentName || "Student";
-
-  document.getElementById("bmkSvgWrap").innerHTML = buildBookmarkSVG(c1, c2, word, emoji, false);
-
-  document.getElementById("previewDetails").innerHTML =
-    '<div class="pd-item"><div class="pd-label">My Word</div><div class="pd-value" style="color:' + (selWord?selWord.color:"#2D5016") + '">' + word + '</div></div>' +
-    '<div class="pd-item"><div class="pd-label">My Emoji</div><div class="pd-value">' + emoji + ' ' + (selEmoji?selEmoji.n:"") + '</div></div>' +
-    '<div class="pd-item"><div class="pd-label">Bookmark Color</div><div class="pd-value"><span style="display:inline-block;width:18px;height:18px;border-radius:50%;background:' + c1 + ';vertical-align:middle;margin-right:6px;border:2px solid #ddd;"></span>' + (selColor1?selColor1.name:"") + '</div></div>' +
-    '<div class="pd-item"><div class="pd-label">Word &amp; Emoji Color</div><div class="pd-value"><span style="display:inline-block;width:18px;height:18px;border-radius:50%;background:' + c2 + ';vertical-align:middle;margin-right:6px;border:2px solid #ddd;"></span>' + (selColor2?selColor2.name:"") + '</div></div>';
-
-  document.getElementById("celebrateMsg").innerHTML =
-    '<span class="cel-emoji">\uD83C\uDF89</span>' +
-    '<h2>You did it, ' + name + '! \uD83C\uDF1F</h2>' +
-    '<p>Your bookmark is ready!<br/>Press <strong>Print Bookmark Sheet</strong> so your teacher can make it on the 3D printer!</p>';
 }
 
 // ── SUBMIT TO SHEET ────────────────────────────────────
