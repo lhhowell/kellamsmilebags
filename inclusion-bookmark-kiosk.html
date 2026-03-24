@@ -279,16 +279,16 @@ function buildColorGrids() {
     DATA.colors.forEach(function(col) {
       var card = document.createElement("div");
       card.className = "color-card";
-      var isDark = (col.hex === "#F5F5F5" || col.hex === "#FDD835");
       card.innerHTML =
         '<div class="cc-swatch" style="background:' + col.hex + '"></div>' +
         '<div class="cc-name">' + col.name + '</div>';
-      card.onclick = (function(color, el, gi) { return function() {
-        document.querySelectorAll("#" + gridId + " .color-card").forEach(function(c) { c.classList.remove("selected"); });
+      // Capture gridId AND idx in the closure so they don't drift
+      card.onclick = (function(color, el, gid, gi) { return function() {
+        document.querySelectorAll("#" + gid + " .color-card").forEach(function(c) { c.classList.remove("selected"); });
         el.classList.add("selected");
         if (gi === 0) selColor1 = color;
         else          selColor2 = color;
-      };})(col, card, idx);
+      };})(col, card, gridId, idx);
       grid.appendChild(card);
     });
   });
