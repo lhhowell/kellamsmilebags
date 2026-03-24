@@ -412,6 +412,31 @@ function buildBookmarkSVG(c1, c2, word, emoji, small) {
   return svg;
 }
 
+function buildPreview() {
+  var c1   = selColor1 ? selColor1.hex  : "#2D5016";
+  var c2   = selColor2 ? selColor2.hex  : "#FFFFFF";
+  var word = selWord   ? selWord.word   : "BLOOM";
+  var emoj = selEmoji  ? selEmoji.e     : "\u2728";
+  var name = studentName || "Student";
+
+  document.getElementById("bmkSvgWrap").innerHTML = buildBookmarkSVG(c1, c2, word, emoj, false);
+
+  document.getElementById("previewDetails").innerHTML =
+    "<div class=\"pd-item\"><div class=\"pd-label\">My Word</div>" +
+    "<div class=\"pd-value\" style=\"color:" + (selWord ? selWord.color : "#2D5016") + "\">" + word + "</div></div>" +
+    "<div class=\"pd-item\"><div class=\"pd-label\">My Emoji</div>" +
+    "<div class=\"pd-value\">" + emoj + " " + (selEmoji ? selEmoji.n : "") + "</div></div>" +
+    "<div class=\"pd-item\"><div class=\"pd-label\">Bookmark Color</div>" +
+    "<div class=\"pd-value\"><span style=\"display:inline-block;width:18px;height:18px;border-radius:50%;background:" + c1 + ";vertical-align:middle;margin-right:6px;border:2px solid #ddd;\"></span>" + (selColor1 ? selColor1.name : "") + "</div></div>" +
+    "<div class=\"pd-item\"><div class=\"pd-label\">Word &amp; Emoji Color</div>" +
+    "<div class=\"pd-value\"><span style=\"display:inline-block;width:18px;height:18px;border-radius:50%;background:" + c2 + ";vertical-align:middle;margin-right:6px;border:2px solid #ddd;\"></span>" + (selColor2 ? selColor2.name : "") + "</div></div>";
+
+  document.getElementById("celebrateMsg").innerHTML =
+    "<span class=\"cel-emoji\">\uD83C\uDF89</span>" +
+    "<h2>You did it, " + name + "! \uD83C\uDF1F</h2>" +
+    "<p>Your bookmark is ready!<br/>Press <strong>Print Bookmark Sheet</strong> so your teacher can make it on the 3D printer!</p>";
+}
+
 // ── SUBMIT TO SHEET ────────────────────────────────────
 function submitToSheet(callback) {
   if (!SCRIPT_URL || SCRIPT_URL === "YOUR_APPS_SCRIPT_URL_HERE") {
