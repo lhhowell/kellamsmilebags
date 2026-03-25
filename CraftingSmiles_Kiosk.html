@@ -3,35 +3,27 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Kellam Smile Bags — Crafting Smiles Kiosk</title>
+<title>Kellam Smile Bags - Crafting Smiles Kiosk</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding-bottom:60px;}
-
-/* HEADER */
 .hdr{background:linear-gradient(135deg,#1B7A78,#0F4F4E);padding:20px 28px;text-align:center;}
 .hdr h1{font-family:'Fredoka One',cursive;font-size:26px;color:#fff;line-height:1.3;}
 .hdr p{font-size:13px;color:rgba(255,255,255,.85);margin-top:5px;}
-
-/* PROGRESS */
-.prog{display:flex;align-items:flex-start;justify-content:center;padding:14px 16px;background:#fff;border-bottom:2px solid #E0EEE0;gap:6px;flex-wrap:wrap;}
+.prog{display:flex;align-items:flex-start;justify-content:center;padding:14px 16px;background:#fff;border-bottom:2px solid #E0EEE0;gap:4px;flex-wrap:wrap;}
 .prog-item{display:flex;flex-direction:column;align-items:center;gap:3px;}
-.prog-dot{width:34px;height:34px;border-radius:50%;background:#C8E6C9;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:14px;color:#fff;transition:all .3s;}
+.prog-dot{width:32px;height:32px;border-radius:50%;background:#C8E6C9;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:13px;color:#fff;transition:all .3s;}
 .prog-dot.active{background:#1B7A78;transform:scale(1.2);box-shadow:0 4px 12px rgba(27,122,120,.35);}
 .prog-dot.done{background:#2D9E9C;}
-.prog-lbl{font-size:10px;color:#aaa;font-family:'Fredoka One',cursive;text-align:center;max-width:56px;line-height:1.2;}
+.prog-lbl{font-size:9px;color:#aaa;font-family:'Fredoka One',cursive;text-align:center;max-width:52px;line-height:1.2;}
 .prog-lbl.active{color:#1B7A78;}
-.prog-arr{color:#C8E6C9;font-size:16px;margin-top:8px;}
-
-/* SCREENS */
+.prog-arr{color:#C8E6C9;font-size:14px;margin-top:8px;}
 .screen{display:none;max-width:880px;margin:0 auto;padding:24px 16px;}
 .screen.active{display:block;}
 .scr-hd{text-align:center;margin-bottom:22px;}
-.scr-hd h2{font-family:'Fredoka One',cursive;font-size:28px;color:#1B7A78;line-height:1.3;}
-.scr-hd p{font-size:15px;color:#666;margin-top:7px;line-height:1.6;}
-
-/* WELCOME / PATH SELECTION */
+.scr-hd h2{font-family:'Fredoka One',cursive;font-size:26px;color:#1B7A78;line-height:1.3;}
+.scr-hd p{font-size:14px;color:#666;margin-top:7px;line-height:1.6;}
 .path-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px;}
 .path-card{background:#fff;border:4px solid #C8E6C9;border-radius:20px;padding:28px 20px;cursor:pointer;text-align:center;transition:all .25s;display:flex;flex-direction:column;align-items:center;gap:12px;}
 .path-card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,0,0,.12);}
@@ -41,14 +33,16 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
 .path-desc{font-size:13px;color:#666;line-height:1.6;}
 .path-check{font-size:20px;display:none;}
 .path-card.sel .path-check{display:block;}
-
-/* NAME BOX */
 .white-card{background:#fff;border-radius:18px;padding:24px;box-shadow:0 4px 18px rgba(0,0,0,.07);margin-bottom:16px;}
 .field-label{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;display:block;margin-bottom:8px;}
 .field-inp{width:100%;padding:13px 16px;border:3px solid #C8E6C9;border-radius:12px;font-family:'Nunito',sans-serif;font-size:18px;outline:none;transition:border-color .2s;margin-bottom:14px;}
 .field-inp:focus{border-color:#1B7A78;}
-
-/* COLOR PAIR GRID */
+.word-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.word-card{background:#fff;border:3px solid #C8E6C9;border-radius:12px;padding:10px 6px;cursor:pointer;text-align:center;transition:all .2s;}
+.word-card:hover{border-color:#1B7A78;transform:translateY(-1px);}
+.word-card.sel{border-color:#1B7A78;background:#E8F5E9;}
+.word-card-word{font-family:'Fredoka One',cursive;font-size:14px;color:#1B7A78;}
+.word-card-meaning{font-size:10px;color:#888;margin-top:3px;line-height:1.3;}
 .pair-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
 .pair-card{background:#fff;border:4px solid #E0E0E0;border-radius:16px;padding:14px 8px;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:8px;}
 .pair-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.1);}
@@ -58,62 +52,43 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
 .pair-name{font-family:'Fredoka One',cursive;font-size:13px;color:#1B7A78;line-height:1.2;}
 .pair-check{font-size:14px;display:none;}
 .pair-card.sel .pair-check{display:block;}
-
-/* SINGLE COLOR GRID (spinner) */
 .color-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
 .color-card{background:#fff;border:4px solid #E0E0E0;border-radius:14px;padding:14px 8px;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:8px;}
 .color-card:hover{transform:translateY(-2px);}
 .color-card.sel{border-color:#1B7A78;}
 .color-swatch{width:48px;height:48px;border-radius:50%;border:3px solid rgba(0,0,0,.1);}
 .color-name{font-family:'Fredoka One',cursive;font-size:13px;color:#333;}
-
-/* EMOJI GRID */
 .emoji-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:18px;}
 .emoji-btn{background:#fff;border:3px solid #E0E0E0;border-radius:12px;padding:10px;cursor:pointer;font-size:30px;text-align:center;transition:all .2s;}
 .emoji-btn:hover{border-color:#1B7A78;transform:translateY(-2px);}
 .emoji-btn.sel{border-color:#1B7A78;background:#E8F5E9;}
-
-/* BOOKMARK PREVIEW */
-.bookmark-preview-wrap{display:flex;justify-content:center;padding:16px 0;}
-.bookmark-svg-wrap{filter:drop-shadow(0 4px 14px rgba(0,0,0,.15));}
-
-/* SPINNER PREVIEW */
-.spinner-preview-wrap{display:flex;justify-content:center;align-items:center;flex-direction:column;gap:14px;padding:16px 0;}
+.section-lbl{font-family:'Fredoka One',cursive;font-size:17px;color:#1B7A78;margin-bottom:12px;}
+.hint{background:#E8F5E9;border-left:4px solid #1B7A78;border-radius:0 10px 10px 0;padding:10px 14px;font-size:13px;color:#0F4F4E;line-height:1.6;margin-bottom:14px;}
+.bk-preview-wrap{display:flex;justify-content:center;padding:16px 0;}
+.spinner-wrap{display:flex;justify-content:center;align-items:center;flex-direction:column;gap:14px;padding:16px 0;}
 .spinner-disc{width:180px;height:180px;border-radius:50%;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.18);}
-.spinner-top{position:absolute;top:0;left:0;width:100%;height:50%;}
-.spinner-bottom{position:absolute;bottom:0;left:0;width:100%;height:50%;}
-.spinner-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid rgba(0,0,0,.2);z-index:2;}
-.spinner-divider{position:absolute;top:50%;left:0;width:100%;height:3px;background:rgba(255,255,255,.6);transform:translateY(-50%);z-index:1;}
-.spinner-legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
-.legend-item{display:flex;align-items:center;gap:6px;font-size:13px;color:#444;font-weight:700;}
-.legend-dot{width:16px;height:16px;border-radius:50%;border:2px solid rgba(0,0,0,.15);}
-
-/* PHRASE */
-.char-count{font-size:12px;color:#aaa;text-align:right;margin-top:4px;}
-
-/* SUBMISSION */
-.submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,#1B7A78,#0F4F4E);color:#fff;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:18px;cursor:pointer;box-shadow:0 5px 16px rgba(0,0,0,.15);transition:all .2s;margin-bottom:8px;}
-.submit-btn:hover{transform:translateY(-2px);}
+.sp-top{position:absolute;top:0;left:0;width:100%;height:50%;}
+.sp-bot{position:absolute;bottom:0;left:0;width:100%;height:50%;}
+.sp-ctr{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid rgba(0,0,0,.2);z-index:2;}
+.sp-div{position:absolute;top:50%;left:0;width:100%;height:3px;background:rgba(255,255,255,.6);transform:translateY(-50%);z-index:1;}
+.sp-legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.lg-item{display:flex;align-items:center;gap:6px;font-size:13px;color:#444;font-weight:700;}
+.lg-dot{width:16px;height:16px;border-radius:50%;border:2px solid rgba(0,0,0,.15);}
+.submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,#1B7A78,#0F4F4E);color:#fff;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:18px;cursor:pointer;margin-bottom:8px;}
 .submit-note{font-size:12px;color:#888;font-style:italic;text-align:center;}
 .submitted-box{background:#E8F5E9;border-radius:16px;padding:28px;text-align:center;display:none;}
 .token-box{background:#FFF3D6;border:2px solid #C8860A;border-radius:12px;padding:14px;display:inline-block;margin-top:14px;}
 .token-code{font-family:'Fredoka One',cursive;font-size:28px;letter-spacing:4px;color:#7A4F00;}
-
-/* SECTION LABEL */
-.section-lbl{font-family:'Fredoka One',cursive;font-size:17px;color:#1B7A78;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-
-/* BUTTONS */
 .nav-row{display:flex;gap:12px;justify-content:flex-end;margin-top:10px;}
-.btn-next{padding:14px 28px;background:linear-gradient(135deg,#1B7A78,#0F4F4E);color:#fff;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;box-shadow:0 5px 16px rgba(27,122,120,.3);transition:all .2s;}
-.btn-next:hover{transform:translateY(-2px);}
+.btn-next{padding:14px 28px;background:linear-gradient(135deg,#1B7A78,#0F4F4E);color:#fff;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;box-shadow:0 5px 16px rgba(27,122,120,.3);}
 .btn-back{padding:14px 20px;border:3px solid #C8E6C9;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;color:#888;background:#fff;}
-
-/* HINT BANNERS */
-.hint{background:#E8F5E9;border-left:4px solid #1B7A78;border-radius:0 10px 10px 0;padding:10px 14px;font-size:13px;color:#0F4F4E;line-height:1.6;margin-bottom:14px;}
-.hint strong{font-weight:800;}
-
+.det-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.det-cell{background:#F5F5F5;border-radius:10px;padding:10px 12px;}
+.det-lbl{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#666;margin-bottom:3px;}
+.det-val{font-family:'Fredoka One',cursive;font-size:14px;color:#1B7A78;}
 @media(max-width:600px){
   .path-grid{grid-template-columns:1fr;}
+  .word-grid{grid-template-columns:repeat(2,1fr);}
   .pair-grid{grid-template-columns:repeat(2,1fr);}
   .color-grid{grid-template-columns:repeat(2,1fr);}
   .emoji-grid{grid-template-columns:repeat(4,1fr);}
@@ -123,580 +98,442 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
 <body>
 
 <div class="hdr">
-  <h1>🎨 Crafting Smiles</h1>
-  <p>Open to all Kellam students · Design something for a child who needs a smile · Spring 2026</p>
+  <h1>Crafting Smiles</h1>
+  <p>Open to all Kellam students &middot; Design something for a child who needs a smile &middot; Spring 2026</p>
 </div>
 
-<div class="prog" id="prog">
-  <div class="prog-item"><div class="prog-dot active" id="pd0">1</div><div class="prog-lbl active" id="pl0">Welcome</div></div>
-  <div class="prog-arr">›</div>
+<div class="prog">
+  <div class="prog-item"><div class="prog-dot active" id="pd0">1</div><div class="prog-lbl active" id="pl0">Choose</div></div>
+  <div class="prog-arr">&rsaquo;</div>
   <div class="prog-item"><div class="prog-dot" id="pd1">2</div><div class="prog-lbl" id="pl1">My Name</div></div>
-  <div class="prog-arr">›</div>
+  <div class="prog-arr">&rsaquo;</div>
   <div class="prog-item"><div class="prog-dot" id="pd2">3</div><div class="prog-lbl" id="pl2">My Word</div></div>
-  <div class="prog-arr">›</div>
+  <div class="prog-arr">&rsaquo;</div>
   <div class="prog-item"><div class="prog-dot" id="pd3">4</div><div class="prog-lbl" id="pl3">Colors</div></div>
-  <div class="prog-arr">›</div>
+  <div class="prog-arr">&rsaquo;</div>
   <div class="prog-item"><div class="prog-dot" id="pd4">5</div><div class="prog-lbl" id="pl4">Design</div></div>
-  <div class="prog-arr">›</div>
+  <div class="prog-arr">&rsaquo;</div>
   <div class="prog-item"><div class="prog-dot" id="pd5">6</div><div class="prog-lbl" id="pl5">Preview!</div></div>
 </div>
 
-<!-- SCREEN 0: WELCOME & PATH -->
+<!-- S0: PATH -->
 <div class="screen active" id="scr0">
-  <div class="scr-hd">
-    <h2>👋 Welcome to Crafting Smiles!</h2>
-    <p>Any Kellam student can contribute! Choose what you'd like to make for a child receiving a Smile Bag.</p>
-  </div>
+  <div class="scr-hd"><h2>Welcome to Crafting Smiles!</h2><p>Any Kellam student can contribute! Choose what you would like to make.</p></div>
   <div class="path-grid">
-    <div class="path-card" id="path-bookmark" onclick="selectPath('bookmark', this)">
-      <div class="path-icon">🔖</div>
+    <div class="path-card" onclick="pickPath('bookmark',this)">
+      <div class="path-icon">&#128278;</div>
       <div class="path-name">Bookmark</div>
-      <div class="path-desc">Design a two-color 3D printed bookmark with your emoji and a short phrase. Printed on the Bambu Lab printer!</div>
-      <div class="path-check">✓ Selected!</div>
+      <div class="path-desc">Choose a OneWord, colors, and emoji. Printed as a two-color 3D bookmark on the Bambu Lab printer!</div>
+      <div class="path-check">&#10003; Selected!</div>
     </div>
-    <div class="path-card" id="path-spinner" onclick="selectPath('spinner', this)">
-      <div class="path-icon">🌀</div>
+    <div class="path-card" onclick="pickPath('spinner',this)">
+      <div class="path-icon">&#127744;</div>
       <div class="path-name">Magic Illusion Spinner</div>
-      <div class="path-desc">Choose two colors for a mesmerizing optical illusion spinning top. It looks like it's floating when it spins!</div>
-      <div class="path-check">✓ Selected!</div>
+      <div class="path-desc">Choose two colors for a mesmerizing optical illusion spinning top. It looks like it is floating when it spins!</div>
+      <div class="path-check">&#10003; Selected!</div>
     </div>
   </div>
-  <div class="nav-row"><button class="btn-next" onclick="go(1)">Next — Enter My Name →</button></div>
+  <div class="nav-row"><button class="btn-next" onclick="toName()">Next &rarr;</button></div>
 </div>
 
-<!-- SCREEN 1: NAME -->
+<!-- S1: NAME -->
 <div class="screen" id="scr1">
-  <div class="scr-hd"><h2 id="s1title">✏️ What's Your Name?</h2><p id="s1sub">Let's get started!</p></div>
+  <div class="scr-hd"><h2 id="s1h">What is your name?</h2><p>Tell us your name to get started!</p></div>
   <div class="white-card">
     <label class="field-label">Your first name</label>
-    <input class="field-inp" id="studentName" type="text" placeholder="Type your name here..."/>
+    <input class="field-inp" id="iName" type="text" placeholder="Type your name here..."/>
     <label class="field-label">Your grade (optional)</label>
-    <input class="field-inp" id="studentGrade" type="text" placeholder="e.g. 10th grade"/>
+    <input class="field-inp" id="iGrade" type="text" placeholder="e.g. 10th grade"/>
   </div>
   <div class="nav-row">
-    <button class="btn-back" onclick="go(0)">← Back</button>
-    <button class="btn-next" onclick="go(2)">Next — Choose Colors →</button>
+    <button class="btn-back" onclick="nav(0)">&#8592; Back</button>
+    <button class="btn-next" onclick="toWord()">Next &rarr;</button>
   </div>
 </div>
 
-<!-- SCREEN 2: WORD SELECTION -->
+<!-- S2: WORD (bookmark only) -->
 <div class="screen" id="scr2">
-  <div class="scr-hd" id="s2word-hd">
-    <h2>📖 Choose Your OneWord</h2>
-    <p>Pick the word that will appear on the bookmark. Choose the one that means the most to you!</p>
-  </div>
+  <div class="scr-hd"><h2>Choose Your OneWord</h2><p>Pick the word that will appear on your bookmark!</p></div>
   <div class="white-card">
     <div class="section-lbl">Your OneWord</div>
-    <div id="wordGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;"></div>
+    <div class="word-grid" id="wordGrid"></div>
   </div>
   <div class="nav-row">
-    <button class="btn-back" onclick="go(1)">← Back</button>
-    <button class="btn-next" onclick="go(3)">Next — Choose Colors →</button>
+    <button class="btn-back" onclick="nav(1)">&#8592; Back</button>
+    <button class="btn-next" onclick="toColors()">Next &mdash; Choose Colors &rarr;</button>
   </div>
 </div>
 
-<!-- SCREEN 3: COLORS -->
-<div class="screen" id="scr5">
-  <div class="scr-hd"><h2 id="s2title">🎨 Choose Your Colors</h2><p id="s2sub">Pick the colors for your creation!</p></div>
-
-  <!-- BOOKMARK: color pair -->
-  <div id="bookmark-colors">
-    <div class="hint">Color 1 is the main body of your bookmark. Color 2 is the accent — it appears as the border ring and your text color.</div>
+<!-- S3: COLORS -->
+<div class="screen" id="scr3">
+  <div class="scr-hd"><h2 id="s3h">Choose Your Colors</h2><p id="s3p">Pick the colors for your creation!</p></div>
+  <div id="bk-colors">
+    <div class="hint">Color 1 is the main body. Color 2 appears as the border ring and text color.</div>
     <div class="white-card">
-      <div class="section-lbl">🎨 Choose Your Color Pair</div>
+      <div class="section-lbl">Choose Your Color Pair</div>
       <div class="pair-grid" id="pairGrid"></div>
     </div>
   </div>
-
-  <!-- SPINNER: two separate colors -->
-  <div id="spinner-colors" style="display:none;">
-    <div class="hint"><strong>Top half</strong> and <strong>bottom half</strong> each print in a different color — that's what creates the illusion when it spins! Choose one color for each half.</div>
+  <div id="sp-colors" style="display:none;">
+    <div class="hint">Top half and bottom half each print in a different color. That is what creates the illusion when it spins!</div>
     <div class="white-card">
-      <div class="section-lbl">🔵 Top Half Color</div>
-      <div class="color-grid" id="topColorGrid"></div>
+      <div class="section-lbl">Top Half Color</div>
+      <div class="color-grid" id="topGrid"></div>
     </div>
     <div class="white-card">
-      <div class="section-lbl">🟡 Bottom Half Color</div>
-      <div class="color-grid" id="bottomColorGrid"></div>
+      <div class="section-lbl">Bottom Half Color</div>
+      <div class="color-grid" id="botGrid"></div>
     </div>
   </div>
-
   <div class="nav-row">
-    <button class="btn-back" onclick="go(2)">← Back</button>
-    <button class="btn-next" onclick="go(4)">Next — Design It →</button>
+    <button class="btn-back" onclick="colorsBack()">&#8592; Back</button>
+    <button class="btn-next" onclick="toDesign()">Next &mdash; Design It &rarr;</button>
   </div>
 </div>
 
-<!-- SCREEN 3: DESIGN -->
-<div class="screen" id="scr5">
-  <!-- BOOKMARK DESIGN -->
-  <div id="bookmark-design">
-    <div class="scr-hd"><h2>✨ Design Your Bookmark</h2><p>Pick an emoji and write a short phrase for your bookmark!</p></div>
+<!-- S4: DESIGN -->
+<div class="screen" id="scr4">
+  <div id="bk-design">
+    <div class="scr-hd"><h2>Design Your Bookmark</h2><p>Pick an emoji for the center circle!</p></div>
     <div class="white-card">
-      <div class="section-lbl">😊 Choose Your Emoji</div>
+      <div class="section-lbl">Choose Your Emoji</div>
       <div class="emoji-grid" id="emojiGrid"></div>
     </div>
-
-  </div>
-
-  <!-- SPINNER DESIGN (no text — just confirm) -->
-  <div id="spinner-design" style="display:none;">
-    <div class="scr-hd"><h2>🌀 Your Magic Illusion Spinner</h2><p>Here's how your spinner will look! The two colors create the illusion when it spins.</p></div>
     <div class="white-card">
-      <div class="hint">The Magic Illusion Spinner is printed in two halves that snap together. Your top and bottom colors will create a mesmerizing optical effect when the spinner moves!</div>
-      <div class="spinner-preview-wrap">
-        <div class="spinner-disc" id="spinnerDisc">
-          <div class="spinner-top" id="spinnerTop"></div>
-          <div class="spinner-bottom" id="spinnerBottom"></div>
-          <div class="spinner-divider"></div>
-          <div class="spinner-center"></div>
+      <div class="section-lbl">Live Preview</div>
+      <div class="bk-preview-wrap"><svg id="bkSVG" width="160" height="310" viewBox="0 0 160 310"></svg></div>
+    </div>
+  </div>
+  <div id="sp-design" style="display:none;">
+    <div class="scr-hd"><h2>Your Magic Illusion Spinner</h2><p>Here is how your spinner will look!</p></div>
+    <div class="white-card">
+      <div class="hint">The Magic Illusion Spinner prints in two halves that snap together. Your two colors create a mesmerizing optical effect when it spins!</div>
+      <div class="spinner-wrap">
+        <div class="spinner-disc">
+          <div class="sp-top" id="spTop"></div>
+          <div class="sp-bot" id="spBot"></div>
+          <div class="sp-div"></div>
+          <div class="sp-ctr"></div>
         </div>
-        <div class="spinner-legend">
-          <div class="legend-item"><div class="legend-dot" id="legendTop"></div><span id="legendTopLabel">Top half</span></div>
-          <div class="legend-item"><div class="legend-dot" id="legendBottom"></div><span id="legendBottomLabel">Bottom half</span></div>
+        <div class="sp-legend">
+          <div class="lg-item"><div class="lg-dot" id="lgTop"></div><span id="lgTopLbl">Top half</span></div>
+          <div class="lg-item"><div class="lg-dot" id="lgBot"></div><span id="lgBotLbl">Bottom half</span></div>
         </div>
-        <p style="font-size:12px;color:#aaa;font-style:italic;text-align:center;margin-top:6px;">Model by AeroDesigns · MakerWorld · makerworld.com/en/models/2247117</p>
+        <p style="font-size:11px;color:#aaa;font-style:italic;text-align:center;margin-top:6px;">Model by AeroDesigns &middot; MakerWorld &middot; makerworld.com/en/models/2247117</p>
       </div>
     </div>
   </div>
-
   <div class="nav-row">
-    <button class="btn-back" onclick="go(3)">← Back</button>
-    <button class="btn-next" onclick="go(5)">See My Preview! →</button>
+    <button class="btn-back" onclick="nav(3)">&#8592; Back</button>
+    <button class="btn-next" onclick="toPreview()">See My Preview! &rarr;</button>
   </div>
 </div>
 
-<!-- SCREEN 4: PREVIEW & SUBMIT -->
+<!-- S5: PREVIEW & SUBMIT -->
 <div class="screen" id="scr5">
-  <div class="scr-hd"><h2 id="s4title">⭐ Your Design!</h2><p id="s4sub">Here is your final preview. Submit it and your teacher will print it!</p></div>
+  <div class="scr-hd"><h2 id="s5h">Your Design!</h2><p>Submit it and your teacher will print it for a child in the community!</p></div>
 
-  <!-- BOOKMARK FINAL PREVIEW -->
-  <div id="bookmark-final" class="white-card">
-    <div class="section-lbl">🔖 Your Bookmark Preview</div>
-    <div class="bookmark-preview-wrap">
-      <div class="bookmark-svg-wrap"><svg id="bookmarkSVG" width="160" height="310" viewBox="0 0 160 310"></svg></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">
-      <div style="background:#F5F5F5;border-radius:10px;padding:10px 12px;">
-        <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#666;margin-bottom:3px;">Color Pair</div>
-        <div style="font-family:'Fredoka One',cursive;font-size:14px;color:#1B7A78;" id="bkDetailPair"></div>
-      </div>
-      <div style="background:#F5F5F5;border-radius:10px;padding:10px 12px;">
-        <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#666;margin-bottom:3px;">Word</div>
-        <div style="font-family:'Fredoka One',cursive;font-size:14px;color:#1B7A78;" id="bkDetailPhrase"></div>
-      </div>
+  <div id="bk-final" class="white-card">
+    <div class="section-lbl">Your Bookmark</div>
+    <div class="bk-preview-wrap"><svg id="bkSVGFinal" width="160" height="310" viewBox="0 0 160 310"></svg></div>
+    <div class="det-grid">
+      <div class="det-cell"><div class="det-lbl">Word</div><div class="det-val" id="dWord"></div></div>
+      <div class="det-cell"><div class="det-lbl">Color Pair</div><div class="det-val" id="dPair"></div></div>
     </div>
   </div>
 
-  <!-- SPINNER FINAL PREVIEW -->
-  <div id="spinner-final" class="white-card" style="display:none;">
-    <div class="section-lbl">🌀 Your Magic Illusion Spinner Preview</div>
-    <div class="spinner-preview-wrap">
-      <div class="spinner-disc" id="spinnerDiscFinal">
-        <div class="spinner-top" id="spinnerTopFinal"></div>
-        <div class="spinner-bottom" id="spinnerBottomFinal"></div>
-        <div class="spinner-divider"></div>
-        <div class="spinner-center"></div>
+  <div id="sp-final" class="white-card" style="display:none;">
+    <div class="section-lbl">Your Spinner</div>
+    <div class="spinner-wrap">
+      <div class="spinner-disc">
+        <div class="sp-top" id="spTopF"></div>
+        <div class="sp-bot" id="spBotF"></div>
+        <div class="sp-div"></div>
+        <div class="sp-ctr"></div>
       </div>
-      <div class="spinner-legend">
-        <div class="legend-item"><div class="legend-dot" id="legendTopFinal"></div><span id="legendTopLabelFinal">Top half</span></div>
-        <div class="legend-item"><div class="legend-dot" id="legendBottomFinal"></div><span id="legendBottomLabelFinal">Bottom half</span></div>
-      </div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">
-      <div style="background:#F5F5F5;border-radius:10px;padding:10px 12px;">
-        <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#666;margin-bottom:3px;">Top Half</div>
-        <div style="font-family:'Fredoka One',cursive;font-size:14px;color:#1B7A78;" id="spDetailTop"></div>
-      </div>
-      <div style="background:#F5F5F5;border-radius:10px;padding:10px 12px;">
-        <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#666;margin-bottom:3px;">Bottom Half</div>
-        <div style="font-family:'Fredoka One',cursive;font-size:14px;color:#1B7A78;" id="spDetailBottom"></div>
+      <div class="sp-legend">
+        <div class="lg-item"><div class="lg-dot" id="lgTopF"></div><span id="lgTopLblF">Top half</span></div>
+        <div class="lg-item"><div class="lg-dot" id="lgBotF"></div><span id="lgBotLblF">Bottom half</span></div>
       </div>
     </div>
-    <div class="hint" style="margin-top:14px;">🖨️ Print settings: <strong>2-color AMS print</strong> · Model by AeroDesigns on MakerWorld · No supports needed · Snap fit — light glue recommended</div>
+    <div class="det-grid">
+      <div class="det-cell"><div class="det-lbl">Top Half</div><div class="det-val" id="dTop"></div></div>
+      <div class="det-cell"><div class="det-lbl">Bottom Half</div><div class="det-val" id="dBot"></div></div>
+    </div>
+    <div class="hint" style="margin-top:14px;">Print: 2-color AMS &middot; Model by AeroDesigns on MakerWorld &middot; No supports &middot; Snap fit, light glue recommended</div>
   </div>
 
-  <!-- SUBMIT -->
-  <div id="notSubmitted">
-    <button class="submit-btn" onclick="submitDesign()">📬 Submit My Design!</button>
-    <p class="submit-note">Your teacher will print this for you — no printing needed on your end!</p>
+  <div id="notSub">
+    <button class="submit-btn" onclick="doSubmit()">Submit My Design!</button>
+    <p class="submit-note">Your teacher will print this. No printing needed on your end!</p>
   </div>
-  <div class="submitted-box" id="submittedBox">
-    <div style="font-size:52px;margin-bottom:12px;">🎉</div>
+  <div class="submitted-box" id="subBox">
+    <div style="font-size:52px;margin-bottom:12px;">&#127881;</div>
     <div style="font-family:'Fredoka One',cursive;font-size:24px;color:#1B7A78;margin-bottom:6px;">Design Submitted!</div>
-    <p style="font-size:14px;color:#555;line-height:1.7;">Your design has been sent to your teacher.<br/>It will be printed and placed in a Kellam Smile Bag for a child in our community!</p>
+    <p style="font-size:14px;color:#555;line-height:1.7;">Your design has been sent to your teacher and will be placed in a Kellam Smile Bag!</p>
     <div class="token-box">
       <div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#C8860A;margin-bottom:4px;">Your submission code</div>
-      <div class="token-code" id="tokenCode">KSB-0000</div>
+      <div class="token-code" id="tokCode">KSB-0000</div>
       <div style="font-size:11px;color:#888;margin-top:4px;">Write this down just in case!</div>
     </div>
   </div>
-
-  <div class="nav-row" style="justify-content:flex-start;">
-    <button class="btn-back" onclick="go(4)">← Change Something</button>
+  <div class="nav-row" style="justify-content:flex-start;margin-top:12px;">
+    <button class="btn-back" onclick="nav(4)">&#8592; Change Something</button>
   </div>
 </div>
 
 <script>
 var SCRIPT_URL = "YOUR_APPS_SCRIPT_URL_HERE";
 
-var COLOR_PAIRS = [
-  {name:"Red & Grey",   c1:{name:"Red",   hex:"#CC0000"}, c2:{name:"Grey",   hex:"#808080"}},
-  {name:"Green & Gold", c1:{name:"Green", hex:"#2D6A2D"}, c2:{name:"Gold",   hex:"#C8860A"}},
-  {name:"Blue & Silver",c1:{name:"Blue",  hex:"#1565C0"}, c2:{name:"Silver", hex:"#A8A9AD"}},
-  {name:"Blue & Green", c1:{name:"Blue",  hex:"#1565C0"}, c2:{name:"Green",  hex:"#2D6A2D"}},
-  {name:"Red & White",  c1:{name:"Red",   hex:"#CC0000"}, c2:{name:"White",  hex:"#F5F5F5"}},
-  {name:"Blue & White", c1:{name:"Blue",  hex:"#1565C0"}, c2:{name:"White",  hex:"#F5F5F5"}},
-  {name:"Black & Gold", c1:{name:"Black", hex:"#1A1A1A"}, c2:{name:"Gold",   hex:"#C8860A"}},
-];
-
 var WORDS = [
-  {word:"ABSORB",   meaning:"Taking in everything around you"},
-  {word:"ADAPT",    meaning:"Adjusting to what comes your way"},
-  {word:"ANCHOR",   meaning:"Holding steady through the storm"},
-  {word:"BALANCE",  meaning:"Finding your steady place"},
-  {word:"BLOOM",    meaning:"Growing into your best self"},
-  {word:"BREATHE",  meaning:"Pausing to find your calm"},
-  {word:"CLEAR",    meaning:"Seeing things as they really are"},
-  {word:"CONNECT",  meaning:"Building bridges between hearts"},
-  {word:"CYCLE",    meaning:"Moving through seasons of change"},
-  {word:"EMERGE",   meaning:"Rising into who you are becoming"},
-  {word:"FILTER",   meaning:"Choosing what deserves your energy"},
-  {word:"FLOW",     meaning:"Moving forward even slowly"},
-  {word:"GROW",     meaning:"Becoming more than you were"},
-  {word:"HEAL",     meaning:"Restoring what was broken"},
-  {word:"MIGRATE",  meaning:"Carrying home within yourself"},
-  {word:"PERSIST",  meaning:"Keeping going when it gets hard"},
-  {word:"RENEW",    meaning:"Starting fresh with new strength"},
-  {word:"RESTORE",  meaning:"Bringing back what matters most"},
-  {word:"RETURN",   meaning:"Coming back to what is true"},
-  {word:"RISE",     meaning:"Standing tall after falling down"},
-  {word:"SHINE",    meaning:"Letting your light reach others"},
-  {word:"SUSTAIN",  meaning:"Keeping what is good alive"},
-  {word:"THRIVE",   meaning:"Living at your fullest"},
+  {word:"ABSORB",meaning:"Taking in everything around you"},
+  {word:"ADAPT",meaning:"Adjusting to what comes your way"},
+  {word:"ANCHOR",meaning:"Holding steady through the storm"},
+  {word:"BALANCE",meaning:"Finding your steady place"},
+  {word:"BLOOM",meaning:"Growing into your best self"},
+  {word:"BREATHE",meaning:"Pausing to find your calm"},
+  {word:"CLEAR",meaning:"Seeing things as they really are"},
+  {word:"CONNECT",meaning:"Building bridges between hearts"},
+  {word:"CYCLE",meaning:"Moving through seasons of change"},
+  {word:"EMERGE",meaning:"Rising into who you are becoming"},
+  {word:"FILTER",meaning:"Choosing what deserves your energy"},
+  {word:"FLOW",meaning:"Moving forward even slowly"},
+  {word:"GROW",meaning:"Becoming more than you were"},
+  {word:"HEAL",meaning:"Restoring what was broken"},
+  {word:"MIGRATE",meaning:"Carrying home within yourself"},
+  {word:"PERSIST",meaning:"Keeping going when it gets hard"},
+  {word:"RENEW",meaning:"Starting fresh with new strength"},
+  {word:"RESTORE",meaning:"Bringing back what matters most"},
+  {word:"RETURN",meaning:"Coming back to what is true"},
+  {word:"RISE",meaning:"Standing tall after falling down"},
+  {word:"SHINE",meaning:"Letting your light reach others"},
+  {word:"SUSTAIN",meaning:"Keeping what is good alive"},
+  {word:"THRIVE",meaning:"Living at your fullest"},
   {word:"TRANSFORM",meaning:"Becoming something beautifully new"},
-  {word:"CYCLE",    meaning:"Moving through seasons of change"},
+  {word:"MOVE",meaning:"Taking the next step forward"},
 ];
 
-var COLORS = [
-  {name:"Red",    hex:"#CC0000"},
-  {name:"Grey",   hex:"#808080"},
-  {name:"Green",  hex:"#2D6A2D"},
-  {name:"Gold",   hex:"#C8860A"},
-  {name:"Blue",   hex:"#1565C0"},
-  {name:"Silver", hex:"#A8A9AD"},
-  {name:"White",  hex:"#F5F5F5"},
-  {name:"Black",  hex:"#1A1A1A"},
+var PAIRS = [
+  {name:"Red & Grey",   c1:{n:"Red",   h:"#CC0000"}, c2:{n:"Grey",   h:"#808080"}},
+  {name:"Green & Gold", c1:{n:"Green", h:"#2D6A2D"}, c2:{n:"Gold",   h:"#C8860A"}},
+  {name:"Blue & Silver",c1:{n:"Blue",  h:"#1565C0"}, c2:{n:"Silver", h:"#A8A9AD"}},
+  {name:"Blue & Green", c1:{n:"Blue",  h:"#1565C0"}, c2:{n:"Green",  h:"#2D6A2D"}},
+  {name:"Red & White",  c1:{n:"Red",   h:"#CC0000"}, c2:{n:"White",  h:"#F5F5F5"}},
+  {name:"Blue & White", c1:{n:"Blue",  h:"#1565C0"}, c2:{n:"White",  h:"#F5F5F5"}},
+  {name:"Black & Gold", c1:{n:"Black", h:"#1A1A1A"}, c2:{n:"Gold",   h:"#C8860A"}},
 ];
 
-var EMOJIS = [
-  "\u2B50","\u2764\uFE0F","\uD83C\uDF08","\uD83E\uDD8B","\uD83C\uDF38","\uD83C\uDF3B",
-  "\uD83D\uDC3E","\uD83D\uDC4F","\u26A1","\uD83C\uDF0A","\uD83D\uDD25","\uD83C\uDFAF",
-  "\uD83D\uDC8E","\uD83C\uDF1F","\uD83E\uDD81","\uD83D\uDE4C","\uD83D\uDC22","\uD83C\uDF34",
-  "\uD83D\uDE80","\uD83C\uDF31","\uD83C\uDFC6","\uD83D\uDCA1","\u2728","\uD83D\uDC95"
+var CLRS = [
+  {n:"Red",h:"#CC0000"},{n:"Grey",h:"#808080"},{n:"Green",h:"#2D6A2D"},{n:"Gold",h:"#C8860A"},
+  {n:"Blue",h:"#1565C0"},{n:"Silver",h:"#A8A9AD"},{n:"White",h:"#F5F5F5"},{n:"Black",h:"#1A1A1A"},
 ];
 
-// ── STATE ─────────────────────────────────────────────────
-var selPath    = null;
-var selWord    = null;
-var selPair    = null;
-var selTopColor    = null;
-var selBottomColor = null;
-var selEmoji   = "\u2B50";
-var studentName= "";
-var studentGrade = "";
+var EMOJIS = ["star","heart","rainbow","butterfly","blossom","sunflower","paw","clap","bolt","wave","fire","dart","gem","glow","lion","raise","turtle","palm","rocket","sprout","trophy","bulb","sparkle","hearts"];
+var EMOJI_HTML = ["&#11088;","&#10084;&#65039;","&#127752;","&#129419;","&#127800;","&#127803;","&#128062;","&#128079;","&#9889;","&#127882;","&#128293;","&#127919;","&#128142;","&#127775;","&#129409;","&#128588;","&#128034;","&#127956;","&#128640;","&#127793;","&#127942;","&#128161;","&#10024;","&#128149;"];
 
-// ── INIT ─────────────────────────────────────────────────
-document.addEventListener("DOMContentLoaded", function() {
-  buildWordGrid();
-  buildPairGrid();
-  buildColorGrids();
-  buildEmojiGrid();
+var selPath=null, selWord=null, selPair=null, selTC=null, selBC=null;
+var selEmojiIdx=0;
+var sName="", sGrade="";
+
+document.addEventListener("DOMContentLoaded",function(){
+  buildWordGrid(); buildPairGrid(); buildColorGrid("topGrid","top"); buildColorGrid("botGrid","bot"); buildEmojiGrid();
 });
 
-// ── PATH SELECTION ────────────────────────────────────────
-function selectPath(path, el) {
-  document.querySelectorAll(".path-card").forEach(function(c){ c.classList.remove("sel"); });
-  el.classList.add("sel");
-  selPath = path;
+function pickPath(p,el){
+  document.querySelectorAll(".path-card").forEach(function(c){c.classList.remove("sel");});
+  el.classList.add("sel"); selPath=p;
+  var d2=document.getElementById("pd2"),l2=document.getElementById("pl2");
+  if(p==="spinner"){d2.style.opacity="0.3";l2.style.opacity="0.3";}
+  else{d2.style.opacity="1";l2.style.opacity="1";}
 }
 
-// ── WORD GRID ─────────────────────────────────────────────
-function buildWordGrid() {
-  var g = document.getElementById("wordGrid");
-  if (!g) return;
-  WORDS.forEach(function(w) {
-    var card = document.createElement("div");
-    card.style.cssText = "background:#fff;border:3px solid #C8E6C9;border-radius:12px;padding:10px 6px;cursor:pointer;text-align:center;transition:all .2s;";
-    card.innerHTML =
-      '<div style="font-family:Fredoka One,cursive;font-size:14px;color:#1B7A78;">' + w.word + '</div>' +
-      '<div style="font-size:10px;color:#888;margin-top:3px;line-height:1.3;">' + w.meaning + '</div>';
-    card.onclick = (function(word, el) { return function() {
-      document.querySelectorAll("#wordGrid > div").forEach(function(c){
-        c.style.borderColor="#C8E6C9"; c.style.background="#fff";
-      });
-      el.style.borderColor="#1B7A78";
-      el.style.background="#E8F5E9";
-      selWord = word;
-      liveBookmarkPreview();
-    };})(w, card);
-    g.appendChild(card);
+function buildWordGrid(){
+  var g=document.getElementById("wordGrid");
+  WORDS.forEach(function(w){
+    var c=document.createElement("div");c.className="word-card";
+    c.innerHTML='<div class="word-card-word">'+w.word+'</div><div class="word-card-meaning">'+w.meaning+'</div>';
+    c.onclick=(function(wd,el){return function(){
+      document.querySelectorAll(".word-card").forEach(function(x){x.classList.remove("sel");});
+      el.classList.add("sel");selWord=wd;
+    };})(w,c);
+    g.appendChild(c);
   });
 }
 
-// ── PAIR GRID ─────────────────────────────────────────────
-function buildPairGrid() {
-  var g = document.getElementById("pairGrid");
-  COLOR_PAIRS.forEach(function(pair) {
-    var card = document.createElement("div");
-    card.className = "pair-card";
-    card.innerHTML =
-      '<div class="pair-swatches">' +
-        '<div class="pair-swatch" style="background:' + pair.c1.hex + ';"></div>' +
-        '<div class="pair-swatch" style="background:' + pair.c2.hex + ';"></div>' +
-      '</div>' +
-      '<div class="pair-name">' + pair.name + '</div>' +
-      '<div class="pair-check">\u2713</div>';
-    card.onclick = (function(p, el) { return function() {
-      document.querySelectorAll(".pair-card").forEach(function(c){ c.classList.remove("sel"); });
-      el.classList.add("sel");
-      selPair = p;
-      liveBookmarkPreview();
-    };})(pair, card);
-    g.appendChild(card);
+function buildPairGrid(){
+  var g=document.getElementById("pairGrid");
+  PAIRS.forEach(function(p){
+    var c=document.createElement("div");c.className="pair-card";
+    c.innerHTML='<div class="pair-swatches"><div class="pair-swatch" style="background:'+p.c1.h+'"></div><div class="pair-swatch" style="background:'+p.c2.h+'"></div></div><div class="pair-name">'+p.name+'</div><div class="pair-check">&#10003;</div>';
+    c.onclick=(function(pr,el){return function(){
+      document.querySelectorAll(".pair-card").forEach(function(x){x.classList.remove("sel");});
+      el.classList.add("sel");selPair=pr;
+    };})(p,c);
+    g.appendChild(c);
   });
 }
 
-// ── COLOR GRIDS (spinner) ─────────────────────────────────
-function buildColorGrids() {
-  buildOneColorGrid("topColorGrid",    "top");
-  buildOneColorGrid("bottomColorGrid", "bottom");
-}
-
-function buildOneColorGrid(gridId, which) {
-  var g = document.getElementById(gridId);
-  COLORS.forEach(function(col) {
-    var card = document.createElement("div");
-    card.className = "color-card";
-    card.innerHTML =
-      '<div class="color-swatch" style="background:' + col.hex + ';"></div>' +
-      '<div class="color-name">' + col.name + '</div>';
-    card.onclick = (function(c, el, w) { return function() {
-      document.querySelectorAll("#" + gridId + " .color-card").forEach(function(x){ x.classList.remove("sel"); x.style.borderColor="#E0E0E0"; });
-      el.classList.add("sel");
-      el.style.borderColor = c.hex === "#F5F5F5" ? "#999" : c.hex;
-      if (w === "top") {
-        selTopColor = c;
-        document.getElementById("spinnerTop").style.background = c.hex;
-        document.getElementById("legendTop").style.background  = c.hex;
-        document.getElementById("legendTopLabel").textContent  = "Top half \u2014 " + c.name;
+function buildColorGrid(gridId,which){
+  var g=document.getElementById(gridId);
+  CLRS.forEach(function(col){
+    var c=document.createElement("div");c.className="color-card";
+    c.innerHTML='<div class="color-swatch" style="background:'+col.h+'"></div><div class="color-name">'+col.n+'</div>';
+    c.onclick=(function(cl,el,w){return function(){
+      document.querySelectorAll("#"+gridId+" .color-card").forEach(function(x){x.classList.remove("sel");x.style.borderColor="#E0E0E0";});
+      el.classList.add("sel");el.style.borderColor=(cl.h==="#F5F5F5")?"#999":cl.h;
+      if(w==="top"){
+        selTC=cl;
+        document.getElementById("spTop").style.background=cl.h;
+        document.getElementById("lgTop").style.background=cl.h;
+        document.getElementById("lgTopLbl").textContent="Top half - "+cl.n;
       } else {
-        selBottomColor = c;
-        document.getElementById("spinnerBottom").style.background = c.hex;
-        document.getElementById("legendBottom").style.background  = c.hex;
-        document.getElementById("legendBottomLabel").textContent  = "Bottom half \u2014 " + c.name;
+        selBC=cl;
+        document.getElementById("spBot").style.background=cl.h;
+        document.getElementById("lgBot").style.background=cl.h;
+        document.getElementById("lgBotLbl").textContent="Bottom half - "+cl.n;
       }
-    };})(col, card, which);
-    g.appendChild(card);
+    };})(col,c,which);
+    g.appendChild(c);
   });
 }
 
-// ── EMOJI GRID ─────────────────────────────────────────────
-function buildEmojiGrid() {
-  var g = document.getElementById("emojiGrid");
-  EMOJIS.forEach(function(em) {
-    var btn = document.createElement("button");
-    btn.className = "emoji-btn" + (em === selEmoji ? " sel" : "");
-    btn.textContent = em;
-    btn.onclick = (function(e, el) { return function() {
-      document.querySelectorAll(".emoji-btn").forEach(function(b){ b.classList.remove("sel"); });
-      el.classList.add("sel");
-      selEmoji = e;
-      liveBookmarkPreview();
-    };})(em, btn);
+function buildEmojiGrid(){
+  var g=document.getElementById("emojiGrid");
+  EMOJI_HTML.forEach(function(em,i){
+    var btn=document.createElement("button");btn.className="emoji-btn"+(i===0?" sel":"");
+    btn.innerHTML=em;
+    btn.onclick=(function(idx,el){return function(){
+      document.querySelectorAll(".emoji-btn").forEach(function(b){b.classList.remove("sel");});
+      el.classList.add("sel");selEmojiIdx=idx;drawBK("bkSVG");
+    };})(i,btn);
     g.appendChild(btn);
   });
 }
 
-// ── NAVIGATION ─────────────────────────────────────────────
-function go(n) {
-  studentName  = document.getElementById("studentName").value.trim()  || "Student";
-  studentGrade = document.getElementById("studentGrade").value.trim() || "";
+// Navigation helpers
+function toName(){
+  if(!selPath){alert("Please choose what you would like to make!");return;}
+  sName=document.getElementById("iName").value.trim()||"";
+  document.getElementById("s1h").textContent=selPath==="bookmark"?"Let us make your bookmark!":"Let us make your spinner!";
+  nav(1);
+}
 
-  if (n === 1 && !selPath)     { alert("Please choose what you'd like to make!"); return; }
-  if (n === 3 && selPath === "bookmark" && !selPair) { alert("Please choose a color pair! \uD83C\uDFA8"); return; }
-  if (n === 3 && selPath === "spinner"  && (!selTopColor || !selBottomColor)) { alert("Please choose both colors for your spinner!"); return; }
-  if (n === 4) buildFinalPreview();
+function toWord(){
+  sName=document.getElementById("iName").value.trim()||"Student";
+  sGrade=document.getElementById("iGrade").value.trim()||"";
+  if(selPath==="spinner"){nav(3);}else{nav(2);}
+}
 
-  document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
-  document.getElementById("scr" + n).classList.add("active");
+function toColors(){
+  if(selPath==="bookmark"&&!selWord){alert("Please choose your OneWord first!");return;}
+  document.getElementById("bk-colors").style.display=selPath==="bookmark"?"block":"none";
+  document.getElementById("sp-colors").style.display=selPath==="spinner"?"block":"none";
+  nav(3);
+}
 
-  // Progress dots
-  for (var i = 0; i <= 4; i++) {
-    var pd = document.getElementById("pd"+i), pl = document.getElementById("pl"+i);
-    if (!pd) continue;
-    pd.classList.remove("active","done"); pl.classList.remove("active");
-    if (i < n) pd.classList.add("done");
-    else if (i === n) { pd.classList.add("active"); pl.classList.add("active"); }
+function colorsBack(){
+  if(selPath==="spinner"){nav(1);}else{nav(2);}
+}
+
+function toDesign(){
+  if(selPath==="bookmark"&&!selPair){alert("Please choose a color pair!");return;}
+  if(selPath==="spinner"&&(!selTC||!selBC)){alert("Please choose both colors for your spinner!");return;}
+  document.getElementById("bk-design").style.display=selPath==="bookmark"?"block":"none";
+  document.getElementById("sp-design").style.display=selPath==="spinner"?"block":"none";
+  if(selPath==="bookmark")drawBK("bkSVG");
+  if(selPath==="spinner"){
+    if(selTC){document.getElementById("spTop").style.background=selTC.h;document.getElementById("lgTop").style.background=selTC.h;document.getElementById("lgTopLbl").textContent="Top half - "+selTC.n;}
+    if(selBC){document.getElementById("spBot").style.background=selBC.h;document.getElementById("lgBot").style.background=selBC.h;document.getElementById("lgBotLbl").textContent="Bottom half - "+selBC.n;}
   }
+  nav(4);
+}
 
-  // Show/hide path-specific sections
-  if (n === 2) {
-    document.getElementById("bookmark-colors").style.display = selPath === "bookmark" ? "block" : "none";
-    document.getElementById("spinner-colors").style.display  = selPath === "spinner"  ? "block" : "none";
-    document.getElementById("s2title").textContent = selPath === "bookmark" ? "\uD83C\uDFA8 Choose Your Color Pair" : "\uD83C\uDFA8 Choose Your Two Colors";
-    document.getElementById("s2sub").textContent   = selPath === "bookmark" ? "Color 1 is the body, Color 2 is the accent and ring." : "Top half and bottom half each print in a different color.";
-  }
-  if (n === 3) {
-    document.getElementById("bookmark-design").style.display = selPath === "bookmark" ? "block" : "none";
-    document.getElementById("spinner-design").style.display  = selPath === "spinner"  ? "block" : "none";
-    if (selPath === "spinner") buildSpinnerPreview("spinnerTop","spinnerBottom","legendTop","legendBottom","legendTopLabel","legendBottomLabel");
-  }
-  if (n === 1) {
-    document.getElementById("s1title").textContent = selPath === "bookmark" ? "\u270F\uFE0F Let's make your bookmark!" : "\u270F\uFE0F Let's make your spinner!";
-    document.getElementById("s1sub").textContent   = "Tell us your name to get started!";
+function toPreview(){
+  buildFinal();nav(5);
+}
+
+function nav(n){
+  document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});
+  document.getElementById("scr"+n).classList.add("active");
+  for(var i=0;i<=5;i++){
+    var pd=document.getElementById("pd"+i),pl=document.getElementById("pl"+i);
+    if(!pd)continue;
+    pd.classList.remove("active","done");pl.classList.remove("active");
+    if(i<n)pd.classList.add("done");
+    else if(i===n){pd.classList.add("active");pl.classList.add("active");}
   }
   window.scrollTo(0,0);
 }
 
-function updatePhraseCount() {
-  var v = document.getElementById("phraseInput").value;
-  document.getElementById("phraseCount").textContent = v.length;
+function drawBK(svgId){
+  var svg=document.getElementById(svgId);
+  if(!svg||!selPair)return;
+  var c1=selPair.c1.h,c2=selPair.c2.h;
+  var word=selWord?selWord.word:"SMILE";
+  var em=EMOJI_HTML[selEmojiIdx]||EMOJI_HTML[0];
+  var cx=80,R=56,cy=R+8,stemTop=cy,stemH=230,totalH=cy+stemH+12;
+  var len=word.length;
+  var fs=len<=5?22:len<=8?19:len<=12?16:len<=16?13:11;
+  svg.setAttribute("viewBox","0 0 160 "+totalH);
+  svg.setAttribute("height",totalH);
+  svg.innerHTML=
+    '<rect x="14" y="'+stemTop+'" width="132" height="'+stemH+'" rx="8" fill="'+c1+'"/>'+
+    '<rect x="14" y="'+stemTop+'" width="132" height="'+stemH+'" rx="8" fill="none" stroke="'+c2+'" stroke-width="7"/>'+
+    '<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="'+c1+'"/>'+
+    '<circle cx="'+cx+'" cy="'+cy+'" r="'+(R-6)+'" fill="none" stroke="'+c2+'" stroke-width="6"/>'+
+    '<text x="'+cx+'" y="'+(cy+3)+'" text-anchor="middle" dominant-baseline="middle" font-size="42">'+em+'</text>'+
+    '<text transform="rotate(-90 '+cx+' '+(stemTop+stemH/2)+')" x="'+cx+'" y="'+(stemTop+stemH/2)+'" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One,cursive" font-size="'+fs+'" fill="'+c2+'" letter-spacing="3">'+word+'</text>';
 }
 
-// ── BOOKMARK PREVIEW ───────────────────────────────────────
-function liveBookmarkPreview() {
-  if (!selPair) return;
-  var word = selWord ? selWord.word : "SMILE";
-  renderBookmarkSVG("bookmarkSVG", selPair.c1.hex, selPair.c2.hex, selEmoji, word);
-}
-
-function renderBookmarkSVG(svgId, c1, c2, emoji, phrase) {
-  var svg = document.getElementById(svgId);
-  if (!svg) return;
-
-  var W = 160, cx = 80;
-  var R = 56;          // single circle radius
-  var cy = R + 8;      // circle center y
-  var stemTop = cy;    // stem starts at circle center
-  var stemH   = 230;
-  var stemBot = stemTop + stemH;
-  var totalH  = stemBot + 12;
-
-  // Phrase font scaling
-  var len = phrase.length;
-  var fontSize = len <= 5  ? 22
-               : len <= 8  ? 19
-               : len <= 12 ? 16
-               : len <= 16 ? 13
-               :              11;
-
-  svg.setAttribute("viewBox", "0 0 " + W + " " + totalH);
-  svg.setAttribute("width",  "160");
-  svg.setAttribute("height", totalH);
-
-  svg.innerHTML =
-    // Stem
-    '<rect x="14" y="' + stemTop + '" width="132" height="' + stemH + '" rx="8" fill="' + c1 + '"/>' +
-    '<rect x="14" y="' + stemTop + '" width="132" height="' + stemH + '" rx="8" fill="none" stroke="' + c2 + '" stroke-width="7"/>' +
-    // Single circle
-    '<circle cx="' + cx + '" cy="' + cy + '" r="' + R + '" fill="' + c1 + '"/>' +
-    '<circle cx="' + cx + '" cy="' + cy + '" r="' + (R-6) + '" fill="none" stroke="' + c2 + '" stroke-width="6"/>' +
-    // Emoji centered in circle
-    '<text x="' + cx + '" y="' + (cy+3) + '" text-anchor="middle" dominant-baseline="middle" font-size="42">' + emoji + '</text>' +
-    // Phrase vertical in stem
-    '<text ' +
-      'transform="rotate(-90 ' + cx + ' ' + (stemTop + stemH/2) + ')" ' +
-      'x="' + cx + '" y="' + (stemTop + stemH/2) + '" ' +
-      'text-anchor="middle" dominant-baseline="middle" ' +
-      'font-family="Fredoka One, cursive" ' +
-      'font-size="' + fontSize + '" ' +
-      'fill="' + c2 + '" ' +
-      'letter-spacing="3">' +
-      phrase +
-    '</text>';
-}
-
-// ── SPINNER PREVIEW ────────────────────────────────────────
-function buildSpinnerPreview(topId, botId, ldotTopId, ldotBotId, lblTopId, lblBotId) {
-  if (selTopColor) {
-    document.getElementById(topId).style.background = selTopColor.hex;
-    document.getElementById(ldotTopId).style.background = selTopColor.hex;
-    document.getElementById(lblTopId).textContent = "Top half \u2014 " + selTopColor.name;
-  }
-  if (selBottomColor) {
-    document.getElementById(botId).style.background = selBottomColor.hex;
-    document.getElementById(ldotBotId).style.background = selBottomColor.hex;
-    document.getElementById(lblBotId).textContent = "Bottom half \u2014 " + selBottomColor.name;
-  }
-}
-
-// ── FINAL PREVIEW ──────────────────────────────────────────
-function buildFinalPreview() {
-  document.getElementById("s4title").textContent = "\u2B50 Your " + (selPath === "bookmark" ? "Bookmark" : "Spinner") + ", " + studentName + "!";
-  document.getElementById("s4sub").textContent   = "Looking great! Submit it and your teacher will print it for a child in the community.";
-
-  if (selPath === "bookmark") {
-    document.getElementById("bookmark-final").style.display = "block";
-    document.getElementById("spinner-final").style.display  = "none";
-    var word = selWord ? selWord.word : "SMILE";
-    renderBookmarkSVG("bookmarkSVG", selPair.c1.hex, selPair.c2.hex, selEmoji, word);
-    document.getElementById("bkDetailPair").textContent   = selPair.name;
-    document.getElementById("bkDetailPhrase").textContent = word;
+function buildFinal(){
+  document.getElementById("s5h").textContent="Your Design, "+sName+"!";
+  if(selPath==="bookmark"){
+    document.getElementById("bk-final").style.display="block";
+    document.getElementById("sp-final").style.display="none";
+    drawBK("bkSVGFinal");
+    document.getElementById("dWord").textContent=selWord?selWord.word:"";
+    document.getElementById("dPair").textContent=selPair?selPair.name:"";
   } else {
-    document.getElementById("bookmark-final").style.display = "none";
-    document.getElementById("spinner-final").style.display  = "block";
-    buildSpinnerPreview("spinnerTopFinal","spinnerBottomFinal","legendTopFinal","legendBottomFinal","legendTopLabelFinal","legendBottomLabelFinal");
-    document.getElementById("spDetailTop").textContent    = selTopColor    ? selTopColor.name    : "";
-    document.getElementById("spDetailBottom").textContent = selBottomColor ? selBottomColor.name : "";
+    document.getElementById("bk-final").style.display="none";
+    document.getElementById("sp-final").style.display="block";
+    if(selTC){document.getElementById("spTopF").style.background=selTC.h;document.getElementById("lgTopF").style.background=selTC.h;document.getElementById("lgTopLblF").textContent="Top half - "+selTC.n;}
+    if(selBC){document.getElementById("spBotF").style.background=selBC.h;document.getElementById("lgBotF").style.background=selBC.h;document.getElementById("lgBotLblF").textContent="Bottom half - "+selBC.n;}
+    document.getElementById("dTop").textContent=selTC?selTC.n:"";
+    document.getElementById("dBot").textContent=selBC?selBC.n:"";
   }
 }
 
-// ── SUBMIT ─────────────────────────────────────────────────
-function submitDesign() {
-  var token = "KSB-" + Math.random().toString(36).substring(2,6).toUpperCase();
-  document.getElementById("tokenCode").textContent = token;
-
-  var payload = {
-    action:       selPath,
-    studentName:  studentName,
-    studentGrade: studentGrade,
-    token:        token,
-  };
-
-  if (selPath === "bookmark") {
-    payload.word        = selWord ? selWord.word : "";
-    payload.wordMeaning = selWord ? selWord.meaning : "";
-    payload.colorPair   = selPair.name;
-    payload.color1Name  = selPair.c1.name;
-    payload.color1Hex   = selPair.c1.hex;
-    payload.color2Name  = selPair.c2.name;
-    payload.color2Hex   = selPair.c2.hex;
-    payload.emoji       = selEmoji;
+function doSubmit(){
+  var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
+  document.getElementById("tokCode").textContent=tok;
+  var payload={action:selPath,studentName:sName,studentGrade:sGrade,token:tok};
+  if(selPath==="bookmark"){
+    payload.word=selWord?selWord.word:"";
+    payload.wordMeaning=selWord?selWord.meaning:"";
+    payload.colorPair=selPair?selPair.name:"";
+    payload.color1Name=selPair?selPair.c1.n:"";
+    payload.color1Hex=selPair?selPair.c1.h:"";
+    payload.color2Name=selPair?selPair.c2.n:"";
+    payload.color2Hex=selPair?selPair.c2.h:"";
+    payload.emoji=EMOJI_HTML[selEmojiIdx]||"";
   } else {
-    payload.topColorName    = selTopColor    ? selTopColor.name    : "";
-    payload.topColorHex     = selTopColor    ? selTopColor.hex     : "";
-    payload.bottomColorName = selBottomColor ? selBottomColor.name : "";
-    payload.bottomColorHex  = selBottomColor ? selBottomColor.hex  : "";
+    payload.topColorName=selTC?selTC.n:"";
+    payload.topColorHex=selTC?selTC.h:"";
+    payload.bottomColorName=selBC?selBC.n:"";
+    payload.bottomColorHex=selBC?selBC.h:"";
   }
-
-  var btn = document.querySelector(".submit-btn");
-  btn.textContent = "Submitting...";
-  btn.disabled = true;
-
-  if (!SCRIPT_URL || SCRIPT_URL === "YOUR_APPS_SCRIPT_URL_HERE") {
-    showSubmitted(); return;
-  }
-
-  fetch(SCRIPT_URL, { method:"POST", body:JSON.stringify(payload) })
-    .then(function(r){ return r.json(); })
-    .then(function(){ showSubmitted(); })
-    .catch(function(){ showSubmitted(); });
+  var btn=document.querySelector(".submit-btn");
+  btn.textContent="Submitting...";btn.disabled=true;
+  if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){showDone();return;}
+  fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)})
+    .then(function(r){return r.json();})
+    .then(function(){showDone();})
+    .catch(function(){showDone();});
 }
 
-function showSubmitted() {
-  document.getElementById("notSubmitted").style.display  = "none";
-  document.getElementById("submittedBox").style.display  = "block";
+function showDone(){
+  document.getElementById("notSub").style.display="none";
+  document.getElementById("subBox").style.display="block";
 }
 </script>
 </body>
