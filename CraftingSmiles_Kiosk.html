@@ -528,7 +528,7 @@ function doSubmit(){
   }
   var btn=document.querySelector(".submit-btn");
   btn.textContent="Submitting...";btn.disabled=true;
-  if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){showDone();return;}
+  if(!SCRIPT_URL||SCRIPT_URL==="https://script.google.com/macros/s/AKfycbwqvVWBEVKSLFqQhz0NRGDVJQd92j0Pv2PgijptQjKps8Y-PFx7PqeoO2A1hL_ygVBEJQ/exec"){showDone();return;}
   fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)})
     .then(function(r){return r.json();})
     .then(function(){showDone();})
