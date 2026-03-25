@@ -201,7 +201,7 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
     </div>
     <div class="white-card">
       <div class="section-lbl">Live Preview</div>
-      <div class="bk-preview-wrap"><svg id="bkSVG" width="160" height="310" viewBox="0 0 160 310"></svg></div>
+      <div class="bk-preview-wrap"><svg id="bkSVG" width="220" height="430" viewBox="0 0 220 430"></svg></div>
     </div>
   </div>
   <div id="sp-design" style="display:none;">
@@ -235,7 +235,7 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
 
   <div id="bk-final" class="white-card">
     <div class="section-lbl">Your Bookmark</div>
-    <div class="bk-preview-wrap"><svg id="bkSVGFinal" width="160" height="310" viewBox="0 0 160 310"></svg></div>
+    <div class="bk-preview-wrap"><svg id="bkSVGFinal" width="220" height="430" viewBox="0 0 220 430"></svg></div>
     <div class="det-grid">
       <div class="det-cell"><div class="det-lbl">Word</div><div class="det-val" id="dWord"></div></div>
       <div class="det-cell"><div class="det-lbl">Color Pair</div><div class="det-val" id="dPair"></div></div>
@@ -471,18 +471,22 @@ function drawBK(svgId){
   var c1=selPair.c1.h,c2=selPair.c2.h;
   var word=selWord?selWord.word:"SMILE";
   var em=EMOJI_HTML[selEmojiIdx]||EMOJI_HTML[0];
-  var cx=80,R=56,cy=R+8,stemTop=cy,stemH=230,totalH=cy+stemH+12;
+  // Larger, more realistic bookmark proportions
+  var W=220, cx=110, R=72, cy=R+10;
+  var stemTop=cy, stemH=320, totalH=cy+stemH+16;
+  // Large font — scales down only for very long words
   var len=word.length;
-  var fs=len<=5?22:len<=8?19:len<=12?16:len<=16?13:11;
-  svg.setAttribute("viewBox","0 0 160 "+totalH);
+  var fs=len<=5?38:len<=8?32:len<=10?26:len<=12?22:18;
+  svg.setAttribute("viewBox","0 0 "+W+" "+totalH);
+  svg.setAttribute("width","220");
   svg.setAttribute("height",totalH);
   svg.innerHTML=
-    '<rect x="14" y="'+stemTop+'" width="132" height="'+stemH+'" rx="8" fill="'+c1+'"/>'+
-    '<rect x="14" y="'+stemTop+'" width="132" height="'+stemH+'" rx="8" fill="none" stroke="'+c2+'" stroke-width="7"/>'+
+    '<rect x="16" y="'+stemTop+'" width="'+(W-32)+'" height="'+stemH+'" rx="10" fill="'+c1+'"/>'+
+    '<rect x="16" y="'+stemTop+'" width="'+(W-32)+'" height="'+stemH+'" rx="10" fill="none" stroke="'+c2+'" stroke-width="8"/>'+
     '<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="'+c1+'"/>'+
-    '<circle cx="'+cx+'" cy="'+cy+'" r="'+(R-6)+'" fill="none" stroke="'+c2+'" stroke-width="6"/>'+
-    '<text x="'+cx+'" y="'+(cy+3)+'" text-anchor="middle" dominant-baseline="middle" font-size="42">'+em+'</text>'+
-    '<text transform="rotate(-90 '+cx+' '+(stemTop+stemH/2)+')" x="'+cx+'" y="'+(stemTop+stemH/2)+'" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One,cursive" font-size="'+fs+'" fill="'+c2+'" letter-spacing="3">'+word+'</text>';
+    '<circle cx="'+cx+'" cy="'+cy+'" r="'+(R-7)+'" fill="none" stroke="'+c2+'" stroke-width="7"/>'+
+    '<text x="'+cx+'" y="'+(cy+4)+'" text-anchor="middle" dominant-baseline="middle" font-size="56">'+em+'</text>'+
+    '<text transform="rotate(-90 '+cx+' '+(stemTop+stemH/2)+')" x="'+cx+'" y="'+(stemTop+stemH/2)+'" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One,cursive" font-size="'+fs+'" fill="'+c2+'" letter-spacing="4">'+word+'</text>';
 }
 
 function buildFinal(){
