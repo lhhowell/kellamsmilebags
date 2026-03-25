@@ -132,11 +132,13 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
   <div class="prog-arr">›</div>
   <div class="prog-item"><div class="prog-dot" id="pd1">2</div><div class="prog-lbl" id="pl1">My Name</div></div>
   <div class="prog-arr">›</div>
-  <div class="prog-item"><div class="prog-dot" id="pd2">3</div><div class="prog-lbl" id="pl2">Colors</div></div>
+  <div class="prog-item"><div class="prog-dot" id="pd2">3</div><div class="prog-lbl" id="pl2">My Word</div></div>
   <div class="prog-arr">›</div>
-  <div class="prog-item"><div class="prog-dot" id="pd3">4</div><div class="prog-lbl" id="pl3">Design</div></div>
+  <div class="prog-item"><div class="prog-dot" id="pd3">4</div><div class="prog-lbl" id="pl3">Colors</div></div>
   <div class="prog-arr">›</div>
-  <div class="prog-item"><div class="prog-dot" id="pd4">5</div><div class="prog-lbl" id="pl4">Preview!</div></div>
+  <div class="prog-item"><div class="prog-dot" id="pd4">5</div><div class="prog-lbl" id="pl4">Design</div></div>
+  <div class="prog-arr">›</div>
+  <div class="prog-item"><div class="prog-dot" id="pd5">6</div><div class="prog-lbl" id="pl5">Preview!</div></div>
 </div>
 
 <!-- SCREEN 0: WELCOME & PATH -->
@@ -177,8 +179,24 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
   </div>
 </div>
 
-<!-- SCREEN 2: COLORS -->
+<!-- SCREEN 2: WORD SELECTION -->
 <div class="screen" id="scr2">
+  <div class="scr-hd" id="s2word-hd">
+    <h2>📖 Choose Your OneWord</h2>
+    <p>Pick the word that will appear on the bookmark. Choose the one that means the most to you!</p>
+  </div>
+  <div class="white-card">
+    <div class="section-lbl">Your OneWord</div>
+    <div id="wordGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="go(1)">← Back</button>
+    <button class="btn-next" onclick="go(3)">Next — Choose Colors →</button>
+  </div>
+</div>
+
+<!-- SCREEN 3: COLORS (was 2) -->
+<div class="screen" id="scr5">
   <div class="scr-hd"><h2 id="s2title">🎨 Choose Your Colors</h2><p id="s2sub">Pick the colors for your creation!</p></div>
 
   <!-- BOOKMARK: color pair -->
@@ -210,7 +228,7 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
 </div>
 
 <!-- SCREEN 3: DESIGN -->
-<div class="screen" id="scr3">
+<div class="screen" id="scr5">
   <!-- BOOKMARK DESIGN -->
   <div id="bookmark-design">
     <div class="scr-hd"><h2>✨ Design Your Bookmark</h2><p>Pick an emoji and write a short phrase for your bookmark!</p></div>
@@ -218,12 +236,7 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
       <div class="section-lbl">😊 Choose Your Emoji</div>
       <div class="emoji-grid" id="emojiGrid"></div>
     </div>
-    <div class="white-card">
-      <div class="section-lbl">✍️ Your Phrase (max 20 characters)</div>
-      <input class="field-inp" id="phraseInput" type="text" maxlength="20"
-        placeholder="e.g. Keep smiling!" oninput="updatePhraseCount(); liveBookmarkPreview();"/>
-      <div class="char-count"><span id="phraseCount">0</span>/20 characters</div>
-    </div>
+
   </div>
 
   <!-- SPINNER DESIGN (no text — just confirm) -->
@@ -254,7 +267,7 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
 </div>
 
 <!-- SCREEN 4: PREVIEW & SUBMIT -->
-<div class="screen" id="scr4">
+<div class="screen" id="scr5">
   <div class="scr-hd"><h2 id="s4title">⭐ Your Design!</h2><p id="s4sub">Here is your final preview. Submit it and your teacher will print it!</p></div>
 
   <!-- BOOKMARK FINAL PREVIEW -->
@@ -269,7 +282,7 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
         <div style="font-family:'Fredoka One',cursive;font-size:14px;color:#1B7A78;" id="bkDetailPair"></div>
       </div>
       <div style="background:#F5F5F5;border-radius:10px;padding:10px 12px;">
-        <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#666;margin-bottom:3px;">Phrase</div>
+        <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#666;margin-bottom:3px;">Word</div>
         <div style="font-family:'Fredoka One',cursive;font-size:14px;color:#1B7A78;" id="bkDetailPhrase"></div>
       </div>
     </div>
@@ -337,6 +350,34 @@ var COLOR_PAIRS = [
   {name:"Black & Gold", c1:{name:"Black", hex:"#1A1A1A"}, c2:{name:"Gold",   hex:"#C8860A"}},
 ];
 
+var WORDS = [
+  {word:"ABSORB",   meaning:"Taking in everything around you"},
+  {word:"ADAPT",    meaning:"Adjusting to what comes your way"},
+  {word:"ANCHOR",   meaning:"Holding steady through the storm"},
+  {word:"BALANCE",  meaning:"Finding your steady place"},
+  {word:"BLOOM",    meaning:"Growing into your best self"},
+  {word:"BREATHE",  meaning:"Pausing to find your calm"},
+  {word:"CLEAR",    meaning:"Seeing things as they really are"},
+  {word:"CONNECT",  meaning:"Building bridges between hearts"},
+  {word:"CYCLE",    meaning:"Moving through seasons of change"},
+  {word:"EMERGE",   meaning:"Rising into who you are becoming"},
+  {word:"FILTER",   meaning:"Choosing what deserves your energy"},
+  {word:"FLOW",     meaning:"Moving forward even slowly"},
+  {word:"GROW",     meaning:"Becoming more than you were"},
+  {word:"HEAL",     meaning:"Restoring what was broken"},
+  {word:"MIGRATE",  meaning:"Carrying home within yourself"},
+  {word:"PERSIST",  meaning:"Keeping going when it gets hard"},
+  {word:"RENEW",    meaning:"Starting fresh with new strength"},
+  {word:"RESTORE",  meaning:"Bringing back what matters most"},
+  {word:"RETURN",   meaning:"Coming back to what is true"},
+  {word:"RISE",     meaning:"Standing tall after falling down"},
+  {word:"SHINE",    meaning:"Letting your light reach others"},
+  {word:"SUSTAIN",  meaning:"Keeping what is good alive"},
+  {word:"THRIVE",   meaning:"Living at your fullest"},
+  {word:"TRANSFORM",meaning:"Becoming something beautifully new"},
+  {word:"CYCLE",    meaning:"Moving through seasons of change"},
+];
+
 var COLORS = [
   {name:"Red",    hex:"#CC0000"},
   {name:"Grey",   hex:"#808080"},
@@ -357,6 +398,7 @@ var EMOJIS = [
 
 // ── STATE ─────────────────────────────────────────────────
 var selPath    = null;
+var selWord    = null;
 var selPair    = null;
 var selTopColor    = null;
 var selBottomColor = null;
@@ -366,6 +408,7 @@ var studentGrade = "";
 
 // ── INIT ─────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", function() {
+  buildWordGrid();
   buildPairGrid();
   buildColorGrids();
   buildEmojiGrid();
@@ -376,6 +419,29 @@ function selectPath(path, el) {
   document.querySelectorAll(".path-card").forEach(function(c){ c.classList.remove("sel"); });
   el.classList.add("sel");
   selPath = path;
+}
+
+// ── WORD GRID ─────────────────────────────────────────────
+function buildWordGrid() {
+  var g = document.getElementById("wordGrid");
+  if (!g) return;
+  WORDS.forEach(function(w) {
+    var card = document.createElement("div");
+    card.style.cssText = "background:#fff;border:3px solid #C8E6C9;border-radius:12px;padding:10px 6px;cursor:pointer;text-align:center;transition:all .2s;";
+    card.innerHTML =
+      '<div style="font-family:Fredoka One,cursive;font-size:14px;color:#1B7A78;">' + w.word + '</div>' +
+      '<div style="font-size:10px;color:#888;margin-top:3px;line-height:1.3;">' + w.meaning + '</div>';
+    card.onclick = (function(word, el) { return function() {
+      document.querySelectorAll("#wordGrid > div").forEach(function(c){
+        c.style.borderColor="#C8E6C9"; c.style.background="#fff";
+      });
+      el.style.borderColor="#1B7A78";
+      el.style.background="#E8F5E9";
+      selWord = word;
+      liveBookmarkPreview();
+    };})(w, card);
+    g.appendChild(card);
+  });
 }
 
 // ── PAIR GRID ─────────────────────────────────────────────
@@ -501,8 +567,8 @@ function updatePhraseCount() {
 // ── BOOKMARK PREVIEW ───────────────────────────────────────
 function liveBookmarkPreview() {
   if (!selPair) return;
-  var phrase = document.getElementById("phraseInput") ? document.getElementById("phraseInput").value || "Smile!" : "Smile!";
-  renderBookmarkSVG("bookmarkSVG", selPair.c1.hex, selPair.c2.hex, selEmoji, phrase);
+  var word = selWord ? selWord.word : "SMILE";
+  renderBookmarkSVG("bookmarkSVG", selPair.c1.hex, selPair.c2.hex, selEmoji, word);
 }
 
 function renderBookmarkSVG(svgId, c1, c2, emoji, phrase) {
@@ -573,10 +639,10 @@ function buildFinalPreview() {
   if (selPath === "bookmark") {
     document.getElementById("bookmark-final").style.display = "block";
     document.getElementById("spinner-final").style.display  = "none";
-    var phrase = document.getElementById("phraseInput").value || "Smile!";
-    renderBookmarkSVG("bookmarkSVG", selPair.c1.hex, selPair.c2.hex, selEmoji, phrase);
+    var word = selWord ? selWord.word : "SMILE";
+    renderBookmarkSVG("bookmarkSVG", selPair.c1.hex, selPair.c2.hex, selEmoji, word);
     document.getElementById("bkDetailPair").textContent   = selPair.name;
-    document.getElementById("bkDetailPhrase").textContent = phrase;
+    document.getElementById("bkDetailPhrase").textContent = word;
   } else {
     document.getElementById("bookmark-final").style.display = "none";
     document.getElementById("spinner-final").style.display  = "block";
@@ -588,8 +654,7 @@ function buildFinalPreview() {
 
 // ── SUBMIT ─────────────────────────────────────────────────
 function submitDesign() {
-  var phrase  = document.getElementById("phraseInput") ? document.getElementById("phraseInput").value || "Smile!" : "";
-  var token   = "KSB-" + Math.random().toString(36).substring(2,6).toUpperCase();
+  var token = "KSB-" + Math.random().toString(36).substring(2,6).toUpperCase();
   document.getElementById("tokenCode").textContent = token;
 
   var payload = {
@@ -600,13 +665,14 @@ function submitDesign() {
   };
 
   if (selPath === "bookmark") {
+    payload.word        = selWord ? selWord.word : "";
+    payload.wordMeaning = selWord ? selWord.meaning : "";
     payload.colorPair   = selPair.name;
     payload.color1Name  = selPair.c1.name;
     payload.color1Hex   = selPair.c1.hex;
     payload.color2Name  = selPair.c2.name;
     payload.color2Hex   = selPair.c2.hex;
     payload.emoji       = selEmoji;
-    payload.phrase      = phrase;
   } else {
     payload.topColorName    = selTopColor    ? selTopColor.name    : "";
     payload.topColorHex     = selTopColor    ? selTopColor.hex     : "";
