@@ -261,7 +261,7 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
   <div id="bookmark-final" class="white-card">
     <div class="section-lbl">🔖 Your Bookmark Preview</div>
     <div class="bookmark-preview-wrap">
-      <div class="bookmark-svg-wrap"><svg id="bookmarkSVG" width="120" height="280" viewBox="0 0 120 280"></svg></div>
+      <div class="bookmark-svg-wrap"><svg id="bookmarkSVG" width="160" height="310" viewBox="0 0 160 310"></svg></div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">
       <div style="background:#F5F5F5;border-radius:10px;padding:10px 12px;">
@@ -509,45 +509,46 @@ function renderBookmarkSVG(svgId, c1, c2, emoji, phrase) {
   var svg = document.getElementById(svgId);
   if (!svg) return;
 
-  // Dimensions
-  var w = 120, stemH = 210, headR = 42, cx = 60;
-  var headCy = headR + 4; // vertical center of circles
-  // Left circle centered at cx-headR*0.55, right at cx+headR*0.55
-  var offset = headR * 0.55;
-  var lx = cx - offset, rx = cx + offset;
-  // Emoji sits centered in the LEFT circle
-  var emojiCx = lx, emojiCy = headCy;
+  var W = 160, cx = 80;
+  var R = 56;          // single circle radius
+  var cy = R + 8;      // circle center y
+  var stemTop = cy;    // stem starts at circle center
+  var stemH   = 230;
+  var stemBot = stemTop + stemH;
+  var totalH  = stemBot + 12;
 
-  // Smart font size for phrase
+  // Phrase font scaling
   var len = phrase.length;
-  var fontSize = len <= 6 ? 17 : len <= 10 ? 15 : len <= 14 ? 12 : len <= 18 ? 10 : 9;
+  var fontSize = len <= 5  ? 22
+               : len <= 8  ? 19
+               : len <= 12 ? 16
+               : len <= 16 ? 13
+               :              11;
 
-  // Stem top starts just below circle center so it overlaps cleanly
-  var stemY = headCy;
-
-  svg.setAttribute("viewBox", "0 0 120 " + (stemY + stemH + 10));
-  svg.setAttribute("height", stemY + stemH + 10);
+  svg.setAttribute("viewBox", "0 0 " + W + " " + totalH);
+  svg.setAttribute("width",  "160");
+  svg.setAttribute("height", totalH);
 
   svg.innerHTML =
     // Stem
-    '<rect x="10" y="' + stemY + '" width="100" height="' + stemH + '" rx="6" fill="' + c1 + '"/>' +
-    '<rect x="10" y="' + stemY + '" width="100" height="' + stemH + '" rx="6" fill="none" stroke="' + c2 + '" stroke-width="6"/>' +
-    // Left circle (emoji lives here)
-    '<circle cx="' + lx.toFixed(1) + '" cy="' + headCy + '" r="' + headR + '" fill="' + c1 + '"/>' +
-    '<circle cx="' + lx.toFixed(1) + '" cy="' + headCy + '" r="' + (headR-5) + '" fill="none" stroke="' + c2 + '" stroke-width="5"/>' +
-    // Right circle
-    '<circle cx="' + rx.toFixed(1) + '" cy="' + headCy + '" r="' + headR + '" fill="' + c1 + '"/>' +
-    '<circle cx="' + rx.toFixed(1) + '" cy="' + headCy + '" r="' + (headR-5) + '" fill="none" stroke="' + c2 + '" stroke-width="5"/>' +
-    // Emoji centered in LEFT circle
-    '<text x="' + emojiCx.toFixed(1) + '" y="' + (emojiCy + 2) + '" text-anchor="middle" dominant-baseline="middle" font-size="32">' + emoji + '</text>' +
-    // Phrase — vertical down stem, larger font
-    '<text transform="rotate(90 ' + cx + ' ' + (stemY + stemH/2) + ')" ' +
-      'x="' + cx + '" y="' + (stemY + stemH/2) + '" ' +
+    '<rect x="14" y="' + stemTop + '" width="132" height="' + stemH + '" rx="8" fill="' + c1 + '"/>' +
+    '<rect x="14" y="' + stemTop + '" width="132" height="' + stemH + '" rx="8" fill="none" stroke="' + c2 + '" stroke-width="7"/>' +
+    // Single circle
+    '<circle cx="' + cx + '" cy="' + cy + '" r="' + R + '" fill="' + c1 + '"/>' +
+    '<circle cx="' + cx + '" cy="' + cy + '" r="' + (R-6) + '" fill="none" stroke="' + c2 + '" stroke-width="6"/>' +
+    // Emoji centered in circle
+    '<text x="' + cx + '" y="' + (cy+3) + '" text-anchor="middle" dominant-baseline="middle" font-size="42">' + emoji + '</text>' +
+    // Phrase vertical in stem
+    '<text ' +
+      'transform="rotate(-90 ' + cx + ' ' + (stemTop + stemH/2) + ')" ' +
+      'x="' + cx + '" y="' + (stemTop + stemH/2) + '" ' +
       'text-anchor="middle" dominant-baseline="middle" ' +
       'font-family="Fredoka One, cursive" ' +
       'font-size="' + fontSize + '" ' +
       'fill="' + c2 + '" ' +
-      'letter-spacing="2">' + phrase + '</text>';
+      'letter-spacing="3">' +
+      phrase +
+    '</text>';
 }
 
 // ── SPINNER PREVIEW ────────────────────────────────────────
