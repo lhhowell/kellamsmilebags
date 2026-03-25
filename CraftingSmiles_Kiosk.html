@@ -508,24 +508,46 @@ function liveBookmarkPreview() {
 function renderBookmarkSVG(svgId, c1, c2, emoji, phrase) {
   var svg = document.getElementById(svgId);
   if (!svg) return;
-  var w = 120, stemH = 200, headR = 40, cx = 60;
-  var textColor = c2;
-  var fontSize = phrase.length <= 6 ? 13 : phrase.length <= 10 ? 11 : phrase.length <= 14 ? 9 : 8;
+
+  // Dimensions
+  var w = 120, stemH = 210, headR = 42, cx = 60;
+  var headCy = headR + 4; // vertical center of circles
+  // Left circle centered at cx-headR*0.55, right at cx+headR*0.55
+  var offset = headR * 0.55;
+  var lx = cx - offset, rx = cx + offset;
+  // Emoji sits centered in the LEFT circle
+  var emojiCx = lx, emojiCy = headCy;
+
+  // Smart font size for phrase
+  var len = phrase.length;
+  var fontSize = len <= 6 ? 17 : len <= 10 ? 15 : len <= 14 ? 12 : len <= 18 ? 10 : 9;
+
+  // Stem top starts just below circle center so it overlaps cleanly
+  var stemY = headCy;
+
+  svg.setAttribute("viewBox", "0 0 120 " + (stemY + stemH + 10));
+  svg.setAttribute("height", stemY + stemH + 10);
 
   svg.innerHTML =
-    // Bookmark stem
-    '<rect x="10" y="' + headR + '" width="' + (w-20) + '" height="' + stemH + '" rx="6" fill="' + c1 + '"/>' +
-    // Ring border on stem
-    '<rect x="10" y="' + headR + '" width="' + (w-20) + '" height="' + stemH + '" rx="6" fill="none" stroke="' + c2 + '" stroke-width="6"/>' +
-    // Two circle head
-    '<circle cx="' + (cx-14) + '" cy="' + headR + '" r="' + headR + '" fill="' + c1 + '"/>' +
-    '<circle cx="' + (cx+14) + '" cy="' + headR + '" r="' + headR + '" fill="' + c1 + '"/>' +
-    '<circle cx="' + (cx-14) + '" cy="' + headR + '" r="' + (headR-4) + '" fill="none" stroke="' + c2 + '" stroke-width="4"/>' +
-    '<circle cx="' + (cx+14) + '" cy="' + headR + '" r="' + (headR-4) + '" fill="none" stroke="' + c2 + '" stroke-width="4"/>' +
-    // Emoji
-    '<text x="' + cx + '" y="' + (headR+8) + '" text-anchor="middle" dominant-baseline="middle" font-size="28">' + emoji + '</text>' +
-    // Phrase — rotated vertically down the stem
-    '<text transform="rotate(90 ' + cx + ' ' + (headR + stemH/2) + ')" x="' + cx + '" y="' + (headR + stemH/2) + '" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="' + fontSize + '" fill="' + textColor + '" letter-spacing="2">' + phrase + '</text>';
+    // Stem
+    '<rect x="10" y="' + stemY + '" width="100" height="' + stemH + '" rx="6" fill="' + c1 + '"/>' +
+    '<rect x="10" y="' + stemY + '" width="100" height="' + stemH + '" rx="6" fill="none" stroke="' + c2 + '" stroke-width="6"/>' +
+    // Left circle (emoji lives here)
+    '<circle cx="' + lx.toFixed(1) + '" cy="' + headCy + '" r="' + headR + '" fill="' + c1 + '"/>' +
+    '<circle cx="' + lx.toFixed(1) + '" cy="' + headCy + '" r="' + (headR-5) + '" fill="none" stroke="' + c2 + '" stroke-width="5"/>' +
+    // Right circle
+    '<circle cx="' + rx.toFixed(1) + '" cy="' + headCy + '" r="' + headR + '" fill="' + c1 + '"/>' +
+    '<circle cx="' + rx.toFixed(1) + '" cy="' + headCy + '" r="' + (headR-5) + '" fill="none" stroke="' + c2 + '" stroke-width="5"/>' +
+    // Emoji centered in LEFT circle
+    '<text x="' + emojiCx.toFixed(1) + '" y="' + (emojiCy + 2) + '" text-anchor="middle" dominant-baseline="middle" font-size="32">' + emoji + '</text>' +
+    // Phrase — vertical down stem, larger font
+    '<text transform="rotate(90 ' + cx + ' ' + (stemY + stemH/2) + ')" ' +
+      'x="' + cx + '" y="' + (stemY + stemH/2) + '" ' +
+      'text-anchor="middle" dominant-baseline="middle" ' +
+      'font-family="Fredoka One, cursive" ' +
+      'font-size="' + fontSize + '" ' +
+      'fill="' + c2 + '" ' +
+      'letter-spacing="2">' + phrase + '</text>';
 }
 
 // ── SPINNER PREVIEW ────────────────────────────────────────
@@ -595,7 +617,7 @@ function submitDesign() {
   btn.textContent = "Submitting...";
   btn.disabled = true;
 
-  if (!SCRIPT_URL || SCRIPT_URL === "https://script.google.com/macros/s/AKfycbwqvVWBEVKSLFqQhz0NRGDVJQd92j0Pv2PgijptQjKps8Y-PFx7PqeoO2A1hL_ygVBEJQ/exec") {
+  if (!SCRIPT_URL || SCRIPT_URL === "YOUR_APPS_SCRIPT_URL_HERE") {
     showSubmitted(); return;
   }
 
