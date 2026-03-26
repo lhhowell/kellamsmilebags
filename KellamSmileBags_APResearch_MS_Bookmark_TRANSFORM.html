@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Kellam Smile Bags — AP Research MS Bookmark: TRANSFORM</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#1A237E;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 20px;gap:40px}
+h1.page-title{font-family:'Fredoka One',cursive;font-size:22px;color:#C8860A;text-align:center;letter-spacing:1px}
+h1.page-title span{color:#fff}
+.bookmark-pair{display:flex;gap:48px;align-items:flex-start;justify-content:center;flex-wrap:wrap}
+.bookmark-col{display:flex;flex-direction:column;align-items:center;gap:10px}
+.bookmark-col-label{font-family:'Fredoka One',cursive;font-size:13px;color:#888;letter-spacing:2px;text-transform:uppercase}
+.bookmark{width:192px;height:672px;border-radius:12px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.35);position:relative;flex-shrink:0;display:flex;flex-direction:column}
+
+/* FRONT — deep purple-indigo transformation theme */
+.front{background:linear-gradient(175deg,#1A237E 0%,#4527A0 35%,#1A237E 70%,#311B92 100%);display:flex;flex-direction:column;align-items:center}
+.front-stripe{width:100%;height:6px;background:linear-gradient(90deg,#C8860A,#FFD740,#C8860A);flex-shrink:0}
+.front-word{margin-top:22px;font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:#FFD740;letter-spacing:1px;line-height:1;text-align:center;text-shadow:2px 2px 0 rgba(0,0,0,.4);padding:0 12px;white-space:nowrap;overflow:hidden}
+.front-meaning{margin-top:6px;font-size:9px;font-weight:700;color:rgba(255,255,255,.65);letter-spacing:2px;text-transform:uppercase;text-align:center;padding:0 10px}
+.front-divider{margin:12px auto;width:56px;height:2px;background:linear-gradient(90deg,transparent,#FFD740,transparent)}
+.front-illus{flex:1;display:flex;align-items:center;justify-content:center;padding:4px 12px;width:100%}
+.front-dyk{width:calc(100% - 16px);margin:0 8px;border-radius:8px;padding:9px 9px 7px;border:1px solid rgba(255,215,64,.35);background:rgba(255,255,255,.08)}
+.front-dyk-lbl{font-family:'Fredoka One',cursive;font-size:9px;color:#FFD740;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;text-align:center}
+.front-dyk-txt{font-size:8.5px;font-weight:600;line-height:1.55;color:rgba(255,255,255,.9)}
+.front-foot{width:100%;padding:9px 10px 12px;text-align:center;margin-top:8px;border-top:1px solid rgba(255,255,255,.15);background:rgba(0,0,0,.2)}
+.front-foot-t{font-family:'Fredoka One',cursive;font-size:8.5px;color:#FFD740;letter-spacing:1.5px}
+.front-foot-s{font-size:7px;color:rgba(255,255,255,.4);margin-top:1px}
+
+/* BACK */
+.back{display:flex;flex-direction:column;background:#FFFDF5}
+.back-top{padding:14px 12px 10px;text-align:center;flex-shrink:0;background:linear-gradient(135deg,#1A237E,#4527A0)}
+.back-word{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:#FFD740;letter-spacing:4px}
+.back-sub{font-size:8px;font-weight:700;color:rgba(255,255,255,.7);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px}
+.back-tryit{padding:9px 11px 8px;flex-shrink:0;border-bottom:1px dashed #E0DDD5}
+.back-sec{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:4px}
+.back-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;background:#4527A0}
+.back-supplies{border-radius:6px;padding:5px 8px;margin-bottom:6px;font-size:8px;font-weight:700;line-height:1.6;background:#EDE7F6;color:#311B92}
+.back-step{display:flex;gap:5px;margin-bottom:4px;align-items:flex-start}
+.back-step-n{width:14px;height:14px;border-radius:50%;background:#4527A0;color:#fff;font-family:'Fredoka One',cursive;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.back-step-t{font-size:8px;font-weight:600;color:#2A2A2A;line-height:1.5}
+.back-msg{padding:9px 11px 8px;flex:1;border-bottom:1px dashed #E0DDD5}
+.back-msg-txt{font-size:8px;font-style:italic;font-weight:600;color:#2A2A2A;line-height:1.6;border-left:3px solid #C8860A;padding:5px 7px;border-radius:0 6px 6px 0;background:rgba(200,134,10,.05)}
+.back-msg-attr{margin-top:6px;font-size:7px;color:#888;font-weight:600}
+.back-foot{padding:8px 12px;text-align:center;flex-shrink:0;background:linear-gradient(135deg,#1A237E,#4527A0)}
+.back-foot-t{font-family:'Fredoka One',cursive;font-size:8.5px;color:#FFD740;letter-spacing:1px}
+.back-foot-s{font-size:7px;color:rgba(255,255,255,.5);margin-top:1px}
+
+.instructions{background:rgba(255,255,255,.08);border-radius:16px;padding:20px 28px;max-width:500px;font-size:13px;color:rgba(255,255,255,.7);line-height:1.8;text-align:center}
+.instructions strong{color:#C8860A}
+.print-btn{background:#C8860A;color:#fff;border:none;padding:14px 40px;border-radius:30px;font-family:'Fredoka One',cursive;font-size:16px;cursor:pointer;letter-spacing:1px;box-shadow:0 6px 20px rgba(200,134,10,.35);transition:all .2s}
+.print-btn:hover{background:#A06A00;transform:translateY(-2px)}
+
+@media print{
+  body{background:#fff;padding:20px;gap:20px}
+  .print-btn,.instructions,.page-title{display:none}
+  .bookmark{box-shadow:none;border:1px solid #ccc}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<h1 class="page-title">Kellam Smile Bags · AP Research <span>(Middle School)</span><br/>Bookmark Model — TRANSFORM</h1>
+
+<div class="bookmark-pair">
+
+  <!-- FRONT -->
+  <div class="bookmark-col">
+    <div class="bookmark-col-label">Front</div>
+    <div class="bookmark front">
+      <div class="front-stripe"></div>
+      <div class="front-word">TRANSFORM</div>
+      <div class="front-meaning">Becoming something completely different</div>
+      <div class="front-divider"></div>
+
+      <!-- Illustration: caterpillar to butterfly transformation -->
+      <div class="front-illus">
+        <svg viewBox="0 0 168 195" width="168" height="195" xmlns="http://www.w3.org/2000/svg">
+          <rect width="168" height="195" rx="6" fill="rgba(0,0,0,.25)"/>
+          <!-- Chrysalis -->
+          <ellipse cx="48" cy="140" rx="16" ry="28" fill="rgba(161,136,127,.7)" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+          <line x1="48" y1="112" x2="48" y2="100" stroke="rgba(161,136,127,.6)" stroke-width="2"/>
+          <ellipse cx="48" cy="98" rx="6" ry="4" fill="rgba(161,136,127,.5)"/>
+          <!-- Arrow -->
+          <line x1="72" y1="140" x2="96" y2="140" stroke="rgba(255,215,64,.7)" stroke-width="2.5" stroke-dasharray="4,3"/>
+          <path d="M96,135 L104,140 L96,145" fill="none" stroke="rgba(255,215,64,.7)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Butterfly -->
+          <ellipse cx="128" cy="140" rx="5" ry="14" fill="rgba(78,52,46,.8)"/>
+          <ellipse cx="114" cy="128" rx="18" ry="13" fill="rgba(124,77,255,.75)" transform="rotate(-20,114,128)"/>
+          <ellipse cx="142" cy="128" rx="18" ry="13" fill="rgba(124,77,255,.75)" transform="rotate(20,142,128)"/>
+          <ellipse cx="115" cy="148" rx="13" ry="9" fill="rgba(224,64,251,.7)" transform="rotate(15,115,148)"/>
+          <ellipse cx="141" cy="148" rx="13" ry="9" fill="rgba(224,64,251,.7)" transform="rotate(-15,141,148)"/>
+          <line x1="126" y1="127" x2="118" y2="114" stroke="rgba(78,52,46,.8)" stroke-width="1.5"/>
+          <line x1="130" y1="127" x2="138" y2="114" stroke="rgba(78,52,46,.8)" stroke-width="1.5"/>
+          <circle cx="118" cy="113" r="3" fill="rgba(78,52,46,.8)"/>
+          <circle cx="138" cy="113" r="3" fill="rgba(78,52,46,.8)"/>
+          <!-- Top label -->
+          <text x="48" y="92" text-anchor="middle" font-family="Arial" font-size="9" fill="rgba(255,255,255,.6)">chrysalis</text>
+          <!-- Bottom labels -->
+          <text x="128" y="170" text-anchor="middle" font-family="Arial" font-size="9" fill="rgba(255,255,255,.6)">butterfly</text>
+          <!-- DNA/molecule hint top -->
+          <circle cx="84" cy="30" r="4" fill="rgba(124,77,255,.5)"/>
+          <circle cx="100" cy="22" r="3" fill="rgba(224,64,251,.5)"/>
+          <circle cx="116" cy="30" r="4" fill="rgba(124,77,255,.5)"/>
+          <line x1="84" y1="30" x2="100" y2="22" stroke="rgba(255,215,64,.4)" stroke-width="1.5"/>
+          <line x1="100" y1="22" x2="116" y2="30" stroke="rgba(255,215,64,.4)" stroke-width="1.5"/>
+          <text x="100" y="48" text-anchor="middle" font-family="Arial" font-size="8" fill="rgba(255,215,64,.6)">imaginal discs</text>
+          <text x="100" y="58" text-anchor="middle" font-family="Arial" font-size="8" fill="rgba(255,215,64,.6)">rebuild everything</text>
+        </svg>
+      </div>
+
+      <div class="front-dyk">
+        <div class="front-dyk-lbl">🔬 Did You Know?</div>
+        <div class="front-dyk-txt">
+          A caterpillar doesn't just grow wings — it dissolves nearly all of its cells into liquid, then rebuilds itself using clusters called imaginal discs. In 21 days, its DNA rewrites an entire body plan. Scientists are studying this process to understand cellular reprogramming in human medicine.
+        </div>
+      </div>
+
+      <div class="front-foot">
+        <div class="front-foot-t">KELLAM SMILE BAGS</div>
+        <div class="front-foot-s">AP Research · Kellam High School · Spring 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BACK -->
+  <div class="bookmark-col">
+    <div class="bookmark-col-label">Back</div>
+    <div class="bookmark back">
+      <div class="back-top">
+        <div class="back-word">TRANSFORM</div>
+        <div class="back-sub">Try It! Activity</div>
+      </div>
+
+      <div class="back-tryit">
+        <div class="back-sec" style="color:#4527A0;"><div class="back-dot"></div>What You Need</div>
+        <div class="back-supplies">
+          🔍 Your magnifying glass<br/>
+          📓 Your observation journal card<br/>
+          (both are in this bag!)
+        </div>
+
+        <div class="back-sec" style="color:#4527A0;"><div class="back-dot"></div>Try It!</div>
+
+        <div class="back-step">
+          <div class="back-step-n">1</div>
+          <div class="back-step-t">Look at the back of your hand through the magnifying glass. Count the tiny lines. Those are the same skin cells that have been transforming — dividing and rebuilding — your entire life.</div>
+        </div>
+        <div class="back-step">
+          <div class="back-step-n">2</div>
+          <div class="back-step-t">On your journal card, draw something that transformed this year — a skill, a mindset, a relationship. What did it look like before? What does it look like now?</div>
+        </div>
+        <div class="back-step">
+          <div class="back-step-n">3</div>
+          <div class="back-step-t">Here's the real question scientists are asking: if a caterpillar can completely rewrite its body — what can you rewrite? Write one word as your answer.</div>
+        </div>
+      </div>
+
+      <div class="back-msg">
+        <div style="font-family:'Fredoka One',cursive;font-size:10px;color:#C8860A;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:4px;">
+          <div style="width:5px;height:5px;border-radius:50%;background:#C8860A;flex-shrink:0;"></div>A Message For You
+        </div>
+        <div class="back-msg-txt">
+          "The more I studied transformation at the cellular level, the more I understood — change is not something that happens to you. It is something your cells have been doing for you, quietly, your whole life. You are already built to transform."
+        </div>
+        <div class="back-msg-attr">— Jordan, Your Kellam Scientist · Kellam High School</div>
+      </div>
+
+      <div class="back-foot">
+        <div class="back-foot-t">KELLAM SMILE BAGS</div>
+        <div class="back-foot-s">AP Research · Middle School Edition</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="instructions">
+  <strong>Model Bookmark — TRANSFORM (Middle School Edition)</strong><br/>
+  2" × 7" · Print on cardstock · Laminate · Punch hole at top for ribbon.<br/>
+  Share this with students as an example of depth, specificity, and voice.<br/>
+  Students research and write their own content in the Bookmark Builder Kiosk.
+</div>
+
+<button class="print-btn" onclick="window.print()">🖨️ Print Model</button>
+
+</body>
+</html>
