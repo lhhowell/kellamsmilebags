@@ -66,11 +66,11 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
 .hint{background:#E8F5E9;border-left:4px solid #1B7A78;border-radius:0 10px 10px 0;padding:10px 14px;font-size:13px;color:#0F4F4E;line-height:1.6;margin-bottom:14px;}
 .bk-preview-wrap{display:flex;justify-content:center;padding:16px 0;}
 .spinner-wrap{display:flex;justify-content:center;align-items:center;flex-direction:column;gap:14px;padding:16px 0;}
-.spinner-disc{width:180px;height:180px;border-radius:50%;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.18);}
-.sp-top{position:absolute;top:0;left:0;width:100%;height:50%;}
-.sp-bot{position:absolute;bottom:0;left:0;width:100%;height:50%;}
-.sp-ctr{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid rgba(0,0,0,.2);z-index:2;}
-.sp-div{position:absolute;top:50%;left:0;width:100%;height:3px;background:rgba(255,255,255,.6);transform:translateY(-50%);z-index:1;}
+.spinner-disc{width:180px;height:180px;border-radius:50%;position:relative;box-shadow:0 4px 20px rgba(0,0,0,.18);}
+.sp-top{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;}
+.sp-bot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100px;height:100px;border-radius:50%;z-index:1;}
+.sp-ctr{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid rgba(0,0,0,.2);z-index:3;}
+.sp-div{display:none;}
 .sp-legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
 .lg-item{display:flex;align-items:center;gap:6px;font-size:13px;color:#444;font-weight:700;}
 .lg-dot{width:16px;height:16px;border-radius:50%;border:2px solid rgba(0,0,0,.15);}
@@ -282,13 +282,13 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
     </div>
   </div>
   <div id="sp-colors" style="display:none;">
-    <div class="hint">Top half and bottom half each print in a different color. That is what creates the illusion when it spins!</div>
+    <div class="hint">The outer ring and inner disc each print in a different color. That is what creates the illusion when it spins!</div>
     <div class="white-card">
-      <div class="section-lbl">Top Half Color</div>
+      <div class="section-lbl">Outer Ring Color</div>
       <div class="color-grid" id="topGrid"></div>
     </div>
     <div class="white-card">
-      <div class="section-lbl">Bottom Half Color</div>
+      <div class="section-lbl">Inner Circle Color</div>
       <div class="color-grid" id="botGrid"></div>
     </div>
   </div>
@@ -316,15 +316,14 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
     <div class="white-card">
       <div class="hint">The Magic Illusion Spinner prints in two halves that snap together. Your two colors create a mesmerizing optical effect when it spins!</div>
       <div class="spinner-wrap">
-        <div class="spinner-disc">
-          <div class="sp-top" id="spTop"></div>
-          <div class="sp-bot" id="spBot"></div>
-          <div class="sp-div"></div>
-          <div class="sp-ctr"></div>
-        </div>
+        <svg id="spinnerSVG" width="180" height="180" viewBox="0 0 180 180">
+          <circle cx="90" cy="90" r="88" id="spOuter" fill="#808080"/>
+          <circle cx="90" cy="90" r="52" id="spInner" fill="#CC0000"/>
+          <circle cx="90" cy="90" r="10" fill="#fff" stroke="rgba(0,0,0,.2)" stroke-width="2"/>
+        </svg>
         <div class="sp-legend">
-          <div class="lg-item"><div class="lg-dot" id="lgTop"></div><span id="lgTopLbl">Top half</span></div>
-          <div class="lg-item"><div class="lg-dot" id="lgBot"></div><span id="lgBotLbl">Bottom half</span></div>
+          <div class="lg-item"><div class="lg-dot" id="lgTop"></div><span id="lgTopLbl">Outer ring</span></div>
+          <div class="lg-item"><div class="lg-dot" id="lgBot"></div><span id="lgBotLbl">Inner circle</span></div>
         </div>
         <p style="font-size:11px;color:#aaa;font-style:italic;text-align:center;margin-top:6px;">Model by AeroDesigns &middot; MakerWorld &middot; makerworld.com/en/models/2247117</p>
       </div>
@@ -352,20 +351,19 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
   <div id="sp-final" class="white-card" style="display:none;">
     <div class="section-lbl">Your Spinner</div>
     <div class="spinner-wrap">
-      <div class="spinner-disc">
-        <div class="sp-top" id="spTopF"></div>
-        <div class="sp-bot" id="spBotF"></div>
-        <div class="sp-div"></div>
-        <div class="sp-ctr"></div>
-      </div>
+      <svg id="spinnerSVGFinal" width="180" height="180" viewBox="0 0 180 180">
+        <circle cx="90" cy="90" r="88" id="spOuterF" fill="#808080"/>
+        <circle cx="90" cy="90" r="52" id="spInnerF" fill="#CC0000"/>
+        <circle cx="90" cy="90" r="10" fill="#fff" stroke="rgba(0,0,0,.2)" stroke-width="2"/>
+      </svg>
       <div class="sp-legend">
-        <div class="lg-item"><div class="lg-dot" id="lgTopF"></div><span id="lgTopLblF">Top half</span></div>
-        <div class="lg-item"><div class="lg-dot" id="lgBotF"></div><span id="lgBotLblF">Bottom half</span></div>
+        <div class="lg-item"><div class="lg-dot" id="lgTopF"></div><span id="lgTopLblF">Outer ring</span></div>
+        <div class="lg-item"><div class="lg-dot" id="lgBotF"></div><span id="lgBotLblF">Inner circle</span></div>
       </div>
     </div>
     <div class="det-grid">
-      <div class="det-cell"><div class="det-lbl">Top Half</div><div class="det-val" id="dTop"></div></div>
-      <div class="det-cell"><div class="det-lbl">Bottom Half</div><div class="det-val" id="dBot"></div></div>
+      <div class="det-cell"><div class="det-lbl">Outer Ring</div><div class="det-val" id="dTop"></div></div>
+      <div class="det-cell"><div class="det-lbl">Inner Circle</div><div class="det-val" id="dBot"></div></div>
     </div>
     <div class="hint" style="margin-top:14px;">Print: 2-color AMS &middot; Model by AeroDesigns on MakerWorld &middot; No supports &middot; Snap fit, light glue recommended</div>
   </div>
@@ -491,14 +489,14 @@ function buildColorGrid(gridId,which){
       el.classList.add("sel");el.style.borderColor=(cl.h==="#F5F5F5")?"#999":cl.h;
       if(w==="top"){
         selTC=cl;
-        document.getElementById("spTop").style.background=cl.h;
+        var si=document.getElementById("spInner");if(si)si.setAttribute("fill",cl.h);
         document.getElementById("lgTop").style.background=cl.h;
-        document.getElementById("lgTopLbl").textContent="Top half - "+cl.n;
+        document.getElementById("lgTopLbl").textContent="Inner - "+cl.n;
       } else {
         selBC=cl;
-        document.getElementById("spBot").style.background=cl.h;
+        var so=document.getElementById("spOuter");if(so)so.setAttribute("fill",cl.h);
         document.getElementById("lgBot").style.background=cl.h;
-        document.getElementById("lgBotLbl").textContent="Bottom half - "+cl.n;
+        document.getElementById("lgBotLbl").textContent="Outer - "+cl.n;
       }
     };})(col,c,which);
     g.appendChild(c);
@@ -531,7 +529,7 @@ function toWord(){
   sTeacher=document.getElementById("iTeacher").value.trim()||"";
   sGrade=document.getElementById("iGrade").value.trim()||"";
   if(!sTeacher){alert("Please select your teacher!");return;}
-  if(selPath==="spinner"){nav(3);}else{nav(2);}
+  if(selPath==="spinner"){toColors();}else{nav(2);}
 }
 
 function toColors(){
@@ -552,8 +550,8 @@ function toDesign(){
   document.getElementById("sp-design").style.display=selPath==="spinner"?"block":"none";
   if(selPath==="bookmark")drawBK("bkSVG");
   if(selPath==="spinner"){
-    if(selTC){document.getElementById("spTop").style.background=selTC.h;document.getElementById("lgTop").style.background=selTC.h;document.getElementById("lgTopLbl").textContent="Top half - "+selTC.n;}
-    if(selBC){document.getElementById("spBot").style.background=selBC.h;document.getElementById("lgBot").style.background=selBC.h;document.getElementById("lgBotLbl").textContent="Bottom half - "+selBC.n;}
+    if(selTC){document.getElementById("spInner").setAttribute("fill",selTC.h);document.getElementById("lgTop").style.background=selTC.h;document.getElementById("lgTopLbl").textContent="Inner - "+selTC.n;}
+    if(selBC){document.getElementById("spOuter").setAttribute("fill",selBC.h);document.getElementById("lgBot").style.background=selBC.h;document.getElementById("lgBotLbl").textContent="Outer - "+selBC.n;}
   }
   nav(4);
 }
@@ -571,6 +569,10 @@ function nav(n){
     pd.classList.remove("active","done");pl.classList.remove("active");
     if(i<n)pd.classList.add("done");
     else if(i===n){pd.classList.add("active");pl.classList.add("active");}
+  }
+  if(n===3){
+    document.getElementById("bk-colors").style.display=selPath==="bookmark"?"block":"none";
+    document.getElementById("sp-colors").style.display=selPath==="spinner"?"block":"none";
   }
   window.scrollTo(0,0);
 }
@@ -610,8 +612,8 @@ function buildFinal(){
   } else {
     document.getElementById("bk-final").style.display="none";
     document.getElementById("sp-final").style.display="block";
-    if(selTC){document.getElementById("spTopF").style.background=selTC.h;document.getElementById("lgTopF").style.background=selTC.h;document.getElementById("lgTopLblF").textContent="Top half - "+selTC.n;}
-    if(selBC){document.getElementById("spBotF").style.background=selBC.h;document.getElementById("lgBotF").style.background=selBC.h;document.getElementById("lgBotLblF").textContent="Bottom half - "+selBC.n;}
+    if(selTC){document.getElementById("spInnerF").setAttribute("fill",selTC.h);document.getElementById("lgTopF").style.background=selTC.h;document.getElementById("lgTopLblF").textContent="Inner - "+selTC.n;}
+    if(selBC){document.getElementById("spOuterF").setAttribute("fill",selBC.h);document.getElementById("lgBotF").style.background=selBC.h;document.getElementById("lgBotLblF").textContent="Outer - "+selBC.n;}
     document.getElementById("dTop").textContent=selTC?selTC.n:"";
     document.getElementById("dBot").textContent=selBC?selBC.n:"";
   }
