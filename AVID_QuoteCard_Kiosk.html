@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Kellam Smile Bags — AVID Quote Card Kiosk</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&family=Satisfy&family=Oswald:wght@600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding-bottom:60px;}
+.hdr{background:linear-gradient(135deg,#1B7A78,#0F4F4E);padding:20px 28px;text-align:center;}
+.hdr h1{font-family:'Fredoka One',cursive;font-size:26px;color:#fff;line-height:1.3;}
+.hdr p{font-size:13px;color:rgba(255,255,255,.85);margin-top:5px;}
+.prog{display:flex;align-items:flex-start;justify-content:center;padding:14px 16px;background:#fff;border-bottom:2px solid #E0EEE0;gap:4px;flex-wrap:wrap;}
+.prog-item{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.prog-dot{width:32px;height:32px;border-radius:50%;background:#C8E6C9;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:13px;color:#fff;transition:all .3s;}
+.prog-dot.active{background:#1B7A78;transform:scale(1.2);box-shadow:0 4px 12px rgba(27,122,120,.35);}
+.prog-dot.done{background:#2D9E9C;}
+.prog-lbl{font-size:9px;color:#aaa;font-family:'Fredoka One',cursive;text-align:center;max-width:52px;line-height:1.2;}
+.prog-lbl.active{color:#1B7A78;}
+.prog-arr{color:#C8E6C9;font-size:14px;margin-top:8px;}
+.screen{display:none;max-width:880px;margin:0 auto;padding:24px 16px;}
+.screen.active{display:block;}
+.scr-hd{text-align:center;margin-bottom:22px;}
+.scr-hd h2{font-family:'Fredoka One',cursive;font-size:26px;color:#1B7A78;line-height:1.3;}
+.scr-hd p{font-size:14px;color:#666;margin-top:7px;line-height:1.6;}
+.path-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px;}
+.path-card{background:#fff;border:4px solid #C8E6C9;border-radius:20px;padding:28px 20px;cursor:pointer;text-align:center;transition:all .25s;display:flex;flex-direction:column;align-items:center;gap:12px;}
+.path-card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,0,0,.12);}
+.path-card.sel{border-color:#1B7A78;box-shadow:0 6px 24px rgba(27,122,120,.2);}
+.path-icon{font-size:52px;}
+.path-name{font-family:'Fredoka One',cursive;font-size:22px;color:#1B7A78;}
+.path-desc{font-size:13px;color:#666;line-height:1.6;}
+.path-check{font-size:20px;display:none;}
+.path-card.sel .path-check{display:block;}
+.white-card{background:#fff;border-radius:18px;padding:24px;box-shadow:0 4px 18px rgba(0,0,0,.07);margin-bottom:16px;}
+.field-label{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;display:block;margin-bottom:8px;}
+.field-inp{width:100%;padding:13px 16px;border:3px solid #C8E6C9;border-radius:12px;font-family:'Nunito',sans-serif;font-size:18px;outline:none;transition:border-color .2s;margin-bottom:14px;}
+.field-inp:focus{border-color:#1B7A78;}
+.field-textarea{width:100%;padding:13px 16px;border:3px solid #C8E6C9;border-radius:12px;font-family:'Nunito',sans-serif;font-size:16px;outline:none;transition:border-color .2s;resize:vertical;min-height:100px;}
+.field-textarea:focus{border-color:#1B7A78;}
+.char-count{font-size:12px;color:#aaa;text-align:right;margin-top:4px;}
+.word-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.word-card{background:#fff;border:3px solid #C8E6C9;border-radius:12px;padding:10px 6px;cursor:pointer;text-align:center;transition:all .2s;}
+.word-card:hover{border-color:#1B7A78;transform:translateY(-1px);}
+.word-card.sel{border-color:#1B7A78;background:#E8F5E9;}
+.word-card-word{font-family:'Fredoka One',cursive;font-size:14px;color:#1B7A78;}
+.word-card-meaning{font-size:10px;color:#888;margin-top:3px;line-height:1.3;}
+.pair-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.pair-card{background:#fff;border:4px solid #E0E0E0;border-radius:16px;padding:14px 8px;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:8px;}
+.pair-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.1);}
+.pair-card.sel{border-color:#1B7A78;box-shadow:0 4px 16px rgba(27,122,120,.2);}
+.pair-swatches{display:flex;gap:5px;justify-content:center;}
+.pair-swatch{width:38px;height:38px;border-radius:50%;border:3px solid rgba(0,0,0,.1);}
+.pair-name{font-family:'Fredoka One',cursive;font-size:13px;color:#1B7A78;line-height:1.2;}
+.pair-check{font-size:14px;display:none;}
+.pair-card.sel .pair-check{display:block;}
+.font-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+.font-card{background:#fff;border:4px solid #E0E0E0;border-radius:16px;padding:18px;cursor:pointer;text-align:center;transition:all .2s;}
+.font-card:hover{transform:translateY(-2px);}
+.font-card.sel{border-color:#1B7A78;background:#E8F5E9;}
+.font-preview{font-size:22px;color:#1B7A78;margin-bottom:6px;}
+.font-name{font-size:12px;color:#888;font-family:'Nunito',sans-serif;}
+.section-lbl{font-family:'Fredoka One',cursive;font-size:17px;color:#1B7A78;margin-bottom:12px;}
+.hint{background:#E8F5E9;border-left:4px solid #1B7A78;border-radius:0 10px 10px 0;padding:10px 14px;font-size:13px;color:#0F4F4E;line-height:1.6;margin-bottom:14px;}
+.preview-wrap{display:flex;justify-content:center;padding:16px 0;}
+.submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,#1B7A78,#0F4F4E);color:#fff;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:18px;cursor:pointer;margin-bottom:8px;}
+.submitted-box{background:#E8F5E9;border-radius:16px;padding:28px;text-align:center;display:none;}
+.token-box{background:#FFF3D6;border:2px solid #C8860A;border-radius:12px;padding:14px;display:inline-block;margin-top:14px;}
+.token-code{font-family:'Fredoka One',cursive;font-size:28px;letter-spacing:4px;color:#7A4F00;}
+.nav-row{display:flex;gap:12px;justify-content:flex-end;margin-top:10px;}
+.btn-next{padding:14px 28px;background:linear-gradient(135deg,#1B7A78,#0F4F4E);color:#fff;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;box-shadow:0 5px 16px rgba(27,122,120,.3);}
+.btn-back{padding:14px 20px;border:3px solid #C8E6C9;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;color:#888;background:#fff;}
+.det-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.det-cell{background:#F5F5F5;border-radius:10px;padding:10px 12px;}
+.det-lbl{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#666;margin-bottom:3px;}
+.det-val{font-family:'Fredoka One',cursive;font-size:14px;color:#1B7A78;}
+@media(max-width:600px){
+  .path-grid{grid-template-columns:1fr;}
+  .word-grid{grid-template-columns:repeat(2,1fr);}
+  .pair-grid{grid-template-columns:repeat(2,1fr);}
+  .font-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>AVID Quote Cards</h1>
+  <p>Kellam Smile Bags &middot; Deena Vinson &middot; AVID &middot; Grades 9&ndash;12 &middot; Spring 2026</p>
+</div>
+
+<div class="prog">
+  <div class="prog-item"><div class="prog-dot active" id="pd0">1</div><div class="prog-lbl active" id="pl0">Shape</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd1">2</div><div class="prog-lbl" id="pl1">My Name</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd2">3</div><div class="prog-lbl" id="pl2">My Word</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd3">4</div><div class="prog-lbl" id="pl3">Reflect</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd4">5</div><div class="prog-lbl" id="pl4">My Quote</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd5">6</div><div class="prog-lbl" id="pl5">Colors</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd6">7</div><div class="prog-lbl" id="pl6">Font</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd7">8</div><div class="prog-lbl" id="pl7">Preview!</div></div>
+</div>
+
+<!-- S0: SHAPE -->
+<div class="screen active" id="scr0">
+  <div class="scr-hd"><h2>Choose Your Card Shape</h2><p>Your inspirational quote card will be printed and cut to this shape for the child receiving the Smile Bag.</p></div>
+  <div class="path-grid">
+    <div class="path-card" onclick="pickShape('square',this)">
+      <div class="path-icon">&#9632;</div>
+      <div class="path-name">Square</div>
+      <div class="path-desc">4&Prime; &times; 4&Prime; square card printed on cardstock. Clean, bold, and easy to display.</div>
+      <div class="path-check">&#10003; Selected!</div>
+    </div>
+    <div class="path-card" onclick="pickShape('circle',this)">
+      <div class="path-icon">&#9679;</div>
+      <div class="path-name">Circle</div>
+      <div class="path-desc">4&Prime; round circle card cut with the Cricut. Soft, friendly, and great for hanging.</div>
+      <div class="path-check">&#10003; Selected!</div>
+    </div>
+  </div>
+  <div class="nav-row"><button class="btn-next" onclick="toName()">Next &rarr;</button></div>
+</div>
+
+<!-- S1: NAME -->
+<div class="screen" id="scr1">
+  <div class="scr-hd"><h2>What is your name?</h2><p>Tell us your name to get started!</p></div>
+  <div class="white-card">
+    <label class="field-label">Your first name</label>
+    <input class="field-inp" id="iName" type="text" placeholder="Type your name here..."/>
+    <label class="field-label">Your grade</label>
+    <select class="field-inp" id="iGrade" style="cursor:pointer;">
+      <option value="">-- Select your grade --</option>
+      <option>9th grade</option>
+      <option>10th grade</option>
+      <option>11th grade</option>
+      <option>12th grade</option>
+    </select>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="nav(0)">&#8592; Back</button>
+    <button class="btn-next" onclick="toWord()">Next &rarr;</button>
+  </div>
+</div>
+
+<!-- S2: WORD -->
+<div class="screen" id="scr2">
+  <div class="scr-hd"><h2>Choose Your OneWord</h2><p>This word will be the heart of your inspirational quote. Choose the one that speaks to you!</p></div>
+  <div class="white-card">
+    <div class="section-lbl">Your OneWord</div>
+    <div class="word-grid" id="wordGrid"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="nav(1)">&#8592; Back</button>
+    <button class="btn-next" onclick="toQuoteFromReflect()">Next &mdash; Write My Quote &rarr;</button>
+  </div>
+</div>
+
+<!-- S3: REFLECT -->
+<div class="screen" id="scr3">
+  <div class="scr-hd">
+    <h2 id="s3rh">Reflect Before You Write</h2>
+    <p>Before writing your quote, take a moment to think deeply. This is your Quick Write &mdash; 2 to 3 sentences that will help you craft something powerful and true.</p>
+  </div>
+  <div class="white-card">
+    <div class="hint">&#128203; <strong>AVID Strategy: Costa's Levels of Thinking</strong><br/>
+      <strong>Level 1</strong> &mdash; What does your word mean?<br/>
+      <strong>Level 2</strong> &mdash; When have you seen this word come alive in real life?<br/>
+      <strong>Level 3</strong> &mdash; What would this word mean to a child who is struggling right now?
+    </div>
+    <label class="field-label">Your Quick Write <span style="color:#888;">(2&ndash;3 sentences)</span></label>
+    <textarea class="field-textarea" id="iReflect" maxlength="400" oninput="updateReflectCount()" placeholder="Start here: My word is ___ and to me it means... I have seen this happen when... A child who needs to hear this might be feeling..."></textarea>
+    <div class="char-count"><span id="reflectCount">0</span>/400 characters</div>
+  </div>
+  <div class="white-card">
+    <div class="section-lbl">&#129302; Gemini Writing Tutor</div>
+    <div class="hint">After completing your Quick Write above, open the Gemini Writing Tutor using the link your teacher shares. The tutor will read your reflection and help you craft a powerful 120-character quote. Then come back here and enter your final quote on the next screen.</div>
+    <div style="background:#E8EAF6;border-radius:12px;padding:14px;text-align:center;">
+      <div style="font-family:'Fredoka One',cursive;font-size:15px;color:#1A237E;margin-bottom:8px;">Kellam Smile Bags &mdash; AVID Quote Writing Tutor</div>
+      <a href="GEM_LINK_HERE" target="_blank" style="display:inline-block;padding:10px 24px;background:#1A237E;color:#fff;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;text-decoration:none;">Open Gemini Tutor &#8599;</a>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="nav(2)">&#8592; Back</button>
+    <button class="btn-next" onclick="toQuoteFromReflect()">Next &mdash; Write My Quote &rarr;</button>
+  </div>
+</div>
+
+<!-- S4: QUOTE -->
+<div class="screen" id="scr4">
+  <div class="scr-hd"><h2 id="s3h">Write Your Quote</h2><p>Write an original inspirational quote connected to your OneWord. This will appear on the card for the child receiving the Smile Bag.</p></div>
+  <div class="white-card">
+    <div class="hint">&#128161; Tips: Keep it short and powerful. Speak directly to the child. Connect it to the meaning of your word. The best quotes feel personal and true.</div>
+    <label class="field-label">Your Inspirational Quote <span style="color:#888;">(max 120 characters)</span></label>
+    <textarea class="field-textarea" id="iQuote" maxlength="120" placeholder='e.g. "You have the strength to RISE — one step at a time."' oninput="updateQuoteCount();livePreview();"></textarea>
+    <div class="char-count"><span id="quoteCount">0</span>/120 characters</div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="nav(2)">&#8592; Back</button>
+    <button class="btn-next" onclick="toColors()">Next &mdash; Choose Colors &rarr;</button>
+  </div>
+</div>
+
+<!-- S4: COLORS -->
+<div class="screen" id="scr5">
+  <div class="scr-hd"><h2>Choose Your Color Pair</h2><p>Color 1 is the card background. Color 2 is the text and accent color.</p></div>
+  <div class="white-card">
+    <div class="section-lbl">Your Color Pair</div>
+    <div class="pair-grid" id="pairGrid"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="nav(4)">&#8592; Back</button>
+    <button class="btn-next" onclick="toFont()">Next &mdash; Choose Font &rarr;</button>
+  </div>
+</div>
+
+<!-- S5: FONT -->
+<div class="screen" id="scr6">
+  <div class="scr-hd"><h2>Choose Your Font Style</h2><p>Pick the style that best fits your quote's personality.</p></div>
+  <div class="white-card">
+    <div class="font-grid" id="fontGrid"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="nav(5)">&#8592; Back</button>
+    <button class="btn-next" onclick="toPreview()">See My Preview! &rarr;</button>
+  </div>
+</div>
+
+<!-- S6: PREVIEW & SUBMIT -->
+<div class="screen" id="scr7">
+  <div class="scr-hd"><h2 id="s7h">Your Quote Card!</h2><p>Submit it and Ms. Vinson will print and cut it for a child in the community.</p></div>
+  <div class="white-card">
+    <div class="section-lbl">Preview</div>
+    <div class="preview-wrap" id="previewWrap">
+      <svg id="cardSVG" width="300" height="300" viewBox="0 0 300 300"></svg>
+    </div>
+    <div class="det-grid">
+      <div class="det-cell"><div class="det-lbl">Word</div><div class="det-val" id="dWord"></div></div>
+      <div class="det-cell"><div class="det-lbl">Shape</div><div class="det-val" id="dShape"></div></div>
+      <div class="det-cell"><div class="det-lbl">Colors</div><div class="det-val" id="dColors"></div></div>
+      <div class="det-cell"><div class="det-lbl">Font</div><div class="det-val" id="dFont"></div></div>
+    </div>
+  </div>
+  <div id="notSub">
+    <button class="submit-btn" onclick="doSubmit()">Submit My Quote Card!</button>
+    <p style="font-size:12px;color:#888;font-style:italic;text-align:center;">Ms. Vinson will print and cut your card. No printing needed on your end!</p>
+  </div>
+  <div class="submitted-box" id="subBox">
+    <div style="font-size:52px;margin-bottom:12px;">&#127881;</div>
+    <div style="font-family:'Fredoka One',cursive;font-size:24px;color:#1B7A78;margin-bottom:6px;">Quote Card Submitted!</div>
+    <p style="font-size:14px;color:#555;line-height:1.7;">Your quote card has been sent to Ms. Vinson and will be placed in a Kellam Smile Bag!</p>
+    <div class="token-box">
+      <div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#C8860A;margin-bottom:4px;">Your submission code</div>
+      <div class="token-code" id="tokCode">KSB-0000</div>
+      <div style="font-size:11px;color:#888;margin-top:4px;">Write this down just in case!</div>
+    </div>
+  </div>
+  <div class="nav-row" style="justify-content:flex-start;margin-top:12px;">
+    <button class="btn-back" onclick="nav(6)">&#8592; Change Something</button>
+  </div>
+</div>
+
+<script>
+var SCRIPT_URL = "YOUR_APPS_SCRIPT_URL_HERE";
+
+var WORDS = [
+  {word:"ABSORB",meaning:"Taking in everything around you"},
+  {word:"ADAPT",meaning:"Adjusting to what comes your way"},
+  {word:"ANCHOR",meaning:"Holding steady through the storm"},
+  {word:"BALANCE",meaning:"Finding your steady place"},
+  {word:"BLOOM",meaning:"Growing into your best self"},
+  {word:"BREATHE",meaning:"Pausing to find your calm"},
+  {word:"CLEAR",meaning:"Seeing things as they really are"},
+  {word:"CONNECT",meaning:"Building bridges between hearts"},
+  {word:"CYCLE",meaning:"Moving through seasons of change"},
+  {word:"EMERGE",meaning:"Rising into who you are becoming"},
+  {word:"FILTER",meaning:"Choosing what deserves your energy"},
+  {word:"FLOW",meaning:"Moving forward even slowly"},
+  {word:"GROW",meaning:"Becoming more than you were"},
+  {word:"HEAL",meaning:"Restoring what was broken"},
+  {word:"MIGRATE",meaning:"Carrying home within yourself"},
+  {word:"PERSIST",meaning:"Keeping going when it gets hard"},
+  {word:"RENEW",meaning:"Starting fresh with new strength"},
+  {word:"RESTORE",meaning:"Bringing back what matters most"},
+  {word:"RETURN",meaning:"Coming back to what is true"},
+  {word:"RISE",meaning:"Standing tall after falling down"},
+  {word:"SHINE",meaning:"Letting your light reach others"},
+  {word:"SUSTAIN",meaning:"Keeping what is good alive"},
+  {word:"THRIVE",meaning:"Living at your fullest"},
+  {word:"TRANSFORM",meaning:"Becoming something beautifully new"},
+  {word:"MOVE",meaning:"Taking the next step forward"},
+];
+
+var PAIRS = [
+  {name:"Red & Grey",   c1:{n:"Red",   h:"#CC0000"}, c2:{n:"Grey",   h:"#808080"}},
+  {name:"Green & Gold", c1:{n:"Green", h:"#2D6A2D"}, c2:{n:"Gold",   h:"#C8860A"}},
+  {name:"Blue & Silver",c1:{n:"Blue",  h:"#1565C0"}, c2:{n:"Silver", h:"#A8A9AD"}},
+  {name:"Blue & Green", c1:{n:"Blue",  h:"#1565C0"}, c2:{n:"Green",  h:"#2D6A2D"}},
+  {name:"Red & White",  c1:{n:"Red",   h:"#CC0000"}, c2:{n:"White",  h:"#F5F5F5"}},
+  {name:"Blue & White", c1:{n:"Blue",  h:"#1565C0"}, c2:{n:"White",  h:"#F5F5F5"}},
+  {name:"Black & Gold", c1:{n:"Black", h:"#1A1A1A"}, c2:{n:"Gold",   h:"#C8860A"}},
+];
+
+var FONTS = [
+  {name:"Elegant",    label:"Playfair Display", css:"'Playfair Display', serif",     sample:"Words that inspire"},
+  {name:"Friendly",   label:"Fredoka One",       css:"'Fredoka One', cursive",        sample:"Words that inspire"},
+  {name:"Script",     label:"Satisfy",           css:"'Satisfy', cursive",            sample:"Words that inspire"},
+  {name:"Bold",       label:"Oswald",            css:"'Oswald', sans-serif",          sample:"Words that inspire"},
+];
+
+var selShape=null, selWord=null, selPair=null, selFont=FONTS[0];
+var sReflect="";
+var sName="", sGrade="", sQuote="";
+
+document.addEventListener("DOMContentLoaded",function(){
+  buildWordGrid(); buildPairGrid(); buildFontGrid();
+});
+
+function pickShape(s,el){
+  document.querySelectorAll(".path-card").forEach(function(c){c.classList.remove("sel");});
+  el.classList.add("sel"); selShape=s;
+}
+
+function buildWordGrid(){
+  var g=document.getElementById("wordGrid");
+  WORDS.forEach(function(w){
+    var c=document.createElement("div");c.className="word-card";
+    c.innerHTML='<div class="word-card-word">'+w.word+'</div><div class="word-card-meaning">'+w.meaning+'</div>';
+    c.onclick=(function(wd,el){return function(){
+      document.querySelectorAll(".word-card").forEach(function(x){x.classList.remove("sel");});
+      el.classList.add("sel");selWord=wd;livePreview();
+    };})(w,c);
+    g.appendChild(c);
+  });
+}
+
+function buildPairGrid(){
+  var g=document.getElementById("pairGrid");
+  PAIRS.forEach(function(p){
+    var c=document.createElement("div");c.className="pair-card";
+    c.innerHTML='<div class="pair-swatches"><div class="pair-swatch" style="background:'+p.c1.h+'"></div><div class="pair-swatch" style="background:'+p.c2.h+'"></div></div><div class="pair-name">'+p.name+'</div><div class="pair-check">&#10003;</div>';
+    c.onclick=(function(pr,el){return function(){
+      document.querySelectorAll(".pair-card").forEach(function(x){x.classList.remove("sel");});
+      el.classList.add("sel");selPair=pr;livePreview();
+    };})(p,c);
+    g.appendChild(c);
+  });
+}
+
+function buildFontGrid(){
+  var g=document.getElementById("fontGrid");
+  FONTS.forEach(function(f,i){
+    var c=document.createElement("div");c.className="font-card"+(i===0?" sel":"");
+    c.innerHTML='<div class="font-preview" style="font-family:'+f.css+'">'+f.sample+'</div><div class="font-name">'+f.name+' &mdash; '+f.label+'</div>';
+    c.onclick=(function(fn,el){return function(){
+      document.querySelectorAll(".font-card").forEach(function(x){x.classList.remove("sel");});
+      el.classList.add("sel");selFont=fn;livePreview();
+    };})(f,c);
+    g.appendChild(c);
+  });
+}
+
+function updateReflectCount(){
+  var r=document.getElementById("iReflect").value;
+  document.getElementById("reflectCount").textContent=r.length;
+}
+function updateQuoteCount(){
+  var q=document.getElementById("iQuote").value;
+  document.getElementById("quoteCount").textContent=q.length;
+}
+
+// Navigation
+function toName(){
+  if(!selShape){alert("Please choose a card shape!");return;}
+  nav(1);
+}
+function toWord(){
+  sName=document.getElementById("iName").value.trim()||"Student";
+  sGrade=document.getElementById("iGrade").value||"";
+  if(!sName||sName==="Student"){alert("Please enter your name!");return;}
+  document.getElementById("s3h").textContent="Write Your Quote, "+sName+"!";
+  nav(2);
+}
+function toQuote(){
+  if(!selWord){alert("Please choose your OneWord!");return;}
+  document.getElementById("s3rh").textContent="Reflect on '" + (selWord?selWord.word:"Your Word") + "', " + sName + "!";
+  nav(3);
+}
+function toQuoteFromReflect(){
+  sReflect=document.getElementById("iReflect").value.trim();
+  nav(4);
+}
+function toColors(){
+  sQuote=document.getElementById("iQuote").value.trim();
+  if(!sQuote){alert("Please write your inspirational quote!");return;}
+  nav(5);
+}
+function toFont(){
+  if(!selPair){alert("Please choose a color pair!");return;}
+  nav(6);
+}
+function toPreview(){
+  buildFinalPreview();
+  nav(7);
+}
+
+function nav(n){
+  document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});
+  document.getElementById("scr"+n).classList.add("active");
+  for(var i=0;i<=7;i++){
+    var pd=document.getElementById("pd"+i),pl=document.getElementById("pl"+i);
+    if(!pd)continue;
+    pd.classList.remove("active","done");pl.classList.remove("active");
+    if(i<n)pd.classList.add("done");
+    else if(i===n){pd.classList.add("active");pl.classList.add("active");}
+  }
+  window.scrollTo(0,0);
+}
+
+function livePreview(){
+  if(!selPair||!selWord)return;
+  drawCard("cardSVG");
+}
+
+function drawCard(svgId){
+  var svg=document.getElementById(svgId);
+  if(!svg||!selPair)return;
+  var c1=selPair.c1.h, c2=selPair.c2.h;
+  var word=selWord?selWord.word:"WORD";
+  var quote=document.getElementById("iQuote")?document.getElementById("iQuote").value.trim():"";
+  if(!quote)quote="Your inspirational quote will appear here.";
+  var font=selFont?selFont.css:"'Playfair Display', serif";
+  var name=sName||"Student";
+  var isCircle=selShape==="circle";
+
+  function wrapText(text,maxChars){
+    var words=text.split(" "),lines=[],line="";
+    words.forEach(function(w){
+      if((line+" "+w).trim().length>maxChars){lines.push(line.trim());line=w;}
+      else{line=(line+" "+w).trim();}
+    });
+    if(line)lines.push(line.trim());
+    return lines;
+  }
+
+  // Fixed positions
+  var topOrnamentY = 42;
+  var wordY        = 78;
+  var divider1Y    = 98;
+  var nameY        = 252;
+  var footerY      = 272;
+
+  // Quote zone: 106 to 235 (vertically centered)
+  var quoteZoneTop = 106;
+  var quoteZoneBot = 235;
+
+  var quoteLines   = wrapText(quote, 22);
+  var quoteFontSize= quoteLines.length>5?12:quoteLines.length>4?13:quoteLines.length>3?14:15;
+  var quoteLineH   = quoteFontSize+6;
+  var totalQuoteH  = quoteLines.length*quoteLineH;
+  var quoteStartY  = quoteZoneTop+(quoteZoneBot-quoteZoneTop-totalQuoteH)/2+quoteFontSize/2;
+
+  var quoteTextEls=quoteLines.map(function(line,i){
+    return '<text x="150" y="'+(quoteStartY+i*quoteLineH)+'" text-anchor="middle" dominant-baseline="middle" font-family="'+font+'" font-size="'+quoteFontSize+'" fill="'+c2+'" font-style="italic">'+escXml(line)+'</text>';
+  }).join('');
+
+  var clip=isCircle?
+    '<defs><clipPath id="cardClip"><circle cx="150" cy="150" r="148"/></clipPath></defs>':
+    '<defs><clipPath id="cardClip"><rect x="2" y="2" width="296" height="296" rx="12"/></clipPath></defs>';
+
+  var bg=isCircle?
+    '<circle cx="150" cy="150" r="148" fill="'+c1+'"/>'+
+    '<circle cx="150" cy="150" r="148" fill="none" stroke="'+c2+'" stroke-width="8"/>'+
+    '<circle cx="150" cy="150" r="134" fill="none" stroke="'+c2+'" stroke-width="2" stroke-dasharray="6 4" opacity="0.4"/>':
+    '<rect x="2" y="2" width="296" height="296" rx="12" fill="'+c1+'"/>'+
+    '<rect x="2" y="2" width="296" height="296" rx="12" fill="none" stroke="'+c2+'" stroke-width="8"/>'+
+    '<rect x="14" y="14" width="272" height="272" rx="8" fill="none" stroke="'+c2+'" stroke-width="2" stroke-dasharray="6 4" opacity="0.4"/>';
+
+  svg.setAttribute("viewBox","0 0 300 300");
+  svg.setAttribute("width","300");
+  svg.setAttribute("height","300");
+
+  svg.innerHTML=clip+bg+
+    '<text x="150" y="'+topOrnamentY+'" text-anchor="middle" font-size="16" fill="'+c2+'" opacity="0.6">&#10022; &#10022; &#10022;</text>'+
+    '<text x="150" y="'+wordY+'" text-anchor="middle" dominant-baseline="middle" font-family="'Fredoka One', cursive" font-size="34" fill="'+c2+'" letter-spacing="4">'+escXml(word)+'</text>'+
+    '<line x1="70" y1="'+divider1Y+'" x2="230" y2="'+divider1Y+'" stroke="'+c2+'" stroke-width="1.5" opacity="0.5"/>'+
+    quoteTextEls+
+    '<line x1="70" y1="240" x2="230" y2="240" stroke="'+c2+'" stroke-width="1" opacity="0.3"/>'+
+    '<text x="150" y="'+nameY+'" text-anchor="middle" dominant-baseline="middle" font-family="'Fredoka One', cursive" font-size="12" fill="'+c2+'" opacity="0.9">'+escXml(name)+'</text>'+
+    '<text x="150" y="'+footerY+'" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="8" fill="'+c2+'" opacity="0.45" letter-spacing="1">KELLAM SMILE BAGS · AVID · 2026</text>';
+}
+
+function escXml(str){
+  return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+function buildFinalPreview(){
+  sQuote=document.getElementById("iQuote")?document.getElementById("iQuote").value.trim():"";
+  drawCard("cardSVG");
+  document.getElementById("s7h").textContent="Your Quote Card, "+sName+"!";
+  document.getElementById("dWord").textContent=selWord?selWord.word:"";
+  document.getElementById("dShape").textContent=selShape==="circle"?"4\" Circle":"4\" Square";
+  document.getElementById("dColors").textContent=selPair?selPair.name:"";
+  document.getElementById("dFont").textContent=selFont?selFont.name:"";
+}
+
+function doSubmit(){
+  var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
+  document.getElementById("tokCode").textContent=tok;
+  var payload={
+    studentName:sName,
+    studentGrade:sGrade,
+    teacher:"Deena Vinson",
+    word:selWord?selWord.word:"",
+    wordMeaning:selWord?selWord.meaning:"",
+    reflection:sReflect,
+    wordMeaning:selWord?selWord.meaning:"",
+    quote:sQuote,
+    shape:selShape,
+    colorPair:selPair?selPair.name:"",
+    color1Name:selPair?selPair.c1.n:"",
+    color1Hex:selPair?selPair.c1.h:"",
+    color2Name:selPair?selPair.c2.n:"",
+    color2Hex:selPair?selPair.c2.h:"",
+    font:selFont?selFont.name:"",
+    token:tok
+  };
+  var btn=document.querySelector(".submit-btn");
+  btn.textContent="Submitting...";btn.disabled=true;
+  if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){showDone();return;}
+  fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)})
+    .then(function(r){return r.json();})
+    .then(function(){showDone();})
+    .catch(function(){showDone();});
+}
+
+function showDone(){
+  document.getElementById("notSub").style.display="none";
+  document.getElementById("subBox").style.display="block";
+}
+</script>
+</body>
+</html>
