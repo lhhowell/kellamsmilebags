@@ -1,189 +1,654 @@
-function doGet() {
-  var html = `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kellam Smile Bags &#8212; Kellam High School</title><style>
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:Arial,sans-serif;background:#F7F5F0;color:#1A1A2E;overflow-x:hidden}
-  .hero{position:relative;overflow:visible;background:#1A1A2E;background-image:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(27,122,120,.35) 0%,transparent 70%),radial-gradient(ellipse 40% 60% at 10% 80%,rgba(181,68,110,.25) 0%,transparent 60%),radial-gradient(ellipse 30% 40% at 50% 10%,rgba(107,63,158,.2) 0%,transparent 60%);padding:72px 40px 64px;text-align:center;animation:fadeUp .6s ease both}
-  .hero-tag{display:inline-block;font-family:'Courier New',monospace;font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:#fff;background:rgba(255,255,255,.13);padding:6px 18px;border-radius:20px;border:1px solid rgba(255,255,255,.28);margin-bottom:32px}
-  .hero h1{font-family:Georgia,serif;font-size:clamp(52px,7vw,96px);font-weight:900;line-height:1;color:#fff;margin-bottom:20px}
-  .hero h1 em{font-style:italic;color:#D6EEEE}
-  .hero-sub{font-size:17px;font-weight:300;color:rgba(255,255,255,.65);max-width:540px;margin:0 auto 48px;line-height:1.7}
-  .hero-meta{display:flex;justify-content:center;border-top:1px solid rgba(255,255,255,.12);padding-top:36px;max-width:800px;margin:0 auto}
-  .hero-meta-item{flex:1;display:flex;flex-direction:column;gap:6px;padding:0 20px;border-right:1px solid rgba(255,255,255,.1)}
-  .hero-meta-item:last-child{border-right:none}
-  .hero-meta-label{font-family:'Courier New',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.4)}
-  .hero-meta-value{font-size:16px;font-weight:600;color:rgba(255,255,255,.9)}
-  .mission{background:#1B7A78;padding:28px 60px;display:flex;align-items:center;gap:20px;animation:fadeUp .6s .1s ease both}
-  .mission-icon{font-size:28px;flex-shrink:0}
-  .mission p{font-size:15px;color:rgba(255,255,255,.9);line-height:1.6;font-weight:300}
-  .mission strong{font-weight:600;color:#fff}
-  .main{max-width:1100px;margin:0 auto;padding:64px 40px 100px}
-  .section-label{font-family:'Courier New',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#8A8070;margin-bottom:12px;text-align:center}
-  .section-title{font-family:Georgia,serif;font-size:36px;font-weight:700;color:#1A1A2E;margin-bottom:8px;text-align:center}
-  .section-intro{font-size:16px;color:#8A8070;font-weight:300;line-height:1.7;max-width:580px;margin-bottom:48px;text-align:center;margin-left:auto;margin-right:auto}
-  .cards{display:flex;flex-direction:column;gap:20px}
-  .card{background:#fff;border-radius:16px;overflow:hidden;display:grid;grid-template-columns:8px 1fr;box-shadow:0 2px 16px rgba(26,26,46,.06);transition:box-shadow .25s,transform .25s;animation:fadeUp .5s ease both}
-  .card:hover{box-shadow:0 8px 32px rgba(26,26,46,.12);transform:translateY(-2px)}
-  .card-body{padding:22px 26px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start}
-  .card-class-tag{display:inline-flex;align-items:center;gap:8px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;padding:4px 10px;border-radius:20px;margin-bottom:8px}
-  .card h2{font-family:Georgia,serif;font-size:21px;font-weight:700;line-height:1.2;margin-bottom:5px;color:#1A1A2E}
-  .card-teacher{font-size:11px;color:#8A8070;font-weight:400;margin-bottom:8px;font-family:'Courier New',monospace;letter-spacing:.05em}
-  .card-desc{font-size:13px;color:#4A4A5A;line-height:1.6;font-weight:300;margin-bottom:12px}
-  .card-contribution{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;padding:6px 12px;border-radius:8px}
-  .card-links{display:flex;flex-direction:column;gap:7px;min-width:210px}
-  .card-links-label{font-family:'Courier New',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#8A8070;margin-bottom:3px}
-  .doc-link{display:flex;align-items:center;gap:8px;padding:8px 11px;border-radius:9px;border:1.5px solid #EBEBEB;text-decoration:none;color:#1A1A2E;font-size:11px;font-weight:500;transition:all .2s;background:#F7F5F0}
-  .doc-link:hover{background:#fff}
-  .doc-link-icon{font-size:14px;flex-shrink:0}
-  .doc-link-text{line-height:1.3}
-  .doc-link-type{display:block;font-family:'Courier New',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;opacity:.5;font-weight:400;margin-top:1px}
-  .theme-teal .card-accent{background:#1B7A78} .theme-teal .card-class-tag{background:#D6EEEE;color:#0F4F4E} .theme-teal .card-contribution{background:#D6EEEE;color:#0F4F4E} .theme-teal .doc-link:hover{color:#1B7A78;border-color:#1B7A78}
-  .theme-teal2 .card-accent{background:#0F4F4E} .theme-teal2 .card-class-tag{background:#D6EEEE;color:#0F4F4E} .theme-teal2 .card-contribution{background:#D6EEEE;color:#0F4F4E} .theme-teal2 .doc-link:hover{color:#0F4F4E;border-color:#0F4F4E}
-  .theme-pink .card-accent{background:#B5446E} .theme-pink .card-class-tag{background:#FDE8EF;color:#B5446E} .theme-pink .card-contribution{background:#FDE8EF;color:#B5446E} .theme-pink .doc-link:hover{color:#B5446E;border-color:#B5446E}
-  .theme-gold .card-accent{background:#C8860A} .theme-gold .card-class-tag{background:#FFF3D6;color:#C8860A} .theme-gold .card-contribution{background:#FFF3D6;color:#C8860A} .theme-gold .doc-link:hover{color:#C8860A;border-color:#C8860A}
-  .theme-purple .card-accent{background:#6B3F9E} .theme-purple .card-class-tag{background:#EDE4F7;color:#6B3F9E} .theme-purple .card-contribution{background:#EDE4F7;color:#6B3F9E} .theme-purple .doc-link:hover{color:#6B3F9E;border-color:#6B3F9E}
-  .theme-navy .card-accent{background:#1A237E} .theme-navy .card-class-tag{background:#E8EAF6;color:#1A237E} .theme-navy .card-contribution{background:#E8EAF6;color:#1A237E} .theme-navy .doc-link:hover{color:#1A237E;border-color:#1A237E}
-  .theme-green .card-accent{background:#2D5016} .theme-green .card-class-tag{background:#F1F8E9;color:#2D5016} .theme-green .card-contribution{background:#F1F8E9;color:#2D5016} .theme-green .doc-link:hover{color:#2D5016;border-color:#2D5016}
-  .theme-dark .card-accent{background:#1A1A1A} .theme-dark .card-class-tag{background:#FFF3D6;color:#C8860A} .theme-dark .card-contribution{background:#FFF3D6;color:#C8860A} .theme-dark .doc-link:hover{color:#C8860A;border-color:#C8860A}
-  .submit-section{background:#fff;padding:64px 24px;text-align:center;border-top:1px solid #f0ede8}
-  .submit-inner{max-width:600px;margin:0 auto}
-  .submit-icon{font-size:52px;margin-bottom:16px}
-  .submit-title{font-family:Georgia,serif;font-size:32px;color:#0F4F4E;margin-bottom:16px}
-  .submit-body{font-size:15px;color:#555;line-height:1.75;max-width:540px;margin:0 auto}
-  .submit-btn{display:inline-block;margin-top:28px;padding:16px 48px;background:linear-gradient(135deg,#0F4F4E,#1B7A78);color:#fff;border-radius:50px;font-family:Georgia,serif;font-size:20px;text-decoration:none;box-shadow:0 6px 24px rgba(27,122,120,.25);transition:all .2s}
-  .submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(27,122,120,.35)}
-  .submit-meta{margin-top:14px;font-size:12px;color:#aaa;letter-spacing:.5px}
-  .footer{background:#1A1A2E;padding:40px 60px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
-  .footer-left p{font-family:Georgia,serif;font-size:20px;color:#fff;font-weight:700;margin-bottom:4px}
-  .footer-left span{font-size:13px;color:rgba(255,255,255,.4);font-weight:300}
-  .footer-dots{display:flex;gap:8px}
-  .footer-dot{width:12px;height:12px;border-radius:50%}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-  .hero-mascot-left{position:absolute;left:-20px;bottom:0;width:280px;pointer-events:none;filter:drop-shadow(0 8px 32px rgba(0,0,0,.35));z-index:2}
-  .hero-mascot-right{position:absolute;right:-20px;bottom:0;width:280px;pointer-events:none;filter:drop-shadow(0 8px 32px rgba(0,0,0,.35));z-index:2}
-  @media(max-width:900px){.hero-mascot-left,.hero-mascot-right{width:160px}}
-  @media(max-width:720px){.hero{padding:52px 24px 48px}.hero-meta{flex-direction:column;gap:20px}.hero-meta-item{border-right:none;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:16px}.mission{padding:24px 28px}.main{padding:48px 24px 80px}.card-body{grid-template-columns:1fr}.card-links{min-width:unset}.footer{padding:32px 28px}}
-  @media(max-width:600px){.hero-mascot-left{display:none}.hero-mascot-right{width:120px;right:0}}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Kellam Smile Bags - Crafting Smiles Kiosk</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding-bottom:60px;}
+.hdr{background:linear-gradient(135deg,#1B7A78,#0F4F4E);padding:20px 28px;text-align:center;}
+.hdr h1{font-family:'Fredoka One',cursive;font-size:26px;color:#fff;line-height:1.3;}
+.hdr p{font-size:13px;color:rgba(255,255,255,.85);margin-top:5px;}
+.prog{display:flex;align-items:flex-start;justify-content:center;padding:14px 16px;background:#fff;border-bottom:2px solid #E0EEE0;gap:4px;flex-wrap:wrap;}
+.prog-item{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.prog-dot{width:32px;height:32px;border-radius:50%;background:#C8E6C9;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:13px;color:#fff;transition:all .3s;}
+.prog-dot.active{background:#1B7A78;transform:scale(1.2);box-shadow:0 4px 12px rgba(27,122,120,.35);}
+.prog-dot.done{background:#2D9E9C;}
+.prog-lbl{font-size:9px;color:#aaa;font-family:'Fredoka One',cursive;text-align:center;max-width:52px;line-height:1.2;}
+.prog-lbl.active{color:#1B7A78;}
+.prog-arr{color:#C8E6C9;font-size:14px;margin-top:8px;}
+.screen{display:none;max-width:880px;margin:0 auto;padding:24px 16px;}
+.screen.active{display:block;}
+.scr-hd{text-align:center;margin-bottom:22px;}
+.scr-hd h2{font-family:'Fredoka One',cursive;font-size:26px;color:#1B7A78;line-height:1.3;}
+.scr-hd p{font-size:14px;color:#666;margin-top:7px;line-height:1.6;}
+.path-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px;}
+.path-card{background:#fff;border:4px solid #C8E6C9;border-radius:20px;padding:28px 20px;cursor:pointer;text-align:center;transition:all .25s;display:flex;flex-direction:column;align-items:center;gap:12px;}
+.path-card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,0,0,.12);}
+.path-card.sel{border-color:#1B7A78;box-shadow:0 6px 24px rgba(27,122,120,.2);}
+.path-icon{font-size:52px;}
+.path-name{font-family:'Fredoka One',cursive;font-size:22px;color:#1B7A78;}
+.path-desc{font-size:13px;color:#666;line-height:1.6;}
+.path-check{font-size:20px;display:none;}
+.path-card.sel .path-check{display:block;}
+.white-card{background:#fff;border-radius:18px;padding:24px;box-shadow:0 4px 18px rgba(0,0,0,.07);margin-bottom:16px;}
+.field-label{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;display:block;margin-bottom:8px;}
+.field-inp{width:100%;padding:13px 16px;border:3px solid #C8E6C9;border-radius:12px;font-family:'Nunito',sans-serif;font-size:18px;outline:none;transition:border-color .2s;margin-bottom:14px;}
+.field-inp:focus{border-color:#1B7A78;}
+.word-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.word-card{background:#fff;border:3px solid #C8E6C9;border-radius:12px;padding:10px 6px;cursor:pointer;text-align:center;transition:all .2s;}
+.word-card:hover{border-color:#1B7A78;transform:translateY(-1px);}
+.word-card.sel{border-color:#1B7A78;background:#E8F5E9;}
+.word-card-word{font-family:'Fredoka One',cursive;font-size:14px;color:#1B7A78;}
+.word-card-meaning{font-size:10px;color:#888;margin-top:3px;line-height:1.3;}
+.pair-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
+.pair-card{background:#fff;border:4px solid #E0E0E0;border-radius:16px;padding:14px 8px;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:8px;}
+.pair-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.1);}
+.pair-card.sel{border-color:#1B7A78;box-shadow:0 4px 16px rgba(27,122,120,.2);}
+.pair-swatches{display:flex;gap:5px;justify-content:center;}
+.pair-swatch{width:38px;height:38px;border-radius:50%;border:3px solid rgba(0,0,0,.1);}
+.pair-name{font-family:'Fredoka One',cursive;font-size:13px;color:#1B7A78;line-height:1.2;}
+.pair-check{font-size:14px;display:none;}
+.pair-card.sel .pair-check{display:block;}
+.color-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
+.color-card{background:#fff;border:4px solid #E0E0E0;border-radius:14px;padding:14px 8px;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:8px;}
+.color-card:hover{transform:translateY(-2px);}
+.color-card.sel{border-color:#1B7A78;}
+.color-swatch{width:48px;height:48px;border-radius:50%;border:3px solid rgba(0,0,0,.1);}
+.color-name{font-family:'Fredoka One',cursive;font-size:13px;color:#333;}
+.emoji-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:18px;}
+.emoji-btn{background:#fff;border:3px solid #E0E0E0;border-radius:12px;padding:10px;cursor:pointer;font-size:30px;text-align:center;transition:all .2s;}
+.emoji-btn:hover{border-color:#1B7A78;transform:translateY(-2px);}
+.emoji-btn.sel{border-color:#1B7A78;background:#E8F5E9;}
+.section-lbl{font-family:'Fredoka One',cursive;font-size:17px;color:#1B7A78;margin-bottom:12px;}
+.hint{background:#E8F5E9;border-left:4px solid #1B7A78;border-radius:0 10px 10px 0;padding:10px 14px;font-size:13px;color:#0F4F4E;line-height:1.6;margin-bottom:14px;}
+.bk-preview-wrap{display:flex;justify-content:center;padding:16px 0;}
+.spinner-wrap{display:flex;justify-content:center;align-items:center;flex-direction:column;gap:14px;padding:16px 0;}
+.spinner-disc{width:180px;height:180px;border-radius:50%;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.18);}
+.sp-top{position:absolute;top:0;left:0;width:100%;height:50%;}
+.sp-bot{position:absolute;bottom:0;left:0;width:100%;height:50%;}
+.sp-ctr{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid rgba(0,0,0,.2);z-index:2;}
+.sp-div{position:absolute;top:50%;left:0;width:100%;height:3px;background:rgba(255,255,255,.6);transform:translateY(-50%);z-index:1;}
+.sp-legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.lg-item{display:flex;align-items:center;gap:6px;font-size:13px;color:#444;font-weight:700;}
+.lg-dot{width:16px;height:16px;border-radius:50%;border:2px solid rgba(0,0,0,.15);}
+.submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,#1B7A78,#0F4F4E);color:#fff;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:18px;cursor:pointer;margin-bottom:8px;}
+.submit-note{font-size:12px;color:#888;font-style:italic;text-align:center;}
+.submitted-box{background:#E8F5E9;border-radius:16px;padding:28px;text-align:center;display:none;}
+.token-box{background:#FFF3D6;border:2px solid #C8860A;border-radius:12px;padding:14px;display:inline-block;margin-top:14px;}
+.token-code{font-family:'Fredoka One',cursive;font-size:28px;letter-spacing:4px;color:#7A4F00;}
+.nav-row{display:flex;gap:12px;justify-content:flex-end;margin-top:10px;}
+.btn-next{padding:14px 28px;background:linear-gradient(135deg,#1B7A78,#0F4F4E);color:#fff;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;box-shadow:0 5px 16px rgba(27,122,120,.3);}
+.btn-back{padding:14px 20px;border:3px solid #C8E6C9;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;color:#888;background:#fff;}
+.det-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.det-cell{background:#F5F5F5;border-radius:10px;padding:10px 12px;}
+.det-lbl{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#666;margin-bottom:3px;}
+.det-val{font-family:'Fredoka One',cursive;font-size:14px;color:#1B7A78;}
+@media(max-width:600px){
+  .path-grid{grid-template-columns:1fr;}
+  .word-grid{grid-template-columns:repeat(2,1fr);}
+  .pair-grid{grid-template-columns:repeat(2,1fr);}
+  .color-grid{grid-template-columns:repeat(2,1fr);}
+  .emoji-grid{grid-template-columns:repeat(4,1fr);}
+}
 </style>
 </head>
 <body>
 
-<header class="hero">
-  <img class="hero-mascot-left" src="https://lhhowell.github.io/kellamsmilebags/kellam_mascot_left.png" alt="Kellam mascot"/>
-  <img class="hero-mascot-right" src="https://lhhowell.github.io/kellamsmilebags/kellam_mascot_right.png" alt="Kellam mascot"/>
-  <div class="hero-tag">Kellam High School &middot; Virginia Beach</div>
-  <h1>Kellam<br><em>Smile Bags.</em></h1>
-  <p class="hero-sub">A cross-curricular service-learning project connecting Kellam students to elementary, middle, and high school students in our community who need a smile.</p>
-  <div class="hero-meta">
-    <div class="hero-meta-item"><span class="hero-meta-label">Classes</span><span class="hero-meta-value">15 Participating</span></div>
-    <div class="hero-meta-item"><span class="hero-meta-label">Student Contributions</span><span class="hero-meta-value">10 Unique Items</span></div>
-    <div class="hero-meta-item"><span class="hero-meta-label">Launch</span><span class="hero-meta-value">March 2026</span></div>
-    <div class="hero-meta-item"><span class="hero-meta-label">Shared Word</span><span class="hero-meta-value">25 OneWords</span></div>
-    <div class="hero-meta-item"><span class="hero-meta-label">Clubs</span><span class="hero-meta-value">2 Participating</span></div>
-  </div>
-</header>
-
-<div class="mission">
-  <span class="mission-icon">&#127757;</span>
-  <p>Each smile bag contains items handmade by Kellam students &mdash; <strong>one item per class, one word connecting them all.</strong> The 25 OneWord vocabulary words each carry two meanings &mdash; a science meaning rooted in VBCPS Environmental Science standards, and a human meaning grounded in social-emotional awareness, written directly for a child who is healing.</p>
+<div class="hdr">
+  <h1>Crafting Smiles</h1>
+  <p>Open to all Kellam students &middot; Design something for a child who needs a smile &middot; Spring 2026</p>
 </div>
 
-<main class="main">
-  <div class="section-label">Participating Classes</div>
-  <h2 class="section-title">Who's Building the Bags</h2>
-  <p class="section-intro">Each participating class contributes at least one student-made item to every smile bag. A sneak preview of select materials is available below.</p>
+<div class="prog">
+  <div class="prog-item"><div class="prog-dot active" id="pd0">1</div><div class="prog-lbl active" id="pl0">Choose</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd1">2</div><div class="prog-lbl" id="pl1">My Name</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd2">3</div><div class="prog-lbl" id="pl2">My Word</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd3">4</div><div class="prog-lbl" id="pl3">Colors</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd4">5</div><div class="prog-lbl" id="pl4">Design</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd5">6</div><div class="prog-lbl" id="pl5">Preview!</div></div>
+</div>
 
-  <div style="background:#FFF3D6;border-left:5px solid #C8860A;border-radius:12px;padding:18px 24px;margin-bottom:36px;max-width:860px;margin-left:auto;margin-right:auto;">
-    <div style="font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#C8860A;margin-bottom:8px;">Smile Bag Guidelines</div>
-    <p style="font-size:14px;color:#2A2A2A;line-height:1.7;">All smile bag items must be <strong>student-made</strong>. The only acceptable purchased items are <strong>crayons, colored pencils, paint kits, and Play-Doh</strong>.</p>
-    <p style="font-size:12px;color:#C8860A;font-weight:500;margin-top:8px;font-family:'Courier New',monospace;letter-spacing:0.05em;">&#10022; New items will be added as we bring on more participants.</p>
-  </div>
-
-  <div class="cards">
-
-    <div class="card theme-dark"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Instructional Technology</div><h2>Kellam Smile Bags Mascot Sticker &amp; Hidden Picture Activities</h2><div class="card-teacher">Instructional Technology Specialist &middot; Kellam Smile Bags Signature Design</div><p class="card-desc">The Instructional Technology Specialist designed the official Kellam Smile Bags mascot sticker and 25 OneWord hidden picture activities &mdash; one for each of the project's 25 shared words. The mascot serves as the signature identity of the project, appearing on documents, the website, and as a sticker placed in every smile bag.</p><div class="card-contribution"><span>&#127912;</span> Contribution: Mascot sticker &middot; 25 OneWord hidden picture activities</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Mascot Sticker Guide<span class="doc-link-type">Design Guide &middot; DOCX</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/ChatGPT%20Image%20Mar%2018%2C%202026%2C%2007_28_57%20AM.png" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Hidden Picture Activities &mdash; 25 OneWords<span class="doc-link-type">Sample Image &middot; PNG</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_HiddenPicture_CYCLE%20(10).html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127918;</span><span class="doc-link-text">CYCLE &mdash; Interactive Hidden Picture<span class="doc-link-type">Interactive Activity &middot; HTML</span></span></a></div></div></div>
-
-    <div class="card theme-navy"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; AP Research</div><h2>"Did You Know?" Bookmark &mdash; Elementary Edition</h2><div class="card-teacher">Abbie McGee &middot; AP Research &middot; Science Supply Bar &middot; Bookmark Builder Kiosk</div><p class="card-desc">AP Research students translate a year of research thinking into a "Did You Know?" bookmark for an elementary student. Each student selects their OneWord, browses the Science Supply Bar &mdash; choosing 1&ndash;3 hands-on supplies &mdash; and builds their bookmark using the digital Bookmark Builder Kiosk. Future Ready: <strong>Thinkers &amp; Inquirers</strong>; <strong>Personally &amp; Socially Responsible</strong>.</p><div class="card-contribution"><span>&#128300;</span> Contribution: Research bookmark + science supplies &middot; printed on cardstock &middot; laminated</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">AP Research Bookmark Guidelines<span class="doc-link-type">Student Guide &middot; DOCX</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_APResearch_Bookmark_FLOW.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#128278;</span><span class="doc-link-text">Example Bookmark &mdash; FLOW<span class="doc-link-type">Elementary Example &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_APResearch_ScienceSupplyBar.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Science Supply Bar Sign<span class="doc-link-type">Printable Sign &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_APResearch_BookmarkBuilder_Kiosk.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Bookmark Builder Kiosk<span class="doc-link-type">Interactive Kiosk &middot; HTML</span></span></a></div></div></div>
-
-    
-    <div class="card theme-navy"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; AP Research</div><h2>"Did You Know?" Bookmark &mdash; Elementary Edition</h2><div class="card-teacher">Amy Stone &#183; AP Research &#183; Science Supply Bar &#183; Bookmark Builder Kiosk</div><p class="card-desc">AP Research students translate a year of research thinking into a "Did You Know?" bookmark for an elementary student. Each student selects their OneWord, browses the Science Supply Bar &#8212; choosing 1&#8211;3 hands-on supplies &#8212; and builds their bookmark using the digital Bookmark Builder Kiosk. Future Ready: <strong>Thinkers &amp; Inquirers</strong>; <strong>Personally &amp; Socially Responsible</strong>.</p><div class="card-contribution"><span>&#128300;</span> Contribution: Research bookmark + science supplies &#183; printed on cardstock &#183; laminated</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">AP Research Bookmark Guidelines<span class="doc-link-type">Student Guide &#183; DOCX</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_APResearch_Bookmark_FLOW.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#128278;</span><span class="doc-link-text">Example Bookmark &#8212; FLOW<span class="doc-link-type">Elementary Example &#183; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_APResearch_ScienceSupplyBar.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Science Supply Bar Sign<span class="doc-link-type">Printable Sign &#183; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_APResearch_BookmarkBuilder_Kiosk.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Bookmark Builder Kiosk<span class="doc-link-type">Interactive Kiosk &#183; HTML</span></span></a></div></div></div>
-<div class="card theme-navy"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; AP Research</div><h2>"Did You Know?" Bookmark &mdash; Middle School Edition</h2><div class="card-teacher">Coming Soon &middot; Middle School recipient group</div><p class="card-desc">A middle school edition of the "Did You Know?" research bookmark is planned for students in grades 6&ndash;8. Details about the contributing class and teacher are coming soon. The Middle School Science Supply Bar and Bookmark Builder Kiosk are already built and ready.</p><div class="card-contribution"><span>&#128300;</span> Contribution: Coming soon &middot; Middle School Edition</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">AP Research Bookmark Guidelines<span class="doc-link-type">Student Guide &middot; DOCX</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_APResearch_Bookmark_FLOW.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#128278;</span><span class="doc-link-text">Example Bookmark &mdash; FLOW<span class="doc-link-type">Elementary Example &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_APResearch_ScienceSupplyBar.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Science Supply Bar Sign<span class="doc-link-type">Printable Sign &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_APResearch_BookmarkBuilder_Kiosk.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Bookmark Builder Kiosk<span class="doc-link-type">Interactive Kiosk &middot; HTML</span></span></a></div></div></div>
-
-    <div class="card theme-teal2"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; AP Environmental Science</div><h2>Smile Disc &amp; 3D Print Unit</h2><div class="card-teacher">Kristan Honaker &middot; VBCPS Env.1&ndash;Env.12 Standards</div><p class="card-desc">After AP Testing, students take on passion projects of their choosing. This group digs into the real-world environmental connections behind Operation Smiles &mdash; the causes of cleft conditions, 3D printing filament lifecycle, and acrylic mirror materials analysis &mdash; before contributing to the smile bag assembly. Future Ready: <strong>Thinkers &amp; Inquirers</strong>; <strong>Personally &amp; Socially Responsible</strong>.</p><div class="card-contribution"><span>&#128191;</span> Contribution: 3D printed smile disc with acrylic mirror</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">APES Unit Plan<span class="doc-link-type">Teacher Guide &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">3D Print Supplement<span class="doc-link-type">Student Guide &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Portfolio Reflection<span class="doc-link-type">Portrait of a Graduate &middot; DOCX</span></span></a></div></div></div>
-
-    <div class="card theme-teal"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Environmental Science</div><h2>OneWord 3D Keychain</h2><div class="card-teacher">Carly Carmack &middot; VBCPS Env.1&ndash;Env.12 Standards</div><p class="card-desc">Students use the OneWord interactive kiosk to research one of 25 environmental science words, write an encouragement message for a child in recovery, and design a 3D printed keychain in Tinkercad. Printed on the Bambu Lab printer. Future Ready: <strong>Knowledgeable</strong>; <strong>Problem Solvers &amp; Value Creators</strong>.</p><div class="card-contribution"><span>&#128273;</span> Contribution: 3D printed OneWord keychain</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Lesson Plan<span class="doc-link-type">Teacher Guide &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">OneWord Bookmark Supplement<span class="doc-link-type">Student Worksheet &middot; DOCX</span></span></a></div></div></div>
-
-    <div class="card theme-pink"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; English 9</div><h2>OneWord Coloring Book Page</h2><div class="card-teacher">Angie Evans &middot; Virginia SOL 9.5 / 9.6 / 9.7</div><p class="card-desc">English 9 students complete a literary analysis one-pager connecting their assigned word to required reading. From that foundation, students write an original short story or poem for a child, illustrated as a coloring page in Canva, Google Drawings, or Adobe Express. Future Ready: <strong>Balanced Communicators &amp; Collaborators</strong>; <strong>Personally &amp; Socially Responsible</strong>.</p><div class="card-contribution"><span>&#127912;</span> Contribution: Illustrated coloring book page</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">English 9 Lesson Plan<span class="doc-link-type">Teacher Guide &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Literary Analysis &mdash; Teacher Guide<span class="doc-link-type">Teacher Guide &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Literary Analysis &mdash; Student Sheet<span class="doc-link-type">Student Assignment &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#129302;</span><span class="doc-link-text">Writing Coach Gemini Gem Setup<span class="doc-link-type">AI Tutor Setup &middot; DOCX</span></span></a></div></div></div>
-
-    <div class="card theme-purple"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Physics</div><h2>Spinning Top Design</h2><div class="card-teacher">Sehriban Acikgoz &middot; Virginia SOL PH.3 / PH.4 &middot; Tinkercad + Bambu Lab</div><p class="card-desc">Students design an original spinning top in Tinkercad, applying physics concepts including rotational inertia, angular momentum, and center of mass. Printed on the Bambu Lab printer. Future Ready: <strong>Problem Solvers &amp; Value Creators</strong>; <strong>Knowledgeable</strong>.</p><div class="card-contribution"><span>&#127744;</span> Contribution: 3D printed spinning top</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Spinning Top Design Guidelines<span class="doc-link-type">Student Guide &middot; DOCX</span></span></a></div></div></div>
-
-    <div class="card theme-gold"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; SPED &mdash; STEP</div><h2>OneWord Bookmark</h2><div class="card-teacher">Sharon Glover &middot; Adapted curriculum</div><p class="card-desc">STEP students work with a curated set of OneWord words and use a supported process to design a personalized bookmark. Students make all creative decisions &mdash; choosing their word, emoji, and two colors &mdash; while the teacher enters choices into MakerWorld Model Maker. Printed in two colors using the Bambu AMS system. Future Ready: <strong>Resilient Learners</strong>; <strong>Balanced Communicators &amp; Collaborators</strong>.</p><div class="card-contribution"><span>&#128278;</span> Contribution: Two-color 3D printed bookmark</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Inclusion Lesson Plan<span class="doc-link-type">Teacher Guide &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">OneWord Choice Board<span class="doc-link-type">Student Printable &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Emoji Selection Sheet<span class="doc-link-type">Student Printable &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Color Choice Card<span class="doc-link-type">Student Printable &middot; DOCX</span></span></a></div></div></div>
-
-    <div class="card theme-green"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; SPED &mdash; Inclusion/Resource</div><h2>OneWord Bookmark Kiosk</h2><div class="card-teacher">Sharon Glover &middot; Accommodated &middot; Grades 10&ndash;12</div><p class="card-desc">Inclusion students use a fully accessible interactive kiosk to design their own two-color 3D printed bookmark. The kiosk walks students through choosing their word, emoji, and two colors step by step with large text and visual supports. A live preview shows their bookmark before submitting. Future Ready: <strong>Resilient Learners</strong>; <strong>Cross-Culturally Competent</strong>.</p><div class="card-contribution"><span>&#128278;</span> Contribution: Two-color 3D printed bookmark</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Inclusion Teacher Guide<span class="doc-link-type">Teacher Guide &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Inclusion Student Guide<span class="doc-link-type">Student Guide &middot; DOCX</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/inclusion-bookmark-kiosk.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Inclusion Bookmark Kiosk<span class="doc-link-type">Interactive Kiosk &middot; HTML</span></span></a></div></div></div>
-
-    <div class="card" style="background:#fff;border-radius:16px;overflow:hidden;display:grid;grid-template-columns:8px 1fr;box-shadow:0 2px 16px rgba(26,26,46,.06);"><div class="card-accent" style="background:#B52020;"></div><div class="card-body"><div class="card-left"><div class="card-class-tag" style="background:#FAE4E4;color:#B52020;">&#9679; Culinary Arts</div><h2>OneWord Cookie Cutter</h2><div class="card-teacher">Betsabe Sayers &middot; WRS 1 / WRS 5 / WRS 14 &middot; Tinkercad + Bambu Lab</div><p class="card-desc">Culinary students design an original cookie cutter shape in Tinkercad inspired by their assigned OneWord. Printed in red PLA on the Bambu Lab printer. A small container of Play-Doh accompanies each cutter in the smile bag. Future Ready: <strong>Problem Solvers &amp; Value Creators</strong>; <strong>Balanced Communicators &amp; Collaborators</strong>.</p><div class="card-contribution" style="background:#FAE4E4;color:#B52020;display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;padding:6px 12px;border-radius:8px;"><span>&#127850;</span> Contribution: 3D printed cookie cutter + Play-Doh</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Cookie Cutter Design Guidelines<span class="doc-link-type">Student Guide &middot; DOCX</span></span></a></div></div></div>
-
-    <div class="card" style="background:#fff;border-radius:16px;overflow:hidden;display:grid;grid-template-columns:8px 1fr;box-shadow:0 2px 16px rgba(26,26,46,.06);"><div class="card-accent" style="background:#B55A00;"></div><div class="card-body"><div class="card-left"><div class="card-class-tag" style="background:#FDECD9;color:#B55A00;">&#9679; Introduction to Engineering (8540)</div><h2>3D Printed Assembly Kit</h2><div class="card-teacher">Kaitlin Beamer &middot; Virginia CTE Introduction to Engineering (8540) &middot; OnShape CAD + Bambu Lab</div><p class="card-desc">Introduction to Engineering students design a 5&ndash;8 piece snap-fit assembly kit in OnShape CAD &mdash; no glue, no tools, pieces click together. Students choose from four model categories. Printed in orange PLA on the Bambu Lab printer. Future Ready: <strong>Problem Solvers &amp; Value Creators</strong>; <strong>Thinkers &amp; Inquirers</strong>.</p><div class="card-contribution" style="background:#FDECD9;color:#B55A00;display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;padding:6px 12px;border-radius:8px;"><span>&#128295;</span> Contribution: 3D printed snap-fit assembly kit (5&ndash;8 pieces)</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Assembly Kit Design Guidelines<span class="doc-link-type">Student Guide &middot; DOCX</span></span></a></div></div></div>
-
-    <div class="card" style="background:#fff;border-radius:16px;overflow:hidden;display:grid;grid-template-columns:8px 1fr;box-shadow:0 2px 16px rgba(26,26,46,.06);"><div class="card-accent" style="background:#B5446E;"></div><div class="card-body"><div class="card-left"><div class="card-class-tag" style="background:#FDE8EF;color:#B5446E;">&#9679; Fashion Marketing</div><h2>OneWord Paper Doll Fashion Design</h2><div class="card-teacher">Cindy Miller &middot; Virginia CTE Fashion Marketing &middot; Doll Kiosk</div><p class="card-desc">Fashion Marketing students apply design thinking and fashion principles to create a custom paper doll outfit for a child. Each student selects their OneWord and uses the Digital Doll Kiosk to design outfits inspired by their word. Printed in black and white for the child to color, cut out, and play with. Future Ready: <strong>Problem Solvers &amp; Value Creators</strong>; <strong>Personally &amp; Socially Responsible</strong>.</p><div class="card-contribution" style="background:#FDE8EF;color:#B5446E;display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;padding:6px 12px;border-radius:8px;"><span>&#128087;</span> Contribution: OneWord paper doll fashion design &middot; printed on cardstock for coloring</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Fashion Marketing Guidelines<span class="doc-link-type">Student Guide &middot; DOCX</span></span></a></div></div></div>
-
-    <div class="card" style="background:#fff;border-radius:16px;overflow:hidden;display:grid;grid-template-columns:8px 1fr;box-shadow:0 2px 16px rgba(26,26,46,.06);"><div class="card-accent" style="background:#1A6B3A;"></div><div class="card-body"><div class="card-left"><div class="card-class-tag" style="background:#DFF2E8;color:#1A6B3A;">&#9679; Advanced Entrepreneurship</div><h2>OneWord Sticker Design</h2><div class="card-teacher">Christine Maloney &middot; Virginia CTE Entrepreneurship &middot; Canva &middot; Adobe Express &middot; Cricut Design Space</div><p class="card-desc">Advanced Entrepreneurship students design a OneWord sticker in their tool of choice &mdash; Canva, Adobe Express, Google Slides, or Cricut Design Space. Designs are printed on adhesive sticker paper in two size options: 2.0 inch round or 2.5 inch square. Future Ready: <strong>Problem Solvers &amp; Value Creators</strong>; <strong>Personally &amp; Socially Responsible</strong>.</p><div class="card-contribution" style="background:#DFF2E8;color:#1A6B3A;display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;padding:6px 12px;border-radius:8px;"><span>&#127991;&#65039;</span> Contribution: OneWord sticker &middot; 2.0 inch round or 2.5 inch square</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">OneWord Sticker Design Guidelines<span class="doc-link-type">Student Guide &middot; DOCX</span></span></a></div></div></div>
-
-    <div class="card theme-green"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Leadership Skills</div><h2>OneWord Activity Package + Handwritten Letter + Sticker</h2><div class="card-teacher">Katelyn Marquand &middot; Grades 9&ndash;12 &middot; Leadership Skills</div><p class="card-desc">Leadership students create a complete personalized package for a child receiving a Smile Bag &mdash; eight activities total. Six activities build leadership skills for the recipient. Tab 7 is a personal handwritten letter guided by a Gemini AI writing tutor and approved by the teacher. Tab 8 is a custom 2-inch OneWord sticker printed as a class set. Future Ready: <strong>Communicators &amp; Collaborators</strong>; <strong>Personally &amp; Socially Responsible</strong>.</p><div class="card-contribution"><span>&#9993;&#65039;</span> Contribution: 8-activity package &middot; handwritten letter on cardstock &middot; 2-inch OneWord sticker</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Teacher Guide<span class="doc-link-type">Teacher Guide &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Student Guide<span class="doc-link-type">Student Guide &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Activity Rubric<span class="doc-link-type">Rubric &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Gemini Gem Setup<span class="doc-link-type">AI Tutor Setup &middot; DOCX</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/LeadershipActivities_Kiosk_v2.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Leadership Activity Kiosk<span class="doc-link-type">Interactive Kiosk &middot; HTML</span></span></a></div></div></div>
-
-    <div class="card theme-teal"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Virginia Teachers for Tomorrow</div><h2>Student Contribution &mdash; Coming Soon</h2><div class="card-teacher">Robin Hoffman &middot; Details coming soon</div><p class="card-desc">Virginia Teachers for Tomorrow students will be contributing to Kellam Smile Bags. Details about their specific contribution and standards alignment are coming soon. Check back for updates!</p><div class="card-contribution"><span>&#127822;</span> Contribution: Coming soon</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Details Coming Soon<span class="doc-link-type">Guide &middot; Pending</span></span></a></div></div></div>
-
-    <div class="card theme-pink"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; English 12</div><h2>Student Contribution &mdash; Coming Soon</h2><div class="card-teacher">Robin Hoffman &middot; Details coming soon</div><p class="card-desc">English 12 students will be contributing to Kellam Smile Bags. Details about their specific contribution and standards alignment are coming soon. Check back for updates!</p><div class="card-contribution"><span>&#128221;</span> Contribution: Coming soon</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Details Coming Soon<span class="doc-link-type">Guide &middot; Pending</span></span></a></div></div></div>
-
-    <div class="card theme-purple"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; AP Psychology</div><h2>Psychology Behind Your Word &mdash; Activity Card</h2><div class="card-teacher">AP Psychology Teacher &middot; Details coming soon</div><p class="card-desc">AP Psychology students use their knowledge of psychological concepts to design an activity card for a child in our community. Students choose their OneWord, select a psychology concept, choose their recipient's age group, and select a format &mdash; double-sided card, coloring page, mini booklet, card + supply, card + puzzle, or card + pinwheel. Future Ready: <strong>Thinkers &amp; Inquirers</strong>; <strong>Personally &amp; Socially Responsible</strong>.</p><div class="card-contribution"><span>&#129504;</span> Contribution: Psychology activity card &middot; format chosen by student</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">AP Psychology Kiosk<span class="doc-link-type">Interactive Kiosk &middot; Coming Soon</span></span></a></div></div></div>
-
-    <div class="card theme-teal"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Open to All Students</div><h2>Crafting Smiles</h2><div class="card-teacher">Any Kellam student &middot; No class assignment required</div><p class="card-desc">Any Kellam student can contribute to Kellam Smile Bags through the Crafting Smiles kiosk! Students choose to design a OneWord 3D printed bookmark or a Magic Illusion Spinner. Both connect to the 25 shared OneWords and the same color palette used across the project. Future Ready: <strong>Problem Solvers &amp; Value Creators</strong>; <strong>Personally &amp; Socially Responsible</strong>.</p><div class="card-contribution"><span>&#127912;</span> Contribution: 3D printed bookmark or Magic Illusion Spinner</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="https://lhhowell.github.io/kellamsmilebags/CraftingSmiles_Kiosk.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Crafting Smiles Kiosk<span class="doc-link-type">Interactive Kiosk &middot; HTML</span></span></a></div></div></div>
-
-  </div>
-
-  <div class="section-label" style="margin-top:56px;">Student Clubs</div>
-  <h2 class="section-title">Club Participants</h2>
-  <p class="section-intro">Two Kellam student clubs are contributing to Kellam Smile Bags alongside the academic classes.</p>
-
-  <div class="cards">
-    <div class="card theme-pink"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Student Club</div><h2>Operation Smiles Club</h2><div class="card-teacher">Club sponsor &middot; Service-learning coordination</div><p class="card-desc">The Operation Smiles student club leads the smile bag assembly and coordinates contributions from all participating classes. Club members connect the project to the broader Operation Smiles mission and serve as the organizing heart of the effort at Kellam. Future Ready: <strong>Personally &amp; Socially Responsible</strong>; <strong>Balanced Communicators &amp; Collaborators</strong>.</p><div class="card-contribution"><span>&#128155;</span> Role: Smile bag assembly &amp; project coordination</div></div><div class="card-links"><div class="card-links-label">Resources</div><a href="#" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Operation Smiles Organization<span class="doc-link-type">External Link</span></span></a></div></div></div>
-    <div class="card theme-teal"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Student Club</div><h2>Environmental Science Club</h2><div class="card-teacher">Club sponsor &middot; Environmental advocacy</div><p class="card-desc">The Environmental Science Club supports the Operation Smiles Club in the smile bag assembly and project coordination efforts. More details on their specific contribution coming soon. Future Ready: <strong>Personally &amp; Socially Responsible</strong>; <strong>Knowledgeable</strong>.</p><div class="card-contribution"><span>&#127807;</span> Role: Supporting the Operation Smiles Club</div></div><div class="card-links"><div class="card-links-label">Resources</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Environmental Science Planning Guide<span class="doc-link-type">VBCPS Standards &middot; DOCX</span></span></a></div></div></div>
-  </div>
-
-  <section class="submit-section">
-    <div class="submit-inner">
-      <div class="submit-icon">&#127890;</div>
-      <h2 class="submit-title">Get Involved</h2>
-      <p class="submit-body">Students &#8212; interested in contributing to Kellam Smile Bags? <strong>Ask your teacher to join!</strong> Teachers can submit a participation request using the button below, and you can be part of the project through your class.</p>
-      <p class="submit-body" style="margin-top:12px">Teachers &#8212; interested in joining Kellam Smile Bags? Submit your participation details or request a conversation by clicking the button below.</p>
-      <a class="submit-btn" href="https://script.google.com/macros/s/AKfycbz92O2M_kZTua9ncIZmBc619DqB4in-qG7PG1Yr8FOVZEsgDSiWDiJf-1XJ7Fg0Kwqt/exec" target="_blank">Teachers &#8212; Join Kellam Smile Bags &#8594;</a>
-      <p class="submit-meta">Opens in a new tab &#183; Kellam High School &#183; Spring 2026</p>
+<!-- S0: PATH -->
+<div class="screen active" id="scr0">
+  <div class="scr-hd"><h2>Welcome to Crafting Smiles!</h2><p>Any Kellam student can contribute! Choose what you would like to make.</p></div>
+  <div class="path-grid">
+    <div class="path-card" onclick="pickPath('bookmark',this)">
+      <div class="path-icon">&#128278;</div>
+      <div class="path-name">Bookmark</div>
+      <div class="path-desc">Choose a OneWord, colors, and emoji. Printed as a two-color 3D bookmark on the Bambu Lab printer!</div>
+      <div class="path-check">&#10003; Selected!</div>
     </div>
-  </section>
-
-</main>
-
-<footer class="footer">
-  <div class="footer-left">
-    <p>Kellam Smile Bags</p>
-    <span>Virginia Beach City Public Schools &#183; Spring 2026</span>
+    <div class="path-card" onclick="pickPath('spinner',this)">
+      <div class="path-icon">&#127744;</div>
+      <div class="path-name">Magic Illusion Spinner</div>
+      <div class="path-desc">Choose two colors for a mesmerizing optical illusion spinning top. It looks like it is floating when it spins!</div>
+      <div class="path-check">&#10003; Selected!</div>
+    </div>
   </div>
-  <div class="footer-dots">
-    <div class="footer-dot" style="background:#1B7A78"></div>
-    <div class="footer-dot" style="background:#B5446E"></div>
-    <div class="footer-dot" style="background:#C8860A"></div>
-    <div class="footer-dot" style="background:#6B3F9E"></div>
-    <div class="footer-dot" style="background:#0F4F4E"></div>
-  </div>
-</footer>
+  <div class="nav-row"><button class="btn-next" onclick="toName()">Next &rarr;</button></div>
+</div>
 
-</body>
-</html>`;
-  return HtmlService.createHtmlOutput(html)
-    .setTitle('Kellam Smile Bags &#8212; Kellam High School')
-    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+<!-- S1: NAME -->
+<div class="screen" id="scr1">
+  <div class="scr-hd"><h2 id="s1h">What is your name?</h2><p>Tell us your name to get started!</p></div>
+  <div class="white-card">
+    <label class="field-label">Your first name</label>
+    <input class="field-inp" id="iName" type="text" placeholder="Type your name here..."/>
+    <label class="field-label">Your teacher</label>
+    <select class="field-inp" id="iTeacher" style="cursor:pointer;">
+<option value="">-- Select your teacher --</option>
+<option value="Acikgoz, Sehriban">Acikgoz, Sehriban</option>
+<option value="Aiello, Patrick">Aiello, Patrick</option>
+<option value="Bailey, Susan">Bailey, Susan</option>
+<option value="Baja, Melanie">Baja, Melanie</option>
+<option value="Baranello, Samantha">Baranello, Samantha</option>
+<option value="Beamer, Kaitlin">Beamer, Kaitlin</option>
+<option value="Benzel, Rebecca">Benzel, Rebecca</option>
+<option value="Benzel, Ross">Benzel, Ross</option>
+<option value="Boutwell, Brooke">Boutwell, Brooke</option>
+<option value="Brown, Roland">Brown, Roland</option>
+<option value="Caraballo, Hope">Caraballo, Hope</option>
+<option value="Carmack, Carly">Carmack, Carly</option>
+<option value="Christman, Jeffrey">Christman, Jeffrey</option>
+<option value="Clark, James">Clark, James</option>
+<option value="Coffee, Carrie">Coffee, Carrie</option>
+<option value="Colton, Sharlane">Colton, Sharlane</option>
+<option value="Copeland, Jason">Copeland, Jason</option>
+<option value="Copon, Carl">Copon, Carl</option>
+<option value="DeAtley, Thomas">DeAtley, Thomas</option>
+<option value="Delachica, Soraya">Delachica, Soraya</option>
+<option value="Despiau, Daneisha">Despiau, Daneisha</option>
+<option value="Drake, Kerri">Drake, Kerri</option>
+<option value="DuPont, Jennifer">DuPont, Jennifer</option>
+<option value="Eckert, Kim">Eckert, Kim</option>
+<option value="Edwards, Michele">Edwards, Michele</option>
+<option value="Evans, Angela">Evans, Angela</option>
+<option value="Ferebee, Diana">Ferebee, Diana</option>
+<option value="Finney, Margaret">Finney, Margaret</option>
+<option value="Franks, Gina">Franks, Gina</option>
+<option value="Frederick, Jamie">Frederick, Jamie</option>
+<option value="Galligan, Christie">Galligan, Christie</option>
+<option value="Galligan, Erik">Galligan, Erik</option>
+<option value="Gau, Kayla">Gau, Kayla</option>
+<option value="Gavin, Lori">Gavin, Lori</option>
+<option value="Gay IV, Robert">Gay IV, Robert</option>
+<option value="Gilson, Jennifer">Gilson, Jennifer</option>
+<option value="Glover, Sharon">Glover, Sharon</option>
+<option value="Grady, Sarah">Grady, Sarah</option>
+<option value="Gridley-Bungete, Mihaela">Gridley-Bungete, Mihaela</option>
+<option value="Gutt, Matthew">Gutt, Matthew</option>
+<option value="Gwin, Gabrielle">Gwin, Gabrielle</option>
+<option value="Hamilton, Jennifer">Hamilton, Jennifer</option>
+<option value="Hassell, Norman">Hassell, Norman</option>
+<option value="Henry, Chris">Henry, Chris</option>
+<option value="Hoffman, Robin">Hoffman, Robin</option>
+<option value="Hogan, Melissa">Hogan, Melissa</option>
+<option value="Honaker, Kristan">Honaker, Kristan</option>
+<option value="Horgan, Melissa">Horgan, Melissa</option>
+<option value="Hudson, Jeff">Hudson, Jeff</option>
+<option value="Hurdle, Mario">Hurdle, Mario</option>
+<option value="Jennings, Anne">Jennings, Anne</option>
+<option value="Jones, St. Clair">Jones, St. Clair</option>
+<option value="Kelleher, Kimberly">Kelleher, Kimberly</option>
+<option value="Leiden, Lesa">Leiden, Lesa</option>
+<option value="Lindner, Meghan">Lindner, Meghan</option>
+<option value="Lopez, Thirzia">Lopez, Thirzia</option>
+<option value="Maloney, Christine">Maloney, Christine</option>
+<option value="Marquand, Katelyn">Marquand, Katelyn</option>
+<option value="McFarland, Kari">McFarland, Kari</option>
+<option value="McGee, Abigail">McGee, Abigail</option>
+<option value="Mejia, Sarah">Mejia, Sarah</option>
+<option value="Miller, Cindy">Miller, Cindy</option>
+<option value="Moffett, Laura">Moffett, Laura</option>
+<option value="Morris, Betsy">Morris, Betsy</option>
+<option value="Neas, Brian">Neas, Brian</option>
+<option value="O'Brien, Elena">O'Brien, Elena</option>
+<option value="O'Hara, Michael">O'Hara, Michael</option>
+<option value="Pardo, Terri">Pardo, Terri</option>
+<option value="Parker, Meredyth">Parker, Meredyth</option>
+<option value="Peoples, Keira">Peoples, Keira</option>
+<option value="Peters, Laura">Peters, Laura</option>
+<option value="Petersen, Robin">Petersen, Robin</option>
+<option value="Pippert, Ryan">Pippert, Ryan</option>
+<option value="Pitz, Samantha">Pitz, Samantha</option>
+<option value="Polhemus, Greg">Polhemus, Greg</option>
+<option value="Powers, Craig">Powers, Craig</option>
+<option value="Pritchett, Rachel">Pritchett, Rachel</option>
+<option value="Raidl, Alexandra">Raidl, Alexandra</option>
+<option value="Rice, Kelly">Rice, Kelly</option>
+<option value="Rivers, Randolph">Rivers, Randolph</option>
+<option value="Robbins, Matthew">Robbins, Matthew</option>
+<option value="Robusto-DeAtley, Michelle">Robusto-DeAtley, Michelle</option>
+<option value="Rodriguez, Keirsten">Rodriguez, Keirsten</option>
+<option value="Root, Dylan">Root, Dylan</option>
+<option value="San Souci, Kelli">San Souci, Kelli</option>
+<option value="Sayers, Betsabe">Sayers, Betsabe</option>
+<option value="Serino, Thalia">Serino, Thalia</option>
+<option value="Seyrlehner, Anna">Seyrlehner, Anna</option>
+<option value="Sheppard, Sara">Sheppard, Sara</option>
+<option value="Stauffer, Jessica">Stauffer, Jessica</option>
+<option value="Stone, Amy">Stone, Amy</option>
+<option value="Sturgill, Lauren">Sturgill, Lauren</option>
+<option value="Swanson, John">Swanson, John</option>
+<option value="Tillman, Alexus">Tillman, Alexus</option>
+<option value="Turner, Andrew">Turner, Andrew</option>
+<option value="Turner, Kelly">Turner, Kelly</option>
+<option value="Vinson, Deena">Vinson, Deena</option>
+<option value="Ward, Rosiris">Ward, Rosiris</option>
+<option value="Welch, Katherine">Welch, Katherine</option>
+<option value="Wiles, Nathan">Wiles, Nathan</option>
+<option value="Willoughby, Amanda">Willoughby, Amanda</option>
+<option value="Young, Elizabeth">Young, Elizabeth</option>
+<option value="Zanetti, Steven">Zanetti, Steven</option>
+    </select>
+    <label class="field-label" style="margin-top:14px;">Your grade (optional)</label>
+    <input class="field-inp" id="iGrade" type="text" placeholder="e.g. 10th grade"/>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="nav(0)">&#8592; Back</button>
+    <button class="btn-next" onclick="toWord()">Next &rarr;</button>
+  </div>
+</div>
+
+<!-- S2: WORD (bookmark only) -->
+<div class="screen" id="scr2">
+  <div class="scr-hd"><h2>Choose Your OneWord</h2><p>Pick the word that will appear on your bookmark!</p></div>
+  <div class="white-card">
+    <div class="section-lbl">Your OneWord</div>
+    <div class="word-grid" id="wordGrid"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="nav(1)">&#8592; Back</button>
+    <button class="btn-next" onclick="toColors()">Next &mdash; Choose Colors &rarr;</button>
+  </div>
+</div>
+
+<!-- S3: COLORS -->
+<div class="screen" id="scr3">
+  <div class="scr-hd"><h2 id="s3h">Choose Your Colors</h2><p id="s3p">Pick the colors for your creation!</p></div>
+  <div id="bk-colors">
+    <div class="hint">Color 1 is the main body. Color 2 appears as the border ring and text color.</div>
+    <div class="white-card">
+      <div class="section-lbl">Choose Your Color Pair</div>
+      <div class="pair-grid" id="pairGrid"></div>
+    </div>
+  </div>
+  <div id="sp-colors" style="display:none;">
+    <div class="hint">Top half and bottom half each print in a different color. That is what creates the illusion when it spins!</div>
+    <div class="white-card">
+      <div class="section-lbl">Top Half Color</div>
+      <div class="color-grid" id="topGrid"></div>
+    </div>
+    <div class="white-card">
+      <div class="section-lbl">Bottom Half Color</div>
+      <div class="color-grid" id="botGrid"></div>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="colorsBack()">&#8592; Back</button>
+    <button class="btn-next" onclick="toDesign()">Next &mdash; Design It &rarr;</button>
+  </div>
+</div>
+
+<!-- S4: DESIGN -->
+<div class="screen" id="scr4">
+  <div id="bk-design">
+    <div class="scr-hd"><h2>Design Your Bookmark</h2><p>Pick an emoji for the center circle!</p></div>
+    <div class="white-card">
+      <div class="section-lbl">Choose Your Emoji</div>
+      <div class="emoji-grid" id="emojiGrid"></div>
+    </div>
+    <div class="white-card">
+      <div class="section-lbl">Live Preview</div>
+      <div class="bk-preview-wrap"><svg id="bkSVG" width="220" height="430" viewBox="0 0 220 430"></svg></div>
+    </div>
+  </div>
+  <div id="sp-design" style="display:none;">
+    <div class="scr-hd"><h2>Your Magic Illusion Spinner</h2><p>Here is how your spinner will look!</p></div>
+    <div class="white-card">
+      <div class="hint">The Magic Illusion Spinner prints in two halves that snap together. Your two colors create a mesmerizing optical effect when it spins!</div>
+      <div class="spinner-wrap">
+        <div class="spinner-disc">
+          <div class="sp-top" id="spTop"></div>
+          <div class="sp-bot" id="spBot"></div>
+          <div class="sp-div"></div>
+          <div class="sp-ctr"></div>
+        </div>
+        <div class="sp-legend">
+          <div class="lg-item"><div class="lg-dot" id="lgTop"></div><span id="lgTopLbl">Top half</span></div>
+          <div class="lg-item"><div class="lg-dot" id="lgBot"></div><span id="lgBotLbl">Bottom half</span></div>
+        </div>
+        <p style="font-size:11px;color:#aaa;font-style:italic;text-align:center;margin-top:6px;">Model by AeroDesigns &middot; MakerWorld &middot; makerworld.com/en/models/2247117</p>
+      </div>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="nav(3)">&#8592; Back</button>
+    <button class="btn-next" onclick="toPreview()">See My Preview! &rarr;</button>
+  </div>
+</div>
+
+<!-- S5: PREVIEW & SUBMIT -->
+<div class="screen" id="scr5">
+  <div class="scr-hd"><h2 id="s5h">Your Design!</h2><p>Submit it and your teacher will print it for a child in the community!</p></div>
+
+  <div id="bk-final" class="white-card">
+    <div class="section-lbl">Your Bookmark</div>
+    <div class="bk-preview-wrap"><svg id="bkSVGFinal" width="220" height="430" viewBox="0 0 220 430"></svg></div>
+    <div class="det-grid">
+      <div class="det-cell"><div class="det-lbl">Word</div><div class="det-val" id="dWord"></div></div>
+      <div class="det-cell"><div class="det-lbl">Color Pair</div><div class="det-val" id="dPair"></div></div>
+    </div>
+  </div>
+
+  <div id="sp-final" class="white-card" style="display:none;">
+    <div class="section-lbl">Your Spinner</div>
+    <div class="spinner-wrap">
+      <div class="spinner-disc">
+        <div class="sp-top" id="spTopF"></div>
+        <div class="sp-bot" id="spBotF"></div>
+        <div class="sp-div"></div>
+        <div class="sp-ctr"></div>
+      </div>
+      <div class="sp-legend">
+        <div class="lg-item"><div class="lg-dot" id="lgTopF"></div><span id="lgTopLblF">Top half</span></div>
+        <div class="lg-item"><div class="lg-dot" id="lgBotF"></div><span id="lgBotLblF">Bottom half</span></div>
+      </div>
+    </div>
+    <div class="det-grid">
+      <div class="det-cell"><div class="det-lbl">Top Half</div><div class="det-val" id="dTop"></div></div>
+      <div class="det-cell"><div class="det-lbl">Bottom Half</div><div class="det-val" id="dBot"></div></div>
+    </div>
+    <div class="hint" style="margin-top:14px;">Print: 2-color AMS &middot; Model by AeroDesigns on MakerWorld &middot; No supports &middot; Snap fit, light glue recommended</div>
+  </div>
+
+  <div id="notSub">
+    <button class="submit-btn" onclick="doSubmit()">Submit My Design!</button>
+    <p class="submit-note">Your teacher will print this. No printing needed on your end!</p>
+  </div>
+  <div class="submitted-box" id="subBox">
+    <div style="font-size:52px;margin-bottom:12px;">&#127881;</div>
+    <div style="font-family:'Fredoka One',cursive;font-size:24px;color:#1B7A78;margin-bottom:6px;">Design Submitted!</div>
+    <p style="font-size:14px;color:#555;line-height:1.7;">Your design has been sent to your teacher and will be placed in a Kellam Smile Bag!</p>
+    <div class="token-box">
+      <div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#C8860A;margin-bottom:4px;">Your submission code</div>
+      <div class="token-code" id="tokCode">KSB-0000</div>
+      <div style="font-size:11px;color:#888;margin-top:4px;">Write this down just in case!</div>
+    </div>
+  </div>
+  <div class="nav-row" style="justify-content:flex-start;margin-top:12px;">
+    <button class="btn-back" onclick="nav(4)">&#8592; Change Something</button>
+  </div>
+</div>
+
+<script>
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwqvVWBEVKSLFqQhz0NRGDVJQd92j0Pv2PgijptQjKps8Y-PFx7PqeoO2A1hL_ygVBEJQ/exec";
+
+var WORDS = [
+  {word:"ABSORB",meaning:"Taking in everything around you"},
+  {word:"ADAPT",meaning:"Adjusting to what comes your way"},
+  {word:"ANCHOR",meaning:"Holding steady through the storm"},
+  {word:"BALANCE",meaning:"Finding your steady place"},
+  {word:"BLOOM",meaning:"Growing into your best self"},
+  {word:"BREATHE",meaning:"Pausing to find your calm"},
+  {word:"CLEAR",meaning:"Seeing things as they really are"},
+  {word:"CONNECT",meaning:"Building bridges between hearts"},
+  {word:"CYCLE",meaning:"Moving through seasons of change"},
+  {word:"EMERGE",meaning:"Rising into who you are becoming"},
+  {word:"FILTER",meaning:"Choosing what deserves your energy"},
+  {word:"FLOW",meaning:"Moving forward even slowly"},
+  {word:"GROW",meaning:"Becoming more than you were"},
+  {word:"HEAL",meaning:"Restoring what was broken"},
+  {word:"MIGRATE",meaning:"Carrying home within yourself"},
+  {word:"PERSIST",meaning:"Keeping going when it gets hard"},
+  {word:"RENEW",meaning:"Starting fresh with new strength"},
+  {word:"RESTORE",meaning:"Bringing back what matters most"},
+  {word:"RETURN",meaning:"Coming back to what is true"},
+  {word:"RISE",meaning:"Standing tall after falling down"},
+  {word:"SHINE",meaning:"Letting your light reach others"},
+  {word:"SUSTAIN",meaning:"Keeping what is good alive"},
+  {word:"THRIVE",meaning:"Living at your fullest"},
+  {word:"TRANSFORM",meaning:"Becoming something beautifully new"},
+  {word:"MOVE",meaning:"Taking the next step forward"},
+];
+
+var PAIRS = [
+  {name:"Red & Grey",   c1:{n:"Red",   h:"#CC0000"}, c2:{n:"Grey",   h:"#808080"}},
+  {name:"Green & Gold", c1:{n:"Green", h:"#2D6A2D"}, c2:{n:"Gold",   h:"#C8860A"}},
+  {name:"Blue & Silver",c1:{n:"Blue",  h:"#1565C0"}, c2:{n:"Silver", h:"#A8A9AD"}},
+  {name:"Blue & Green", c1:{n:"Blue",  h:"#1565C0"}, c2:{n:"Green",  h:"#2D6A2D"}},
+  {name:"Red & White",  c1:{n:"Red",   h:"#CC0000"}, c2:{n:"White",  h:"#F5F5F5"}},
+  {name:"Blue & White", c1:{n:"Blue",  h:"#1565C0"}, c2:{n:"White",  h:"#F5F5F5"}},
+  {name:"Black & Gold", c1:{n:"Black", h:"#1A1A1A"}, c2:{n:"Gold",   h:"#C8860A"}},
+];
+
+var CLRS = [
+  {n:"Red",h:"#CC0000"},{n:"Grey",h:"#808080"},{n:"Green",h:"#2D6A2D"},{n:"Gold",h:"#C8860A"},
+  {n:"Blue",h:"#1565C0"},{n:"Silver",h:"#A8A9AD"},{n:"White",h:"#F5F5F5"},{n:"Black",h:"#1A1A1A"},
+];
+
+var EMOJIS = ["star","heart","rainbow","butterfly","blossom","sunflower","paw","clap","bolt","wave","fire","dart","gem","glow","lion","raise","turtle","palm","rocket","sprout","trophy","bulb","sparkle","hearts"];
+var EMOJI_HTML = ["&#11088;","&#10084;&#65039;","&#127752;","&#129419;","&#127800;","&#127803;","&#128062;","&#128079;","&#9889;","&#127882;","&#128293;","&#127919;","&#128142;","&#127775;","&#129409;","&#128588;","&#128034;","&#127956;","&#128640;","&#127793;","&#127942;","&#128161;","&#10024;","&#128149;"];
+
+var selPath=null, selWord=null, selPair=null, selTC=null, selBC=null;
+var sTeacher="";
+var selEmojiIdx=0;
+var sName="", sGrade="";
+
+document.addEventListener("DOMContentLoaded",function(){
+  buildWordGrid(); buildPairGrid(); buildColorGrid("topGrid","top"); buildColorGrid("botGrid","bot"); buildEmojiGrid();
+});
+
+function pickPath(p,el){
+  document.querySelectorAll(".path-card").forEach(function(c){c.classList.remove("sel");});
+  el.classList.add("sel"); selPath=p;
+  var d2=document.getElementById("pd2"),l2=document.getElementById("pl2");
+  if(p==="spinner"){d2.style.opacity="0.3";l2.style.opacity="0.3";}
+  else{d2.style.opacity="1";l2.style.opacity="1";}
 }
+
+function buildWordGrid(){
+  var g=document.getElementById("wordGrid");
+  WORDS.forEach(function(w){
+    var c=document.createElement("div");c.className="word-card";
+    c.innerHTML='<div class="word-card-word">'+w.word+'</div><div class="word-card-meaning">'+w.meaning+'</div>';
+    c.onclick=(function(wd,el){return function(){
+      document.querySelectorAll(".word-card").forEach(function(x){x.classList.remove("sel");});
+      el.classList.add("sel");selWord=wd;
+    };})(w,c);
+    g.appendChild(c);
+  });
+}
+
+function buildPairGrid(){
+  var g=document.getElementById("pairGrid");
+  PAIRS.forEach(function(p){
+    var c=document.createElement("div");c.className="pair-card";
+    c.innerHTML='<div class="pair-swatches"><div class="pair-swatch" style="background:'+p.c1.h+'"></div><div class="pair-swatch" style="background:'+p.c2.h+'"></div></div><div class="pair-name">'+p.name+'</div><div class="pair-check">&#10003;</div>';
+    c.onclick=(function(pr,el){return function(){
+      document.querySelectorAll(".pair-card").forEach(function(x){x.classList.remove("sel");});
+      el.classList.add("sel");selPair=pr;
+    };})(p,c);
+    g.appendChild(c);
+  });
+}
+
+function buildColorGrid(gridId,which){
+  var g=document.getElementById(gridId);
+  CLRS.forEach(function(col){
+    var c=document.createElement("div");c.className="color-card";
+    c.innerHTML='<div class="color-swatch" style="background:'+col.h+'"></div><div class="color-name">'+col.n+'</div>';
+    c.onclick=(function(cl,el,w){return function(){
+      document.querySelectorAll("#"+gridId+" .color-card").forEach(function(x){x.classList.remove("sel");x.style.borderColor="#E0E0E0";});
+      el.classList.add("sel");el.style.borderColor=(cl.h==="#F5F5F5")?"#999":cl.h;
+      if(w==="top"){
+        selTC=cl;
+        document.getElementById("spTop").style.background=cl.h;
+        document.getElementById("lgTop").style.background=cl.h;
+        document.getElementById("lgTopLbl").textContent="Top half - "+cl.n;
+      } else {
+        selBC=cl;
+        document.getElementById("spBot").style.background=cl.h;
+        document.getElementById("lgBot").style.background=cl.h;
+        document.getElementById("lgBotLbl").textContent="Bottom half - "+cl.n;
+      }
+    };})(col,c,which);
+    g.appendChild(c);
+  });
+}
+
+function buildEmojiGrid(){
+  var g=document.getElementById("emojiGrid");
+  EMOJI_HTML.forEach(function(em,i){
+    var btn=document.createElement("button");btn.className="emoji-btn"+(i===0?" sel":"");
+    btn.innerHTML=em;
+    btn.onclick=(function(idx,el){return function(){
+      document.querySelectorAll(".emoji-btn").forEach(function(b){b.classList.remove("sel");});
+      el.classList.add("sel");selEmojiIdx=idx;drawBK("bkSVG");
+    };})(i,btn);
+    g.appendChild(btn);
+  });
+}
+
+// Navigation helpers
+function toName(){
+  if(!selPath){alert("Please choose what you would like to make!");return;}
+  sName=document.getElementById("iName").value.trim()||"";
+  document.getElementById("s1h").textContent=selPath==="bookmark"?"Let us make your bookmark!":"Let us make your spinner!";
+  nav(1);
+}
+
+function toWord(){
+  sName=document.getElementById("iName").value.trim()||"Student";
+  sTeacher=document.getElementById("iTeacher").value.trim()||"";
+  sGrade=document.getElementById("iGrade").value.trim()||"";
+  if(!sTeacher){alert("Please select your teacher!");return;}
+  if(selPath==="spinner"){toColors();}else{nav(2);}
+}
+
+function toColors(){
+  if(selPath==="bookmark"&&!selWord){alert("Please choose your OneWord first!");return;}
+  document.getElementById("bk-colors").style.display=selPath==="bookmark"?"block":"none";
+  document.getElementById("sp-colors").style.display=selPath==="spinner"?"block":"none";
+  nav(3);
+}
+
+function colorsBack(){
+  if(selPath==="spinner"){nav(1);}else{nav(2);}
+}
+
+function toDesign(){
+  if(selPath==="bookmark"&&!selPair){alert("Please choose a color pair!");return;}
+  if(selPath==="spinner"&&(!selTC||!selBC)){alert("Please choose both colors for your spinner!");return;}
+  document.getElementById("bk-design").style.display=selPath==="bookmark"?"block":"none";
+  document.getElementById("sp-design").style.display=selPath==="spinner"?"block":"none";
+  if(selPath==="bookmark")drawBK("bkSVG");
+  if(selPath==="spinner"){
+    if(selTC){document.getElementById("spTop").style.background=selTC.h;document.getElementById("lgTop").style.background=selTC.h;document.getElementById("lgTopLbl").textContent="Top half - "+selTC.n;}
+    if(selBC){document.getElementById("spBot").style.background=selBC.h;document.getElementById("lgBot").style.background=selBC.h;document.getElementById("lgBotLbl").textContent="Bottom half - "+selBC.n;}
+  }
+  nav(4);
+}
+
+function toPreview(){
+  buildFinal();nav(5);
+}
+
+function nav(n){
+  document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});
+  document.getElementById("scr"+n).classList.add("active");
+  for(var i=0;i<=5;i++){
+    var pd=document.getElementById("pd"+i),pl=document.getElementById("pl"+i);
+    if(!pd)continue;
+    pd.classList.remove("active","done");pl.classList.remove("active");
+    if(i<n)pd.classList.add("done");
+    else if(i===n){pd.classList.add("active");pl.classList.add("active");}
+  }
+  window.scrollTo(0,0);
+}
+
+function drawBK(svgId){
+  var svg=document.getElementById(svgId);
+  if(!svg||!selPair)return;
+  var c1=selPair.c1.h,c2=selPair.c2.h;
+  var word=selWord?selWord.word:"SMILE";
+  var em=EMOJI_HTML[selEmojiIdx]||EMOJI_HTML[0];
+  // Larger, more realistic bookmark proportions
+  var W=220, cx=110, R=72, cy=R+10;
+  var stemTop=cy, stemH=320, totalH=cy+stemH+16;
+  // Large font — scales down only for very long words
+  var len=word.length;
+  var fs=len<=5?38:len<=8?32:len<=10?26:len<=12?22:18;
+  svg.setAttribute("viewBox","0 0 "+W+" "+totalH);
+  svg.setAttribute("width","220");
+  svg.setAttribute("height",totalH);
+  svg.innerHTML=
+    '<rect x="16" y="'+stemTop+'" width="'+(W-32)+'" height="'+stemH+'" rx="10" fill="'+c1+'"/>'+
+    '<rect x="16" y="'+stemTop+'" width="'+(W-32)+'" height="'+stemH+'" rx="10" fill="none" stroke="'+c2+'" stroke-width="8"/>'+
+    '<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="'+c1+'"/>'+
+    '<circle cx="'+cx+'" cy="'+cy+'" r="'+(R-7)+'" fill="none" stroke="'+c2+'" stroke-width="7"/>'+
+    '<text x="'+cx+'" y="'+(cy+4)+'" text-anchor="middle" dominant-baseline="middle" font-size="56">'+em+'</text>'+
+    '<text transform="rotate(-90 '+cx+' '+(stemTop+stemH/2)+')" x="'+cx+'" y="'+(stemTop+stemH/2)+'" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One,cursive" font-size="'+fs+'" fill="'+c2+'" letter-spacing="4">'+word+'</text>';
+}
+
+function buildFinal(){
+  document.getElementById("s5h").textContent="Your Design, "+sName+"!";
+  if(selPath==="bookmark"){
+    document.getElementById("bk-final").style.display="block";
+    document.getElementById("sp-final").style.display="none";
+    drawBK("bkSVGFinal");
+    document.getElementById("dWord").textContent=selWord?selWord.word:"";
+    document.getElementById("dPair").textContent=selPair?selPair.name:"";
+  } else {
+    document.getElementById("bk-final").style.display="none";
+    document.getElementById("sp-final").style.display="block";
+    if(selTC){document.getElementById("spTopF").style.background=selTC.h;document.getElementById("lgTopF").style.background=selTC.h;document.getElementById("lgTopLblF").textContent="Top half - "+selTC.n;}
+    if(selBC){document.getElementById("spBotF").style.background=selBC.h;document.getElementById("lgBotF").style.background=selBC.h;document.getElementById("lgBotLblF").textContent="Bottom half - "+selBC.n;}
+    document.getElementById("dTop").textContent=selTC?selTC.n:"";
+    document.getElementById("dBot").textContent=selBC?selBC.n:"";
+  }
+}
+
+function doSubmit(){
+  var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
+  document.getElementById("tokCode").textContent=tok;
+  var payload={action:selPath,studentName:sName,studentGrade:sGrade,teacher:sTeacher,token:tok};
+  if(selPath==="bookmark"){
+    payload.word=selWord?selWord.word:"";
+    payload.wordMeaning=selWord?selWord.meaning:"";
+    payload.colorPair=selPair?selPair.name:"";
+    payload.color1Name=selPair?selPair.c1.n:"";
+    payload.color1Hex=selPair?selPair.c1.h:"";
+    payload.color2Name=selPair?selPair.c2.n:"";
+    payload.color2Hex=selPair?selPair.c2.h:"";
+    payload.emoji=EMOJI_HTML[selEmojiIdx]||"";
+  } else {
+    payload.topColorName=selTC?selTC.n:"";
+    payload.topColorHex=selTC?selTC.h:"";
+    payload.bottomColorName=selBC?selBC.n:"";
+    payload.bottomColorHex=selBC?selBC.h:"";
+  }
+  var btn=document.querySelector(".submit-btn");
+  btn.textContent="Submitting...";btn.disabled=true;
+  if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){showDone();return;}
+  fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)})
+    .then(function(r){return r.json();})
+    .then(function(){showDone();})
+    .catch(function(){showDone();});
+}
+
+function showDone(){
+  document.getElementById("notSub").style.display="none";
+  document.getElementById("subBox").style.display="block";
+}
+</script>
+</body>
+</html>
