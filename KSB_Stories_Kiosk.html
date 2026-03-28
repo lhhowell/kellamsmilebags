@@ -127,7 +127,7 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
 .progress-dot.visited{background:var(--teal);border-color:var(--teal);}
 
 /* ── LIGHTBOX ── */
-.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center;padding:20px;cursor:zoom-out;}
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center;padding:20px;cursor:zoom-out;flex-direction:column;}
 .lightbox.open{display:flex;}
 .lightbox img{max-width:95vw;max-height:92vh;border-radius:12px;box-shadow:0 0 60px rgba(200,134,10,.4);object-fit:contain;}
 .lightbox-close{position:absolute;top:16px;right:20px;font-family:'Fredoka One',cursive;font-size:28px;color:#F0C040;cursor:pointer;line-height:1;background:rgba(0,0,0,.5);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;}
@@ -208,60 +208,6 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
       <span class="story-word-title" id="storyWordTitle"></span>
       <span class="story-word-meaning" id="storyWordMeaning"></span>
     </div>
-  </div>
-
-  <!-- Illustrations -->
-  <div class="illus-section" id="illusSection">
-    <div class="illus-card">
-      <div class="illus-card-hdr">
-        <span>&#127912; COLOR ILLUSTRATION</span>
-      </div>
-      <div id="colorIllus"></div>
-      <button class="download-btn color" id="downloadColor">&#11015;&#65039; Download Color Version</button>
-    </div>
-    <div class="illus-card">
-      <div class="illus-card-hdr">
-        <span>&#9999;&#65039; COLORING PAGE</span>
-      </div>
-      <div id="bwIllus"></div>
-      <button class="download-btn bw" id="downloadBW">&#11015;&#65039; Download Coloring Page</button>
-    </div>
-  </div>
-  <!-- Extra illustration pair (shown when word has extraImgs) -->
-  <div class="illus-section" id="illusSection2" style="display:none;">
-    <div class="illus-card">
-      <div class="illus-card-hdr">
-        <span>&#127912; COLOR ILLUSTRATION 2</span>
-      </div>
-      <div id="colorIllus2"></div>
-      <button class="download-btn color" id="downloadColor2">&#11015;&#65039; Download Color Version</button>
-    </div>
-    <div class="illus-card">
-      <div class="illus-card-hdr">
-        <span>&#9999;&#65039; COLORING PAGE 2</span>
-      </div>
-      <div id="bwIllus2"></div>
-      <button class="download-btn bw" id="downloadBW2">&#11015;&#65039; Download Coloring Page</button>
-    </div>
-  </div>
-
-  <!-- Hidden Picture -->
-  <div class="hidden-strip">
-    <div class="hidden-strip-title">&#128269; Can You Find the Hidden Pictures?</div>
-    <div class="hidden-objects" id="hiddenObjects"></div>
-  </div>
-
-  <!-- Interactive link (shown when available) -->
-  <div id="interactiveStrip" style="display:none;margin-bottom:20px;">
-    <a id="interactiveLink" href="#" target="_blank"
-      style="display:flex;align-items:center;gap:14px;background:#1F1700;border:2px solid #C8860A;border-radius:14px;padding:16px 22px;text-decoration:none;transition:all .2s;">
-      <span style="font-size:36px;">&#127918;</span>
-      <div>
-        <div style="font-family:'Fredoka One',cursive;font-size:18px;color:#F0C040;margin-bottom:3px;">Play the Interactive Hidden Picture!</div>
-        <div style="font-size:12px;color:#888;">Opens in a new tab &middot; Find all the hidden objects in the scene</div>
-      </div>
-      <span style="margin-left:auto;font-family:'Fredoka One',cursive;font-size:13px;color:#C8860A;white-space:nowrap;">Play &#8599;</span>
-    </a>
   </div>
 
   <!-- Story -->
@@ -679,12 +625,480 @@ function downloadImg(src, filename) {
 }
 
 function openLightbox(src) {
-  document.getElementById('lightboxImg').src = src;
-  document.getElementById('lightbox').classList.add('open');
+  var lb = document.getElementById('lightbox');
+  var img = document.getElementById('lightboxImg');
+  img.src = src;
+  lb.style.display = 'flex';
   document.body.style.overflow = 'hidden';
 }
 function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
+  document.getElementById('lightbox').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape') closeLightbox();
+});
+
+// Start on intro screen
+document.getElementById('gridScreen').style.display  = 'none';
+document.getElementById('storyScreen').style.display = 'none';
+</script>
+</body>
+</html>
+  <!-- Illustrations -->
+  <div class="illus-section" id="illusSection">
+    <div class="illus-card">
+      <div class="illus-card-hdr">
+        <span>&#127912; COLOR ILLUSTRATION</span>
+      </div>
+      <div id="colorIllus"></div>
+      <button class="download-btn color" id="downloadColor">&#11015;&#65039; Download Color Version</button>
+    </div>
+    <div class="illus-card">
+      <div class="illus-card-hdr">
+        <span>&#9999;&#65039; COLORING PAGE</span>
+      </div>
+      <div id="bwIllus"></div>
+      <button class="download-btn bw" id="downloadBW">&#11015;&#65039; Download Coloring Page</button>
+    </div>
+  </div>
+  <!-- Extra illustration pair (shown when word has extraImgs) -->
+  <div class="illus-section" id="illusSection2" style="display:none;">
+    <div class="illus-card">
+      <div class="illus-card-hdr">
+        <span>&#127912; COLOR ILLUSTRATION 2</span>
+      </div>
+      <div id="colorIllus2"></div>
+      <button class="download-btn color" id="downloadColor2">&#11015;&#65039; Download Color Version</button>
+    </div>
+    <div class="illus-card">
+      <div class="illus-card-hdr">
+        <span>&#9999;&#65039; COLORING PAGE 2</span>
+      </div>
+      <div id="bwIllus2"></div>
+      <button class="download-btn bw" id="downloadBW2">&#11015;&#65039; Download Coloring Page</button>
+    </div>
+  </div>
+
+  <!-- Hidden Picture -->
+  <div class="hidden-strip">
+    <div class="hidden-strip-title">&#128269; Can You Find the Hidden Pictures?</div>
+    <div class="hidden-objects" id="hiddenObjects"></div>
+  </div>
+
+  <!-- Interactive link (shown when available) -->
+  <div id="interactiveStrip" style="display:none;margin-bottom:20px;">
+    <a id="interactiveLink" href="#" target="_blank"
+      style="display:flex;align-items:center;gap:14px;background:#1F1700;border:2px solid #C8860A;border-radius:14px;padding:16px 22px;text-decoration:none;transition:all .2s;">
+      <span style="font-size:36px;">&#127918;</span>
+      <div>
+        <div style="font-family:'Fredoka One',cursive;font-size:18px;color:#F0C040;margin-bottom:3px;">Play the Interactive Hidden Picture!</div>
+        <div style="font-size:12px;color:#888;">Opens in a new tab &middot; Find all the hidden objects in the scene</div>
+      </div>
+      <span style="margin-left:auto;font-family:'Fredoka One',cursive;font-size:13px;color:#C8860A;white-space:nowrap;">Play &#8599;</span>
+    </a>
+  </div>
+
+</div>
+
+<script>
+var WORDS = [
+  {
+    word:"ABSORB", meaning:"Taking in everything around you",
+    colorImg:"", bwImg:"",
+    hidden:["butterfly","spider web","ladybug","rainbow in puddle","bird's nest","snail","dragonfly"],
+    shortStory:"<p>Marcus sat very still in the middle of the garden, eyes closed and arms open wide.</p><p>\"What are you doing?\" asked Lily.</p><p>\"Absorbing,\" he whispered. \"The sun on my face, the wind in my ears, the smell of the flowers — I'm taking it all in.\"</p><p>Lily closed her eyes too. For a moment, everything felt full and warm and real.</p><p>Sunny held up a thumbs up. \"When you ABSORB the world around you, you collect it inside your heart forever.\"</p><p>Ray placed the Smile Bag gently nearby. \"Even on hard days — there is always something beautiful worth absorbing.\"</p>",
+    longStory:"<p>Marcus had always been the kind of kid who noticed things others walked right past. The way morning light made spider webs look like silver lace. The way rain smelled different on hot pavement versus cool grass.</p><p>\"You're always so quiet,\" Sofia said one afternoon as they sat on the hill behind the school.</p><p>\"I'm not quiet,\" Marcus said. \"I'm absorbing.\"</p><p>\"What's the difference?\"</p><p>\"Quiet means nothing's happening,\" he said. \"Absorbing means everything is happening — I'm just taking it all in.\"</p><p>Sofia picked up her sketchbook and looked around with new eyes. The shadows of clouds moving across the field. The ant carrying something three times its size. She started drawing — faster than usual.</p><p>Sunny and Ray arrived at the top of the hill and set the Smile Bag between them, watching their friends in comfortable silence.</p><p><em>You don't have to understand everything right away. Sometimes the most powerful thing you can do is slow down, open up, and ABSORB. The world is always teaching — you just have to be still enough to listen.</em></p>"
+  },
+  {
+    word:"ADAPT", meaning:"Adjusting to what comes your way",
+    colorImg:"", bwImg:"",
+    hidden:["frog","duck","rainbow","rain flower","snail","sheltering butterfly","worm"],
+    shortStory:"<p>The rain came down hard and Owen had planned a whole outdoor adventure.</p><p>\"Now what?\" he groaned.</p><p>Zara grinned and grabbed an umbrella. \"We adapt!\"</p><p>They built a fort inside using couch cushions, told stories by flashlight, and made the best indoor adventure they had ever had.</p><p>Ray smiled softly. \"ADAPT means you don't give up — you just find a new way.\"</p><p>Sunny added, \"The best explorers always do.\"</p>",
+    longStory:"<p>Owen had planned the hiking trip for two weeks. He had the trail mapped, the snacks packed, and his brand new boots laced up tight. Then the storm rolled in.</p><p>\"We could wait it out,\" said Maya.</p><p>\"It's not stopping,\" said Marcus. \"Not today.\"</p><p>Owen sat down hard on his backpack. This was supposed to be perfect.</p><p>Zara sat beside him. \"You know what's interesting about animals? The ones that survive aren't always the strongest. They're the ones that adapt. A bird doesn't stop flying because the wind changed direction — it adjusts its wings.\"</p><p>An hour later they had rearranged the furniture into a mountain landscape and were eating trail mix while Maya narrated their \"expedition\" in her best documentary voice.</p><p>Sunny and Ray were at the couch-cushion summit, declaring it conquered.</p><p><em>Life will not always go the way you planned. But the moment you decide to ADAPT — to adjust, reimagine, and keep going — is the moment you discover what you are truly made of.</em></p>"
+  },
+  {
+    word:"ANCHOR", meaning:"Holding steady through the storm",
+    colorImg:"", bwImg:"",
+    hidden:["ship anchor","lighthouse","starfish","turtle in shell","tied boat","compass rose","bird on branch"],
+    shortStory:"<p>The wind was blowing so hard that Lily felt like she might blow away.</p><p>Maya reached out and took her hand. \"I've got you,\" she said.</p><p>\"How are you so steady?\" Lily asked.</p><p>Maya smiled. \"I think about the people I love. They're my anchor.\"</p><p>Ray nodded gently. \"An ANCHOR keeps a ship from drifting — and people can be anchors for each other too.\"</p><p>Sunny held up the Smile Bag. \"Someone made this for you — because they want to be your anchor today.\"</p>",
+    longStory:"<p>The storm had come on fast. Maya stood at the window watching the trees bend and the sky turn the color of a bruise.</p><p>\"Are you scared?\" Sofia asked.</p><p>\"A little,\" Maya admitted. \"Big storms make me feel like nothing is solid.\"</p><p>Sofia said, \"My grandmother used to say that an anchor doesn't stop the storm. It just makes sure you don't drift away while it's happening.\"</p><p>Maya thought about her family. Her friends. The small routines that made her feel like herself. Those were her anchors — not things that stopped hard times from coming, but things that held her steady while they passed.</p><p>Sunny and Ray arrived wrapped in tiny raincoats, dragging the Smile Bag through the wet grass.</p><p>\"We always show up,\" said Ray quietly. \"Storm or no storm,\" said Sunny.</p><p><em>When everything feels uncertain, find your ANCHOR. Whatever holds you — hold onto it. You will not drift away.</em></p>"
+  },
+  {
+    word:"BALANCE", meaning:"Finding your steady place",
+    colorImg:"", bwImg:"",
+    hidden:["tightrope ant","rock stack","centered butterfly","cloud scale","balancing fish","spinning top","one-footed bird"],
+    shortStory:"<p>Zara was trying to walk across a log bridge without falling off.</p><p>\"Arms out!\" called Owen. \"Find your balance!\"</p><p>She wobbled left, then right, then — steady.</p><p>\"I've got it!\" she laughed.</p><p>Sunny clapped. \"BALANCE isn't about being perfect — it's about making little adjustments until you find your steady place.\"</p><p>Ray smiled. \"And it's okay to wobble a little. That's how you learn.\"</p>",
+    longStory:"<p>Everyone always said Zara had it together. Perfect notes. Calm voice. Never seemed rattled. But one Tuesday she sat down at lunch and just stared at her food.</p><p>\"You okay?\" Marcus asked.</p><p>\"I'm tired,\" she said. \"I've been so focused on doing everything right that I forgot to just... be.\"</p><p>Maya nodded. \"My mom calls it losing your balance. Like a spinning top — if it goes too fast it wobbles and falls.\"</p><p>\"So what do you do?\"</p><p>\"Slow down. Do one less thing. Sleep. Go outside. Eat something good.\"</p><p>Zara took a deep breath. Then a real bite of her lunch.</p><p>\"Balance,\" she said softly. \"Balance,\" her friends echoed back.</p><p><em>BALANCE is not a destination — it is a constant, gentle practice. When you feel yourself tilting, pause. Breathe. Make one small adjustment. You already know how to find your steady place.</em></p>"
+  },
+  {
+    word:"BLOOM", meaning:"Growing into your best self",
+    colorImg:"", bwImg:"",
+    hidden:["caterpillar and butterfly","underground sprout","unopened bud","bee","ladybug","bird in flower nest","rainbow"],
+    shortStory:"<p>Sofia planted a seed in a tiny pot and waited. And waited. And waited.</p><p>\"Nothing's happening,\" she sighed.</p><p>\"Something IS happening,\" said Maya. \"You just can't see it yet.\"</p><p>Three weeks later, a tiny green shoot pushed up through the soil.</p><p>Ray smiled. \"That's what BLOOM means — growing into your best self, even when no one can see it happening yet.\"</p><p>Sunny added, \"Just like you!\"</p>",
+    longStory:"<p>Sofia had been working on the same painting for three weeks. Every time she thought it was done, she saw something wrong with it.</p><p>\"Maybe I'm just not good enough,\" she said one afternoon.</p><p>Lily sat beside her. \"Last spring I planted sunflowers. For the first month, nothing happened. I almost gave up. Then one morning — they bloomed. All at once. The whole time they were growing underground where I couldn't see.\"</p><p>Sofia looked at her painting differently. The struggle wasn't failure — it was the underground part. The part where real growth happened quietly, before the bloom.</p><p>Sunny and Ray set the Smile Bag at Sofia's feet, decorated with tiny painted flowers.</p><p><em>You are always growing, even when you cannot see it. Every attempt, every mistake, every quiet moment of trying — it is all happening underground. Your BLOOM is coming. Trust the process.</em></p>"
+  },
+  {
+    word:"BREATHE", meaning:"Pausing to find your calm",
+    colorImg:"", bwImg:"",
+    hidden:["wind chime","dandelion seeds","calm pond","sleeping cat","heart cloud","candle flame","floating feather"],
+    shortStory:"<p>Everything was happening too fast and Lily felt her heart beating too hard.</p><p>\"Breathe,\" said Ray softly. \"In through your nose — one, two, three. Out through your mouth — one, two, three.\"</p><p>Lily tried it. Once. Twice. Three times.</p><p>The world slowed down. Her heart slowed down.</p><p>\"BREATHE,\" she whispered to herself. \"I can always start there.\"</p><p>Sunny nodded. \"Always.\"</p>",
+    longStory:"<p>The test was tomorrow and Lily had read the same paragraph six times without remembering a single word. Her hands felt shaky. Her thoughts were spinning.</p><p>Marcus noticed first. \"Hey. Stop for a second.\"</p><p>\"I can't stop — I have to—\"</p><p>\"Lily.\" His voice was calm. \"Breathe.\"</p><p>\"In through your nose,\" he said slowly. \"Hold it — two, three. Out through your mouth — two, three, four.\"</p><p>She followed his voice. Once. Again. A third time. Something shifted. Not everything — the test was still tomorrow. But the spinning slowed.</p><p>\"My dad taught me,\" Marcus said. \"He said breathing is the one thing your body does automatically — but when you do it on purpose, it reminds your brain that you're safe.\"</p><p>Sunny and Ray were already there, sitting quietly nearby with the Smile Bag. Just present. Just breathing.</p><p><em>When the world gets too loud and your thoughts get too fast, remember: BREATHE. It costs nothing. It takes ten seconds. And it is always available to you. Start there.</em></p>"
+  },
+  {
+    word:"CLEAR", meaning:"Seeing things as they really are",
+    colorImg:"", bwImg:"",
+    hidden:["glasses","crystal ball","mirror","lighthouse beam","key","cleaning window","star through clouds"],
+    shortStory:"<p>There was so much fog that morning that Owen couldn't see the path ahead.</p><p>\"How do we know where to go?\" he asked.</p><p>\"We wait,\" said Zara. \"And we look carefully at what we can see right now.\"</p><p>Slowly the fog lifted. The path had been there all along — beautiful and clear.</p><p>Ray smiled. \"Sometimes things just need time to become CLEAR.\"</p><p>Sunny added, \"And sometimes you just need to look more carefully.\"</p>",
+    longStory:"<p>Owen had been angry at Marcus for two weeks and he wasn't entirely sure why anymore. It had started with something small — a misunderstanding — but it had grown in the silence between them until it felt enormous.</p><p>\"Start with what actually happened,\" Maya said. \"Not the story you've been telling yourself — what actually happened.\"</p><p>Owen thought about it. Really thought about it, without the fog of two weeks of hurt feelings. What had Marcus actually said? What had Owen actually heard? Were they the same thing? They weren't.</p><p>He found Marcus after school. The conversation was awkward at first, then honest, then — clear. Like fog lifting off a morning field.</p><p>Sunny and Ray delivered the Smile Bag with a tiny pair of glasses sitting on top — because sometimes seeing clearly is the greatest gift.</p><p><em>CLEAR doesn't mean easy. It means honest. When you set aside assumptions and look at things as they really are, you usually find the truth is simpler than you thought.</em></p>"
+  },
+  {
+    word:"CONNECT", meaning:"Building bridges between hearts",
+    colorImg:"", bwImg:"",
+    hidden:["puzzle pieces","bridge","birds touching beaks","handshake cloud","telephone cord","interlinked rings","hand heart"],
+    shortStory:"<p>Maya didn't know anyone at the new lunch table. She stared at her food feeling invisible.</p><p>Then Sofia slid her sketchbook across. \"Want to draw something together?\"</p><p>One drawing became two. Two became a conversation. A conversation became a friendship.</p><p>Sunny beamed. \"That's CONNECT — building a bridge between two hearts with something small and brave.\"</p><p>Ray nodded. \"It only takes one person to start.\"</p>",
+    longStory:"<p>The new student had been sitting alone for three days. Maya noticed on the first day but talked herself out of approaching her each time.</p><p>On the fourth day, she sat down anyway. \"Hi. I'm Maya.\"</p><p>The girl looked up — surprised, then cautious, then slowly, carefully, open. Her name was Amara. She had moved from across the country. She missed her friends so much it felt physical.</p><p>They sat together every day after that. Then Sofia joined. Then the others.</p><p>Later, Maya thought about what it had cost her to walk over that first day. Thirty seconds of courage. And what it had given Amara was immeasurable.</p><p>Sunny and Ray arrived with the Smile Bag strung with tiny paper chain links — each one a symbol of a connection made.</p><p><em>CONNECT begins with one brave moment. A hello. A question. A sketchbook slid across a table. You never know which small act of reaching out will change everything for someone who needed it more than you knew.</em></p>"
+  },
+  {
+    word:"CYCLE", meaning:"Moving through seasons of change",
+    colorImg:"https://lhhowell.github.io/kellamsmilebags/Cycle_Color.png",
+    bwImg:"https://lhhowell.github.io/kellamsmilebags/Cycle_ColoringPage.png",
+    extraImgs:[
+      {color:"https://lhhowell.github.io/kellamsmilebags/Cycle_Color2.png?v=2",
+       bw:"https://lhhowell.github.io/kellamsmilebags/Cycle_ColoringPage2.png?v=2"}
+    ],
+    interactiveUrl:"https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_HiddenPicture_CYCLE%20(10).html",
+    hidden:["monarch butterfly","caterpillar","mushrooms on bark","underground roots","robin with worm","splitting seed pod","moon and sun"],
+    shortStory:"<p>Sunny and Ray carried their golden bag down a path covered in fallen leaves.</p><p>\"Everything changes,\" said Ray, picking up a red leaf. \"But look — even this leaf had a whole life.\"</p><p>Zara knelt beside a tiny green sprout pushing up through the dirt. \"Something new is already growing,\" she said softly.</p><p>Sunny grinned and gave a thumbs up. \"That's the CYCLE! Things end so new things can begin.\"</p><p>Ray placed the Smile Bag gently on the ground. \"Whatever you are going through right now — this is not the end. Something beautiful is on its way.\"</p>",
+    longStory:"<p>The six friends gathered at the edge of the forest where the old oak tree had finally fallen. Its massive trunk lay across the mossy ground.</p><p>\"It feels sad,\" said Sofia, sketching the scene.</p><p>\"It is sad,\" said Maya. \"But look closer.\" She pointed to mushrooms growing along the bark. \"This tree isn't gone — it just changed form.\"</p><p>Owen climbed up on the trunk. \"So the end of one thing is actually the beginning of something else?\"</p><p>\"That's the CYCLE,\" said Marcus. \"In science we call it decomposition — but really it's just life making room for more life.\"</p><p>Zara stood quietly, watching a monarch butterfly land on a wildflower nearby.</p><p>Sunny and Ray set the Smile Bag at the base of the old tree — right where a new sapling was already reaching toward the light.</p><p><em>Whatever season you are in right now — the hard part, the waiting part, the not-yet part — remember that CYCLE means something new is already growing. You are part of something bigger than this moment.</em></p>"
+  },
+  {
+    word:"EMERGE", meaning:"Rising into who you are becoming",
+    colorImg:"", bwImg:"",
+    hidden:["silk-spinning caterpillar","hatching egg","sunrise","sprout through concrete","star being born","opening door","reaching hand"],
+    shortStory:"<p>For weeks the chrysalis hung quietly from the branch. Nothing seemed to be happening.</p><p>Then one morning — wings.</p><p>\"It's emerging!\" Lily gasped.</p><p>The butterfly pushed slowly, carefully out into the light — brand new and a little wobbly.</p><p>Ray whispered, \"EMERGE means becoming who you were always meant to be. It takes time. It takes effort. But look.\"</p><p>They all watched the wings unfold. Perfect. Strong. Ready.</p>",
+    longStory:"<p>Marcus had been working on his science project for six weeks. Six weeks of failed experiments, messy data, and moments where he genuinely wasn't sure any of it was going anywhere.</p><p>\"Why do you keep going?\" Owen asked.</p><p>\"Because I think I'm close,\" Marcus said. \"I can feel it.\"</p><p>The next morning Marcus ran into the group waving his notebook. \"It worked.\" Not shouting — something quieter and more certain than shouting. \"It actually worked.\"</p><p>Lily looked at him — at the light in his eyes, the way he stood a little taller.</p><p>\"You emerged,\" she said. \"You went in as one thing and came out as something more.\"</p><p>Sunny and Ray set the Smile Bag beside his notebook, decorated with tiny gold wings.</p><p><em>EMERGE means you don't come out of hard things the same way you went in. Every struggle, every attempt, every moment of almost-giving-up is part of becoming more fully yourself. You are always in the process of emerging.</em></p>"
+  },
+  {
+    word:"FILTER", meaning:"Choosing what deserves your energy",
+    colorImg:"", bwImg:"",
+    hidden:["water drop filter","coffee filter","sunglasses","colander","window screen","honeycomb","prism"],
+    shortStory:"<p>Everyone was talking at once and Zara felt overwhelmed by all the noise.</p><p>\"How do you decide what to listen to?\" she asked Marcus.</p><p>\"I filter,\" he said. \"Like a water filter — I let the good stuff through and leave the rest.\"</p><p>Zara tried it. She listened for kindness. For truth. For things that mattered.</p><p>The noise didn't disappear — but it got quieter.</p><p>Sunny smiled. \"FILTER your world. Not everything deserves your energy.\"</p>",
+    longStory:"<p>Zara had read seventeen comments on her post before Maya gently took the phone from her hand.</p><p>\"You don't need to read all of those.\"</p><p>\"My mom taught me to ask three questions before I let something in,\" Maya said. \"Is it true? Is it kind? Does it help me grow? If it doesn't pass at least two of those — it doesn't get my energy.\"</p><p>Marcus said, \"In water filtration, you don't throw away the filter when it catches something bad. The catching is the point. Your filter is working when it stops things.\"</p><p>Zara nodded. Having a filter didn't mean she was weak. It meant she was protecting something worth protecting.</p><p>Sunny and Ray arrived each wearing tiny hard hats — quality control inspectors of joy.</p><p><em>Not everything that reaches you deserves to stay. FILTER your world — choose what gets your attention, your worry, your energy. You are the gatekeeper of your own mind. Guard it well.</em></p>"
+  },
+  {
+    word:"FLOW", meaning:"Moving forward even slowly",
+    colorImg:"", bwImg:"",
+    hidden:["swimming fish","floating leaf","waterfall","water wheel","duck family","tiny boat","bridge reflection"],
+    shortStory:"<p>The river didn't rush. It didn't push. It just kept moving — around rocks, through narrow spots, over smooth stones.</p><p>Owen watched it for a long time.</p><p>\"It never stops,\" he said quietly.</p><p>\"Even when something's in the way,\" Lily agreed, \"it finds another path.\"</p><p>Ray knelt by the water. \"That's FLOW. You don't have to be fast. You just have to keep moving.\"</p><p>Sunny set the Smile Bag on a flat rock near the bank.</p>",
+    longStory:"<p>Owen had hit a wall. Every idea felt wrong. Every attempt stalled.</p><p>\"You're trying too hard,\" Sofia said. \"Water doesn't force its way downstream. It just moves. When something blocks it, it doesn't crash into it over and over. It goes around.\"</p><p>Owen stared at his blank page. Then he closed it. Went outside. Noticed a crack in the sidewalk with a tiny green plant growing through it.</p><p>When he came back inside, the idea was there. Not because he'd forced it — but because he'd stopped forcing and let himself flow back to it.</p><p>Sunny and Ray were sitting by the window watching the wind move the trees — easy, unhurried, going wherever it wanted.</p><p><em>FLOW is not about giving up — it is about letting go of the struggle long enough to find the path forward. When you are stuck, stop pushing. Go around. Go slowly. Just keep moving. The river always finds the sea.</em></p>"
+  },
+  {
+    word:"GROW", meaning:"Becoming more than you were",
+    colorImg:"", bwImg:"",
+    hidden:["height chart","acorn and oak","butterfly transformation","calendar","seedling in hand","tree rings","growing constellation"],
+    shortStory:"<p>Maya measured herself against the doorframe where her height had been marked every year since she was small. She was taller. Again.</p><p>\"Growing is easy,\" she laughed.</p><p>\"Not always,\" said Zara gently. \"Sometimes growing means learning something hard, or saying sorry, or trying again after you fail.\"</p><p>Ray nodded. \"GROW means becoming more than you were — in every way, not just height.\"</p><p>Sunny grinned. \"And every single day, you're doing it.\"</p>",
+    longStory:"<p>Maya had said something unkind. She hadn't meant it — but it had landed on Sofia like a stone, and Sofia had been quiet ever since.</p><p>For three days Maya told herself Sofia was overreacting. On the fourth day she stopped lying to herself.</p><p>\"I was wrong,\" she said. \"What I said was unkind. I'm sorry. Not because I got caught. Because I actually feel bad about it.\"</p><p>\"Why did it take four days?\" Sofia asked.</p><p>\"Because growing is slow. I had to get past being defensive first. And then embarrassed. And then I had to actually decide to be the kind of person who apologizes.\" She paused. \"I want to be that person.\"</p><p>Sofia slid her paintbrush across the table. \"Paint with me,\" she said.</p><p><em>GROW is not always comfortable. Sometimes it means admitting you were wrong, doing the hard thing, trying again after failing. But every time you choose growth over ego, you become more than you were.</em></p>"
+  },
+  {
+    word:"HEAL", meaning:"Restoring what was broken",
+    colorImg:"", bwImg:"",
+    hidden:["kintsugi vase","healed bandage","gold-filled heart crack","crescent moon","candle","healing herb","tear-to-flower"],
+    shortStory:"<p>Ray sat beside the child who was having a very hard day. He didn't say much. He just stayed.</p><p>After a while the child asked, \"Does it ever stop hurting?\"</p><p>\"Yes,\" Ray said softly. \"Not all at once. But little by little, it gets easier. That's what healing is.\"</p><p>Sunny placed the Smile Bag gently in the child's hands. \"And you don't have to heal alone.\"</p><p>\"Never alone,\" Ray agreed.</p>",
+    longStory:"<p>Zara's grandmother had passed away three months ago, and people kept telling her she should be feeling better by now. She wasn't.</p><p>\"Healing isn't a schedule,\" Maya said. \"It doesn't happen on anyone else's timeline.\"</p><p>\"I think it happens in between things,\" Maya said slowly. \"You'll be doing something ordinary and you'll notice the heavy feeling is a little lighter than yesterday. And then one day you'll laugh at something, really laugh, and feel guilty for a second — and then realize: that's healing. That's it happening.\"</p><p>\"She would have liked you,\" Zara said finally.</p><p>Maya put her arm around her friend's shoulders and didn't say anything else. Sometimes the most healing thing is just being present.</p><p>Sunny and Ray left the Smile Bag outside Zara's door that night — decorated with small paper stars, one for every person who was thinking of her.</p><p><em>HEAL does not mean forgetting. It means, slowly and in your own time, you find a way to carry it differently — lighter, with more grace. You are allowed to take as long as you need.</em></p>"
+  },
+  {
+    word:"MIGRATE", meaning:"Carrying home within yourself",
+    colorImg:"", bwImg:"",
+    hidden:["monarch butterfly","home compass","cloud world map","glowing heart house","southbound bird","stickered suitcase","home star"],
+    shortStory:"<p>Marcus had moved three times. Three schools, three sets of friends, three different bedrooms.</p><p>\"Don't you miss home?\" Lily asked.</p><p>Marcus smiled. \"I carry it with me. The songs my mom sings. The way my dad makes breakfast. The smell of my grandmother's house. Those go everywhere I go.\"</p><p>Ray nodded. \"That's MIGRATE — carrying home within yourself, no matter where life takes you.\"</p><p>Sunny held up the Smile Bag. \"Home is not just a place. It's what you carry inside.\"</p>",
+    longStory:"<p>When Marcus found out his family was moving again, he sat very still for a long time.</p><p>\"Monarch butterflies migrate thousands of miles,\" he told Zara. \"No individual butterfly lives long enough to complete the full cycle. But they know the way.\"</p><p>\"How?\" Zara asked.</p><p>\"It's inside them,\" he said. \"Encoded. They carry it.\"</p><p>Zara looked at him carefully. \"What do you carry?\"</p><p>He thought about it. His mother's voice singing in the kitchen. The exact smell of his grandmother's house. The sound of his neighborhood at night. His father's laugh.</p><p>\"Everything important,\" he said quietly.</p><p>Sunny and Ray delivered the Smile Bag to Marcus's house on his last night. Inside, Sofia had drawn a map — not of any real place, but of all the places that lived inside him.</p><p><em>Wherever you go, you carry every place you've ever belonged. MIGRATE means home is not lost when you leave it — it becomes part of you, carried in your heart across every distance.</em></p>"
+  },
+  {
+    word:"PERSIST", meaning:"Keeping going when it gets hard",
+    colorImg:"", bwImg:"",
+    hidden:["tortoise and hare","nearly-spent candle","broken-step staircase","mountain climber","bent tree","river through rock","cloud medal"],
+    shortStory:"<p>Owen had fallen off his bike five times.</p><p>\"Maybe I'm just not a bike person,\" he said, sitting on the grass.</p><p>\"Maybe you just haven't learned yet,\" said Lily, helping him up.</p><p>He tried again. And again. And on the eighth try — he didn't fall.</p><p>Sunny cheered so loudly the whole neighborhood heard.</p><p>\"That's PERSIST,\" Ray said. \"Keeping going when it gets hard. That's how everything worth doing gets done.\"</p>",
+    longStory:"<p>The competition was in two weeks and Owen had not nailed the routine once. Not once — in six weeks of practice.</p><p>\"Some people just aren't—\" he started.</p><p>\"Don't,\" said Marcus. \"You're not bad at this. You're in the middle of it. There's a difference.\"</p><p>He practiced again that night. And the next. Three days before the competition, alone in the gym, he finally nailed it. Then did it again to make sure it wasn't luck.</p><p>At the competition he came third. But he finished — clean, complete, proud.</p><p>\"PERSIST doesn't always mean winning,\" Lily said afterward.</p><p>\"No,\" Owen agreed. \"It means not stopping.\"</p><p>Sunny and Ray were there at the end, jumping up and down with the particular joy of people who had watched every struggle and never doubted the outcome.</p><p><em>PERSIST is not about being the best. It is about refusing to be stopped. Every time you get back up, try again, show up one more time — you are building something failure cannot touch: the knowledge that you do not quit.</em></p>"
+  },
+  {
+    word:"RENEW", meaning:"Starting fresh with new strength",
+    colorImg:"", bwImg:"",
+    hidden:["charging battery","sunrise","seasonal tree pair","fresh notebook page","butterfly transformation","dew drop","resetting clock"],
+    shortStory:"<p>It had been a very hard week. Lily felt worn out all the way to her bones.</p><p>\"I need to start over,\" she said.</p><p>\"You don't have to start over,\" said Maya gently. \"You just need to RENEW.\"</p><p>\"What's the difference?\"</p><p>\"Starting over means throwing away everything. Renewing means resting, refilling, and beginning again — stronger.\"</p><p>Ray handed her the Smile Bag. \"Sleep. Eat. Breathe. Then begin again.\"</p><p>\"Fresh,\" said Sunny. \"Like morning.\"</p>",
+    longStory:"<p>By Friday afternoon Lily felt like a phone running on 2% battery all week. She had given everything to everyone — and there was nothing left.</p><p>\"Trees shed their leaves in autumn,\" Marcus said the next day. \"Not because they're giving up. Because they're conserving energy to come back stronger in spring. That's renewal. It's a survival strategy.\"</p><p>Lily spent the weekend doing almost nothing. She slept. She ate real food. She sat in the garden and let the quiet fill her up.</p><p>On Monday she came back different — not fixed, not perfect, but genuinely refreshed. Like something had been replenished that she hadn't even realized was empty.</p><p>Sunny and Ray were waiting at school with the Smile Bag, which somehow smelled faintly of morning air.</p><p><em>RENEW is not giving up. It is the wisdom to know that you cannot pour from an empty cup. Rest. Refill. Begin again. You are allowed to start fresh as many times as you need to.</em></p>"
+  },
+  {
+    word:"RESTORE", meaning:"Bringing back what matters most",
+    colorImg:"", bwImg:"",
+    hidden:["before/after split","butterfly","restored tool","cracked-pot plant","color-restoring paintbrush","heart flower patch","ladybug"],
+    shortStory:"<p>The old bench in the park had been broken for a long time. Everyone walked past it. But Sofia stopped. She got some paint and a hammer and nails. She fixed it. Repainted it. Made it beautiful again.</p><p>The next day three people sat on it.</p><p>Ray watched them smile. \"That's RESTORE. Bringing back what matters most.\"</p><p>Sunny added, \"Sometimes all something needs is someone willing to care.\"</p>",
+    longStory:"<p>The community garden had been abandoned for two years — overgrown, the fence broken, tools rusted. Sofia thought otherwise.</p><p>It started with one afternoon. Then two. Then the others joined — Marcus researching which plants would grow best, Owen fixing the fence posts, Zara clearing the old beds, Lily planting new seeds, Maya painting a sign for the gate.</p><p>\"Why does this matter so much to you?\" Owen asked.</p><p>\"Because someone built this,\" Sofia said. \"Someone cared enough to make this thing. And it felt wrong to let it disappear just because no one was paying attention.\"</p><p>The garden didn't come back overnight. It came back in weeks — slowly, imperfectly, but genuinely.</p><p>Sunny and Ray planted the Smile Bag in the center like it was the most important seed of all.</p><p><em>RESTORE means refusing to let good things disappear without a fight. Whatever needs restoring — you have what it takes.</em></p>"
+  },
+  {
+    word:"RETURN", meaning:"Coming back to what is true",
+    colorImg:"", bwImg:"",
+    hidden:["true-north compass","honest mirror","returning path","bookmark in book","boomerang","star in constellation","key in lock"],
+    shortStory:"<p>Marcus had been trying so hard to be cool that he'd forgotten to be himself. He stopped laughing at the things he loved. Stopped talking about science.</p><p>\"I miss you,\" said Zara one day.</p><p>He looked at her. \"I'm right here.\"</p><p>\"No,\" she said kindly. \"The real you.\"</p><p>The next day he told a science fact at lunch and laughed too loudly at his own joke.</p><p>Sunny and Ray grinned at each other. \"He returned,\" Ray said.</p>",
+    longStory:"<p>For about three weeks Marcus had been someone slightly different. More careful about what he said and how he laughed. Watching other people to figure out the right way to be.</p><p>\"What happened to the periodic table poster?\" Zara asked. He'd taken it down.</p><p>\"It seemed... nerdy.\"</p><p>Zara said, \"It is nerdy. You're nerdy. That's why we love you.\"</p><p>It was said with such complete certainty that it stopped him cold. He thought about how exhausting it was performing a different version of himself.</p><p>He put the poster back up.</p><p>Sunny and Ray delivered the Smile Bag with a small mirror tucked inside — not for vanity, but for recognition.</p><p><em>RETURN means coming back to what is true — about yourself, about what matters, about who you really are. When the world asks you to be smaller or different, you are allowed to return to yourself. That is not weakness. That is wisdom.</em></p>"
+  },
+  {
+    word:"RISE", meaning:"Standing tall after falling down",
+    colorImg:"", bwImg:"",
+    hidden:["rising phoenix","sunrise","stump shoot","valley climber","hatching bird","ascending stairs","wave-lifted boat"],
+    shortStory:"<p>Lily fell. Hard. She sat on the ground for a moment, checking her hands and knees. They stung.</p><p>Sunny crouched down beside her. \"Ready?\"</p><p>\"Not yet,\" she said.</p><p>\"Okay,\" said Sunny. And waited.</p><p>After a minute she looked up. \"Okay. Now.\"</p><p>Sunny and Ray each took a hand and helped her up.</p><p>Ray smiled. \"That's RISE. You get to take a moment. And then you get up.\"</p>",
+    longStory:"<p>Owen had failed publicly. He'd frozen completely in the middle of his presentation and stood in silence for what felt like an hour before mumbling his way to the end. He spent the rest of the day wanting to disappear.</p><p>\"You know what I think is actually hard?\" Marcus said after school. \"Not falling. Falling is easy — it just happens. The hard part is deciding to get up when part of you wants to stay down.\"</p><p>\"The thing about rising,\" said Zara, \"is that it doesn't require feeling ready. It just requires deciding.\"</p><p>Owen went back to class the next day. He didn't feel ready. He just went. That was enough.</p><p>Sunny and Ray were at the door — one thumbs up, one peace sign — saying nothing else because nothing else needed to be said.</p><p><em>RISE does not require that you feel strong. It only requires one decision: to get up one more time. That decision, made quietly and imperfectly, is one of the bravest things a person can do.</em></p>"
+  },
+  {
+    word:"SHINE", meaning:"Letting your light reach others",
+    colorImg:"", bwImg:"",
+    hidden:["lighthouse beam","candle-lighting-candles","sunflower","night star","lantern","light-reflecting mirror","prism rainbow"],
+    shortStory:"<p>Sofia was nervous to share her drawing. What if no one liked it? But she held it up anyway — hands shaking just a little.</p><p>The room went quiet. Then everyone leaned in.</p><p>\"Sofia,\" said Lily. \"This is beautiful.\"</p><p>Sunny beamed. \"That's SHINE. When you share your gift — even when you're scared — your light reaches people who needed it.\"</p><p>Ray added softly, \"Someone in this room needed to see exactly what you made today.\"</p>",
+    longStory:"<p>Sofia had a gift. Everyone who knew her knew it. But she kept most of it private. Sketchbooks full of things no one had ever seen.</p><p>\"Gifts are strange,\" Zara said one day. \"They're only really gifts when you give them. Until then they're just things you have.\"</p><p>That sentence stayed with Sofia for a long time. She started sharing more — a sketch left on a friend's desk, a painting donated to the school office, a small drawing slipped anonymously into a Smile Bag.</p><p>Sunny and Ray delivered that bag personally and watched from across the room when the child opened it and held the drawing up to the light.</p><p><em>Your SHINE is not for you alone. The gifts you have — creativity, kindness, humor, insight, courage — were not given to you to be hidden. Someone out there is waiting for exactly the light only you can give. Let it reach them.</em></p>"
+  },
+  {
+    word:"SUSTAIN", meaning:"Keeping what is good alive",
+    colorImg:"", bwImg:"",
+    hidden:["protected flame","water cycle","returning bee","interval clock","marked calendar","deep-rooted heart","river with streams"],
+    shortStory:"<p>The friendship garden had been growing all year — watered and weeded and cared for every single week.</p><p>\"Why do you keep coming back?\" someone asked Maya.</p><p>\"Because good things need tending,\" she said. \"If you stop caring for something good, it fades. If you keep showing up — it grows.\"</p><p>Ray watered a small plant near the Smile Bag. \"SUSTAIN means keeping what is good alive. On purpose. Every day.\"</p><p>Sunny nodded. \"Love is a verb.\"</p>",
+    longStory:"<p>The group of friends had been together for two years. Long enough that some people had started to take it for granted. Maya didn't think that way.</p><p>She was the one who remembered birthdays. Who checked in when someone had been quiet too long. Who organized the small gatherings that kept the connection alive.</p><p>\"You're like the gardener,\" Zara told her once.</p><p>\"Someone has to be,\" Maya said simply.</p><p>\"Because I've seen what happens when good things aren't tended. They don't disappear dramatically. They just fade. Slowly. Until one day you look up and they're gone.\"</p><p>Sunny and Ray arrived with the Smile Bag every time — not just once, but again and again. Because that's what sustaining looks like. Showing up. Returning. Choosing to keep the good thing alive.</p><p><em>SUSTAIN is an act of love and intention. Good friendships, good habits, good communities — none maintain themselves. Show up. Return. Choose them again tomorrow. That is how good things survive.</em></p>"
+  },
+  {
+    word:"THRIVE", meaning:"Living at your fullest",
+    colorImg:"", bwImg:"",
+    hidden:["full sun","full bloom plant","musical note","heart trophy","free-flowing river","bird in flight","tall bright candle"],
+    shortStory:"<p>\"What does thriving feel like?\" Lily asked. Everyone thought about it.</p><p>\"Like when you're so into something that you forget to look at the clock,\" said Marcus.</p><p>\"Like when you laugh so hard your stomach hurts,\" said Owen.</p><p>\"Like when you did something hard and it worked,\" said Sofia.</p><p>\"Like being exactly where you're supposed to be,\" said Zara.</p><p>Ray smiled. \"THRIVE means living at your fullest. Not perfect — just fully, completely, joyfully you.\"</p><p>Sunny threw confetti from the Smile Bag. Just because.</p>",
+    longStory:"<p>There was a difference between surviving and thriving, and Lily had spent a long time doing the first while telling herself it was the second.</p><p>Surviving looked like: getting through the day. Doing what was required. Being fine.</p><p>Thriving looked like: the afternoon she spent three hours painting and forgot to eat. The morning she woke up genuinely excited. The conversation with Zara that left her feeling so understood she could barely speak.</p><p>\"How do you know when you're thriving?\" she asked Marcus.</p><p>\"I think it's when you stop noticing time. When you're so fully present that the clock becomes irrelevant.\"</p><p>Lily started making different choices — slowly, imperfectly, one at a time. More of the things that lit her up.</p><p>Sunny and Ray arrived with a Smile Bag full of tiny things: a flower seed, a page of a story, a small golden star. \"Plant one thing,\" said Ray. \"That you want to grow.\"</p><p><em>THRIVE means refusing to settle for merely getting through. Ask yourself: what makes me come alive? Then do more of that. You deserve a life that feels full, not just a life that looks fine.</em></p>"
+  },
+  {
+    word:"TRANSFORM", meaning:"Becoming something beautifully new",
+    colorImg:"", bwImg:"",
+    hidden:["butterfly sequence","coal-to-diamond","seed-to-tree","tadpole-to-frog","crystal rock","parting sky","transformation mirror"],
+    shortStory:"<p>The caterpillar went into the chrysalis as one thing and came out as something completely different.</p><p>\"Is it still the same creature?\" Lily asked.</p><p>\"Yes,\" said Marcus. \"And no. It kept what it needed and became something new.\"</p><p>Ray held the butterfly gently on his finger. \"TRANSFORM means you don't have to stay the same. Hard things can change you into something more beautiful than you were.\"</p><p>Sunny watched it fly away. \"That's the whole point,\" he said softly.</p>",
+    longStory:"<p>Owen had moved through the past year feeling like something inside him was being rearranged. The things that had mattered didn't matter the same way. He'd been broken open by a few hard things and somehow — impossibly — felt more himself than ever.</p><p>\"Is that weird?\" he asked Marcus.</p><p>\"That's transformation. In chemistry, a transformed substance isn't the same substance anymore. The properties change. But the underlying atoms — the real stuff — are still there. Just arranged differently.\"</p><p>\"So I'm still me.\"</p><p>\"You're still you. But the arrangement changed.\"</p><p>Sofia had been drawing him all year without telling him. She showed him the series at the end — same face, but something in the expression gradually opening, like a window being raised.</p><p><em>TRANSFORM does not mean losing yourself. It means becoming more fully yourself through the process of change. Hard things can be the pressure that shapes something more beautiful. You are always in the process of becoming.</em></p>"
+  },
+  {
+    word:"MOVE", meaning:"Taking the next step forward",
+    colorImg:"", bwImg:"",
+    hidden:["first footprint","open door","compass pointing forward","river finding its way","clock hands moving","sunrise path","hand reaching forward"],
+    shortStory:"<p>Everyone was waiting for the perfect moment. But the perfect moment didn't come.</p><p>\"What do we do?\" asked Lily.</p><p>Ray stood up. \"We MOVE,\" he said simply.</p><p>\"But what if it's not perfect?\"</p><p>\"It won't be,\" said Sunny. \"Nothing starts perfect. That's okay. Ready?\"</p><p>He held out his hand. She took it. They moved.</p>",
+    longStory:"<p>The hardest step is always the first one. Everyone knows this and no one finds it any less hard.</p><p>Maya had been standing at the edge of the thing for weeks. The conversation she needed to have. The apology she owed. The new direction she wanted to take. She had thought about it from every angle and still couldn't make herself begin.</p><p>\"The thinking is a way of not moving,\" Zara told her.</p><p>\"I know.\"</p><p>\"So move.\"</p><p>\"You have everything you need. You've always had everything you need. The only thing left is the first step.\"</p><p>Maya moved. One step. Then the next. Then the one after that.</p><p>Sunny and Ray were right behind her — not ahead, not pulling her forward. Just behind. Present. Steady. There.</p><p>The first step was the hardest. The second was a little easier. By the third, she was simply walking.</p><p><em>MOVE. Not perfectly, not with all the answers, not when you feel ready. Move with what you have, from where you are, toward what matters. The next step is enough. Take it.</em></p>"
+  }
+];
+
+var currentWordIdx = 0;
+var visitedWords = new Set();
+
+// ── INTRO ──────────────────────────────────────────────
+function toggleIntroStory(version, btn) {
+  document.getElementById('introShort').style.display = version==='short'?'block':'none';
+  document.getElementById('introLong').style.display  = version==='long'?'block':'none';
+  document.querySelectorAll('.story-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+}
+
+function showGrid() {
+  document.getElementById('introScreen').style.display  = 'none';
+  document.getElementById('gridScreen').style.display   = 'block';
+  document.getElementById('storyScreen').style.display  = 'none';
+  document.getElementById('gridScreen').classList.add('active');
+  document.getElementById('storyScreen').classList.remove('active');
+  buildGrid();
+  buildProgressDots();
+  window.scrollTo(0,0);
+}
+
+// ── WORD GRID ───────────────────────────────────────────
+function buildGrid() {
+  var g = document.getElementById('wordGrid');
+  if(g.children.length > 0) return; // already built
+  WORDS.forEach(function(w, i) {
+    var card = document.createElement('div');
+    card.className = 'word-card' + (visitedWords.has(i)?' done':'');
+    card.innerHTML =
+      '<div class="wc-num">'+(i+1)+' of '+WORDS.length+'</div>'+
+      '<div class="wc-word">'+w.word+'</div>'+
+      '<div class="wc-meaning">'+w.meaning+'</div>'+
+      '<div class="wc-check"></div>';
+    card.onclick = (function(idx){ return function(){ openWord(idx); }; })(i);
+    g.appendChild(card);
+  });
+}
+
+function buildProgressDots() {
+  var d = document.getElementById('progressDots');
+  d.innerHTML = '';
+  WORDS.forEach(function(w, i) {
+    var dot = document.createElement('div');
+    dot.className = 'progress-dot' + (visitedWords.has(i)?' visited':'') + (i===currentWordIdx?' current':'');
+    dot.title = w.word;
+    dot.onclick = (function(idx){ return function(){ openWord(idx); }; })(i);
+    d.appendChild(dot);
+  });
+}
+
+// ── STORY SCREEN ────────────────────────────────────────
+function openWord(idx) {
+  currentWordIdx = idx;
+  visitedWords.add(idx);
+  var w = WORDS[idx];
+
+  document.getElementById('introScreen').style.display  = 'none';
+  document.getElementById('gridScreen').style.display   = 'none';
+  document.getElementById('storyScreen').style.display  = 'block';
+  document.getElementById('gridScreen').classList.remove('active');
+  document.getElementById('storyScreen').classList.add('active');
+
+  // Title
+  document.getElementById('storyWordTitle').textContent = w.word;
+  document.getElementById('storyWordMeaning').textContent = '— '+w.meaning;
+
+  // Illustrations
+  var colorDiv = document.getElementById('colorIllus');
+  var bwDiv    = document.getElementById('bwIllus');
+
+  if(w.colorImg) {
+    var ci=document.createElement('img');
+    ci.src=w.colorImg; ci.alt=w.word+' color illustration';
+    ci.style.cssText='width:100%;display:block;cursor:zoom-in;';
+    ci.title='Click to view full size';
+    ci.onclick=(function(src){return function(){openLightbox(src);};})(w.colorImg);
+    colorDiv.innerHTML=''; colorDiv.appendChild(ci);
+  } else {
+    colorDiv.innerHTML = '<div class="illus-placeholder"><div class="ph-icon">&#127912;</div><p>Color illustration coming soon</p></div>';
+  }
+
+  if(w.bwImg) {
+    var bi=document.createElement('img');
+    bi.src=w.bwImg; bi.alt=w.word+' coloring page';
+    bi.style.cssText='width:100%;display:block;cursor:zoom-in;';
+    bi.title='Click to view full size';
+    bi.onclick=(function(src){return function(){openLightbox(src);};})(w.bwImg);
+    bwDiv.innerHTML=''; bwDiv.appendChild(bi);
+  } else {
+    bwDiv.innerHTML = '<div class="illus-placeholder"><div class="ph-icon">&#9999;&#65039;</div><p>Coloring page coming soon</p></div>';
+  }
+
+  // Download buttons
+  document.getElementById('downloadColor').onclick = function(){
+    if(w.colorImg){ downloadImg(w.colorImg, w.word+'_Color.png'); }
+    else{ alert('Color illustration coming soon!'); }
+  };
+  document.getElementById('downloadBW').onclick = function(){
+    if(w.bwImg){ downloadImg(w.bwImg, w.word+'_ColoringPage.png'); }
+    else{ alert('Coloring page coming soon!'); }
+  };
+
+  // Extra illustrations
+  var sec2 = document.getElementById('illusSection2');
+  if(w.extraImgs && w.extraImgs.length > 0){
+    var e = w.extraImgs[0];
+    sec2.style.display = 'grid';
+    var c2 = document.getElementById('colorIllus2');
+    var b2 = document.getElementById('bwIllus2');
+    if(e.color){
+      var ci2=document.createElement('img');
+      ci2.src=e.color; ci2.alt=w.word+' color 2';
+      ci2.style.cssText='width:100%;display:block;cursor:zoom-in;';
+      ci2.onclick=(function(src){return function(){openLightbox(src);};})(e.color);
+      c2.innerHTML=''; c2.appendChild(ci2);
+    } else { c2.innerHTML='<div class="illus-placeholder"><div class="ph-icon">&#127912;</div><p>Coming soon</p></div>'; }
+      '<div class="illus-placeholder"><div class="ph-icon">&#127912;</div><p>Coming soon</p></div>';
+    if(e.bw){
+      var bi2=document.createElement('img');
+      bi2.src=e.bw; bi2.alt=w.word+' coloring page 2';
+      bi2.style.cssText='width:100%;display:block;cursor:zoom-in;';
+      bi2.onclick=(function(src){return function(){openLightbox(src);};})(e.bw);
+      b2.innerHTML=''; b2.appendChild(bi2);
+    } else { b2.innerHTML='<div class="illus-placeholder"><div class="ph-icon">&#9999;&#65039;</div><p>Coming soon</p></div>'; }
+      '<div class="illus-placeholder"><div class="ph-icon">&#9999;&#65039;</div><p>Coming soon</p></div>';
+    document.getElementById('downloadColor2').onclick = function(){
+      if(e.color){ downloadImg(e.color, w.word+'_Color2.png'); }
+    };
+    document.getElementById('downloadBW2').onclick = function(){
+      if(e.bw){ downloadImg(e.bw, w.word+'_ColoringPage2.png'); }
+    };
+  } else {
+    sec2.style.display = 'none';
+  }
+
+  // Hidden objects
+  var ho = document.getElementById('hiddenObjects');
+  ho.innerHTML = '';
+  w.hidden.forEach(function(obj) {
+    var el = document.createElement('div');
+    el.className = 'hidden-obj';
+    el.innerHTML = '<div class="obj-check"></div>'+obj;
+    el.onclick = function(){ el.classList.toggle('found'); };
+    ho.appendChild(el);
+  });
+
+  // Interactive link
+  var strip = document.getElementById('interactiveStrip');
+  var link  = document.getElementById('interactiveLink');
+  if(w.interactiveUrl){
+    strip.style.display = 'block';
+    link.href = w.interactiveUrl;
+  } else {
+    strip.style.display = 'none';
+  }
+
+  // Stories
+  document.getElementById('shortStory').innerHTML = w.shortStory;
+  document.getElementById('longStory').innerHTML  = w.longStory;
+  document.getElementById('shortStory').classList.add('active');
+  document.getElementById('longStory').classList.remove('active');
+
+  // Reset age buttons
+  document.querySelectorAll('.age-btn').forEach(function(b,i){
+    b.classList.toggle('active', i===0);
+  });
+
+  // Navigation
+  document.getElementById('prevWordBtn').style.opacity  = idx===0?'0.3':'1';
+  document.getElementById('prevWordBtn').disabled = idx===0;
+  document.getElementById('nextWordBtn').textContent = idx===WORDS.length-1?'Back to All Words ✓':'Next Word →';
+  document.getElementById('wordCounter').textContent = (idx+1)+' of '+WORDS.length;
+
+  // Update grid visited state
+  document.querySelectorAll('.word-card').forEach(function(c,i){
+    c.classList.toggle('done', visitedWords.has(i));
+  });
+
+  window.scrollTo(0,0);
+}
+
+function toggleStory(version, btn) {
+  document.getElementById('shortStory').classList.toggle('active', version==='short');
+  document.getElementById('longStory').classList.toggle('active',  version==='long');
+  document.querySelectorAll('.age-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+}
+
+function navigateWord(dir) {
+  var next = currentWordIdx + dir;
+  if(next < 0) return;
+  if(next >= WORDS.length){ showGrid(); return; }
+  openWord(next);
+}
+
+function downloadImg(src, filename) {
+  var a = document.createElement('a');
+  a.href = src;
+  a.download = filename;
+  a.target = '_blank';
+  a.click();
+}
+
+function openLightbox(src) {
+  var lb = document.getElementById('lightbox');
+  var img = document.getElementById('lightboxImg');
+  img.src = src;
+  lb.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').style.display = 'none';
   document.body.style.overflow = '';
 }
 document.addEventListener('keydown', function(e){
