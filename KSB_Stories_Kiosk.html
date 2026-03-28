@@ -226,6 +226,19 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
     <div class="hidden-objects" id="hiddenObjects"></div>
   </div>
 
+  <!-- Interactive link (shown when available) -->
+  <div id="interactiveStrip" style="display:none;margin-bottom:20px;">
+    <a id="interactiveLink" href="#" target="_blank"
+      style="display:flex;align-items:center;gap:14px;background:#1F1700;border:2px solid #C8860A;border-radius:14px;padding:16px 22px;text-decoration:none;transition:all .2s;">
+      <span style="font-size:36px;">&#127918;</span>
+      <div>
+        <div style="font-family:'Fredoka One',cursive;font-size:18px;color:#F0C040;margin-bottom:3px;">Play the Interactive Hidden Picture!</div>
+        <div style="font-size:12px;color:#888;">Opens in a new tab &middot; Find all the hidden objects in the scene</div>
+      </div>
+      <span style="margin-left:auto;font-family:'Fredoka One',cursive;font-size:13px;color:#C8860A;white-space:nowrap;">Play &#8599;</span>
+    </a>
+  </div>
+
   <!-- Story -->
   <div class="story-section">
     <div class="story-section-title">&#128214; Read the Story</div>
@@ -306,6 +319,7 @@ var WORDS = [
   {
     word:"CYCLE", meaning:"Moving through seasons of change",
     colorImg:"", bwImg:"",
+    interactiveUrl:"https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_HiddenPicture_CYCLE%20(10).html",
     hidden:["monarch butterfly","caterpillar","mushrooms on bark","underground roots","robin with worm","splitting seed pod","moon and sun"],
     shortStory:"<p>Sunny and Ray carried their golden bag down a path covered in fallen leaves.</p><p>\"Everything changes,\" said Ray, picking up a red leaf. \"But look — even this leaf had a whole life.\"</p><p>Zara knelt beside a tiny green sprout pushing up through the dirt. \"Something new is already growing,\" she said softly.</p><p>Sunny grinned and gave a thumbs up. \"That's the CYCLE! Things end so new things can begin.\"</p><p>Ray placed the Smile Bag gently on the ground. \"Whatever you are going through right now — this is not the end. Something beautiful is on its way.\"</p>",
     longStory:"<p>The six friends gathered at the edge of the forest where the old oak tree had finally fallen. Its massive trunk lay across the mossy ground.</p><p>\"It feels sad,\" said Sofia, sketching the scene.</p><p>\"It is sad,\" said Maya. \"But look closer.\" She pointed to mushrooms growing along the bark. \"This tree isn't gone — it just changed form.\"</p><p>Owen climbed up on the trunk. \"So the end of one thing is actually the beginning of something else?\"</p><p>\"That's the CYCLE,\" said Marcus. \"In science we call it decomposition — but really it's just life making room for more life.\"</p><p>Zara stood quietly, watching a monarch butterfly land on a wildflower nearby.</p><p>Sunny and Ray set the Smile Bag at the base of the old tree — right where a new sapling was already reaching toward the light.</p><p><em>Whatever season you are in right now — the hard part, the waiting part, the not-yet part — remember that CYCLE means something new is already growing. You are part of something bigger than this moment.</em></p>"
@@ -527,6 +541,16 @@ function openWord(idx) {
     el.onclick = function(){ el.classList.toggle('found'); };
     ho.appendChild(el);
   });
+
+  // Interactive link
+  var strip = document.getElementById('interactiveStrip');
+  var link  = document.getElementById('interactiveLink');
+  if(w.interactiveUrl){
+    strip.style.display = 'block';
+    link.href = w.interactiveUrl;
+  } else {
+    strip.style.display = 'none';
+  }
 
   // Stories
   document.getElementById('shortStory').innerHTML = w.shortStory;
