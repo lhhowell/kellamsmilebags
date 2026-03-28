@@ -158,7 +158,7 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
   </div>
   <div class="nav-row">
     <button class="btn-back" onclick="nav(1)">&#8592; Back</button>
-    <button class="btn-next" onclick="toQuoteFromReflect()">Next &mdash; Write My Quote &rarr;</button>
+    <button class="btn-next" onclick="toReflect()">Next &mdash; Write My Quote &rarr;</button>
   </div>
 </div>
 
@@ -202,12 +202,12 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
     <div class="char-count"><span id="quoteCount">0</span>/120 characters</div>
   </div>
   <div class="nav-row">
-    <button class="btn-back" onclick="nav(2)">&#8592; Back</button>
+    <button class="btn-back" onclick="nav(3)">&#8592; Back</button>
     <button class="btn-next" onclick="toColors()">Next &mdash; Choose Colors &rarr;</button>
   </div>
 </div>
 
-<!-- S4: COLORS -->
+<!-- S5: COLORS -->
 <div class="screen" id="scr5">
   <div class="scr-hd"><h2>Choose Your Color Pair</h2><p>Color 1 is the card background. Color 2 is the text and accent color.</p></div>
   <div class="white-card">
@@ -220,7 +220,7 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
   </div>
 </div>
 
-<!-- S5: FONT -->
+<!-- S6: FONT -->
 <div class="screen" id="scr6">
   <div class="scr-hd"><h2>Choose Your Font Style</h2><p>Pick the style that best fits your quote's personality.</p></div>
   <div class="white-card">
@@ -232,7 +232,7 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
   </div>
 </div>
 
-<!-- S6: PREVIEW & SUBMIT -->
+<!-- S7: PREVIEW & SUBMIT -->
 <div class="screen" id="scr7">
   <div class="scr-hd"><h2 id="s7h">Your Quote Card!</h2><p>Submit it and Ms. Vinson will print and cut it for a child in the community.</p></div>
   <div class="white-card">
@@ -381,15 +381,15 @@ function toName(){
   nav(1);
 }
 function toWord(){
-  sName=document.getElementById("iName").value.trim()||"Student";
+  sName=document.getElementById("iName").value.trim();
   sGrade=document.getElementById("iGrade").value||"";
-  if(!sName||sName==="Student"){alert("Please enter your name!");return;}
+  if(!sName){alert("Please enter your name!");return;}
   document.getElementById("s3h").textContent="Write Your Quote, "+sName+"!";
   nav(2);
 }
-function toQuote(){
+function toReflect(){
   if(!selWord){alert("Please choose your OneWord!");return;}
-  document.getElementById("s3rh").textContent="Reflect on '" + (selWord?selWord.word:"Your Word") + "', " + sName + "!";
+  document.getElementById("s3rh").textContent="Reflect on '" + selWord.word + "', " + sName + "!";
   nav(3);
 }
 function toQuoteFromReflect(){
@@ -449,14 +449,12 @@ function drawCard(svgId){
     return lines;
   }
 
-  // Fixed positions
   var topOrnamentY = 42;
   var wordY        = 78;
   var divider1Y    = 98;
   var nameY        = 252;
   var footerY      = 272;
 
-  // Quote zone: 106 to 235 (vertically centered)
   var quoteZoneTop = 106;
   var quoteZoneBot = 235;
 
@@ -467,7 +465,7 @@ function drawCard(svgId){
   var quoteStartY  = quoteZoneTop+(quoteZoneBot-quoteZoneTop-totalQuoteH)/2+quoteFontSize/2;
 
   var quoteTextEls=quoteLines.map(function(line,i){
-    return '<text x="150" y="'+(quoteStartY+i*quoteLineH)+'" text-anchor="middle" dominant-baseline="middle" font-family="'+font+'" font-size="'+quoteFontSize+'" fill="'+c2+'" font-style="italic">'+escXml(line)+'</text>';
+    return '<text x="150" y="'+(quoteStartY+i*quoteLineH)+'" text-anchor="middle" dominant-baseline="middle" font-family="'+escXml(font)+'" font-size="'+quoteFontSize+'" fill="'+c2+'" font-style="italic">'+escXml(line)+'</text>';
   }).join('');
 
   var clip=isCircle?
@@ -488,16 +486,16 @@ function drawCard(svgId){
 
   svg.innerHTML=clip+bg+
     '<text x="150" y="'+topOrnamentY+'" text-anchor="middle" font-size="16" fill="'+c2+'" opacity="0.6">&#10022; &#10022; &#10022;</text>'+
-    '<text x="150" y="'+wordY+'" text-anchor="middle" dominant-baseline="middle" font-family="'Fredoka One', cursive" font-size="34" fill="'+c2+'" letter-spacing="4">'+escXml(word)+'</text>'+
+    '<text x="150" y="'+wordY+'" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="34" fill="'+c2+'" letter-spacing="4">'+escXml(word)+'</text>'+
     '<line x1="70" y1="'+divider1Y+'" x2="230" y2="'+divider1Y+'" stroke="'+c2+'" stroke-width="1.5" opacity="0.5"/>'+
     quoteTextEls+
     '<line x1="70" y1="240" x2="230" y2="240" stroke="'+c2+'" stroke-width="1" opacity="0.3"/>'+
-    '<text x="150" y="'+nameY+'" text-anchor="middle" dominant-baseline="middle" font-family="'Fredoka One', cursive" font-size="12" fill="'+c2+'" opacity="0.9">'+escXml(name)+'</text>'+
+    '<text x="150" y="'+nameY+'" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="12" fill="'+c2+'" opacity="0.9">'+escXml(name)+'</text>'+
     '<text x="150" y="'+footerY+'" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="8" fill="'+c2+'" opacity="0.45" letter-spacing="1">KELLAM SMILE BAGS · AVID · 2026</text>';
 }
 
 function escXml(str){
-  return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
 
 function buildFinalPreview(){
@@ -520,7 +518,6 @@ function doSubmit(){
     word:selWord?selWord.word:"",
     wordMeaning:selWord?selWord.meaning:"",
     reflection:sReflect,
-    wordMeaning:selWord?selWord.meaning:"",
     quote:sQuote,
     shape:selShape,
     colorPair:selPair?selPair.name:"",
