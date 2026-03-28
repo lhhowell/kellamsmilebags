@@ -174,8 +174,8 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
       <strong>Level 2</strong> &mdash; When have you seen this word come alive in real life?<br/>
       <strong>Level 3</strong> &mdash; What would this word mean to a child who is struggling right now?
     </div>
-    <label class="field-label">Your Quick Write <span style="color:#888;">(2&ndash;3 sentences)</span></label>
-    <textarea class="field-textarea" id="iReflect" maxlength="400" oninput="updateReflectCount()" placeholder="Start here: My word is ___ and to me it means... I have seen this happen when... A child who needs to hear this might be feeling..."></textarea>
+    <label class="field-label">Your Quick Write <span style="color:#888;">(2&ndash;3 sentences)</span> <span style="color:#CC0000;">&#10033; required</span></label>
+    <textarea class="field-textarea" id="iReflect" maxlength="400" oninput="updateReflectCount();this.style.borderColor=this.value.trim().length>20?'#1B7A78':'#CC0000';" placeholder="Start here: My word is ___ and to me it means... I have seen this happen when... A child who needs to hear this might be feeling..." style="border-color:#CC0000;"></textarea>
     <div class="char-count"><span id="reflectCount">0</span>/400 characters</div>
   </div>
   <div class="white-card">
