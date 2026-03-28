@@ -394,6 +394,8 @@ function toReflect(){
 }
 function toQuoteFromReflect(){
   sReflect=document.getElementById("iReflect").value.trim();
+  if(!sReflect){alert("Please complete your Quick Write before moving on!");return;}
+  if(sReflect.length<20){alert("Your Quick Write needs a little more — aim for 2 to 3 sentences!");return;}
   nav(4);
 }
 function toColors(){
