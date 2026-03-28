@@ -8,180 +8,121 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Nunito',sans-serif;background:#f5f5f5;padding:20px 16px;}
+.page{max-width:660px;margin:0 auto;background:#fff;border:1px solid #ddd;border-radius:10px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
 
-.page{max-width:680px;margin:0 auto;background:#fff;border:1px solid #ddd;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);}
+.hdr{background:#1A1A1A;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.hdr h1{font-family:'Fredoka One',cursive;font-size:19px;color:#F0C040;line-height:1.1;}
+.hdr p{font-size:10px;color:rgba(255,255,255,.55);margin-top:2px;letter-spacing:.4px;}
+.hdr-badge{background:#F0C040;color:#111;font-family:'Fredoka One',cursive;font-size:11px;padding:5px 12px;border-radius:50px;white-space:nowrap;}
 
-/* Header */
-.hdr{background:#1A1A1A;padding:22px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
-.hdr-left h1{font-family:'Fredoka One',cursive;font-size:22px;color:#F0C040;line-height:1.1;}
-.hdr-left p{font-size:11px;color:rgba(255,255,255,.6);margin-top:3px;letter-spacing:.5px;}
-.hdr-badge{background:#F0C040;color:#111;font-family:'Fredoka One',cursive;font-size:12px;padding:6px 14px;border-radius:50px;white-space:nowrap;letter-spacing:.5px;}
+.body{padding:14px 22px;}
 
-/* Body */
-.body{padding:20px 28px;}
-
-.intro{font-size:12px;color:#333;line-height:1.65;margin-bottom:14px;border-left:4px solid #C8860A;padding:10px 14px;background:#FFFBF0;border-radius:0 8px 8px 0;}
+.intro{font-size:11px;color:#333;line-height:1.6;margin-bottom:10px;border-left:4px solid #C8860A;padding:8px 12px;background:#FFFBF0;border-radius:0 6px 6px 0;}
 .intro strong{color:#1A1A1A;}
 
-/* Student fills out */
-.student-section{margin-bottom:14px;}
-.section-head{font-family:'Fredoka One',cursive;font-size:13px;color:#1B7A78;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
-.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;}
-.field{display:flex;flex-direction:column;gap:4px;}
-.field.full{grid-column:1/-1;}
-.field label{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#888;}
-.field-line{border-bottom:2px solid #C8860A;min-height:26px;}
+.section-head{font-family:'Fredoka One',cursive;font-size:11px;color:#1B7A78;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
 
-/* Checklist */
-.checklist{background:#F7F5F0;border-radius:10px;padding:12px 16px;margin-bottom:14px;}
-.checklist-title{font-family:'Fredoka One',cursive;font-size:13px;color:#1A1A1A;margin-bottom:10px;}
-.check-item{display:flex;align-items:flex-start;gap:8px;font-size:11px;color:#333;line-height:1.4;margin-bottom:5px;}
-.check-item:last-child{margin-bottom:0;}
-.check-box{width:14px;height:14px;border:2px solid #C8860A;border-radius:3px;flex-shrink:0;margin-top:2px;}
+/* Student fields — 4 across in one row */
+.fields-4{display:grid;grid-template-columns:2fr 1fr 1fr 2fr;gap:8px 14px;margin-bottom:10px;}
+.field{display:flex;flex-direction:column;gap:3px;}
+.field label{font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:#999;}
+.field-line{border-bottom:1.5px solid #C8860A;min-height:20px;}
 
-/* Sponsor sign-off */
-.signoff{border:2px dashed #C8860A;border-radius:10px;padding:12px 16px;margin-bottom:14px;}
-.signoff-title{font-family:'Fredoka One',cursive;font-size:13px;color:#C8860A;margin-bottom:6px;}
-.signoff-note{font-size:10px;color:#666;line-height:1.5;margin-bottom:10px;}
-.signoff-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;}
+/* Checklist — two columns */
+.checklist{background:#F7F5F0;border-radius:8px;padding:9px 14px;margin-bottom:10px;}
+.checklist-title{font-family:'Fredoka One',cursive;font-size:11px;color:#1A1A1A;margin-bottom:6px;}
+.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;}
+.check-item{display:flex;align-items:flex-start;gap:7px;font-size:10px;color:#333;line-height:1.4;}
+.check-box{width:11px;height:11px;border:1.5px solid #C8860A;border-radius:2px;flex-shrink:0;margin-top:2px;}
+
+/* Sponsor — inline layout */
+.signoff{border:2px dashed #C8860A;border-radius:8px;padding:9px 14px;margin-bottom:10px;}
+.signoff-title{font-family:'Fredoka One',cursive;font-size:11px;color:#C8860A;margin-bottom:3px;}
+.signoff-note{font-size:9.5px;color:#666;line-height:1.45;margin-bottom:8px;}
+.fields-2{display:grid;grid-template-columns:1fr 1fr;gap:7px 14px;}
+.fields-sig{display:grid;grid-template-columns:2fr 1fr 1fr;gap:7px 14px;margin-top:7px;}
 
 /* Office use */
-.office{background:#1A1A1A;padding:12px 16px;border-radius:10px;}
-.office-title{font-family:'Fredoka One',cursive;font-size:12px;color:#F0C040;letter-spacing:1px;margin-bottom:10px;}
-.office-fields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
-.office-field label{font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.5);display:block;margin-bottom:4px;}
-.office-line{border-bottom:1px solid rgba(240,192,64,.4);min-height:22px;}
+.office{background:#1A1A1A;padding:9px 14px;border-radius:8px;}
+.office-title{font-family:'Fredoka One',cursive;font-size:10px;color:#F0C040;letter-spacing:1px;margin-bottom:7px;}
+.office-fields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.office-field label{font-size:8px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.45);display:block;margin-bottom:3px;}
+.office-line{border-bottom:1px solid rgba(240,192,64,.35);min-height:18px;}
 
-/* Footer */
-.footer{text-align:center;padding:8px;font-size:9px;color:#aaa;border-top:1px solid #eee;font-style:italic;}
+.footer{text-align:center;padding:7px;font-size:9px;color:#bbb;border-top:1px solid #eee;font-style:italic;}
 
-/* Print — force single page */
+.no-print{text-align:center;margin-top:16px;}
+
 @media print{
-  @page{margin:0.35in;size:letter portrait;}
-  body{background:#fff;padding:0;margin:0;}
-  .page{border:none;border-radius:0;box-shadow:none;max-width:100%;page-break-after:avoid;}
+  @page{margin:0.4in;size:letter portrait;}
+  body{background:#fff;padding:0;}
+  .page{border:none;border-radius:0;box-shadow:none;max-width:100%;}
   .no-print{display:none;}
-  .hdr{padding:12px 20px;}
-  .hdr-left h1{font-size:17px;}
-  .body{padding:12px 20px;}
-  .intro{font-size:11px;padding:8px 12px;margin-bottom:12px;}
-  .student-section{margin-bottom:12px;}
-  .section-head{font-size:11px;margin-bottom:8px;}
-  .fields{gap:8px 16px;}
-  .field-line{min-height:20px;}
-  .checklist{padding:10px 14px;margin-bottom:12px;}
-  .checklist-title{font-size:11px;margin-bottom:6px;}
-  .check-item{font-size:10px;margin-bottom:4px;}
-  .check-box{width:11px;height:11px;}
-  .signoff{padding:10px 14px;margin-bottom:12px;}
-  .signoff-title{font-size:11px;margin-bottom:4px;}
-  .signoff-note{font-size:10px;margin-bottom:10px;}
-  .signoff-fields{gap:8px 16px;}
-  .office{padding:10px 14px;}
-  .office-title{font-size:10px;margin-bottom:6px;}
-  .office-fields{gap:8px;}
-  .office-line{min-height:18px;}
-  .footer{padding:8px;font-size:9px;}
+  .hdr{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .checklist{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .office{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .signoff{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .intro{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
 }
 </style>
 </head>
 <body>
-
 <div class="page">
 
-  <!-- HEADER -->
   <div class="hdr">
-    <div class="hdr-left">
-      <h1>Kellam Smile Bags</h1>
-      <p>Service Points Permission &middot; Spring 2026 &middot; Kellam High School</p>
+    <div>
+      <h1>Kellam Smile Bags — Service Points Permission</h1>
+      <p>Spring 2026 &middot; Kellam High School &middot; Return to Ms. Howell in D210</p>
     </div>
-    <div class="hdr-badge">&#127942; 5 Service Points</div>
+    <div class="hdr-badge">&#127942; 5 Points</div>
   </div>
 
   <div class="body">
 
-    <!-- INTRO -->
     <div class="intro">
-      I am requesting permission to earn <strong>5 service points</strong> through the <strong>Kellam Smile Bags</strong> project as a member of my club. I understand that I must complete at least <strong>10 original items</strong> across at least <strong>4 different kiosk activities</strong> and submit them digitally. Ms. Howell will verify all submissions. My club sponsor only needs to confirm that I am an active club member with permission to participate.
+      I am requesting permission to earn <strong>5 service points</strong> through <strong>Kellam Smile Bags</strong> as a club member. I will complete at least <strong>10 original items</strong> across at least <strong>4 different kiosk activities</strong> and submit them digitally. Ms. Howell verifies all submissions — my sponsor only confirms I am an active member with permission to participate.
     </div>
 
-    <!-- STUDENT INFO -->
-    <div class="student-section">
-      <div class="section-head">Student Information</div>
-      <div class="fields">
-        <div class="field">
-          <label>First Name</label>
-          <div class="field-line"></div>
-        </div>
-        <div class="field">
-          <label>Last Initial</label>
-          <div class="field-line"></div>
-        </div>
-        <div class="field">
-          <label>Grade</label>
-          <div class="field-line"></div>
-        </div>
-        <div class="field">
-          <label>Club Name</label>
-          <div class="field-line"></div>
-        </div>
+    <div class="section-head">Student Information</div>
+    <div class="fields-4">
+      <div class="field"><label>First Name</label><div class="field-line"></div></div>
+      <div class="field"><label>Last Initial</label><div class="field-line"></div></div>
+      <div class="field"><label>Grade</label><div class="field-line"></div></div>
+      <div class="field"><label>Club Name</label><div class="field-line"></div></div>
+    </div>
+
+    <div class="checklist">
+      <div class="checklist-title">Student Acknowledgment — I confirm that:</div>
+      <div class="check-grid">
+        <div class="check-item"><div class="check-box"></div>I will complete at least 10 original kiosk items.</div>
+        <div class="check-item"><div class="check-box"></div>Items will span at least 4 different activities.</div>
+        <div class="check-item"><div class="check-box"></div>3D-print items include a real Tinkercad/CAD link.</div>
+        <div class="check-item"><div class="check-box"></div>Ms. Howell verifies codes — my sponsor does not.</div>
+        <div class="check-item"><div class="check-box"></div>I will return this signed form to Ms. Howell in D210.</div>
+        <div class="check-item"><div class="check-box"></div>I may earn points for one complete bag per semester.</div>
       </div>
     </div>
 
-    <!-- STUDENT CHECKLIST -->
-    <div class="checklist">
-      <div class="checklist-title">Student Acknowledgment</div>
-      <div class="check-item"><div class="check-box"></div>I will complete at least 10 original items submitted through the Kellam Smile Bags kiosks.</div>
-      <div class="check-item"><div class="check-box"></div>I will submit items from at least 4 different kiosk activities.</div>
-      <div class="check-item"><div class="check-box"></div>I understand that 3D-printed items require a real design in Tinkercad, Fusion 360, or similar with a shareable link.</div>
-      <div class="check-item"><div class="check-box"></div>I understand that Ms. Howell verifies all KSB submission codes and my sponsor does not need to review individual items.</div>
-      <div class="check-item"><div class="check-box"></div>I will return this form to Ms. Howell in <strong>D210</strong> once my sponsor has signed below.</div>
-    </div>
-
-    <!-- SPONSOR SIGN-OFF -->
     <div class="signoff">
       <div class="signoff-title">&#128221; Club Sponsor Confirmation</div>
-      <div class="signoff-note">By signing, you confirm that this student is an active member of your club and has your permission to earn service points through the Kellam Smile Bags project. You are not responsible for verifying individual submissions — Ms. Howell handles all KSB code verification.</div>
-      <div class="signoff-fields">
-        <div class="field">
-          <label>Sponsor Printed Name</label>
-          <div class="field-line"></div>
-        </div>
-        <div class="field">
-          <label>Club Name</label>
-          <div class="field-line"></div>
-        </div>
-        <div class="field full">
-          <label>Sponsor Signature</label>
-          <div class="field-line" style="min-height:34px;"></div>
-        </div>
-        <div class="field">
-          <label>Date</label>
-          <div class="field-line"></div>
-        </div>
-        <div class="field">
-          <label>Best way to reach you (optional)</label>
-          <div class="field-line"></div>
-        </div>
+      <div class="signoff-note">By signing, you confirm this student is an active club member with permission to earn service points through Kellam Smile Bags. You are not responsible for verifying individual submissions — Ms. Howell handles all KSB code verification.</div>
+      <div class="fields-2">
+        <div class="field"><label>Sponsor Printed Name</label><div class="field-line"></div></div>
+        <div class="field"><label>Club Name</label><div class="field-line"></div></div>
+      </div>
+      <div class="fields-sig">
+        <div class="field"><label>Sponsor Signature</label><div class="field-line"></div></div>
+        <div class="field"><label>Date</label><div class="field-line"></div></div>
+        <div class="field"><label>Best way to reach you</label><div class="field-line"></div></div>
       </div>
     </div>
 
-    <!-- OFFICE USE -->
     <div class="office">
       <div class="office-title">&#128203; FOR MS. HOWELL — D210</div>
       <div class="office-fields">
-        <div class="office-field">
-          <label>Date Received</label>
-          <div class="office-line"></div>
-        </div>
-        <div class="office-field">
-          <label>KSB Codes Verified</label>
-          <div class="office-line"></div>
-        </div>
-        <div class="office-field">
-          <label>Points Approved &#9744;</label>
-          <div class="office-line"></div>
-        </div>
+        <div class="office-field"><label>Date Received</label><div class="office-line"></div></div>
+        <div class="office-field"><label>KSB Codes Verified</label><div class="office-line"></div></div>
+        <div class="office-field"><label>Points Approved &#9744;</label><div class="office-line"></div></div>
       </div>
     </div>
 
@@ -190,10 +131,8 @@ body{font-family:'Nunito',sans-serif;background:#f5f5f5;padding:20px 16px;}
   <div class="footer">Return completed form to Ms. Howell &middot; D210 &middot; Kellam High School &middot; Spring 2026 &middot; lhhowell.github.io/kellamsmilebags</div>
 </div>
 
-<!-- Print button — screen only -->
-<div class="no-print" style="text-align:center;margin-top:20px;">
-  <button onclick="window.print()" style="padding:12px 32px;background:#1A1A1A;color:#F0C040;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:16px;cursor:pointer;">&#128438; Print This Form</button>
+<div class="no-print">
+  <button onclick="window.print()" style="padding:11px 28px;background:#1A1A1A;color:#F0C040;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;">&#128438; Print This Form</button>
 </div>
-
 </body>
 </html>
