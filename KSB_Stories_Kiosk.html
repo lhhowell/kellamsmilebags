@@ -126,6 +126,14 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
 .progress-dot.current{background:var(--gold);border-color:var(--gold);transform:scale(1.3);}
 .progress-dot.visited{background:var(--teal);border-color:var(--teal);}
 
+/* ── LIGHTBOX ── */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center;padding:20px;cursor:zoom-out;}
+.lightbox.open{display:flex;}
+.lightbox img{max-width:95vw;max-height:92vh;border-radius:12px;box-shadow:0 0 60px rgba(200,134,10,.4);object-fit:contain;}
+.lightbox-close{position:absolute;top:16px;right:20px;font-family:'Fredoka One',cursive;font-size:28px;color:#F0C040;cursor:pointer;line-height:1;background:rgba(0,0,0,.5);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;}
+.illus-card img{cursor:zoom-in;transition:opacity .2s;}
+.illus-card img:hover{opacity:.85;}
+
 @media(max-width:700px){
   .word-grid{grid-template-columns:repeat(3,1fr);}
   .illus-section{grid-template-columns:1fr;}
@@ -273,6 +281,12 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
     <span class="word-counter" id="wordCounter"></span>
     <button class="word-nav-btn primary" id="nextWordBtn" onclick="navigateWord(1)">Next Word &#8594;</button>
   </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-close" onclick="closeLightbox()">&#x2715;</div>
+  <img id="lightboxImg" src="" alt="Full size illustration"/>
 </div>
 
 <script>
@@ -532,13 +546,13 @@ function openWord(idx) {
   var bwDiv    = document.getElementById('bwIllus');
 
   if(w.colorImg) {
-    colorDiv.innerHTML = '<img src="'+w.colorImg+'" alt="'+w.word+' color illustration"/>';
+    colorDiv.innerHTML = '<img src="'+w.colorImg+'" alt="'+w.word+' color illustration" onclick="openLightbox(\'"+w.colorImg+"\')" title="Click to view full size"/>';
   } else {
     colorDiv.innerHTML = '<div class="illus-placeholder"><div class="ph-icon">&#127912;</div><p>Color illustration coming soon</p></div>';
   }
 
   if(w.bwImg) {
-    bwDiv.innerHTML = '<img src="'+w.bwImg+'" alt="'+w.word+' coloring page"/>';
+    bwDiv.innerHTML = '<img src="'+w.bwImg+'" alt="'+w.word+' coloring page" onclick="openLightbox(\'"+w.bwImg+"\')" title="Click to view full size"/>';
   } else {
     bwDiv.innerHTML = '<div class="illus-placeholder"><div class="ph-icon">&#9999;&#65039;</div><p>Coloring page coming soon</p></div>';
   }
@@ -560,9 +574,9 @@ function openWord(idx) {
     sec2.style.display = 'grid';
     var c2 = document.getElementById('colorIllus2');
     var b2 = document.getElementById('bwIllus2');
-    c2.innerHTML = e.color ? '<img src="'+e.color+'" alt="'+w.word+' color 2" style="width:100%;display:block;"/>' :
+    c2.innerHTML = e.color ? '<img src="'+e.color+'" alt="'+w.word+' color 2" style="width:100%;display:block;" onclick="openLightbox(\'"+e.color+"\')" title="Click to view full size"/>' :
       '<div class="illus-placeholder"><div class="ph-icon">&#127912;</div><p>Coming soon</p></div>';
-    b2.innerHTML = e.bw ? '<img src="'+e.bw+'" alt="'+w.word+' coloring page 2" style="width:100%;display:block;"/>' :
+    b2.innerHTML = e.bw ? '<img src="'+e.bw+'" alt="'+w.word+' coloring page 2" style="width:100%;display:block;" onclick="openLightbox(\'"+e.bw+"\')" title="Click to view full size"/>' :
       '<div class="illus-placeholder"><div class="ph-icon">&#9999;&#65039;</div><p>Coming soon</p></div>';
     document.getElementById('downloadColor2').onclick = function(){
       if(e.color){ downloadImg(e.color, w.word+'_Color2.png'); }
@@ -641,6 +655,19 @@ function downloadImg(src, filename) {
   a.target = '_blank';
   a.click();
 }
+
+function openLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape') closeLightbox();
+});
 
 // Start on intro screen
 document.getElementById('gridScreen').style.display  = 'none';
