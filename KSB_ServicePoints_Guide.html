@@ -495,16 +495,27 @@ function buildTracker(){
     var linkRow=document.createElement("div");
     linkRow.className="tracker-link-row";
     linkRow.style.cssText="display:none;grid-column:1/-1;padding:6px 0 10px 6px;";
-    linkRow.innerHTML=
-      '<div style="display:flex;align-items:center;gap:8px;background:#1F1700;border:2px solid #C8860A;border-radius:10px;padding:8px 12px;">'+
-        '<span style="font-size:18px;">&#128249;</span>'+
-        '<div style="flex:1;">'+
-          '<div style="font-family:'Fredoka One',cursive;font-size:11px;color:#C8860A;letter-spacing:1px;margin-bottom:4px;">TINKERCAD / FUSION 360 SHAREABLE LINK <span style="color:#FF6666;">* required</span></div>'+
-          '<input type="url" class="design-link-input" placeholder="https://www.tinkercad.com/things/... or similar" '+
-          'style="width:100%;border:none;border-bottom:2px solid #C8860A;background:transparent;font-family:Nunito,sans-serif;font-size:13px;color:#ddd;outline:none;padding:2px 0;" '+
-          'oninput="this.style.borderColor=this.value.trim().length>10?'#1B7A78':'#C8860A'"/>'+
-        '</div>'+
-      '</div>';
+    var linkDiv=document.createElement("div");
+    linkDiv.style.cssText="display:flex;align-items:center;gap:8px;background:#1F1700;border:2px solid #C8860A;border-radius:10px;padding:8px 12px;";
+    var linkIcon=document.createElement("span");
+    linkIcon.style.fontSize="18px";
+    linkIcon.textContent="&#128249;";
+    var linkInner=document.createElement("div");
+    linkInner.style.flex="1";
+    var linkLabel=document.createElement("div");
+    linkLabel.style.cssText="font-family:Arial,sans-serif;font-weight:800;font-size:11px;color:#C8860A;letter-spacing:1px;margin-bottom:4px;";
+    linkLabel.innerHTML='TINKERCAD / FUSION 360 SHAREABLE LINK <span style="color:#FF6666;">* required</span>';
+    var linkInput=document.createElement("input");
+    linkInput.type="url";
+    linkInput.className="design-link-input";
+    linkInput.placeholder="https://www.tinkercad.com/things/... or similar";
+    linkInput.style.cssText="width:100%;border:none;border-bottom:2px solid #C8860A;background:transparent;font-family:Nunito,sans-serif;font-size:13px;color:#ddd;outline:none;padding:2px 0;";
+    linkInput.addEventListener("input",function(){this.style.borderColor=this.value.trim().length>10?"#1B7A78":"#C8860A";});
+    linkInner.appendChild(linkLabel);
+    linkInner.appendChild(linkInput);
+    linkDiv.appendChild(linkIcon);
+    linkDiv.appendChild(linkInner);
+    linkRow.appendChild(linkDiv);
     row.appendChild(linkRow);
     wrap.appendChild(row);
   }
