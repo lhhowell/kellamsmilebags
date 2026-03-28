@@ -54,15 +54,29 @@ body{font-family:'Nunito',sans-serif;background:#f5f5f5;padding:20px 16px;}
 .no-print{text-align:center;margin-top:16px;}
 
 @media print{
-  @page{margin:0.4in;size:letter portrait;}
+  @page{margin:0.25in;size:letter portrait;}
   body{background:#fff;padding:0;}
   .page{border:none;border-radius:0;box-shadow:none;max-width:100%;}
   .no-print{display:none;}
-  .hdr{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .checklist{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .office{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .signoff{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .hdr{-webkit-print-color-adjust:exact;print-color-adjust:exact;padding:10px 18px;}
+  .body{padding:10px 18px;}
+  .intro{margin-bottom:7px;padding:6px 10px;font-size:10px;}
+  .checklist{padding:7px 12px;margin-bottom:7px;-webkit-print-color-adjust:exact;print-color-adjust:exact;page-break-inside:avoid;}
+  .signoff{padding:7px 12px;margin-bottom:7px;-webkit-print-color-adjust:exact;print-color-adjust:exact;page-break-inside:avoid;}
+  .office{padding:7px 12px;-webkit-print-color-adjust:exact;print-color-adjust:exact;page-break-inside:avoid;break-inside:avoid;}
   .intro{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .fields-4{gap:6px 10px;margin-bottom:7px;}
+  .field-line{min-height:16px;}
+  .office-line{min-height:14px;}
+  .footer{padding:5px;}
+  .section-head{margin-bottom:5px;}
+  .checklist-title{margin-bottom:4px;}
+  .check-item{font-size:9.5px;}
+  .signoff-note{font-size:9px;}
+  .fields-2{gap:5px 12px;}
+  .fields-sig{gap:5px 12px;margin-top:5px;}
+  .office-fields{gap:6px;}
+  .office-title{margin-bottom:5px;}
 }
 </style>
 </head>
