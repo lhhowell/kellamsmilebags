@@ -424,7 +424,7 @@ function loadTicker() {
     renderTicker(18, false);
     return;
   }
-  fetch(SCRIPT_URL)
+  fetch(SCRIPT_URL, {redirect:'follow', mode:'cors'})
     .then(function(r){ return r.json(); })
     .then(function(d){
       renderTicker(d.remaining, d.full);
