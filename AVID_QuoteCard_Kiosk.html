@@ -459,7 +459,7 @@ function drawCard(svgId){
   var quoteZoneBot = 216;
 
   var quoteLines   = wrapText(quote, 22);
-  var quoteFontSize= quoteLines.length>5?14:quoteLines.length>4?15:quoteLines.length>3?16:18;
+  var quoteFontSize= quoteLines.length>5?15:quoteLines.length>4?17:quoteLines.length>3?19:22;
   var quoteLineH   = quoteFontSize+6;
   var totalQuoteH  = quoteLines.length*quoteLineH;
   var quoteStartY  = quoteZoneTop+(quoteZoneBot-quoteZoneTop-totalQuoteH)/2+quoteFontSize/2;
