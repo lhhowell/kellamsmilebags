@@ -37,6 +37,9 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
 .field-label{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;display:block;margin-bottom:8px;}
 .field-inp{width:100%;padding:13px 16px;border:3px solid #C8E6C9;border-radius:12px;font-family:'Nunito',sans-serif;font-size:18px;outline:none;transition:border-color .2s;margin-bottom:14px;}
 .field-inp:focus{border-color:#1B7A78;}
+.toggle-row{display:flex;gap:10px;margin-bottom:16px;}
+.toggle-btn{flex:1;padding:12px;border:3px solid #C8E6C9;border-radius:12px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;background:#fff;color:#888;transition:all .2s;text-align:center;}
+.toggle-btn.sel{background:#1B7A78;border-color:#1B7A78;color:#fff;}
 .word-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
 .word-card{background:#fff;border:3px solid #C8E6C9;border-radius:12px;padding:10px 6px;cursor:pointer;text-align:center;transition:all .2s;}
 .word-card:hover{border-color:#1B7A78;transform:translateY(-1px);}
@@ -142,8 +145,16 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
   <div class="white-card">
     <label class="field-label">Your first name</label>
     <input class="field-inp" id="iName" type="text" placeholder="Type your name here..."/>
-    <label class="field-label">Your teacher</label>
-    <select class="field-inp" id="iTeacher" style="cursor:pointer;">
+
+    <label class="field-label">Are you here with a class or a club?</label>
+    <div class="toggle-row">
+      <button class="toggle-btn sel" id="togClass" onclick="setGroup('class')">&#127979; Class</button>
+      <button class="toggle-btn" id="togClub" onclick="setGroup('club')">&#127381; Club</button>
+    </div>
+
+    <div id="grpClass">
+      <label class="field-label">Your teacher</label>
+      <select class="field-inp" id="iTeacher" style="cursor:pointer;">
 <option value="">-- Select your teacher --</option>
 <option value="Acikgoz, Sehriban">Acikgoz, Sehriban</option>
 <option value="Aiello, Patrick">Aiello, Patrick</option>
@@ -248,8 +259,19 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
 <option value="Willoughby, Amanda">Willoughby, Amanda</option>
 <option value="Young, Elizabeth">Young, Elizabeth</option>
 <option value="Zanetti, Steven">Zanetti, Steven</option>
-    </select>
-    <label class="field-label" style="margin-top:14px;">Your grade (optional)</label>
+      </select>
+    </div><!-- end grpClass -->
+
+    <div id="grpClub" style="display:none;">
+      <label class="field-label">Your club sponsor</label>
+      <select class="field-inp" id="iSponsor" style="cursor:pointer;">
+        <option value="">-- Select your sponsor --</option>
+        <option value="Manco, Teresa (Bible Club)">Bible Club &mdash; Manco, Teresa</option>
+        <option value="Evans, Angie (Speech Club)">Speech Club &mdash; Evans, Angie</option>
+      </select>
+    </div><!-- end grpClub -->
+
+    <label class="field-label" style="margin-top:4px;">Your grade (optional)</label>
     <input class="field-inp" id="iGrade" type="text" placeholder="e.g. 10th grade"/>
   </div>
   <div class="nav-row">
@@ -437,13 +459,22 @@ var EMOJIS = ["star","heart","rainbow","butterfly","blossom","sunflower","paw","
 var EMOJI_HTML = ["&#11088;","&#10084;&#65039;","&#127752;","&#129419;","&#127800;","&#127803;","&#128062;","&#128079;","&#9889;","&#127882;","&#128293;","&#127919;","&#128142;","&#127775;","&#129409;","&#128588;","&#128034;","&#127956;","&#128640;","&#127793;","&#127942;","&#128161;","&#10024;","&#128149;"];
 
 var selPath=null, selWord=null, selPair=null, selTC=null, selBC=null;
-var sTeacher="";
+var sTeacher="", sSponsor="";
 var selEmojiIdx=0;
 var sName="", sGrade="";
+var _group="class";
 
 document.addEventListener("DOMContentLoaded",function(){
   buildWordGrid(); buildPairGrid(); buildColorGrid("topGrid","top"); buildColorGrid("botGrid","bot"); buildEmojiGrid();
 });
+
+function setGroup(g){
+  _group=g;
+  document.getElementById("grpClass").style.display=g==="class"?"block":"none";
+  document.getElementById("grpClub").style.display=g==="club"?"block":"none";
+  document.getElementById("togClass").classList.toggle("sel",g==="class");
+  document.getElementById("togClub").classList.toggle("sel",g==="club");
+}
 
 function pickPath(p,el){
   document.querySelectorAll(".path-card").forEach(function(c){c.classList.remove("sel");});
@@ -516,7 +547,6 @@ function buildEmojiGrid(){
   });
 }
 
-// Navigation helpers
 function toName(){
   if(!selPath){alert("Please choose what you would like to make!");return;}
   sName=document.getElementById("iName").value.trim()||"";
@@ -526,9 +556,16 @@ function toName(){
 
 function toWord(){
   sName=document.getElementById("iName").value.trim()||"Student";
-  sTeacher=document.getElementById("iTeacher").value.trim()||"";
   sGrade=document.getElementById("iGrade").value.trim()||"";
-  if(!sTeacher){alert("Please select your teacher!");return;}
+  if(_group==="class"){
+    sTeacher=document.getElementById("iTeacher").value.trim()||"";
+    sSponsor="";
+    if(!sTeacher){alert("Please select your teacher!");return;}
+  } else {
+    sSponsor=document.getElementById("iSponsor").value.trim()||"";
+    sTeacher="";
+    if(!sSponsor){alert("Please select your club sponsor!");return;}
+  }
   if(selPath==="spinner"){toColors();}else{nav(2);}
 }
 
@@ -583,10 +620,8 @@ function drawBK(svgId){
   var c1=selPair.c1.h,c2=selPair.c2.h;
   var word=selWord?selWord.word:"SMILE";
   var em=EMOJI_HTML[selEmojiIdx]||EMOJI_HTML[0];
-  // Larger, more realistic bookmark proportions
   var W=220, cx=110, R=72, cy=R+10;
   var stemTop=cy, stemH=320, totalH=cy+stemH+16;
-  // Large font — scales down only for very long words
   var len=word.length;
   var fs=len<=5?38:len<=8?32:len<=10?26:len<=12?22:18;
   svg.setAttribute("viewBox","0 0 "+W+" "+totalH);
@@ -622,7 +657,15 @@ function buildFinal(){
 function doSubmit(){
   var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
   document.getElementById("tokCode").textContent=tok;
-  var payload={action:selPath,studentName:sName,studentGrade:sGrade,teacher:sTeacher,token:tok};
+  var payload={
+    action:selPath,
+    studentName:sName,
+    studentGrade:sGrade,
+    teacher:sTeacher||"",
+    sponsor:sSponsor||"",
+    groupType:_group,
+    token:tok
+  };
   if(selPath==="bookmark"){
     payload.word=selWord?selWord.word:"";
     payload.wordMeaning=selWord?selWord.meaning:"";
