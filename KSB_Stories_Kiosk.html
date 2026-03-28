@@ -546,13 +546,24 @@ function openWord(idx) {
   var bwDiv    = document.getElementById('bwIllus');
 
   if(w.colorImg) {
-    colorDiv.innerHTML = '<img src="'+w.colorImg+'" alt="'+w.word+' color illustration" onclick="openLightbox(\'"+w.colorImg+"\')" title="Click to view full size"/>';
+  if(w.colorImg) {
+    var ci=document.createElement('img');
+    ci.src=w.colorImg; ci.alt=w.word+' color illustration';
+    ci.style.cssText='width:100%;display:block;cursor:zoom-in;';
+    ci.title='Click to view full size';
+    ci.onclick=(function(src){return function(){openLightbox(src);};})(w.colorImg);
+    colorDiv.innerHTML=''; colorDiv.appendChild(ci);
   } else {
     colorDiv.innerHTML = '<div class="illus-placeholder"><div class="ph-icon">&#127912;</div><p>Color illustration coming soon</p></div>';
   }
 
   if(w.bwImg) {
-    bwDiv.innerHTML = '<img src="'+w.bwImg+'" alt="'+w.word+' coloring page" onclick="openLightbox(\'"+w.bwImg+"\')" title="Click to view full size"/>';
+    var bi=document.createElement('img');
+    bi.src=w.bwImg; bi.alt=w.word+' coloring page';
+    bi.style.cssText='width:100%;display:block;cursor:zoom-in;';
+    bi.title='Click to view full size';
+    bi.onclick=(function(src){return function(){openLightbox(src);};})(w.bwImg);
+    bwDiv.innerHTML=''; bwDiv.appendChild(bi);
   } else {
     bwDiv.innerHTML = '<div class="illus-placeholder"><div class="ph-icon">&#9999;&#65039;</div><p>Coloring page coming soon</p></div>';
   }
@@ -574,9 +585,21 @@ function openWord(idx) {
     sec2.style.display = 'grid';
     var c2 = document.getElementById('colorIllus2');
     var b2 = document.getElementById('bwIllus2');
-    c2.innerHTML = e.color ? '<img src="'+e.color+'" alt="'+w.word+' color 2" style="width:100%;display:block;" onclick="openLightbox(\'"+e.color+"\')" title="Click to view full size"/>' :
+    if(e.color){
+      var ci2=document.createElement('img');
+      ci2.src=e.color; ci2.alt=w.word+' color 2';
+      ci2.style.cssText='width:100%;display:block;cursor:zoom-in;';
+      ci2.onclick=(function(src){return function(){openLightbox(src);};})(e.color);
+      c2.innerHTML=''; c2.appendChild(ci2);
+    } else { c2.innerHTML='<div class="illus-placeholder"><div class="ph-icon">&#127912;</div><p>Coming soon</p></div>'; }
       '<div class="illus-placeholder"><div class="ph-icon">&#127912;</div><p>Coming soon</p></div>';
-    b2.innerHTML = e.bw ? '<img src="'+e.bw+'" alt="'+w.word+' coloring page 2" style="width:100%;display:block;" onclick="openLightbox(\'"+e.bw+"\')" title="Click to view full size"/>' :
+    if(e.bw){
+      var bi2=document.createElement('img');
+      bi2.src=e.bw; bi2.alt=w.word+' coloring page 2';
+      bi2.style.cssText='width:100%;display:block;cursor:zoom-in;';
+      bi2.onclick=(function(src){return function(){openLightbox(src);};})(e.bw);
+      b2.innerHTML=''; b2.appendChild(bi2);
+    } else { b2.innerHTML='<div class="illus-placeholder"><div class="ph-icon">&#9999;&#65039;</div><p>Coming soon</p></div>'; }
       '<div class="illus-placeholder"><div class="ph-icon">&#9999;&#65039;</div><p>Coming soon</p></div>';
     document.getElementById('downloadColor2').onclick = function(){
       if(e.color){ downloadImg(e.color, w.word+'_Color2.png'); }
