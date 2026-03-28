@@ -452,14 +452,14 @@ function drawCard(svgId){
   var topOrnamentY = 42;
   var wordY        = 78;
   var divider1Y    = 98;
-  var nameY        = 252;
-  var footerY      = 272;
+  var nameY        = 246;
+  var footerY      = 262;
 
   var quoteZoneTop = 106;
-  var quoteZoneBot = 235;
+  var quoteZoneBot = 232;
 
   var quoteLines   = wrapText(quote, 22);
-  var quoteFontSize= quoteLines.length>5?12:quoteLines.length>4?13:quoteLines.length>3?14:15;
+  var quoteFontSize= quoteLines.length>5?14:quoteLines.length>4?15:quoteLines.length>3?16:18;
   var quoteLineH   = quoteFontSize+6;
   var totalQuoteH  = quoteLines.length*quoteLineH;
   var quoteStartY  = quoteZoneTop+(quoteZoneBot-quoteZoneTop-totalQuoteH)/2+quoteFontSize/2;
@@ -484,14 +484,17 @@ function drawCard(svgId){
   svg.setAttribute("width","300");
   svg.setAttribute("height","300");
 
-  svg.innerHTML=clip+bg+
+  svg.innerHTML=clip+
+    '<g clip-path="url(#cardClip)">'+
+    bg+
     '<text x="150" y="'+topOrnamentY+'" text-anchor="middle" font-size="16" fill="'+c2+'" opacity="0.6">&#10022; &#10022; &#10022;</text>'+
     '<text x="150" y="'+wordY+'" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="34" fill="'+c2+'" letter-spacing="4">'+escXml(word)+'</text>'+
     '<line x1="70" y1="'+divider1Y+'" x2="230" y2="'+divider1Y+'" stroke="'+c2+'" stroke-width="1.5" opacity="0.5"/>'+
     quoteTextEls+
-    '<line x1="70" y1="240" x2="230" y2="240" stroke="'+c2+'" stroke-width="1" opacity="0.3"/>'+
+    '<line x1="70" y1="236" x2="230" y2="236" stroke="'+c2+'" stroke-width="1" opacity="0.3"/>'+
     '<text x="150" y="'+nameY+'" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="12" fill="'+c2+'" opacity="0.9">'+escXml(name)+'</text>'+
-    '<text x="150" y="'+footerY+'" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="8" fill="'+c2+'" opacity="0.45" letter-spacing="1">KELLAM SMILE BAGS · AVID · 2026</text>';
+    '<text x="150" y="'+footerY+'" text-anchor="middle" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="8" fill="'+c2+'" opacity="0.45" letter-spacing="1">KELLAM SMILE BAGS · AVID · 2026</text>'+
+    '</g>';
 }
 
 function escXml(str){
