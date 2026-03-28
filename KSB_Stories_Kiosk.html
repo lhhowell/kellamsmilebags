@@ -219,6 +219,23 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
       <button class="download-btn bw" id="downloadBW">&#11015;&#65039; Download Coloring Page</button>
     </div>
   </div>
+  <!-- Extra illustration pair (shown when word has extraImgs) -->
+  <div class="illus-section" id="illusSection2" style="display:none;">
+    <div class="illus-card">
+      <div class="illus-card-hdr">
+        <span>&#127912; COLOR ILLUSTRATION 2</span>
+      </div>
+      <div id="colorIllus2"></div>
+      <button class="download-btn color" id="downloadColor2">&#11015;&#65039; Download Color Version</button>
+    </div>
+    <div class="illus-card">
+      <div class="illus-card-hdr">
+        <span>&#9999;&#65039; COLORING PAGE 2</span>
+      </div>
+      <div id="bwIllus2"></div>
+      <button class="download-btn bw" id="downloadBW2">&#11015;&#65039; Download Coloring Page</button>
+    </div>
+  </div>
 
   <!-- Hidden Picture -->
   <div class="hidden-strip">
@@ -320,6 +337,10 @@ var WORDS = [
     word:"CYCLE", meaning:"Moving through seasons of change",
     colorImg:"https://lhhowell.github.io/kellamsmilebags/Cycle_Color.png",
     bwImg:"https://lhhowell.github.io/kellamsmilebags/Cycle_ColoringPage.png",
+    extraImgs:[
+      {color:"https://lhhowell.github.io/kellamsmilebags/Cycle_Color2.png",
+       bw:"https://lhhowell.github.io/kellamsmilebags/Cycle_ColoringPage2.png"}
+    ],
     interactiveUrl:"https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_HiddenPicture_CYCLE%20(10).html",
     hidden:["monarch butterfly","caterpillar","mushrooms on bark","underground roots","robin with worm","splitting seed pod","moon and sun"],
     shortStory:"<p>Sunny and Ray carried their golden bag down a path covered in fallen leaves.</p><p>\"Everything changes,\" said Ray, picking up a red leaf. \"But look — even this leaf had a whole life.\"</p><p>Zara knelt beside a tiny green sprout pushing up through the dirt. \"Something new is already growing,\" she said softly.</p><p>Sunny grinned and gave a thumbs up. \"That's the CYCLE! Things end so new things can begin.\"</p><p>Ray placed the Smile Bag gently on the ground. \"Whatever you are going through right now — this is not the end. Something beautiful is on its way.\"</p>",
@@ -531,6 +552,27 @@ function openWord(idx) {
     if(w.bwImg){ downloadImg(w.bwImg, w.word+'_ColoringPage.png'); }
     else{ alert('Coloring page coming soon!'); }
   };
+
+  // Extra illustrations
+  var sec2 = document.getElementById('illusSection2');
+  if(w.extraImgs && w.extraImgs.length > 0){
+    var e = w.extraImgs[0];
+    sec2.style.display = 'grid';
+    var c2 = document.getElementById('colorIllus2');
+    var b2 = document.getElementById('bwIllus2');
+    c2.innerHTML = e.color ? '<img src="'+e.color+'" alt="'+w.word+' color 2" style="width:100%;display:block;"/>' :
+      '<div class="illus-placeholder"><div class="ph-icon">&#127912;</div><p>Coming soon</p></div>';
+    b2.innerHTML = e.bw ? '<img src="'+e.bw+'" alt="'+w.word+' coloring page 2" style="width:100%;display:block;"/>' :
+      '<div class="illus-placeholder"><div class="ph-icon">&#9999;&#65039;</div><p>Coming soon</p></div>';
+    document.getElementById('downloadColor2').onclick = function(){
+      if(e.color){ downloadImg(e.color, w.word+'_Color2.png'); }
+    };
+    document.getElementById('downloadBW2').onclick = function(){
+      if(e.bw){ downloadImg(e.bw, w.word+'_ColoringPage2.png'); }
+    };
+  } else {
+    sec2.style.display = 'none';
+  }
 
   // Hidden objects
   var ho = document.getElementById('hiddenObjects');
