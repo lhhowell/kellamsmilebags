@@ -733,6 +733,7 @@ function openWord(idx) {
   document.getElementById('elemHubContent').style.display='block';
   document.getElementById('secHubContent').style.display='none';
   document.querySelectorAll('.hs-hide').forEach(function(el){ el.style.display=''; });
+  // strips shown after word data is loaded — handled below
 
   // Navigation
   document.getElementById('prevWordBtn').style.opacity  = idx===0?'0.3':'1';
@@ -759,19 +760,21 @@ function switchWordTab(version, btn) {
   document.getElementById('elemHubContent').style.display = 'none';
   document.getElementById('secHubContent').style.display = 'none';
   document.querySelectorAll('.hs-hide').forEach(function(el){ el.style.display='none'; });
+  document.getElementById('interactiveStrip').style.display = 'none';
+  document.getElementById('activityStrip').style.display = 'none';
 
-  // Show correct content
-  if(version==='short')   { document.getElementById('shortStory').classList.add('active'); }
-  if(version==='long')    { document.getElementById('longStory').classList.add('active'); }
-  if(version==='elemhub' || version==='default') {
+  // Show correct content per tab
+  if(version==='short') { document.getElementById('shortStory').classList.add('active'); }
+  if(version==='long')  { document.getElementById('longStory').classList.add('active'); }
+  if(version==='elemhub') {
     document.getElementById('elemHubContent').style.display='block';
     document.querySelectorAll('.hs-hide').forEach(function(el){ el.style.display=''; });
-    // Re-show interactive and activity strips if they have content
     var iStrip = document.getElementById('interactiveStrip');
     var aStrip = document.getElementById('activityStrip');
     if(iStrip && iStrip.dataset.hasUrl==='1') iStrip.style.display='block';
-    if(aStrip && aStrip.dataset.hasUrl==='1') aStrip.style.display='block'; }
-  if(version==='sechub')  { document.getElementById('secHubContent').style.display='block'; }
+    if(aStrip && aStrip.dataset.hasUrl==='1') aStrip.style.display='block';
+  }
+  if(version==='sechub') { document.getElementById('secHubContent').style.display='block'; }
 
   // Reset all tab buttons
   document.querySelectorAll('.age-btn').forEach(function(b){
