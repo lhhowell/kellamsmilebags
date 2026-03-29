@@ -211,23 +211,23 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
     </div>
   </div>
 
-  <!-- Story + High School Tabs -->
+  <!-- 4 Tabs -->
   <div class="story-section">
     <div class="story-section-title">&#128214; Explore This Word</div>
     <div class="age-toggle">
       <button class="age-btn active" onclick="switchWordTab('short',this)">&#127800; Elementary</button>
+      <button class="age-btn" onclick="switchWordTab('elemhub',this)">&#127912; Elementary Hub</button>
       <button class="age-btn" onclick="switchWordTab('long',this)">&#128218; Secondary</button>
-      <button class="age-btn" onclick="switchWordTab('hs',this)" style="background:linear-gradient(135deg,#2A0A4E,#1A0A2E);border-color:#9B59B6;color:#D7A8F0;">&#127919; High School</button>
+      <button class="age-btn" onclick="switchWordTab('sechub',this)" style="background:linear-gradient(135deg,#2A0A4E,#1A0A2E);border-color:#9B59B6;color:#D7A8F0;">&#127919; Secondary Hub</button>
     </div>
     <div class="story-content active" id="shortStory"></div>
+    <div class="story-content" id="elemHubContent" style="display:none;"><div id="elemHubInner"></div></div>
     <div class="story-content" id="longStory"></div>
-    <div class="story-content" id="hsContent" style="display:none;">
-      <div id="hsInner"></div>
-    </div>
+    <div class="story-content" id="secHubContent" style="display:none;"><div id="secHubInner"></div></div>
   </div>
 
   <!-- Illustrations -->
-  <div class="illus-section" id="illusSection">
+  <div class="illus-section hs-hide" id="illusSection">
     <div class="illus-card">
       <div class="illus-card-hdr"><span>&#127912; COLOR ILLUSTRATION</span></div>
       <div id="colorIllus"></div>
@@ -241,7 +241,7 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
   </div>
 
   <!-- Extra illustrations -->
-  <div class="illus-section" id="illusSection2" style="display:none;">
+  <div class="illus-section hs-hide" id="illusSection2" style="display:none;">
     <div class="illus-card">
       <div class="illus-card-hdr"><span>&#127912; COLOR ILLUSTRATION 2</span></div>
       <div id="colorIllus2"></div>
@@ -255,13 +255,13 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
   </div>
 
   <!-- Hidden Picture -->
-  <div class="hidden-strip">
+  <div class="hidden-strip hs-hide">
     <div class="hidden-strip-title">&#128269; Can You Find the Hidden Pictures?</div>
     <div class="hidden-objects" id="hiddenObjects"></div>
   </div>
 
   <!-- Interactive link -->
-  <div id="interactiveStrip" style="display:none;margin-bottom:20px;">
+  <div id="interactiveStrip" class="hs-hide" style="display:none;margin-bottom:20px;">
     <a id="interactiveLink" href="#" target="_blank"
       style="display:flex;align-items:center;gap:14px;background:#1F1700;border:2px solid #C8860A;border-radius:14px;padding:16px 22px;text-decoration:none;">
       <span style="font-size:36px;">&#127918;</span>
@@ -274,7 +274,7 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
   </div>
 
   <!-- Activity Sheets -->
-  <div id="activityStrip" style="display:none;margin-bottom:20px;">
+  <div id="activityStrip" class="hs-hide" style="display:none;margin-bottom:20px;">
     <div style="font-family:'Fredoka One',cursive;font-size:16px;color:#F0C040;margin-bottom:10px;">&#127912; Activity Sheets</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
       <a id="coloringSheetLink" href="#" target="_blank"
@@ -665,12 +665,12 @@ function openWord(idx) {
   });
 
   // Populate High School tab
-  var hsInner = document.getElementById('hsInner');
+  var secInner = document.getElementById('secHubInner');
   if(w.activityHubUrl){
-    hsInner.innerHTML =
+    secInner.innerHTML =
       '<div style="text-align:center;padding:28px 0 16px;">'+
       '<div style="font-size:48px;margin-bottom:12px;">&#127919;</div>'+
-      '<div style="font-family:Fredoka One,cursive;font-size:24px;color:#D7A8F0;margin-bottom:8px;">Activity Hub</div>'+
+      '<div style="font-family:Fredoka One,cursive;font-size:24px;color:#D7A8F0;margin-bottom:8px;">Secondary Hub</div>'+
       '<div style="font-size:14px;color:#888;line-height:1.7;max-width:480px;margin:0 auto 24px;">'+
       'Four interactive activities built around this word — play, create, and download something to share with a child.'+
       '</div>'+
@@ -688,10 +688,10 @@ function openWord(idx) {
       'background:linear-gradient(135deg,#6C3483,#9B59B6);color:#fff;border:none;border-radius:50px;'+
       'padding:14px 36px;font-family:Fredoka One,cursive;font-size:18px;text-decoration:none;'+
       'box-shadow:0 6px 24px rgba(155,89,182,.4);">'+
-      '&#127919; Enter the Activity Hub &#8599;</a>'+
+      '&#127919; Enter the Secondary Hub &#8599;</a>'+
       '</div>';
   } else {
-    hsInner.innerHTML = '<div style="text-align:center;padding:32px;color:#555;font-style:italic;">Activities coming soon for this word!</div>';
+    secInner.innerHTML = '<div style="text-align:center;padding:32px;color:#555;font-style:italic;">Activities coming soon for this word!</div>';
   }
 
   // Interactive link
@@ -727,7 +727,7 @@ function openWord(idx) {
   document.getElementById('shortStory').classList.add('active');
   document.getElementById('longStory').classList.remove('active');
 
-  // Reset story tabs to Elementary
+  // Reset all tabs to Elementary
   document.querySelectorAll('.age-btn').forEach(function(b,i){
     b.classList.remove('active');
     b.style.background=''; b.style.borderColor=''; b.style.color='';
@@ -735,7 +735,9 @@ function openWord(idx) {
   });
   document.getElementById('shortStory').classList.add('active');
   document.getElementById('longStory').classList.remove('active');
-  document.getElementById('hsContent').style.display='none';
+  document.getElementById('elemHubContent').style.display='none';
+  document.getElementById('secHubContent').style.display='none';
+  document.querySelectorAll('.hs-hide').forEach(function(el){ el.style.display='none'; });
 
   // Navigation
   document.getElementById('prevWordBtn').style.opacity  = idx===0?'0.3':'1';
@@ -756,21 +758,26 @@ function toggleStory(version, btn) {
 }
 
 function switchWordTab(version, btn) {
-  document.getElementById('shortStory').classList.toggle('active', version==='short');
-  document.getElementById('longStory').classList.toggle('active', version==='long');
-  var hsDiv = document.getElementById('hsContent');
-  if(version==='hs'){
-    hsDiv.style.display='block';
-    document.getElementById('shortStory').classList.remove('active');
-    document.getElementById('longStory').classList.remove('active');
-  } else {
-    hsDiv.style.display='none';
-  }
+  // Hide all content first
+  document.getElementById('shortStory').classList.remove('active');
+  document.getElementById('longStory').classList.remove('active');
+  document.getElementById('elemHubContent').style.display = 'none';
+  document.getElementById('secHubContent').style.display = 'none';
+  document.querySelectorAll('.hs-hide').forEach(function(el){ el.style.display='none'; });
+
+  // Show correct content
+  if(version==='short')   { document.getElementById('shortStory').classList.add('active'); }
+  if(version==='long')    { document.getElementById('longStory').classList.add('active'); }
+  if(version==='elemhub') { document.getElementById('elemHubContent').style.display='block';
+    document.querySelectorAll('.hs-hide').forEach(function(el){ el.style.display=''; }); }
+  if(version==='sechub')  { document.getElementById('secHubContent').style.display='block'; }
+
+  // Reset all tab buttons
   document.querySelectorAll('.age-btn').forEach(function(b){
     b.classList.remove('active');
     b.style.background=''; b.style.borderColor=''; b.style.color='';
   });
-  if(version==='hs'){
+  if(version==='sechub'){
     btn.style.background='linear-gradient(135deg,#9B59B6,#6C3483)';
     btn.style.borderColor='#9B59B6'; btn.style.color='#fff';
   } else {
