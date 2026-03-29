@@ -211,19 +211,19 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
     </div>
   </div>
 
-  <!-- Story + High School Tabs -->
+  <!-- 4 Tabs -->
   <div class="story-section">
     <div class="story-section-title">&#128214; Explore This Word</div>
     <div class="age-toggle">
       <button class="age-btn active" onclick="switchWordTab('short',this)">&#127800; Elementary</button>
+      <button class="age-btn" onclick="switchWordTab('elemhub',this)">&#127912; Elementary Hub</button>
       <button class="age-btn" onclick="switchWordTab('long',this)">&#128218; Secondary</button>
-      <button class="age-btn" onclick="switchWordTab('hs',this)" style="background:linear-gradient(135deg,#2A0A4E,#1A0A2E);border-color:#9B59B6;color:#D7A8F0;">&#127919; High School</button>
+      <button class="age-btn" onclick="switchWordTab('sechub',this)" style="background:linear-gradient(135deg,#2A0A4E,#1A0A2E);border-color:#9B59B6;color:#D7A8F0;">&#127919; Secondary Hub</button>
     </div>
     <div class="story-content active" id="shortStory"></div>
+    <div class="story-content" id="elemHubContent" style="display:none;"><div id="elemHubInner"></div></div>
     <div class="story-content" id="longStory"></div>
-    <div class="story-content" id="hsContent" style="display:none;">
-      <div id="hsInner"></div>
-    </div>
+    <div class="story-content" id="secHubContent" style="display:none;"><div id="secHubInner"></div></div>
   </div>
 
   <!-- Illustrations -->
@@ -296,19 +296,7 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
         <span style="margin-left:auto;font-family:'Fredoka One',cursive;font-size:12px;color:#C8860A;">Open &#8599;</span>
       </a>
     </div>
-    <!-- HIGH SCHOOLERS TAB -->
-    <a id="activityHubLink" href="#" target="_blank" style="display:none;
-      flex-direction:row;align-items:center;gap:14px;
-      background:linear-gradient(135deg,#1A0A2E,#2A0A4E);
-      border:2px solid #9B59B6;border-radius:14px;padding:16px 22px;
-      text-decoration:none;transition:all .2s;">
-      <span style="font-size:36px;">&#127919;</span>
-      <div>
-        <div style="font-family:'Fredoka One',cursive;font-size:18px;color:#D7A8F0;margin-bottom:3px;">High Schoolers — Activity Hub</div>
-        <div style="font-size:12px;color:#888;">Jigsaw &middot; Maze &middot; Brain Challenge &middot; Digital Paint &middot; Download &amp; Share</div>
-      </div>
-      <span style="margin-left:auto;font-family:'Fredoka One',cursive;font-size:13px;color:#9B59B6;white-space:nowrap;">Enter &#8599;</span>
-    </a>
+
   </div>
 
   <!-- Word Navigation -->
@@ -333,8 +321,12 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
 var WORDS = [
   {
     word:"ABSORB", meaning:"Taking in everything around you",
-    colorImg:"", bwImg:"",
-    hidden:["butterfly","spider web","ladybug","rainbow in puddle","bird's nest","snail","dragonfly"],
+    colorImg:"https://lhhowell.github.io/kellamsmilebags/Absorb_Color.png",
+    bwImg:"https://lhhowell.github.io/kellamsmilebags/Absorb_ColoringPage.png",
+    coloringSheetUrl:"https://lhhowell.github.io/kellamsmilebags/ABSORB_ColoringSheet.html",
+    matchingSheetUrl:"https://lhhowell.github.io/kellamsmilebags/ABSORB_MatchingSheet.html",
+    activityHubUrl:"https://lhhowell.github.io/kellamsmilebags/ABSORB_ActivityHub.html",
+    hidden:["butterfly","spider web","ladybug","rainbow in puddle","bird's nest","snail","dragonfly","ant","dewdrop","mushroom"],
     shortStory:"<p>Marcos sat very still in the middle of the garden, eyes closed and arms open wide.</p><p>\"What are you doing?\" asked Lily.</p><p>\"Absorbing,\" he whispered. \"The sun on my face, the wind in my ears, the smell of the flowers — I'm taking it all in.\"</p><p>Lily closed her eyes too. For a moment, everything felt full and warm and real.</p><p>Sunny held up a thumbs up. \"When you ABSORB the world around you, you collect it inside your heart forever.\"</p><p>Ray placed the Smile Bag gently nearby. \"Even on hard days — there is always something beautiful worth absorbing.\"</p>",
     longStory:"<p>Marcos had always been the kind of kid who noticed things others walked right past. The way morning light made spider webs look like silver lace. The way rain smelled different on hot pavement versus cool grass.</p><p>\"You're always so quiet,\" Sofia said one afternoon as they sat on the hill behind the school.</p><p>\"I'm not quiet,\" Marcos said. \"I'm absorbing.\"</p><p>\"What's the difference?\"</p><p>\"Quiet means nothing's happening,\" he said. \"Absorbing means everything is happening — I'm just taking it all in.\"</p><p>Sofia picked up her sketchbook and looked around with new eyes. The shadows of clouds moving across the field. The ant carrying something three times its size. She started drawing — faster than usual.</p><p>Sunny and Ray arrived at the top of the hill and set the Smile Bag between them, watching their friends in comfortable silence.</p><p><em>You don't have to understand everything right away. Sometimes the most powerful thing you can do is slow down, open up, and ABSORB. The world is always teaching — you just have to be still enough to listen.</em></p>"
   },
@@ -665,12 +657,12 @@ function openWord(idx) {
   });
 
   // Populate High School tab
-  var hsInner = document.getElementById('hsInner');
+  var secInner = document.getElementById('secHubInner');
   if(w.activityHubUrl){
-    hsInner.innerHTML =
+    secInner.innerHTML =
       '<div style="text-align:center;padding:28px 0 16px;">'+
       '<div style="font-size:48px;margin-bottom:12px;">&#127919;</div>'+
-      '<div style="font-family:Fredoka One,cursive;font-size:24px;color:#D7A8F0;margin-bottom:8px;">Activity Hub</div>'+
+      '<div style="font-family:Fredoka One,cursive;font-size:24px;color:#D7A8F0;margin-bottom:8px;">Secondary Hub</div>'+
       '<div style="font-size:14px;color:#888;line-height:1.7;max-width:480px;margin:0 auto 24px;">'+
       'Four interactive activities built around this word — play, create, and download something to share with a child.'+
       '</div>'+
@@ -688,10 +680,10 @@ function openWord(idx) {
       'background:linear-gradient(135deg,#6C3483,#9B59B6);color:#fff;border:none;border-radius:50px;'+
       'padding:14px 36px;font-family:Fredoka One,cursive;font-size:18px;text-decoration:none;'+
       'box-shadow:0 6px 24px rgba(155,89,182,.4);">'+
-      '&#127919; Enter the Activity Hub &#8599;</a>'+
+      '&#127919; Enter the Secondary Hub &#8599;</a>'+
       '</div>';
   } else {
-    hsInner.innerHTML = '<div style="text-align:center;padding:32px;color:#555;font-style:italic;">Activities coming soon for this word!</div>';
+    secInner.innerHTML = '<div style="text-align:center;padding:32px;color:#555;font-style:italic;">Activities coming soon for this word!</div>';
   }
 
   // Interactive link
@@ -706,17 +698,16 @@ function openWord(idx) {
 
   // Activity sheets
   var actStrip = document.getElementById('activityStrip');
-  if(w.coloringSheetUrl || w.matchingSheetUrl || w.activityHubUrl){
+  if(w.coloringSheetUrl || w.matchingSheetUrl){
     actStrip.style.display = 'block';
     var cl = document.getElementById('coloringSheetLink');
     var ml = document.getElementById('matchingSheetLink');
-    var hl = document.getElementById('activityHubLink');
+
     if(w.coloringSheetUrl){ cl.href=w.coloringSheetUrl; cl.style.opacity='1'; cl.style.pointerEvents='auto'; }
     else { cl.style.opacity='0.4'; cl.style.pointerEvents='none'; }
     if(w.matchingSheetUrl){ ml.href=w.matchingSheetUrl; ml.style.opacity='1'; ml.style.pointerEvents='auto'; }
     else { ml.style.opacity='0.4'; ml.style.pointerEvents='none'; }
-    if(w.activityHubUrl){ hl.style.display='flex'; hl.href=w.activityHubUrl; }
-    else { hl.style.display='none'; }
+
   } else {
     actStrip.style.display = 'none';
   }
@@ -727,7 +718,7 @@ function openWord(idx) {
   document.getElementById('shortStory').classList.add('active');
   document.getElementById('longStory').classList.remove('active');
 
-  // Reset story tabs to Elementary
+  // Reset all tabs to Elementary
   document.querySelectorAll('.age-btn').forEach(function(b,i){
     b.classList.remove('active');
     b.style.background=''; b.style.borderColor=''; b.style.color='';
@@ -735,7 +726,9 @@ function openWord(idx) {
   });
   document.getElementById('shortStory').classList.add('active');
   document.getElementById('longStory').classList.remove('active');
-  document.getElementById('hsContent').style.display='none';
+  document.getElementById('elemHubContent').style.display='none';
+  document.getElementById('secHubContent').style.display='none';
+  document.querySelectorAll('.hs-hide').forEach(function(el){ el.style.display='none'; });
 
   // Navigation
   document.getElementById('prevWordBtn').style.opacity  = idx===0?'0.3':'1';
@@ -756,26 +749,26 @@ function toggleStory(version, btn) {
 }
 
 function switchWordTab(version, btn) {
-  document.getElementById('shortStory').classList.toggle('active', version==='short');
-  document.getElementById('longStory').classList.toggle('active', version==='long');
-  var hsDiv = document.getElementById('hsContent');
-  var isHS = version==='hs';
-  if(isHS){
-    hsDiv.style.display='block';
-    document.getElementById('shortStory').classList.remove('active');
-    document.getElementById('longStory').classList.remove('active');
-  } else {
-    hsDiv.style.display='none';
-  }
-  // Hide/show illustrations and activities when HS tab active
-  document.querySelectorAll('.hs-hide').forEach(function(el){
-    el.style.display = isHS ? 'none' : '';
-  });
+  // Hide all content first
+  document.getElementById('shortStory').classList.remove('active');
+  document.getElementById('longStory').classList.remove('active');
+  document.getElementById('elemHubContent').style.display = 'none';
+  document.getElementById('secHubContent').style.display = 'none';
+  document.querySelectorAll('.hs-hide').forEach(function(el){ el.style.display='none'; });
+
+  // Show correct content
+  if(version==='short')   { document.getElementById('shortStory').classList.add('active'); }
+  if(version==='long')    { document.getElementById('longStory').classList.add('active'); }
+  if(version==='elemhub') { document.getElementById('elemHubContent').style.display='block';
+    document.querySelectorAll('.hs-hide').forEach(function(el){ el.style.display=''; }); }
+  if(version==='sechub')  { document.getElementById('secHubContent').style.display='block'; }
+
+  // Reset all tab buttons
   document.querySelectorAll('.age-btn').forEach(function(b){
     b.classList.remove('active');
     b.style.background=''; b.style.borderColor=''; b.style.color='';
   });
-  if(isHS){
+  if(version==='sechub'){
     btn.style.background='linear-gradient(135deg,#9B59B6,#6C3483)';
     btn.style.borderColor='#9B59B6'; btn.style.color='#fff';
   } else {
