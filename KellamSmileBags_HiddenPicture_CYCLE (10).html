@@ -36,22 +36,70 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#E8F5E9 0
 .footer{font-size:11px;color:#aaa;letter-spacing:.5px;text-align:center;}
 
 @media print {
+  @page { margin: 0.3in; size: letter portrait; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 0; background: #fff; }
   .score-bar { display: none !important; }
   .page-title { display: none !important; }
-  .print-btn { display: none !important; }
+  .print-header, .print-footer { display: none; }
+.print-btn { display: none !important; }
   .found-list { display: none !important; }
   .hotspot { display: none !important; }
-  body { margin: 0; padding: 0; background: #fff; }
-  .image-wrap { 
-    position: fixed; top: 0; left: 0; 
-    width: 100vw; height: 100vh;
+
+  /* Object list — compact single row at top */
+  .print-header {
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 14px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1.5px solid #ccc;
+  }
+  .print-header-title {
+    display: block !important;
+    width: 100%;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 13pt;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+  .print-header-item {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    font-size: 8pt;
+    color: #333;
+    gap: 2px;
+  }
+  .print-header-item img { width: 28px; height: 28px; object-fit: contain; }
+
+  /* Image fills the rest of the page */
+  .image-wrap {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
     border-radius: 0 !important;
     box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
   }
   .image-wrap img {
     width: 100% !important;
-    height: 100% !important;
+    height: auto !important;
+    display: block !important;
     object-fit: contain !important;
+  }
+  .print-footer {
+    display: block !important;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 7pt;
+    color: #aaa;
+    margin-top: 4px;
   }
 }
 .print-btn {
@@ -76,6 +124,21 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#E8F5E9 0
 </style>
 </head>
 <body>
+<!-- PRINT HEADER — hidden on screen, shows when printing -->
+<div class="print-header">
+  <div class="print-header-title">&#128269; Find these 10 hidden objects!</div>
+  <div class="print-header-item"><span style="font-size:20pt;">🐦</span><span>Robin</span></div>
+<div class="print-header-item"><span style="font-size:20pt;">🦋</span><span>Butterfly</span></div>
+<div class="print-header-item"><span style="font-size:20pt;">🦋</span><span>Butterfly</span></div>
+<div class="print-header-item"><span style="font-size:20pt;">🍶</span><span>Water Bottle</span></div>
+<div class="print-header-item"><span style="font-size:20pt;">⚙️</span><span>Wheel</span></div>
+<div class="print-header-item"><span style="font-size:20pt;">🍃</span><span>Leaf</span></div>
+<div class="print-header-item"><span style="font-size:20pt;">🍄</span><span>Mushroom</span></div>
+<div class="print-header-item"><span style="font-size:20pt;">🌱</span><span>Sprout</span></div>
+<div class="print-header-item"><span style="font-size:20pt;">🫘</span><span>Seed</span></div>
+<div class="print-header-item"><span style="font-size:20pt;">🍌</span><span>Banana</span></div>
+
+</div>
 
 <div class="page-title">Kellam Smile Bags · <span>CYCLE</span> Hidden Picture</div>
 <div class="score-bar">
@@ -186,5 +249,7 @@ init();
   &#128438; Print Hidden Picture
 </button>
 
+<!-- PRINT FOOTER -->
+<div class="print-footer">Kellam Smile Bags &middot; Kellam High School &middot; Spring 2026 &middot; lhhowell.github.io/kellamsmilebags</div>
 </body>
 </html>
