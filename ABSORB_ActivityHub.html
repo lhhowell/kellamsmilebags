@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ABSORB — Activity Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#111;min-height:100vh;color:#fff;}
+
+/* ── HEADER ── */
+.hub-hdr{background:linear-gradient(135deg,#1A1A1A,#0A0A0A);border-bottom:3px solid #C8860A;
+  padding:16px 28px;display:flex;align-items:center;justify-content:space-between;}
+.hub-title{font-family:'Fredoka One',cursive;font-size:22px;color:#F0C040;}
+.hub-sub{font-size:12px;color:rgba(255,255,255,.45);margin-top:2px;}
+.hub-badge{background:#C8860A;color:#111;font-family:'Fredoka One',cursive;
+  font-size:12px;padding:6px 16px;border-radius:50px;}
+
+/* ── TABS ── */
+.tab-bar{display:flex;gap:0;background:#1A1A1A;border-bottom:2px solid #2A2A2A;overflow-x:auto;}
+.tab-btn{padding:14px 22px;border:none;background:transparent;font-family:'Fredoka One',cursive;
+  font-size:14px;color:#666;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;
+  transition:all .2s;display:flex;align-items:center;gap:8px;}
+.tab-btn:hover{color:#C8860A;background:rgba(200,134,10,.05);}
+.tab-btn.active{color:#F0C040;border-bottom-color:#C8860A;background:rgba(200,134,10,.08);}
+.tab-icon{font-size:18px;}
+
+/* ── TAB PANELS ── */
+.tab-panel{display:none;padding:28px;max-width:900px;margin:0 auto;}
+.tab-panel.active{display:block;}
+
+/* ── SHARED PANEL STYLES ── */
+.panel-title{font-family:'Fredoka One',cursive;font-size:24px;color:#F0C040;margin-bottom:6px;}
+.panel-sub{font-size:14px;color:rgba(255,255,255,.55);margin-bottom:24px;line-height:1.6;}
+.action-bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;}
+.act-btn{padding:10px 22px;border:none;border-radius:50px;font-family:'Fredoka One',cursive;
+  font-size:14px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;}
+.act-btn.gold{background:linear-gradient(135deg,#C8860A,#F0C040);color:#111;}
+.act-btn.gold:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(200,134,10,.4);}
+.act-btn.dark{background:#2A2A2A;color:#ccc;border:2px solid #333;}
+.act-btn.dark:hover{border-color:#C8860A;color:#F0C040;}
+.act-btn.teal{background:#1B7A78;color:#fff;}
+.act-btn.teal:hover{background:#0F4F4E;}
+
+/* ════════════════════════════════════
+   TAB 1: JIGSAW PUZZLE
+════════════════════════════════════ */
+.puzzle-wrap{position:relative;background:#1A1A1A;border-radius:16px;padding:20px;
+  border:2px solid #2A2A2A;}
+.puzzle-info{display:flex;gap:16px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.puzzle-stat{background:#222;border-radius:8px;padding:8px 16px;font-size:13px;color:#888;}
+.puzzle-stat strong{color:#F0C040;font-family:'Fredoka One',cursive;font-size:16px;display:block;}
+#puzzleCanvas{border-radius:10px;cursor:grab;display:block;margin:0 auto;
+  max-width:100%;border:2px solid #333;}
+#puzzleCanvas:active{cursor:grabbing;}
+.puzzle-complete{display:none;text-align:center;padding:20px;}
+.puzzle-complete h3{font-family:'Fredoka One',cursive;font-size:28px;color:#F0C040;margin-bottom:8px;}
+
+/* ════════════════════════════════════
+   TAB 2: MAZE
+════════════════════════════════════ */
+.maze-wrap{background:#1A1A1A;border-radius:16px;padding:20px;border:2px solid #2A2A2A;}
+.maze-info{display:flex;gap:16px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.maze-stat{background:#222;border-radius:8px;padding:8px 16px;font-size:13px;color:#888;}
+.maze-stat strong{color:#F0C040;font-family:'Fredoka One',cursive;font-size:16px;display:block;}
+#mazeCanvas{border-radius:10px;display:block;margin:0 auto;max-width:100%;border:2px solid #333;}
+.maze-controls{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
+.maze-key{background:#222;border:2px solid #333;border-radius:8px;padding:6px 14px;
+  font-size:12px;color:#888;display:flex;align-items:center;gap:6px;}
+
+/* ════════════════════════════════════
+   TAB 3: BRAIN CHALLENGE
+════════════════════════════════════ */
+.brain-wrap{display:flex;flex-direction:column;gap:24px;}
+
+/* Word Scramble */
+.challenge-card{background:#1A1A1A;border-radius:16px;padding:22px;border:2px solid #2A2A2A;}
+.challenge-card h3{font-family:'Fredoka One',cursive;font-size:18px;color:#F0C040;margin-bottom:6px;}
+.challenge-card p{font-size:13px;color:#888;margin-bottom:16px;}
+.scramble-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.scramble-item{background:#222;border-radius:10px;padding:14px;}
+.scrambled-word{font-family:'Fredoka One',cursive;font-size:22px;color:#C8860A;
+  letter-spacing:4px;margin-bottom:8px;}
+.scramble-hint{font-size:11px;color:#666;margin-bottom:8px;}
+.scramble-input{width:100%;background:#111;border:2px solid #333;border-radius:8px;
+  padding:8px 12px;font-family:'Fredoka One',cursive;font-size:16px;color:#fff;
+  outline:none;letter-spacing:2px;text-transform:uppercase;}
+.scramble-input:focus{border-color:#C8860A;}
+.scramble-input.correct{border-color:#2ECC71;background:rgba(46,204,113,.1);color:#2ECC71;}
+.scramble-input.wrong{border-color:#E74C3C;animation:shake .3s;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* Hidden Word */
+.wordsearch-grid{display:grid;gap:2px;margin:0 auto;}
+.ws-cell{width:30px;height:30px;display:flex;align-items:center;justify-content:center;
+  font-family:'Fredoka One',cursive;font-size:14px;color:#888;border-radius:4px;
+  cursor:pointer;transition:all .15s;user-select:none;background:#222;}
+.ws-cell:hover{background:#333;color:#F0C040;}
+.ws-cell.selected{background:#C8860A;color:#111;}
+.ws-cell.found{background:#1B7A78;color:#fff;}
+.ws-words{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.ws-word{padding:5px 14px;background:#222;border-radius:50px;font-size:12px;
+  font-weight:700;color:#888;letter-spacing:1px;transition:all .2s;}
+.ws-word.found{background:#1B7A78;color:#fff;text-decoration:line-through;}
+
+/* ════════════════════════════════════
+   TAB 4: DIGITAL PAINT
+════════════════════════════════════ */
+.paint-wrap{background:#1A1A1A;border-radius:16px;padding:20px;border:2px solid #2A2A2A;}
+.paint-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;
+  background:#222;border-radius:10px;padding:12px 16px;}
+.tool-group{display:flex;gap:6px;align-items:center;}
+.tool-label{font-size:10px;font-weight:800;letter-spacing:1px;color:#666;text-transform:uppercase;margin-right:4px;}
+.color-swatch{width:28px;height:28px;border-radius:50%;cursor:pointer;border:3px solid transparent;
+  transition:all .2s;flex-shrink:0;}
+.color-swatch.active{border-color:#F0C040;transform:scale(1.2);}
+.brush-btn{padding:5px 12px;background:#333;border:none;border-radius:6px;
+  font-size:12px;color:#aaa;cursor:pointer;transition:all .2s;}
+.brush-btn.active,.brush-btn:hover{background:#C8860A;color:#111;}
+input[type=range]{accent-color:#C8860A;width:80px;}
+#paintCanvas{border-radius:10px;cursor:crosshair;display:block;margin:0 auto;
+  max-width:100%;border:2px solid #333;}
+.paint-credits{text-align:center;margin-top:8px;font-size:11px;color:#555;font-style:italic;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hub-hdr">
+  <div>
+    <div class="hub-title">&#127919; ABSORB — Activity Hub</div>
+    <div class="hub-sub">Kellam Smile Bags &middot; High School Activities &middot; Play, Create &amp; Share</div>
+  </div>
+  <div class="hub-badge">&#127881; 4 Activities</div>
+</div>
+
+<!-- TABS -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('puzzle',this)"><span class="tab-icon">&#129513;</span> Jigsaw Puzzle</button>
+  <button class="tab-btn" onclick="showTab('maze',this)"><span class="tab-icon">&#128196;</span> Maze</button>
+  <button class="tab-btn" onclick="showTab('brain',this)"><span class="tab-icon">&#129504;</span> Brain Challenge</button>
+  <button class="tab-btn" onclick="showTab('paint',this)"><span class="tab-icon">&#127912;</span> Digital Paint</button>
+</div>
+
+<!-- ══════════ TAB 1: JIGSAW ══════════ -->
+<div class="tab-panel active" id="tab-puzzle">
+  <div class="panel-title">&#129513; Jigsaw Puzzle</div>
+  <div class="panel-sub">Solve the CYCLE illustration puzzle — then download your completed image to share with a child!</div>
+
+  <div class="puzzle-wrap">
+    <div class="puzzle-info">
+      <div class="puzzle-stat"><strong id="puzzleMoves">0</strong>Moves</div>
+      <div class="puzzle-stat"><strong id="puzzlePieces">0</strong>Pieces Left</div>
+      <div class="puzzle-stat"><strong id="puzzleTime">0:00</strong>Time</div>
+    </div>
+    <canvas id="puzzleCanvas" width="600" height="450"></canvas>
+    <div class="puzzle-complete" id="puzzleComplete">
+      <h3>&#127881; Puzzle Complete!</h3>
+      <p style="color:#888;margin-bottom:16px;">Amazing work! Download the completed image to share with a child.</p>
+    </div>
+  </div>
+
+  <div class="action-bar">
+    <button class="act-btn gold" onclick="downloadPuzzle()">&#11015;&#65039; Download Completed Image</button>
+    <button class="act-btn dark" onclick="shufflePuzzle()">&#128260; New Shuffle</button>
+    <button class="act-btn dark" onclick="resetPuzzle()">&#128257; Reset</button>
+  </div>
+</div>
+
+<!-- ══════════ TAB 2: MAZE ══════════ -->
+<div class="tab-panel" id="tab-maze">
+  <div class="panel-title">&#128196; CYCLE Maze</div>
+  <div class="panel-sub">Help the Smile Bag find its way through the ABSORB maze! Use arrow keys or WASD to move. Download your solved maze to share!</div>
+
+  <div class="maze-wrap">
+    <div class="maze-info">
+      <div class="maze-stat"><strong id="mazeSteps">0</strong>Steps</div>
+      <div class="maze-stat"><strong id="mazeTime">0:00</strong>Time</div>
+      <div class="maze-stat" id="mazeSolved" style="display:none;"><strong style="color:#2ECC71;">&#10003;</strong>Solved!</div>
+    </div>
+    <canvas id="mazeCanvas" width="600" height="480"></canvas>
+    <div class="maze-controls">
+      <div class="maze-key">&#8593; &#8595; &#8592; &#8594; or W A S D to move</div>
+    </div>
+  </div>
+
+  <div class="action-bar">
+    <button class="act-btn gold" onclick="downloadMaze()">&#11015;&#65039; Download Solved Maze</button>
+    <button class="act-btn dark" onclick="generateMaze()">&#128260; New Maze</button>
+  </div>
+</div>
+
+<!-- ══════════ TAB 3: BRAIN CHALLENGE ══════════ -->
+<div class="tab-panel" id="tab-brain">
+  <div class="panel-title">&#129504; Brain Challenge</div>
+  <div class="panel-sub">Two challenges — word scramble and word search. Find all the hidden words and unscramble the vocabulary!</div>
+
+  <div class="brain-wrap">
+
+    <!-- WORD SCRAMBLE -->
+    <div class="challenge-card">
+      <h3>&#128257; Word Scramble</h3>
+      <p>Unscramble each CYCLE vocabulary word. Type your answer and press Enter!</p>
+      <div class="scramble-grid" id="scrambleGrid"></div>
+      <div class="action-bar" style="margin-top:16px;">
+        <button class="act-btn gold" onclick="checkAllScramble()">&#10003; Check Answers</button>
+        <button class="act-btn dark" onclick="resetScramble()">&#128257; Reset</button>
+      </div>
+    </div>
+
+    <!-- WORD SEARCH -->
+    <div class="challenge-card">
+      <h3>&#128270; Word Search</h3>
+      <p>Find all 8 hidden words — click the first and last letter of each word!</p>
+      <div id="wordSearchGrid" class="wordsearch-grid" style="width:fit-content;"></div>
+      <div class="ws-words" id="wsWordList"></div>
+      <div class="action-bar" style="margin-top:16px;">
+        <button class="act-btn gold" onclick="downloadBrain()">&#11015;&#65039; Download Challenge</button>
+        <button class="act-btn dark" onclick="generateWordSearch()">&#128260; New Puzzle</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ TAB 4: DIGITAL PAINT ══════════ -->
+<div class="tab-panel" id="tab-paint">
+  <div class="panel-title">&#127912; Digital Paint</div>
+  <div class="panel-sub">Color the CYCLE scene your way! Choose your colors, paint the image, then download it to share with a child in the community.</div>
+
+  <div class="paint-wrap">
+    <div class="paint-toolbar">
+      <div class="tool-group">
+        <span class="tool-label">Colors</span>
+        <div class="color-swatch active" style="background:#F0C040;" onclick="setColor('#F0C040',this)" title="Gold"></div>
+        <div class="color-swatch" style="background:#E74C3C;" onclick="setColor('#E74C3C',this)" title="Red"></div>
+        <div class="color-swatch" style="background:#E67E22;" onclick="setColor('#E67E22',this)" title="Orange"></div>
+        <div class="color-swatch" style="background:#2ECC71;" onclick="setColor('#2ECC71',this)" title="Green"></div>
+        <div class="color-swatch" style="background:#3498DB;" onclick="setColor('#3498DB',this)" title="Blue"></div>
+        <div class="color-swatch" style="background:#9B59B6;" onclick="setColor('#9B59B6',this)" title="Purple"></div>
+        <div class="color-swatch" style="background:#1B7A78;" onclick="setColor('#1B7A78',this)" title="Teal"></div>
+        <div class="color-swatch" style="background:#ECF0F1;" onclick="setColor('#ECF0F1',this)" title="White"></div>
+        <div class="color-swatch" style="background:#1A1A1A;" onclick="setColor('#1A1A1A',this)" title="Black"></div>
+        <input type="color" id="customColor" style="width:28px;height:28px;border-radius:50%;
+          border:3px solid #444;cursor:pointer;padding:0;background:none;"
+          onchange="setColor(this.value,null)" title="Custom color"/>
+      </div>
+      <div class="tool-group">
+        <span class="tool-label">Brush</span>
+        <button class="brush-btn active" onclick="setTool('brush',this)" id="brushBtn">&#128396;</button>
+        <button class="brush-btn" onclick="setTool('eraser',this)" id="eraserBtn">&#9003;</button>
+        <button class="brush-btn" onclick="setTool('fill',this)" id="fillBtn">&#127744;</button>
+      </div>
+      <div class="tool-group">
+        <span class="tool-label">Size</span>
+        <input type="range" id="brushSize" min="2" max="40" value="10" oninput="brushSize=parseInt(this.value)"/>
+      </div>
+      <div class="tool-group">
+        <button class="brush-btn" onclick="undoPaint()" title="Undo">&#8617;</button>
+        <button class="brush-btn" onclick="clearPaint()" title="Clear">&#128465;</button>
+      </div>
+    </div>
+    <canvas id="paintCanvas" width="600" height="480"></canvas>
+    <div class="paint-credits">Kellam Smile Bags OneWord Stories &middot; ABSORB — Paint the scene!</div>
+  </div>
+
+  <div class="action-bar">
+    <button class="act-btn gold" onclick="downloadPainting()">&#11015;&#65039; Download My Painting</button>
+    <button class="act-btn teal" onclick="printPainting()">&#128438; Print My Painting</button>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════
+// TAB SWITCHING
+// ════════════════════════════════════════════
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ════════════════════════════════════════════
+// TAB 1: JIGSAW PUZZLE
+// ════════════════════════════════════════════
+var puzzleImg = new Image();
+puzzleImg.crossOrigin = 'anonymous';
+puzzleImg.src = 'https://lhhowell.github.io/kellamsmilebags/Absorb_Color.png';
+
+var COLS=4, ROWS=3;
+var puzzlePieces=[], dragPiece=null, dragOffX=0, dragOffY=0;
+var puzzleMoves=0, puzzleTimer=null, puzzleSeconds=0, puzzleStarted=false;
+var pCanvas, pCtx, pW, pH, pieceW, pieceH;
+
+puzzleImg.onload = function() {
+  pCanvas = document.getElementById('puzzleCanvas');
+  pCtx = pCanvas.getContext('2d');
+  pW = pCanvas.width; pH = pCanvas.height;
+  pieceW = pW/COLS; pieceH = pH/ROWS;
+  initPuzzle();
+};
+
+function initPuzzle(){
+  puzzlePieces = [];
+  for(var r=0;r<ROWS;r++){
+    for(var c=0;c<COLS;c++){
+      puzzlePieces.push({
+        id:r*COLS+c, col:c, row:r,
+        x: Math.random()*(pW-pieceW),
+        y: Math.random()*(pH-pieceH),
+        correctX: c*pieceW, correctY: r*pieceH,
+        placed: false
+      });
+    }
+  }
+  document.getElementById('puzzlePieces').textContent = puzzlePieces.filter(function(p){return !p.placed;}).length;
+  drawPuzzle();
+  setupPuzzleEvents();
+}
+
+function shufflePuzzle(){ puzzleMoves=0; puzzleSeconds=0; document.getElementById('puzzleMoves').textContent=0; initPuzzle(); }
+function resetPuzzle(){ puzzlePieces.forEach(function(p){p.placed=false;p.x=p.correctX;p.y=p.correctY;}); drawPuzzle(); }
+
+function drawPuzzle(){
+  pCtx.clearRect(0,0,pW,pH);
+  // Draw grid guide
+  pCtx.strokeStyle='rgba(200,134,10,.2)';
+  pCtx.lineWidth=1;
+  for(var r=0;r<=ROWS;r++){ pCtx.beginPath();pCtx.moveTo(0,r*pieceH);pCtx.lineTo(pW,r*pieceH);pCtx.stroke(); }
+  for(var c=0;c<=COLS;c++){ pCtx.beginPath();pCtx.moveTo(c*pieceW,0);pCtx.lineTo(c*pieceW,pH);pCtx.stroke(); }
+
+  puzzlePieces.forEach(function(p){
+    if(p === dragPiece) return;
+    drawPiece(p);
+  });
+  if(dragPiece) drawPiece(dragPiece);
+}
+
+function drawPiece(p){
+  pCtx.save();
+  pCtx.shadowColor = p.placed ? 'rgba(46,204,113,.4)' : 'rgba(0,0,0,.5)';
+  pCtx.shadowBlur = 8;
+  pCtx.drawImage(puzzleImg, p.col*pieceW, p.row*pieceH, pieceW, pieceH, p.x, p.y, pieceW, pieceH);
+  pCtx.strokeStyle = p.placed ? '#2ECC71' : '#C8860A';
+  pCtx.lineWidth = 2;
+  pCtx.strokeRect(p.x+1, p.y+1, pieceW-2, pieceH-2);
+  pCtx.restore();
+}
+
+function setupPuzzleEvents(){
+  var c = document.getElementById('puzzleCanvas');
+  c.onmousedown = function(e){ startDrag(e.offsetX, e.offsetY); };
+  c.onmousemove = function(e){ if(dragPiece){ dragPiece.x=e.offsetX-dragOffX; dragPiece.y=e.offsetY-dragOffY; drawPuzzle(); }};
+  c.onmouseup = function(){ endDrag(); };
+  c.ontouchstart = function(e){ var t=e.touches[0]; var r=c.getBoundingClientRect(); startDrag(t.clientX-r.left,t.clientY-r.top); e.preventDefault(); };
+  c.ontouchmove = function(e){ var t=e.touches[0]; var r=c.getBoundingClientRect(); if(dragPiece){dragPiece.x=t.clientX-r.left-dragOffX;dragPiece.y=t.clientY-r.top-dragOffY;drawPuzzle();} e.preventDefault(); };
+  c.ontouchend = function(){ endDrag(); };
+}
+
+function startDrag(x,y){
+  for(var i=puzzlePieces.length-1;i>=0;i--){
+    var p=puzzlePieces[i];
+    if(x>=p.x&&x<=p.x+pieceW&&y>=p.y&&y<=p.y+pieceH){
+      if(!p.placed){ dragPiece=p; dragOffX=x-p.x; dragOffY=y-p.y;
+        puzzlePieces.splice(i,1); puzzlePieces.push(p);
+        if(!puzzleStarted){ puzzleStarted=true; startPuzzleTimer(); }
+      } return;
+    }
+  }
+}
+
+function endDrag(){
+  if(!dragPiece) return;
+  var snap=40;
+  if(Math.abs(dragPiece.x-dragPiece.correctX)<snap && Math.abs(dragPiece.y-dragPiece.correctY)<snap){
+    dragPiece.x=dragPiece.correctX; dragPiece.y=dragPiece.correctY; dragPiece.placed=true;
+  }
+  puzzleMoves++;
+  document.getElementById('puzzleMoves').textContent=puzzleMoves;
+  var left=puzzlePieces.filter(function(p){return !p.placed;}).length;
+  document.getElementById('puzzlePieces').textContent=left;
+  dragPiece=null; drawPuzzle();
+  if(left===0){ clearInterval(puzzleTimer); document.getElementById('puzzleComplete').style.display='block'; }
+}
+
+function startPuzzleTimer(){
+  puzzleTimer=setInterval(function(){
+    puzzleSeconds++;
+    var m=Math.floor(puzzleSeconds/60),s=puzzleSeconds%60;
+    document.getElementById('puzzleTime').textContent=m+':'+(s<10?'0':'')+s;
+  },1000);
+}
+
+function downloadPuzzle(){
+  var link=document.createElement('a');
+  link.download='ABSORB_Puzzle_Complete.png';
+  link.href=document.getElementById('puzzleCanvas').toDataURL();
+  link.click();
+}
+
+// ════════════════════════════════════════════
+// TAB 2: MAZE
+// ════════════════════════════════════════════
+var MAZE_COLS=19, MAZE_ROWS=15;
+var mazeGrid=[], mazePlayer={x:0,y:0};
+var mazeSteps=0, mazeTimer=null, mazeSeconds=0, mazeSolved=false;
+var mCanvas, mCtx, mW, mH, cellW, cellH;
+
+function initMaze(){
+  mCanvas=document.getElementById('mazeCanvas');
+  mCtx=mCanvas.getContext('2d');
+  mW=mCanvas.width; mH=mCanvas.height;
+  cellW=Math.floor(mW/MAZE_COLS); cellH=Math.floor(mH/MAZE_ROWS);
+  generateMaze();
+}
+
+function generateMaze(){
+  mazeSolved=false; mazeSteps=0; mazeSeconds=0;
+  document.getElementById('mazeSteps').textContent=0;
+  document.getElementById('mazeTime').textContent='0:00';
+  document.getElementById('mazeSolved').style.display='none';
+  clearInterval(mazeTimer);
+
+  // Init grid
+  mazeGrid=[];
+  for(var r=0;r<MAZE_ROWS;r++){
+    mazeGrid.push([]);
+    for(var c=0;c<MAZE_COLS;c++){
+      mazeGrid[r].push({visited:false,walls:{top:true,right:true,bottom:true,left:true}});
+    }
+  }
+
+  // DFS maze generation
+  var stack=[{r:0,c:0}]; mazeGrid[0][0].visited=true;
+  while(stack.length){
+    var cur=stack[stack.length-1];
+    var neighbors=[];
+    var dirs=[{dr:-1,dc:0,w:'top',opp:'bottom'},{dr:1,dc:0,w:'bottom',opp:'top'},{dr:0,dc:-1,w:'left',opp:'right'},{dr:0,dc:1,w:'right',opp:'left'}];
+    dirs.forEach(function(d){
+      var nr=cur.r+d.dr,nc=cur.c+d.dc;
+      if(nr>=0&&nr<MAZE_ROWS&&nc>=0&&nc<MAZE_COLS&&!mazeGrid[nr][nc].visited)
+        neighbors.push({r:nr,c:nc,w:d.w,opp:d.opp});
+    });
+    if(neighbors.length){
+      var n=neighbors[Math.floor(Math.random()*neighbors.length)];
+      mazeGrid[cur.r][cur.c].walls[n.w]=false;
+      mazeGrid[n.r][n.c].walls[n.opp]=false;
+      mazeGrid[n.r][n.c].visited=true;
+      stack.push(n);
+    } else { stack.pop(); }
+  }
+
+  mazePlayer={x:0,y:0};
+  drawMaze();
+
+  // Start timer on first move
+  document.onkeydown=function(e){
+    if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d'].includes(e.key)){
+      e.preventDefault(); movePlayer(e.key);
+    }
+  };
+}
+
+function movePlayer(key){
+  if(mazeSolved) return;
+  if(!mazeTimer){ mazeTimer=setInterval(function(){
+    mazeSeconds++;
+    var m=Math.floor(mazeSeconds/60),s=mazeSeconds%60;
+    document.getElementById('mazeTime').textContent=m+':'+(s<10?'0':'')+s;
+  },1000);}
+
+  var r=mazePlayer.y, c=mazePlayer.x, moved=false;
+  if((key==='ArrowUp'||key==='w')&&r>0&&!mazeGrid[r][c].walls.top){mazePlayer.y--;moved=true;}
+  if((key==='ArrowDown'||key==='s')&&r<MAZE_ROWS-1&&!mazeGrid[r][c].walls.bottom){mazePlayer.y++;moved=true;}
+  if((key==='ArrowLeft'||key==='a')&&c>0&&!mazeGrid[r][c].walls.left){mazePlayer.x--;moved=true;}
+  if((key==='ArrowRight'||key==='d')&&c<MAZE_COLS-1&&!mazeGrid[r][c].walls.right){mazePlayer.x++;moved=true;}
+
+  if(moved){
+    mazeSteps++;
+    document.getElementById('mazeSteps').textContent=mazeSteps;
+    drawMaze();
+    if(mazePlayer.x===MAZE_COLS-1&&mazePlayer.y===MAZE_ROWS-1){
+      mazeSolved=true; clearInterval(mazeTimer);
+      document.getElementById('mazeSolved').style.display='block';
+      drawMaze();
+    }
+  }
+}
+
+function drawMaze(){
+  mCtx.fillStyle='#111';
+  mCtx.fillRect(0,0,mW,mH);
+
+  // Draw cells
+  for(var r=0;r<MAZE_ROWS;r++){
+    for(var c=0;c<MAZE_COLS;c++){
+      var x=c*cellW, y=r*cellH;
+      var cell=mazeGrid[r][c];
+      mCtx.strokeStyle='#C8860A';
+      mCtx.lineWidth=2;
+      if(cell.walls.top){mCtx.beginPath();mCtx.moveTo(x,y);mCtx.lineTo(x+cellW,y);mCtx.stroke();}
+      if(cell.walls.right){mCtx.beginPath();mCtx.moveTo(x+cellW,y);mCtx.lineTo(x+cellW,y+cellH);mCtx.stroke();}
+      if(cell.walls.bottom){mCtx.beginPath();mCtx.moveTo(x,y+cellH);mCtx.lineTo(x+cellW,y+cellH);mCtx.stroke();}
+      if(cell.walls.left){mCtx.beginPath();mCtx.moveTo(x,y);mCtx.lineTo(x,y+cellH);mCtx.stroke();}
+    }
+  }
+
+  // Start marker
+  mCtx.fillStyle='rgba(27,122,120,.4)';
+  mCtx.fillRect(1,1,cellW-2,cellH-2);
+  mCtx.fillStyle='#1B7A78';
+  mCtx.font='bold 10px Nunito';
+  mCtx.textAlign='center';
+  mCtx.fillText('START',cellW/2,cellH/2+4);
+
+  // End marker
+  var ex=(MAZE_COLS-1)*cellW, ey=(MAZE_ROWS-1)*cellH;
+  mCtx.fillStyle = mazeSolved ? 'rgba(46,204,113,.5)' : 'rgba(200,134,10,.3)';
+  mCtx.fillRect(ex+1,ey+1,cellW-2,cellH-2);
+  mCtx.fillStyle= mazeSolved ? '#2ECC71' : '#F0C040';
+  mCtx.font='16px serif';
+  mCtx.fillText('😊',ex+cellW/2,ey+cellH/2+6);
+
+  // Player (Smile Bag)
+  var px=mazePlayer.x*cellW+cellW/2;
+  var py=mazePlayer.y*cellH+cellH/2;
+  mCtx.fillStyle='#F0C040';
+  mCtx.beginPath();
+  mCtx.arc(px,py,cellW*0.35,0,Math.PI*2);
+  mCtx.fill();
+  mCtx.fillStyle='#111';
+  mCtx.font=(cellW*0.4)+'px serif';
+  mCtx.textAlign='center';
+  mCtx.fillText('👍',px,py+cellH*0.15);
+}
+
+function downloadMaze(){
+  var link=document.createElement('a');
+  link.download='ABSORB_Maze_Solved.png';
+  link.href=document.getElementById('mazeCanvas').toDataURL();
+  link.click();
+}
+
+// ════════════════════════════════════════════
+// TAB 3: BRAIN CHALLENGE
+// ════════════════════════════════════════════
+var SCRAMBLE_WORDS=[
+  {word:'ABSORB',hint:'The OneWord — taking in everything around you'},
+  {word:'BUTTERFLY',hint:'A winged insect that floats from flower to flower'},
+  {word:'DRAGONFLY',hint:'An ancient insect that hovers near water'},
+  {word:'MUSHROOM',hint:'A fungi that quietly recycles the earth'},
+  {word:'DEWDROP',hint:'A tiny drop formed by absorbing moisture overnight'},
+  {word:'LADYBUG',hint:'A tiny spotted beetle that loves sunlight'},
+];
+
+function scrambleWord(word){
+  var arr=word.split('');
+  for(var i=arr.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var tmp=arr[i];arr[i]=arr[j];arr[j]=tmp;
+  }
+  return arr.join('');
+}
+
+function buildScramble(){
+  var grid=document.getElementById('scrambleGrid');
+  grid.innerHTML='';
+  SCRAMBLE_WORDS.forEach(function(item,i){
+    var sc=scrambleWord(item.word);
+    while(sc===item.word) sc=scrambleWord(item.word);
+    var div=document.createElement('div');
+    div.className='scramble-item';
+    div.innerHTML='<div class="scrambled-word">'+sc+'</div>'+
+      '<div class="scramble-hint">'+item.hint+'</div>'+
+      '<input class="scramble-input" data-answer="'+item.word+'" placeholder="Your answer..." '+
+      'maxlength="'+item.word.length+'" oninput="this.value=this.value.toUpperCase()" '+
+      'onkeydown="if(event.key===\'Enter\')checkScramble(this)"/>';
+    grid.appendChild(div);
+  });
+}
+
+function checkScramble(input){
+  if(input.value.trim()===input.dataset.answer){
+    input.classList.add('correct'); input.classList.remove('wrong');
+    input.readOnly=true;
+  } else {
+    input.classList.add('wrong');
+    setTimeout(function(){input.classList.remove('wrong');},400);
+  }
+}
+
+function checkAllScramble(){
+  document.querySelectorAll('.scramble-input').forEach(function(inp){ checkScramble(inp); });
+}
+
+function resetScramble(){ buildScramble(); }
+
+// WORD SEARCH
+var WS_WORDS=['ABSORB','BUTTERFLY','DRAGONFLY','RAINBOW','LADYBUG','DEWDROP','SNAIL','MUSHROOM'];
+var WS_SIZE=12;
+var wsGrid=[], wsSelected=[], wsFirstClick=null, wsFound=[];
+
+function generateWordSearch(){
+  wsGrid=[]; wsFound=[];
+  for(var r=0;r<WS_SIZE;r++){
+    wsGrid.push(new Array(WS_SIZE).fill(''));
+  }
+
+  var dirs=[[0,1],[1,0],[0,-1],[-1,0],[1,1],[-1,-1]];
+  WS_WORDS.forEach(function(word){
+    var placed=false, tries=0;
+    while(!placed&&tries<100){
+      tries++;
+      var dir=dirs[Math.floor(Math.random()*dirs.length)];
+      var startR=Math.floor(Math.random()*WS_SIZE);
+      var startC=Math.floor(Math.random()*WS_SIZE);
+      var fits=true;
+      for(var i=0;i<word.length;i++){
+        var nr=startR+dir[0]*i, nc=startC+dir[1]*i;
+        if(nr<0||nr>=WS_SIZE||nc<0||nc>=WS_SIZE||(wsGrid[nr][nc]!==''&&wsGrid[nr][nc]!==word[i])){fits=false;break;}
+      }
+      if(fits){
+        for(var i=0;i<word.length;i++){wsGrid[startR+dir[0]*i][startC+dir[1]*i]=word[i];}
+        placed=true;
+      }
+    }
+  });
+
+  // Fill blanks
+  var letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  for(var r=0;r<WS_SIZE;r++)
+    for(var c=0;c<WS_SIZE;c++)
+      if(wsGrid[r][c]==='') wsGrid[r][c]=letters[Math.floor(Math.random()*letters.length)];
+
+  renderWordSearch();
+}
+
+function renderWordSearch(){
+  var container=document.getElementById('wordSearchGrid');
+  container.style.gridTemplateColumns='repeat('+WS_SIZE+',30px)';
+  container.innerHTML='';
+  for(var r=0;r<WS_SIZE;r++){
+    for(var c=0;c<WS_SIZE;c++){
+      var cell=document.createElement('div');
+      cell.className='ws-cell';
+      cell.textContent=wsGrid[r][c];
+      cell.dataset.r=r; cell.dataset.c=c;
+      cell.onclick=(function(cr,cc){return function(){wsClick(cr,cc,this);};})(r,c);
+      container.appendChild(cell);
+    }
+  }
+  var wl=document.getElementById('wsWordList');
+  wl.innerHTML='';
+  WS_WORDS.forEach(function(w){
+    var span=document.createElement('span');
+    span.className='ws-word'; span.textContent=w; span.id='ws-'+w;
+    wl.appendChild(span);
+  });
+  wsFirstClick=null; wsSelected=[];
+}
+
+function wsClick(r,c,el){
+  if(!wsFirstClick){
+    wsFirstClick={r:r,c:c,el:el}; el.classList.add('selected');
+  } else {
+    // Check if valid word
+    var r1=wsFirstClick.r,c1=wsFirstClick.c,r2=r,c2=c;
+    var found=false;
+    WS_WORDS.forEach(function(word){
+      if(wsFound.indexOf(word)!==-1) return;
+      var len=word.length;
+      var dr=(r2-r1),dc=(c2-c1);
+      if(Math.abs(dr)!==Math.abs(dc)&&dr!==0&&dc!==0) return;
+      var steps=Math.max(Math.abs(dr),Math.abs(dc));
+      if(steps!==len-1) return;
+      var stepR=dr===0?0:dr/Math.abs(dr), stepC=dc===0?0:dc/Math.abs(dc);
+      var letters='';
+      for(var i=0;i<len;i++) letters+=wsGrid[r1+stepR*i][c1+stepC*i];
+      if(letters===word){
+        found=true; wsFound.push(word);
+        for(var i=0;i<len;i++){
+          var cells=document.querySelectorAll('[data-r="'+(r1+stepR*i)+'"][data-c="'+(c1+stepC*i)+'"]');
+          cells.forEach(function(c){c.classList.remove('selected');c.classList.add('found');});
+        }
+        document.getElementById('ws-'+word).classList.add('found');
+      }
+    });
+    if(!found){
+      document.querySelectorAll('.ws-cell.selected').forEach(function(c){c.classList.remove('selected');});
+    }
+    wsFirstClick=null;
+  }
+}
+
+function downloadBrain(){
+  alert('Print this page to save your Brain Challenge results!');
+  window.print();
+}
+
+// ════════════════════════════════════════════
+// TAB 4: DIGITAL PAINT
+// ════════════════════════════════════════════
+var paintColor='#F0C040', paintTool='brush', brushSize=10;
+var painting=false, paintHistory=[];
+var paintImg = new Image();
+paintImg.crossOrigin='anonymous';
+paintImg.src='https://lhhowell.github.io/kellamsmilebags/Absorb_Color.png';
+
+paintImg.onload=function(){
+  var c=document.getElementById('paintCanvas');
+  var ctx=c.getContext('2d');
+  ctx.drawImage(paintImg,0,0,c.width,c.height);
+  savePaintState();
+  setupPaint();
+};
+
+function setupPaint(){
+  var c=document.getElementById('paintCanvas');
+  var ctx=c.getContext('2d');
+  c.onmousedown=function(e){painting=true;paint(e,ctx,c);};
+  c.onmousemove=function(e){if(painting)paint(e,ctx,c);};
+  c.onmouseup=function(){if(painting){painting=false;savePaintState();}};
+  c.onmouseleave=function(){if(painting){painting=false;savePaintState();}};
+  c.ontouchstart=function(e){painting=true;paintTouch(e,ctx,c);e.preventDefault();};
+  c.ontouchmove=function(e){if(painting)paintTouch(e,ctx,c);e.preventDefault();};
+  c.ontouchend=function(){if(painting){painting=false;savePaintState();}};
+}
+
+function paint(e,ctx,c){
+  var rect=c.getBoundingClientRect();
+  var x=(e.clientX-rect.left)*(c.width/rect.width);
+  var y=(e.clientY-rect.top)*(c.height/rect.height);
+  doPaint(x,y,ctx,c);
+}
+function paintTouch(e,ctx,c){
+  var rect=c.getBoundingClientRect();
+  var t=e.touches[0];
+  var x=(t.clientX-rect.left)*(c.width/rect.width);
+  var y=(t.clientY-rect.top)*(c.height/rect.height);
+  doPaint(x,y,ctx,c);
+}
+function doPaint(x,y,ctx,c){
+  if(paintTool==='fill'){ floodFill(ctx,c,Math.round(x),Math.round(y),paintColor); return; }
+  ctx.globalCompositeOperation = paintTool==='eraser' ? 'destination-out' : 'source-atop';
+  ctx.fillStyle = paintColor;
+  ctx.beginPath();
+  ctx.arc(x,y,paintTool==='eraser'?brushSize*2:brushSize,0,Math.PI*2);
+  ctx.fill();
+  ctx.globalCompositeOperation='source-over';
+}
+
+function floodFill(ctx,c,x,y,fillColor){
+  var imgData=ctx.getImageData(0,0,c.width,c.height);
+  var data=imgData.data;
+  var idx=(y*c.width+x)*4;
+  var tr=data[idx],tg=data[idx+1],tb=data[idx+2],ta=data[idx+3];
+  var fc=hexToRgb(fillColor);
+  if(tr===fc.r&&tg===fc.g&&tb===fc.b) return;
+  var stack=[[x,y]];
+  var w=c.width,h=c.height;
+  while(stack.length){
+    var p=stack.pop(),px=p[0],py=p[1];
+    if(px<0||px>=w||py<0||py>=h) continue;
+    var i=(py*w+px)*4;
+    if(Math.abs(data[i]-tr)>30||Math.abs(data[i+1]-tg)>30||Math.abs(data[i+2]-tb)>30) continue;
+    data[i]=fc.r;data[i+1]=fc.g;data[i+2]=fc.b;data[i+3]=255;
+    stack.push([px+1,py],[px-1,py],[px,py+1],[px,py-1]);
+  }
+  ctx.putImageData(imgData,0,0);
+}
+
+function hexToRgb(hex){
+  var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return{r:r,g:g,b:b};
+}
+
+function savePaintState(){
+  var c=document.getElementById('paintCanvas');
+  paintHistory.push(c.toDataURL());
+  if(paintHistory.length>20) paintHistory.shift();
+}
+
+function undoPaint(){
+  if(paintHistory.length<=1) return;
+  paintHistory.pop();
+  var c=document.getElementById('paintCanvas');
+  var ctx=c.getContext('2d');
+  var img=new Image();
+  img.onload=function(){ctx.clearRect(0,0,c.width,c.height);ctx.drawImage(img,0,0);};
+  img.src=paintHistory[paintHistory.length-1];
+}
+
+function clearPaint(){
+  var c=document.getElementById('paintCanvas');
+  var ctx=c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.drawImage(paintImg,0,0,c.width,c.height);
+  savePaintState();
+}
+
+function setColor(color,el){
+  paintColor=color;
+  document.querySelectorAll('.color-swatch').forEach(function(s){s.classList.remove('active');});
+  if(el) el.classList.add('active');
+  if(paintTool==='eraser') setTool('brush',document.getElementById('brushBtn'));
+}
+
+function setTool(tool,btn){
+  paintTool=tool;
+  document.querySelectorAll('.brush-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+}
+
+function downloadPainting(){
+  var link=document.createElement('a');
+  link.download='ABSORB_My_Painting.png';
+  link.href=document.getElementById('paintCanvas').toDataURL();
+  link.click();
+}
+
+function printPainting(){
+  var c=document.getElementById('paintCanvas');
+  var win=window.open('');
+  win.document.write('<img src="'+c.toDataURL()+'" style="max-width:100%;"/>');
+  win.document.close();
+  win.print();
+}
+
+// ════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════
+window.onload=function(){
+  buildScramble();
+  generateWordSearch();
+  initMaze();
+};
+</script>
+</body>
+</html>

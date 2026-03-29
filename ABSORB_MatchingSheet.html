@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>ABSORB — Matching Activity Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito', sans-serif; background: #f5f5f5; padding: 20px; }
+
+.sheet-header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+.sheet-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 26px;
+  color: #1A1A1A;
+  letter-spacing: 1px;
+}
+.sheet-word {
+  font-family: 'Fredoka One', cursive;
+  font-size: 20px;
+  color: #C8860A;
+  letter-spacing: 2px;
+  margin: 2px 0;
+}
+.sheet-inst {
+  font-size: 13px;
+  color: #666;
+  margin-top: 4px;
+}
+.sheet-name {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #999;
+  margin-top: 6px;
+  border-top: 1px solid #ddd;
+  padding-top: 6px;
+  font-style: italic;
+}
+
+/* Two column layout */
+.matching-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 30px;
+  align-items: start;
+}
+
+/* LEFT — images */
+.img-col { display: flex; flex-direction: column; gap: 10px; }
+.img-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+.img-letter {
+  font-family: 'Fredoka One', cursive;
+  font-size: 22px;
+  color: #C8860A;
+  min-width: 28px;
+  text-align: center;
+}
+.vocab-img {
+  width: 100px;
+  height: 75px;
+  object-fit: contain;
+  border-radius: 6px;
+  display: block;
+}
+
+/* RIGHT — words + definitions */
+.word-col { display: flex; flex-direction: column; gap: 10px; }
+.word-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #fff;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.word-number {
+  font-family: 'Fredoka One', cursive;
+  font-size: 22px;
+  color: #1B7A78;
+  min-width: 28px;
+  text-align: center;
+}
+.word-answer {
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  border: 2px solid #C8860A;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fredoka One', cursive;
+  font-size: 16px;
+  color: #C8860A;
+  margin-top: 2px;
+}
+.word-content { flex: 1; }
+.word-label {
+  font-family: 'Fredoka One', cursive;
+  font-size: 16px;
+  color: #1A1A1A;
+  margin-bottom: 3px;
+}
+.word-def {
+  font-size: 12px;
+  color: #555;
+  line-height: 1.5;
+}
+
+/* Answer key */
+.answer-key {
+  margin-top: 18px;
+  border-top: 2px dashed #ccc;
+  padding-top: 10px;
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+}
+.answer-key-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+/* Buttons */
+.btn-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.btn {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 50px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 14px;
+  cursor: pointer;
+}
+.btn-bw  { background: #1A1A1A; color: #F0C040; }
+.btn-col { background: #C8860A; color: #fff; }
+.btn-prev-bw  { background: #555; color: #fff; }
+.btn-prev-col { background: #1B7A78; color: #fff; }
+
+/* Print */
+@media print {
+  @page { size: letter portrait; margin: 0.25in; }
+  body { background: #fff; padding: 0; }
+  .btn-row { display: none; }
+  .answer-key { display: none; }
+  .sheet-header { margin-bottom: 8px; }
+  .sheet-title { font-size: 16px; }
+  .sheet-word { font-size: 14px; }
+  .sheet-inst { font-size: 10px; }
+  .sheet-name { font-size: 10px; padding-top: 4px; }
+  .matching-body { gap: 0 14px; }
+  .img-item { border: 1px solid #ccc; padding: 3px 6px; gap: 6px; }
+  .word-item { border: 1px solid #ccc; padding: 4px 8px; gap: 6px; }
+  .vocab-img { width: 70px; height: 52px; }
+  .img-letter { font-size: 16px; min-width: 20px; }
+  .word-number { font-size: 16px; min-width: 20px; }
+  .word-answer { width: 20px; min-width: 20px; height: 20px; font-size: 12px; }
+  .word-label { font-size: 12px; margin-bottom: 1px; }
+  .word-def { font-size: 9.5px; line-height: 1.3; }
+  .img-col, .word-col { gap: 5px; }
+}
+</style>
+</head>
+<body>
+
+<div class="btn-row no-print">
+  <button class="btn btn-bw"  onclick="switchVersion('bw');window.print();">&#9999;&#65039; Print B&amp;W Coloring</button>
+  <button class="btn btn-col" onclick="switchVersion('color');window.print();">&#127912; Print Color Version</button>
+  <button class="btn btn-prev-bw"  onclick="switchVersion('bw');">&#128065; Preview B&amp;W</button>
+  <button class="btn btn-prev-col" onclick="switchVersion('color');">&#128065; Preview Color</button>
+</div>
+
+<div class="sheet-header">
+  <div class="sheet-title">Vocabulary Matching Activity</div>
+  <div class="sheet-word">A B S O R B</div>
+  <div class="sheet-inst">Draw a line — or write the letter — to match each picture on the left with its word and definition on the right.</div>
+  <div class="sheet-name">
+    <span>Name: _______________________________</span>
+    <span>Kellam Smile Bags &middot; Spring 2026</span>
+    <span>Date: ________________</span>
+  </div>
+</div>
+
+<div class="matching-body">
+
+    <!-- LEFT: Images in scrambled order A-J -->
+  <div class="img-col">
+    <div class="img-item"><div class="img-letter">A</div><img class="vocab-img" src="Absorb_Nest_BW.png" data-color="Absorb_Nest_Color.png" data-bw="Absorb_Nest_BW.png" alt="BIRD'S NEST"/></div>
+    <div class="img-item"><div class="img-letter">B</div><img class="vocab-img" src="Absorb_Ant_BW.png" data-color="Absorb_Ant_Color.png" data-bw="Absorb_Ant_BW.png" alt="ANT"/></div>
+    <div class="img-item"><div class="img-letter">C</div><img class="vocab-img" src="Absorb_SpiderWeb_BW.png" data-color="Absorb_SpiderWeb_Color.png" data-bw="Absorb_SpiderWeb_BW.png" alt="SPIDER WEB"/></div>
+    <div class="img-item"><div class="img-letter">D</div><img class="vocab-img" src="Absorb_Mushroom_BW.png" data-color="Absorb_Mushroom_Color.png" data-bw="Absorb_Mushroom_BW.png" alt="MUSHROOM"/></div>
+    <div class="img-item"><div class="img-letter">E</div><img class="vocab-img" src="Absorb_Rainbow_BW.png" data-color="Absorb_Rainbow_Color.png" data-bw="Absorb_Rainbow_BW.png" alt="RAINBOW"/></div>
+    <div class="img-item"><div class="img-letter">F</div><img class="vocab-img" src="Absorb_Dragonfly_BW.png" data-color="Absorb_Dragonfly_Color.png" data-bw="Absorb_Dragonfly_BW.png" alt="DRAGONFLY"/></div>
+    <div class="img-item"><div class="img-letter">G</div><img class="vocab-img" src="Absorb_Ladybug_BW.png" data-color="Absorb_Ladybug_Color.png" data-bw="Absorb_Ladybug_BW.png" alt="LADYBUG"/></div>
+    <div class="img-item"><div class="img-letter">H</div><img class="vocab-img" src="Absorb_Dewdrop_BW.png" data-color="Absorb_Dewdrop_Color.png" data-bw="Absorb_Dewdrop_BW.png" alt="DEWDROP"/></div>
+    <div class="img-item"><div class="img-letter">I</div><img class="vocab-img" src="Absorb_Snail_BW.png" data-color="Absorb_Snail_Color.png" data-bw="Absorb_Snail_BW.png" alt="SNAIL"/></div>
+    <div class="img-item"><div class="img-letter">J</div><img class="vocab-img" src="Absorb_Butterfly_BW.png" data-color="Absorb_Butterfly_Color.png" data-bw="Absorb_Butterfly_BW.png" alt="BUTTERFLY"/></div>
+  </div>
+
+    <!-- RIGHT: Words in different order 1-10 with answer box -->
+  <div class="word-col">
+    <div class="word-item"><div class="word-number">1</div><div class="word-answer"></div><div class="word-content"><div class="word-label">BUTTERFLY</div><div class="word-def">A winged insect that floats from flower to flower, drinking in nectar and spreading life.</div></div></div>
+    <div class="word-item"><div class="word-number">2</div><div class="word-answer"></div><div class="word-content"><div class="word-label">SPIDER WEB</div><div class="word-def">A delicate silk structure that catches dewdrops, light, and everything that drifts by.</div></div></div>
+    <div class="word-item"><div class="word-number">3</div><div class="word-answer"></div><div class="word-content"><div class="word-label">LADYBUG</div><div class="word-def">A tiny spotted beetle that absorbs sunlight on leaves and helps gardens grow.</div></div></div>
+    <div class="word-item"><div class="word-number">4</div><div class="word-answer"></div><div class="word-content"><div class="word-label">RAINBOW</div><div class="word-def">Light absorbed by water droplets and released as a spectrum of beautiful color.</div></div></div>
+    <div class="word-item"><div class="word-number">5</div><div class="word-answer"></div><div class="word-content"><div class="word-label">BIRD'S NEST</div><div class="word-def">A carefully built home that absorbs warmth and protects new life growing inside.</div></div></div>
+    <div class="word-item"><div class="word-number">6</div><div class="word-answer"></div><div class="word-content"><div class="word-label">SNAIL</div><div class="word-def">A slow, mindful creature that absorbs its surroundings one gentle step at a time.</div></div></div>
+    <div class="word-item"><div class="word-number">7</div><div class="word-answer"></div><div class="word-content"><div class="word-label">DRAGONFLY</div><div class="word-def">An ancient insect that hovers near water, absorbing the sights and sounds around it.</div></div></div>
+    <div class="word-item"><div class="word-number">8</div><div class="word-answer"></div><div class="word-content"><div class="word-label">ANT</div><div class="word-def">A tiny but mighty creature that absorbs its environment through touch, smell, and teamwork.</div></div></div>
+    <div class="word-item"><div class="word-number">9</div><div class="word-answer"></div><div class="word-content"><div class="word-label">DEWDROP</div><div class="word-def">A tiny drop of water that forms overnight by absorbing moisture from the cool night air.</div></div></div>
+    <div class="word-item"><div class="word-number">10</div><div class="word-answer"></div><div class="word-content"><div class="word-label">MUSHROOM</div><div class="word-def">A fungi that absorbs nutrients from the forest floor, quietly recycling the earth.</div></div></div>
+  </div>
+
+</div>
+
+<!-- Answer Key (hidden on print) -->
+<div class="answer-key no-print">
+  <div class="answer-key-title">&#128273; Answer Key</div>
+  <div>1=J &nbsp; 2=C &nbsp; 3=G &nbsp; 4=E &nbsp; 5=A &nbsp; 6=I &nbsp; 7=F &nbsp; 8=B &nbsp; 9=H &nbsp; 10=D</div>
+</div>
+
+<script>
+function switchVersion(version) {
+  document.querySelectorAll('.vocab-img').forEach(function(img) {
+    img.src = version === 'color' ? img.dataset.color : img.dataset.bw;
+  });
+}
+switchVersion('bw');
+</script>
+</body>
+</html>
