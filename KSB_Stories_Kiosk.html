@@ -171,8 +171,8 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
 
   <div class="intro-story">
     <div class="story-toggle">
-      <button class="story-btn active" onclick="toggleIntroStory('short',this)">&#127800; Ages 7–9</button>
-      <button class="story-btn" onclick="toggleIntroStory('long',this)">&#128218; Ages 10–13</button>
+      <button class="story-btn active" onclick="toggleIntroStory('short',this)">&#127800; Elementary</button>
+      <button class="story-btn" onclick="toggleIntroStory('long',this)">&#128218; Secondary</button>
     </div>
     <div class="story-text" id="introShort">
       <p>In the land of Kellam, six young knights had one mission: to fill the world with smiles.</p>
@@ -227,7 +227,7 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
   </div>
 
   <!-- Illustrations -->
-  <div class="illus-section" id="illusSection">
+  <div class="illus-section hs-hide" id="illusSection">
     <div class="illus-card">
       <div class="illus-card-hdr"><span>&#127912; COLOR ILLUSTRATION</span></div>
       <div id="colorIllus"></div>
@@ -241,7 +241,7 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
   </div>
 
   <!-- Extra illustrations -->
-  <div class="illus-section" id="illusSection2" style="display:none;">
+  <div class="illus-section hs-hide" id="illusSection2" style="display:none;">
     <div class="illus-card">
       <div class="illus-card-hdr"><span>&#127912; COLOR ILLUSTRATION 2</span></div>
       <div id="colorIllus2"></div>
@@ -255,13 +255,13 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
   </div>
 
   <!-- Hidden Picture -->
-  <div class="hidden-strip">
+  <div class="hidden-strip hs-hide">
     <div class="hidden-strip-title">&#128269; Can You Find the Hidden Pictures?</div>
     <div class="hidden-objects" id="hiddenObjects"></div>
   </div>
 
   <!-- Interactive link -->
-  <div id="interactiveStrip" style="display:none;margin-bottom:20px;">
+  <div id="interactiveStrip" class="hs-hide" style="display:none;margin-bottom:20px;">
     <a id="interactiveLink" href="#" target="_blank"
       style="display:flex;align-items:center;gap:14px;background:#1F1700;border:2px solid #C8860A;border-radius:14px;padding:16px 22px;text-decoration:none;">
       <span style="font-size:36px;">&#127918;</span>
@@ -274,7 +274,7 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
   </div>
 
   <!-- Activity Sheets -->
-  <div id="activityStrip" style="display:none;margin-bottom:20px;">
+  <div id="activityStrip" class="hs-hide" style="display:none;margin-bottom:20px;">
     <div style="font-family:'Fredoka One',cursive;font-size:16px;color:#F0C040;margin-bottom:10px;">&#127912; Activity Sheets</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
       <a id="coloringSheetLink" href="#" target="_blank"
@@ -759,18 +759,23 @@ function switchWordTab(version, btn) {
   document.getElementById('shortStory').classList.toggle('active', version==='short');
   document.getElementById('longStory').classList.toggle('active', version==='long');
   var hsDiv = document.getElementById('hsContent');
-  if(version==='hs'){
+  var isHS = version==='hs';
+  if(isHS){
     hsDiv.style.display='block';
     document.getElementById('shortStory').classList.remove('active');
     document.getElementById('longStory').classList.remove('active');
   } else {
     hsDiv.style.display='none';
   }
+  // Hide/show illustrations and activities when HS tab active
+  document.querySelectorAll('.hs-hide').forEach(function(el){
+    el.style.display = isHS ? 'none' : '';
+  });
   document.querySelectorAll('.age-btn').forEach(function(b){
     b.classList.remove('active');
     b.style.background=''; b.style.borderColor=''; b.style.color='';
   });
-  if(version==='hs'){
+  if(isHS){
     btn.style.background='linear-gradient(135deg,#9B59B6,#6C3483)';
     btn.style.borderColor='#9B59B6'; btn.style.color='#fff';
   } else {
