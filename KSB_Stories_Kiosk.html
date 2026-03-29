@@ -261,7 +261,7 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
   </div>
 
   <!-- Interactive link -->
-  <div id="interactiveStrip" class="hs-hide" style="display:none;margin-bottom:20px;">
+  <div id="interactiveStrip" style="display:none;margin-bottom:20px;">
     <a id="interactiveLink" href="#" target="_blank"
       style="display:flex;align-items:center;gap:14px;background:#1F1700;border:2px solid #C8860A;border-radius:14px;padding:16px 22px;text-decoration:none;">
       <span style="font-size:36px;">&#127918;</span>
@@ -274,7 +274,7 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
   </div>
 
   <!-- Activity Sheets -->
-  <div id="activityStrip" class="hs-hide" style="display:none;margin-bottom:20px;">
+  <div id="activityStrip" style="display:none;margin-bottom:20px;">
     <div style="font-family:'Fredoka One',cursive;font-size:16px;color:#F0C040;margin-bottom:10px;">&#127912; Activity Sheets</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
       <a id="coloringSheetLink" href="#" target="_blank"
@@ -321,8 +321,8 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
 var WORDS = [
   {
     word:"ABSORB", meaning:"Taking in everything around you",
-    colorImg:"https://lhhowell.github.io/kellamsmilebags/Absorb_Color.png",
-    bwImg:"https://lhhowell.github.io/kellamsmilebags/Absorb_ColoringPage.png",
+    colorImg:"https://lhhowell.github.io/kellamsmilebags/Absorb_Color.png?v=2",
+    bwImg:"https://lhhowell.github.io/kellamsmilebags/Absorb_ColoringPage.png?v=2",
     coloringSheetUrl:"https://lhhowell.github.io/kellamsmilebags/ABSORB_ColoringSheet.html",
     matchingSheetUrl:"https://lhhowell.github.io/kellamsmilebags/ABSORB_MatchingSheet.html",
     activityHubUrl:"https://lhhowell.github.io/kellamsmilebags/ABSORB_ActivityHub.html",
@@ -692,15 +692,18 @@ function openWord(idx) {
   var link  = document.getElementById('interactiveLink');
   if(w.interactiveUrl){
     strip.style.display = 'block';
+    strip.dataset.hasUrl = '1';
     link.href = w.interactiveUrl;
   } else {
     strip.style.display = 'none';
+    strip.dataset.hasUrl = '0';
   }
 
   // Activity sheets
   var actStrip = document.getElementById('activityStrip');
   if(w.coloringSheetUrl || w.matchingSheetUrl){
     actStrip.style.display = 'block';
+    actStrip.dataset.hasUrl = '1';
     var cl = document.getElementById('coloringSheetLink');
     var ml = document.getElementById('matchingSheetLink');
 
@@ -719,17 +722,17 @@ function openWord(idx) {
   document.getElementById('shortStory').classList.add('active');
   document.getElementById('longStory').classList.remove('active');
 
-  // Reset all tabs to Elementary
+  // Reset all tabs to Elementary Hub (so images show by default)
   document.querySelectorAll('.age-btn').forEach(function(b,i){
     b.classList.remove('active');
     b.style.background=''; b.style.borderColor=''; b.style.color='';
-    if(i===0) b.classList.add('active');
+    if(i===1) b.classList.add('active');
   });
-  document.getElementById('shortStory').classList.add('active');
+  document.getElementById('shortStory').classList.remove('active');
   document.getElementById('longStory').classList.remove('active');
-  document.getElementById('elemHubContent').style.display='none';
+  document.getElementById('elemHubContent').style.display='block';
   document.getElementById('secHubContent').style.display='none';
-  document.querySelectorAll('.hs-hide').forEach(function(el){ el.style.display='none'; });
+  document.querySelectorAll('.hs-hide').forEach(function(el){ el.style.display=''; });
 
   // Navigation
   document.getElementById('prevWordBtn').style.opacity  = idx===0?'0.3':'1';
@@ -760,8 +763,14 @@ function switchWordTab(version, btn) {
   // Show correct content
   if(version==='short')   { document.getElementById('shortStory').classList.add('active'); }
   if(version==='long')    { document.getElementById('longStory').classList.add('active'); }
-  if(version==='elemhub') { document.getElementById('elemHubContent').style.display='block';
-    document.querySelectorAll('.hs-hide').forEach(function(el){ el.style.display=''; }); }
+  if(version==='elemhub' || version==='default') {
+    document.getElementById('elemHubContent').style.display='block';
+    document.querySelectorAll('.hs-hide').forEach(function(el){ el.style.display=''; });
+    // Re-show interactive and activity strips if they have content
+    var iStrip = document.getElementById('interactiveStrip');
+    var aStrip = document.getElementById('activityStrip');
+    if(iStrip && iStrip.dataset.hasUrl==='1') iStrip.style.display='block';
+    if(aStrip && aStrip.dataset.hasUrl==='1') aStrip.style.display='block'; }
   if(version==='sechub')  { document.getElementById('secHubContent').style.display='block'; }
 
   // Reset all tab buttons
