@@ -34,6 +34,45 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#E8F5E9 0
 .play-again{margin-top:8px;padding:12px 32px;background:linear-gradient(135deg,#2E7D32,#43A047);color:#fff;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:16px;cursor:pointer;letter-spacing:1px;transition:all .2s;}
 .play-again:hover{transform:translateY(-2px);}
 .footer{font-size:11px;color:#aaa;letter-spacing:.5px;text-align:center;}
+
+@media print {
+  .score-bar { display: none !important; }
+  .page-title { display: none !important; }
+  .print-btn { display: none !important; }
+  .found-list { display: none !important; }
+  .hotspot { display: none !important; }
+  body { margin: 0; padding: 0; background: #fff; }
+  .image-wrap { 
+    position: fixed; top: 0; left: 0; 
+    width: 100vw; height: 100vh;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  .image-wrap img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+  }
+}
+.print-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #C8860A, #F0C040);
+  color: #111;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 24px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(200,134,10,.4);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.print-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,134,10,.5); }
 </style>
 </head>
 <body>
@@ -142,5 +181,10 @@ function resetGame(){
 
 init();
 </script>
+
+<button class="print-btn" onclick="window.print()">
+  &#128438; Print Hidden Picture
+</button>
+
 </body>
 </html>
