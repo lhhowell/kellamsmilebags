@@ -105,6 +105,7 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
 .age-toggle{display:flex;gap:8px;margin-bottom:20px;}
 .age-btn{padding:7px 18px;border-radius:50px;border:2px solid var(--gold-dark);background:transparent;font-family:'Fredoka One',cursive;font-size:13px;color:var(--gold-dark);cursor:pointer;transition:all .2s;}
 .age-btn.active{background:var(--gold);border-color:var(--gold);color:var(--black);}
+.age-btn.hs-active{background:linear-gradient(135deg,#9B59B6,#6C3483)!important;border-color:#9B59B6!important;color:#fff!important;}
 .story-content{font-size:15px;color:#ccc;line-height:2;display:none;}
 .story-content.active{display:block;}
 .story-content p{margin-bottom:16px;}
@@ -210,15 +211,19 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
     </div>
   </div>
 
-  <!-- Story -->
+  <!-- Story + High School Tabs -->
   <div class="story-section">
-    <div class="story-section-title">&#128214; Read the Story</div>
+    <div class="story-section-title">&#128214; Explore This Word</div>
     <div class="age-toggle">
-      <button class="age-btn active" onclick="toggleStory('short',this)">&#127800; Ages 7–9</button>
-      <button class="age-btn" onclick="toggleStory('long',this)">&#128218; Ages 10–13</button>
+      <button class="age-btn active" onclick="switchWordTab('short',this)">&#127800; Elementary</button>
+      <button class="age-btn" onclick="switchWordTab('long',this)">&#128218; Secondary</button>
+      <button class="age-btn" onclick="switchWordTab('hs',this)" style="background:linear-gradient(135deg,#2A0A4E,#1A0A2E);border-color:#9B59B6;color:#D7A8F0;">&#127919; High School</button>
     </div>
     <div class="story-content active" id="shortStory"></div>
     <div class="story-content" id="longStory"></div>
+    <div class="story-content" id="hsContent" style="display:none;">
+      <div id="hsInner"></div>
+    </div>
   </div>
 
   <!-- Illustrations -->
@@ -659,6 +664,36 @@ function openWord(idx) {
     ho.appendChild(el);
   });
 
+  // Populate High School tab
+  var hsInner = document.getElementById('hsInner');
+  if(w.activityHubUrl){
+    hsInner.innerHTML =
+      '<div style="text-align:center;padding:28px 0 16px;">'+
+      '<div style="font-size:48px;margin-bottom:12px;">&#127919;</div>'+
+      '<div style="font-family:Fredoka One,cursive;font-size:24px;color:#D7A8F0;margin-bottom:8px;">Activity Hub</div>'+
+      '<div style="font-size:14px;color:#888;line-height:1.7;max-width:480px;margin:0 auto 24px;">'+
+      'Four interactive activities built around this word — play, create, and download something to share with a child.'+
+      '</div>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:500px;margin:0 auto 24px;">'+
+      '<div style="background:#1A0A2E;border:1.5px solid #6C3483;border-radius:10px;padding:12px;text-align:center;">'+
+      '<div style="font-size:24px;">&#129513;</div><div style="font-family:Fredoka One,cursive;font-size:13px;color:#D7A8F0;margin-top:4px;">Jigsaw Puzzle</div></div>'+
+      '<div style="background:#1A0A2E;border:1.5px solid #6C3483;border-radius:10px;padding:12px;text-align:center;">'+
+      '<div style="font-size:24px;">&#128196;</div><div style="font-family:Fredoka One,cursive;font-size:13px;color:#D7A8F0;margin-top:4px;">Maze</div></div>'+
+      '<div style="background:#1A0A2E;border:1.5px solid #6C3483;border-radius:10px;padding:12px;text-align:center;">'+
+      '<div style="font-size:24px;">&#129504;</div><div style="font-family:Fredoka One,cursive;font-size:13px;color:#D7A8F0;margin-top:4px;">Brain Challenge</div></div>'+
+      '<div style="background:#1A0A2E;border:1.5px solid #6C3483;border-radius:10px;padding:12px;text-align:center;">'+
+      '<div style="font-size:24px;">&#127912;</div><div style="font-family:Fredoka One,cursive;font-size:13px;color:#D7A8F0;margin-top:4px;">Digital Paint</div></div>'+
+      '</div>'+
+      '<a href="'+w.activityHubUrl+'" target="_blank" style="display:inline-flex;align-items:center;gap:10px;'+
+      'background:linear-gradient(135deg,#6C3483,#9B59B6);color:#fff;border:none;border-radius:50px;'+
+      'padding:14px 36px;font-family:Fredoka One,cursive;font-size:18px;text-decoration:none;'+
+      'box-shadow:0 6px 24px rgba(155,89,182,.4);">'+
+      '&#127919; Enter the Activity Hub &#8599;</a>'+
+      '</div>';
+  } else {
+    hsInner.innerHTML = '<div style="text-align:center;padding:32px;color:#555;font-style:italic;">Activities coming soon for this word!</div>';
+  }
+
   // Interactive link
   var strip = document.getElementById('interactiveStrip');
   var link  = document.getElementById('interactiveLink');
@@ -692,10 +727,15 @@ function openWord(idx) {
   document.getElementById('shortStory').classList.add('active');
   document.getElementById('longStory').classList.remove('active');
 
-  // Reset age buttons
+  // Reset story tabs to Elementary
   document.querySelectorAll('.age-btn').forEach(function(b,i){
-    b.classList.toggle('active', i===0);
+    b.classList.remove('active');
+    b.style.background=''; b.style.borderColor=''; b.style.color='';
+    if(i===0) b.classList.add('active');
   });
+  document.getElementById('shortStory').classList.add('active');
+  document.getElementById('longStory').classList.remove('active');
+  document.getElementById('hsContent').style.display='none';
 
   // Navigation
   document.getElementById('prevWordBtn').style.opacity  = idx===0?'0.3':'1';
@@ -712,10 +752,30 @@ function openWord(idx) {
 }
 
 function toggleStory(version, btn) {
+  switchWordTab(version, btn);
+}
+
+function switchWordTab(version, btn) {
   document.getElementById('shortStory').classList.toggle('active', version==='short');
-  document.getElementById('longStory').classList.toggle('active',  version==='long');
-  document.querySelectorAll('.age-btn').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
+  document.getElementById('longStory').classList.toggle('active', version==='long');
+  var hsDiv = document.getElementById('hsContent');
+  if(version==='hs'){
+    hsDiv.style.display='block';
+    document.getElementById('shortStory').classList.remove('active');
+    document.getElementById('longStory').classList.remove('active');
+  } else {
+    hsDiv.style.display='none';
+  }
+  document.querySelectorAll('.age-btn').forEach(function(b){
+    b.classList.remove('active');
+    b.style.background=''; b.style.borderColor=''; b.style.color='';
+  });
+  if(version==='hs'){
+    btn.style.background='linear-gradient(135deg,#9B59B6,#6C3483)';
+    btn.style.borderColor='#9B59B6'; btn.style.color='#fff';
+  } else {
+    btn.classList.add('active');
+  }
 }
 
 function navigateWord(dir) {
