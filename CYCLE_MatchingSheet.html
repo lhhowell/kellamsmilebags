@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>CYCLE — Matching Activity Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito', sans-serif; background: #f5f5f5; padding: 20px; }
+
+.sheet-header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+.sheet-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 26px;
+  color: #1A1A1A;
+  letter-spacing: 1px;
+}
+.sheet-word {
+  font-family: 'Fredoka One', cursive;
+  font-size: 20px;
+  color: #C8860A;
+  letter-spacing: 2px;
+  margin: 2px 0;
+}
+.sheet-inst {
+  font-size: 13px;
+  color: #666;
+  margin-top: 4px;
+}
+.sheet-name {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #999;
+  margin-top: 6px;
+  border-top: 1px solid #ddd;
+  padding-top: 6px;
+  font-style: italic;
+}
+
+/* Two column layout */
+.matching-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 30px;
+  align-items: start;
+}
+
+/* LEFT — images */
+.img-col { display: flex; flex-direction: column; gap: 10px; }
+.img-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+.img-letter {
+  font-family: 'Fredoka One', cursive;
+  font-size: 22px;
+  color: #C8860A;
+  min-width: 28px;
+  text-align: center;
+}
+.vocab-img {
+  width: 100px;
+  height: 75px;
+  object-fit: contain;
+  border-radius: 6px;
+  display: block;
+}
+
+/* RIGHT — words + definitions */
+.word-col { display: flex; flex-direction: column; gap: 10px; }
+.word-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #fff;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.word-number {
+  font-family: 'Fredoka One', cursive;
+  font-size: 22px;
+  color: #1B7A78;
+  min-width: 28px;
+  text-align: center;
+}
+.word-answer {
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  border: 2px solid #C8860A;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fredoka One', cursive;
+  font-size: 16px;
+  color: #C8860A;
+  margin-top: 2px;
+}
+.word-content { flex: 1; }
+.word-label {
+  font-family: 'Fredoka One', cursive;
+  font-size: 16px;
+  color: #1A1A1A;
+  margin-bottom: 3px;
+}
+.word-def {
+  font-size: 12px;
+  color: #555;
+  line-height: 1.5;
+}
+
+/* Answer key */
+.answer-key {
+  margin-top: 18px;
+  border-top: 2px dashed #ccc;
+  padding-top: 10px;
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+}
+.answer-key-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+/* Buttons */
+.btn-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.btn {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 50px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 14px;
+  cursor: pointer;
+}
+.btn-bw  { background: #1A1A1A; color: #F0C040; }
+.btn-col { background: #C8860A; color: #fff; }
+.btn-prev-bw  { background: #555; color: #fff; }
+.btn-prev-col { background: #1B7A78; color: #fff; }
+
+/* Print */
+@media print {
+  @page { size: letter portrait; margin: 0.35in; }
+  body { background: #fff; padding: 0; }
+  .btn-row { display: none; }
+  .answer-key { display: none; }
+  .img-item, .word-item { border: 1.5px solid #ccc; padding: 6px 8px; }
+  .matching-body { gap: 0 20px; }
+  .vocab-img { width: 88px; height: 66px; }
+  .word-def { font-size: 11px; }
+  .word-label { font-size: 14px; }
+}
+</style>
+</head>
+<body>
+
+<div class="btn-row no-print">
+  <button class="btn btn-bw"  onclick="switchVersion('bw');window.print();">&#9999;&#65039; Print B&amp;W Coloring</button>
+  <button class="btn btn-col" onclick="switchVersion('color');window.print();">&#127912; Print Color Version</button>
+  <button class="btn btn-prev-bw"  onclick="switchVersion('bw');">&#128065; Preview B&amp;W</button>
+  <button class="btn btn-prev-col" onclick="switchVersion('color');">&#128065; Preview Color</button>
+</div>
+
+<div class="sheet-header">
+  <div class="sheet-title">Vocabulary Matching Activity</div>
+  <div class="sheet-word">C Y C L E</div>
+  <div class="sheet-inst">Draw a line — or write the letter — to match each picture on the left with its word and definition on the right.</div>
+  <div class="sheet-name">
+    <span>Name: _______________________________</span>
+    <span>Kellam Smile Bags &middot; Spring 2026</span>
+    <span>Date: ________________</span>
+  </div>
+</div>
+
+<div class="matching-body">
+
+  <!-- LEFT: Images in scrambled order A-J -->
+  <div class="img-col">
+    <div class="img-item"><div class="img-letter">A</div><img class="vocab-img" src="" data-color="CYCLE_Sprout_Color.png"     data-bw="CYCLE_Sprout_BW.png"     alt="Sprout"/></div>
+    <div class="img-item"><div class="img-letter">B</div><img class="vocab-img" src="" data-color="CYCLE_Butterfly_Color.png"  data-bw="CYCLE_Butterfly_BW.png"  alt="Butterfly"/></div>
+    <div class="img-item"><div class="img-letter">C</div><img class="vocab-img" src="" data-color="CYCLE_Log_Color.png"        data-bw="CYCLE_Log_BW.png"        alt="Log"/></div>
+    <div class="img-item"><div class="img-letter">D</div><img class="vocab-img" src="" data-color="CYCLE_WaterDrop_Color.png"  data-bw="CYCLE_WaterDrop_BW.png"  alt="Water"/></div>
+    <div class="img-item"><div class="img-letter">E</div><img class="vocab-img" src="" data-color="CYCLE_Chrysalis_Color.png"  data-bw="CYCLE_Chrysalis_BW.png"  alt="Chrysalis"/></div>
+    <div class="img-item"><div class="img-letter">F</div><img class="vocab-img" src="" data-color="CYCLE_Wheel_Color.png"      data-bw="CYCLE_Wheel_BW.png"      alt="Wheel"/></div>
+    <div class="img-item"><div class="img-letter">G</div><img class="vocab-img" src="" data-color="CYCLE_Leaf_Color.png"       data-bw="CYCLE_Leaf_BW.png"       alt="Leaf"/></div>
+    <div class="img-item"><div class="img-letter">H</div><img class="vocab-img" src="" data-color="CYCLE_Caterpillar_Color.png" data-bw="CYCLE_Caterpillar_BW.png" alt="Caterpillar"/></div>
+    <div class="img-item"><div class="img-letter">I</div><img class="vocab-img" src="" data-color="CYCLE_CycleArrow_Color.png" data-bw="CYCLE_CycleArrow_BW.png" alt="Cycle"/></div>
+    <div class="img-item"><div class="img-letter">J</div><img class="vocab-img" src="" data-color="CYCLE_Sprout_Color.png"     data-bw="CYCLE_Sprout_BW.png"     alt="Sun"/></div>
+  </div>
+
+  <!-- RIGHT: Words in different order 1-10 with answer box -->
+  <div class="word-col">
+    <div class="word-item"><div class="word-number">1</div><div class="word-answer"></div><div class="word-content"><div class="word-label">CATERPILLAR</div><div class="word-def">A young butterfly or moth in its crawling stage, eating and growing before it transforms.</div></div></div>
+    <div class="word-item"><div class="word-number">2</div><div class="word-answer"></div><div class="word-content"><div class="word-label">CYCLE</div><div class="word-def">A series of events that repeat in order — like seasons, water, or life always returning to a beginning.</div></div></div>
+    <div class="word-item"><div class="word-number">3</div><div class="word-answer"></div><div class="word-content"><div class="word-label">LEAF</div><div class="word-def">Part of a plant that captures sunlight — and falls each autumn to nourish the soil for new growth.</div></div></div>
+    <div class="word-item"><div class="word-number">4</div><div class="word-answer"></div><div class="word-content"><div class="word-label">SPROUT</div><div class="word-def">A tiny new plant breaking through the soil — the first sign something new is growing.</div></div></div>
+    <div class="word-item"><div class="word-number">5</div><div class="word-answer"></div><div class="word-content"><div class="word-label">BUTTERFLY</div><div class="word-def">A winged insect that begins as a caterpillar — proof that incredible change is possible.</div></div></div>
+    <div class="word-item"><div class="word-number">6</div><div class="word-answer"></div><div class="word-content"><div class="word-label">WATER CYCLE</div><div class="word-def">Water evaporates, forms clouds, falls as rain, and flows back — always moving, never lost.</div></div></div>
+    <div class="word-item"><div class="word-number">7</div><div class="word-answer"></div><div class="word-content"><div class="word-label">FALLEN LOG</div><div class="word-def">A tree that ended one life and began another — now a home for mushrooms, insects, and new plants.</div></div></div>
+    <div class="word-item"><div class="word-number">8</div><div class="word-answer"></div><div class="word-content"><div class="word-label">SUN</div><div class="word-def">The source of energy for almost every cycle on Earth — rising and setting each day, powering life.</div></div></div>
+    <div class="word-item"><div class="word-number">9</div><div class="word-answer"></div><div class="word-content"><div class="word-label">WHEEL</div><div class="word-def">A circle that keeps turning — like the cycles of nature, it never stops and always comes back around.</div></div></div>
+    <div class="word-item"><div class="word-number">10</div><div class="word-answer"></div><div class="word-content"><div class="word-label">CHRYSALIS</div><div class="word-def">The protective shell a caterpillar forms around itself while changing into a butterfly.</div></div></div>
+  </div>
+
+</div>
+
+<!-- Answer Key (hidden on print) -->
+<div class="answer-key no-print">
+  <div class="answer-key-title">&#128273; Answer Key</div>
+  <div>1=H &nbsp; 2=I &nbsp; 3=G &nbsp; 4=A &nbsp; 5=B &nbsp; 6=D &nbsp; 7=C &nbsp; 8=J &nbsp; 9=F &nbsp; 10=E</div>
+</div>
+
+<script>
+function switchVersion(version) {
+  document.querySelectorAll('.vocab-img').forEach(function(img) {
+    img.src = version === 'color' ? img.dataset.color : img.dataset.bw;
+  });
+}
+switchVersion('bw');
+</script>
+</body>
+</html>
