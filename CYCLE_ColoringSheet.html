@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>CYCLE — Vocabulary Coloring Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #f5f5f5;
+  padding: 20px;
+}
+
+.sheet-title {
+  text-align: center;
+  font-family: 'Fredoka One', cursive;
+  font-size: 28px;
+  color: #1A1A1A;
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
+.sheet-sub {
+  text-align: center;
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 20px;
+}
+
+/* Each row = one vocabulary item */
+.vocab-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #fff;
+  border-radius: 12px;
+  border: 2px solid #e0e0e0;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.vocab-img {
+  width: 160px;
+  min-width: 160px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+}
+
+.vocab-text {
+  flex: 1;
+}
+
+.vocab-word {
+  font-family: 'Fredoka One', cursive;
+  font-size: 26px;
+  color: #1A1A1A;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.vocab-def {
+  font-size: 15px;
+  color: #444;
+  line-height: 1.6;
+}
+
+.vocab-line {
+  border-bottom: 2px solid #ddd;
+  margin-top: 10px;
+  height: 24px;
+}
+
+/* Print */
+@media print {
+  @page { size: letter portrait; margin: 0.4in; }
+  body { background: #fff; padding: 0; }
+  .no-print { display: none; }
+  .vocab-row { border: 1.5px solid #ccc; border-radius: 8px; margin-bottom: 10px; padding: 8px 12px; }
+  .vocab-img { width: 140px; min-width: 140px; height: 105px; }
+  .vocab-word { font-size: 22px; }
+  .vocab-def { font-size: 13px; }
+  .sheet-title { font-size: 22px; }
+}
+</style>
+</head>
+<body>
+
+<div class="sheet-title">CYCLE — Vocabulary Coloring Sheet</div>
+<div class="sheet-sub">Kellam Smile Bags &middot; Kellam High School &middot; Spring 2026</div>
+
+<!-- Print buttons — screen only -->
+<div class="no-print" style="text-align:center;margin-bottom:20px;display:flex;gap:12px;justify-content:center;">
+  <button onclick="switchVersion('bw');window.print();" 
+    style="padding:11px 28px;background:#1A1A1A;color:#F0C040;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;">
+    &#9999;&#65039; Print Coloring Sheet (B&amp;W)
+  </button>
+  <button onclick="switchVersion('color');window.print();"
+    style="padding:11px 28px;background:#C8860A;color:#fff;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;">
+    &#127912; Print Color Reference
+  </button>
+  <button onclick="switchVersion('bw')"
+    style="padding:11px 28px;background:#555;color:#fff;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;">
+    &#9999;&#65039; Preview B&amp;W
+  </button>
+  <button onclick="switchVersion('color')"
+    style="padding:11px 28px;background:#1B7A78;color:#fff;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;">
+    &#127912; Preview Color
+  </button>
+</div>
+
+<div id="sheetBody">
+
+  <div class="vocab-row">
+    <img class="vocab-img" src="" data-color="CYCLE_Caterpillar_Color.png" data-bw="CYCLE_Caterpillar_BW.png" alt="Caterpillar"/>
+    <div class="vocab-text">
+      <div class="vocab-word">CATERPILLAR</div>
+      <div class="vocab-def">A young butterfly or moth in its crawling stage, eating and growing before it transforms into something new.</div>
+    </div>
+  </div>
+
+  <div class="vocab-row">
+    <img class="vocab-img" src="" data-color="CYCLE_Chrysalis_Color.png" data-bw="CYCLE_Chrysalis_BW.png" alt="Chrysalis"/>
+    <div class="vocab-text">
+      <div class="vocab-word">CHRYSALIS</div>
+      <div class="vocab-def">The protective shell a caterpillar forms around itself while it changes into a butterfly — a symbol of transformation.</div>
+    </div>
+  </div>
+
+  <div class="vocab-row">
+    <img class="vocab-img" src="" data-color="CYCLE_Butterfly_Color.png" data-bw="CYCLE_Butterfly_BW.png" alt="Butterfly"/>
+    <div class="vocab-text">
+      <div class="vocab-word">BUTTERFLY</div>
+      <div class="vocab-def">A winged insect that begins as a caterpillar — proof that incredible change is possible.</div>
+    </div>
+  </div>
+
+  <div class="vocab-row">
+    <img class="vocab-img" src="" data-color="CYCLE_Leaf_Color.png" data-bw="CYCLE_Leaf_BW.png" alt="Leaf"/>
+    <div class="vocab-text">
+      <div class="vocab-word">LEAF</div>
+      <div class="vocab-def">A part of a plant that captures sunlight to make food — and falls each autumn to nourish the soil for new growth.</div>
+    </div>
+  </div>
+
+  <div class="vocab-row">
+    <img class="vocab-img" src="" data-color="CYCLE_Log_Color.png" data-bw="CYCLE_Log_BW.png" alt="Fallen Log"/>
+    <div class="vocab-text">
+      <div class="vocab-word">FALLEN LOG</div>
+      <div class="vocab-def">A tree that has ended one life and begun another — becoming a home for mushrooms, insects, and new plants.</div>
+    </div>
+  </div>
+
+  <div class="vocab-row">
+    <img class="vocab-img" src="" data-color="CYCLE_CycleArrow_Color.png" data-bw="CYCLE_CycleArrow_BW.png" alt="Cycle"/>
+    <div class="vocab-text">
+      <div class="vocab-word">CYCLE</div>
+      <div class="vocab-def">A series of events that repeat in order — like seasons, water, or life itself always returning to a beginning.</div>
+    </div>
+  </div>
+
+  <div class="vocab-row">
+    <img class="vocab-img" src="" data-color="CYCLE_WaterDrop_Color.png" data-bw="CYCLE_WaterDrop_BW.png" alt="Water Drop"/>
+    <div class="vocab-text">
+      <div class="vocab-word">WATER CYCLE</div>
+      <div class="vocab-def">Water evaporates, forms clouds, falls as rain, and flows back to the sea — always moving, never lost.</div>
+    </div>
+  </div>
+
+  <div class="vocab-row">
+    <img class="vocab-img" src="" data-color="CYCLE_Sprout_Color.png" data-bw="CYCLE_Sprout_BW.png" alt="Sprout"/>
+    <div class="vocab-text">
+      <div class="vocab-word">SPROUT</div>
+      <div class="vocab-def">A tiny new plant breaking through the soil — the first sign that something new is growing even when you can't see it yet.</div>
+    </div>
+  </div>
+
+  <div class="vocab-row">
+    <img class="vocab-img" src="" data-color="CYCLE_Wheel_Color.png" data-bw="CYCLE_Wheel_BW.png" alt="Wheel"/>
+    <div class="vocab-text">
+      <div class="vocab-word">WHEEL</div>
+      <div class="vocab-def">A circle that keeps turning — like the cycles of nature, it never stops and always comes back around.</div>
+    </div>
+  </div>
+
+  <div class="vocab-row">
+    <img class="vocab-img" src="" data-color="CYCLE_Sun_Color.png" data-bw="CYCLE_Sun_BW.png" alt="Sun"/>
+    <div class="vocab-text">
+      <div class="vocab-word">SUN</div>
+      <div class="vocab-def">The source of energy for almost every cycle on Earth — rising and setting each day, powering life through seasons and years.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Set all images to BW by default
+function switchVersion(version) {
+  var imgs = document.querySelectorAll('.vocab-img');
+  imgs.forEach(function(img) {
+    img.src = version === 'color' ? img.dataset.color : img.dataset.bw;
+  });
+  document.querySelector('.sheet-title').textContent = version === 'color'
+    ? 'CYCLE — Color Reference Sheet'
+    : 'CYCLE — Vocabulary Coloring Sheet';
+}
+// Start with B&W
+switchVersion('bw');
+</script>
+
+</body>
+</html>
