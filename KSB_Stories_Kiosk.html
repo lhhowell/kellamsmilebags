@@ -268,6 +268,31 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
     </a>
   </div>
 
+  <!-- Activity Sheets -->
+  <div id="activityStrip" style="display:none;margin-bottom:20px;">
+    <div style="font-family:'Fredoka One',cursive;font-size:16px;color:#F0C040;margin-bottom:10px;">&#127912; Activity Sheets</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <a id="coloringSheetLink" href="#" target="_blank"
+        style="display:flex;align-items:center;gap:12px;background:#1F1700;border:2px solid #C8860A;border-radius:12px;padding:14px 16px;text-decoration:none;">
+        <span style="font-size:28px;">&#9999;&#65039;</span>
+        <div>
+          <div style="font-family:'Fredoka One',cursive;font-size:15px;color:#F0C040;margin-bottom:2px;">Coloring Sheet</div>
+          <div style="font-size:11px;color:#888;">Color &amp; B&amp;W versions &middot; Printable</div>
+        </div>
+        <span style="margin-left:auto;font-family:'Fredoka One',cursive;font-size:12px;color:#C8860A;">Open &#8599;</span>
+      </a>
+      <a id="matchingSheetLink" href="#" target="_blank"
+        style="display:flex;align-items:center;gap:12px;background:#1F1700;border:2px solid #C8860A;border-radius:12px;padding:14px 16px;text-decoration:none;">
+        <span style="font-size:28px;">&#128221;</span>
+        <div>
+          <div style="font-family:'Fredoka One',cursive;font-size:15px;color:#F0C040;margin-bottom:2px;">Matching Activity</div>
+          <div style="font-size:11px;color:#888;">Match pictures to words &middot; Printable</div>
+        </div>
+        <span style="margin-left:auto;font-family:'Fredoka One',cursive;font-size:12px;color:#C8860A;">Open &#8599;</span>
+      </a>
+    </div>
+  </div>
+
   <!-- Word Navigation -->
   <div class="word-nav">
     <button class="word-nav-btn" id="prevWordBtn" onclick="navigateWord(-1)">&#8592; Previous Word</button>
@@ -353,6 +378,8 @@ var WORDS = [
        bw:"https://lhhowell.github.io/kellamsmilebags/Cycle_ColoringPage2.png?v=2"}
     ],
     interactiveUrl:"https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_HiddenPicture_CYCLE%20(10).html",
+    coloringSheetUrl:"https://lhhowell.github.io/kellamsmilebags/CYCLE_ColoringSheet.html",
+    matchingSheetUrl:"https://lhhowell.github.io/kellamsmilebags/CYCLE_MatchingSheet.html",
     hidden:["monarch butterfly","caterpillar","mushrooms on bark","underground roots","robin with worm","splitting seed pod","moon and sun"],
     shortStory:"<p>Sunny and Ray carried their golden bag down a path covered in fallen leaves.</p><p>\"Everything changes,\" said Ray, picking up a red leaf. \"But look — even this leaf had a whole life.\"</p><p>Zara knelt beside a tiny green sprout pushing up through the dirt. \"Something new is already growing,\" she said softly.</p><p>Sunny grinned and gave a thumbs up. \"That's the CYCLE! Things end so new things can begin.\"</p><p>Ray placed the Smile Bag gently on the ground. \"Whatever you are going through right now — this is not the end. Something beautiful is on its way.\"</p>",
     longStory:"<p>The six friends gathered at the edge of the forest where the old oak tree had finally fallen. Its massive trunk lay across the mossy ground.</p><p>\"It feels sad,\" said Sofia, sketching the scene.</p><p>\"It is sad,\" said Maya. \"But look closer.\" She pointed to mushrooms growing along the bark. \"This tree isn't gone — it just changed form.\"</p><p>Owen climbed up on the trunk. \"So the end of one thing is actually the beginning of something else?\"</p><p>\"That's the CYCLE,\" said Marcus. \"In science we call it decomposition — but really it's just life making room for more life.\"</p><p>Zara stood quietly, watching a monarch butterfly land on a wildflower nearby.</p><p>Sunny and Ray set the Smile Bag at the base of the old tree — right where a new sapling was already reaching toward the light.</p><p><em>Whatever season you are in right now — the hard part, the waiting part, the not-yet part — remember that CYCLE means something new is already growing. You are part of something bigger than this moment.</em></p>"
@@ -626,6 +653,20 @@ function openWord(idx) {
     link.href = w.interactiveUrl;
   } else {
     strip.style.display = 'none';
+  }
+
+  // Activity sheets
+  var actStrip = document.getElementById('activityStrip');
+  if(w.coloringSheetUrl || w.matchingSheetUrl){
+    actStrip.style.display = 'block';
+    var cl = document.getElementById('coloringSheetLink');
+    var ml = document.getElementById('matchingSheetLink');
+    if(w.coloringSheetUrl){ cl.href = w.coloringSheetUrl; cl.style.opacity='1'; cl.style.pointerEvents='auto'; }
+    else { cl.style.opacity='0.4'; cl.style.pointerEvents='none'; }
+    if(w.matchingSheetUrl){ ml.href = w.matchingSheetUrl; ml.style.opacity='1'; ml.style.pointerEvents='auto'; }
+    else { ml.style.opacity='0.4'; ml.style.pointerEvents='none'; }
+  } else {
+    actStrip.style.display = 'none';
   }
 
   // Stories
