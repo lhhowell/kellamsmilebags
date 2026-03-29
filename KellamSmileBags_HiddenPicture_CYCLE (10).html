@@ -41,8 +41,7 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#E8F5E9 0
   body { margin: 0; padding: 0; background: #fff; }
   .score-bar { display: none !important; }
   .page-title { display: none !important; }
-  .print-header, .print-footer { display: none !important; }
-@media print { .print-header { display: flex !important; } .print-footer { display: block !important; } }
+  /* print-header and footer injected by JS on beforeprint */
 .print-btn { display: none !important; }
   .found-list { display: none !important; }
   .hotspot { display: none !important; }
@@ -125,22 +124,6 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#E8F5E9 0
 </style>
 </head>
 <body>
-<!-- PRINT HEADER — hidden on screen, shows when printing -->
-<div class="print-header">
-  <div class="print-header-title">&#128269; Find these 10 hidden objects!</div>
-  <div class="print-header-item"><span style="font-size:20pt;">🐦</span><span>Robin</span></div>
-<div class="print-header-item"><span style="font-size:20pt;">🦋</span><span>Butterfly</span></div>
-<div class="print-header-item"><span style="font-size:20pt;">🦋</span><span>Butterfly</span></div>
-<div class="print-header-item"><span style="font-size:20pt;">🍶</span><span>Water Bottle</span></div>
-<div class="print-header-item"><span style="font-size:20pt;">⚙️</span><span>Wheel</span></div>
-<div class="print-header-item"><span style="font-size:20pt;">🍃</span><span>Leaf</span></div>
-<div class="print-header-item"><span style="font-size:20pt;">🍄</span><span>Mushroom</span></div>
-<div class="print-header-item"><span style="font-size:20pt;">🌱</span><span>Sprout</span></div>
-<div class="print-header-item"><span style="font-size:20pt;">🫘</span><span>Seed</span></div>
-<div class="print-header-item"><span style="font-size:20pt;">🍌</span><span>Banana</span></div>
-
-</div>
-
 <div class="page-title">Kellam Smile Bags · <span>CYCLE</span> Hidden Picture</div>
 <div class="score-bar">
   <span>Found:</span>
@@ -250,7 +233,30 @@ init();
   &#128438; Print Hidden Picture
 </button>
 
-<!-- PRINT FOOTER -->
-<div class="print-footer">Kellam Smile Bags &middot; Kellam High School &middot; Spring 2026 &middot; lhhowell.github.io/kellamsmilebags</div>
+<script>
+var _printHeader = null;
+var _printFooter = null;
+
+window.addEventListener('beforeprint', function() {
+  // Build header
+  _printHeader = document.createElement('div');
+  _printHeader.className = 'print-header';
+  _printHeader.innerHTML = '<div class="print-header-title">&#128269; Find these 10 hidden objects!</div>' +
+    OBJECTS.map(function(o){ return '<div class="print-header-item"><span style="font-size:20pt;">'+o.emoji+'</span><span>'+o.label+'</span></div>'; }).join('');
+  document.body.insertBefore(_printHeader, document.body.firstChild);
+
+  // Build footer
+  _printFooter = document.createElement('div');
+  _printFooter.className = 'print-footer';
+  _printFooter.innerHTML = 'Kellam Smile Bags &middot; Kellam High School &middot; Spring 2026 &middot; lhhowell.github.io/kellamsmilebags';
+  document.body.appendChild(_printFooter);
+});
+
+window.addEventListener('afterprint', function() {
+  if(_printHeader) { _printHeader.remove(); _printHeader = null; }
+  if(_printFooter) { _printFooter.remove(); _printFooter = null; }
+});
+</script>
+
 </body>
 </html>
