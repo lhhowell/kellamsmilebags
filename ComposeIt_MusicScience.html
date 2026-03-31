@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎵 The Music Science Behind Compose It!</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a1a4e;
+    --purple: #7c3aed;
+    --purple-light: #a78bfa;
+    --gold: #f59e0b;
+    --gold-light: #fde68a;
+    --teal: #0d9488;
+    --pink: #ec4899;
+    --bg: #0f0f2e;
+    --card: #1e1e4a;
+    --card2: #252560;
+    --text: #e2e8f0;
+    --radius: 18px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated star background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 15% 20%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 45%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 80%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 5% 75%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 45% 85%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(2px 2px at 25% 40%, rgba(167,139,250,0.4) 0%, transparent 100%),
+      radial-gradient(2px 2px at 65% 70%, rgba(245,158,11,0.3) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  /* Hero header */
+  .hero {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeDown 0.7s ease both;
+  }
+
+  .hero-note {
+    font-size: 72px;
+    display: inline-block;
+    animation: bounce 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(245,158,11,0.6));
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-12px) rotate(5deg); }
+  }
+
+  .hero h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(28px, 6vw, 48px);
+    background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--purple-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin: 8px 0;
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--purple-light);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Section cards */
+  .section {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(124,58,237,0.2);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .section:nth-child(2) { animation-delay: 0.1s; }
+  .section:nth-child(3) { animation-delay: 0.2s; }
+  .section:nth-child(4) { animation-delay: 0.3s; }
+  .section:nth-child(5) { animation-delay: 0.4s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .section-icon {
+    font-size: 36px;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 8px currentColor);
+  }
+
+  .section-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 24px;
+    color: var(--gold-light);
+  }
+
+  .section-title span {
+    display: block;
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--purple-light);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  p { line-height: 1.75; font-size: 15px; color: #c4c4e0; margin-bottom: 10px; }
+  p:last-child { margin-bottom: 0; }
+  p strong { color: var(--gold-light); font-weight: 800; }
+  p em { color: var(--purple-light); font-style: normal; font-weight: 700; }
+
+  /* Vocabulary cards */
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-top: 6px;
+  }
+
+  .vocab-card {
+    background: var(--card2);
+    border-radius: 12px;
+    padding: 16px;
+    border-left: 4px solid var(--purple);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .vocab-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(124,58,237,0.3);
+  }
+
+  .vocab-word {
+    font-family: 'Fredoka One', cursive;
+    font-size: 18px;
+    color: var(--gold-light);
+    margin-bottom: 6px;
+  }
+
+  .vocab-def {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #b0b0cc;
+  }
+
+  .vocab-card:nth-child(2) { border-color: var(--teal); }
+  .vocab-card:nth-child(3) { border-color: var(--pink); }
+  .vocab-card:nth-child(4) { border-color: var(--gold); }
+  .vocab-card:nth-child(5) { border-color: var(--purple-light); }
+
+  /* Pentatonic scale visual */
+  .scale-viz {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 20px 0;
+  }
+
+  .note-pill {
+    background: linear-gradient(135deg, var(--purple), var(--purple-light));
+    color: white;
+    font-family: 'Fredoka One', cursive;
+    font-size: 18px;
+    padding: 10px 18px;
+    border-radius: 50px;
+    box-shadow: 0 4px 12px rgba(124,58,237,0.4);
+    transition: transform 0.15s;
+    cursor: default;
+  }
+
+  .note-pill:hover { transform: scale(1.12) translateY(-3px); }
+  .note-pill.gold { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--navy); }
+
+  /* VOICE grid */
+  .voice-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin: 18px 0;
+  }
+
+  .voice-col {
+    background: var(--card2);
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .voice-header {
+    font-family: 'Fredoka One', cursive;
+    font-size: 22px;
+    padding: 10px 0 6px;
+    color: white;
+  }
+
+  .voice-col:nth-child(1) .voice-header { background: #7c3aed; }
+  .voice-col:nth-child(2) .voice-header { background: #0d9488; }
+  .voice-col:nth-child(3) .voice-header { background: #ec4899; }
+  .voice-col:nth-child(4) .voice-header { background: #f59e0b; color: var(--navy); }
+  .voice-col:nth-child(5) .voice-header { background: #2563eb; }
+
+  .voice-letters {
+    padding: 8px 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .voice-letter {
+    font-size: 12px;
+    font-weight: 800;
+    color: #c4c4e0;
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.04);
+  }
+
+  .voice-letter .ltr { color: white; }
+  .voice-letter .note { color: var(--gold-light); }
+
+  /* Instrument gallery */
+  .instrument-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+  }
+
+  .instrument-card {
+    background: var(--card2);
+    border-radius: 14px;
+    padding: 18px 10px 14px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: default;
+  }
+
+  .instrument-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+
+  .instrument-emoji { font-size: 40px; margin-bottom: 8px; display: block; }
+  .instrument-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 14px;
+    color: var(--gold-light);
+    margin-bottom: 4px;
+  }
+
+  .instrument-fact {
+    font-size: 11px;
+    color: #8888aa;
+    line-height: 1.4;
+  }
+
+  /* Fun fact callout */
+  .callout {
+    background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(13,148,136,0.2));
+    border: 1px solid rgba(124,58,237,0.4);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin: 16px 0;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .callout-icon { font-size: 28px; flex-shrink: 0; }
+  .callout-text { font-size: 14px; color: #c4c4e0; line-height: 1.7; }
+  .callout-text strong { color: var(--gold-light); }
+
+  /* Try it demo */
+  .demo-box {
+    background: var(--card2);
+    border-radius: 14px;
+    padding: 20px;
+    margin-top: 16px;
+    border: 1px dashed rgba(245,158,11,0.4);
+  }
+
+  .demo-label {
+    font-family: 'Fredoka One', cursive;
+    font-size: 16px;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .demo-input-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .demo-input {
+    flex: 1;
+    min-width: 160px;
+    background: rgba(255,255,255,0.07);
+    border: 2px solid rgba(124,58,237,0.4);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 20px;
+    color: white;
+    outline: none;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+  }
+
+  .demo-input:focus { border-color: var(--purple-light); }
+
+  .demo-btn {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--navy);
+    font-family: 'Fredoka One', cursive;
+    font-size: 16px;
+    padding: 10px 22px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+
+  .demo-btn:hover { transform: scale(1.05); }
+
+  .demo-result {
+    margin-top: 14px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    min-height: 40px;
+    align-items: center;
+  }
+
+  .demo-note {
+    background: linear-gradient(135deg, var(--purple), var(--purple-light));
+    color: white;
+    font-family: 'Fredoka One', cursive;
+    font-size: 16px;
+    padding: 8px 14px;
+    border-radius: 50px;
+    animation: popIn 0.3s cubic-bezier(.34,1.56,.64,1) both;
+  }
+
+  @keyframes popIn {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+
+  .demo-note .letter { font-size: 11px; opacity: 0.75; display: block; text-align: center; }
+
+  /* Back button */
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(124,58,237,0.2);
+    color: var(--purple-light);
+    font-family: 'Fredoka One', cursive;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: 1px solid rgba(124,58,237,0.4);
+    text-decoration: none;
+    transition: all 0.2s;
+    margin-bottom: 28px;
+    cursor: pointer;
+  }
+
+  .back-btn:hover {
+    background: rgba(124,58,237,0.4);
+    transform: translateX(-3px);
+  }
+
+  @media (max-width: 500px) {
+    .voice-grid { grid-template-columns: repeat(5, 1fr); gap: 5px; }
+    .voice-header { font-size: 16px; }
+    .voice-letter { font-size: 10px; padding: 2px 4px; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- Back link -->
+  <a class="back-btn" onclick="history.back()">← Back to Compose It!</a>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-note">🎵</div>
+    <h1>The Music Science<br>Behind Compose It!</h1>
+    <p class="hero-sub">How your word becomes a song — and why it always sounds amazing</p>
+  </div>
+
+  <!-- Section 1: Vocabulary -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">📖</div>
+      <div class="section-title">
+        <span>Start Here</span>
+        Words You Need to Know
+      </div>
+    </div>
+
+    <div class="vocab-grid">
+      <div class="vocab-card">
+        <div class="vocab-word">🎼 Note</div>
+        <div class="vocab-def">A single musical sound with its own pitch — like one key on a piano. Think of it as one "step" in a melody.</div>
+      </div>
+      <div class="vocab-card">
+        <div class="vocab-word">🎹 Scale</div>
+        <div class="vocab-def">A group of notes that sound good together, arranged from low to high. Like a musical "team" where everyone gets along.</div>
+      </div>
+      <div class="vocab-card">
+        <div class="vocab-word">🎸 Pentatonic</div>
+        <div class="vocab-def">"Penta" = 5, "tonic" = notes. A scale with only 5 notes — the most naturally pleasing sounds the human ear knows!</div>
+      </div>
+      <div class="vocab-card">
+        <div class="vocab-word">🎵 Pitch</div>
+        <div class="vocab-def">How high or low a note sounds. A bird chirping = high pitch. A foghorn = low pitch.</div>
+      </div>
+      <div class="vocab-card">
+        <div class="vocab-word">🎶 Melody</div>
+        <div class="vocab-def">A sequence of notes played one after another — what you hum or whistle. Your word's DNA becomes a mini-melody!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Pentatonic scale -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">⭐</div>
+      <div class="section-title">
+        <span>The Secret Weapon</span>
+        Why It Always Sounds Good
+      </div>
+    </div>
+
+    <p>Here's the wildest thing about Compose It! — <strong>it is mathematically impossible to make your word sound bad.</strong> That's not luck. That's science! 🔬</p>
+
+    <p>Every note in your word is chosen from the <em>pentatonic scale</em> — a 5-note scale that humans have loved for thousands of years. Ancient Greek musicians used it. African drums use it. The Beatles used it. It's in country music, jazz, rock, and pop.</p>
+
+    <div class="callout">
+      <div class="callout-icon">🤯</div>
+      <div class="callout-text"><strong>Mind-blowing fact:</strong> The pentatonic scale removes the two notes that normally clash with each other. What's left? Five notes that harmonize with anything. Scientists believe we're actually <strong>wired at birth</strong> to find this scale pleasing — it may be hardcoded into human biology!</div>
+    </div>
+
+    <p>The 5 notes in the C pentatonic scale:</p>
+    <div class="scale-viz">
+      <div class="note-pill">C</div>
+      <div class="note-pill">D</div>
+      <div class="note-pill">E</div>
+      <div class="note-pill gold">G</div>
+      <div class="note-pill">A</div>
+    </div>
+
+    <p style="text-align:center; font-size:13px; color:#8888aa;">Mix any of these in any order → always sounds musical ✨</p>
+  </div>
+
+  <!-- Section 3: VOICE grid / letter mapping -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🧬</div>
+      <div class="section-title">
+        <span>Your Word's Musical Fingerprint</span>
+        The V·O·I·C·E Grid
+      </div>
+    </div>
+
+    <p>Every letter of the alphabet is assigned one of the 5 pentatonic notes using the <strong>V·O·I·C·E grid</strong> — five columns, one for each note. The letter lands in a column, the column gives it a note. That's your word's <em>musical DNA!</em></p>
+
+    <div class="voice-grid">
+      <div class="voice-col">
+        <div class="voice-header">V → C</div>
+        <div class="voice-letters">
+          <div class="voice-letter"><span class="ltr">A</span><span class="note">C</span></div>
+          <div class="voice-letter"><span class="ltr">F</span><span class="note">C</span></div>
+          <div class="voice-letter"><span class="ltr">K</span><span class="note">C</span></div>
+          <div class="voice-letter"><span class="ltr">P</span><span class="note">C</span></div>
+          <div class="voice-letter"><span class="ltr">U</span><span class="note">C</span></div>
+          <div class="voice-letter"><span class="ltr">Z</span><span class="note">C</span></div>
+        </div>
+      </div>
+      <div class="voice-col">
+        <div class="voice-header">O → D</div>
+        <div class="voice-letters">
+          <div class="voice-letter"><span class="ltr">B</span><span class="note">D</span></div>
+          <div class="voice-letter"><span class="ltr">G</span><span class="note">D</span></div>
+          <div class="voice-letter"><span class="ltr">L</span><span class="note">D</span></div>
+          <div class="voice-letter"><span class="ltr">Q</span><span class="note">D</span></div>
+          <div class="voice-letter"><span class="ltr">V</span><span class="note">D</span></div>
+        </div>
+      </div>
+      <div class="voice-col">
+        <div class="voice-header">I → E</div>
+        <div class="voice-letters">
+          <div class="voice-letter"><span class="ltr">C</span><span class="note">E</span></div>
+          <div class="voice-letter"><span class="ltr">H</span><span class="note">E</span></div>
+          <div class="voice-letter"><span class="ltr">M</span><span class="note">E</span></div>
+          <div class="voice-letter"><span class="ltr">R</span><span class="note">E</span></div>
+          <div class="voice-letter"><span class="ltr">W</span><span class="note">E</span></div>
+        </div>
+      </div>
+      <div class="voice-col">
+        <div class="voice-header">C → G</div>
+        <div class="voice-letters">
+          <div class="voice-letter"><span class="ltr">D</span><span class="note">G</span></div>
+          <div class="voice-letter"><span class="ltr">I</span><span class="note">G</span></div>
+          <div class="voice-letter"><span class="ltr">N</span><span class="note">G</span></div>
+          <div class="voice-letter"><span class="ltr">S</span><span class="note">G</span></div>
+          <div class="voice-letter"><span class="ltr">X</span><span class="note">G</span></div>
+        </div>
+      </div>
+      <div class="voice-col">
+        <div class="voice-header">E → A</div>
+        <div class="voice-letters">
+          <div class="voice-letter"><span class="ltr">E</span><span class="note">A</span></div>
+          <div class="voice-letter"><span class="ltr">J</span><span class="note">A</span></div>
+          <div class="voice-letter"><span class="ltr">O</span><span class="note">A</span></div>
+          <div class="voice-letter"><span class="ltr">T</span><span class="note">A</span></div>
+          <div class="voice-letter"><span class="ltr">Y</span><span class="note">A</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-icon">💡</div>
+      <div class="callout-text">Example: The word <strong>ANCHOR</strong> → A=C, N=G, C=E, H=E, O=A, R=E → your melody is <strong>C · G · E · E · A · E</strong>. Every word gets its own unique sequence — that's your musical fingerprint!</div>
+    </div>
+
+    <!-- Live demo -->
+    <div class="demo-box">
+      <div class="demo-label">🎹 Try it! Type any word:</div>
+      <div class="demo-input-row">
+        <input class="demo-input" id="wordInput" type="text" maxlength="12" placeholder="BREATHE" oninput="decodeWord()">
+      </div>
+      <div class="demo-result" id="demoResult"></div>
+    </div>
+  </div>
+
+  <!-- Section 4: Instruments -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🎸</div>
+      <div class="section-title">
+        <span>Meet the Band</span>
+        Instruments That Love the Pentatonic Scale
+      </div>
+    </div>
+
+    <p>These instruments are famous for using the pentatonic scale — and they all show up in music you already know!</p>
+
+    <div class="instrument-row">
+      <div class="instrument-card">
+        <span class="instrument-emoji">🎹</span>
+        <div class="instrument-name">Piano</div>
+        <div class="instrument-fact">The black keys alone form a pentatonic scale — try it!</div>
+      </div>
+      <div class="instrument-card">
+        <span class="instrument-emoji">🎸</span>
+        <div class="instrument-name">Guitar</div>
+        <div class="instrument-fact">Every guitar solo you've ever loved is probably pentatonic</div>
+      </div>
+      <div class="instrument-card">
+        <span class="instrument-emoji">🪘</span>
+        <div class="instrument-name">Steel Drums</div>
+        <div class="instrument-fact">Caribbean steel drums are tuned to pentatonic — instant island vibes</div>
+      </div>
+      <div class="instrument-card">
+        <span class="instrument-emoji">🪗</span>
+        <div class="instrument-name">Harmonica</div>
+        <div class="instrument-fact">Blues harmonica runs are almost entirely pentatonic scales</div>
+      </div>
+      <div class="instrument-card">
+        <span class="instrument-emoji">🎺</span>
+        <div class="instrument-name">Trumpet</div>
+        <div class="instrument-fact">Jazz trumpet solos love to dance through pentatonic notes</div>
+      </div>
+      <div class="instrument-card">
+        <span class="instrument-emoji">🎻</span>
+        <div class="instrument-name">Violin</div>
+        <div class="instrument-fact">Folk fiddle music worldwide stays almost entirely pentatonic</div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:18px;">
+      <div class="callout-icon">🎵</div>
+      <div class="callout-text"><strong>Did you know?</strong> "My Girl" by The Temptations, "Amazing Grace," the Jaws theme, and traditional Chinese music all use the pentatonic scale. It crosses every culture on Earth — which is exactly why <strong>your word's melody will feel natural to anyone who hears it.</strong></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const NOTE_MAP = {
+  A:'C',B:'D',C:'E',D:'G',E:'A',
+  F:'C',G:'D',H:'E',I:'G',J:'A',
+  K:'C',L:'D',M:'E',N:'G',O:'A',
+  P:'C',Q:'D',R:'E',S:'G',T:'A',
+  U:'C',V:'D',W:'E',X:'G',Y:'A',
+  Z:'C'
+};
+
+const NOTE_COLORS = {
+  C:'#7c3aed', D:'#0d9488', E:'#ec4899', G:'#f59e0b', A:'#2563eb'
+};
+
+function decodeWord() {
+  const word = document.getElementById('wordInput').value.toUpperCase().replace(/[^A-Z]/g,'');
+  const result = document.getElementById('demoResult');
+  result.innerHTML = '';
+  if (!word) return;
+  word.split('').forEach((letter, i) => {
+    const note = NOTE_MAP[letter] || '?';
+    const pill = document.createElement('div');
+    pill.className = 'demo-note';
+    pill.style.background = `linear-gradient(135deg, ${NOTE_COLORS[note] || '#666'}, ${NOTE_COLORS[note] || '#999'}aa)`;
+    pill.style.animationDelay = (i * 0.07) + 's';
+    pill.innerHTML = `${note}<span class="letter">${letter}</span>`;
+    result.appendChild(pill);
+  });
+}
+
+// Init with placeholder
+setTimeout(() => {
+  document.getElementById('wordInput').value = 'BREATHE';
+  decodeWord();
+}, 400);
+</script>
+</body>
+</html>
