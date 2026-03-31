@@ -36,6 +36,47 @@ body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--te
 .hdr-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
 .badge { background: var(--gold); color: #111; font-family: 'Fredoka One', cursive; font-size: 11px; padding: 5px 14px; border-radius: 50px; }
 
+/* NEW — resource buttons in header */
+.hdr-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.hdr-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 50px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 12px;
+  text-decoration: none;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all .2s;
+}
+.hdr-link-btn.science {
+  background: rgba(124,58,237,0.15);
+  border-color: rgba(124,58,237,0.4);
+  color: #a78bfa;
+}
+.hdr-link-btn.science:hover {
+  background: rgba(124,58,237,0.3);
+  border-color: #a78bfa;
+  transform: translateY(-1px);
+}
+.hdr-link-btn.print {
+  background: rgba(200,134,10,0.15);
+  border-color: rgba(200,134,10,0.4);
+  color: var(--gold-light);
+}
+.hdr-link-btn.print:hover {
+  background: rgba(200,134,10,0.3);
+  border-color: var(--gold-light);
+  transform: translateY(-1px);
+}
+
 .main { padding: 20px; max-width: 860px; margin: 0 auto; }
 
 /* WORD SELECTOR */
@@ -244,7 +285,12 @@ input[type=range] { accent-color: var(--gold); width: 80px; cursor: pointer; }
       <div class="hdr-sub">Kellam Smile Bags &middot; Instructional Technology &middot; Hear your word's Voice, then add your own!</div>
     </div>
   </div>
-  <div class="badge">🎹 Word Voice</div>
+  <!-- NEW: Resource buttons -->
+  <div class="hdr-links">
+    <a class="hdr-link-btn science" href="ComposeIt_MusicScience.html" target="_blank">🎵 Music Science</a>
+    <a class="hdr-link-btn print" href="ComposeIt_Printable.html" target="_blank">🖨️ Print Activity</a>
+    <div class="badge">🎹 Word Voice</div>
+  </div>
 </div>
 
 <div class="main">
@@ -297,8 +343,8 @@ input[type=range] { accent-color: var(--gold); width: 80px; cursor: pointer; }
 
   <!-- CONTROLS -->
   <div class="controls">
-    <button class="btn btn-play" id="playBtn" onclick="togglePlay()">▶ Play</button>
-    <button class="btn btn-sm" onclick="stopPlay()">⏹ Stop</button>
+    <button class="btn btn-play" id="playBtn" onclick="togglePlay()">&#9654; Play</button>
+    <button class="btn btn-sm" onclick="stopPlay()">&#9209; Stop</button>
     <div style="display:flex;align-items:center;gap:8px;margin-left:4px;">
       <span class="ctrl-label">Voice</span>
       <button class="inst-btn active" id="inst-chime" onclick="setInst('chime',this)">🔔 Chime</button>
@@ -318,41 +364,29 @@ input[type=range] { accent-color: var(--gold); width: 80px; cursor: pointer; }
   <!-- STATUS -->
   <div class="status-bar">
     <div style="display:flex;gap:8px;align-items:center;">
-      <div class="status-pill" id="statusPill">⏸ Ready</div>
+      <div class="status-pill" id="statusPill">&#9208; Ready</div>
       <span id="noteCount">0 notes added</span>
     </div>
-    <span>Pentatonic scale · V·O·I·C·E columns · 5 pitches · Press Space to play</span>
+    <span>Pentatonic scale &middot; V&middot;O&middot;I&middot;C&middot;E columns &middot; 5 pitches &middot; Press Space to play</span>
   </div>
 
 </div>
 
 <script>
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// PENTATONIC NOTES (C Major pentatonic, low → high)
-// Row 0 = bottom (lowest), Row 4 = top (highest)
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 var NOTES = [
-  { name: 'C5', label: 'Do ↑',  freq: 523.25 },
+  { name: 'C5', label: 'Do \u2191',  freq: 523.25 },
   { name: 'A4', label: 'La',    freq: 440.00 },
   { name: 'G4', label: 'Sol',   freq: 392.00 },
   { name: 'E4', label: 'Mi',    freq: 329.63 },
   { name: 'C4', label: 'Do',    freq: 261.63 },
 ];
-// Displayed top→bottom in bingo, so row 0 in bingo = note index 4 (C5)
-// row 0 displayed = NOTES[4-0] = NOTES[4] ... row 4 displayed = NOTES[0]
 
-var COLS = 5; // B I N G O
-var ROWS = 5; // notes
+var COLS = 5;
+var ROWS = 5;
 
-// grid[row][col]: 0=empty, 1=DNA, 2=student, 3=both
 var grid = [];
 for (var r = 0; r < ROWS; r++) grid.push(new Array(COLS).fill(0));
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// ALL 25 ONEWORDS
-// voice: chime | pluck | bell | pad
-// tempo: BPM suggestion
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 var WORDS_DATA = {
   'CYCLE':     { meaning: 'a series of events that repeat in the same order',     voice: 'chime', tempo: 100 },
   'ABSORB':    { meaning: 'to take in or soak up something fully',                voice: 'pad',   tempo: 75  },
@@ -383,13 +417,9 @@ var WORDS_DATA = {
 
 var VOICE_ICONS = { chime: '🔔', pluck: '🎸', bell: '🎶', pad: '🌊' };
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// WORD DNA ALGORITHM
-// Each letter → col (position mod 5), row (charCode mod 5)
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function wordDNA(word) {
   var clean = word.toUpperCase().replace(/[^A-Z]/g, '');
-  var dna = {}; // col → Set of rows
+  var dna = {};
   for (var i = 0; i < clean.length; i++) {
     var col = i % 5;
     var row = (clean.charCodeAt(i) - 65) % 5;
@@ -399,9 +429,6 @@ function wordDNA(word) {
   return dna;
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// STATE
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 var currentWord = 'CYCLE';
 var isPlaying = false;
 var currentCol = -1;
@@ -415,9 +442,6 @@ function getCtx() {
   return audioCtx;
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// SOUND ENGINE
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function playNote(freq, inst, isDNA) {
   var ctx = getCtx();
   var now = ctx.currentTime;
@@ -434,7 +458,6 @@ function playNote(freq, inst, isDNA) {
     gain.gain.linearRampToValueAtTime(vol, now + 0.012);
     gain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
     osc.start(now); osc2.start(now); osc.stop(now+2); osc2.stop(now+2);
-
   } else if (inst === 'pluck') {
     var osc = ctx.createOscillator(), gain = ctx.createGain(), filt = ctx.createBiquadFilter();
     filt.type = 'lowpass'; filt.frequency.value = freq * 5;
@@ -443,7 +466,6 @@ function playNote(freq, inst, isDNA) {
     gain.gain.setValueAtTime(vol + 0.1, now);
     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
     osc.start(now); osc.stop(now + 0.6);
-
   } else if (inst === 'bell') {
     var ratios = [1, 2.756, 5.404, 8.933], amps = [0.25, 0.15, 0.08, 0.04];
     var master = ctx.createGain(); master.connect(ctx.destination);
@@ -455,7 +477,6 @@ function playNote(freq, inst, isDNA) {
       g.gain.exponentialRampToValueAtTime(0.001, now + 2.2);
       o.start(now); o.stop(now + 2.3);
     });
-
   } else if (inst === 'pad') {
     var osc = ctx.createOscillator(), osc2 = ctx.createOscillator();
     var gain = ctx.createGain(), g2 = ctx.createGain();
@@ -470,9 +491,6 @@ function playNote(freq, inst, isDNA) {
   }
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// BUILD UI
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function buildWordChips() {
   var container = document.getElementById('wordChips');
   container.innerHTML = '';
@@ -488,7 +506,6 @@ function buildWordChips() {
 function buildBingoGrid() {
   var body = document.getElementById('bingoBody');
   body.innerHTML = '';
-  // Display: row 0 at top = highest note (NOTES[0] = C5)
   for (var r = 0; r < ROWS; r++) {
     for (var c = 0; c < COLS; c++) {
       var cell = document.createElement('div');
@@ -496,22 +513,17 @@ function buildBingoGrid() {
       cell.id = 'bc-' + r + '-' + c;
       cell.dataset.row = r;
       cell.dataset.col = c;
-
       var noteLabel = document.createElement('div');
       noteLabel.className = 'cell-label note-name';
       noteLabel.textContent = NOTES[r].name;
-
       var sub = document.createElement('div');
       sub.className = 'cell-sub';
       sub.textContent = NOTES[r].label;
-
       cell.appendChild(noteLabel);
       cell.appendChild(sub);
-
       (function(row, col) {
         cell.onclick = function() { toggleStudentNote(row, col); };
       })(r, c);
-
       body.appendChild(cell);
     }
   }
@@ -534,13 +546,9 @@ function loadWord(word) {
   stopPlay();
   currentWord = word;
   var data = WORDS_DATA[word];
-
-  // Update display
   document.getElementById('wordBig').textContent = word;
   document.getElementById('wordMeaning').textContent = data.meaning;
   document.getElementById('voiceTag').textContent = VOICE_ICONS[data.voice] + ' Voice: ' + data.voice.charAt(0).toUpperCase() + data.voice.slice(1);
-
-  // Set voice & tempo
   instrument = data.voice;
   tempo = data.tempo;
   document.getElementById('tempoSlider').value = tempo;
@@ -548,21 +556,14 @@ function loadWord(word) {
   document.querySelectorAll('.inst-btn').forEach(function(b) { b.classList.remove('active'); });
   var ib = document.getElementById('inst-' + instrument);
   if (ib) ib.classList.add('active');
-
-  // Clear grid (preserve student notes? No — fresh start per word)
   for (var r = 0; r < ROWS; r++) grid[r] = new Array(COLS).fill(0);
-
-  // Apply Word DNA
   var dna = wordDNA(word);
   Object.keys(dna).forEach(function(col) {
     dna[col].forEach(function(row) {
-      grid[row][parseInt(col)] = 1; // DNA
+      grid[row][parseInt(col)] = 1;
     });
   });
-
   renderGrid();
-
-  // Update word chips
   document.querySelectorAll('.word-chip').forEach(function(c) {
     c.classList.toggle('active', c.textContent === word);
   });
@@ -570,17 +571,10 @@ function loadWord(word) {
 
 function toggleStudentNote(r, c) {
   var val = grid[r][c];
-  if (val === 0) {
-    grid[r][c] = 2; // student
-    playNote(NOTES[r].freq, instrument, false);
-  } else if (val === 1) {
-    grid[r][c] = 3; // DNA + student
-    playNote(NOTES[r].freq, instrument, true);
-  } else if (val === 2) {
-    grid[r][c] = 0; // remove student
-  } else if (val === 3) {
-    grid[r][c] = 1; // remove student, keep DNA
-  }
+  if (val === 0) { grid[r][c] = 2; playNote(NOTES[r].freq, instrument, false); }
+  else if (val === 1) { grid[r][c] = 3; playNote(NOTES[r].freq, instrument, true); }
+  else if (val === 2) { grid[r][c] = 0; }
+  else if (val === 3) { grid[r][c] = 1; }
   renderGrid();
 }
 
@@ -600,18 +594,13 @@ function updateNoteCount() {
   document.getElementById('noteCount').textContent = count + ' note' + (count !== 1 ? 's' : '') + ' added by you';
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// PLAYBACK
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-function togglePlay() {
-  if (isPlaying) pausePlay(); else startPlay();
-}
+function togglePlay() { if (isPlaying) pausePlay(); else startPlay(); }
 
 function startPlay() {
   getCtx().resume();
   isPlaying = true;
-  document.getElementById('playBtn').innerHTML = '⏸ Pause';
-  document.getElementById('statusPill').textContent = '▶ Playing';
+  document.getElementById('playBtn').innerHTML = '&#9208; Pause';
+  document.getElementById('statusPill').textContent = '\u25b6 Playing';
   document.getElementById('statusPill').classList.add('playing');
   if (currentCol < 0) currentCol = 0;
   tick();
@@ -621,8 +610,8 @@ function pausePlay() {
   isPlaying = false;
   clearTimeout(beatTimer);
   clearColHighlight();
-  document.getElementById('playBtn').innerHTML = '▶ Play';
-  document.getElementById('statusPill').textContent = '⏸ Paused';
+  document.getElementById('playBtn').innerHTML = '&#9654; Play';
+  document.getElementById('statusPill').textContent = '&#9208; Paused';
   document.getElementById('statusPill').classList.remove('playing');
 }
 
@@ -631,36 +620,26 @@ function stopPlay() {
   clearTimeout(beatTimer);
   currentCol = -1;
   clearColHighlight();
-  document.getElementById('playBtn').innerHTML = '▶ Play';
-  document.getElementById('statusPill').textContent = '⏸ Ready';
+  document.getElementById('playBtn').innerHTML = '&#9654; Play';
+  document.getElementById('statusPill').textContent = '&#9208; Ready';
   document.getElementById('statusPill').classList.remove('playing');
 }
 
 function tick() {
   if (!isPlaying) return;
-  // ms per beat = 60000 / tempo, then divide by 2 for feel
   var ms = (60000 / tempo) * 0.85;
   clearColHighlight();
   highlightCol(currentCol);
-
-  // Play notes in this column
   for (var r = 0; r < ROWS; r++) {
     var val = grid[r][currentCol];
-    if (val === 1 || val === 3) {
-      playNote(NOTES[r].freq, instrument, true);
-      flashCell(r, currentCol);
-    } else if (val === 2) {
-      playNote(NOTES[r].freq, instrument, false);
-      flashCell(r, currentCol);
-    }
+    if (val === 1 || val === 3) { playNote(NOTES[r].freq, instrument, true); flashCell(r, currentCol); }
+    else if (val === 2) { playNote(NOTES[r].freq, instrument, false); flashCell(r, currentCol); }
   }
-
   currentCol = (currentCol + 1) % COLS;
   beatTimer = setTimeout(tick, ms);
 }
 
 function clearColHighlight() {
-  var letters = ['B','I','N','G','O'];
   for (var c = 0; c < COLS; c++) {
     var hdr = document.getElementById('bl-' + c);
     var dot = document.getElementById('dot-' + c);
@@ -691,9 +670,6 @@ function flashCell(r, c) {
   setTimeout(function() { cell.classList.remove('playing-note'); }, 220);
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// CONTROLS
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function updateTempo(v) {
   tempo = parseInt(v);
   document.getElementById('tempoVal').textContent = v;
@@ -710,9 +686,6 @@ document.addEventListener('keydown', function(e) {
   if (e.code === 'Escape') stopPlay();
 });
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// INIT
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 window.onload = function() {
   buildWordChips();
   buildBingoGrid();
