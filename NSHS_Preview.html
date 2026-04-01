@@ -316,7 +316,7 @@
           </select>
         </div>
       </div>
-      <p class="form-note">By signing up you are expressing interest in participating. Your spot is not confirmed until your NSHS sponsor approves your participation. You will be contacted at your school email.</p>
+      <p class="form-note">By signing up you are expressing interest in participating. Your spot is not confirmed until your NSHS sponsor approves your participation.</p>
       <button class="submit-btn" id="submitBtn" onclick="handleSubmit()">&#11088; Reserve My Spot</button>
       <div class="success-msg" id="successMsg" style="display:none;text-align:center;padding:32px;background:#E8F5E9;border:2px solid #4caf82;border-radius:12px;margin-top:16px;">
         <div style="font-size:40px;margin-bottom:12px;">&#11088;</div>
@@ -440,26 +440,24 @@ function handleSubmit() {
   btn.textContent = 'Submitting...';
 
   // Generate confirmation code locally
-  const spotNum = (parseInt(localStorage.getItem('nshsSpotNum') || '0') + 1);
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let rand = '';
-  for (let i = 0; i < 4; i++) rand += chars[Math.floor(Math.random() * chars.length)];
-  const localCode = 'NSH-' + String(spotNum).padStart(3,'0') + '-' + rand;
+  var spotNum = (parseInt(localStorage.getItem('nshsSpotNum') || '0') + 1);
+  var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  var rand = '';
+  for (var i = 0; i < 4; i++) rand += chars[Math.floor(Math.random() * chars.length)];
+  var spotPad = spotNum < 10 ? '00' + spotNum : spotNum < 100 ? '0' + spotNum : '' + spotNum;
+  var localCode = 'NSH-' + spotPad + '-' + rand;
 
   // JSONP submission — works cross-origin without CORS issues
-  window.nshsCallback = function(result) {
-    // Response received from Apps Script
-    const old = document.getElementById('nshs_jsonp');
-    if (old) old.remove();
-  };
+  window.nshsCallback = function(result) { /* data received */ 
+};
 
-  const params = new URLSearchParams({ firstName, lastInitial, grade, oneword, localCode, callback: 'nshsCallback' });
-  const script = document.createElement('script');
+  var params = 'firstName=' + encodeURIComponent(firstName) + '&lastInitial=' + encodeURIComponent(lastInitial) + '&grade=' + encodeURIComponent(grade) + '&oneword=' + encodeURIComponent(oneword) + '&localCode=' + encodeURIComponent(localCode) + '&callback=nshsCallback';
+  var script = document.createElement('script');
   script.id = 'nshs_jsonp';
-  script.src = SCRIPT_URL + '?' + params.toString();
+  script.src = SCRIPT_URL + '?' + params;
   document.body.appendChild(script);
 
-  // Show success immediately
+  // Show success
   localStorage.setItem('nshsSpotNum', spotNum);
   spotsTaken = Math.min(spotsTaken + 1, MAX_SPOTS);
   localStorage.setItem('nshsSpots', spotsTaken);
