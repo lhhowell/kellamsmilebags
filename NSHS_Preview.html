@@ -403,7 +403,7 @@ function toggleSection() {
 
 // ── Configuration ──
 // After deploying your Apps Script, replace the URL below
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx1UyVO0a8PWTwF_lSAP8lQWr0SDaxBREuOc__huE17RXfIPmE6wBEdGkCIoC4zu-s-/exec';
+const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScv4pcc22HIrVxYuvvfuFAiheR4z19TMBFm7Npm4nQVjrWlMw/formResponse';
 const MAX_SPOTS = 15;
 
 function updateTicker(taken) {
@@ -447,15 +447,28 @@ function handleSubmit() {
   var spotPad = spotNum < 10 ? '00' + spotNum : spotNum < 100 ? '0' + spotNum : '' + spotNum;
   var localCode = 'NSH-' + spotPad + '-' + rand;
 
-  // JSONP submission — works cross-origin without CORS issues
-  window.nshsCallback = function(result) { /* data received */ 
-};
-
-  var params = 'firstName=' + encodeURIComponent(firstName) + '&lastInitial=' + encodeURIComponent(lastInitial) + '&grade=' + encodeURIComponent(grade) + '&oneword=' + encodeURIComponent(oneword) + '&localCode=' + encodeURIComponent(localCode) + '&callback=nshsCallback';
-  var script = document.createElement('script');
-  script.id = 'nshs_jsonp';
-  script.src = SCRIPT_URL + '?' + params;
-  document.body.appendChild(script);
+  // Submit to Google Form via hidden iframe
+  var gfIframe = document.getElementById('gf_iframe');
+  if (!gfIframe) {
+    gfIframe = document.createElement('iframe');
+    gfIframe.id = 'gf_iframe';
+    gfIframe.name = 'gf_iframe';
+    gfIframe.style.display = 'none';
+    document.body.appendChild(gfIframe);
+  }
+  var gfForm = document.createElement('form');
+  gfForm.method = 'POST';
+  gfForm.action = 'https://docs.google.com/forms/d/e/1FAIpQLScv4pcc22HIrVxYuvvfuFAiheR4z19TMBFm7Npm4nQVjrWlMw/formResponse';
+  gfForm.target = 'gf_iframe';
+  var gfFields = {'entry.1021960932': firstName, 'entry.1048900777': lastInitial, 'entry.2094847498': grade, 'entry.937428804': oneword};
+  for (var k in gfFields) {
+    var inp = document.createElement('input');
+    inp.type = 'hidden'; inp.name = k; inp.value = gfFields[k];
+    gfForm.appendChild(inp);
+  }
+  document.body.appendChild(gfForm);
+  gfForm.submit();
+  document.body.removeChild(gfForm);
 
   // Show success
   localStorage.setItem('nshsSpotNum', spotNum);
