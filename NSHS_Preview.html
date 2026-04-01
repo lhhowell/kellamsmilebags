@@ -306,7 +306,7 @@
 
 <script>
 // ── OneWord data ──
-const oneWords = [
+const oneWords = const oneWords = [
   {word:"ABSORB",science:"Plants and soils absorb carbon, water, and nutrients to sustain ecosystems.",sel:"Taking in new information and experiences with an open, curious mind."},
   {word:"ADAPT",science:"Species adapt to changing environments through evolution and behavioral shifts.",sel:"Adjusting thoughts and responses when life feels uncertain or unfamiliar."},
   {word:"ANCHOR",science:"Root systems anchor soil, preventing erosion and stabilizing ecosystems.",sel:"Finding people, places, and practices that keep you grounded and steady."},
@@ -357,91 +357,10 @@ function toggleSection() {
   const label = document.getElementById('owExpandLabel');
   const isOpen = panel.classList.toggle('open');
   btn.classList.toggle('open', isOpen);
-  label.textContent = isOpen ? 'Collapse \u2014 The 25 OneWords' : 'Explore the 25 OneWords';
-}
-
-// ── Configuration ──
-// After deploying your Apps Script, replace the URL below
-const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScv4pcc22HIrVxYuvvfuFAiheR4z19TMBFm7Npm4nQVjrWlMw/formResponse';
-const MAX_SPOTS = 15;
-
-function updateTicker(taken) {
-  const remaining = Math.max(0, MAX_SPOTS - taken);
-  document.getElementById('spotsLeft').textContent = remaining;
-  document.getElementById('spotsTaken').textContent = taken + ' of ' + MAX_SPOTS + ' claimed';
-  if (remaining === 0) {
-    document.getElementById('submitBtn').disabled = true;
-    document.getElementById('submitBtn').textContent = 'All Spots Filled';
-  }
-}
-
-function handleSubmit() {
-  const firstName = document.getElementById('firstName').value.trim();
-  const lastInitial = document.getElementById('lastInitial').value.trim().charAt(0).toUpperCase();
-  const grade = document.getElementById('grade').value;
-  const oneword = document.getElementById('oneword').value;
-
-  if (!firstName || !lastInitial) {
-    alert('Please enter your first name and last initial.');
-    return;
-  }
-  if (!grade) {
-    alert('Please select your grade.');
-    return;
-  }
-  if (!oneword) {
-    alert('Please select your OneWord.');
-    return;
-  }
-
-  const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.textContent = 'Submitting...';
-
-  // Generate confirmation code locally
-  var spotNum = (parseInt(localStorage.getItem('nshsSpotNum') || '0') + 1);
-  var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  var rand = '';
-  for (var i = 0; i < 4; i++) rand += chars[Math.floor(Math.random() * chars.length)];
-  var spotPad = spotNum < 10 ? '00' + spotNum : spotNum < 100 ? '0' + spotNum : '' + spotNum;
-  var localCode = 'NSH-' + spotPad + '-' + rand;
-
-  // Submit to Google Form via hidden iframe
-  var gfIframe = document.getElementById('gf_iframe');
-  if (!gfIframe) {
-    gfIframe = document.createElement('iframe');
-    gfIframe.id = 'gf_iframe';
-    gfIframe.name = 'gf_iframe';
-    gfIframe.style.display = 'none';
-    document.body.appendChild(gfIframe);
-  }
-  var gfForm = document.createElement('form');
-  gfForm.method = 'POST';
-  gfForm.action = 'https://docs.google.com/forms/d/e/1FAIpQLScv4pcc22HIrVxYuvvfuFAiheR4z19TMBFm7Npm4nQVjrWlMw/formResponse';
-  gfForm.target = 'gf_iframe';
-  var gfFields = {'entry.1021960932': firstName, 'entry.1048900777': lastInitial, 'entry.2094847498': grade, 'entry.937428804': oneword};
-  for (var k in gfFields) {
-    var inp = document.createElement('input');
-    inp.type = 'hidden'; inp.name = k; inp.value = gfFields[k];
-    gfForm.appendChild(inp);
-  }
-  document.body.appendChild(gfForm);
-  gfForm.submit();
-  document.body.removeChild(gfForm);
-
-  // Show success
-  localStorage.setItem('nshsSpotNum', spotNum);
-  spotsTaken = Math.min(spotsTaken + 1, MAX_SPOTS);
-  localStorage.setItem('nshsSpots', spotsTaken);
-  updateTicker(spotsTaken);
-
-  btn.style.display = 'none';
-  document.getElementById('confirmCode').textContent = localCode;
-  document.getElementById('successMsg').style.display = 'block';
+  label.textContent = isOpen ? 'Collapse — The 25 OneWords' : 'Explore the 25 OneWords';
 }
 
 buildGrid();
-updateTicker(0);
 </script>
 </body>
 </html>
