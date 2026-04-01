@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>SNHS Creation Kiosk &mdash; Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#1A1A1A;color:#fff;min-height:100vh;padding:0 0 60px;}
+.hero{background:#111;border-bottom:3px solid #4caf82;padding:48px 32px 40px;text-align:center;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:14px;letter-spacing:3px;color:#4caf82;text-transform:uppercase;margin-bottom:12px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,54px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:12px;}
+.hero-title span{color:#c9a84c;}
+.hero-sub{font-size:15px;color:#aaa;max-width:620px;margin:0 auto 24px;line-height:1.7;}
+.hero-pills{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;}
+.pill{display:inline-flex;align-items:center;gap:8px;background:#1a1a1a;border:1px solid #333;border-radius:50px;padding:7px 16px;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:1px;color:#aaa;}
+.pill.green{border-color:#4caf82;color:#4caf82;}
+.pill.gold{border-color:#c9a84c;color:#c9a84c;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:#242424;border:1.5px solid #4caf82;color:#4caf82;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 20px;border-radius:8px;text-decoration:none;transition:all .2s;margin:32px 24px 0;}
+.back-btn:hover{background:#4caf82;color:#111;}
+.how-section{max-width:960px;margin:0 auto;padding:40px 24px 0;}
+.how-banner{background:#242424;border:1px solid #333;border-left:4px solid #4caf82;border-radius:14px;padding:24px 28px;margin-bottom:48px;}
+.how-banner h2{font-family:'Playfair Display',serif;font-size:20px;color:#fff;margin-bottom:12px;}
+.how-banner p{font-size:14px;color:#ccc;line-height:1.75;}
+.how-banner strong{color:#4caf82;}
+.how-note{margin-top:14px;background:#1a1a1a;border:1px solid #444;border-left:3px solid #c9a84c;border-radius:8px;padding:10px 16px;font-size:13px;color:#c9a84c;line-height:1.6;}
+.categories{max-width:960px;margin:0 auto;padding:0 24px;}
+.cat-section{margin-bottom:48px;}
+.cat-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid #333;}
+.cat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.cat-icon.science{background:#1a2e1a;border:1px solid #4caf82;}
+.cat-icon.design{background:#1a1a2e;border:1px solid #5b9bd5;}
+.cat-icon.build{background:#2e1a1a;border:1px solid #c9a84c;}
+.cat-icon.wellness{background:#2a1a2e;border:1px solid #9b59b6;}
+.cat-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#888;display:block;margin-bottom:2px;}
+.cat-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#fff;}
+.cat-range{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#888;margin-left:auto;flex-shrink:0;}
+.items-grid{display:grid;gap:10px;}
+.item-card{background:#242424;border:1px solid #333;border-radius:12px;padding:16px 20px;display:flex;gap:16px;align-items:flex-start;transition:border-color .2s;}
+.item-card:hover{border-color:#4caf82;}
+.item-card.choice{border-style:dashed;border-color:#555;}
+.item-card.choice:hover{border-color:#c9a84c;}
+.item-card.handwritten{border-left:3px solid #5b9bd5;}
+.item-number{font-family:'Fredoka One',cursive;font-size:22px;color:#333;flex-shrink:0;line-height:1;width:32px;text-align:center;padding-top:2px;}
+.item-number.science{color:#4caf82;}
+.item-number.design{color:#5b9bd5;}
+.item-number.build{color:#c9a84c;}
+.item-number.wellness{color:#9b59b6;}
+.item-title{font-size:15px;font-weight:800;color:#fff;margin-bottom:4px;}
+.item-desc{font-size:13px;color:#888;line-height:1.6;}
+.item-tag{display:inline-block;margin-top:8px;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;}
+.tag-science{background:#1a2e1a;color:#4caf82;border:1px solid #4caf82;}
+.tag-design{background:#1a1a2e;color:#5b9bd5;border:1px solid #5b9bd5;}
+.tag-build{background:#2e1a1a;color:#c9a84c;border:1px solid #c9a84c;}
+.tag-wellness{background:#2a1a2e;color:#9b59b6;border:1px solid #9b59b6;}
+.tag-choice{background:#2e2e1a;color:#c9a84c;border:1px dashed #c9a84c;}
+.tag-handwritten{background:#1a1a2e;color:#5b9bd5;border:1px solid #5b9bd5;}
+.tag-size{font-size:10px;color:#555;font-family:'Fredoka One',cursive;letter-spacing:1px;margin-left:8px;}
+.summary{background:#111;border-top:1px solid #333;padding:32px 24px;margin-top:48px;}
+.summary-inner{max-width:960px;margin:0 auto;}
+.summary-title{font-family:'Playfair Display',serif;font-size:20px;color:#fff;margin-bottom:20px;text-align:center;}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px;}
+.summary-card{background:#242424;border:1px solid #333;border-radius:12px;padding:16px;text-align:center;}
+.summary-card-icon{font-size:1.6rem;margin-bottom:8px;display:block;}
+.summary-card-label{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#888;display:block;margin-bottom:4px;}
+.summary-card-value{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#4caf82;}
+.summary-note{background:#242424;border:1px solid #333;border-left:4px solid #c9a84c;border-radius:12px;padding:18px 22px;font-size:14px;color:#ccc;line-height:1.9;text-align:center;}
+.summary-note strong{color:#c9a84c;}
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #222;max-width:960px;margin:32px auto 0;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:13px;color:#333;letter-spacing:1px;}
+@media(max-width:600px){.cat-range{display:none;}.hero-pills{gap:8px;}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">Smile Bags &middot; A Word &amp; Wonder Experience</div>
+  <h1 class="hero-title">SNHS <span>Creation Kiosk</span></h1>
+  <p class="hero-sub">Choose <strong>10 items</strong> from the menu below across at least <strong>2 categories</strong> to build one complete Smile Bag for a middle school student. Every item must be an original creation made with technology &mdash; except one.</p>
+  <div class="hero-pills">
+    <div class="pill green">&#127807; 10 Items Required</div>
+    <div class="pill gold">&#11088; 5 Service Points</div>
+    <div class="pill">&#127979; Middle School Recipients</div>
+    <div class="pill">&#128640; March &mdash; May 2026</div>
+  </div>
+</div>
+
+<a href="NSHS_Preview.html" class="back-btn">&#8592; Back to SNHS Overview</a>
+
+<div class="how-section">
+  <div class="how-banner">
+    <h2>How to Use This Menu</h2>
+    <p>Browse all four categories below. Select <strong>10 items total</strong> spanning at least <strong>2 categories</strong>. Items marked with a dashed border are <strong>student choice &mdash; sponsor approved</strong> &mdash; bring your idea to your sponsor before you begin. All items must be <strong>digitally designed</strong> and printed unless otherwise noted. Print size is <strong>5&times;7</strong> unless specified.</p>
+    <div class="how-note">&#128204; All supplies and materials listed in this menu are provided through the project. Any materials not listed are the student&#39;s responsibility to obtain.</div>
+  </div>
+</div>
+
+<div class="categories">
+
+  <!-- Science & Inquiry -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-icon science">&#128300;</div>
+      <div>
+        <span class="cat-num">Category 1</span>
+        <div class="cat-title">&#128300; Science &amp; Inquiry</div>
+      </div>
+      <span class="cat-range">Items 1&ndash;5</span>
+    </div>
+    <div class="items-grid">
+
+      <div class="item-card">
+        <div class="item-number science">1</div>
+        <div>
+          <div class="item-title">Short Story &mdash; OneWord as the Character</div>
+          <div class="item-desc">Write an original short story where your OneWord is the main character. The story should reflect both the environmental science meaning and the social-emotional meaning of your word. Digitally designed and printed. Illustrated cover encouraged.</div>
+          <span class="item-tag tag-science">Science &amp; Inquiry</span><span class="tag-size">5&times;7 or folded booklet</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number science">2</div>
+        <div>
+          <div class="item-title">Science Supply Bar + Bookmark Builder Kiosk</div>
+          <div class="item-desc">Visit the Science Supply Bar and choose <strong>2 supplies</strong>. Use the Bookmark Builder Kiosk to design <strong>2 bookmarks</strong> &mdash; one per supply. Each bookmark connects that supply to your OneWord through scientific reasoning and vocabulary. Two bookmarks + two supplies go into the bag.</div>
+          <span class="item-tag tag-science">Science &amp; Inquiry</span><span class="tag-size">Counts as 2 items + 2 supplies</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number science">3</div>
+        <div>
+          <div class="item-title">Science Fact Card &mdash; &ldquo;Did You Know?&rdquo;</div>
+          <div class="item-desc">Design an original &ldquo;Did You Know?&rdquo; fact card connected to your OneWord. Include one surprising science fact, a simple diagram or illustration, and one sentence connecting the fact to social-emotional well-being. Digitally designed and printed.</div>
+          <span class="item-tag tag-science">Science &amp; Inquiry</span><span class="tag-size">5&times;7</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number science">4</div>
+        <div>
+          <div class="item-title">Science Vocabulary Trading Card</div>
+          <div class="item-desc">Design a trading card for your OneWord featuring the scientific definition, the SEL definition, an illustration, and one real-world example. Front and back design. Printed on cardstock and cut to size.</div>
+          <span class="item-tag tag-science">Science &amp; Inquiry</span><span class="tag-size">3&times;4 trading card</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number science">5</div>
+        <div>
+          <div class="item-title">Science Comic Strip</div>
+          <div class="item-desc">Create an original comic strip (3&ndash;6 panels) where a character experiences your OneWord in a real environmental science context. The story should be relatable for a middle schooler and connect science to everyday life. Digitally designed and printed.</div>
+          <span class="item-tag tag-science">Science &amp; Inquiry</span><span class="tag-size">5&times;7 or folded</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Design & Print -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-icon design">&#127912;</div>
+      <div>
+        <span class="cat-num">Category 2</span>
+        <div class="cat-title">&#127912; Design &amp; Print</div>
+      </div>
+      <span class="cat-range">Items 6&ndash;10</span>
+    </div>
+    <div class="items-grid">
+
+      <div class="item-card">
+        <div class="item-number design">6</div>
+        <div>
+          <div class="item-title">Mandala or Zentangle Template</div>
+          <div class="item-desc">Design an original mandala or zentangle pattern digitally. Include a short prompt inviting the recipient to color or complete it. The design should feel calming and intentional.</div>
+          <span class="item-tag tag-design">Design &amp; Print</span><span class="tag-size">5&times;7</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number design">7</div>
+        <div>
+          <div class="item-title">Zentangle or Doodle Prompt Sheet</div>
+          <div class="item-desc">Design a digitally framed doodle prompt sheet with step-by-step instructions for the recipient. Guide them through creating their own zentangle or doodle pattern. Include your OneWord as the theme or inspiration.</div>
+          <span class="item-tag tag-design">Design &amp; Print</span><span class="tag-size">5&times;7</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number design">8</div>
+        <div>
+          <div class="item-title">Mini Sticker Sheet</div>
+          <div class="item-desc">Design an original set of stickers digitally &mdash; themed around your OneWord, science, nature, or encouragement. Printed on sticker paper and cut to size. Minimum 6 stickers per sheet. Designs must be entirely original.</div>
+          <span class="item-tag tag-design">Design &amp; Print</span><span class="tag-size">Sticker paper &middot; cut to size</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number design">9</div>
+        <div>
+          <div class="item-title">Nature-Themed Paper Craft</div>
+          <div class="item-desc">Design a fold-and-cut paper craft digitally &mdash; such as an origami-style animal, a pinwheel, a pop-up element, or a nature scene. Include printed assembly instructions. The recipient builds it themselves.</div>
+          <span class="item-tag tag-design">Design &amp; Print</span><span class="tag-size">Full sheet &middot; fold-and-cut</span>
+        </div>
+      </div>
+
+      <div class="item-card choice">
+        <div class="item-number design">10</div>
+        <div>
+          <div class="item-title">Student Choice &mdash; Design &amp; Print</div>
+          <div class="item-desc">Have a design idea not listed above? Your item must be digitally designed, printed, and appropriate for a middle school student. Bring a sketch or description to your sponsor for approval before you begin.</div>
+          <span class="item-tag tag-choice">Student Choice &middot; Sponsor Approved</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Construct & Build -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-icon build">&#128295;</div>
+      <div>
+        <span class="cat-num">Category 3</span>
+        <div class="cat-title">&#128295; Construct &amp; Build</div>
+      </div>
+      <span class="cat-range">Items 11&ndash;15</span>
+    </div>
+    <div class="items-grid">
+
+      <div class="item-card">
+        <div class="item-number build">11</div>
+        <div>
+          <div class="item-title">3D Printed Item &mdash; Tinkercad Required</div>
+          <div class="item-desc">Design an original 3D object in <strong>Tinkercad</strong> &mdash; not a downloaded model, not a template. Email your shareable Tinkercad link to <strong>lhhowell@vbschools.com</strong> for approval before printing. It will be printed in D210. The design should connect to your OneWord or the calming, science-themed purpose of the bag.</div>
+          <span class="item-tag tag-build">Construct &amp; Build</span><span class="tag-size">Email link first &middot; Printed in D210</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number build">12</div>
+        <div>
+          <div class="item-title">Paper Craft &mdash; Digitally Designed &amp; Assembled</div>
+          <div class="item-desc">Design a multi-piece paper craft digitally, print it, and assemble it yourself before placing it in the bag. This could be a 3D paper sculpture, a layered scene, or a structured model. Must require assembly &mdash; not just a flat print.</div>
+          <span class="item-tag tag-build">Construct &amp; Build</span><span class="tag-size">Assembled before bagging</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number build">13</div>
+        <div>
+          <div class="item-title">Mini Zine or Folded Booklet</div>
+          <div class="item-desc">Design an 8-panel zine from a single sheet of paper. Your zine should tell a story, explain a science concept, or guide the recipient through an activity connected to your OneWord. Digitally designed, printed, and folded before placing in the bag.</div>
+          <span class="item-tag tag-build">Construct &amp; Build</span><span class="tag-size">Single sheet &middot; folded</span>
+        </div>
+      </div>
+
+      <div class="item-card choice">
+        <div class="item-number build">14</div>
+        <div>
+          <div class="item-title">Student Choice &mdash; Construct &amp; Build</div>
+          <div class="item-desc">Have a construction or building idea not listed above? It must involve digital design, physical construction, or 3D creation. Bring your idea to your sponsor for approval before you begin.</div>
+          <span class="item-tag tag-choice">Student Choice &middot; Sponsor Approved</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number build">15</div>
+        <div>
+          <div class="item-title">Puzzle or Activity Game Card</div>
+          <div class="item-desc">Design an original activity card for a middle schooler &mdash; a word search, a logic puzzle, a science trivia challenge, or a drawing game. Digitally designed and printed. Must be entirely original &mdash; not generated by a kiosk.</div>
+          <span class="item-tag tag-build">Construct &amp; Build</span><span class="tag-size">5&times;7 &middot; front and back</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Words & Wellness -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-icon wellness">&#128149;</div>
+      <div>
+        <span class="cat-num">Category 4</span>
+        <div class="cat-title">&#128149; Words &amp; Wellness</div>
+      </div>
+      <span class="cat-range">Items 16&ndash;20</span>
+    </div>
+    <div class="items-grid">
+
+      <div class="item-card handwritten">
+        <div class="item-number wellness">16</div>
+        <div>
+          <div class="item-title">Handwritten Inspirational Letter &#9997;&#65039;</div>
+          <div class="item-desc">Write a personal, encouraging letter to the middle school student who will receive your bag. Warm, genuine, and connected to your OneWord. Written on a <strong>5&times;7 card</strong> or cardstock. Sign with your <strong>first name only</strong>. This is the <strong>only handwritten item</strong> permitted in your bag.</div>
+          <span class="item-tag tag-handwritten">Handwritten &middot; One Item Only</span><span class="tag-size">5&times;7 &middot; First name only</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number wellness">17</div>
+        <div>
+          <div class="item-title">Breathing or Grounding Exercise Card</div>
+          <div class="item-desc">Design a card that guides the recipient through a breathing exercise, a grounding technique, or a mindfulness moment. Include clear step-by-step instructions and a calming visual. Connect the activity to your OneWord. Digitally designed and printed.</div>
+          <span class="item-tag tag-wellness">Words &amp; Wellness</span><span class="tag-size">5&times;7</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number wellness">18</div>
+        <div>
+          <div class="item-title">Calm Corner Guide Card</div>
+          <div class="item-desc">Design a guide card for setting up a personal calm corner or quiet space. Include 3&ndash;5 simple strategies a middle schooler can use when they need to reset. Illustrated and digitally designed. The tone should feel supportive, not clinical.</div>
+          <span class="item-tag tag-wellness">Words &amp; Wellness</span><span class="tag-size">5&times;7</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number wellness">19</div>
+        <div>
+          <div class="item-title">Affirmation Card Set</div>
+          <div class="item-desc">Design a set of <strong>5 original affirmation cards</strong> connected to your OneWord. Each card has one affirmation and one small illustration. Digitally designed, printed on cardstock, and cut to size. The recipient keeps all 5.</div>
+          <span class="item-tag tag-wellness">Words &amp; Wellness</span><span class="tag-size">3&times;3 cards &middot; set of 5</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number wellness">20</div>
+        <div>
+          <div class="item-title">Wellness Item of Choice</div>
+          <div class="item-desc">Design any wellness-focused item that doesn&#39;t fit the categories above. It should support calm, encouragement, creativity, or positive self-reflection for a middle schooler. Must be digitally designed. Discuss your idea with your sponsor if you&#39;re unsure whether it qualifies.</div>
+          <span class="item-tag tag-wellness">Words &amp; Wellness</span><span class="tag-size">Student choice &middot; 5&times;7 or similar</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="summary">
+  <div class="summary-inner">
+    <div class="summary-title">&#127942; Your Bag at a Glance</div>
+    <div class="summary-grid">
+      <div class="summary-card"><span class="summary-card-icon">&#128300;</span><span class="summary-card-label">Science &amp; Inquiry</span><span class="summary-card-value">Items 1&ndash;5</span></div>
+      <div class="summary-card"><span class="summary-card-icon">&#127912;</span><span class="summary-card-label">Design &amp; Print</span><span class="summary-card-value">Items 6&ndash;10</span></div>
+      <div class="summary-card"><span class="summary-card-icon">&#128295;</span><span class="summary-card-label">Construct &amp; Build</span><span class="summary-card-value">Items 11&ndash;15</span></div>
+      <div class="summary-card"><span class="summary-card-icon">&#128149;</span><span class="summary-card-label">Words &amp; Wellness</span><span class="summary-card-value">Items 16&ndash;20</span></div>
+      <div class="summary-card"><span class="summary-card-icon">&#11088;</span><span class="summary-card-label">Choose Any 10</span><span class="summary-card-value">= 5 Points</span></div>
+    </div>
+    <div class="summary-note">
+      Items <strong>#10</strong> and <strong>#14</strong> are student choice &mdash; sponsor approved. &nbsp;|&nbsp;
+      Item <strong>#16</strong> is the only handwritten item permitted. &nbsp;|&nbsp;
+      Item <strong>#11</strong> requires emailing your Tinkercad link to <strong>lhhowell@vbschools.com</strong> before printing. &nbsp;|&nbsp;
+      Sponsors: <strong>Chris Henry</strong> &amp; <strong>Kristan Honaker</strong>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
+</div>
+
+</body>
+</html>
