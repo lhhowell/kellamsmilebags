@@ -440,25 +440,27 @@ async function handleSubmit() {
   btn.textContent = 'Submitting...';
 
   try {
-    const params = new URLSearchParams({
-      firstName, lastInitial, grade, oneword
-    });
-    const response = await fetch(SCRIPT_URL + '?' + params.toString(), {
-      method: 'GET',
-      redirect: 'follow'
-    });
-    const result = await response.json();
+    // Generate local confirmation code immediately
+    const spotNum = (parseInt(localStorage.getItem('nshsSpotNum') || '0') + 1);
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let rand = '';
+    for (let i = 0; i < 4; i++) rand += chars[Math.floor(Math.random() * chars.length)];
+    const localCode = 'NSH-' + String(spotNum).padStart(3,'0') + '-' + rand;
 
-    if (result.success) {
-      updateTicker(MAX_SPOTS - result.spotsRemaining);
-      btn.style.display = 'none';
-      document.getElementById('confirmCode').textContent = result.confirmCode;
-      document.getElementById('successMsg').style.display = 'block';
-    } else {
-      alert(result.message || 'Something went wrong. Please try again.');
-      btn.disabled = false;
-      btn.textContent = '⭐ Reserve My Spot';
-    }
+    // Send to Apps Script (no-cors — data goes through, response not readable)
+    const params = new URLSearchParams({ firstName, lastInitial, grade, oneword, localCode });
+    fetch(SCRIPT_URL + '?' + params.toString(), { method: 'GET', mode: 'no-cors' });
+
+    // Store spot and show success immediately
+    localStorage.setItem('nshsSpotNum', spotNum);
+    spotsTaken = Math.min(spotsTaken + 1, MAX_SPOTS);
+    localStorage.setItem('nshsSpots', spotsTaken);
+    updateTicker(spotsTaken);
+
+    btn.style.display = 'none';
+    document.getElementById('confirmCode').textContent = localCode;
+    document.getElementById('successMsg').style.display = 'block';
+
   } catch (err) {
     alert('Unable to submit. Please check your connection and try again.');
     btn.disabled = false;
