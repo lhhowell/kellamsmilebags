@@ -318,11 +318,12 @@
       </div>
       <p class="form-note">By signing up you are expressing interest in participating. Your spot is not confirmed until your NSHS sponsor approves your participation. You will be contacted at your school email.</p>
       <button class="submit-btn" id="submitBtn" onclick="handleSubmit()">&#11088; Reserve My Spot</button>
-      <div class="success-msg" id="successMsg">
-        <h3>You're on the list!</h3>
-        <p>Your spot has been reserved! Your confirmation code is:</p>
-        <div id="confirmCode" style="font-family:'Fredoka One',cursive;font-size:36px;color:#1A237E;letter-spacing:6px;margin:16px 0;"></div>
-        <p>Write this down or screenshot it. Your NSHS sponsor will ask for this code to verify your participation.</p>
+      <div class="success-msg" id="successMsg" style="display:none;text-align:center;padding:32px;background:#E8F5E9;border:2px solid #4caf82;border-radius:12px;margin-top:16px;">
+        <div style="font-size:40px;margin-bottom:12px;">&#11088;</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:24px;color:#2D5016;margin-bottom:8px;">You're on the list!</h3>
+        <p style="font-size:14px;color:#4A5A3A;margin-bottom:16px;">Your spot has been reserved. Your confirmation code is:</p>
+        <div id="confirmCode" style="font-family:'Fredoka One',cursive;font-size:42px;color:#1A237E;letter-spacing:8px;background:#fff;border:2px solid #1A237E;border-radius:10px;padding:12px 24px;display:inline-block;margin-bottom:16px;"></div>
+        <p style="font-size:14px;color:#4A5A3A;line-height:1.7;"><strong>Screenshot or write this down!</strong><br>Your NSHS sponsor will ask for this code to verify your participation.</p>
       </div>
     </div>
   </div>
@@ -418,12 +419,19 @@ function updateTicker(taken) {
 async function handleSubmit() {
   const firstName = document.getElementById('firstName').value.trim();
   const lastInitial = document.getElementById('lastInitial').value.trim().charAt(0).toUpperCase();
-  const email = document.getElementById('email').value.trim();
   const grade = document.getElementById('grade').value;
   const oneword = document.getElementById('oneword').value;
 
-  if (!firstName || !lastInitial || !grade || !oneword) {
-    alert('Please complete all required fields before submitting.');
+  if (!firstName || !lastInitial) {
+    alert('Please enter your first name and last initial.');
+    return;
+  }
+  if (!grade) {
+    alert('Please select your grade.');
+    return;
+  }
+  if (!oneword) {
+    alert('Please select your OneWord.');
     return;
   }
 
