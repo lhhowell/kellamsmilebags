@@ -273,58 +273,17 @@
         <p>Sign up now to reserve your spot &mdash; only 15 available for the Middle School recipient group.</p>
       </div>
       <div class="ticker-box">
-        <span class="ticker-count" id="spotsLeft">15</span>
-        <span class="ticker-label">Spots Remaining</span>
-        <span class="ticker-remaining" id="spotsTaken">0 of 15 claimed</span>
+        <span class="ticker-count">15</span>
+        <span class="ticker-label">Spots Available</span>
+        <span class="ticker-remaining">First come, first served</span>
       </div>
     </div>
-    <div class="signup-form">
-      <div class="form-grid">
-        <div class="form-group">
-          <label class="form-label" for="firstName">First Name</label>
-          <input class="form-input" type="text" id="firstName" placeholder="Your first name" required/>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="lastInitial">Last Initial</label>
-          <input class="form-input" type="text" id="lastInitial" placeholder="Last initial only" maxlength="1" required/>
-        </div>
-
-
-        <div class="form-group">
-          <label class="form-label" for="grade">Grade</label>
-          <select class="form-select" id="grade" required>
-            <option value="" disabled selected>Select your grade</option>
-            <option value="9">Grade 9</option>
-            <option value="10">Grade 10</option>
-            <option value="11">Grade 11</option>
-            <option value="12">Grade 12</option>
-          </select>
-        </div>
-        <div class="form-group full">
-          <label class="form-label" for="oneword">Your OneWord</label>
-          <select class="form-select" id="oneword" required>
-            <option value="" disabled selected>Select your OneWord</option>
-            <option>ABSORB</option><option>ADAPT</option><option>ANCHOR</option>
-            <option>BALANCE</option><option>BLOOM</option><option>BREATHE</option>
-            <option>CLEAR</option><option>CONNECT</option><option>CYCLE</option>
-            <option>EMERGE</option><option>FILTER</option><option>FLOW</option>
-            <option>GROW</option><option>HEAL</option><option>MIGRATE</option>
-            <option>PERSIST</option><option>RENEW</option><option>RESTORE</option>
-            <option>RETURN</option><option>RISE</option><option>ROOT</option>
-            <option>SHINE</option><option>SUSTAIN</option><option>THRIVE</option>
-            <option>TRANSFORM</option>
-          </select>
-        </div>
-      </div>
-      <p class="form-note">By signing up you are expressing interest in participating. Your spot is not confirmed until your NSHS sponsor approves your participation.</p>
-      <button class="submit-btn" id="submitBtn" onclick="handleSubmit()">&#11088; Reserve My Spot</button>
-      <div class="success-msg" id="successMsg" style="display:none;text-align:center;padding:32px;background:#E8F5E9;border:2px solid #4caf82;border-radius:12px;margin-top:16px;">
-        <div style="font-size:40px;margin-bottom:12px;">&#11088;</div>
-        <h3 style="font-family:'Playfair Display',serif;font-size:24px;color:#2D5016;margin-bottom:8px;">You're on the list!</h3>
-        <p style="font-size:14px;color:#4A5A3A;margin-bottom:16px;">Your spot has been reserved. Your confirmation code is:</p>
-        <div id="confirmCode" style="font-family:'Fredoka One',cursive;font-size:42px;color:#1A237E;letter-spacing:8px;background:#fff;border:2px solid #1A237E;border-radius:10px;padding:12px 24px;display:inline-block;margin-bottom:16px;"></div>
-        <p style="font-size:14px;color:#4A5A3A;line-height:1.7;"><strong>Screenshot or write this down!</strong><br>Your NSHS sponsor will ask for this code to verify your participation.</p>
-      </div>
+    <div class="signup-form" style="text-align:center;padding:40px 32px;">
+      <p style="font-size:15px;color:#4A4A5A;line-height:1.75;max-width:560px;margin:0 auto 28px;">Click below to complete your enrollment. You will need your <strong>first name</strong>, <strong>last initial</strong>, <strong>grade</strong>, and <strong>OneWord selection</strong>.</p>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLScv4pcc22HIrVxYuvvfuFAiheR4z19TMBFm7Npm4nQVjrWlMw/viewform" target="_blank" class="submit-btn" style="text-decoration:none;display:inline-flex;width:auto;padding:16px 48px;">
+        &#11088; Reserve My Spot &rarr;
+      </a>
+      <p style="margin-top:16px;font-size:13px;color:#8A8070;">Opens in a new tab &middot; 15 spots available &middot; Spring 2026</p>
     </div>
   </div>
 
