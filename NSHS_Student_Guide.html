@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>NSHS Smile Bags — Student Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#1A1A1A;color:#fff;min-height:100vh;padding:0 0 60px;}
+
+/* ── Hero ── */
+.hero{background:#111;border-bottom:3px solid #4caf82;padding:48px 32px 40px;text-align:center;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:14px;letter-spacing:3px;color:#4caf82;text-transform:uppercase;margin-bottom:12px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(36px,6vw,60px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:12px;}
+.hero-title span{color:#c9a84c;}
+.hero-sub{font-size:16px;color:#aaa;max-width:580px;margin:0 auto 24px;line-height:1.7;}
+.hero-pills{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;}
+.pill{display:inline-flex;align-items:center;gap:8px;background:#1a1a1a;border:1px solid #333;border-radius:50px;padding:8px 18px;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;color:#aaa;}
+.pill.green{border-color:#4caf82;color:#4caf82;}
+.pill.gold{border-color:#c9a84c;color:#c9a84c;}
+
+/* ── Section wrapper ── */
+.section{max-width:960px;margin:0 auto;padding:48px 24px 0;}
+
+/* ── How it works banner ── */
+.how-banner{background:#242424;border:1px solid #333;border-left:4px solid #4caf82;border-radius:14px;padding:24px 28px;margin-bottom:48px;}
+.how-banner h2{font-family:'Playfair Display',serif;font-size:22px;color:#fff;margin-bottom:12px;}
+.how-banner p{font-size:15px;color:#ccc;line-height:1.75;}
+.how-banner strong{color:#4caf82;}
+.how-banner .rule-row{display:flex;gap:24px;margin-top:18px;flex-wrap:wrap;}
+.rule-chip{display:flex;align-items:center;gap:8px;background:#1a1a1a;border:1px solid #333;border-radius:8px;padding:8px 14px;font-size:13px;color:#aaa;}
+.rule-chip span{font-size:18px;}
+
+/* ── Category heading ── */
+.cat-heading{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.cat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.cat-icon.science{background:#1a2e1a;}
+.cat-icon.design{background:#1a1a2e;}
+.cat-icon.build{background:#2e1a1a;}
+.cat-icon.wellness{background:#2e2a1a;}
+.cat-label{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#888;display:block;margin-bottom:2px;}
+.cat-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#fff;}
+
+/* ── Item cards ── */
+.items-grid{display:grid;gap:12px;margin-bottom:40px;}
+.item-card{background:#242424;border:1px solid #333;border-radius:12px;padding:18px 20px;display:flex;gap:16px;align-items:flex-start;transition:border-color .2s;}
+.item-card:hover{border-color:#4caf82;}
+.item-card.required{border-left:3px solid #4caf82;}
+.item-card.gold-border{border-left:3px solid #c9a84c;}
+.item-card.handwritten{border-left:3px solid #5b9bd5;}
+.item-num{font-family:'Fredoka One',cursive;font-size:28px;color:#333;flex-shrink:0;line-height:1;width:32px;text-align:center;}
+.item-body{}
+.item-title{font-size:15px;font-weight:800;color:#fff;margin-bottom:4px;}
+.item-desc{font-size:13px;color:#888;line-height:1.6;}
+.item-tag{display:inline-block;margin-top:8px;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;}
+.tag-required{background:#1a2e1a;color:#4caf82;border:1px solid #4caf82;}
+.tag-choice{background:#2e2a1a;color:#c9a84c;border:1px solid #c9a84c;}
+.tag-exception{background:#1a1a2e;color:#5b9bd5;border:1px solid #5b9bd5;}
+
+/* ── Divider ── */
+.divider{height:1px;background:#2a2a2a;margin:8px 0 40px;}
+
+/* ── Core section label ── */
+.section-label{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#4caf82;margin-bottom:8px;}
+.section-title-lg{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#fff;margin-bottom:24px;}
+
+/* ── Tally bar ── */
+.tally{background:#111;border:2px solid #4caf82;border-radius:16px;padding:28px 32px;margin-bottom:48px;text-align:center;}
+.tally-title{font-family:'Fredoka One',cursive;font-size:14px;letter-spacing:2px;color:#4caf82;text-transform:uppercase;margin-bottom:16px;}
+.tally-row{display:flex;justify-content:center;gap:0;flex-wrap:wrap;margin-bottom:20px;}
+.tally-item{padding:14px 20px;border-right:1px solid #222;text-align:center;min-width:100px;}
+.tally-item:last-child{border-right:none;}
+.tally-num{font-family:'Fredoka One',cursive;font-size:32px;color:#4caf82;display:block;line-height:1;}
+.tally-label{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-top:4px;display:block;}
+.tally-note{font-size:14px;color:#aaa;line-height:1.7;}
+.tally-note strong{color:#fff;}
+
+/* ── Sponsor box ── */
+.sponsor-box{background:#242424;border:1px solid #333;border-radius:14px;padding:24px 28px;margin-bottom:48px;}
+.sponsor-box h3{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:12px;}
+.sponsor-box p{font-size:14px;color:#888;line-height:1.7;margin-bottom:8px;}
+.sponsor-box p:last-child{margin-bottom:0;}
+.sponsor-box strong{color:#c9a84c;}
+
+/* ── Footer ── */
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #222;max-width:960px;margin:0 auto;}
+.footer p{font-size:13px;color:#555;line-height:1.7;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:13px;color:#333;letter-spacing:1px;margin-top:8px;}
+
+@media(max-width:600px){
+  .tally-row{flex-direction:column;align-items:center;}
+  .tally-item{border-right:none;border-bottom:1px solid #222;width:100%;}
+  .tally-item:last-child{border-bottom:none;}
+  .how-banner .rule-row{flex-direction:column;}
+}
+
+@media print{
+  body{background:#fff;color:#000;padding:0;}
+  .hero{background:#fff;border-bottom:3px solid #4caf82;}
+  .hero-title,.item-title,.cat-title,.tally-num,.section-title-lg{color:#000;}
+  .hero-sub,.item-desc,.tally-note,.sponsor-box p{color:#333;}
+  .hero-brand,.pill.green,.cat-label,.section-label,.tally-title,.tally-label{color:#4caf82;}
+  .pill.gold,.item-num{color:#c9a84c;}
+  .how-banner,.item-card,.tally,.sponsor-box{background:#f9f9f9;border-color:#ddd;}
+  .cat-icon.science,.cat-icon.design,.cat-icon.build,.cat-icon.wellness{background:#f0f0f0;}
+  .tag-required{background:#e8f5e9;color:#2e7d32;border-color:#2e7d32;}
+  .tag-choice{background:#fff8e1;color:#c8860a;border-color:#c8860a;}
+  .tag-exception{background:#e3f2fd;color:#1565c0;border-color:#1565c0;}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  @page{size:letter;margin:.5in;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── Hero ── -->
+<div class="hero">
+  <div class="hero-brand">Smile Bags &middot; A Word &amp; Wonder Experience</div>
+  <h1 class="hero-title">NSHS <span>Student Guide</span></h1>
+  <p class="hero-sub">National Science Honors Society members earn service points by building one complete Smile Bag for a middle school student &mdash; using technology, scientific thinking, and original design.</p>
+  <div class="hero-pills">
+    <div class="pill green">&#127807; 10 Items Required</div>
+    <div class="pill gold">&#11088; 5 Service Points</div>
+    <div class="pill">&#128640; Spring 2026</div>
+    <div class="pill">&#127979; Middle School Recipients &middot; Grades 6&ndash;8</div>
+  </div>
+</div>
+
+<div class="section">
+
+  <!-- ── Who Receives a Smile Bag ── -->
+  <div style="margin-top:48px;background:#111;border:1px solid #333;border-left:4px solid #4caf82;border-radius:14px;padding:28px 32px;margin-bottom:32px;">
+    <div style="font-family:'Courier New',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#4caf82;margin-bottom:12px;">Who Receives Your Bag</div>
+    <h2 style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:14px;line-height:1.3;">Somewhere, a student is having a hard day.<br><em style="color:#D6EEEE;">Your bag is going to find them.</em></h2>
+    <p style="font-size:15px;color:#ccc;line-height:1.8;margin-bottom:14px;">Smile Bags are distributed across <strong style="color:#4caf82;">Kellam's eight feeder schools and Kellam High School itself</strong> &mdash; ten bags per school. Guidance counselors identify students who may need encouragement, motivation, or simply a reason to smile. A bag is chosen for them deliberately, not randomly &mdash; at exactly the right moment.</p>
+    <p style="font-size:15px;color:#ccc;line-height:1.8;margin-bottom:20px;">You will never meet the student who receives your bag. But every item you create &mdash; every choice you make about what to include and how to make it &mdash; is an act of care for someone real. That's what makes this different from a class project. <strong style="color:#fff;">This one matters beyond the grade.</strong></p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <div style="background:#1a2e1a;border:1px solid #4caf82;border-radius:8px;padding:10px 18px;font-family:'Courier New',monospace;font-size:11px;color:#4caf82;letter-spacing:.1em;">9 Schools</div>
+      <div style="background:#1a2e1a;border:1px solid #4caf82;border-radius:8px;padding:10px 18px;font-family:'Courier New',monospace;font-size:11px;color:#4caf82;letter-spacing:.1em;">10 Bags Per School</div>
+      <div style="background:#1a2e1a;border:1px solid #4caf82;border-radius:8px;padding:10px 18px;font-family:'Courier New',monospace;font-size:11px;color:#4caf82;letter-spacing:.1em;">90 Students Reached</div>
+      <div style="background:#1a2e1a;border:1px solid #4caf82;border-radius:8px;padding:10px 18px;font-family:'Courier New',monospace;font-size:11px;color:#4caf82;letter-spacing:.1em;">Chosen With Intention</div>
+    </div>
+  </div>
+
+  <!-- ── How It Works ── -->
+  <div class="how-banner">
+    <h2>How It Works</h2>
+    <p>You will build <strong>one complete Smile Bag</strong> for a middle school student in grades 6&ndash;8. Every item in the bag must be an <strong>original creation</strong> &mdash; something you designed and made using technology. The only exception is one handwritten inspirational letter. Your sponsor approves your participation, verifies each item, and determines the final service point value. The 5-point guideline is a starting point &mdash; your sponsor has the option to adjust points up or down based on their chapter's requirements.</p>
+  </div>
+
+  <!-- ── Tally ── -->
+  <div class="tally">
+    <div class="tally-title">Your 10-Item Breakdown</div>
+    <div class="tally-row">
+      <div class="tally-item"><span class="tally-num">5</span><span class="tally-label">Core Items</span></div>
+      <div class="tally-item"><span class="tally-num">2</span><span class="tally-label">Original Creations</span></div>
+      <div class="tally-item"><span class="tally-num">1</span><span class="tally-label">Category Item</span></div>
+      <div class="tally-item"><span class="tally-num">2</span><span class="tally-label">Choice Items</span></div>
+      <div class="tally-item"><span class="tally-num" style="color:#c9a84c;">5</span><span class="tally-label" style="color:#c9a84c;">Service Points</span></div>
+    </div>
+    <p class="tally-note">Complete all <strong>10 items</strong> to earn <strong>5 service points</strong>. All items must be original creations made with technology. Supplies are limited to what is available for all students &mdash; no special requests. Bags will be provided. Check with your sponsor regarding how completed items will be collected.</p>
+  </div>
+
+  <!-- ── CORE ITEMS ── -->
+  <div class="section-label">Part One</div>
+  <div class="section-title-lg">Core Items &mdash; Complete All 5</div>
+
+  <!-- Science & Inquiry -->
+  <div class="cat-heading">
+    <div class="cat-icon science">&#128300;</div>
+    <div>
+      <span class="cat-label">Category 1</span>
+      <div class="cat-title">Science &amp; Inquiry</div>
+    </div>
+  </div>
+  <div class="items-grid">
+    <div class="item-card required">
+      <div class="item-num">1</div>
+      <div class="item-body">
+        <div class="item-title">Science Supply Bar + Bookmark Builder Kiosk</div>
+        <div class="item-desc">Visit the <strong>Science Supply Bar</strong> and choose <strong>2 supplies</strong>. Then use the <strong>Bookmark Builder Kiosk</strong> to design <strong>2 bookmarks</strong> &mdash; one bookmark per supply. Each bookmark contains one activity connecting that supply to your OneWord through scientific reasoning and vocabulary. Two supplies = two bookmarks = two original items that go into the bag alongside your supplies. If a supply you want is not on the bar, your sponsor must approve it in advance.</div>
+        <span class="item-tag tag-required">Required &middot; Core &middot; 2 Bookmarks + 2 Supplies</span>
+      </div>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- Design & Print -->
+  <div class="cat-heading">
+    <div class="cat-icon design">&#127912;</div>
+    <div>
+      <span class="cat-label">Category 2</span>
+      <div class="cat-title">Design &amp; Print</div>
+    </div>
+  </div>
+  <div class="items-grid">
+    <div class="item-card required">
+      <div class="item-num">2</div>
+      <div class="item-body">
+        <div class="item-title">Original Digitally Designed Visual Item</div>
+        <div class="item-desc">Design an original visual item using Canva, Google Drawings, Adobe Express, or a similar digital tool. Print at <strong>5&times;7 size</strong>. The design must be entirely your own &mdash; not a template, not a kiosk output. Choose one from the options below:
+          <ul style="margin-top:10px;margin-left:4px;list-style:none;display:grid;gap:6px;">
+            <li style="color:#e8e8e8;">&#127744; <strong>Mandala or zentangle template</strong> &mdash; digitally designed with instructions for the recipient</li>
+            <li style="color:#e8e8e8;">&#128336; <strong>Zentangle or doodle prompt sheet</strong> &mdash; digitally framed with step-by-step doodle instructions</li>
+            <li style="color:#e8e8e8;">&#127183; <strong>Mini sticker sheet</strong> &mdash; designed digitally, printed on sticker paper, cut to size</li>
+            <li style="color:#e8e8e8;">&#128214; <strong>Mini zine or folded booklet</strong> &mdash; 8-panel single sheet, digitally designed and folded</li>
+            <li style="color:#e8e8e8;">&#127800; <strong>Nature-themed paper craft</strong> &mdash; digitally designed, printed, fold-and-cut assembly</li>
+          </ul>
+        </div>
+        <span class="item-tag tag-required">Required &middot; Core &middot; Print at 5&times;7</span>
+      </div>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- Construct & Build -->
+  <div class="cat-heading">
+    <div class="cat-icon build">&#128295;</div>
+    <div>
+      <span class="cat-label">Category 3</span>
+      <div class="cat-title">Construct &amp; Build</div>
+    </div>
+  </div>
+  <div class="items-grid">
+    <div class="item-card required">
+      <div class="item-num">3</div>
+      <div class="item-body">
+        <div class="item-title">Original 3D Printed Design &mdash; Tinkercad Required</div>
+        <div class="item-desc">Design an original 3D object in <strong>Tinkercad</strong>. This item must be entirely your own design &mdash; not a downloaded model, not a template. The design should connect meaningfully to your OneWord or to the calming, science-themed purpose of the bag. When your design is ready, <strong>email your shareable Tinkercad link to <a href="mailto:lhhowell@vbschools.com" style="color:#4caf82;">lhhowell@vbschools.com</a></strong> and it will be printed in D210.
+          <div style="margin-top:12px;background:#1a1a1a;border:1px solid #444;border-left:3px solid #c9a84c;border-radius:8px;padding:12px 16px;">
+            <span style="font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;color:#c9a84c;text-transform:uppercase;">&#127381; Bonus Option &mdash; Zero Points</span>
+            <p style="margin-top:6px;font-size:13px;color:#aaa;line-height:1.6;">If you prefer to use a kiosk template instead of designing your own, you may create one of the following: a <strong style="color:#fff;">3D bookmark</strong>, <strong style="color:#fff;">keychain</strong>, or <strong style="color:#fff;">spinner</strong>. You keep one for yourself and one goes in the bag. This option does <strong style="color:#fff;">not count toward your 10 items</strong> but is a great way to contribute if you want to participate beyond your bag.</p>
+          </div>
+        </div>
+        <span class="item-tag tag-required">Required &middot; Email Tinkercad Link to lhhowell@vbschools.com</span>
+      </div>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- Words & Wellness -->
+  <div class="cat-heading">
+    <div class="cat-icon wellness">&#128149;</div>
+    <div>
+      <span class="cat-label">Category 4</span>
+      <div class="cat-title">Words &amp; Wellness</div>
+    </div>
+  </div>
+  <div class="items-grid">
+    <div class="item-card required">
+      <div class="item-num">4</div>
+      <div class="item-body">
+        <div class="item-title">Original Digitally Designed Wellness Item</div>
+        <div class="item-desc">Create a digitally designed item focused on calm, encouragement, or well-being. This could be a breathing or grounding exercise card, a calm corner guide, a set of affirmation cards, or a similar wellness-focused item. It must be your own design, printed and ready to place in the bag.</div>
+        <span class="item-tag tag-required">Required &middot; Core</span>
+      </div>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <!-- Handwritten Exception -->
+  <div class="cat-heading">
+    <div class="cat-icon" style="background:#1a1a2e;">&#9997;&#65039;</div>
+    <div>
+      <span class="cat-label">Handwritten Exception &mdash; One Only</span>
+      <div class="cat-title">Inspirational Letter</div>
+    </div>
+  </div>
+  <div class="items-grid">
+    <div class="item-card handwritten">
+      <div class="item-num">5</div>
+      <div class="item-body">
+        <div class="item-title">Handwritten Inspirational Letter</div>
+        <div class="item-desc">This is the <strong>only handwritten item permitted</strong> in your bag. Write a personal, encouraging letter to the middle school student who will receive your bag. Your letter should feel warm, genuine, and connected to your OneWord. It does not need to be long &mdash; it needs to be real. Written on a <strong>5&times;7 card</strong>, cardstock, or quality paper. No typed letters &mdash; handwritten only for this item. Sign with your <strong>first name only</strong>.</div>
+        <span class="item-tag tag-exception">Handwritten &middot; One Item Only &middot; 5&times;7 &middot; First Name Only</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:48px;"></div>
+
+  <!-- ── ADDITIONAL ITEMS ── -->
+  <div class="section-label">Part Two</div>
+  <div class="section-title-lg">Additional Items &mdash; Complete All 5</div>
+
+  <div class="items-grid">
+    <div class="item-card gold-border">
+      <div class="item-num">6</div>
+      <div class="item-body">
+        <div class="item-title">Original Creation #1 &mdash; Tech-Created</div>
+        <div class="item-desc">Choose any item from the four categories above and create an additional original piece using technology. This should be something different from your core items &mdash; a new type of item, not a duplicate of what you've already made.</div>
+        <span class="item-tag tag-choice">Your Choice &middot; Any Category</span>
+      </div>
+    </div>
+    <div class="item-card gold-border">
+      <div class="item-num">7</div>
+      <div class="item-body">
+        <div class="item-title">Original Creation #2 &mdash; Tech-Created</div>
+        <div class="item-desc">A second additional original creation. Again, choose from any of the four categories. Aim for variety &mdash; your bag should feel like a collection of different things, not repetitions of the same idea.</div>
+        <span class="item-tag tag-choice">Your Choice &middot; Any Category</span>
+      </div>
+    </div>
+    <div class="item-card gold-border">
+      <div class="item-num">8</div>
+      <div class="item-body">
+        <div class="item-title">Additional Category Item</div>
+        <div class="item-desc">One more item from any of the four categories: Science &amp; Inquiry, Design &amp; Print, Construct &amp; Build, or Words &amp; Wellness. This is your opportunity to go deeper in an area that connects strongly to your OneWord or your science background.</div>
+        <span class="item-tag tag-choice">Your Choice &middot; Any Category</span>
+      </div>
+    </div>
+    <div class="item-card gold-border">
+      <div class="item-num">9</div>
+      <div class="item-body">
+        <div class="item-title">Choice Item #1</div>
+        <div class="item-desc">A student-chosen item from any category. If you have a creative idea that doesn't clearly fit one of the four categories, bring it to your sponsor for approval. Innovation is welcome &mdash; it just needs to be original, tech-created, and meaningful for a middle schooler.</div>
+        <span class="item-tag tag-choice">Student Choice &middot; Sponsor Approved</span>
+      </div>
+    </div>
+    <div class="item-card gold-border">
+      <div class="item-num">10</div>
+      <div class="item-body">
+        <div class="item-title">Choice Item #2</div>
+        <div class="item-desc">Your final item. Make it count. Think about what would make this bag feel complete and intentional for the middle school student receiving it. Every item in the bag should feel like it belongs there &mdash; purposeful, original, and made with care.</div>
+        <span class="item-tag tag-choice">Student Choice &middot; Sponsor Approved</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Sponsor Verification ── -->
+  <div class="sponsor-box">
+    <h3>Sponsor Verification</h3>
+    <p>Your sponsor approves your participation and initials each item as it is completed. Sponsors for this track are <strong>Chris Henry</strong> and <strong>Kristan Honaker</strong> (pending confirmation). Only <strong>15 spots</strong> are available for the middle school recipient group &mdash; first come, first served across NSHS members. If more students are interested beyond the 15-bag maximum, additional opportunities may be available through elementary school recipients. The 5-point value is a guideline &mdash; your sponsor has the authority to adjust service points up or down based on your chapter&rsquo;s requirements.</p>
+    <p>For item #3, email your shareable Tinkercad link to <strong>lhhowell@vbschools.com</strong> for approval before printing. Your design will be printed in D210 once approved. No sponsor intervention is needed for this step.</p>
+    <p style="margin-top:12px;font-style:italic;color:#666;">Questions? Reach out to your NSHS sponsor before you begin.</p>
+  </div>
+
+</div>
+
+<!-- ── Footer ── -->
+<div class="footer">
+  <p>This guide is part of the Kellam Smile Bags project &mdash; a cross-curricular service-learning initiative connecting students to community through creativity, technology, and care.</p>
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
+</div>
+
+</body>
+</html>
