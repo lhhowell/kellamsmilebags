@@ -432,9 +432,12 @@ async function handleSubmit() {
   btn.textContent = 'Submitting...';
 
   try {
-    const response = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify({ firstName, lastInitial, grade, oneword }),
+    const params = new URLSearchParams({
+      firstName, lastInitial, grade, oneword
+    });
+    const response = await fetch(SCRIPT_URL + '?' + params.toString(), {
+      method: 'GET',
+      redirect: 'follow'
     });
     const result = await response.json();
 
