@@ -284,11 +284,12 @@
           <label class="form-label" for="firstName">First Name</label>
           <input class="form-input" type="text" id="firstName" placeholder="Your first name" required/>
         </div>
-
         <div class="form-group">
-          <label class="form-label" for="email">School Email</label>
-          <input class="form-input" type="email" id="email" placeholder="yourname@vbschools.com" required/>
+          <label class="form-label" for="lastInitial">Last Initial</label>
+          <input class="form-input" type="text" id="lastInitial" placeholder="Last initial only" maxlength="1" required/>
         </div>
+
+
         <div class="form-group">
           <label class="form-label" for="grade">Grade</label>
           <select class="form-select" id="grade" required>
@@ -416,12 +417,12 @@ function updateTicker(taken) {
 
 async function handleSubmit() {
   const firstName = document.getElementById('firstName').value.trim();
-  const lastInitial = '';
+  const lastInitial = document.getElementById('lastInitial').value.trim().charAt(0).toUpperCase();
   const email = document.getElementById('email').value.trim();
   const grade = document.getElementById('grade').value;
   const oneword = document.getElementById('oneword').value;
 
-  if (!firstName || !email || !grade || !oneword) {
+  if (!firstName || !lastInitial || !grade || !oneword) {
     alert('Please complete all required fields before submitting.');
     return;
   }
@@ -433,7 +434,7 @@ async function handleSubmit() {
   try {
     const response = await fetch(SCRIPT_URL, {
       method: 'POST',
-      body: JSON.stringify({ firstName, lastInitial, email, grade, oneword }),
+      body: JSON.stringify({ firstName, lastInitial, grade, oneword }),
     });
     const result = await response.json();
 
