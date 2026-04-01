@@ -446,26 +446,18 @@ function handleSubmit() {
   for (let i = 0; i < 4; i++) rand += chars[Math.floor(Math.random() * chars.length)];
   const localCode = 'NSH-' + String(spotNum).padStart(3,'0') + '-' + rand;
 
-  // Submit via hidden iframe to avoid CORS
-  const params = new URLSearchParams({ firstName, lastInitial, grade, oneword, localCode });
-  const iframe = document.createElement('iframe');
-  iframe.style.display = 'none';
-  iframe.name = 'hidden_iframe';
-  document.body.appendChild(iframe);
+  // JSONP submission — works cross-origin without CORS issues
+  window.nshsCallback = function(result) {
+    // Response received from Apps Script
+    const old = document.getElementById('nshs_jsonp');
+    if (old) old.remove();
+  };
 
-  const form = document.createElement('form');
-  form.method = 'GET';
-  form.action = SCRIPT_URL;
-  form.target = 'hidden_iframe';
-  params.forEach((val, key) => {
-    const input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = key;
-    input.value = val;
-    form.appendChild(input);
-  });
-  document.body.appendChild(form);
-  form.submit();
+  const params = new URLSearchParams({ firstName, lastInitial, grade, oneword, localCode, callback: 'nshsCallback' });
+  const script = document.createElement('script');
+  script.id = 'nshs_jsonp';
+  script.src = SCRIPT_URL + '?' + params.toString();
+  document.body.appendChild(script);
 
   // Show success immediately
   localStorage.setItem('nshsSpotNum', spotNum);
