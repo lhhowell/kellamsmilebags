@@ -306,7 +306,7 @@
 
 <script>
 // ── OneWord data ──
-const oneWords = const oneWords = [
+var oneWords = var oneWords = [
   {word:"ABSORB",science:"Plants and soils absorb carbon, water, and nutrients to sustain ecosystems.",sel:"Taking in new information and experiences with an open, curious mind."},
   {word:"ADAPT",science:"Species adapt to changing environments through evolution and behavioral shifts.",sel:"Adjusting thoughts and responses when life feels uncertain or unfamiliar."},
   {word:"ANCHOR",science:"Root systems anchor soil, preventing erosion and stabilizing ecosystems.",sel:"Finding people, places, and practices that keep you grounded and steady."},
@@ -335,27 +335,36 @@ const oneWords = const oneWords = [
 ];
 
 function buildGrid() {
-  document.getElementById('owGrid').innerHTML = oneWords.map((w,i) => `
-    <div class="ow-card" id="card-${i}">
-      <div class="ow-card-header" onclick="toggleCard(${i})">
-        <span class="ow-word-badge">${w.word}</span>
-        <span class="ow-card-preview">${w.science}</span>
-        <span class="ow-toggle">&#9660;</span>
-      </div>
-      <div class="ow-card-body">
-        <div class="ow-connection"><div class="ow-connection-dot science"></div><div><span class="ow-connection-label">Environmental Science</span><span class="ow-connection-text">${w.science}</span></div></div>
-        <div class="ow-connection"><div class="ow-connection-dot sel"></div><div><span class="ow-connection-label">Social Emotional Well-Being</span><span class="ow-connection-text">${w.sel}</span></div></div>
-      </div>
-    </div>`).join('');
+  var html = '';
+  for (var i = 0; i < oneWords.length; i++) {
+    var w = oneWords[i];
+    html += '<div class="ow-card" id="card-' + i + '">' +
+      '<div class="ow-card-header" onclick="toggleCard(' + i + ')">' +
+        '<span class="ow-word-badge">' + w.word + '</span>' +
+        '<span class="ow-card-preview">' + w.science + '</span>' +
+        '<span class="ow-toggle">&#9660;</span>' +
+      '</div>' +
+      '<div class="ow-card-body">' +
+        '<div class="ow-connection"><div class="ow-connection-dot science"></div><div><span class="ow-connection-label">Environmental Science</span><span class="ow-connection-text">' + w.science + '</span></div></div>' +
+        '<div class="ow-connection"><div class="ow-connection-dot sel"></div><div><span class="ow-connection-label">Social Emotional Well-Being</span><span class="ow-connection-text">' + w.sel + '</span></div></div>' +
+      '</div>' +
+    '</div>';
+  }
+  document.getElementById('owGrid').innerHTML = html;
 }
 
-function toggleCard(i) { document.getElementById('card-'+i).classList.toggle('open'); }
-function toggleAll(open) { document.querySelectorAll('.ow-card').forEach(c => open ? c.classList.add('open') : c.classList.remove('open')); }
+function toggleCard(i) { document.getElementById('card-' + i).classList.toggle('open'); }
+function toggleAll(open) {
+  var cards = document.querySelectorAll('.ow-card');
+  for (var i = 0; i < cards.length; i++) {
+    if (open) { cards[i].classList.add('open'); } else { cards[i].classList.remove('open'); }
+  }
+}
 function toggleSection() {
-  const btn = document.getElementById('owExpandBtn');
-  const panel = document.getElementById('owPanel');
-  const label = document.getElementById('owExpandLabel');
-  const isOpen = panel.classList.toggle('open');
+  var btn = document.getElementById('owExpandBtn');
+  var panel = document.getElementById('owPanel');
+  var label = document.getElementById('owExpandLabel');
+  var isOpen = panel.classList.toggle('open');
   btn.classList.toggle('open', isOpen);
   label.textContent = isOpen ? 'Collapse — The 25 OneWords' : 'Explore the 25 OneWords';
 }
