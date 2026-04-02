@@ -50,15 +50,9 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 .tile{aspect-ratio:1;border-radius:3px;background:#1a2a3a;transition:background .4s;}
 
 .card-grid{display:grid;gap:10px;}
-.card{background:#0d0d0d;border:2px solid #1a2a3a;border-radius:12px;height:100px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:10px;text-align:center;overflow:hidden;}
+.card{background:#0d0d0d;border:2px solid #1a2a3a;border-radius:12px;height:100px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:8px;text-align:center;overflow:hidden;}
 .card:hover{border-color:#c9a84c;}
-.cb{color:#1a2a3a;font-size:20px;flex-shrink:0;}
-.cf{display:none;width:100%;align-items:center;justify-content:center;overflow:hidden;}
-.card.flip .cf{display:flex;}
-.card.flip .cb{display:none;}
 .card.match{border-color:#4caf82;background:rgba(76,175,130,.08);cursor:default;}
-.card.match .cf{display:flex;}
-.card.match .cb{display:none;}
 .card.wrong{border-color:#D4537E;background:rgba(212,83,126,.06);}
 .word-f{font-family:'Fredoka One',cursive;font-size:13px;color:#c9a84c;letter-spacing:1px;}
 .def-f{font-size:10px;color:#c8c4bc;line-height:1.3;}
@@ -253,7 +247,9 @@ window.flipCard=function(idx){
   if(el.classList.contains('match'))return;
   if(flipped.indexOf(idx)!==-1)return;
   if(flipped.length>=2)return;
-  el.classList.add('flip');
+  el.innerHTML=el.getAttribute('data-front');
+  el.setAttribute('data-flipped','1');
+  el.style.borderColor='#c9a84c';
   flipped.push(idx);
   if(flipped.length===2){
     moves++;
@@ -270,22 +266,19 @@ function buildCards() {
   g.style.gridTemplateColumns='repeat('+cols+',1fr)';
   for(var i=0;i<cards.length;i++){
     var c=cards[i];
+    var frontHTML='';
+    if(c.side==='word'){
+      frontHTML='<span class="word-f">'+c.w+'</span>';
+    } else if(mode==='zoo'){
+      frontHTML='<div class="zoo-f"><span class="zoo-e">'+ZOO[c.w].e+'</span><span class="zoo-n">'+ZOO[c.w].n+'</span></div>';
+    } else {
+      frontHTML='<span class="def-f">'+(mode==='science'?SCI[c.w]:SEL[c.w])+'</span>';
+    }
     var card=document.createElement('div');
     card.className='card';
-    var back=document.createElement('div');
-    back.className='cb';
-    back.textContent='\u25cf';
-    card.appendChild(back);
-    var front=document.createElement('div');
-    front.className='cf';
-    if(c.side==='word'){
-      front.innerHTML='<span class="word-f">'+c.w+'</span>';
-    } else if(mode==='zoo'){
-      front.innerHTML='<div class="zoo-f"><span class="zoo-e">'+ZOO[c.w].e+'</span><span class="zoo-n">'+ZOO[c.w].n+'</span></div>';
-    } else {
-      front.innerHTML='<span class="def-f">'+(mode==='science'?SCI[c.w]:SEL[c.w])+'</span>';
-    }
-    card.appendChild(front);
+    card.innerHTML='<span style="color:#1a2a3a;font-size:20px;">●</span>';
+    card.setAttribute('data-front', frontHTML);
+    card.setAttribute('data-flipped','0');
     card.setAttribute('onclick','flipCard('+i+')');
     g.appendChild(card);
   }
@@ -296,8 +289,8 @@ function checkPair() {
   var ca=g.children[flipped[0]];
   var cb=g.children[flipped[1]];
   if(cards[flipped[0]].w===cards[flipped[1]].w){
-    ca.classList.add('match');ca.classList.remove('flip');
-    cb.classList.add('match');cb.classList.remove('flip');
+    ca.classList.add('match');
+    cb.classList.add('match');
     matched++;
     var pts=Math.max(10,100-moves*2-secs);
     score+=pts;
@@ -307,7 +300,12 @@ function checkPair() {
     if(matched===chosen.length){clearInterval(ticker);setTimeout(showWin,500);}
   } else {
     ca.classList.add('wrong');cb.classList.add('wrong');
-    setTimeout(function(){ca.classList.remove('flip','wrong');cb.classList.remove('flip','wrong');},700);
+    setTimeout(function(){
+      ca.innerHTML='<span style="color:#1a2a3a;font-size:20px;">●</span>';
+      cb.innerHTML='<span style="color:#1a2a3a;font-size:20px;">●</span>';
+      ca.classList.remove('wrong'); cb.classList.remove('wrong');
+      ca.style.borderColor=''; cb.style.borderColor='';
+    },700);
   }
   flipped=[];canFlip=true;
 }
