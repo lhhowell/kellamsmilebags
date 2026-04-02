@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AP Bio &amp; TIDE Student Guide &mdash; Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#1A1A1A;color:#fff;min-height:100vh;padding:0 0 60px;}
+.hero{background:#111;border-bottom:3px solid #4caf82;padding:40px 32px;text-align:center;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:3px;color:#4caf82;text-transform:uppercase;margin-bottom:10px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,44px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:10px;}
+.hero-title span{color:#c9a84c;}
+.hero-sub{font-size:14px;color:#aaa;max-width:600px;margin:0 auto 20px;line-height:1.7;}
+.hero-pills{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid #333;border-radius:50px;padding:6px 14px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#aaa;}
+.pill.green{border-color:#4caf82;color:#4caf82;}
+.pill.gold{border-color:#c9a84c;color:#c9a84c;}
+.pill.pink{border-color:#D4537E;color:#D4537E;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:#242424;border:1.5px solid #4caf82;color:#4caf82;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 20px;border-radius:8px;text-decoration:none;margin:28px 24px 0;}
+.main{max-width:960px;margin:0 auto;padding:32px 24px 0;}
+
+/* ── Who section ── */
+.who-card{background:#242424;border:1px solid #333;border-left:4px solid #4caf82;border-radius:12px;padding:24px 28px;margin-bottom:32px;}
+.who-card h2{font-family:'Playfair Display',serif;font-size:22px;color:#fff;margin-bottom:12px;}
+.who-card p{font-size:14px;color:#ccc;line-height:1.8;margin-bottom:10px;}
+.who-card p:last-child{margin-bottom:0;}
+.who-card strong{color:#4caf82;}
+
+/* ── Zoo bridge ── */
+.zoo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-bottom:32px;}
+.zoo-card{background:#242424;border:1px solid #333;border-radius:12px;padding:18px 20px;transition:border-color .2s;}
+.zoo-card:hover{border-color:#c9a84c;}
+.zoo-card-num{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;color:#c9a84c;text-transform:uppercase;margin-bottom:6px;}
+.zoo-card-title{font-size:15px;font-weight:800;color:#fff;margin-bottom:6px;}
+.zoo-card-arrow{font-size:12px;color:#4caf82;margin:8px 0;}
+.zoo-card-item{font-size:13px;color:#aaa;line-height:1.6;}
+.zoo-card-tag{display:inline-block;margin-top:10px;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;background:#1a2e1a;color:#4caf82;border:1px solid #4caf82;}
+
+/* ── Section headers ── */
+.section-label{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#4caf82;margin-bottom:6px;}
+.section-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:8px;}
+.section-desc{font-size:14px;color:#aaa;line-height:1.75;margin-bottom:24px;max-width:680px;}
+
+/* ── How banner ── */
+.how-banner{background:#242424;border:1px solid #333;border-left:4px solid #c9a84c;border-radius:12px;padding:20px 24px;margin-bottom:32px;}
+.how-banner p{font-size:14px;color:#ccc;line-height:1.75;}
+.how-banner strong{color:#c9a84c;}
+.how-note{margin-top:14px;background:#1a1a1a;border:1px solid #444;border-left:3px solid #4caf82;border-radius:8px;padding:10px 14px;font-size:13px;color:#4caf82;line-height:1.6;}
+
+/* ── Item cards ── */
+.items-grid{display:grid;gap:10px;margin-bottom:32px;}
+.item-card{background:#242424;border:1px solid #333;border-radius:12px;padding:16px 20px;display:flex;gap:16px;align-items:flex-start;transition:border-color .2s;}
+.item-card:hover{border-color:#4caf82;}
+.item-card.handwritten{border-left:3px solid #5b9bd5;}
+.item-num{font-family:'Fredoka One',cursive;font-size:24px;color:#c9a84c;flex-shrink:0;line-height:1;width:32px;text-align:center;padding-top:2px;}
+.item-title{font-size:15px;font-weight:800;color:#fff;margin-bottom:4px;}
+.item-desc{font-size:13px;color:#888;line-height:1.65;}
+.item-tag{display:inline-block;margin-top:8px;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;}
+.tag-required{background:#1a2e1a;color:#4caf82;border:1px solid #4caf82;}
+.tag-choice{background:#2e2e1a;color:#c9a84c;border:1px dashed #c9a84c;}
+.tag-handwritten{background:#1a1a2e;color:#5b9bd5;border:1px solid #5b9bd5;}
+.tag-size{font-size:10px;color:#555;font-family:'Fredoka One',cursive;letter-spacing:1px;margin-left:8px;}
+
+/* ── Kiosk link block ── */
+.kiosk-block{background:#242424;border:1px solid #333;border-left:4px solid #c9a84c;border-radius:12px;padding:24px 28px;margin-bottom:32px;}
+.kiosk-block p{font-size:14px;color:#ccc;line-height:1.75;margin-bottom:16px;}
+.kiosk-block strong{color:#c9a84c;}
+.kiosk-btn{display:inline-flex;align-items:center;gap:10px;background:#4caf82;color:#111;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700;}
+
+/* ── Sponsor box ── */
+.sponsor-box{background:#111;border:1px solid #333;border-radius:12px;padding:22px 26px;}
+.sponsor-box h3{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:10px;}
+.sponsor-box p{font-size:13px;color:#888;line-height:1.75;margin-bottom:8px;}
+.sponsor-box p:last-child{margin-bottom:0;}
+.sponsor-box strong{color:#c9a84c;}
+
+/* ── Footer ── */
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #222;max-width:960px;margin:32px auto 0;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:13px;color:#333;letter-spacing:1px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">Smile Bags &middot; A Word &amp; Wonder Experience</div>
+  <h1 class="hero-title">AP Biology &amp; <span>T.I.D.E. Coalition</span><br>Student Guide</h1>
+  <p class="hero-sub">How to build a complete Smile Bag for a North Landing Elementary student &mdash; where your zoo fieldwork becomes a gift for a child who needs it.</p>
+  <div class="hero-pills">
+    <div class="pill green">&#127807; 10 Items Required</div>
+    <div class="pill gold">&#127974; Elementary Recipients</div>
+    <div class="pill pink">&#128149; North Landing Elementary</div>
+    <div class="pill">&#128640; March &mdash; May 2026</div>
+  </div>
+</div>
+
+<a href="APBio_TIDE_Preview.html" class="back-btn">&#8592; Back to Overview</a>
+
+<div class="main">
+
+  <!-- Who receives -->
+  <div class="who-card" style="margin-top:32px;">
+    <h2>Somewhere, an elementary student is going to open your bag.</h2>
+    <p>Smile Bags go to <strong>North Landing Elementary</strong> students in grades K&ndash;5. Guidance counselors identify students who may need encouragement, motivation, or simply a reason to smile. A bag is chosen for them deliberately &mdash; not randomly &mdash; at exactly the right moment.</p>
+    <p>You will never meet the child who receives your bag. But every item you create is an act of care for someone real. <strong>That&#39;s what makes this different from a class project. This one matters beyond the grade.</strong></p>
+  </div>
+
+  <!-- Zoo bridge -->
+  <div class="section-label">Your Zoo Project &rarr; Your Bag</div>
+  <h2 class="section-title">From the Field to the Bag</h2>
+  <p class="section-desc">Your AP Biology Zoo Project doesn&#39;t just live in a presentation. Use what you observed and created at the Norfolk Zoo to build something real for an elementary student. Here&#39;s how each project type translates:</p>
+
+  <div class="zoo-grid">
+    <div class="zoo-card">
+      <div class="zoo-card-num">Zoo Option 1</div>
+      <div class="zoo-card-title">Exhibit Design</div>
+      <div class="zoo-card-arrow">&#8595; becomes</div>
+      <div class="zoo-card-item">An animal fact card or 3D printed model of the animal, designed for a K&ndash;5 student to hold and learn from.</div>
+      <span class="zoo-card-tag">Fact card &middot; 3D model</span>
+    </div>
+    <div class="zoo-card">
+      <div class="zoo-card-num">Zoo Option 2</div>
+      <div class="zoo-card-title">Behavioral Observation Journal</div>
+      <div class="zoo-card-arrow">&#8595; becomes</div>
+      <div class="zoo-card-item">A behavior scene puzzle or activity card the elementary student can complete themselves.</div>
+      <span class="zoo-card-tag">Puzzle &middot; Activity card</span>
+    </div>
+    <div class="zoo-card">
+      <div class="zoo-card-num">Zoo Option 3</div>
+      <div class="zoo-card-title">Comparative Anatomy</div>
+      <div class="zoo-card-arrow">&#8595; becomes</div>
+      <div class="zoo-card-item">A coloring sheet with labeled anatomy &mdash; simplified for a young student, beautifully designed.</div>
+      <span class="zoo-card-tag">Coloring sheet</span>
+    </div>
+    <div class="zoo-card">
+      <div class="zoo-card-num">Zoo Option 4</div>
+      <div class="zoo-card-title">Conservation Campaign</div>
+      <div class="zoo-card-arrow">&#8595; becomes</div>
+      <div class="zoo-card-item">A fold-out conservation card with a kid-friendly message and one simple action step.</div>
+      <span class="zoo-card-tag">Fold-out card &middot; Brochure</span>
+    </div>
+    <div class="zoo-card">
+      <div class="zoo-card-num">Zoo Option 5</div>
+      <div class="zoo-card-title">Food Web / Ecosystem Model</div>
+      <div class="zoo-card-arrow">&#8595; becomes</div>
+      <div class="zoo-card-item">A food web puzzle or drag-and-drop activity card the elementary student builds themselves.</div>
+      <span class="zoo-card-tag">Puzzle &middot; Activity card</span>
+    </div>
+    <div class="zoo-card">
+      <div class="zoo-card-num">Zoo Option 6</div>
+      <div class="zoo-card-title">Student-Designed Project</div>
+      <div class="zoo-card-arrow">&#8595; becomes</div>
+      <div class="zoo-card-item">An illustrated children&#39;s book page, an educational activity, or a creative original piece.</div>
+      <span class="zoo-card-tag">Children&#39;s book &middot; Original</span>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <div class="how-banner">
+    <p>Choose <strong>10 items total</strong> spanning at least <strong>3 categories</strong> from the Creation Kiosk. Your Zoo Project deliverable should inspire at least 1&ndash;2 of your items. All items must be <strong>digitally designed</strong> and printed or produced unless otherwise noted. Print size is <strong>5&times;7</strong> unless specified.</p>
+    <div class="how-note">&#128204; All supplies and materials listed in the project are provided. Any materials not listed are the student&#39;s responsibility to obtain or must be approved by your sponsor.</div>
+  </div>
+
+  <!-- Core items -->
+  <div class="section-label">Your Bag</div>
+  <h2 class="section-title">Core Items &mdash; Complete All 5</h2>
+  <p class="section-desc">These 5 items are required for every bag. They ensure every elementary student receives a complete, intentional experience.</p>
+
+  <div class="items-grid">
+
+    <div class="item-card">
+      <div class="item-num">1</div>
+      <div>
+        <div class="item-title">Zoo Project Bag Item</div>
+        <div class="item-desc">Translate your AP Biology Zoo Project into one physical item for the bag. Use the chart above to match your project type to a bag item format. This is your science contribution &mdash; designed to be accessible and engaging for a K&ndash;5 student.</div>
+        <span class="item-tag tag-required">Required &middot; Zoo Project</span><span class="tag-size">5&times;7 or appropriate format</span>
+      </div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-num">2</div>
+      <div>
+        <div class="item-title">Elementary Science Supply Bar + Bookmark</div>
+        <div class="item-desc">Visit the Elementary Science Supply Bar and choose <strong>1 or 2 supplies</strong>. Use the Bookmark Builder Kiosk to design <strong>1 bookmark</strong> connecting your supply to your OneWord through language a K&ndash;5 student can understand. Your bookmark + supplies go into the bag together.</div>
+        <span class="item-tag tag-required">Required &middot; Core</span><span class="tag-size">Bookmark + 1&ndash;2 supplies</span>
+      </div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-num">3</div>
+      <div>
+        <div class="item-title">Coding or Decoding Activity</div>
+        <div class="item-desc">Design an original coding or decoding activity for the elementary student. This could be a binary coding sheet, a secret cipher, or a color-by-code activity where solving the puzzle reveals an animal, ecosystem scene, or your OneWord. Must be kid-friendly and completable with crayons or a pencil.</div>
+        <span class="item-tag tag-required">Required &middot; Core</span><span class="tag-size">5&times;7 &middot; B&amp;W or color</span>
+      </div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-num">4</div>
+      <div>
+        <div class="item-title">Wellness or Belonging Item</div>
+        <div class="item-desc">Design an item focused on calm, encouragement, belonging, or joy &mdash; reflecting the T.I.D.E. Coalition&#39;s values. This could be an affirmation card set, a breathing exercise card, a calm corner guide, or a creative wellness activity. Designed with a K&ndash;5 student in mind.</div>
+        <span class="item-tag tag-required">Required &middot; T.I.D.E.</span><span class="tag-size">5&times;7</span>
+      </div>
+    </div>
+
+    <div class="item-card handwritten">
+      <div class="item-num">5</div>
+      <div>
+        <div class="item-title">Handwritten Letter &#9997;&#65039;</div>
+        <div class="item-desc">Write a warm, personal letter to the elementary student who will receive your bag. Keep it encouraging and age-appropriate. Written on a <strong>5&times;7 card</strong> or quality paper. Sign with your <strong>first name only</strong>. This is the <strong>only handwritten item</strong> permitted in your bag.</div>
+        <span class="item-tag tag-handwritten">Handwritten &middot; One Item Only</span><span class="tag-size">5&times;7 &middot; First name only</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Additional items -->
+  <div class="section-label">Part Two</div>
+  <h2 class="section-title">Additional Items &mdash; Choose 5 from the Creation Kiosk</h2>
+
+  <div class="kiosk-block">
+    <p>Your remaining <strong>5 items</strong> come from the <strong>AP Bio &amp; TIDE Creation Kiosk Menu</strong>. Browse all four categories and choose any 5 items that aren&#39;t already covered in your core items above. Aim for variety &mdash; your bag should feel like a thoughtful collection that an elementary student will genuinely enjoy. Think about what would make a K&ndash;5 student&#39;s day.</p>
+    <a href="APBio_TIDE_Kiosk_Menu.html" target="_blank" class="kiosk-btn">&#128300; Open the Creation Kiosk Menu &#8594;</a>
+  </div>
+
+  <!-- Sponsor box -->
+  <div class="sponsor-box">
+    <h3>Sponsor &amp; Project Information</h3>
+    <p>This project is sponsored by <strong>Elena O&#39;Brien</strong> for both AP Biology and the T.I.D.E. Coalition. AP Biology students connect this project to their Zoo Project capstone. T.I.D.E. Coalition members participate as a club service project.</p>
+    <p>For 3D printed items, email your shareable Tinkercad link to <strong>lhhowell@vbschools.com</strong> for approval before printing. Your design will be printed in D210 once approved.</p>
+    <p style="margin-top:10px;font-style:italic;color:#555;">Questions? Reach out to Ms. O&#39;Brien before you begin.</p>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
+</div>
+
+</body>
+</html>

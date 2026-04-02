@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Color-by-Code: Lion &mdash; Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#0a0a0f;color:#fff;min-height:100vh;padding:0 0 60px;}
+.hero{background:#111;border-bottom:3px solid #D4537E;padding:36px 32px 32px;text-align:center;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:4px;color:#D4537E;text-transform:uppercase;margin-bottom:12px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,46px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:10px;}
+.hero-title span{color:#c9a84c;}
+.hero-sub{font-size:14px;color:#666;max-width:560px;margin:0 auto;line-height:1.7;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid #D4537E;color:#D4537E;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;margin:24px 24px 0;}
+
+/* Mode tabs */
+.mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:0;background:#111;border:1px solid #1a1a2e;border-radius:12px;overflow:hidden;max-width:900px;margin:24px auto 0;}
+.mode-tab{padding:16px 20px;text-align:center;cursor:pointer;border:none;background:transparent;color:#444;width:100%;transition:all .2s;}
+.mode-tab.active{background:#1a1a2e;color:#fff;}
+.mode-tab-icon{font-size:20px;display:block;margin-bottom:4px;}
+.mode-tab-title{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:1px;color:inherit;display:block;margin-bottom:3px;}
+.mode-tab.active.make .mode-tab-title{color:#D4537E;}
+.mode-tab.active.play .mode-tab-title{color:#4caf82;}
+.mode-tab-desc{font-size:11px;color:#333;line-height:1.3;}
+.mode-tab.active .mode-tab-desc{color:#555;}
+
+.workspace{max-width:900px;margin:0 auto;padding:0 24px;}
+.mode-panel{display:none;padding-top:16px;}
+.mode-panel.active{display:block;}
+
+/* OneWord selector */
+.ow-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-bottom:12px;}
+.ow-btn{background:#0a0a0f;border:1px solid #1a1a2e;border-radius:8px;padding:8px 10px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#444;cursor:pointer;transition:all .2s;text-align:center;}
+.ow-btn:hover{border-color:#c9a84c;color:#c9a84c;}
+.ow-btn.active{border-color:#4caf82;color:#4caf82;background:rgba(76,175,130,.08);}
+
+.step-card{background:#111;border:1px solid #1a1a2e;border-radius:14px;padding:22px;margin-bottom:14px;}
+.step-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#333;margin-bottom:8px;}
+.step-title{font-family:'Playfair Display',serif;font-size:17px;color:#fff;margin-bottom:14px;}
+.gen-btn{width:100%;background:#D4537E;color:#fff;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:3px;text-transform:uppercase;padding:14px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;}
+.gen-btn:hover{background:#c3426d;}
+.gen-btn:disabled{background:#1a1a1a;color:#333;cursor:not-allowed;}
+
+/* Color key */
+.color-key{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;}
+.ck-item{display:flex;align-items:center;gap:8px;background:#111;border:1px solid #1a1a2e;border-radius:8px;padding:8px 12px;}
+.ck-dot{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:13px;font-weight:700;flex-shrink:0;}
+.ck-label{font-size:13px;color:#888;}
+
+/* SVG containers */
+.svg-wrap{background:#fff;border-radius:12px;padding:16px;margin-bottom:14px;display:none;}
+.svg-wrap.show{display:block;}
+.svg-wrap svg{width:100%;height:auto;display:block;}
+
+/* Play palette */
+.play-palette{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+.play-color-btn{width:44px;height:44px;border-radius:8px;border:3px solid transparent;cursor:pointer;transition:all .2s;position:relative;}
+.play-color-btn.selected{border-color:#fff;transform:scale(1.15);}
+.play-color-label{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-family:'Fredoka One',cursive;font-size:10px;color:#555;white-space:nowrap;}
+
+/* Print */
+.print-section{background:#fff;color:#111;border-radius:12px;padding:24px;margin-bottom:4px;display:none;position:relative;}
+.print-section.show{display:block;}
+.print-section::before{content:'PREVIEW';position:absolute;top:12px;right:16px;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;color:#eee;}
+.print-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:#111;text-align:center;margin-bottom:4px;}
+.print-subtitle{font-size:12px;color:#999;text-align:center;margin-bottom:14px;font-family:'Fredoka One',cursive;letter-spacing:1px;text-transform:uppercase;}
+.print-instr{background:#fdf0f4;border-left:4px solid #D4537E;border-radius:4px;padding:10px 14px;font-size:13px;color:#333;margin-bottom:14px;line-height:1.6;}
+.print-key-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.print-key-item{display:flex;align-items:center;gap:6px;font-size:13px;color:#333;}
+.print-key-swatch{width:24px;height:24px;border-radius:4px;border:1px solid #ddd;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:11px;}
+.print-bio{background:#f0fff8;border:1px solid #c0e8d4;border-radius:8px;padding:14px;margin-top:12px;}
+.print-bio-title{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;margin-bottom:6px;}
+.print-bio-text{font-size:12px;color:#444;line-height:1.65;}
+.print-footer-sig{text-align:center;margin-top:14px;font-size:10px;color:#ccc;font-family:'Fredoka One',cursive;letter-spacing:1px;}
+
+.print-btn{width:100%;background:#0a0a0f;color:#D4537E;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:14px;border:1.5px solid #D4537E;border-radius:10px;cursor:pointer;transition:all .2s;margin-top:10px;}
+.print-btn:hover{background:#D4537E;color:#fff;}
+
+/* Celebration */
+.celebrate{display:none;background:rgba(76,175,130,.1);border:2px solid #4caf82;border-radius:14px;padding:24px;text-align:center;margin-top:14px;}
+.celebrate.show{display:block;}
+.celebrate-emoji{font-size:48px;display:block;margin-bottom:12px;}
+.celebrate-title{font-family:'Playfair Display',serif;font-size:22px;color:#4caf82;margin-bottom:8px;}
+.celebrate-text{font-size:14px;color:#888;line-height:1.7;}
+
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #111;max-width:900px;margin:32px auto 0;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:12px;color:#222;letter-spacing:1px;}
+
+@media print{
+  body{background:#fff;padding:0;}
+  .hero,.mode-tabs,.workspace .step-card,.workspace .mode-panel .gen-btn,.workspace .mode-panel .color-key,.workspace .mode-panel .svg-wrap,.workspace .mode-panel .play-palette,.print-btn,.back-btn,.footer{display:none!important;}
+  .print-section{display:block!important;position:static;box-shadow:none;border:none;padding:0;border-radius:0;}
+  .print-section::before{display:none;}
+  @page{size:letter;margin:.5in;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">Smile Bags &middot; AP Bio &amp; T.I.D.E. &middot; Creation Kiosk</div>
+  <h1 class="hero-title">Color-by-Code<br><span>Lion &mdash; African Safari</span></h1>
+  <p class="hero-sub">Generate a numbered coloring sheet of a cartoon lion. The elementary student uses the color key to bring it to life!</p>
+</div>
+
+<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to Kiosk Menu</a>
+
+<div class="mode-tabs">
+  <button class="mode-tab make active" onclick="switchMode('make')">
+    <span class="mode-tab-icon">&#127912;</span>
+    <span class="mode-tab-title">Make It</span>
+    <span class="mode-tab-desc">Generate a printable color-by-code sheet for your bag</span>
+  </button>
+  <button class="mode-tab play" onclick="switchMode('play')">
+    <span class="mode-tab-icon">&#127774;</span>
+    <span class="mode-tab-title">Color It</span>
+    <span class="mode-tab-desc">Color the lion interactively online</span>
+  </button>
+</div>
+
+<div class="workspace">
+
+<!-- MAKE IT -->
+<div class="mode-panel active" id="panel-make">
+  <div class="step-card" style="margin-top:16px;">
+    <div class="step-num">Step 1 of 2</div>
+    <div class="step-title">Choose your OneWord</div>
+    <div class="ow-grid" id="owGridMake"></div>
+  </div>
+  <div class="step-card">
+    <div class="step-num">Step 2 of 2</div>
+    <div class="step-title">Generate your color-by-code sheet</div>
+    <button class="gen-btn" id="genBtn" onclick="generateSheet()" disabled>&#129409; Generate Lion Color-by-Code Sheet</button>
+  </div>
+
+  <div class="print-section" id="printSection">
+    <div class="print-title">&#129409; Color the Lion!</div>
+    <div class="print-subtitle" id="printSubtitle">A Smile Bags Coloring Activity &middot; Elementary Edition</div>
+    <div class="print-instr">Use the <strong>color key</strong> below! Find the number inside each section of the lion and use the matching color from the key. When you finish, your lion will be ready to roar!</div>
+    <div class="print-key-row" id="printKeyRow"></div>
+    <div id="printSvgWrap" style="margin-bottom:12px;"></div>
+    <div class="print-bio">
+      <div class="print-bio-title">&#128300; Did You Know?</div>
+      <div class="print-bio-text" id="printBioText"></div>
+    </div>
+    <div class="print-footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>
+  </div>
+  <button class="print-btn" id="printBtn" onclick="window.print()" style="display:none;">&#128438; Print This Color-by-Code Sheet</button>
+</div>
+
+<!-- COLOR IT -->
+<div class="mode-panel" id="panel-play">
+  <div class="step-card" style="margin-top:16px;">
+    <div class="step-num">Pick a color, then click a section!</div>
+    <div class="step-title" style="margin-bottom:8px;">Color the Lion</div>
+    <p style="font-size:13px;color:#555;margin-bottom:16px;line-height:1.5;">Click a color from the palette below, then click any numbered section on the lion to fill it with that color.</p>
+    <div class="play-palette" id="playPalette"></div>
+  </div>
+  <div style="background:#fff;border-radius:12px;padding:16px;margin-bottom:14px;">
+    <svg id="playSvg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;cursor:pointer;" onclick="handleSvgClick(event)"></svg>
+  </div>
+  <div style="margin-bottom:14px;">
+    <button onclick="clearPlay()" style="background:transparent;border:1px solid #333;color:#555;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 18px;border-radius:8px;cursor:pointer;">&#10006; Clear</button>
+  </div>
+  <div class="celebrate" id="celebrate">
+    <span class="celebrate-emoji">&#129409;</span>
+    <div class="celebrate-title">The lion is alive!</div>
+    <div class="celebrate-text">Lions are apex predators &mdash; the top of their food web. Every ecosystem needs predators to keep prey populations in balance. Without lions, wildebeest and zebra would overgraze the savanna, causing the whole ecosystem to collapse. This is called a trophic cascade!</div>
+  </div>
+</div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
+</div>
+
+<script>
+var oneWords = ['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT','CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST','RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
+var selectedWord = '';
+var playColors = {};
+var selectedPlayColor = 0;
+
+// Color palette for the lion
+var colors = [
+  {hex:'#87CEEB', label:'Sky', num:1},
+  {hex:'#C8E6A0', label:'Grass', num:2},
+  {hex:'#B8860B', label:'Outer Mane', num:3},
+  {hex:'#F5C842', label:'Body & Head', num:4},
+  {hex:'#D4854A', label:'Inner Mane', num:5},
+  {hex:'#F0967A', label:'Nose & Ears', num:6}
+];
+
+// Lion zones as SVG path data (simplified cartoon lion face + body)
+var zones = [
+  // Sky background
+  {id:'sky', d:'M0 0 L500 0 L500 200 Q250 160 0 200 Z', color:0, label:'Sky'},
+  // Grass
+  {id:'grass', d:'M0 380 Q50 360 100 375 Q150 390 200 370 Q250 355 300 370 Q350 388 400 368 Q450 350 500 375 L500 500 L0 500 Z', color:1, label:'Grass'},
+  // Outer mane (large circle)
+  {id:'mane-outer', d:'M250 310 Q170 310 130 265 Q90 220 95 165 Q100 110 140 80 Q180 50 250 45 Q320 50 360 80 Q400 110 405 165 Q410 220 370 265 Q330 310 250 310 Z', color:2, label:'Outer Mane'},
+  // Body
+  {id:'body', d:'M160 340 Q120 380 130 430 L170 430 L175 370 Q210 400 250 405 Q290 400 325 370 L330 430 L370 430 Q380 380 340 340 Q310 320 250 315 Q190 320 160 340 Z', color:3, label:'Body'},
+  // Inner mane
+  {id:'mane-inner', d:'M250 285 Q190 285 160 248 Q130 210 135 168 Q140 126 170 105 Q200 84 250 82 Q300 84 330 105 Q360 126 365 168 Q370 210 340 248 Q310 285 250 285 Z', color:4, label:'Inner Mane'},
+  // Face
+  {id:'face', d:'M250 270 Q200 270 178 238 Q156 206 160 172 Q164 138 187 120 Q210 102 250 100 Q290 102 313 120 Q336 138 340 172 Q344 206 322 238 Q300 270 250 270 Z', color:3, label:'Face'},
+  // Left ear
+  {id:'ear-l', d:'M175 118 Q155 90 165 70 Q175 50 195 65 Q210 78 205 105 Z', color:5, label:'Ear'},
+  // Right ear
+  {id:'ear-r', d:'M325 118 Q345 90 335 70 Q325 50 305 65 Q290 78 295 105 Z', color:5, label:'Ear'},
+  // Left eye white
+  {id:'eye-l-white', d:'M205 165 Q205 148 218 145 Q231 142 231 158 Q231 175 218 178 Q205 181 205 165 Z', color:-1, label:'', fixed:'#fff'},
+  // Right eye white
+  {id:'eye-r-white', d:'M295 165 Q295 148 282 145 Q269 142 269 158 Q269 175 282 178 Q295 181 295 165 Z', color:-1, label:'', fixed:'#fff'},
+  // Left pupil
+  {id:'pupil-l', d:'M214 165 Q214 155 218 152 Q222 149 222 158 Q222 168 218 171 Q214 174 214 165 Z', color:-1, label:'', fixed:'#1a1a1a'},
+  // Right pupil
+  {id:'pupil-r', d:'M286 165 Q286 155 282 152 Q278 149 278 158 Q278 168 282 171 Q286 174 286 165 Z', color:-1, label:'', fixed:'#1a1a1a'},
+  // Nose
+  {id:'nose', d:'M235 210 Q250 200 265 210 Q272 220 265 228 Q250 235 235 228 Q228 220 235 210 Z', color:5, label:'Nose'},
+  // Mouth area
+  {id:'mouth', d:'M225 228 Q250 245 275 228 Q270 242 262 248 Q256 252 250 252 Q244 252 238 248 Q230 242 225 228 Z', color:-1, label:'', fixed:'#e07060'},
+  // Cheeks
+  {id:'cheek-l', d:'M175 200 Q175 215 185 222 Q195 229 205 222 Q215 215 210 200 Q205 188 192 188 Q180 188 175 200 Z', color:4, label:'Cheek'},
+  {id:'cheek-r', d:'M325 200 Q325 215 315 222 Q305 229 295 222 Q285 215 290 200 Q295 188 308 188 Q320 188 325 200 Z', color:4, label:'Cheek'}
+];
+
+function buildOWGrid() {
+  var html = '';
+  for (var i = 0; i < oneWords.length; i++) {
+    html += '<button class="ow-btn" onclick="selectWord(\'' + oneWords[i] + '\')" id="ow-' + i + '">' + oneWords[i] + '</button>';
+  }
+  document.getElementById('owGridMake').innerHTML = html;
+}
+
+function selectWord(w) {
+  selectedWord = w;
+  document.querySelectorAll('.ow-btn').forEach(function(b){ b.classList.remove('active'); });
+  for (var i = 0; i < oneWords.length; i++) {
+    if (oneWords[i] === w) { document.getElementById('ow-' + i).classList.add('active'); break; }
+  }
+  document.getElementById('genBtn').disabled = false;
+}
+
+function switchMode(mode) {
+  document.getElementById('panel-make').classList.toggle('active', mode === 'make');
+  document.getElementById('panel-play').classList.toggle('active', mode === 'play');
+  var tabs = document.querySelectorAll('.mode-tab');
+  tabs[0].classList.toggle('active', mode === 'make');
+  tabs[1].classList.toggle('active', mode === 'play');
+  if (mode === 'play') { buildPlaySvg(); buildPlayPalette(); }
+}
+
+function buildLionSvg(numbered, fills) {
+  var svg = '<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">';
+  for (var i = 0; i < zones.length; i++) {
+    var z = zones[i];
+    var fill = z.fixed ? z.fixed : (fills && fills[i] !== undefined ? fills[i] : (numbered ? '#f8f8f8' : colors[z.color].hex));
+    var stroke = z.fixed ? 'none' : '#2a1a0a';
+    var sw = z.fixed ? '0' : '2';
+    svg += '<path id="zp-' + i + '" d="' + z.d + '" fill="' + fill + '" stroke="' + stroke + '" stroke-width="' + sw + '" stroke-linejoin="round"/>';
+  }
+  // Add numbers for numbered version
+  if (numbered) {
+    var numberPositions = [
+      [250,90],[250,450],[250,200],[250,390],[250,190],[250,175],
+      [172,90],[328,90],null,null,null,null,
+      [250,215],null,[190,205],[310,205]
+    ];
+    for (var i = 0; i < zones.length; i++) {
+      if (zones[i].color >= 0 && numberPositions[i]) {
+        svg += '<text x="' + numberPositions[i][0] + '" y="' + (numberPositions[i][1]+5) + '" text-anchor="middle" font-family="Fredoka One,cursive" font-size="18" font-weight="700" fill="#888">' + (zones[i].color + 1) + '</text>';
+      }
+    }
+  }
+  svg += '</svg>';
+  return svg;
+}
+
+function generateSheet() {
+  var keyHtml = '';
+  for (var i = 0; i < colors.length; i++) {
+    keyHtml += '<div class="print-key-item"><div class="print-key-swatch" style="background:' + colors[i].hex + ';color:#111;border-color:' + colors[i].hex + ';">' + colors[i].num + '</div><span>' + colors[i].label + '</span></div>';
+  }
+  document.getElementById('printKeyRow').innerHTML = keyHtml;
+  document.getElementById('printSubtitle').textContent = 'Lion \u2014 ' + selectedWord + ' \u00b7 A Smile Bags Coloring Activity';
+  document.getElementById('printSvgWrap').innerHTML = buildLionSvg(true, null);
+  document.getElementById('printBioText').innerHTML = 'Lions are apex predators &mdash; at the very top of their food web in the African savanna. Every ecosystem needs predators to keep prey populations balanced. Scientists at the Norfolk Zoo study lion behavior to understand how social bonds form and how prides cooperate to hunt and raise cubs. The mane you just colored tells other lions how healthy and strong this lion is &mdash; darker manes signal dominance!';
+  document.getElementById('printSection').classList.add('show');
+  document.getElementById('printBtn').style.display = 'block';
+  document.getElementById('printSection').scrollIntoView({behavior:'smooth'});
+}
+
+// ── Play mode ──
+function buildPlayPalette() {
+  var html = '';
+  for (var i = 0; i < colors.length; i++) {
+    html += '<div style="text-align:center;">' +
+      '<button class="play-color-btn' + (i===0?' selected':'') + '" style="background:' + colors[i].hex + ';" onclick="selectPlayColor(' + i + ')" id="pcb-' + i + '"></button>' +
+      '<div style="font-family:Fredoka One,cursive;font-size:10px;color:#555;margin-top:22px;">' + colors[i].num + '</div>' +
+    '</div>';
+  }
+  document.getElementById('playPalette').innerHTML = html;
+  selectedPlayColor = 0;
+}
+
+function selectPlayColor(i) {
+  selectedPlayColor = i;
+  document.querySelectorAll('.play-color-btn').forEach(function(b){ b.classList.remove('selected'); });
+  document.getElementById('pcb-' + i).classList.add('selected');
+}
+
+function buildPlaySvg() {
+  document.getElementById('playSvg').innerHTML = '';
+  var fills = {};
+  for (var i = 0; i < zones.length; i++) {
+    var z = zones[i];
+    var fill = z.fixed ? z.fixed : (playColors[i] !== undefined ? playColors[i] : '#f8f8f8');
+    var stroke = z.fixed ? 'none' : '#2a1a0a';
+    var sw = z.fixed ? '0' : '2';
+    var path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', z.d);
+    path.setAttribute('fill', fill);
+    path.setAttribute('stroke', stroke);
+    path.setAttribute('stroke-width', sw);
+    path.setAttribute('stroke-linejoin', 'round');
+    path.setAttribute('data-zone', i);
+    if (z.color >= 0) { path.style.cursor = 'pointer'; }
+    document.getElementById('playSvg').appendChild(path);
+  }
+  // Add numbers
+  var numPositions = [[250,90],[250,450],[250,200],[250,390],[250,190],[250,175],[172,90],[328,90],null,null,null,null,[250,215],null,[190,205],[310,205]];
+  for (var i = 0; i < zones.length; i++) {
+    if (zones[i].color >= 0 && numPositions[i] && playColors[i] === undefined) {
+      var t = document.createElementNS('http://www.w3.org/2000/svg','text');
+      t.setAttribute('x', numPositions[i][0]);
+      t.setAttribute('y', numPositions[i][1]+5);
+      t.setAttribute('text-anchor','middle');
+      t.setAttribute('font-family','sans-serif');
+      t.setAttribute('font-size','18');
+      t.setAttribute('font-weight','700');
+      t.setAttribute('fill','#bbb');
+      t.setAttribute('pointer-events','none');
+      t.setAttribute('id','num-'+i);
+      t.textContent = zones[i].color+1;
+      document.getElementById('playSvg').appendChild(t);
+    }
+  }
+}
+
+function handleSvgClick(e) {
+  var target = e.target;
+  var zone = target.getAttribute('data-zone');
+  if (zone === null) return;
+  var idx = parseInt(zone);
+  if (zones[idx].color < 0 || zones[idx].fixed) return;
+  playColors[idx] = colors[selectedPlayColor].hex;
+  target.setAttribute('fill', playColors[idx]);
+  var numEl = document.getElementById('num-'+idx);
+  if (numEl) numEl.parentNode.removeChild(numEl);
+  checkPlayDone();
+}
+
+function checkPlayDone() {
+  var colorable = 0;
+  var filled = 0;
+  for (var i = 0; i < zones.length; i++) {
+    if (zones[i].color >= 0 && !zones[i].fixed) {
+      colorable++;
+      if (playColors[i] !== undefined) filled++;
+    }
+  }
+  if (filled >= colorable) {
+    document.getElementById('celebrate').classList.add('show');
+    document.getElementById('celebrate').scrollIntoView({behavior:'smooth'});
+  }
+}
+
+function clearPlay() {
+  playColors = {};
+  buildPlaySvg();
+  document.getElementById('celebrate').classList.remove('show');
+}
+
+buildOWGrid();
+buildPlayPalette();
+buildPlaySvg();
+</script>
+</body>
+</html>

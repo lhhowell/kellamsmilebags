@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Anatomy Match Kiosk &mdash; Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:100vh;padding:0 0 60px;}
+.hero{background:#0a0f14;border-bottom:1px solid #1a2a3a;padding:40px 32px 36px;text-align:center;position:relative;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(91,155,213,.1) 0%,transparent 65%);pointer-events:none;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:4px;color:#5b9bd5;text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4.5vw,50px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:10px;}
+.hero-title span{color:#c9a84c;}
+.hero-sub{font-size:14px;color:#c8c4bc;max-width:580px;margin:0 auto;line-height:1.7;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(91,155,213,.06);border:1px solid #5b9bd5;color:#5b9bd5;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;margin:24px 24px 0;}
+
+.mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:0;background:#111;border:1px solid #1a2a3a;border-radius:12px;overflow:hidden;max-width:960px;margin:24px auto 0;}
+.mode-tab{padding:18px 24px;text-align:center;cursor:pointer;border:none;background:transparent;color:#444;width:100%;transition:all .2s;}
+.mode-tab.active{background:#0d151d;}
+.mode-tab-icon{font-size:22px;display:block;margin-bottom:6px;}
+.mode-tab-title{font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;color:inherit;display:block;margin-bottom:4px;}
+.mode-tab.active.make .mode-tab-title{color:#c9a84c;}
+.mode-tab.active.play .mode-tab-title{color:#5b9bd5;}
+.mode-tab-desc{font-size:12px;color:#333;line-height:1.4;}
+.mode-tab.active .mode-tab-desc{color:#c8c4bc;}
+
+.workspace{max-width:960px;margin:0 auto;padding:0 24px;}
+.mode-panel{display:none;padding-top:20px;}
+.mode-panel.active{display:block;}
+
+.step-card{background:#0d0d0d;border:1px solid #1a2a3a;border-radius:14px;padding:24px;margin-bottom:14px;}
+.step-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#c8c4bc;margin-bottom:8px;}
+.step-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:16px;}
+
+/* Animal pair selector */
+.pair-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.pair-btn{background:#0a0f14;border:1.5px solid #1a2a3a;border-radius:12px;padding:16px;cursor:pointer;transition:all .2s;text-align:left;width:100%;}
+.pair-btn:hover{border-color:#5b9bd5;}
+.pair-btn.active{border-color:#5b9bd5;background:rgba(91,155,213,.08);}
+.pair-btn-icons{font-size:22px;margin-bottom:8px;}
+.pair-btn-name{font-family:'Fredoka One',cursive;font-size:12px;color:#5b9bd5;display:block;margin-bottom:4px;}
+.pair-btn-desc{font-size:11px;color:#c8c4bc;line-height:1.4;}
+
+/* OneWord */
+.ow-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;}
+.ow-btn{background:#0a0f14;border:1px solid #1a2a3a;border-radius:8px;padding:8px 10px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#c8c4bc;cursor:pointer;transition:all .2s;text-align:center;}
+.ow-btn:hover{border-color:#c9a84c;color:#c9a84c;}
+.ow-btn.active{border-color:#5b9bd5;color:#5b9bd5;background:rgba(91,155,213,.08);}
+
+.gen-btn{width:100%;background:#5b9bd5;color:#fff;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:3px;text-transform:uppercase;padding:16px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;font-weight:700;}
+.gen-btn:hover{background:#4a8ac4;}
+.gen-btn:disabled{background:#1a2a3a;color:#c8c4bc;cursor:not-allowed;}
+
+/* ── MATCH GAME ── */
+.match-area{background:#0d151d;border:1px solid #1a2a3a;border-radius:14px;padding:24px;margin-bottom:14px;display:none;}
+.match-area.show{display:block;}
+.match-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:6px;}
+.match-sub{font-size:13px;color:#c8c4bc;margin-bottom:20px;line-height:1.5;}
+
+.match-board{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
+.match-col-title{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#c8c4bc;margin-bottom:12px;text-align:center;}
+.animal-display{background:#0a0f14;border:1px solid #1a2a3a;border-radius:12px;padding:16px;text-align:center;}
+.animal-big{font-size:48px;display:block;margin-bottom:8px;}
+.animal-label{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:12px;}
+.feature-slots{display:flex;flex-direction:column;gap:8px;}
+.feature-slot{background:#111;border:2px dashed #1a2a3a;border-radius:8px;padding:10px 14px;min-height:44px;display:flex;align-items:center;transition:border-color .2s;font-size:13px;color:#c8c4bc;font-style:italic;}
+.feature-slot.drag-over{border-color:#5b9bd5;background:rgba(91,155,213,.05);}
+.feature-slot.filled{border-style:solid;border-color:#5b9bd5;color:#fff;font-style:normal;background:#0d151d;}
+.feature-slot.correct{border-color:#4caf82;background:rgba(76,175,130,.08);color:#4caf82;}
+.feature-slot.wrong{border-color:#D4537E;background:rgba(212,83,126,.08);color:#D4537E;}
+
+/* Feature cards bank */
+.features-bank{display:flex;flex-wrap:wrap;gap:8px;padding:16px;background:#0a0f14;border:1px solid #1a2a3a;border-radius:12px;margin-bottom:20px;min-height:60px;}
+.feature-card{background:#111;border:1.5px solid #1a2a3a;border-radius:8px;padding:8px 14px;cursor:grab;font-size:13px;color:#fff;transition:all .2s;user-select:none;}
+.feature-card:hover{border-color:#5b9bd5;transform:scale(1.03);}
+.feature-card.dragging{opacity:.4;}
+
+.action-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
+.check-btn{background:#5b9bd5;color:#fff;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:12px 24px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;font-weight:700;}
+.check-btn:hover{background:#4a8ac4;}
+.reset-btn{background:transparent;border:1.5px solid #333;color:#555;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:12px 18px;border-radius:10px;cursor:pointer;transition:all .2s;}
+.reset-btn:hover{border-color:#D4537E;color:#D4537E;}
+
+.result-msg{display:none;background:rgba(91,155,213,.1);border:2px solid #5b9bd5;border-radius:14px;padding:24px;text-align:center;margin-top:14px;}
+.result-msg.show{display:block;}
+.result-msg.wrong-r{background:rgba(212,83,126,.08);border-color:#D4537E;}
+.result-emoji{font-size:42px;display:block;margin-bottom:12px;}
+.result-title{font-family:'Playfair Display',serif;font-size:22px;color:#5b9bd5;margin-bottom:8px;}
+.result-title.wrong{color:#D4537E;}
+.result-text{font-size:14px;color:#c8c4bc;line-height:1.7;max-width:560px;margin:0 auto;}
+
+/* Print */
+.print-section{background:#fff;color:#111;border-radius:12px;padding:28px;margin-bottom:4px;display:none;position:relative;}
+.print-section.show{display:block;}
+.print-section::before{content:'PREVIEW';position:absolute;top:12px;right:16px;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;color:#eee;}
+.print-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:#111;text-align:center;margin-bottom:4px;}
+.print-subtitle{font-size:12px;color:#999;text-align:center;margin-bottom:16px;font-family:'Fredoka One',cursive;letter-spacing:1px;text-transform:uppercase;}
+.print-instr{background:#e8f0f8;border-left:4px solid #5b9bd5;border-radius:4px;padding:10px 14px;font-size:13px;color:#333;margin-bottom:16px;line-height:1.6;}
+.print-match-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.print-animal-box{border:2px solid #eee;border-radius:12px;padding:16px;text-align:center;}
+.print-animal-emoji{font-size:40px;display:block;margin-bottom:8px;}
+.print-animal-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#111;margin-bottom:10px;}
+.print-blank-row{border-bottom:1.5px solid #ccc;height:28px;margin-bottom:8px;display:flex;align-items:center;font-size:11px;color:#ccc;padding-left:4px;}
+.print-features-box{margin-bottom:16px;padding:14px;border:1px solid #eee;border-radius:8px;background:#f9f9f9;}
+.print-features-title{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#333;margin-bottom:10px;}
+.print-feature-tag{display:inline-block;background:#e8f0f8;border:1px solid #5b9bd5;border-radius:20px;padding:4px 12px;font-size:12px;color:#185FA5;margin:3px;}
+.print-bio{background:#f0fff8;border:1px solid #c0e8d4;border-radius:8px;padding:14px;}
+.print-bio-title{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;margin-bottom:6px;}
+.print-bio-text{font-size:12px;color:#444;line-height:1.65;}
+.print-footer-sig{text-align:center;margin-top:14px;font-size:10px;color:#ccc;font-family:'Fredoka One',cursive;letter-spacing:1px;}
+
+.print-btn{width:100%;background:#0a0f14;color:#5b9bd5;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:14px;border:1.5px solid #5b9bd5;border-radius:10px;cursor:pointer;transition:all .2s;margin-top:12px;}
+.print-btn:hover{background:#5b9bd5;color:#fff;}
+
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #0a151f;max-width:960px;margin:32px auto 0;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:12px;color:#1a2a3a;letter-spacing:1px;}
+
+@media print{
+  body{background:#fff;padding:0;}
+  .hero,.mode-tabs,.workspace .step-card,.match-area,.action-row,.result-msg,.print-btn,.back-btn,.footer{display:none!important;}
+  .print-section{display:block!important;position:static;box-shadow:none;border:none;padding:0;border-radius:0;}
+  .print-section::before{display:none;}
+  @page{size:letter;margin:.5in;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">Smile Bags &middot; AP Bio &amp; T.I.D.E. &middot; Zoo Project</div>
+  <h1 class="hero-title">Anatomy<br><span>Match</span></h1>
+  <p class="hero-sub">Match body features to the correct animal — then print a labeled coloring sheet for your elementary student. Connected to Zoo Project Option 3: Comparative Anatomy.</p>
+</div>
+
+<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to Kiosk Menu</a>
+
+<div class="mode-tabs">
+  <button class="mode-tab make active" onclick="switchMode('make')">
+    <span class="mode-tab-icon">&#128196;</span>
+    <span class="mode-tab-title">Make It</span>
+    <span class="mode-tab-desc">Generate a printable anatomy match sheet for your bag</span>
+  </button>
+  <button class="mode-tab play" onclick="switchMode('play')">
+    <span class="mode-tab-icon">&#128270;</span>
+    <span class="mode-tab-title">Match It</span>
+    <span class="mode-tab-desc">Drag and drop features to the correct animal</span>
+  </button>
+</div>
+
+<div class="workspace">
+
+<!-- MAKE IT -->
+<div class="mode-panel active" id="panel-make">
+  <div class="step-card" style="margin-top:20px;">
+    <div class="step-num">Step 1 of 3</div>
+    <div class="step-title">Choose your animal pair</div>
+    <div class="pair-grid" id="pairGrid"></div>
+  </div>
+  <div class="step-card">
+    <div class="step-num">Step 2 of 3</div>
+    <div class="step-title">Choose your OneWord</div>
+    <div class="ow-grid" id="owGridMake"></div>
+  </div>
+  <div class="step-card">
+    <div class="step-num">Step 3 of 3</div>
+    <div class="step-title">Generate your anatomy match sheet</div>
+    <button class="gen-btn" id="genBtn" onclick="generateSheet()" disabled>&#128270; Generate Anatomy Match Sheet</button>
+  </div>
+  <div class="print-section" id="printSection">
+    <div class="print-title">&#128270; Anatomy Match!</div>
+    <div class="print-subtitle" id="printSubtitle">A Smile Bags Science Activity &middot; Elementary Edition</div>
+    <div class="print-instr">Cut out the feature cards at the bottom. Match each one to the correct animal by placing it in the right box. Can you figure out which features belong to which animal?</div>
+    <div class="print-match-grid" id="printMatchGrid"></div>
+    <div class="print-features-box">
+      <div class="print-features-title">&#9986; Cut out and match these features</div>
+      <div id="printFeatureTags"></div>
+    </div>
+    <div class="print-bio">
+      <div class="print-bio-title">&#128300; The Biology Connection</div>
+      <div class="print-bio-text" id="printBioText"></div>
+    </div>
+    <div class="print-footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>
+  </div>
+  <button class="print-btn" id="printBtn" onclick="window.print()" style="display:none;">&#128438; Print This Sheet</button>
+</div>
+
+<!-- MATCH IT -->
+<div class="mode-panel" id="panel-play">
+  <div class="step-card" style="margin-top:20px;">
+    <div class="step-num">Choose an animal pair to match</div>
+    <div class="step-title" style="margin-bottom:10px;">Select your animal pair</div>
+    <div class="pair-grid" id="pairGridPlay"></div>
+  </div>
+  <div class="match-area" id="matchArea">
+    <div class="match-title" id="matchTitle"></div>
+    <div class="match-sub">Drag each feature card from the bank below into the correct animal column. Click a placed feature to return it to the bank.</div>
+    <div class="match-board">
+      <div>
+        <div class="match-col-title" id="colTitle1"></div>
+        <div class="animal-display">
+          <span class="animal-big" id="animalBig1"></span>
+          <div class="animal-label" id="animalLabel1"></div>
+          <div class="feature-slots" id="slots1"></div>
+        </div>
+      </div>
+      <div>
+        <div class="match-col-title" id="colTitle2"></div>
+        <div class="animal-display">
+          <span class="animal-big" id="animalBig2"></span>
+          <div class="animal-label" id="animalLabel2"></div>
+          <div class="feature-slots" id="slots2"></div>
+        </div>
+      </div>
+    </div>
+    <div style="font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c8c4bc;margin-bottom:10px;">Feature bank &mdash; drag to place</div>
+    <div class="features-bank" id="featureBank"></div>
+    <div class="action-row">
+      <button class="check-btn" onclick="checkMatch()">&#10003; Check My Matches</button>
+      <button class="reset-btn" onclick="resetMatch()">&#8635; Reset</button>
+    </div>
+    <div class="result-msg" id="resultMsg">
+      <span class="result-emoji" id="resultEmoji"></span>
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-text" id="resultText"></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
+</div>
+
+<script>
+var oneWords = ['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT','CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST','RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
+
+var pairs = {
+  lionelephant:{
+    name:'Lion vs. Elephant',icons:'&#129409; &#128024;',
+    a1:{name:'Lion',emoji:'&#129409;',features:['Sharp retractable claws','Mane for displaying dominance','Binocular vision for hunting','Padded paws for silent stalking','Carnivore teeth (canines)']},
+    a2:{name:'Elephant',emoji:'&#128024;',features:['Prehensile trunk for grasping','Flat grinding molars for plants','Large ears for cooling blood','Thick wrinkled skin for sun protection','Herbivore digestive system']},
+    shared:['Four limbs','Mammal (warm-blooded)','Social family groups','Lives in African savanna'],
+    bio:'Lions and elephants share the same African savanna but have completely different body plans because they evolved for different roles. Lions are cursorial predators \u2014 built for short bursts of speed and killing. Elephants are megaherbivores \u2014 built to process enormous amounts of vegetation. Comparing these two animals shows how natural selection shapes anatomy to match an organism\'s ecological role.'
+  },
+  turtlefish:{
+    name:'Sea Turtle vs. Fish',icons:'&#128034; &#128032;',
+    a1:{name:'Sea Turtle',emoji:'&#128034;',features:['Hard shell (carapace) for protection','Flippers evolved from front legs','Breathes air (must surface)','Lays eggs on beach','Slow metabolism (ectotherm)']},
+    a2:{name:'Fish',emoji:'&#128032;',features:['Gills for breathing underwater','Streamlined scales reduce drag','Lateral line detects vibrations','Fins for precise steering','Swim bladder controls buoyancy']},
+    shared:['Live in ocean','Ectothermic (cold-blooded)','Lays eggs','Vertebrate','Streamlined body shape'],
+    bio:'Sea turtles and fish both live in the ocean but evolved from completely different ancestors. Sea turtles are reptiles whose ancestors walked on land \u2014 their flippers are modified legs. Fish have always lived in water and developed completely different solutions to the same problems. This is called convergent evolution: different ancestors arriving at similar solutions through different paths.'
+  },
+  eaglefrog:{
+    name:'Eagle vs. Tree Frog',icons:'&#129413; &#128056;',
+    a1:{name:'Eagle',emoji:'&#129413;',features:['Hollow bones reduce weight','Binocular vision (8x human)','Talons for gripping prey','Warm-blooded (endotherm)','Large wingspan for soaring']},
+    a2:{name:'Tree Frog',emoji:'&#128056;',features:['Sticky toe pads for climbing','Permeable skin absorbs water','Cold-blooded (ectotherm)','Camouflage coloring','Vocal sac amplifies calls']},
+    shared:['Vertebrate','Lays eggs','Has four limbs','Predator','Uses camouflage or surprise'],
+    bio:'Eagles and tree frogs evolved in completely different environments but are both highly adapted predators. The eagle\'s hollow bones and powerful vision make it a master of aerial hunting. The tree frog\'s sticky toe pads and permeable skin make it a master of vertical environments. Comparing their anatomy reveals how vastly different solutions can evolve for similar ecological challenges.'
+  },
+  lionbutterfly:{
+    name:'Lion vs. Butterfly',icons:'&#129409; &#129419;',
+    a1:{name:'Lion',emoji:'&#129409;',features:['Fur coat for temperature regulation','Large brain for social behavior','Canine teeth for killing prey','Binocular depth perception','Live birth (viviparous)']},
+    a2:{name:'Butterfly',emoji:'&#129419;',features:['Wings covered in tiny scales','Compound eyes see UV light','Proboscis for drinking nectar','Complete metamorphosis (4 stages)','Antennae detect chemicals']},
+    shared:['Bilateral symmetry','Has a head','Responds to light','Moves to find food','Part of a food web'],
+    bio:'Lions and butterflies seem nothing alike \u2014 but both are the result of millions of years of natural selection shaping anatomy for survival. The lion evolved as a social apex predator with advanced mammalian features. The butterfly evolved as a pollinator with a dramatically different body plan and one of nature\'s most remarkable life cycles: complete metamorphosis. Comparing them shows the extraordinary diversity of solutions evolution has produced.'
+  }
+};
+
+var selectedPair = '';
+var selectedWord = '';
+var currentPlayPair = '';
+var placedFeatures = {};
+var draggedFeature = null;
+
+function switchMode(mode) {
+  document.getElementById('panel-make').classList.toggle('active', mode==='make');
+  document.getElementById('panel-play').classList.toggle('active', mode==='play');
+  var tabs = document.querySelectorAll('.mode-tab');
+  tabs[0].classList.toggle('active', mode==='make');
+  tabs[1].classList.toggle('active', mode==='play');
+}
+
+function buildPairGrids() {
+  var keys = Object.keys(pairs);
+  var html = '';
+  for (var i = 0; i < keys.length; i++) {
+    var k = keys[i];
+    var p = pairs[k];
+    html += '<button class="pair-btn" onclick="selectPair(\'' + k + '\')" id="pair-' + k + '">' +
+      '<div class="pair-btn-icons">' + p.icons + '</div>' +
+      '<span class="pair-btn-name">' + p.name + '</span>' +
+      '<span class="pair-btn-desc">From the Norfolk Zoo \u00b7 Zoo Project Option 3</span>' +
+    '</button>';
+  }
+  document.getElementById('pairGrid').innerHTML = html;
+
+  var html2 = '';
+  for (var i = 0; i < keys.length; i++) {
+    var k = keys[i];
+    var p = pairs[k];
+    html2 += '<button class="pair-btn" onclick="selectPlayPair(\'' + k + '\')" id="ppair-' + k + '">' +
+      '<div class="pair-btn-icons">' + p.icons + '</div>' +
+      '<span class="pair-btn-name">' + p.name + '</span>' +
+      '<span class="pair-btn-desc">Drag features to the correct animal</span>' +
+    '</button>';
+  }
+  document.getElementById('pairGridPlay').innerHTML = html2;
+}
+
+function buildOWGrid() {
+  var html = '';
+  for (var i = 0; i < oneWords.length; i++) {
+    html += '<button class="ow-btn" onclick="selectWord(\'' + oneWords[i] + '\')" id="ow-' + i + '">' + oneWords[i] + '</button>';
+  }
+  document.getElementById('owGridMake').innerHTML = html;
+}
+
+function selectPair(k) {
+  selectedPair = k;
+  document.querySelectorAll('[id^="pair-"]').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('pair-' + k).classList.add('active');
+  checkReady();
+}
+
+function selectWord(w) {
+  selectedWord = w;
+  document.querySelectorAll('.ow-btn').forEach(function(b){ b.classList.remove('active'); });
+  for (var i = 0; i < oneWords.length; i++) {
+    if (oneWords[i] === w) { document.getElementById('ow-' + i).classList.add('active'); break; }
+  }
+  checkReady();
+}
+
+function checkReady() {
+  document.getElementById('genBtn').disabled = !(selectedPair && selectedWord);
+}
+
+function generateSheet() {
+  var p = pairs[selectedPair];
+  document.getElementById('printSubtitle').textContent = p.a1.name + ' vs. ' + p.a2.name + ' \u2014 ' + selectedWord + ' \u00b7 A Smile Bags Science Activity';
+
+  var gridHtml = '';
+  var numRows = Math.max(p.a1.features.length, p.a2.features.length);
+  for (var col = 0; col < 2; col++) {
+    var animal = col === 0 ? p.a1 : p.a2;
+    gridHtml += '<div class="print-animal-box">' +
+      '<span class="print-animal-emoji">' + animal.emoji + '</span>' +
+      '<div class="print-animal-name">' + animal.name + '</div>';
+    for (var i = 0; i < numRows; i++) {
+      gridHtml += '<div class="print-blank-row">___</div>';
+    }
+    gridHtml += '</div>';
+  }
+  document.getElementById('printMatchGrid').innerHTML = gridHtml;
+
+  var allFeatures = p.a1.features.concat(p.a2.features);
+  var shuffled = allFeatures.slice().sort(function(){ return Math.random()-.5; });
+  var tagsHtml = '';
+  for (var i = 0; i < shuffled.length; i++) {
+    tagsHtml += '<span class="print-feature-tag">' + shuffled[i] + '</span>';
+  }
+  document.getElementById('printFeatureTags').innerHTML = tagsHtml;
+  document.getElementById('printBioText').innerHTML = p.bio;
+  document.getElementById('printSection').classList.add('show');
+  document.getElementById('printBtn').style.display = 'block';
+  document.getElementById('printSection').scrollIntoView({behavior:'smooth'});
+}
+
+// ── MATCH IT ──
+function selectPlayPair(k) {
+  currentPlayPair = k;
+  placedFeatures = {};
+  document.querySelectorAll('[id^="ppair-"]').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('ppair-' + k).classList.add('active');
+  buildMatchGame();
+}
+
+function buildMatchGame() {
+  var p = pairs[currentPlayPair];
+  document.getElementById('matchTitle').textContent = p.a1.name + ' vs. ' + p.a2.name;
+  document.getElementById('colTitle1').textContent = p.a1.name + ' features';
+  document.getElementById('colTitle2').textContent = p.a2.name + ' features';
+  document.getElementById('animalBig1').innerHTML = p.a1.emoji;
+  document.getElementById('animalLabel1').textContent = p.a1.name;
+  document.getElementById('animalBig2').innerHTML = p.a2.emoji;
+  document.getElementById('animalLabel2').textContent = p.a2.name;
+
+  buildSlots('slots1', 'a1', p.a1.features.length);
+  buildSlots('slots2', 'a2', p.a2.features.length);
+  buildFeatureBank();
+  document.getElementById('resultMsg').classList.remove('show');
+  document.getElementById('matchArea').classList.add('show');
+  document.getElementById('matchArea').scrollIntoView({behavior:'smooth'});
+}
+
+function buildSlots(containerId, animalKey, count) {
+  var html = '';
+  for (var i = 0; i < count; i++) {
+    var slotId = animalKey + '-' + i;
+    var placed = placedFeatures[slotId];
+    html += '<div class="feature-slot' + (placed ? ' filled' : '') + '" id="slot-' + slotId + '" ' +
+      'ondragover="allowDrop(event)" ondrop="dropFeature(event,\'' + animalKey + '\',' + i + ')" ' +
+      'ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">' +
+      (placed ? placed : 'Drop feature here') +
+    '</div>';
+  }
+  document.getElementById(containerId).innerHTML = html;
+}
+
+function buildFeatureBank() {
+  var p = pairs[currentPlayPair];
+  var allFeatures = p.a1.features.concat(p.a2.features);
+  var placed = Object.values(placedFeatures);
+  var html = '';
+  for (var i = 0; i < allFeatures.length; i++) {
+    if (placed.indexOf(allFeatures[i]) === -1) {
+      html += '<div class="feature-card" draggable="true" id="fc-' + i + '" ' +
+        'ondragstart="dragStart(event,\'' + allFeatures[i].replace(/'/g,"\\'") + '\',' + i + ')" ' +
+        'ondragend="dragEnd(event,' + i + ')">' +
+        allFeatures[i] +
+      '</div>';
+    }
+  }
+  if (!html) html = '<span style="font-size:13px;color:#c8c4bc;font-style:italic;">All features placed!</span>';
+  document.getElementById('featureBank').innerHTML = html;
+}
+
+function dragStart(e, feature, idx) {
+  draggedFeature = {feature:feature, idx:idx};
+  setTimeout(function(){ var el=document.getElementById('fc-'+idx); if(el) el.classList.add('dragging'); },0);
+}
+function dragEnd(e, idx) {
+  var el = document.getElementById('fc-'+idx);
+  if (el) el.classList.remove('dragging');
+}
+function allowDrop(e){ e.preventDefault(); }
+function dragEnter(e){ e.currentTarget.classList.add('drag-over'); }
+function dragLeave(e){ e.currentTarget.classList.remove('drag-over'); }
+
+function dropFeature(e, animalKey, slotIdx) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if (!draggedFeature) return;
+  var slotId = animalKey + '-' + slotIdx;
+  // Remove from any previous slot
+  for (var key in placedFeatures) {
+    if (placedFeatures[key] === draggedFeature.feature) { delete placedFeatures[key]; }
+  }
+  placedFeatures[slotId] = draggedFeature.feature;
+  var p = pairs[currentPlayPair];
+  buildSlots('slots1', 'a1', p.a1.features.length);
+  buildSlots('slots2', 'a2', p.a2.features.length);
+  buildFeatureBank();
+  draggedFeature = null;
+}
+
+function checkMatch() {
+  var p = pairs[currentPlayPair];
+  var allCorrect = true;
+  var totalPlaced = Object.keys(placedFeatures).length;
+  var totalNeeded = p.a1.features.length + p.a2.features.length;
+
+  if (totalPlaced < totalNeeded) {
+    showResult(false, 'Not quite yet!', (totalNeeded - totalPlaced) + ' feature' + (totalNeeded-totalPlaced>1?'s are':' is') + ' still in the bank. Place all features first!');
+    return;
+  }
+
+  for (var slotId in placedFeatures) {
+    var animalKey = slotId.split('-')[0];
+    var feature = placedFeatures[slotId];
+    var correctAnimal = p.a1.features.indexOf(feature) !== -1 ? 'a1' : 'a2';
+    var slot = document.getElementById('slot-' + slotId);
+    if (animalKey === correctAnimal) {
+      if (slot) { slot.classList.add('correct'); slot.classList.remove('wrong'); }
+    } else {
+      allCorrect = false;
+      if (slot) { slot.classList.add('wrong'); slot.classList.remove('correct'); }
+    }
+  }
+
+  if (allCorrect) {
+    showResult(true, 'Perfect Match!', p.bio);
+  } else {
+    showResult(false, 'Almost there!', 'Some features are in the wrong column \u2014 check the red ones. Think about what each animal eats, how it moves, and where it lives.');
+  }
+}
+
+function showResult(correct, title, text) {
+  var msg = document.getElementById('resultMsg');
+  msg.className = 'result-msg show' + (correct ? '' : ' wrong-r');
+  document.getElementById('resultEmoji').textContent = correct ? '\u{1F389}' : '\u{1F4A1}';
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultTitle').className = 'result-title' + (correct ? '' : ' wrong');
+  document.getElementById('resultText').textContent = text;
+  msg.scrollIntoView({behavior:'smooth'});
+}
+
+function resetMatch() {
+  placedFeatures = {};
+  var p = pairs[currentPlayPair];
+  buildSlots('slots1', 'a1', p.a1.features.length);
+  buildSlots('slots2', 'a2', p.a2.features.length);
+  buildFeatureBank();
+  document.getElementById('resultMsg').classList.remove('show');
+}
+
+buildPairGrids();
+buildOWGrid();
+</script>
+</body>
+</html>

@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Food Web Builder &mdash; Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#0a0f0a;color:#fff;min-height:100vh;padding:0 0 60px;}
+.hero{background:#0a0f0a;border-bottom:1px solid #1a2e1a;padding:40px 32px 36px;text-align:center;position:relative;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(76,175,130,.1) 0%,transparent 65%);pointer-events:none;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:4px;color:#4caf82;text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4.5vw,50px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:10px;}
+.hero-title span{color:#c9a84c;}
+.hero-sub{font-size:14px;color:#c8c4bc;max-width:580px;margin:0 auto;line-height:1.7;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(76,175,130,.06);border:1px solid #4caf82;color:#4caf82;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;margin:24px 24px 0;}
+
+/* Mode tabs */
+.mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:0;background:#111;border:1px solid #1a2e1a;border-radius:12px;overflow:hidden;max-width:960px;margin:24px auto 0;}
+.mode-tab{padding:18px 24px;text-align:center;cursor:pointer;border:none;background:transparent;color:#444;width:100%;transition:all .2s;}
+.mode-tab.active{background:#0d1a0d;}
+.mode-tab-icon{font-size:22px;display:block;margin-bottom:6px;}
+.mode-tab-title{font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;color:inherit;display:block;margin-bottom:4px;}
+.mode-tab.active.make .mode-tab-title{color:#c9a84c;}
+.mode-tab.active.play .mode-tab-title{color:#4caf82;}
+.mode-tab-desc{font-size:12px;color:#333;line-height:1.4;}
+.mode-tab.active .mode-tab-desc{color:#c8c4bc;}
+
+.workspace{max-width:960px;margin:0 auto;padding:0 24px;}
+.mode-panel{display:none;padding-top:20px;}
+.mode-panel.active{display:block;}
+
+/* Step cards */
+.step-card{background:#0d0d0d;border:1px solid #1a2e1a;border-radius:14px;padding:24px;margin-bottom:14px;}
+.step-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#c8c4bc;margin-bottom:8px;}
+.step-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:16px;}
+
+/* Ecosystem selector */
+.eco-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;}
+.eco-btn{background:#0a0f0a;border:1.5px solid #1a2e1a;border-radius:10px;padding:16px;cursor:pointer;transition:all .2s;text-align:left;width:100%;}
+.eco-btn:hover{border-color:#4caf82;}
+.eco-btn.active{border-color:#4caf82;background:rgba(76,175,130,.08);}
+.eco-btn-icon{font-size:24px;display:block;margin-bottom:8px;}
+.eco-btn-name{font-family:'Fredoka One',cursive;font-size:13px;color:#4caf82;display:block;margin-bottom:4px;}
+.eco-btn-desc{font-size:11px;color:#c8c4bc;line-height:1.4;}
+
+/* OneWord */
+.ow-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;}
+.ow-btn{background:#0a0f0a;border:1px solid #1a2e1a;border-radius:8px;padding:8px 10px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#c8c4bc;cursor:pointer;transition:all .2s;text-align:center;}
+.ow-btn:hover{border-color:#c9a84c;color:#c9a84c;}
+.ow-btn.active{border-color:#4caf82;color:#4caf82;background:rgba(76,175,130,.08);}
+
+.gen-btn{width:100%;background:#4caf82;color:#111;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:3px;text-transform:uppercase;padding:16px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;font-weight:700;}
+.gen-btn:hover{background:#3d9e72;}
+.gen-btn:disabled{background:#1a2e1a;color:#c8c4bc;cursor:not-allowed;}
+
+/* ── INTERACTIVE FOOD WEB ── */
+.foodweb-area{background:#0d1a0d;border:1px solid #1a2e1a;border-radius:14px;padding:24px;margin-bottom:14px;display:none;}
+.foodweb-area.show{display:block;}
+.fw-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:6px;}
+.fw-sub{font-size:13px;color:#c8c4bc;margin-bottom:20px;line-height:1.5;}
+
+/* Trophic levels */
+.trophic-board{display:grid;grid-template-rows:auto auto auto auto;gap:12px;margin-bottom:20px;}
+.trophic-level{background:#0a0f0a;border:1px solid #1a2e1a;border-radius:12px;padding:14px;}
+.trophic-label{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.trophic-label-dot{width:10px;height:10px;border-radius:50%;}
+.trophic-drop{min-height:64px;display:flex;flex-wrap:wrap;gap:8px;padding:8px;border:2px dashed #1a2e1a;border-radius:8px;transition:border-color .2s;align-items:center;}
+.trophic-drop.drag-over{border-color:#4caf82;background:rgba(76,175,130,.05);}
+.trophic-drop.correct{border-color:#4caf82;}
+.trophic-drop.wrong{border-color:#D4537E;}
+.trophic-empty{font-size:12px;color:#1a3a1a;font-style:italic;padding:4px;}
+
+/* Animal cards (draggable) */
+.animal-bank{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;padding:16px;background:#0a0f0a;border:1px solid #1a2e1a;border-radius:12px;min-height:80px;}
+.animal-card{background:#111;border:1.5px solid #1a2e1a;border-radius:10px;padding:10px 14px;cursor:grab;transition:all .2s;display:flex;align-items:center;gap:8px;user-select:none;}
+.animal-card:hover{border-color:#4caf82;transform:scale(1.04);}
+.animal-card.dragging{opacity:.4;}
+.animal-card.placed{opacity:.5;cursor:default;}
+.animal-emoji{font-size:22px;}
+.animal-name{font-family:'Fredoka One',cursive;font-size:12px;color:#fff;letter-spacing:.5px;}
+.animal-hint{font-size:10px;color:#c8c4bc;}
+
+/* Placed card (in trophic level) */
+.placed-card{background:#1a2e1a;border:1px solid #4caf82;border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:6px;cursor:pointer;transition:all .2s;}
+.placed-card:hover{background:#243a24;border-color:#6cbe92;}
+.placed-card-emoji{font-size:18px;}
+.placed-card-name{font-family:'Fredoka One',cursive;font-size:11px;color:#4caf82;}
+
+/* Action btns */
+.action-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
+.check-btn{background:#4caf82;color:#111;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:12px 24px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;font-weight:700;}
+.check-btn:hover{background:#3d9e72;}
+.reset-btn{background:transparent;border:1.5px solid #333;color:#555;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:12px 18px;border-radius:10px;cursor:pointer;transition:all .2s;}
+.reset-btn:hover{border-color:#D4537E;color:#D4537E;}
+
+/* Result */
+.result-msg{display:none;background:rgba(76,175,130,.1);border:2px solid #4caf82;border-radius:14px;padding:24px;text-align:center;margin-top:14px;}
+.result-msg.show{display:block;}
+.result-msg.wrong-result{background:rgba(212,83,126,.08);border-color:#D4537E;}
+.result-emoji{font-size:42px;display:block;margin-bottom:12px;}
+.result-title{font-family:'Playfair Display',serif;font-size:22px;color:#4caf82;margin-bottom:8px;}
+.result-title.wrong{color:#D4537E;}
+.result-text{font-size:14px;color:#c8c4bc;line-height:1.7;max-width:560px;margin:0 auto;}
+
+/* Print sheet */
+.print-section{background:#fff;color:#111;border-radius:12px;padding:28px;margin-bottom:4px;display:none;position:relative;}
+.print-section.show{display:block;}
+.print-section::before{content:'PREVIEW';position:absolute;top:12px;right:16px;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;color:#eee;}
+.print-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:#111;text-align:center;margin-bottom:4px;}
+.print-subtitle{font-size:12px;color:#999;text-align:center;margin-bottom:16px;font-family:'Fredoka One',cursive;letter-spacing:1px;text-transform:uppercase;}
+.print-instr{background:#f0fff4;border-left:4px solid #4caf82;border-radius:4px;padding:10px 14px;font-size:13px;color:#333;margin-bottom:16px;line-height:1.6;}
+.print-levels{margin-bottom:16px;}
+.print-level{margin-bottom:12px;}
+.print-level-title{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#333;margin-bottom:8px;}
+.print-level-boxes{display:flex;gap:8px;flex-wrap:wrap;}
+.print-box{border:2px solid #ccc;border-radius:8px;padding:8px 14px;min-width:80px;min-height:44px;font-size:13px;color:#999;text-align:center;}
+.print-animals{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;padding:12px;border:1px solid #eee;border-radius:8px;background:#f9f9f9;}
+.print-animal-tag{background:#e8f5ee;border:1px solid #4caf82;border-radius:20px;padding:4px 12px;font-size:12px;color:#1B7A78;}
+.print-bio{background:#f0fff8;border:1px solid #c0e8d4;border-radius:8px;padding:14px;}
+.print-bio-title{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;margin-bottom:6px;}
+.print-bio-text{font-size:12px;color:#444;line-height:1.65;}
+.print-footer-sig{text-align:center;margin-top:14px;font-size:10px;color:#ccc;font-family:'Fredoka One',cursive;letter-spacing:1px;}
+
+.print-btn{width:100%;background:#0a0f0a;color:#4caf82;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:14px;border:1.5px solid #4caf82;border-radius:10px;cursor:pointer;transition:all .2s;margin-top:12px;}
+.print-btn:hover{background:#4caf82;color:#111;}
+
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #0f1f0f;max-width:960px;margin:32px auto 0;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:12px;color:#1a3a1a;letter-spacing:1px;}
+
+@media print{
+  body{background:#fff;padding:0;}
+  .hero,.mode-tabs,.workspace .step-card,.foodweb-area,.action-row,.result-msg,.print-btn,.back-btn,.footer{display:none!important;}
+  .print-section{display:block!important;position:static;box-shadow:none;border:none;padding:0;border-radius:0;}
+  .print-section::before{display:none;}
+  @page{size:letter;margin:.5in;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">Smile Bags &middot; AP Bio &amp; T.I.D.E. &middot; Zoo Project</div>
+  <h1 class="hero-title">Food Web<br><span>Builder</span></h1>
+  <p class="hero-sub">Drag animals into their correct trophic levels to build a food web. Connect your zoo fieldwork to a real ecosystem &mdash; then print it for your elementary student!</p>
+</div>
+
+<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to Kiosk Menu</a>
+
+<div class="mode-tabs">
+  <button class="mode-tab make active" onclick="switchMode('make')">
+    <span class="mode-tab-icon">&#128196;</span>
+    <span class="mode-tab-title">Make It</span>
+    <span class="mode-tab-desc">Build a food web and print a cut-and-sort activity sheet</span>
+  </button>
+  <button class="mode-tab play" onclick="switchMode('play')">
+    <span class="mode-tab-icon">&#128243;</span>
+    <span class="mode-tab-title">Build It</span>
+    <span class="mode-tab-desc">Drag and drop animals into the right trophic levels</span>
+  </button>
+</div>
+
+<div class="workspace">
+
+<!-- MAKE IT -->
+<div class="mode-panel active" id="panel-make">
+  <div class="step-card" style="margin-top:20px;">
+    <div class="step-num">Step 1 of 3</div>
+    <div class="step-title">Choose your ecosystem</div>
+    <div class="eco-grid" id="ecoGrid"></div>
+  </div>
+  <div class="step-card">
+    <div class="step-num">Step 2 of 3</div>
+    <div class="step-title">Choose your OneWord</div>
+    <div class="ow-grid" id="owGridMake"></div>
+  </div>
+  <div class="step-card">
+    <div class="step-num">Step 3 of 3</div>
+    <div class="step-title">Generate your food web activity sheet</div>
+    <button class="gen-btn" id="genBtn" onclick="generateSheet()" disabled>&#127807; Generate Food Web Sheet</button>
+  </div>
+  <div class="print-section" id="printSection">
+    <div class="print-title">&#127807; Build the Food Web!</div>
+    <div class="print-subtitle" id="printSubtitle">A Smile Bags Science Activity &middot; Elementary Edition</div>
+    <div class="print-instr">Cut out the animal cards at the bottom. Sort them into the correct trophic levels. Use arrows to show <strong>who eats whom</strong>. The arrow goes FROM the food TO the eater!</div>
+    <div class="print-levels" id="printLevels"></div>
+    <div style="font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#333;margin-bottom:10px;">&#9986; Cut out these animal cards</div>
+    <div class="print-animals" id="printAnimals"></div>
+    <div class="print-bio">
+      <div class="print-bio-title">&#128300; The Biology Connection</div>
+      <div class="print-bio-text" id="printBioText"></div>
+    </div>
+    <div class="print-footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>
+  </div>
+  <button class="print-btn" id="printBtn" onclick="window.print()" style="display:none;">&#128438; Print This Food Web Sheet</button>
+</div>
+
+<!-- BUILD IT -->
+<div class="mode-panel" id="panel-play">
+  <div class="step-card" style="margin-top:20px;">
+    <div class="step-num">Choose an ecosystem to build</div>
+    <div class="step-title" style="margin-bottom:10px;">Select your ecosystem</div>
+    <div class="eco-grid" id="ecoGridPlay"></div>
+  </div>
+  <div class="foodweb-area" id="foodwebArea">
+    <div class="fw-title" id="fwTitle"></div>
+    <div class="fw-sub">Drag each animal from the bank below into the correct trophic level. Click a placed animal to return it to the bank.</div>
+    <div class="trophic-board" id="trophicBoard"></div>
+    <div style="font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c8c4bc;margin-bottom:10px;">&#127807; Animal bank &mdash; drag to place</div>
+    <div class="animal-bank" id="animalBank"></div>
+    <div class="action-row">
+      <button class="check-btn" onclick="checkFoodWeb()">&#10003; Check My Food Web</button>
+      <button class="reset-btn" onclick="resetFoodWeb()">&#8635; Reset</button>
+    </div>
+    <div class="result-msg" id="resultMsg">
+      <span class="result-emoji" id="resultEmoji"></span>
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-text" id="resultText"></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
+</div>
+
+<script>
+var oneWords = ['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT','CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST','RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
+
+var ecosystems = {
+  savanna:{
+    name:'African Savanna',icon:'&#127774;',
+    desc:'Norfolk Zoo African Safari Trail',
+    onewordLink:'BALANCE, CONNECT, CYCLE, SUSTAIN',
+    bio:'In the African savanna, lions and cheetahs are apex predators that keep zebra and wildebeest populations balanced. Without predators, herbivores would overgraze the grass, causing the entire ecosystem to collapse \u2014 a process called a trophic cascade. Every animal in this web depends on every other.',
+    levels:{
+      producers:{label:'Producers',color:'#c8c4bc',dot:'#4caf82',animals:['Grass','Acacia Tree','Shrubs']},
+      primary:{label:'Primary Consumers (Herbivores)',color:'#2a4a1a',dot:'#8cbe52',animals:['Zebra','Wildebeest','Impala','Elephant']},
+      secondary:{label:'Secondary Consumers (Omnivores)',color:'#4a3a0a',dot:'#c9a84c',animals:['Hyena','Baboon','Warthog']},
+      apex:{label:'Apex Predators (Top Carnivores)',color:'#4a1a1a',dot:'#D4537E',animals:['Lion','Cheetah','Leopard']}
+    },
+    animals:[
+      {name:'Grass',emoji:'&#127807;',level:'producers'},
+      {name:'Acacia',emoji:'&#127795;',level:'producers'},
+      {name:'Zebra',emoji:'&#129412;',level:'primary'},
+      {name:'Wildebeest',emoji:'&#128002;',level:'primary'},
+      {name:'Elephant',emoji:'&#128024;',level:'primary'},
+      {name:'Hyena',emoji:'&#129411;',level:'secondary'},
+      {name:'Baboon',emoji:'&#128018;',level:'secondary'},
+      {name:'Lion',emoji:'&#129409;',level:'apex'},
+      {name:'Cheetah',emoji:'&#128008;',level:'apex'}
+    ]
+  },
+  ocean:{
+    name:'Ocean Ecosystem',icon:'&#127754;',
+    desc:'Lafayette River &middot; Turtle Oasis',
+    onewordLink:'FLOW, CYCLE, CONNECT, FILTER',
+    bio:'Ocean food webs are powered by tiny phytoplankton \u2014 microscopic plants that produce half of all oxygen on Earth through photosynthesis. Zooplankton eat them, small fish eat zooplankton, and the energy flows all the way up to sharks and whales. Remove any level and the whole system collapses.',
+    levels:{
+      producers:{label:'Producers (Phytoplankton)',color:'#0a2a3a',dot:'#4caf82',animals:['Phytoplankton','Seaweed','Kelp']},
+      primary:{label:'Primary Consumers',color:'#0a1a3a',dot:'#5b9bd5',animals:['Zooplankton','Small Fish','Sea Turtle','Crab']},
+      secondary:{label:'Secondary Consumers',color:'#1a0a3a',dot:'#c9a84c',animals:['Squid','Tuna','Dolphin']},
+      apex:{label:'Apex Predators',color:'#2a0a2a',dot:'#D4537E',animals:['Shark','Orca']}
+    },
+    animals:[
+      {name:'Phytoplankton',emoji:'&#127780;',level:'producers'},
+      {name:'Seaweed',emoji:'&#127807;',level:'producers'},
+      {name:'Small Fish',emoji:'&#128032;',level:'primary'},
+      {name:'Sea Turtle',emoji:'&#128034;',level:'primary'},
+      {name:'Crab',emoji:'&#129408;',level:'primary'},
+      {name:'Squid',emoji:'&#129422;',level:'secondary'},
+      {name:'Tuna',emoji:'&#128031;',level:'secondary'},
+      {name:'Dolphin',emoji:'&#128044;',level:'secondary'},
+      {name:'Shark',emoji:'&#129416;',level:'apex'}
+    ]
+  },
+  forest:{
+    name:'Temperate Forest',icon:'&#127795;',
+    desc:'Connected to Zoo conservation programs',
+    onewordLink:'GROW, ROOT, CYCLE, SUSTAIN, EMERGE',
+    bio:'Temperate forests are some of Earth\'s most complex ecosystems. Trees communicate through underground fungal networks called mycorrhizae \u2014 sharing nutrients with neighboring trees. Decomposers like mushrooms and earthworms break down dead matter into soil, completing the cycle and making growth possible.',
+    levels:{
+      producers:{label:'Producers',color:'#1a2e1a',dot:'#4caf82',animals:['Oak Tree','Ferns','Berry Bushes','Mushrooms']},
+      primary:{label:'Primary Consumers',color:'#2a2e1a',dot:'#8cbe52',animals:['Deer','Rabbit','Squirrel','Caterpillar']},
+      secondary:{label:'Secondary Consumers',color:'#2e2a1a',dot:'#c9a84c',animals:['Fox','Raccoon','Snake','Owl']},
+      apex:{label:'Apex Predators',color:'#2e1a1a',dot:'#D4537E',animals:['Black Bear','Red-tailed Hawk']}
+    },
+    animals:[
+      {name:'Oak Tree',emoji:'&#127795;',level:'producers'},
+      {name:'Ferns',emoji:'&#127807;',level:'producers'},
+      {name:'Mushrooms',emoji:'&#127812;',level:'producers'},
+      {name:'Deer',emoji:'&#129420;',level:'primary'},
+      {name:'Rabbit',emoji:'&#128007;',level:'primary'},
+      {name:'Squirrel',emoji:'&#128063;',level:'primary'},
+      {name:'Fox',emoji:'&#129418;',level:'secondary'},
+      {name:'Owl',emoji:'&#129417;',level:'secondary'},
+      {name:'Snake',emoji:'&#128013;',level:'secondary'},
+      {name:'Bear',emoji:'&#128059;',level:'apex'}
+    ]
+  }
+};
+
+var selectedEco = '';
+var selectedWord = '';
+var currentEcoPlay = '';
+var placedAnimals = {};
+var draggedCard = null;
+
+function switchMode(mode) {
+  document.getElementById('panel-make').classList.toggle('active', mode==='make');
+  document.getElementById('panel-play').classList.toggle('active', mode==='play');
+  var tabs = document.querySelectorAll('.mode-tab');
+  tabs[0].classList.toggle('active', mode==='make');
+  tabs[1].classList.toggle('active', mode==='play');
+}
+
+function buildEcoGrids() {
+  var keys = Object.keys(ecosystems);
+  var html = '';
+  for (var i = 0; i < keys.length; i++) {
+    var k = keys[i];
+    var e = ecosystems[k];
+    html += '<button class="eco-btn" onclick="selectEco(\'' + k + '\')" id="eco-' + k + '">' +
+      '<span class="eco-btn-icon">' + e.icon + '</span>' +
+      '<span class="eco-btn-name">' + e.name + '</span>' +
+      '<span class="eco-btn-desc">' + e.desc + '</span>' +
+    '</button>';
+  }
+  document.getElementById('ecoGrid').innerHTML = html;
+
+  var html2 = '';
+  for (var i = 0; i < keys.length; i++) {
+    var k = keys[i];
+    var e = ecosystems[k];
+    html2 += '<button class="eco-btn" onclick="selectPlayEco(\'' + k + '\')" id="peco-' + k + '">' +
+      '<span class="eco-btn-icon">' + e.icon + '</span>' +
+      '<span class="eco-btn-name">' + e.name + '</span>' +
+      '<span class="eco-btn-desc">' + e.desc + '</span>' +
+    '</button>';
+  }
+  document.getElementById('ecoGridPlay').innerHTML = html2;
+}
+
+function buildOWGrid() {
+  var html = '';
+  for (var i = 0; i < oneWords.length; i++) {
+    html += '<button class="ow-btn" onclick="selectWord(\'' + oneWords[i] + '\')" id="ow-' + i + '">' + oneWords[i] + '</button>';
+  }
+  document.getElementById('owGridMake').innerHTML = html;
+}
+
+function selectEco(k) {
+  selectedEco = k;
+  document.querySelectorAll('[id^="eco-"]').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('eco-' + k).classList.add('active');
+  checkMakeReady();
+}
+
+function selectWord(w) {
+  selectedWord = w;
+  document.querySelectorAll('.ow-btn').forEach(function(b){ b.classList.remove('active'); });
+  for (var i = 0; i < oneWords.length; i++) {
+    if (oneWords[i] === w) { document.getElementById('ow-' + i).classList.add('active'); break; }
+  }
+  checkMakeReady();
+}
+
+function checkMakeReady() {
+  document.getElementById('genBtn').disabled = !(selectedEco && selectedWord);
+}
+
+function generateSheet() {
+  var eco = ecosystems[selectedEco];
+  var levels = eco.levels;
+  var levelKeys = Object.keys(levels);
+
+  document.getElementById('printSubtitle').textContent = eco.name + ' \u2014 ' + selectedWord + ' \u00b7 A Smile Bags Science Activity';
+
+  var levelsHtml = '';
+  for (var i = 0; i < levelKeys.length; i++) {
+    var lk = levelKeys[i];
+    var lv = levels[lk];
+    levelsHtml += '<div class="print-level">' +
+      '<div class="print-level-title">' + (i+1) + '. ' + lv.label + '</div>' +
+      '<div class="print-level-boxes">';
+    for (var j = 0; j < lv.animals.length; j++) {
+      levelsHtml += '<div class="print-box"></div>';
+    }
+    levelsHtml += '</div></div>';
+  }
+  document.getElementById('printLevels').innerHTML = levelsHtml;
+
+  var animalsHtml = '';
+  for (var i = 0; i < eco.animals.length; i++) {
+    var a = eco.animals[i];
+    animalsHtml += '<div class="print-animal-tag">' + a.emoji + ' ' + a.name + '</div>';
+  }
+  document.getElementById('printAnimals').innerHTML = animalsHtml;
+  document.getElementById('printBioText').innerHTML = eco.bio;
+  document.getElementById('printSection').classList.add('show');
+  document.getElementById('printBtn').style.display = 'block';
+  document.getElementById('printSection').scrollIntoView({behavior:'smooth'});
+}
+
+// ── BUILD IT (drag & drop) ──
+function selectPlayEco(k) {
+  currentEcoPlay = k;
+  placedAnimals = {};
+  document.querySelectorAll('[id^="peco-"]').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('peco-' + k).classList.add('active');
+  buildFoodWeb();
+}
+
+function buildFoodWeb() {
+  var eco = ecosystems[currentEcoPlay];
+  document.getElementById('fwTitle').textContent = eco.name + ' Food Web';
+
+  var levels = eco.levels;
+  var levelKeys = Object.keys(levels);
+  var boardHtml = '';
+  for (var i = 0; i < levelKeys.length; i++) {
+    var lk = levelKeys[i];
+    var lv = levels[lk];
+    boardHtml += '<div class="trophic-level" style="border-left:4px solid ' + lv.dot + ';">' +
+      '<div class="trophic-label">' +
+        '<div class="trophic-label-dot" style="background:' + lv.dot + ';"></div>' +
+        '<span style="font-family:\'Fredoka One\',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:' + lv.dot + ';">' + (i+1) + '. ' + lv.label + '</span>' +
+      '</div>' +
+      '<div class="trophic-drop" id="drop-' + lk + '" ondragover="allowDrop(event)" ondrop="dropCard(event,\'' + lk + '\')" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">' +
+        '<span class="trophic-empty">Drag animals here</span>' +
+      '</div>' +
+    '</div>';
+  }
+  document.getElementById('trophicBoard').innerHTML = boardHtml;
+
+  buildAnimalBank();
+  document.getElementById('resultMsg').classList.remove('show');
+  document.getElementById('foodwebArea').classList.add('show');
+  document.getElementById('foodwebArea').scrollIntoView({behavior:'smooth'});
+}
+
+function buildAnimalBank() {
+  var eco = ecosystems[currentEcoPlay];
+  var html = '';
+  for (var i = 0; i < eco.animals.length; i++) {
+    var a = eco.animals[i];
+    if (!placedAnimals[a.name]) {
+      html += '<div class="animal-card" draggable="true" id="card-' + i + '" ' +
+        'ondragstart="dragStart(event,' + i + ')" ondragend="dragEnd(event)">' +
+        '<span class="animal-emoji">' + a.emoji + '</span>' +
+        '<div><div class="animal-name">' + a.name + '</div></div>' +
+      '</div>';
+    }
+  }
+  if (!html) html = '<span style="font-size:13px;color:#c8c4bc;font-style:italic;">All animals placed!</span>';
+  document.getElementById('animalBank').innerHTML = html;
+}
+
+function dragStart(e, idx) {
+  draggedCard = idx;
+  setTimeout(function(){ document.getElementById('card-'+idx).classList.add('dragging'); }, 0);
+}
+function dragEnd(e) {
+  if (document.getElementById('card-'+draggedCard)) {
+    document.getElementById('card-'+draggedCard).classList.remove('dragging');
+  }
+}
+function allowDrop(e) { e.preventDefault(); }
+function dragEnter(e) { e.currentTarget.classList.add('drag-over'); }
+function dragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+
+function dropCard(e, level) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if (draggedCard === null) return;
+  var eco = ecosystems[currentEcoPlay];
+  var animal = eco.animals[draggedCard];
+  placedAnimals[animal.name] = level;
+  renderDropZone(level);
+  buildAnimalBank();
+  draggedCard = null;
+}
+
+function renderDropZone(level) {
+  var eco = ecosystems[currentEcoPlay];
+  var drop = document.getElementById('drop-' + level);
+  drop.innerHTML = '';
+  for (var i = 0; i < eco.animals.length; i++) {
+    var a = eco.animals[i];
+    if (placedAnimals[a.name] === level) {
+      drop.innerHTML += '<div class="placed-card" onclick="returnAnimal(\'' + a.name + '\',\'' + level + '\')">' +
+        '<span class="placed-card-emoji">' + a.emoji + '</span>' +
+        '<span class="placed-card-name">' + a.name + '</span>' +
+      '</div>';
+    }
+  }
+  if (!drop.innerHTML) drop.innerHTML = '<span class="trophic-empty">Drag animals here</span>';
+}
+
+function returnAnimal(name, level) {
+  delete placedAnimals[name];
+  renderDropZone(level);
+  buildAnimalBank();
+}
+
+function checkFoodWeb() {
+  var eco = ecosystems[currentEcoPlay];
+  var allCorrect = true;
+  var unplaced = 0;
+  for (var i = 0; i < eco.animals.length; i++) {
+    var a = eco.animals[i];
+    if (!placedAnimals[a.name]) { unplaced++; continue; }
+    if (placedAnimals[a.name] !== a.level) { allCorrect = false; }
+  }
+  var msg = document.getElementById('resultMsg');
+  if (unplaced > 0) {
+    msg.className = 'result-msg show wrong-result';
+    document.getElementById('resultEmoji').textContent = '&#129300;';
+    document.getElementById('resultTitle').innerHTML = 'Not quite yet!';
+    document.getElementById('resultTitle').className = 'result-title wrong';
+    document.getElementById('resultText').textContent = unplaced + ' animal' + (unplaced>1?'s are':' is') + ' still in the bank. Place all animals before checking!';
+  } else if (allCorrect) {
+    msg.className = 'result-msg show';
+    document.getElementById('resultEmoji').textContent = '&#127881;';
+    document.getElementById('resultTitle').innerHTML = 'Perfect Food Web!';
+    document.getElementById('resultTitle').className = 'result-title';
+    document.getElementById('resultText').textContent = eco.bio;
+  } else {
+    msg.className = 'result-msg show wrong-result';
+    document.getElementById('resultEmoji').textContent = '&#128161;';
+    document.getElementById('resultTitle').innerHTML = 'Almost there!';
+    document.getElementById('resultTitle').className = 'result-title wrong';
+    document.getElementById('resultText').textContent = 'Some animals are in the wrong level. Think about what each animal eats \u2014 producers make their own food, herbivores eat plants, and predators eat other animals.';
+  }
+  msg.scrollIntoView({behavior:'smooth'});
+}
+
+function resetFoodWeb() {
+  placedAnimals = {};
+  var eco = ecosystems[currentEcoPlay];
+  var levels = eco.levels;
+  Object.keys(levels).forEach(function(lk){
+    var drop = document.getElementById('drop-' + lk);
+    if (drop) drop.innerHTML = '<span class="trophic-empty">Drag animals here</span>';
+  });
+  buildAnimalBank();
+  document.getElementById('resultMsg').classList.remove('show');
+}
+
+buildEcoGrids();
+buildOWGrid();
+</script>
+</body>
+</html>

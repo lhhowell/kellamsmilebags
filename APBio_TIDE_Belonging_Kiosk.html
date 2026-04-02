@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Belonging Activity Builder &mdash; Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#0f0a14;color:#fff;min-height:100vh;padding:0 0 60px;}
+.hero{background:#0f0a14;border-bottom:1px solid #2a1a3a;padding:40px 32px 36px;text-align:center;position:relative;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(212,83,126,.1) 0%,transparent 65%);pointer-events:none;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:4px;color:#D4537E;text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4.5vw,50px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:10px;}
+.hero-title span{color:#c9a84c;}
+.hero-sub{font-size:14px;color:#c8c4bc;max-width:580px;margin:0 auto;line-height:1.7;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(212,83,126,.06);border:1px solid #D4537E;color:#D4537E;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;margin:24px 24px 0;}
+
+.workspace{max-width:900px;margin:28px auto 0;padding:0 24px;}
+.step-card{background:#111;border:1px solid #2a1a3a;border-radius:14px;padding:24px;margin-bottom:14px;}
+.step-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#c8c4bc;margin-bottom:8px;}
+.step-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:16px;}
+
+/* Activity type selector */
+.activity-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.activity-btn{background:#0f0a14;border:1.5px solid #2a1a3a;border-radius:12px;padding:16px;cursor:pointer;transition:all .2s;text-align:left;width:100%;}
+.activity-btn:hover{border-color:#D4537E;}
+.activity-btn.active{border-color:#D4537E;background:rgba(212,83,126,.08);}
+.activity-btn-icon{font-size:26px;display:block;margin-bottom:8px;}
+.activity-btn-name{font-family:'Fredoka One',cursive;font-size:13px;color:#D4537E;display:block;margin-bottom:4px;}
+.activity-btn-desc{font-size:11px;color:#c8c4bc;line-height:1.4;}
+
+/* OneWord */
+.ow-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;}
+.ow-btn{background:#0f0a14;border:1px solid #2a1a3a;border-radius:8px;padding:8px 10px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#c8c4bc;cursor:pointer;transition:all .2s;text-align:center;}
+.ow-btn:hover{border-color:#c9a84c;color:#c9a84c;}
+.ow-btn.active{border-color:#D4537E;color:#D4537E;background:rgba(212,83,126,.08);}
+
+/* Message input */
+.msg-input{width:100%;background:#0f0a14;border:1.5px solid #2a1a3a;border-radius:10px;padding:14px 18px;font-family:'Nunito',sans-serif;font-size:15px;color:#fff;outline:none;transition:border-color .2s;margin-bottom:8px;}
+.msg-input:focus{border-color:#D4537E;}
+.msg-input::placeholder{color:#c8c4bc;}
+.char-count{font-size:12px;color:#c8c4bc;text-align:right;}
+
+/* Color picker */
+.color-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px;}
+.color-swatch{width:36px;height:36px;border-radius:8px;border:3px solid transparent;cursor:pointer;transition:all .2s;}
+.color-swatch.selected{border-color:#fff;transform:scale(1.15);}
+
+/* Preview card */
+.preview-card{border-radius:16px;padding:28px 24px;margin-bottom:14px;display:none;transition:all .3s;}
+.preview-card.show{display:block;}
+.preview-card-word{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;opacity:.7;}
+.preview-card-msg{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;line-height:1.4;margin-bottom:16px;}
+.preview-card-footer{font-size:12px;opacity:.6;font-family:'Fredoka One',cursive;letter-spacing:1px;}
+
+/* Buttons */
+.gen-btn{width:100%;background:#D4537E;color:#fff;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:3px;text-transform:uppercase;padding:16px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;font-weight:700;}
+.gen-btn:hover{background:#c3426d;}
+.gen-btn:disabled{background:#2a1a3a;color:#c8c4bc;cursor:not-allowed;}
+.print-btn{width:100%;background:#0f0a14;color:#D4537E;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:14px;border:1.5px solid #D4537E;border-radius:10px;cursor:pointer;transition:all .2s;margin-top:12px;}
+.print-btn:hover{background:#D4537E;color:#fff;}
+
+/* Print sheet */
+.print-section{background:#fff;color:#111;border-radius:12px;padding:32px;margin-bottom:4px;display:none;position:relative;}
+.print-section.show{display:block;}
+.print-section::before{content:'PREVIEW';position:absolute;top:12px;right:16px;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;color:#eee;}
+.print-card-outer{border-radius:16px;padding:32px 28px;margin-bottom:20px;text-align:center;}
+.print-card-word{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;opacity:.7;}
+.print-card-msg{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;line-height:1.4;margin-bottom:16px;}
+.print-card-activity{font-size:14px;line-height:1.7;margin-bottom:12px;}
+.print-card-footer{font-size:11px;opacity:.5;font-family:'Fredoka One',cursive;letter-spacing:1px;}
+.print-bio{background:#f0fff8;border:1px solid #c0e8d4;border-radius:8px;padding:14px;}
+.print-bio-title{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;margin-bottom:6px;}
+.print-bio-text{font-size:12px;color:#444;line-height:1.65;}
+.print-footer-sig{text-align:center;margin-top:14px;font-size:10px;color:#ccc;font-family:'Fredoka One',cursive;letter-spacing:1px;}
+
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #1a0a2a;max-width:900px;margin:32px auto 0;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:12px;color:#2a1a3a;letter-spacing:1px;}
+
+.print-4up{display:none;}
+.print-4up.show{display:block;}
+.grid-8up{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px;}
+.grid-card{border-radius:8px;padding:7px 10px;}
+.grid-card-word{font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;opacity:.7;}
+.grid-card-msg{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;line-height:1.35;margin-bottom:6px;}
+.grid-card-tide{font-size:10px;opacity:.55;font-family:'Fredoka One',cursive;letter-spacing:.5px;line-height:1.5;}
+.grid-card-footer{font-size:9px;opacity:.4;font-family:'Fredoka One',cursive;letter-spacing:1px;margin-top:8px;}
+.print-toggle-row{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;}
+.toggle-btn{background:transparent;border:1.5px solid #D4537E;color:#D4537E;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 18px;border-radius:8px;cursor:pointer;transition:all .2s;}
+.toggle-btn.active{background:#D4537E;color:#fff;}
+.toggle-btn:hover{background:#D4537E;color:#fff;}
+@media print{
+  body{background:#fff;padding:0;}
+  .hero,.workspace .step-card,.preview-card,.print-btn,.back-btn,.footer,.print-toggle-row{display:none!important;}
+  .print-section{display:none!important;}
+  .print-4up{display:none!important;}
+  body.print-1up .print-section.show{display:block!important;}
+  body.print-4up-mode .print-4up.show{display:block!important;}
+  body.print-4up-mode .grid-8up{gap:6px;}
+  @page{size:letter;margin:.35in;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">Smile Bags &middot; T.I.D.E. Coalition &middot; Creation Kiosk</div>
+  <h1 class="hero-title">Belonging<br><span>Activity Builder</span></h1>
+  <p class="hero-sub">Design a belonging and inclusion activity card for your elementary student &mdash; rooted in T.I.D.E. values of Togetherness, Inclusion, Diversity, and Equity.</p>
+</div>
+
+<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to Kiosk Menu</a>
+
+<div class="workspace">
+
+  <div class="step-card" style="margin-top:28px;">
+    <div class="step-num">Step 1 of 4</div>
+    <div class="step-title">Choose your activity type</div>
+    <div class="activity-grid">
+      <button class="activity-btn" onclick="selectActivity('affirmation')" id="act-affirmation">
+        <span class="activity-btn-icon">&#11088;</span>
+        <span class="activity-btn-name">Affirmation Card</span>
+        <span class="activity-btn-desc">A powerful statement the elementary student can read to themselves every day</span>
+      </button>
+      <button class="activity-btn" onclick="selectActivity('belonging')" id="act-belonging">
+        <span class="activity-btn-icon">&#128149;</span>
+        <span class="activity-btn-name">Belonging Prompt</span>
+        <span class="activity-btn-desc">A reflection prompt that helps the student think about what makes them unique and valued</span>
+      </button>
+      <button class="activity-btn" onclick="selectActivity('kindness')" id="act-kindness">
+        <span class="activity-btn-icon">&#127752;</span>
+        <span class="activity-btn-name">Kindness Challenge</span>
+        <span class="activity-btn-desc">A simple challenge to practice kindness and inclusion with classmates or family</span>
+      </button>
+      <button class="activity-btn" onclick="selectActivity('commonground')" id="act-commonground">
+        <span class="activity-btn-icon">&#127760;</span>
+        <span class="activity-btn-name">Common Ground</span>
+        <span class="activity-btn-desc">An activity that helps the student find what they share with others who seem different</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-num">Step 2 of 4</div>
+    <div class="step-title">Choose your OneWord</div>
+    <div class="ow-grid" id="owGrid"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-num">Step 3 of 4</div>
+    <div class="step-title">Write your message</div>
+    <textarea class="msg-input" id="msgInput" rows="3" placeholder="Write a warm, encouraging message for the elementary student..." maxlength="180" oninput="updatePreview()"></textarea>
+    <div class="char-count"><span id="charCount">0</span>/180 characters</div>
+    <div style="margin-top:16px;">
+      <div style="font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c8c4bc;margin-bottom:10px;">Choose a card color</div>
+      <div class="color-row" id="colorRow"></div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-num">Step 4 of 4</div>
+    <div class="step-title">Preview &amp; generate</div>
+    <button class="gen-btn" id="genBtn" onclick="generateCard()" disabled>&#128149; Generate Belonging Card</button>
+  </div>
+
+  <!-- Live preview -->
+  <div class="preview-card" id="previewCard">
+    <div class="preview-card-word" id="prevWord"></div>
+    <div class="preview-card-msg" id="prevMsg"></div>
+    <div class="preview-card-footer">Smile Bags &middot; Made just for you</div>
+  </div>
+
+  <!-- Print sheet -->
+  <div class="print-section" id="printSection">
+    <div class="print-card-outer" id="printCardOuter">
+      <div class="print-card-word" id="printWord"></div>
+      <div class="print-card-msg" id="printMsg"></div>
+      <div class="print-card-activity" id="printActivity"></div>
+      <div class="print-card-footer">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>
+    </div>
+    <div class="print-bio">
+      <div class="print-bio-title">&#128149; The T.I.D.E. Connection</div>
+      <div class="print-bio-text">T.I.D.E. &mdash; Togetherness through Inclusion, Diversity, and Equity &mdash; is a student-led initiative in Virginia Beach City Public Schools. T.I.D.E. students believe every person deserves to feel like they belong, exactly as they are. This card was made by a Kellam High School student who wanted you to know: you matter, you belong, and someone who has never met you made something just for you.</div>
+    </div>
+    <div class="print-footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
+  </div>
+  <div class="print-toggle-row" id="printToggleRow" style="display:none;">
+    <button class="toggle-btn active" id="btn1up" onclick="switchPrint('1up')">&#128196; Print 1 Card</button>
+    <button class="toggle-btn" id="btn4up" onclick="switchPrint('4up')">&#128208; Print 8-Up Grid</button>
+  </div>
+
+  <div class="print-4up" id="print4up">
+    <div class="grid-8up" id="grid4up"></div>
+  </div>
+
+  <button class="print-btn" id="printBtn" onclick="window.print()" style="display:none;">&#128438; Print</button>
+
+</div>
+
+<div class="footer">
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
+</div>
+
+<script>
+var oneWords = ['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT','CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST','RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
+
+var activities = {
+  affirmation:{
+    label:'Affirmation Card',
+    prompts:{
+      ABSORB:'Read this every morning: I am learning and growing every day.',
+      ADAPT:'Read this when things feel hard: I can handle change. I am flexible and strong.',
+      ANCHOR:'Read this when you feel wobbly: I know who I am. I know what I value. I am grounded.',
+      BALANCE:'Read this when you feel overwhelmed: I do not have to do everything at once. I can find balance.',
+      BLOOM:'Read this and believe it: I am becoming exactly who I am meant to be.',
+      BREATHE:'Read this and take a deep breath: Right now, in this moment, I am okay.',
+      CLEAR:'Read this when your mind feels cloudy: I can slow down. I can think. I can figure this out.',
+      CONNECT:'Read this and feel it: I am not alone. People care about me. I belong.',
+      CYCLE:'Read this on hard days: Hard times do not last forever. Everything moves in cycles.',
+      EMERGE:'Read this with courage: Something amazing is growing inside me. I am emerging.',
+      FILTER:'Read this when the world feels too loud: I get to choose what I let in. I can filter out what does not serve me.',
+      FLOW:'Read this and relax: I do not have to force it. I can let things flow.',
+      GROW:'Read this with pride: Every mistake I make is helping me grow.',
+      HEAL:'Read this with kindness: I am allowed to take time to heal. I am not falling behind.',
+      MIGRATE:'Read this during change: Moving into something new takes courage. I have that courage.',
+      PERSIST:'Read this when you want to quit: I have done hard things before. I can do this too.',
+      RENEW:'Read this when you feel tired: Rest is not giving up. Rest is how I renew.',
+      RESTORE:'Read this gently: I am allowed to restore myself. I deserve care.',
+      RETURN:'Read this like a promise: No matter how far I wander, I can always return to myself.',
+      RISE:'Read this with your chin up: I have risen from hard things before. I will rise again.',
+      ROOT:'Read this and feel steady: My roots hold me. My people hold me. I am held.',
+      SHINE:'Read this and believe it: The world needs the light that only you can give.',
+      SUSTAIN:'Read this as a commitment: I will take care of myself so I can keep going.',
+      THRIVE:'Read this as a vision: I deserve more than just surviving. I deserve to thrive.',
+      TRANSFORM:'Read this with wonder: I am not who I was. I am becoming someone even better.'
+    }
+  },
+  belonging:{
+    label:'Belonging Prompt',
+    prompts:{
+      ABSORB:'What is one new thing you learned this week that surprised you? Draw or write it here.',
+      ADAPT:'Think of a time you had to do something in a new way. What did you learn about yourself?',
+      ANCHOR:'Name three things that keep you grounded when things feel hard. A person, a place, and one thing you do.',
+      BALANCE:'Draw a balance scale. On one side, write something you give to others. On the other, something you need.',
+      BLOOM:'What is one thing about you that is just starting to bloom? Something you are getting good at?',
+      BREATHE:'Draw your breath. What color is it when you breathe in? What color is it when you breathe out?',
+      CLEAR:'Write one worry on a cloud. Now imagine the wind blowing it away. What does the clear sky feel like?',
+      CONNECT:'Draw a web. Put yourself in the middle. Add five people or things you are connected to.',
+      CYCLE:'What is something that keeps coming back around in your life \u2014 a feeling, a season, a song?',
+      EMERGE:'What is something you are proud of that took a long time to grow? You emerged from something hard.',
+      FILTER:'Write three things that make you feel good. Write one thing you want less of. You get to choose.',
+      FLOW:'When do you feel like you are in a flow \u2014 where time disappears and things feel easy?',
+      GROW:'Draw a plant. Label its roots with people who support you. Label its flowers with your strengths.',
+      HEAL:'Is there something you are healing from? You do not have to share it. But know: healing is happening.',
+      MIGRATE:'Have you ever moved, changed schools, or started something new? What did you carry with you?',
+      PERSIST:'What is the hardest thing you have ever kept trying at? Write one word that describes your persistence.',
+      RENEW:'What does rest look like for you? Draw or describe your favorite way to recharge.',
+      RESTORE:'Write a letter to yourself on a hard day. What would you want to hear?',
+      RETURN:'Is there something you left behind that you want to return to \u2014 a hobby, a friendship, a dream?',
+      RISE:'Write about a time you rose above something difficult. What helped you get there?',
+      ROOT:'List five things that are part of your roots \u2014 your culture, your family, your history, your home.',
+      SHINE:'What is something you do that makes other people\u2019s lives better? That is your light. Let it shine.',
+      SUSTAIN:'What one small habit helps you feel better every day? It does not have to be big.',
+      THRIVE:'Describe what thriving looks like for you. Not just okay \u2014 truly thriving.',
+      TRANSFORM:'Write about one way you have changed in the last year. What transformed you?'
+    }
+  },
+  kindness:{
+    label:'Kindness Challenge',
+    prompts:{
+      ABSORB:'This week: really listen when someone talks to you. Absorb what they say without thinking about what you will say next.',
+      ADAPT:'This week: try doing one kind thing in a completely new way. Maybe write a note instead of saying it, or draw instead of write.',
+      ANCHOR:'This week: be someone\u2019s anchor. Check in on a friend who might be having a hard time. Just say: I see you.',
+      BALANCE:'This week: do one kind thing for someone else AND one kind thing for yourself. Both matter.',
+      BLOOM:'This week: notice when someone does something well and tell them. Help someone bloom.',
+      BREATHE:'This week: when someone seems frustrated or sad, take a breath together. Just slow down with them.',
+      CLEAR:'This week: clear the air with someone. If something feels awkward, say: Hey, are we okay?',
+      CONNECT:'This week: sit with someone who is eating alone. You do not have to say much. Just be there.',
+      CYCLE:'This week: return a kindness that someone once showed you. Pass it forward.',
+      EMERGE:'This week: encourage someone who is trying something new. Tell them: I see you trying. That is brave.',
+      FILTER:'This week: stop yourself from saying something unkind, even if it is true. Filter with kindness.',
+      FLOW:'This week: let someone go ahead of you in line, or take the last turn. Let kindness flow from you.',
+      GROW:'This week: teach someone something you know how to do. Share what you\u2019ve grown.',
+      HEAL:'This week: say sorry to someone you may have hurt. Even if it was a long time ago.',
+      MIGRATE:'This week: welcome someone who is new \u2014 to your school, your class, your neighborhood, your lunch table.',
+      PERSIST:'This week: keep being kind to someone even when they are grumpy or hard to reach. Persist.',
+      RENEW:'This week: do something kind that you used to do but stopped. Bring it back.',
+      RESTORE:'This week: fix something. A friendship, a misunderstanding, a moment that went wrong.',
+      RETURN:'This week: return a smile to every stranger who makes eye contact with you.',
+      RISE:'This week: stand up for someone who cannot stand up for themselves in that moment.',
+      ROOT:'This week: share something about your roots \u2014 your culture, your family, your history \u2014 with someone who doesn\u2019t know.',
+      SHINE:'This week: shine a light on someone who never gets credit. Name them. Thank them.',
+      SUSTAIN:'This week: do one small kind thing every single day. Build the habit. Sustain it.',
+      THRIVE:'This week: help someone else thrive. Ask: What do you need right now? And then try to help.',
+      TRANSFORM:'This week: transform one negative moment into something better with a single kind word or action.'
+    }
+  },
+  commonground:{
+    label:'Common Ground Activity',
+    prompts:{
+      ABSORB:'Write five things you love. Find one person who loves one of them too. That is your common ground.',
+      ADAPT:'Ask a family member or neighbor: What is something you had to learn to do differently than you expected?',
+      ANCHOR:'Ask three people: What is one thing that keeps you going when things get hard? Listen for what you share.',
+      BALANCE:'Play the balance game: for every difference you notice between you and someone, find one thing you share.',
+      BLOOM:'Ask a friend: What is something you are just starting to get good at? Share yours too. Bloom together.',
+      BREATHE:'Find someone to take three deep breaths with. Breathing is something every human shares.',
+      CLEAR:'Write down one thing that confuses or worries you. Share it with someone. See if they feel the same.',
+      CONNECT:'Make a Venn diagram with a friend. In the middle, write everything you have in common. You might be surprised.',
+      CYCLE:'Ask a grandparent or older adult: What seasons of life have you been through? Find the one you share.',
+      EMERGE:'Share a story about something hard you came through. Invite someone to share theirs. Notice what connects you.',
+      FILTER:'Make a list of things that stress you out. Share it. Find what you have in common and laugh about it together.',
+      FLOW:'Find out what someone else\u2019s flow state feels like. When do they lose track of time? Compare with yours.',
+      GROW:'Ask: What is something you learned from a mistake? Share yours. Growing is something everyone does.',
+      HEAL:'Share something gentle: I am still working through something. Do you have something you are healing from too?',
+      MIGRATE:'Ask someone who has moved or changed schools: What did you miss most? What surprised you about the new place?',
+      PERSIST:'Tell someone about something you kept trying even when it was hard. Ask them to share one too.',
+      RENEW:'Ask: What do you do when you need to recharge? Share yours. Rest looks different for everyone.',
+      RESTORE:'Find something broken \u2014 a friendship, a habit, a tradition \u2014 and invite someone to help you restore it.',
+      RETURN:'Ask someone: Is there something you used to love that you want to return to? Maybe you can do it together.',
+      RISE:'Share a story about a time you got back up after falling down. Ask someone to share theirs.',
+      ROOT:'Ask: Where are you from? What is something from your roots that you carry with you everywhere?',
+      SHINE:'Tell someone specifically: This is what I see in you that shines. Then ask them what they see in you.',
+      SUSTAIN:'Ask: What one small thing keeps you going every day? Coffee? Music? A walk? Find your common ground.',
+      THRIVE:'Ask someone: What does a really good day look like for you? Share yours. Thriving looks different for everyone.',
+      TRANSFORM:'Share a moment that changed you. Ask: What has transformed you? Find what you have in common.'
+    }
+  }
+};
+
+var cardColors = [
+  {bg:'#1B3A4B',text:'#D6EEEE',accent:'#4caf82'},
+  {bg:'#3D1A3D',text:'#F0D0F0',accent:'#D4537E'},
+  {bg:'#1A3D1A',text:'#D0F0D0',accent:'#4caf82'},
+  {bg:'#3D2A0A',text:'#F0E0C0',accent:'#c9a84c'},
+  {bg:'#0A1A3D',text:'#C0D0F0',accent:'#5b9bd5'},
+  {bg:'#2A1A0A',text:'#F0E8D0',accent:'#c9a84c'}
+];
+
+var selectedActivity = '';
+var selectedWord = '';
+var selectedColor = 0;
+
+function buildOWGrid() {
+  var html = '';
+  for (var i = 0; i < oneWords.length; i++) {
+    html += '<button class="ow-btn" onclick="selectWord(\'' + oneWords[i] + '\')" id="ow-' + i + '">' + oneWords[i] + '</button>';
+  }
+  document.getElementById('owGrid').innerHTML = html;
+}
+
+function buildColorRow() {
+  var html = '';
+  for (var i = 0; i < cardColors.length; i++) {
+    html += '<div class="color-swatch' + (i===0?' selected':'') + '" style="background:' + cardColors[i].bg + ';border-color:' + (i===0?cardColors[i].accent:'transparent') + ';" onclick="selectColor(' + i + ')" id="csw-' + i + '"></div>';
+  }
+  document.getElementById('colorRow').innerHTML = html;
+}
+
+function selectActivity(a) {
+  selectedActivity = a;
+  document.querySelectorAll('.activity-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('act-' + a).classList.add('active');
+  checkReady();
+  updatePreview();
+}
+
+function selectWord(w) {
+  selectedWord = w;
+  document.querySelectorAll('.ow-btn').forEach(function(b){ b.classList.remove('active'); });
+  for (var i = 0; i < oneWords.length; i++) {
+    if (oneWords[i] === w) { document.getElementById('ow-' + i).classList.add('active'); break; }
+  }
+  if (selectedActivity && selectedWord) {
+    var prompt = activities[selectedActivity].prompts[selectedWord];
+    if (!document.getElementById('msgInput').value) {
+      document.getElementById('msgInput').value = prompt;
+      document.getElementById('charCount').textContent = prompt.length;
+    }
+  }
+  checkReady();
+  updatePreview();
+}
+
+function selectColor(i) {
+  selectedColor = i;
+  document.querySelectorAll('.color-swatch').forEach(function(s){ s.classList.remove('selected'); s.style.borderColor = 'transparent'; });
+  document.getElementById('csw-' + i).classList.add('selected');
+  document.getElementById('csw-' + i).style.borderColor = cardColors[i].accent;
+  updatePreview();
+}
+
+function checkReady() {
+  var msg = document.getElementById('msgInput').value.trim();
+  document.getElementById('genBtn').disabled = !(selectedActivity && selectedWord && msg);
+}
+
+function updatePreview() {
+  var msg = document.getElementById('msgInput').value.trim();
+  document.getElementById('charCount').textContent = document.getElementById('msgInput').value.length;
+  checkReady();
+  if (!selectedActivity || !selectedWord || !msg) { document.getElementById('previewCard').classList.remove('show'); return; }
+  var col = cardColors[selectedColor];
+  var card = document.getElementById('previewCard');
+  card.style.background = col.bg;
+  card.style.color = col.text;
+  document.getElementById('prevWord').style.color = col.accent;
+  document.getElementById('prevWord').textContent = selectedWord + ' \u00b7 ' + activities[selectedActivity].label;
+  document.getElementById('prevMsg').textContent = msg;
+  card.classList.add('show');
+}
+
+function generateCard() {
+  var msg = document.getElementById('msgInput').value.trim();
+  var col = cardColors[selectedColor];
+  var act = activities[selectedActivity];
+
+  document.getElementById('printCardOuter').style.background = col.bg;
+  document.getElementById('printCardOuter').style.color = col.text;
+  document.getElementById('printWord').style.color = col.accent;
+  document.getElementById('printWord').textContent = selectedWord + ' \u00b7 ' + act.label;
+  document.getElementById('printMsg').textContent = msg;
+  document.getElementById('printActivity').style.color = col.text;
+  document.getElementById('printActivity').style.opacity = '.8';
+  // Build 4-up grid
+  var cardHtml = '';
+  for (var i = 0; i < 12; i++) {
+    cardHtml += '<div class="grid-card" style="background:' + col.bg + ';color:' + col.text + ';">' +
+      '<div class="grid-card-word" style="color:' + col.accent + ';">' + selectedWord + ' &middot; ' + act.label + '</div>' +
+      '<div class="grid-card-msg">' + msg + '</div>' +
+      '<div class="grid-card-tide">T.I.D.E. Coalition &mdash; Togetherness, Inclusion, Diversity &amp; Equity</div>' +
+      '<div class="grid-card-footer">Smile Bags &middot; A Word &amp; Wonder Experience</div>' +
+    '</div>';
+  }
+  document.getElementById('grid4up').innerHTML = cardHtml;
+
+  document.getElementById('printSection').classList.add('show');
+  document.getElementById('printToggleRow').style.display = 'flex';
+  document.getElementById('printBtn').style.display = 'block';
+  document.body.className = 'print-1up';
+  document.getElementById('printSection').scrollIntoView({behavior:'smooth'});
+}
+
+function switchPrint(mode) {
+  if (mode === '1up') {
+    document.getElementById('print4up').classList.remove('show');
+    document.getElementById('printSection').classList.add('show');
+    document.getElementById('btn1up').classList.add('active');
+    document.getElementById('btn4up').classList.remove('active');
+    document.body.className = 'print-1up';
+  } else {
+    document.getElementById('printSection').classList.remove('show');
+    document.getElementById('print4up').classList.add('show');
+    document.getElementById('btn4up').classList.add('active');
+    document.getElementById('btn1up').classList.remove('active');
+    document.body.className = 'print-4up-mode';
+  }
+}
+
+buildOWGrid();
+buildColorRow();
+</script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Elementary Science Supply Bar &mdash; Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#0F2027;color:#fff;min-height:100vh;padding:0 0 60px;}
+.hero{background:linear-gradient(135deg,#0F2027 0%,#1a3a2a 100%);padding:48px 32px 40px;text-align:center;border-bottom:3px solid #4caf82;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:3px;color:#4caf82;text-transform:uppercase;margin-bottom:12px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4.5vw,50px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:10px;}
+.hero-title span{color:#c9a84c;}
+.hero-sub{font-size:15px;color:rgba(255,255,255,.7);max-width:580px;margin:0 auto 22px;line-height:1.7;}
+.hero-pills{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.2);border-radius:50px;padding:6px 14px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:rgba(255,255,255,.6);}
+.pill.green{border-color:#4caf82;color:#4caf82;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1.5px solid #4caf82;color:#4caf82;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 20px;border-radius:8px;text-decoration:none;margin:28px 24px 0;}
+.main{max-width:900px;margin:0 auto;padding:36px 24px 0;}
+.intro{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-left:4px solid #4caf82;border-radius:14px;padding:22px 26px;margin-bottom:40px;}
+.intro p{font-size:14px;color:rgba(255,255,255,.8);line-height:1.8;}
+.intro strong{color:#4caf82;}
+.intro .note{margin-top:12px;font-size:13px;color:#c9a84c;line-height:1.6;}
+.supplies-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:40px;}
+.supply-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px;transition:border-color .25s,background .25s;cursor:pointer;}
+.supply-card:hover{border-color:#4caf82;background:rgba(76,175,130,.08);}
+.supply-card.selected{border-color:#4caf82;background:rgba(76,175,130,.15);border-width:2px;}
+.supply-top{display:flex;align-items:center;gap:14px;margin-bottom:10px;}
+.supply-emoji{font-size:28px;flex-shrink:0;}
+.supply-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#fff;}
+.supply-science{font-size:12px;color:rgba(255,255,255,.55);line-height:1.6;}
+.supply-onew{font-size:12px;color:#4caf82;margin-top:8px;line-height:1.5;font-style:italic;}
+.supply-check{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0;transition:all .2s;font-size:12px;}
+.supply-card.selected .supply-check{background:#4caf82;border-color:#4caf82;}
+
+/* selection panel */
+.selection-panel{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:22px 26px;margin-bottom:32px;}
+.selection-panel h3{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:14px;}
+.selected-list{min-height:48px;margin-bottom:14px;}
+.selected-item{display:flex;align-items:center;gap:10px;background:rgba(76,175,130,.12);border:1px solid rgba(76,175,130,.3);border-radius:8px;padding:10px 14px;margin-bottom:8px;}
+.selected-item-emoji{font-size:18px;}
+.selected-item-name{font-size:14px;font-weight:700;color:#fff;flex:1;}
+.selected-item-remove{background:transparent;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:16px;padding:0 4px;transition:color .2s;}
+.selected-item-remove:hover{color:#D4537E;}
+.empty-state{font-size:13px;color:rgba(255,255,255,.3);font-style:italic;padding:8px 0;}
+.counter{font-family:'Fredoka One',cursive;font-size:13px;color:#4caf82;margin-bottom:16px;}
+.counter span{color:rgba(255,255,255,.4);}
+.confirm-btn{width:100%;background:#4caf82;color:#111;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:14px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;font-weight:700;}
+.confirm-btn:hover{background:#3d9e72;}
+.confirm-btn:disabled{background:rgba(255,255,255,.1);color:rgba(255,255,255,.3);cursor:not-allowed;}
+.confirmed-msg{display:none;background:rgba(76,175,130,.15);border:1px solid #4caf82;border-radius:10px;padding:16px;text-align:center;margin-top:12px;}
+.confirmed-msg p{font-size:14px;color:#4caf82;line-height:1.6;}
+
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid rgba(255,255,255,.08);max-width:900px;margin:32px auto 0;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:13px;color:rgba(255,255,255,.15);letter-spacing:1px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">Smile Bags &middot; A Word &amp; Wonder Experience</div>
+  <h1 class="hero-title">Elementary<br><span>Science Supply Bar</span></h1>
+  <p class="hero-sub">Choose 1 or 2 supplies from the bar below. Each supply goes into the elementary student&#39;s bag alongside your bookmark. Select the ones that connect most meaningfully to your OneWord.</p>
+  <div class="hero-pills">
+    <div class="pill green">&#127807; Choose 1 or 2 Supplies</div>
+    <div class="pill">&#127974; Elementary Edition &middot; K&ndash;5</div>
+  </div>
+</div>
+
+<a href="APBio_TIDE_Preview.html" class="back-btn">&#8592; Back to Overview</a>
+
+<div class="main">
+
+  <div class="intro">
+    <p>Select <strong>1 or 2 supplies</strong> from the bar below. Your chosen supplies go into the bag alongside the bookmark you design using the Bookmark Builder Kiosk. Each supply is connected to a real science concept &mdash; use that connection to inspire your bookmark design. Think about what a K&ndash;5 student would love to discover and use.</p>
+    <div class="note">&#128204; If a supply you want is not on the bar, ask Ms. O&#39;Brien for approval before selecting it.</div>
+  </div>
+
+  <!-- Selection panel -->
+  <div class="selection-panel">
+    <h3>My Supply Selections</h3>
+    <div class="selected-list" id="selectedList">
+      <div class="empty-state" id="emptyState">No supplies selected yet &mdash; choose 1 or 2 from the bar below.</div>
+    </div>
+    <div class="counter" id="counter">0 <span>of 2 maximum selected</span></div>
+    <button class="confirm-btn" id="confirmBtn" disabled onclick="confirmSelections()">&#10003; Confirm My Selections</button>
+    <div class="confirmed-msg" id="confirmedMsg">
+      <p>&#11088; <strong>Selections confirmed!</strong><br>Head to the Bookmark Builder Kiosk to design your bookmark connecting these supplies to your OneWord.</p>
+    </div>
+  </div>
+
+  <!-- Supply cards -->
+  <div class="supplies-grid" id="suppliesGrid"></div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
+</div>
+
+<script>
+var supplies = [
+  {emoji:"&#127774;",name:"Crayons",science:"Light, color, and pigment science. Each color absorbs and reflects different wavelengths of light.",onew:"Connect to: SHINE, BLOOM, CLEAR, TRANSFORM"},
+  {emoji:"&#9999;&#65039;",name:"Colored Pencils",science:"Fine motor skills, color mixing, and the chemistry of pigments bonding to paper fibers.",onew:"Connect to: GROW, CREATE, FLOW, SHINE"},
+  {emoji:"&#11088;",name:"Stickers",science:"Polymer chemistry &mdash; the adhesive is a pressure-sensitive polymer that bonds on contact.",onew:"Connect to: CONNECT, ANCHOR, SUSTAIN, BELONG"},
+  {emoji:"&#127939;",name:"Play-Doh",science:"Non-Newtonian fluid &mdash; it flows slowly like a liquid but holds shape like a solid. Models biological forms.",onew:"Connect to: ADAPT, TRANSFORM, CYCLE, GROW"},
+  {emoji:"&#128207;",name:"Ruler",science:"Measurement and scale &mdash; the foundation of scientific observation, data collection, and comparison.",onew:"Connect to: BALANCE, MEASURE, CLEAR, FILTER"},
+  {emoji:"&#128211;",name:"Mini Notepad",science:"Scientific method in action &mdash; observation, recording, hypothesizing. Every scientist starts here.",onew:"Connect to: OBSERVE, EMERGE, CONNECT, ABSORB"},
+  {emoji:"&#129517;",name:"Rubber Bands",science:"Elastic potential energy &mdash; stretching stores energy that converts to kinetic energy on release.",onew:"Connect to: STRETCH, RETURN, RISE, PERSIST"},
+  {emoji:"&#127807;",name:"Seeds",science:"Germination, genetics, and ecosystems. A seed contains the complete genetic blueprint for a living organism.",onew:"Connect to: GROW, EMERGE, ROOT, SUSTAIN, BLOOM"},
+  {emoji:"&#129351;",name:"Mirror",science:"Physics of reflection, optics, and light. Mirrors show symmetry &mdash; a pattern found throughout nature.",onew:"Connect to: REFLECT, CLEAR, SHINE, BALANCE"}
+];
+
+var selected = [];
+
+function renderSupplies() {
+  var html = '';
+  for (var i = 0; i < supplies.length; i++) {
+    var s = supplies[i];
+    var isSelected = selected.indexOf(i) !== -1;
+    html += '<div class="supply-card' + (isSelected ? ' selected' : '') + '" onclick="toggleSupply(' + i + ')" id="sc-' + i + '">' +
+      '<div class="supply-top">' +
+        '<div class="supply-emoji">' + s.emoji + '</div>' +
+        '<div style="flex:1"><div class="supply-name">' + s.name + '</div></div>' +
+        '<div class="supply-check">' + (isSelected ? '&#10003;' : '') + '</div>' +
+      '</div>' +
+      '<div class="supply-science">' + s.science + '</div>' +
+      '<div class="supply-onew">' + s.onew + '</div>' +
+    '</div>';
+  }
+  document.getElementById('suppliesGrid').innerHTML = html;
+}
+
+function renderSelected() {
+  var list = document.getElementById('selectedList');
+  var empty = document.getElementById('emptyState');
+  var counter = document.getElementById('counter');
+  var btn = document.getElementById('confirmBtn');
+
+  if (selected.length === 0) {
+    list.innerHTML = '<div class="empty-state" id="emptyState">No supplies selected yet &mdash; choose 1 or 2 from the bar below.</div>';
+    counter.innerHTML = '0 <span>of 2 maximum selected</span>';
+    btn.disabled = true;
+    return;
+  }
+
+  var html = '';
+  for (var i = 0; i < selected.length; i++) {
+    var s = supplies[selected[i]];
+    html += '<div class="selected-item">' +
+      '<div class="selected-item-emoji">' + s.emoji + '</div>' +
+      '<div class="selected-item-name">' + s.name + '</div>' +
+      '<button class="selected-item-remove" onclick="removeSupply(' + selected[i] + ')">&#10005;</button>' +
+    '</div>';
+  }
+  list.innerHTML = html;
+  counter.innerHTML = selected.length + ' <span>of 2 maximum selected</span>';
+  btn.disabled = false;
+}
+
+function toggleSupply(i) {
+  var idx = selected.indexOf(i);
+  if (idx !== -1) {
+    selected.splice(idx, 1);
+  } else {
+    if (selected.length >= 2) {
+      alert('You can select a maximum of 2 supplies. Remove one to add another.');
+      return;
+    }
+    selected.push(i);
+  }
+  document.getElementById('confirmedMsg').style.display = 'none';
+  document.getElementById('confirmBtn').disabled = false;
+  renderSupplies();
+  renderSelected();
+}
+
+function removeSupply(i) {
+  var idx = selected.indexOf(i);
+  if (idx !== -1) { selected.splice(idx, 1); }
+  document.getElementById('confirmedMsg').style.display = 'none';
+  renderSupplies();
+  renderSelected();
+}
+
+function confirmSelections() {
+  if (selected.length === 0) { return; }
+  document.getElementById('confirmedMsg').style.display = 'block';
+  document.getElementById('confirmBtn').textContent = '&#10003; Confirmed!';
+  document.getElementById('confirmBtn').style.background = '#1B7A78';
+}
+
+renderSupplies();
+renderSelected();
+</script>
+</body>
+</html>

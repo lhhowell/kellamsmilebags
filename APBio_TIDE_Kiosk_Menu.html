@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AP Bio &amp; TIDE Creation Kiosk &mdash; Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#1A1A1A;color:#fff;min-height:100vh;padding:0 0 60px;}
+.hero{background:#111;border-bottom:3px solid #4caf82;padding:48px 32px 40px;text-align:center;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:14px;letter-spacing:3px;color:#4caf82;text-transform:uppercase;margin-bottom:12px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4.5vw,50px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:12px;}
+.hero-title span{color:#c9a84c;}
+.hero-sub{font-size:15px;color:#aaa;max-width:640px;margin:0 auto 24px;line-height:1.7;}
+.hero-pills{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid #333;border-radius:50px;padding:6px 14px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#aaa;}
+.pill.green{border-color:#4caf82;color:#4caf82;}
+.pill.gold{border-color:#c9a84c;color:#c9a84c;}
+.pill.pink{border-color:#D4537E;color:#D4537E;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:#242424;border:1.5px solid #4caf82;color:#4caf82;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 20px;border-radius:8px;text-decoration:none;margin:28px 24px 0;}
+.how-section{max-width:960px;margin:0 auto;padding:32px 24px 0;}
+.how-banner{background:#242424;border:1px solid #333;border-left:4px solid #4caf82;border-radius:14px;padding:24px 28px;margin-bottom:40px;}
+.how-banner h2{font-family:'Playfair Display',serif;font-size:20px;color:#fff;margin-bottom:12px;}
+.how-banner p{font-size:14px;color:#ccc;line-height:1.75;}
+.how-banner strong{color:#4caf82;}
+.how-note{margin-top:14px;background:#1a1a1a;border:1px solid #444;border-left:3px solid #c9a84c;border-radius:8px;padding:10px 16px;font-size:13px;color:#c9a84c;line-height:1.6;}
+.categories{max-width:960px;margin:0 auto;padding:0 24px;}
+.cat-section{margin-bottom:48px;}
+.cat-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid #333;}
+.cat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.cat-icon.science{background:#1a2e1a;border:1px solid #4caf82;}
+.cat-icon.code{background:#1a1a2e;border:1px solid #c9a84c;}
+.cat-icon.design{background:#2a1a2e;border:1px solid #9b59b6;}
+.cat-icon.wellness{background:#2e1a1a;border:1px solid #D4537E;}
+.cat-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#888;display:block;margin-bottom:2px;}
+.cat-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#fff;}
+.cat-range{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#888;margin-left:auto;flex-shrink:0;}
+.items-grid{display:grid;gap:10px;}
+.item-card{background:#242424;border:1px solid #333;border-radius:12px;padding:16px 20px;display:flex;gap:16px;align-items:flex-start;transition:border-color .2s;}
+.item-card:hover{border-color:#4caf82;}
+.item-card.choice{border-style:dashed;border-color:#555;}
+.item-card.choice:hover{border-color:#c9a84c;}
+.item-card.handwritten{border-left:3px solid #5b9bd5;}
+.item-card.interactive{border-left:3px solid #D4537E;}
+.item-number{font-family:'Fredoka One',cursive;font-size:22px;flex-shrink:0;line-height:1;width:32px;text-align:center;padding-top:2px;}
+.item-number.science{color:#4caf82;}
+.item-number.code{color:#c9a84c;}
+.item-number.design{color:#9b59b6;}
+.item-number.wellness{color:#D4537E;}
+.item-title{font-size:15px;font-weight:800;color:#fff;margin-bottom:4px;}
+.item-desc{font-size:13px;color:#888;line-height:1.65;}
+.item-tag{display:inline-block;margin-top:8px;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;}
+.tag-science{background:#1a2e1a;color:#4caf82;border:1px solid #4caf82;}
+.tag-code{background:#2e2e1a;color:#c9a84c;border:1px solid #c9a84c;}
+.tag-design{background:#2a1a2e;color:#9b59b6;border:1px solid #9b59b6;}
+.tag-wellness{background:#2e1a1a;color:#D4537E;border:1px solid #D4537E;}
+.tag-interactive{background:#2e1a1a;color:#D4537E;border:1px dashed #D4537E;}
+.tag-choice{background:#2e2e1a;color:#c9a84c;border:1px dashed #c9a84c;}
+.tag-handwritten{background:#1a1a2e;color:#5b9bd5;border:1px solid #5b9bd5;}
+.tag-size{font-size:10px;color:#555;font-family:'Fredoka One',cursive;letter-spacing:1px;margin-left:8px;}
+.zoo-badge{display:inline-block;margin-top:6px;margin-left:6px;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;background:#1a1a2e;color:#5b9bd5;border:1px solid #5b9bd5;}
+.summary{background:#111;border-top:1px solid #333;padding:32px 24px;margin-top:48px;}
+.summary-inner{max-width:960px;margin:0 auto;}
+.summary-title{font-family:'Playfair Display',serif;font-size:20px;color:#fff;margin-bottom:20px;text-align:center;}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px;}
+.summary-card{background:#242424;border:1px solid #333;border-radius:12px;padding:16px;text-align:center;}
+.summary-card-icon{font-size:1.6rem;margin-bottom:8px;display:block;}
+.summary-card-label{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#888;display:block;margin-bottom:4px;}
+.summary-card-value{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#4caf82;}
+.summary-note{background:#242424;border:1px solid #333;border-left:4px solid #c9a84c;border-radius:12px;padding:18px 22px;font-size:14px;color:#ccc;line-height:1.9;text-align:center;}
+.summary-note strong{color:#c9a84c;}
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #222;max-width:960px;margin:32px auto 0;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:13px;color:#333;letter-spacing:1px;}
+@media(max-width:600px){.cat-range{display:none;}.hero-pills{gap:8px;}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">Smile Bags &middot; A Word &amp; Wonder Experience</div>
+  <h1 class="hero-title">AP Bio &amp; T.I.D.E.<br><span>Creation Kiosk</span></h1>
+  <p class="hero-sub">Choose <strong>10 items</strong> from the menu below across at least <strong>3 categories</strong> to build one complete Smile Bag for a North Landing Elementary student in grades K&ndash;5.</p>
+  <div class="hero-pills">
+    <div class="pill green">&#127807; 10 Items Required</div>
+    <div class="pill gold">&#127974; Elementary Recipients</div>
+    <div class="pill pink">&#128149; K&ndash;5 Students</div>
+    <div class="pill">&#128640; March &mdash; May 2026</div>
+  </div>
+</div>
+
+<a href="APBio_TIDE_Preview.html" class="back-btn">&#8592; Back to Overview</a>
+
+<div class="how-section">
+  <div class="how-banner">
+    <h2>How to Use This Menu</h2>
+    <p>Browse all four categories below. Select <strong>10 items total</strong> spanning at least <strong>3 categories</strong>. Items marked <span style="color:#5b9bd5;">&#127974; Zoo Project</span> connect directly to your AP Bio fieldwork. Items marked with a dashed border are <strong>student choice &mdash; sponsor approved</strong>. All items must be designed for a <strong>K&ndash;5 elementary student</strong> &mdash; keep language simple, visuals engaging, and activities completable with crayons or a pencil.</p>
+    <div class="how-note">&#128204; All supplies and materials listed are provided through the project. Any materials not listed are the student&#39;s responsibility. &nbsp;<a href="SNHS_Supply_List.html" target="_blank" style="color:#c9a84c;font-weight:700;">View full supply list &rarr;</a></div>
+  </div>
+</div>
+
+<div class="categories">
+
+  <!-- Science & Discovery -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-icon science">&#128300;</div>
+      <div>
+        <span class="cat-num">Category 1</span>
+        <div class="cat-title">&#128300; Science &amp; Discovery</div>
+      </div>
+      <span class="cat-range">Items 1&ndash;5</span>
+    </div>
+    <div class="items-grid">
+
+      <div class="item-card">
+        <div class="item-number science">1</div>
+        <div>
+          <div class="item-title">Animal Fact Card &mdash; &ldquo;Did You Know?&rdquo;</div>
+          <div class="item-desc">Design a kid-friendly fact card about an animal you observed at the Norfolk Zoo. Include one amazing science fact, a simple illustration, and your OneWord connection. Language should be exciting and accessible for a K&ndash;5 student.</div>
+          <span class="item-tag tag-science">Science &amp; Discovery</span><span class="zoo-badge">&#127974; Zoo Project</span><span class="tag-size">5&times;7</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number science">2</div>
+        <div>
+          <div class="item-title">Elementary Science Supply Bar + Bookmark</div>
+          <div class="item-desc">Visit the Elementary Science Supply Bar and choose <strong>1 or 2 supplies</strong>. Use the Bookmark Builder Kiosk to design <strong>1 bookmark</strong> connecting your supply to your OneWord in language a young student can understand. Bookmark + supplies go into the bag together.</div>
+          <span class="item-tag tag-science">Science &amp; Discovery</span><span class="tag-size">Bookmark + 1&ndash;2 supplies</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number science">3</div>
+        <div>
+          <div class="item-title">Conservation Campaign Card</div>
+          <div class="item-desc">Create a kid-friendly conservation card about a species at risk that you learned about at the zoo. Include one simple fact about the threat, one amazing thing about the animal, and one action the child can take. Fold-out or single card format.</div>
+          <span class="item-tag tag-science">Science &amp; Discovery</span><span class="zoo-badge">&#127974; Zoo Project</span><span class="tag-size">Fold-out or 5&times;7</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number science">4</div>
+        <div>
+          <div class="item-title">Illustrated Children&#39;s Book Page</div>
+          <div class="item-desc">Write and illustrate one page (or a mini 4-page booklet) of a children&#39;s story about an animal adaptation, behavior, or ecosystem you observed at the zoo. The story should connect to your OneWord and feel like something a K&ndash;5 student would want to read again.</div>
+          <span class="item-tag tag-science">Science &amp; Discovery</span><span class="zoo-badge">&#127974; Zoo Project</span><span class="tag-size">5&times;7 or mini booklet</span>
+        </div>
+      </div>
+
+      <div class="item-card choice">
+        <div class="item-number science">5</div>
+        <div>
+          <div class="item-title">Student Choice &mdash; Science &amp; Discovery</div>
+          <div class="item-desc">Have a science-based idea from your zoo visit that doesn&#39;t fit above? Propose it to Ms. O&#39;Brien. It must connect to your zoo fieldwork, be appropriate for K&ndash;5, and be something the elementary student can hold, use, or interact with.</div>
+          <span class="item-tag tag-choice">Student Choice &middot; Sponsor Approved</span><span class="zoo-badge">&#127974; Zoo Connected</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Coding & Decoding -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-icon code">&#128290;</div>
+      <div>
+        <span class="cat-num">Category 2</span>
+        <div class="cat-title">&#128290; Coding &amp; Decoding</div>
+      </div>
+      <span class="cat-range">Items 6&ndash;10</span>
+    </div>
+    <div class="items-grid">
+
+      <div class="item-card interactive">
+        <div class="item-number code">6</div>
+        <div>
+          <div class="item-title">Binary Coding Activity</div>
+          <div class="item-desc">Design a binary coding sheet where the elementary student decodes a hidden message, an animal name, or your OneWord using 0s and 1s. Include a simple key and clear instructions. Connect to the biology fact that DNA is nature&#39;s binary code &mdash; four bases, infinite combinations.</div>
+          <span class="item-tag tag-code">Coding &amp; Decoding</span><span class="item-tag tag-interactive" style="margin-left:4px;">Interactive</span><span class="tag-size">5&times;7 &middot; B&amp;W or color</span>
+        </div>
+      </div>
+
+      <div class="item-card interactive">
+        <div class="item-number code">7</div>
+        <div>
+          <div class="item-title">Secret Cipher Sheet</div>
+          <div class="item-desc">Design an original cipher where each letter maps to a symbol, animal, or nature image. The student decodes a hidden message connected to your OneWord or an animal. Include the cipher key and a fun decoded message waiting to be found. Kid-friendly and completable with a pencil.</div>
+          <span class="item-tag tag-code">Coding &amp; Decoding</span><span class="item-tag tag-interactive" style="margin-left:4px;">Interactive</span><span class="tag-size">5&times;7 &middot; B&amp;W</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number code">8</div>
+        <div>
+          <div class="item-title">Color-by-Code Sheet</div>
+          <div class="item-desc">Design a color-by-number or color-by-code sheet where solving the code reveals a hidden animal, ecosystem scene, or your OneWord illustrated in color. Numbers or symbols correspond to colors. The student colors it in with the crayons from the supply bar.</div>
+          <span class="item-tag tag-code">Coding &amp; Decoding</span><span class="tag-size">5&times;7 or larger &middot; B&amp;W to color</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number code">9</div>
+        <div>
+          <div class="item-title">Decode the OneWord</div>
+          <div class="item-desc">Design a multi-step decoding activity where the elementary student works through 2&ndash;3 simple puzzles (word scramble, picture clue, pattern) to reveal your OneWord at the end. Include a brief explanation of what the word means in science and in everyday life &mdash; written for a child.</div>
+          <span class="item-tag tag-code">Coding &amp; Decoding</span><span class="tag-size">5&times;7 &middot; front and back</span>
+        </div>
+      </div>
+
+      <div class="item-card choice">
+        <div class="item-number code">10</div>
+        <div>
+          <div class="item-title">Student Choice &mdash; Coding &amp; Decoding</div>
+          <div class="item-desc">Have a coding, puzzle, or decoding idea not listed above? It must be interactive, completable by a K&ndash;5 student with a pencil or crayons, and connected to your OneWord or zoo experience. Get Ms. O&#39;Brien&#39;s approval before you begin.</div>
+          <span class="item-tag tag-choice">Student Choice &middot; Sponsor Approved</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Design & Print -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-icon design">&#127912;</div>
+      <div>
+        <span class="cat-num">Category 3</span>
+        <div class="cat-title">&#127912; Design &amp; Print</div>
+      </div>
+      <span class="cat-range">Items 11&ndash;15</span>
+    </div>
+    <div class="items-grid">
+
+      <div class="item-card">
+        <div class="item-number design">11</div>
+        <div>
+          <div class="item-title">Comparative Anatomy Coloring Sheet</div>
+          <div class="item-desc">Design a labeled coloring sheet comparing two animals from the zoo &mdash; simplified for a K&ndash;5 student. Show one key body structure on each animal with a simple label. The student colors it in. Include a one-sentence fun fact about each animal at the bottom.</div>
+          <span class="item-tag tag-design">Design &amp; Print</span><span class="zoo-badge">&#127974; Zoo Project</span><span class="tag-size">5&times;7 or full sheet</span>
+        </div>
+      </div>
+
+      <div class="item-card interactive">
+        <div class="item-number design">12</div>
+        <div>
+          <div class="item-title">Food Web Puzzle or Cut &amp; Sort</div>
+          <div class="item-desc">Design a food web activity where the elementary student cuts out animal cards and arranges them into a simple food web, or sorts animals into producers, consumers, and decomposers. Based on an ecosystem you observed at the zoo. Include a completed answer guide on the back.</div>
+          <span class="item-tag tag-design">Design &amp; Print</span><span class="zoo-badge">&#127974; Zoo Project</span><span class="item-tag tag-interactive" style="margin-left:4px;">Interactive</span><span class="tag-size">Full sheet &middot; cut-apart</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number design">13</div>
+        <div>
+          <div class="item-title">Mini Sticker Sheet</div>
+          <div class="item-desc">Design an original set of stickers featuring animals from the zoo, nature scenes, or your OneWord illustrated. Minimum 6 stickers. Printed on sticker paper via Cricut in D210. Elementary students love stickers &mdash; make them bright, bold, and joyful.</div>
+          <span class="item-tag tag-design">Design &amp; Print</span><span class="tag-size">Sticker paper &middot; Cricut &middot; D210</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number design">14</div>
+        <div>
+          <div class="item-title">3D Printed Animal Model or Token</div>
+          <div class="item-desc">Design an original 3D model in <strong>Tinkercad</strong> &mdash; an animal from the zoo, a nature-themed shape, or a comfort token. Email your shareable Tinkercad link to <strong>lhhowell@vbschools.com</strong> before printing. Printed in D210. The elementary student keeps it as a tactile, holdable item.</div>
+          <span class="item-tag tag-design">Design &amp; Print</span><span class="tag-size">Email link first &middot; D210</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number design">15</div>
+        <div>
+          <div class="item-title">Nature-Themed Paper Craft</div>
+          <div class="item-desc">Design a fold-and-cut paper craft digitally &mdash; an origami animal, a pop-up ecosystem, a pinwheel, or a nature scene. Include printed assembly instructions on the sheet. The elementary student builds it themselves. Keep it simple enough for a K&ndash;5 student to complete.</div>
+          <span class="item-tag tag-design">Design &amp; Print</span><span class="tag-size">Full sheet &middot; fold-and-cut</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Words & Wellness -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-icon wellness">&#128149;</div>
+      <div>
+        <span class="cat-num">Category 4</span>
+        <div class="cat-title">&#128149; Words &amp; Wellness</div>
+      </div>
+      <span class="cat-range">Items 16&ndash;20</span>
+    </div>
+    <div class="items-grid">
+
+      <div class="item-card handwritten">
+        <div class="item-number wellness">16</div>
+        <div>
+          <div class="item-title">Handwritten Letter &#9997;&#65039;</div>
+          <div class="item-desc">Write a warm, encouraging letter to the elementary student who will receive your bag. Keep it age-appropriate, genuine, and connected to your OneWord. Written on a <strong>5&times;7 card</strong> or quality paper. Sign with your <strong>first name only</strong>. This is the <strong>only handwritten item</strong> permitted in your bag.</div>
+          <span class="item-tag tag-handwritten">Handwritten &middot; One Item Only</span><span class="tag-size">5&times;7 &middot; First name only</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number wellness">17</div>
+        <div>
+          <div class="item-title">Affirmation Card Set</div>
+          <div class="item-desc">Design a set of <strong>5 original affirmation cards</strong> for a K&ndash;5 student. Each card has one simple, powerful affirmation and one small illustration connected to your OneWord or a zoo animal. Digitally designed, printed, and cut. The elementary student keeps all 5.</div>
+          <span class="item-tag tag-wellness">Words &amp; Wellness</span><span class="tag-size">3&times;3 cards &middot; set of 5</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number wellness">18</div>
+        <div>
+          <div class="item-title">Breathing or Calm Corner Card</div>
+          <div class="item-desc">Design a calm-down card with a simple breathing exercise or grounding activity for a young student. Use kid-friendly language and illustrations &mdash; no clinical language. Connect the activity to your OneWord (e.g. BREATHE, FLOW, ANCHOR). Something a teacher or parent could use with them too.</div>
+          <span class="item-tag tag-wellness">Words &amp; Wellness</span><span class="tag-size">5&times;7</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number wellness">19</div>
+        <div>
+          <div class="item-title">Belonging &amp; Inclusion Activity</div>
+          <div class="item-desc">Design an activity rooted in T.I.D.E. values &mdash; togetherness, inclusion, diversity, and equity &mdash; for a K&ndash;5 student. This could be a &ldquo;things we have in common&rdquo; activity, a self-portrait prompt, a community web, or a &ldquo;what makes me unique&rdquo; card. Joyful, age-appropriate, and affirming.</div>
+          <span class="item-tag tag-wellness">Words &amp; Wellness</span><span class="item-tag" style="margin-left:4px;background:#2e1a1a;color:#D4537E;border:1px solid #D4537E;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:2px 10px;border-radius:20px;">T.I.D.E.</span><span class="tag-size">5&times;7</span>
+        </div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-number wellness">20</div>
+        <div>
+          <div class="item-title">Wellness Item of Choice</div>
+          <div class="item-desc">Design any wellness-focused item for a K&ndash;5 student that doesn&#39;t fit the categories above. It should support calm, belonging, creativity, or joy. Must be digitally designed and appropriate for an elementary student. Check with Ms. O&#39;Brien if you&#39;re unsure it qualifies.</div>
+          <span class="item-tag tag-wellness">Words &amp; Wellness</span><span class="tag-size">Student choice &middot; 5&times;7 or similar</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Summary -->
+<div class="summary">
+  <div class="summary-inner">
+    <div class="summary-title">&#127942; Your Bag at a Glance</div>
+    <div class="summary-grid">
+      <div class="summary-card"><span class="summary-card-icon">&#128300;</span><span class="summary-card-label">Science &amp; Discovery</span><span class="summary-card-value">Items 1&ndash;5</span></div>
+      <div class="summary-card"><span class="summary-card-icon">&#128290;</span><span class="summary-card-label">Coding &amp; Decoding</span><span class="summary-card-value">Items 6&ndash;10</span></div>
+      <div class="summary-card"><span class="summary-card-icon">&#127912;</span><span class="summary-card-label">Design &amp; Print</span><span class="summary-card-value">Items 11&ndash;15</span></div>
+      <div class="summary-card"><span class="summary-card-icon">&#128149;</span><span class="summary-card-label">Words &amp; Wellness</span><span class="summary-card-value">Items 16&ndash;20</span></div>
+      <div class="summary-card"><span class="summary-card-icon">&#127974;</span><span class="summary-card-label">Zoo Project Items</span><span class="summary-card-value">1, 3, 4, 5, 11, 12</span></div>
+    </div>
+    <div class="summary-note">
+      Items <strong>#5</strong> and <strong>#10</strong> are student choice &mdash; sponsor approved. &nbsp;|&nbsp;
+      Item <strong>#16</strong> is the only handwritten item. &nbsp;|&nbsp;
+      Item <strong>#14</strong> requires emailing Tinkercad link to <strong>lhhowell@vbschools.com</strong>. &nbsp;|&nbsp;
+      Sponsor: <strong>Elena O&#39;Brien</strong> &nbsp;|&nbsp; Elementary recipients: <strong>North Landing Elementary</strong>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
+</div>
+
+</body>
+</html>
