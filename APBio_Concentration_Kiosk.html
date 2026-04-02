@@ -36,7 +36,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 .wbtn.on{border-color:#4caf82;color:#4caf82;background:rgba(76,175,130,.1);}
 .counter{font-family:'Fredoka One',cursive;font-size:13px;color:#c8c4bc;margin-bottom:14px;}
 .sbtn{width:100%;background:#c9a84c;color:#111;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:3px;text-transform:uppercase;padding:14px;border:none;border-radius:10px;cursor:pointer;font-weight:700;}
-.sbtn:disabled{background:#1a2a3a;color:#333;cursor:not-allowed;}
+.sbtn.off{background:#1a2a3a;color:#333;cursor:not-allowed;}
 
 /* Game */
 .game-panel{display:none;}
@@ -143,7 +143,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
         <button class="wbtn" onclick="toggleW('TRANSFORM',this)">TRANSFORM</button>
       </div>
       <div class="counter" id="counter">0 of 6 selected</div>
-      <button class="sbtn" id="startBtn" onclick="startGame()" disabled>🎳 Start Game</button>
+      <button class="sbtn off" id="startBtn" onclick="startGame()">🎳 Start Game</button>
     </div>
   </div>
 
@@ -208,7 +208,7 @@ function pickMode(m) {
   var wbs = document.getElementsByClassName('wbtn');
   for (var j = 0; j < wbs.length; j++) { wbs[j].className = 'wbtn'; }
   document.getElementById('counter').textContent = '0 of 6 selected';
-  document.getElementById('startBtn').disabled = true;
+  document.getElementById('startBtn').className = 'sbtn off';
   document.getElementById('owPanel').className = 'ow-panel show';
   document.getElementById('gamePanel').className = 'game-panel';
   document.getElementById('winPanel').className = 'win-panel';
@@ -225,10 +225,12 @@ function toggleW(w, btn) {
     btn.className = 'wbtn on';
   }
   document.getElementById('counter').textContent = chosen.length + ' of 6 selected';
-  document.getElementById('startBtn').disabled = (chosen.length !== 6);
+  var sb = document.getElementById('startBtn');
+  if (chosen.length >= 6) { sb.className = 'sbtn'; } else { sb.className = 'sbtn off'; }
 }
 
 function startGame() {
+  if (chosen.length < 6) { return; }
   if (ticker) { clearInterval(ticker); }
   flipped = []; matched = 0; moves = 0; score = 0; secs = 0; canFlip = true;
   document.getElementById('sTime').textContent = '0';
