@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Concentration Kiosk &mdash; Smile Bags</title>
+<title>Concentration &mdash; Smile Bags</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -15,67 +15,71 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 .hero-sub{font-size:14px;color:#c8c4bc;max-width:580px;margin:0 auto;line-height:1.7;}
 .back-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #c9a84c;color:#c9a84c;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;margin:20px 24px 0;}
 .workspace{max-width:960px;margin:0 auto;padding:0 24px;}
+.section{background:#0d0d0d;border:1px solid #1a2a3a;border-radius:14px;padding:22px;margin-top:14px;}
+.section-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#4caf82;margin-bottom:14px;}
 
-.mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0 0;}
-.mode-btn{background:#0d0d0d;border:2px solid #1a2a3a;border-radius:14px;padding:20px;cursor:pointer;transition:border-color .2s;text-align:left;width:100%;}
-.mode-btn:hover{border-color:#c9a84c;}
-.mode-btn.sel{border-color:#c9a84c;background:rgba(201,168,76,.08);}
-.mode-icon{font-size:28px;display:block;margin-bottom:10px;}
-.mode-name{font-family:'Fredoka One',cursive;font-size:14px;color:#c9a84c;display:block;margin-bottom:6px;}
-.mode-desc{font-size:12px;color:#c8c4bc;line-height:1.5;}
+/* Mode buttons */
+.mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px;}
+.mbtn{background:#0d0d0d;border:2px solid #1a2a3a;border-radius:14px;padding:20px;cursor:pointer;text-align:left;width:100%;transition:border-color .2s;}
+.mbtn:hover{border-color:#c9a84c;}
+.mbtn.active{border-color:#c9a84c;background:rgba(201,168,76,.08);}
+.mbtn-icon{font-size:26px;display:block;margin-bottom:8px;}
+.mbtn-name{font-family:'Fredoka One',cursive;font-size:13px;color:#c9a84c;display:block;margin-bottom:5px;}
+.mbtn-desc{font-size:11px;color:#c8c4bc;line-height:1.5;}
 
-.ow-panel{background:#0d0d0d;border:1px solid #1a2a3a;border-radius:14px;padding:22px;margin-top:14px;}
-.ow-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#4caf82;margin-bottom:14px;}
+/* Word buttons */
+.ow-panel{display:none;}
+.ow-panel.show{display:block;}
 .ow-wrap{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-bottom:14px;}
-
-.word-btn{background:#0a0f14;border:2px solid #1a2a3a;border-radius:8px;padding:9px 10px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#c8c4bc;cursor:pointer;transition:all .2s;text-align:center;width:100%;}
-.word-btn:hover{border-color:#c9a84c;color:#c9a84c;}
-.word-btn.on{border-color:#4caf82;color:#4caf82;background:rgba(76,175,130,.1);}
-
+.wbtn{background:#0a0f14;border:2px solid #1a2a3a;border-radius:8px;padding:9px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#c8c4bc;cursor:pointer;width:100%;text-align:center;transition:all .2s;}
+.wbtn:hover{border-color:#c9a84c;color:#c9a84c;}
+.wbtn.on{border-color:#4caf82;color:#4caf82;background:rgba(76,175,130,.1);}
 .counter{font-family:'Fredoka One',cursive;font-size:13px;color:#c8c4bc;margin-bottom:14px;}
-.counter span{color:#4caf82;}
+.sbtn{width:100%;background:#c9a84c;color:#111;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:3px;text-transform:uppercase;padding:14px;border:none;border-radius:10px;cursor:pointer;font-weight:700;}
+.sbtn:disabled{background:#1a2a3a;color:#333;cursor:not-allowed;}
 
-.start-btn{width:100%;background:#c9a84c;color:#111;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:3px;text-transform:uppercase;padding:14px;border:none;border-radius:10px;cursor:pointer;font-weight:700;}
-.start-btn:disabled{background:#1a2a3a;color:#333;cursor:not-allowed;}
-
-.game-wrap{margin-top:14px;display:none;}
-.stats{display:flex;gap:12px;background:#0d0d0d;border:1px solid #1a2a3a;border-radius:12px;padding:14px 20px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
-.stat{text-align:center;flex:1;min-width:60px;}
-.stat-n{font-family:'Fredoka One',cursive;font-size:24px;color:#c9a84c;display:block;}
+/* Game */
+.game-panel{display:none;}
+.game-panel.show{display:block;}
+.stats{display:flex;gap:10px;background:#0d0d0d;border:1px solid #1a2a3a;border-radius:12px;padding:14px 18px;margin-top:14px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
+.stat{text-align:center;flex:1;min-width:55px;}
+.stat-n{font-family:'Fredoka One',cursive;font-size:22px;color:#c9a84c;display:block;}
 .stat-l{font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#c8c4bc;}
-.reset-btn{background:transparent;border:1px solid #333;color:#666;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;border-radius:8px;cursor:pointer;margin-left:auto;}
-.reset-btn:hover{border-color:#D4537E;color:#D4537E;}
+.rbtn{background:transparent;border:1px solid #333;color:#666;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 12px;border-radius:8px;cursor:pointer;margin-left:auto;}
+.rbtn:hover{border-color:#D4537E;color:#D4537E;}
 
-.img-reveal{background:#0d0d0d;border:1px solid #1a2a3a;border-radius:12px;padding:16px;margin-bottom:14px;}
+.img-box{background:#0d0d0d;border:1px solid #1a2a3a;border-radius:12px;padding:14px;margin-bottom:12px;}
 .img-lbl{font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#c8c4bc;margin-bottom:10px;}
 .img-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;}
-.img-tile{aspect-ratio:1;border-radius:3px;background:#1a2a3a;transition:background .5s;}
+.tile{aspect-ratio:1;border-radius:3px;background:#1a2a3a;transition:background .4s;}
 
 .card-grid{display:grid;gap:10px;}
-.card{background:#0d0d0d;border:2px solid #1a2a3a;border-radius:12px;min-height:80px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;padding:10px;text-align:center;position:relative;}
+.card{background:#0d0d0d;border:2px solid #1a2a3a;border-radius:12px;min-height:80px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:10px;text-align:center;transition:border-color .2s;}
 .card:hover{border-color:#c9a84c;}
-.card .front{display:none;}
-.card .back{color:#1a2a3a;font-size:22px;font-family:'Fredoka One',cursive;}
-.card.flip .front{display:flex;align-items:center;justify-content:center;width:100%;}
-.card.flip .back{display:none;}
-.card.match{border-color:#4caf82;background:rgba(76,175,130,.1);cursor:default;}
-.card.match .front{display:flex;align-items:center;justify-content:center;width:100%;}
-.card.match .back{display:none;}
-.card.wrong{border-color:#D4537E;background:rgba(212,83,126,.08);}
-.word-face{font-family:'Fredoka One',cursive;font-size:13px;color:#c9a84c;letter-spacing:1px;}
-.def-face{font-size:11px;color:#c8c4bc;line-height:1.4;}
-.zoo-face{display:flex;flex-direction:column;align-items:center;gap:4px;}
-.zoo-emoji{font-size:28px;}
-.zoo-name{font-size:10px;color:#c8c4bc;}
+.card-back{color:#1a2a3a;font-size:20px;}
+.card-front{display:none;width:100%;align-items:center;justify-content:center;}
+.card.flip .card-front{display:flex;}
+.card.flip .card-back{display:none;}
+.card.match{border-color:#4caf82;background:rgba(76,175,130,.08);cursor:default;}
+.card.match .card-front{display:flex;}
+.card.match .card-back{display:none;}
+.card.wrong{border-color:#D4537E;}
+.word-f{font-family:'Fredoka One',cursive;font-size:13px;color:#c9a84c;letter-spacing:1px;}
+.def-f{font-size:11px;color:#c8c4bc;line-height:1.4;}
+.zoo-f{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.zoo-e{font-size:26px;}
+.zoo-n{font-size:10px;color:#c8c4bc;}
 
-.win{display:none;background:rgba(76,175,130,.08);border:2px solid #4caf82;border-radius:16px;padding:32px;text-align:center;margin-top:14px;}
-.win-emoji{font-size:56px;display:block;margin-bottom:14px;}
-.win-title{font-family:'Playfair Display',serif;font-size:28px;color:#4caf82;margin-bottom:14px;}
-.win-stats{display:flex;gap:24px;justify-content:center;margin-bottom:16px;flex-wrap:wrap;}
-.win-stat-n{font-family:'Fredoka One',cursive;font-size:32px;color:#c9a84c;display:block;}
-.win-stat-l{font-size:12px;color:#c8c4bc;}
-.win-bio{background:#111;border:1px solid #1a2e1a;border-radius:10px;padding:16px;font-size:14px;color:#c8c4bc;line-height:1.7;text-align:left;margin-bottom:16px;}
-.again-btn{background:#4caf82;color:#111;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:14px 28px;border:none;border-radius:10px;cursor:pointer;font-weight:700;}
+/* Win */
+.win-panel{display:none;}
+.win-panel.show{display:block;background:rgba(76,175,130,.08);border:2px solid #4caf82;border-radius:16px;padding:28px;text-align:center;margin-top:14px;}
+.win-emoji{font-size:52px;display:block;margin-bottom:12px;}
+.win-title{font-family:'Playfair Display',serif;font-size:26px;color:#4caf82;margin-bottom:12px;}
+.win-stats{display:flex;gap:20px;justify-content:center;margin-bottom:14px;flex-wrap:wrap;}
+.ws-n{font-family:'Fredoka One',cursive;font-size:30px;color:#c9a84c;display:block;}
+.ws-l{font-size:12px;color:#c8c4bc;}
+.win-bio{background:#111;border:1px solid #1a2e1a;border-radius:10px;padding:14px;font-size:13px;color:#c8c4bc;line-height:1.7;text-align:left;margin-bottom:14px;}
+.again-btn{background:#4caf82;color:#111;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:13px 26px;border:none;border-radius:10px;cursor:pointer;font-weight:700;}
 
 .footer{text-align:center;padding:32px 24px 0;border-top:1px solid #0a151f;max-width:960px;margin:32px auto 0;}
 .footer-sig{font-family:'Fredoka One',cursive;font-size:12px;color:#1a2a3a;letter-spacing:1px;}
@@ -91,55 +95,83 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 <div class="workspace">
 
   <div class="mode-grid">
-    <button class="mode-btn" id="mb-science" onclick="pickMode('science')">
-      <span class="mode-icon">&#128300;</span>
-      <span class="mode-name">Science Match</span>
-      <span class="mode-desc">Match each OneWord to its environmental science meaning.</span>
+    <button class="mbtn" id="mb-science" onclick="pickMode('science')">
+      <span class="mbtn-icon">&#128300;</span>
+      <span class="mbtn-name">Science Match</span>
+      <span class="mbtn-desc">Match each OneWord to its environmental science meaning.</span>
     </button>
-    <button class="mode-btn" id="mb-sel" onclick="pickMode('sel')">
-      <span class="mode-icon">&#128149;</span>
-      <span class="mode-name">Belonging Match</span>
-      <span class="mode-desc">Match each OneWord to its social-emotional meaning.</span>
+    <button class="mbtn" id="mb-sel" onclick="pickMode('sel')">
+      <span class="mbtn-icon">&#128149;</span>
+      <span class="mbtn-name">Belonging Match</span>
+      <span class="mbtn-desc">Match each OneWord to its social-emotional meaning.</span>
     </button>
-    <button class="mode-btn" id="mb-zoo" onclick="pickMode('zoo')">
-      <span class="mode-icon">&#129409;</span>
-      <span class="mode-name">Zoo Animal Match</span>
-      <span class="mode-desc">Match each OneWord to its Norfolk Zoo animal.</span>
+    <button class="mbtn" id="mb-zoo" onclick="pickMode('zoo')">
+      <span class="mbtn-icon">&#129409;</span>
+      <span class="mbtn-name">Zoo Animal Match</span>
+      <span class="mbtn-desc">Match each OneWord to its Norfolk Zoo animal.</span>
     </button>
   </div>
 
-  <div class="ow-panel" id="owPanel" style="display:none;">
-    <div class="ow-label">Choose exactly 6 OneWords to play</div>
-    <div class="ow-wrap" id="owWrap"></div>
-    <div class="counter" id="counter"><span>0</span> of 6 selected</div>
-    <button class="start-btn" id="startBtn" onclick="startGame()" disabled>&#127183; Start Game</button>
+  <div class="ow-panel" id="owPanel">
+    <div class="section" style="margin-top:14px;">
+      <div class="section-label">Choose exactly 6 OneWords to play</div>
+      <div class="ow-wrap">
+        <button class="wbtn" onclick="toggleW('ABSORB',this)">ABSORB</button>
+        <button class="wbtn" onclick="toggleW('ADAPT',this)">ADAPT</button>
+        <button class="wbtn" onclick="toggleW('ANCHOR',this)">ANCHOR</button>
+        <button class="wbtn" onclick="toggleW('BALANCE',this)">BALANCE</button>
+        <button class="wbtn" onclick="toggleW('BLOOM',this)">BLOOM</button>
+        <button class="wbtn" onclick="toggleW('BREATHE',this)">BREATHE</button>
+        <button class="wbtn" onclick="toggleW('CLEAR',this)">CLEAR</button>
+        <button class="wbtn" onclick="toggleW('CONNECT',this)">CONNECT</button>
+        <button class="wbtn" onclick="toggleW('CYCLE',this)">CYCLE</button>
+        <button class="wbtn" onclick="toggleW('EMERGE',this)">EMERGE</button>
+        <button class="wbtn" onclick="toggleW('FILTER',this)">FILTER</button>
+        <button class="wbtn" onclick="toggleW('FLOW',this)">FLOW</button>
+        <button class="wbtn" onclick="toggleW('GROW',this)">GROW</button>
+        <button class="wbtn" onclick="toggleW('HEAL',this)">HEAL</button>
+        <button class="wbtn" onclick="toggleW('MIGRATE',this)">MIGRATE</button>
+        <button class="wbtn" onclick="toggleW('PERSIST',this)">PERSIST</button>
+        <button class="wbtn" onclick="toggleW('RENEW',this)">RENEW</button>
+        <button class="wbtn" onclick="toggleW('RESTORE',this)">RESTORE</button>
+        <button class="wbtn" onclick="toggleW('RETURN',this)">RETURN</button>
+        <button class="wbtn" onclick="toggleW('RISE',this)">RISE</button>
+        <button class="wbtn" onclick="toggleW('ROOT',this)">ROOT</button>
+        <button class="wbtn" onclick="toggleW('SHINE',this)">SHINE</button>
+        <button class="wbtn" onclick="toggleW('SUSTAIN',this)">SUSTAIN</button>
+        <button class="wbtn" onclick="toggleW('THRIVE',this)">THRIVE</button>
+        <button class="wbtn" onclick="toggleW('TRANSFORM',this)">TRANSFORM</button>
+      </div>
+      <div class="counter" id="counter">0 of 6 selected</div>
+      <button class="sbtn" id="startBtn" onclick="startGame()" disabled>&#127183; Start Game</button>
+    </div>
   </div>
 
-  <div class="game-wrap" id="gameWrap">
+  <div class="game-panel" id="gamePanel">
     <div class="stats">
       <div class="stat"><span class="stat-n" id="sTime">0</span><span class="stat-l">Seconds</span></div>
       <div class="stat"><span class="stat-n" id="sMoves">0</span><span class="stat-l">Moves</span></div>
       <div class="stat"><span class="stat-n" id="sMatch">0</span><span class="stat-l">Matched</span></div>
       <div class="stat"><span class="stat-n" id="sScore">0</span><span class="stat-l">Points</span></div>
-      <button class="reset-btn" id="resetBtn" onclick="startGame()">&#8635; Reset</button>
+      <button class="rbtn" onclick="startGame()">&#8635; Reset</button>
     </div>
-    <div class="img-reveal">
+    <div class="img-box">
       <div class="img-lbl">&#127774; Reveal the hidden image &mdash; each match uncovers a tile!</div>
       <div class="img-grid" id="imgGrid"></div>
     </div>
     <div class="card-grid" id="cardGrid"></div>
   </div>
 
-  <div class="win" id="winDiv">
+  <div class="win-panel" id="winPanel">
     <span class="win-emoji">&#127881;</span>
     <div class="win-title">You matched them all!</div>
     <div class="win-stats">
-      <div><span class="win-stat-n" id="wTime"></span><span class="win-stat-l">seconds</span></div>
-      <div><span class="win-stat-n" id="wMoves"></span><span class="win-stat-l">moves</span></div>
-      <div><span class="win-stat-n" id="wScore"></span><span class="win-stat-l">points</span></div>
+      <div><span class="ws-n" id="wTime">0</span><span class="ws-l">seconds</span></div>
+      <div><span class="ws-n" id="wMoves">0</span><span class="ws-l">moves</span></div>
+      <div><span class="ws-n" id="wScore">0</span><span class="ws-l">points</span></div>
     </div>
-    <div class="win-bio" id="wBio"></div>
-    <button class="again-btn" id="againBtn" onclick="resetAll()">&#127183; Play Again</button>
+    <div class="win-bio" id="winBio"></div>
+    <button class="again-btn" onclick="resetAll()">&#127183; Play Again</button>
   </div>
 
 </div>
@@ -148,15 +180,13 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 </div>
 
 <script>
-var OW = ['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT','CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST','RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
+var SCI = {ABSORB:'Plants absorb carbon, water, and nutrients to sustain ecosystems.',ADAPT:'Species adapt to changing environments through evolution.',ANCHOR:'Root systems anchor soil, preventing erosion.',BALANCE:'Ecosystems depend on balance between predators and prey.',BLOOM:'Flowers bloom in response to light and temperature.',BREATHE:'Photosynthesis and respiration are the breath of Earth.',CLEAR:'Clear water and skies signal a healthy environment.',CONNECT:'Food webs connect every organism in an ecosystem.',CYCLE:'Water, carbon, and nitrogen move in continuous cycles.',EMERGE:'Species emerge from dormancy when conditions are right.',FILTER:'Wetlands filter toxins and pollutants from water.',FLOW:'Rivers carry energy and life across landscapes.',GROW:'Growth requires sunlight, nutrients, water, and time.',HEAL:'Ecosystems heal through succession and regeneration.',MIGRATE:'Animals migrate in response to temperature and food.',PERSIST:'Resilient species persist through drought and climate shifts.',RENEW:'Forests renew after fire through decomposition.',RESTORE:'Restoration rebuilds what human impact has damaged.',RETURN:'Salmon return to birth streams to complete their cycle.',RISE:'Sea levels rise as global temperatures increase.',ROOT:'Deep roots stabilize plants during periods of drought.',SHINE:'The sun powers all life through photosynthesis.',SUSTAIN:'Sustainability keeps ecosystems viable for future generations.',THRIVE:'Species thrive where their needs are consistently met.',TRANSFORM:'Metamorphosis transforms living matter into something new.'};
 
-var SCI = {ABSORB:'Plants and soils absorb carbon, water, and nutrients.',ADAPT:'Species adapt through evolution and behavioral shifts.',ANCHOR:'Root systems anchor soil, preventing erosion.',BALANCE:'Ecosystems depend on balance between predators and prey.',BLOOM:'Flowers bloom in response to light and temperature.',BREATHE:'Photosynthesis and respiration are Earth\'s breath.',CLEAR:'Clear water and skies signal environmental health.',CONNECT:'Food webs connect every organism in an ecosystem.',CYCLE:'Water, carbon, nitrogen move in continuous cycles.',EMERGE:'Species emerge from dormancy when conditions are right.',FILTER:'Wetlands filter toxins and pollutants from water.',FLOW:'Rivers carry energy and life across landscapes.',GROW:'Growth requires sunlight, nutrients, water, and time.',HEAL:'Ecosystems heal through succession and regeneration.',MIGRATE:'Animals migrate in response to temperature and food.',PERSIST:'Resilient species persist through drought and climate shifts.',RENEW:'Forests renew after fire through decomposition.',RESTORE:'Habitat restoration rebuilds what human impact damaged.',RETURN:'Salmon return to birth streams to complete their cycle.',RISE:'Sea levels rise as temperatures climb globally.',ROOT:'Deep roots stabilize plants and reach water in drought.',SHINE:'The sun powers all life through photosynthesis.',SUSTAIN:'Sustainability keeps ecosystems viable for future generations.',THRIVE:'Species thrive where their needs are consistently met.',TRANSFORM:'Metamorphosis transforms matter into something entirely new.'};
-
-var SEL = {ABSORB:'Taking in new experiences with an open, curious mind.',ADAPT:'Adjusting when life feels uncertain or unfamiliar.',ANCHOR:'Finding people and practices that keep you grounded.',BALANCE:'Maintaining balance between work, rest, and relationships.',BLOOM:'Thriving when your environment meets your essential needs.',BREATHE:'Breath is the fastest tool for calming the nervous system.',CLEAR:'Clarity comes when we slow down and release what is not ours.',CONNECT:'Healthy relationships and belonging are essential to well-being.',CYCLE:'Life moves in cycles of rest, effort, grief, and renewal.',EMERGE:'Growth happens gradually, then you emerge stronger.',FILTER:'Filter out negativity so you can focus on what truly matters.',FLOW:'Finding your flow state where effort feels effortless.',GROW:'Personal growth requires the same patience ecosystems demand.',HEAL:'Healing is not linear for people or nature. Both need patience.',MIGRATE:'Transitions are a natural part of every life journey.',PERSIST:'Persistence through difficulty builds strength and character.',RENEW:'Rest and recovery are how we renew energy and purpose.',RESTORE:'Restoring relationships after hard seasons takes courage.',RETURN:'Returning to your values after feeling lost is always possible.',RISE:'Rising above challenges without denying they existed.',ROOT:'Your roots keep you stable when life shifts.',SHINE:'Letting your authentic self shine is a gift to others.',SUSTAIN:'Building habits that sustain your mental and physical health.',THRIVE:'You deserve environments where you truly thrive.',TRANSFORM:'Every challenge has the power to transform you.'};
+var SEL = {ABSORB:'Taking in new experiences with an open and curious mind.',ADAPT:'Adjusting your approach when life feels uncertain.',ANCHOR:'Finding people and practices that keep you grounded.',BALANCE:'Maintaining balance between work, rest, and relationships.',BLOOM:'Thriving when your environment meets your essential needs.',BREATHE:'Breath is the fastest tool for calming your nervous system.',CLEAR:'Clarity comes when we slow down and release what is not ours.',CONNECT:'Healthy relationships and belonging are essential to well-being.',CYCLE:'Life moves in cycles of rest, effort, grief, and renewal.',EMERGE:'Growth happens gradually, then you emerge stronger than before.',FILTER:'Filtering out negativity so you can focus on what truly matters.',FLOW:'Finding your flow state where effort feels completely effortless.',GROW:'Personal growth requires the same patience ecosystems demand.',HEAL:'Healing is not linear for people or for nature. Both need time.',MIGRATE:'Transitions and change are a natural part of every life journey.',PERSIST:'Persistence through difficulty builds strength and character.',RENEW:'Rest and recovery are how we renew our energy and purpose.',RESTORE:'Restoring relationships and self-trust after hard seasons.',RETURN:'Returning to your values after feeling lost is always possible.',RISE:'Rising above challenges without denying they ever existed.',ROOT:'Your roots in family and values keep you stable when life shifts.',SHINE:'Letting your authentic self shine is a gift to the world.',SUSTAIN:'Building daily habits that sustain your mental and physical health.',THRIVE:'You deserve environments where you can truly and fully thrive.',TRANSFORM:'Every challenge you survive has the power to transform you.'};
 
 var ZOO = {ABSORB:{e:'&#127807;',n:'Mangrove'},ADAPT:{e:'&#129412;',n:'Chameleon'},ANCHOR:{e:'&#128034;',n:'Sea Turtle'},BALANCE:{e:'&#129409;',n:'Lion'},BLOOM:{e:'&#129419;',n:'Butterfly'},BREATHE:{e:'&#128031;',n:'Whale'},CLEAR:{e:'&#128025;',n:'Elephant'},CONNECT:{e:'&#128060;',n:'Chimpanzee'},CYCLE:{e:'&#129424;',n:'Salmon'},EMERGE:{e:'&#128056;',n:'Tree Frog'},FILTER:{e:'&#128044;',n:'Whale Shark'},FLOW:{e:'&#128040;',n:'Otter'},GROW:{e:'&#129423;',n:'Giraffe'},HEAL:{e:'&#128059;',n:'Bear'},MIGRATE:{e:'&#128038;',n:'Arctic Tern'},PERSIST:{e:'&#128022;',n:'Komodo Dragon'},RENEW:{e:'&#129434;',n:'Salamander'},RESTORE:{e:'&#128024;',n:'Elephant'},RETURN:{e:'&#128032;',n:'Clownfish'},RISE:{e:'&#129413;',n:'Eagle'},ROOT:{e:'&#128014;',n:'Horse'},SHINE:{e:'&#128054;',n:'Peacock'},SUSTAIN:{e:'&#128013;',n:'Python'},THRIVE:{e:'&#128007;',n:'Rabbit'},TRANSFORM:{e:'&#128027;',n:'Caterpillar'}};
 
-var TILE_COLORS = ['#87CEEB','#87CEEB','#4caf82','#4caf82','#87CEEB','#87CEEB','#4caf82','#F5C842','#F5C842','#D4854A','#F5C842','#4caf82','#4caf82','#4caf82','#c9a84c','#c9a84c','#87CEEB','#87CEEB','#4caf82','#5b9bd5','#5b9bd5','#4caf82','#4caf82','#c9a84c','#c9a84c','#F5C842','#F5C842','#D4854A','#4caf82','#87CEEB','#87CEEB','#87CEEB','#4caf82','#4caf82','#c9a84c','#c9a84c'];
+var TC = ['#87CEEB','#87CEEB','#4caf82','#4caf82','#87CEEB','#87CEEB','#4caf82','#F5C842','#D4854A','#D4854A','#F5C842','#4caf82','#4caf82','#c9a84c','#c9a84c','#c9a84c','#87CEEB','#87CEEB','#4caf82','#5b9bd5','#5b9bd5','#4caf82','#c9a84c','#c9a84c','#F5C842','#F5C842','#D4854A','#4caf82','#87CEEB','#87CEEB','#87CEEB','#4caf82','#4caf82','#c9a84c','#c9a84c','#87CEEB'];
 
 var mode = '';
 var chosen = [];
@@ -166,207 +196,168 @@ var matched = 0;
 var moves = 0;
 var score = 0;
 var secs = 0;
-var tInterval = null;
+var ticker = null;
 var canFlip = true;
-
-// onclick handlers set inline in HTML
 
 function pickMode(m) {
   mode = m;
   chosen = [];
-  document.getElementById('mb-science').className = 'mode-btn' + (m==='science'?' sel':'');
-  document.getElementById('mb-sel').className = 'mode-btn' + (m==='sel'?' sel':'');
-  document.getElementById('mb-zoo').className = 'mode-btn' + (m==='zoo'?' sel':'');
-  buildWordBtns();
-  document.getElementById('owPanel').style.display = 'block';
-  document.getElementById('gameWrap').style.display = 'none';
-  document.getElementById('winDiv').style.display = 'none';
+  var mbs = document.getElementsByClassName('mbtn');
+  for (var i = 0; i < mbs.length; i++) { mbs[i].className = 'mbtn'; }
+  document.getElementById('mb-' + m).className = 'mbtn active';
+  var wbs = document.getElementsByClassName('wbtn');
+  for (var j = 0; j < wbs.length; j++) { wbs[j].className = 'wbtn'; }
+  document.getElementById('counter').textContent = '0 of 6 selected';
   document.getElementById('startBtn').disabled = true;
-  updateCounter();
-  document.getElementById('owPanel').scrollIntoView({behavior:'smooth'});
+  document.getElementById('owPanel').className = 'ow-panel show';
+  document.getElementById('gamePanel').className = 'game-panel';
+  document.getElementById('winPanel').className = 'win-panel';
 }
 
-function buildWordBtns() {
-  var wrap = document.getElementById('owWrap');
-  wrap.innerHTML = '';
-  for (var i = 0; i < OW.length; i++) {
-    var btn = document.createElement('button');
-    btn.className = 'word-btn';
-    btn.textContent = OW[i];
-    btn.setAttribute('data-w', OW[i]);
-    btn.onclick = handleWordClick;
-    wrap.appendChild(btn);
-  }
-}
-
-function handleWordClick() {
-  var w = this.getAttribute('data-w');
+function toggleW(w, btn) {
   var idx = chosen.indexOf(w);
   if (idx !== -1) {
     chosen.splice(idx, 1);
-    this.className = 'word-btn';
+    btn.className = 'wbtn';
   } else {
-    if (chosen.length >= 6) return;
+    if (chosen.length >= 6) { return; }
     chosen.push(w);
-    this.className = 'word-btn on';
+    btn.className = 'wbtn on';
   }
-  updateCounter();
+  document.getElementById('counter').textContent = chosen.length + ' of 6 selected';
   document.getElementById('startBtn').disabled = (chosen.length !== 6);
 }
 
-function updateCounter() {
-  document.getElementById('counter').innerHTML = '<span>' + chosen.length + '</span> of 6 selected';
-}
-
 function startGame() {
-  if (tInterval) clearInterval(tInterval);
+  if (ticker) { clearInterval(ticker); }
   flipped = []; matched = 0; moves = 0; score = 0; secs = 0; canFlip = true;
   document.getElementById('sTime').textContent = '0';
   document.getElementById('sMoves').textContent = '0';
   document.getElementById('sMatch').textContent = '0';
   document.getElementById('sScore').textContent = '0';
-  document.getElementById('winDiv').style.display = 'none';
+  document.getElementById('winPanel').className = 'win-panel';
 
-  // Build pairs
   var pairs = [];
   for (var i = 0; i < chosen.length; i++) {
-    var w = chosen[i];
-    pairs.push({w:w, side:'word'});
-    pairs.push({w:w, side:'match'});
+    pairs.push({w: chosen[i], side: 'word'});
+    pairs.push({w: chosen[i], side: 'match'});
   }
-  // Shuffle
-  for (var i = pairs.length-1; i > 0; i--) {
-    var j = Math.floor(Math.random()*(i+1));
-    var tmp = pairs[i]; pairs[i] = pairs[j]; pairs[j] = tmp;
+  for (var i = pairs.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = pairs[i]; pairs[i] = pairs[j]; pairs[j] = t;
   }
   cards = pairs;
 
-  renderCards();
   buildImgGrid();
-  document.getElementById('gameWrap').style.display = 'block';
-  document.getElementById('gameWrap').scrollIntoView({behavior:'smooth'});
+  buildCardGrid();
+  document.getElementById('gamePanel').className = 'game-panel show';
+  document.getElementById('gamePanel').scrollIntoView({behavior: 'smooth'});
 
-  tInterval = setInterval(function(){
+  ticker = setInterval(function() {
     secs++;
     document.getElementById('sTime').textContent = secs;
   }, 1000);
 }
 
-function renderCards() {
-  var grid = document.getElementById('cardGrid');
-  grid.innerHTML = '';
-  var cols = Math.ceil(Math.sqrt(cards.length * 1.5));
-  grid.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
-
-  for (var i = 0; i < cards.length; i++) {
-    var c = cards[i];
-    var div = document.createElement('div');
-    div.className = 'card';
-    div.setAttribute('data-i', i);
-
-    var back = document.createElement('div');
-    back.className = 'back';
-    back.textContent = '\u25cf';
-    div.appendChild(back);
-
-    var front = document.createElement('div');
-    front.className = 'front';
-
-    if (c.side === 'word') {
-      var span = document.createElement('span');
-      span.className = 'word-face';
-      span.textContent = c.w;
-      front.appendChild(span);
-    } else if (mode === 'zoo') {
-      var z = ZOO[c.w];
-      var zd = document.createElement('div');
-      zd.className = 'zoo-face';
-      zd.innerHTML = '<span class="zoo-emoji">' + z.e + '</span><span class="zoo-name">' + z.n + '</span>';
-      front.appendChild(zd);
-    } else {
-      var span = document.createElement('span');
-      span.className = 'def-face';
-      span.textContent = mode === 'science' ? SCI[c.w] : SEL[c.w];
-      front.appendChild(span);
-    }
-
-    div.appendChild(front);
-    div.onclick = handleCardClick;
-    grid.appendChild(div);
+function buildImgGrid() {
+  var g = document.getElementById('imgGrid');
+  g.innerHTML = '';
+  for (var i = 0; i < TC.length; i++) {
+    var d = document.createElement('div');
+    d.className = 'tile';
+    d.id = 'T' + i;
+    d.setAttribute('data-c', TC[i]);
+    g.appendChild(d);
   }
 }
 
-function handleCardClick() {
-  if (!canFlip) return;
-  var idx = parseInt(this.getAttribute('data-i'));
-  if (this.classList.contains('match')) return;
-  if (flipped.indexOf(idx) !== -1) return;
-  if (flipped.length >= 2) return;
+function buildCardGrid() {
+  var g = document.getElementById('cardGrid');
+  g.innerHTML = '';
+  var cols = Math.ceil(Math.sqrt(cards.length * 1.4));
+  g.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
+  for (var i = 0; i < cards.length; i++) {
+    var c = cards[i];
+    var d = document.createElement('div');
+    d.className = 'card';
+    d.setAttribute('data-idx', i);
+    d.onclick = clickCard;
 
+    var back = document.createElement('div');
+    back.className = 'card-back';
+    back.innerHTML = '&#9679;';
+    d.appendChild(back);
+
+    var front = document.createElement('div');
+    front.className = 'card-front';
+    if (c.side === 'word') {
+      front.innerHTML = '<span class="word-f">' + c.w + '</span>';
+    } else if (mode === 'zoo') {
+      front.innerHTML = '<div class="zoo-f"><span class="zoo-e">' + ZOO[c.w].e + '</span><span class="zoo-n">' + ZOO[c.w].n + '</span></div>';
+    } else {
+      var txt = mode === 'science' ? SCI[c.w] : SEL[c.w];
+      front.innerHTML = '<span class="def-f">' + txt + '</span>';
+    }
+    d.appendChild(front);
+    g.appendChild(d);
+  }
+}
+
+function clickCard() {
+  if (!canFlip) { return; }
+  var idx = parseInt(this.getAttribute('data-idx'));
+  if (this.classList.contains('match')) { return; }
+  if (flipped.indexOf(idx) !== -1) { return; }
+  if (flipped.length >= 2) { return; }
   this.classList.add('flip');
   flipped.push(idx);
-
   if (flipped.length === 2) {
     moves++;
     document.getElementById('sMoves').textContent = moves;
     canFlip = false;
-    var self = this;
-    setTimeout(checkFlipped, 900);
+    setTimeout(checkPair, 900);
   }
 }
 
-function checkFlipped() {
-  var a = cards[flipped[0]];
-  var b = cards[flipped[1]];
-  var grid = document.getElementById('cardGrid');
-  var cardA = grid.children[flipped[0]];
-  var cardB = grid.children[flipped[1]];
-
-  if (a.w === b.w) {
-    cardA.classList.add('match'); cardA.classList.remove('flip');
-    cardB.classList.add('match'); cardB.classList.remove('flip');
+function checkPair() {
+  var g = document.getElementById('cardGrid');
+  var ca = g.children[flipped[0]];
+  var cb = g.children[flipped[1]];
+  if (cards[flipped[0]].w === cards[flipped[1]].w) {
+    ca.classList.add('match'); ca.classList.remove('flip');
+    cb.classList.add('match'); cb.classList.remove('flip');
     matched++;
-    var pts = Math.max(10, 100 - moves*2 - secs);
+    var pts = Math.max(10, 100 - moves * 2 - secs);
     score += pts;
     document.getElementById('sMatch').textContent = matched;
     document.getElementById('sScore').textContent = score;
     revealTiles(matched);
     if (matched === chosen.length) {
-      clearInterval(tInterval);
+      clearInterval(ticker);
       setTimeout(showWin, 500);
     }
   } else {
-    cardA.classList.add('wrong'); cardB.classList.add('wrong');
-    setTimeout(function(){
-      cardA.classList.remove('flip','wrong');
-      cardB.classList.remove('flip','wrong');
+    ca.classList.add('wrong'); cb.classList.add('wrong');
+    setTimeout(function() {
+      ca.classList.remove('flip', 'wrong');
+      cb.classList.remove('flip', 'wrong');
     }, 600);
   }
   flipped = [];
   canFlip = true;
 }
 
-function buildImgGrid() {
-  var g = document.getElementById('imgGrid');
-  g.innerHTML = '';
-  for (var i = 0; i < TILE_COLORS.length; i++) {
-    var t = document.createElement('div');
-    t.className = 'img-tile';
-    t.id = 'tile' + i;
-    t.setAttribute('data-color', TILE_COLORS[i]);
-    g.appendChild(t);
-  }
-}
-
-function revealTiles(matchNum) {
-  var perMatch = Math.floor(TILE_COLORS.length / chosen.length);
-  var start = (matchNum-1) * perMatch;
-  var end = matchNum === chosen.length ? TILE_COLORS.length : start + perMatch;
+function revealTiles(n) {
+  var per = Math.floor(TC.length / chosen.length);
+  var start = (n - 1) * per;
+  var end = (n === chosen.length) ? TC.length : start + per;
   for (var i = start; i < end; i++) {
-    (function(n){ setTimeout(function(){
-      var t = document.getElementById('tile'+n);
-      if (t) t.style.background = t.getAttribute('data-color');
-    }, n*50); })(i);
+    (function(idx) {
+      setTimeout(function() {
+        var t = document.getElementById('T' + idx);
+        if (t) { t.style.background = t.getAttribute('data-c'); }
+      }, idx * 50);
+    })(i);
   }
 }
 
@@ -374,25 +365,25 @@ function showWin() {
   document.getElementById('wTime').textContent = secs;
   document.getElementById('wMoves').textContent = moves;
   document.getElementById('wScore').textContent = score;
-  var bio = '';
-  if (mode==='science') bio = 'You just matched all ' + chosen.length + ' environmental science connections! These 25 OneWords bridge the natural systems AP Biology studies with the human experiences we all share. The same forces that sustain ecosystems sustain people.';
-  else if (mode==='sel') bio = 'You just matched all ' + chosen.length + ' social-emotional connections! T.I.D.E. Coalition members use these words to build belonging and equity in every school they serve.';
-  else bio = 'You just matched all ' + chosen.length + ' zoo animals to their OneWords! At the Norfolk Zoo, every animal you saw proves that the natural world and human experience are connected.';
-  document.getElementById('wBio').textContent = bio;
-  document.getElementById('winDiv').style.display = 'block';
-  document.getElementById('winDiv').scrollIntoView({behavior:'smooth'});
+  var bio = mode === 'science'
+    ? 'You matched all ' + chosen.length + ' science connections! These OneWords bridge the natural systems AP Biology studies with the human experiences we all share.'
+    : mode === 'sel'
+    ? 'You matched all ' + chosen.length + ' belonging connections! T.I.D.E. Coalition members carry these values into every school they serve.'
+    : 'You matched all ' + chosen.length + ' zoo animals! Every animal at the Norfolk Zoo is living proof that biology and belonging tell the same story.';
+  document.getElementById('winBio').textContent = bio;
+  document.getElementById('winPanel').className = 'win-panel show';
+  document.getElementById('winPanel').scrollIntoView({behavior: 'smooth'});
 }
 
 function resetAll() {
-  if (tInterval) clearInterval(tInterval);
+  if (ticker) { clearInterval(ticker); }
   mode = ''; chosen = [];
-  document.getElementById('mb-science').className = 'mode-btn';
-  document.getElementById('mb-sel').className = 'mode-btn';
-  document.getElementById('mb-zoo').className = 'mode-btn';
-  document.getElementById('owPanel').style.display = 'none';
-  document.getElementById('gameWrap').style.display = 'none';
-  document.getElementById('winDiv').style.display = 'none';
-  window.scrollTo({top:0,behavior:'smooth'});
+  var mbs = document.getElementsByClassName('mbtn');
+  for (var i = 0; i < mbs.length; i++) { mbs[i].className = 'mbtn'; }
+  document.getElementById('owPanel').className = 'ow-panel';
+  document.getElementById('gamePanel').className = 'game-panel';
+  document.getElementById('winPanel').className = 'win-panel';
+  window.scrollTo({top: 0, behavior: 'smooth'});
 }
 </script>
 </body>
