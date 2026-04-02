@@ -143,7 +143,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
         <button class="wbtn" onclick="toggleW('TRANSFORM',this)">TRANSFORM</button>
       </div>
       <div class="counter" id="counter">0 of 6 selected</div>
-      <button class="sbtn" id="startBtn" onclick="startGame()" disabled>&#127183; Start Game</button>
+      <button class="sbtn" id="startBtn" onclick="startGame()" disabled>🎳 Start Game</button>
     </div>
   </div>
 
@@ -153,17 +153,17 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
       <div class="stat"><span class="stat-n" id="sMoves">0</span><span class="stat-l">Moves</span></div>
       <div class="stat"><span class="stat-n" id="sMatch">0</span><span class="stat-l">Matched</span></div>
       <div class="stat"><span class="stat-n" id="sScore">0</span><span class="stat-l">Points</span></div>
-      <button class="rbtn" onclick="startGame()">&#8635; Reset</button>
+      <button class="rbtn" onclick="startGame()">↻ Reset</button>
     </div>
     <div class="img-box">
-      <div class="img-lbl">&#127774; Reveal the hidden image &mdash; each match uncovers a tile!</div>
+      <div class="img-lbl">🌞 Reveal the hidden image &mdash; each match uncovers a tile!</div>
       <div class="img-grid" id="imgGrid"></div>
     </div>
     <div class="card-grid" id="cardGrid"></div>
   </div>
 
   <div class="win-panel" id="winPanel">
-    <span class="win-emoji">&#127881;</span>
+    <span class="win-emoji">🎉</span>
     <div class="win-title">You matched them all!</div>
     <div class="win-stats">
       <div><span class="ws-n" id="wTime">0</span><span class="ws-l">seconds</span></div>
@@ -171,7 +171,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
       <div><span class="ws-n" id="wScore">0</span><span class="ws-l">points</span></div>
     </div>
     <div class="win-bio" id="winBio"></div>
-    <button class="again-btn" onclick="resetAll()">&#127183; Play Again</button>
+    <button class="again-btn" onclick="resetAll()">🎳 Play Again</button>
   </div>
 
 </div>
@@ -184,7 +184,7 @@ var SCI = {ABSORB:'Plants absorb carbon, water, and nutrients to sustain ecosyst
 
 var SEL = {ABSORB:'Taking in new experiences with an open and curious mind.',ADAPT:'Adjusting your approach when life feels uncertain.',ANCHOR:'Finding people and practices that keep you grounded.',BALANCE:'Maintaining balance between work, rest, and relationships.',BLOOM:'Thriving when your environment meets your essential needs.',BREATHE:'Breath is the fastest tool for calming your nervous system.',CLEAR:'Clarity comes when we slow down and release what is not ours.',CONNECT:'Healthy relationships and belonging are essential to well-being.',CYCLE:'Life moves in cycles of rest, effort, grief, and renewal.',EMERGE:'Growth happens gradually, then you emerge stronger than before.',FILTER:'Filtering out negativity so you can focus on what truly matters.',FLOW:'Finding your flow state where effort feels completely effortless.',GROW:'Personal growth requires the same patience ecosystems demand.',HEAL:'Healing is not linear for people or for nature. Both need time.',MIGRATE:'Transitions and change are a natural part of every life journey.',PERSIST:'Persistence through difficulty builds strength and character.',RENEW:'Rest and recovery are how we renew our energy and purpose.',RESTORE:'Restoring relationships and self-trust after hard seasons.',RETURN:'Returning to your values after feeling lost is always possible.',RISE:'Rising above challenges without denying they ever existed.',ROOT:'Your roots in family and values keep you stable when life shifts.',SHINE:'Letting your authentic self shine is a gift to the world.',SUSTAIN:'Building daily habits that sustain your mental and physical health.',THRIVE:'You deserve environments where you can truly and fully thrive.',TRANSFORM:'Every challenge you survive has the power to transform you.'};
 
-var ZOO = {ABSORB:{e:'&#127807;',n:'Mangrove'},ADAPT:{e:'&#129412;',n:'Chameleon'},ANCHOR:{e:'&#128034;',n:'Sea Turtle'},BALANCE:{e:'&#129409;',n:'Lion'},BLOOM:{e:'&#129419;',n:'Butterfly'},BREATHE:{e:'&#128031;',n:'Whale'},CLEAR:{e:'&#128025;',n:'Elephant'},CONNECT:{e:'&#128060;',n:'Chimpanzee'},CYCLE:{e:'&#129424;',n:'Salmon'},EMERGE:{e:'&#128056;',n:'Tree Frog'},FILTER:{e:'&#128044;',n:'Whale Shark'},FLOW:{e:'&#128040;',n:'Otter'},GROW:{e:'&#129423;',n:'Giraffe'},HEAL:{e:'&#128059;',n:'Bear'},MIGRATE:{e:'&#128038;',n:'Arctic Tern'},PERSIST:{e:'&#128022;',n:'Komodo Dragon'},RENEW:{e:'&#129434;',n:'Salamander'},RESTORE:{e:'&#128024;',n:'Elephant'},RETURN:{e:'&#128032;',n:'Clownfish'},RISE:{e:'&#129413;',n:'Eagle'},ROOT:{e:'&#128014;',n:'Horse'},SHINE:{e:'&#128054;',n:'Peacock'},SUSTAIN:{e:'&#128013;',n:'Python'},THRIVE:{e:'&#128007;',n:'Rabbit'},TRANSFORM:{e:'&#128027;',n:'Caterpillar'}};
+var ZOO = {ABSORB:{e:'🌿',n:'Mangrove'},ADAPT:{e:'🦎',n:'Chameleon'},ANCHOR:{e:'🐢',n:'Sea Turtle'},BALANCE:{e:'🦁',n:'Lion'},BLOOM:{e:'🦋',n:'Butterfly'},BREATHE:{e:'🐟',n:'Whale'},CLEAR:{e:'🐙',n:'Elephant'},CONNECT:{e:'🐼',n:'Chimpanzee'},CYCLE:{e:'🐠',n:'Salmon'},EMERGE:{e:'🐸',n:'Tree Frog'},FILTER:{e:'🐬',n:'Whale Shark'},FLOW:{e:'🦦',n:'Otter'},GROW:{e:'🦒',n:'Giraffe'},HEAL:{e:'🐻',n:'Bear'},MIGRATE:{e:'🦆',n:'Arctic Tern'},PERSIST:{e:'🦖',n:'Komodo Dragon'},RENEW:{e:'🦎',n:'Salamander'},RESTORE:{e:'🐘',n:'Elephant'},RETURN:{e:'🐡',n:'Clownfish'},RISE:{e:'🦅',n:'Eagle'},ROOT:{e:'🐎',n:'Horse'},SHINE:{e:'🦚',n:'Peacock'},SUSTAIN:{e:'🐍',n:'Python'},THRIVE:{e:'🐇',n:'Rabbit'},TRANSFORM:{e:'🐛',n:'Caterpillar'}};
 
 var TC = ['#87CEEB','#87CEEB','#4caf82','#4caf82','#87CEEB','#87CEEB','#4caf82','#F5C842','#D4854A','#D4854A','#F5C842','#4caf82','#4caf82','#c9a84c','#c9a84c','#c9a84c','#87CEEB','#87CEEB','#4caf82','#5b9bd5','#5b9bd5','#4caf82','#c9a84c','#c9a84c','#F5C842','#F5C842','#D4854A','#4caf82','#87CEEB','#87CEEB','#87CEEB','#4caf82','#4caf82','#c9a84c','#c9a84c','#87CEEB'];
 
@@ -285,7 +285,7 @@ function buildCardGrid() {
 
     var back = document.createElement('div');
     back.className = 'card-back';
-    back.innerHTML = '&#9679;';
+    back.innerHTML = '●';
     d.appendChild(back);
 
     var front = document.createElement('div');
