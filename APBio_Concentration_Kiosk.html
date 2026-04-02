@@ -298,7 +298,7 @@ function buildCardGrid() {
   g.innerHTML = html;
 }
 
-function flipCard(idx) {
+window.flipCard = function(idx) {
   document.getElementById('dbg').textContent = 'flipCard(' + idx + ') called. canFlip=' + canFlip + ' flipped=' + flipped.length;
   if (!canFlip) { return; }
   var el = document.getElementById('card' + idx);
@@ -315,7 +315,7 @@ function flipCard(idx) {
     canFlip = false;
     setTimeout(checkPair, 900);
   }
-}
+};
 
 function checkPair() {
   var ca = document.getElementById('card' + flipped[0]);
