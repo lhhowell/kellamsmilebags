@@ -45,7 +45,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 .rbtn:hover{border-color:#D4537E;color:#D4537E;}
 
 
-.card-grid{display:grid;gap:10px;grid-auto-rows:100px;}
+.card-grid{display:grid;gap:10px;grid-auto-rows:120px;max-width:700px;margin:0 auto;}
 .card{background:#0d0d0d;border:2px solid #1a2a3a;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:8px;text-align:center;overflow:hidden;width:100%;}
 .card:hover{border-color:#c9a84c;}
 .card.match{border-color:#4caf82;background:rgba(76,175,130,.08);cursor:default;}
@@ -219,8 +219,7 @@ function startGame() {
 function buildCards() {
   var g=document.getElementById('cardGrid');
   g.innerHTML='';
-  var cols=Math.ceil(Math.sqrt(cards.length*1.4));
-  g.style.gridTemplateColumns='repeat('+cols+',1fr)';
+  g.style.gridTemplateColumns='repeat(4,1fr)';
   for(var i=0;i<cards.length;i++){
     var c=cards[i];
     var frontHTML='';
