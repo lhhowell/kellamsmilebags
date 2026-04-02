@@ -147,6 +147,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
     </div>
   </div>
 
+  <div id="dbg" style="font-family:monospace;font-size:11px;color:#4caf82;padding:8px;background:#0d0d0d;border-radius:6px;margin-top:8px;display:none;word-break:break-all;"></div>
   <div class="game-panel" id="gamePanel">
     <div class="stats">
       <div class="stat"><span class="stat-n" id="sTime">0</span><span class="stat-l">Seconds</span></div>
@@ -253,6 +254,7 @@ function startGame() {
   buildImgGrid();
   buildCardGrid();
   document.getElementById('gamePanel').className = 'game-panel show';
+  document.getElementById('dbg').style.display = 'block';
   document.getElementById('gamePanel').scrollIntoView({behavior: 'smooth'});
 
   ticker = setInterval(function() {
@@ -297,13 +299,15 @@ function buildCardGrid() {
 }
 
 function flipCard(idx) {
+  document.getElementById('dbg').textContent = 'flipCard(' + idx + ') called. canFlip=' + canFlip + ' flipped=' + flipped.length;
   if (!canFlip) { return; }
   var el = document.getElementById('card' + idx);
-  if (!el) { return; }
+  if (!el) { document.getElementById('dbg').textContent += ' NO ELEMENT FOUND'; return; }
   if (el.classList.contains('match')) { return; }
   if (flipped.indexOf(idx) !== -1) { return; }
   if (flipped.length >= 2) { return; }
   el.classList.add('flip');
+  document.getElementById('dbg').textContent += ' | added flip class. Has flip: ' + el.classList.contains('flip');
   flipped.push(idx);
   if (flipped.length === 2) {
     moves++;
