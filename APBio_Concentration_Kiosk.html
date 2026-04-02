@@ -15,32 +15,28 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 .hero-sub{font-size:14px;color:#c8c4bc;max-width:580px;margin:0 auto;line-height:1.7;}
 .back-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #c9a84c;color:#c9a84c;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;margin:20px 24px 0;}
 .workspace{max-width:960px;margin:0 auto;padding:0 24px;}
-.section{background:#0d0d0d;border:1px solid #1a2a3a;border-radius:14px;padding:22px;margin-top:14px;}
-.section-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#4caf82;margin-bottom:14px;}
 
-/* Mode buttons */
 .mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px;}
-.mbtn{background:#0d0d0d;border:2px solid #1a2a3a;border-radius:14px;padding:20px;cursor:pointer;text-align:left;width:100%;transition:border-color .2s;}
+.mbtn{background:#0d0d0d;border:2px solid #1a2a3a;border-radius:14px;padding:20px;cursor:pointer;text-align:left;width:100%;}
 .mbtn:hover{border-color:#c9a84c;}
 .mbtn.active{border-color:#c9a84c;background:rgba(201,168,76,.08);}
 .mbtn-icon{font-size:26px;display:block;margin-bottom:8px;}
 .mbtn-name{font-family:'Fredoka One',cursive;font-size:13px;color:#c9a84c;display:block;margin-bottom:5px;}
 .mbtn-desc{font-size:11px;color:#c8c4bc;line-height:1.5;}
 
-/* Word buttons */
-.ow-panel{display:none;}
-.ow-panel.show{display:block;}
+.panel{display:none;}
+.panel.show{display:block;}
+
+.ow-section{background:#0d0d0d;border:1px solid #1a2a3a;border-radius:14px;padding:22px;margin-top:14px;}
+.ow-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#4caf82;margin-bottom:14px;}
 .ow-wrap{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-bottom:14px;}
-.wbtn{background:#0a0f14;border:2px solid #1a2a3a;border-radius:8px;padding:9px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#c8c4bc;cursor:pointer;width:100%;text-align:center;transition:all .2s;}
+.wbtn{background:#0a0f14;border:2px solid #1a2a3a;border-radius:8px;padding:9px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#c8c4bc;cursor:pointer;width:100%;text-align:center;}
 .wbtn:hover{border-color:#c9a84c;color:#c9a84c;}
 .wbtn.on{border-color:#4caf82;color:#4caf82;background:rgba(76,175,130,.1);}
 .counter{font-family:'Fredoka One',cursive;font-size:13px;color:#c8c4bc;margin-bottom:14px;}
 .sbtn{width:100%;background:#c9a84c;color:#111;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:3px;text-transform:uppercase;padding:14px;border:none;border-radius:10px;cursor:pointer;font-weight:700;}
 .sbtn.off{background:#1a2a3a;color:#333;cursor:not-allowed;}
 
-/* Game */
-.game-panel{display:none;}
-.game-panel.show{display:block;}
 .stats{display:flex;gap:10px;background:#0d0d0d;border:1px solid #1a2a3a;border-radius:12px;padding:14px 18px;margin-top:14px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
 .stat{text-align:center;flex:1;min-width:55px;}
 .stat-n{font-family:'Fredoka One',cursive;font-size:22px;color:#c9a84c;display:block;}
@@ -54,28 +50,27 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 .tile{aspect-ratio:1;border-radius:3px;background:#1a2a3a;transition:background .4s;}
 
 .card-grid{display:grid;gap:10px;}
-.card{min-height:80px;cursor:pointer;border-radius:12px;border:2px solid #1a2a3a;background:#0d0d0d;display:flex;align-items:center;justify-content:center;padding:10px;text-align:center;transition:border-color .2s;}
+.card{background:#0d0d0d;border:2px solid #1a2a3a;border-radius:12px;min-height:80px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:10px;text-align:center;}
 .card:hover{border-color:#c9a84c;}
-.card-back{color:#2a3a4a;font-size:20px;}
-.card-front{display:none;width:100%;align-items:center;justify-content:center;}
-.card.flip .card-back{display:none;}
-.card.flip .card-front{display:flex;}
+.cb{color:#1a2a3a;font-size:20px;}
+.cf{display:none;width:100%;align-items:center;justify-content:center;}
+.card.flip .cf{display:flex;}
+.card.flip .cb{display:none;}
 .card.match{border-color:#4caf82;background:rgba(76,175,130,.08);cursor:default;}
-.card.match .card-back{display:none;}
-.card.match .card-front{display:flex;}
+.card.match .cf{display:flex;}
+.card.match .cb{display:none;}
 .card.wrong{border-color:#D4537E;background:rgba(212,83,126,.06);}
 .word-f{font-family:'Fredoka One',cursive;font-size:13px;color:#c9a84c;letter-spacing:1px;}
 .def-f{font-size:11px;color:#c8c4bc;line-height:1.4;}
 .zoo-f{display:flex;flex-direction:column;align-items:center;gap:3px;}
-.zoo-e{font-size:26px;}
+.zoo-e{font-size:28px;}
 .zoo-n{font-size:10px;color:#c8c4bc;}
 
-/* Win */
-.win-panel{display:none;}
-.win-panel.show{display:block;background:rgba(76,175,130,.08);border:2px solid #4caf82;border-radius:16px;padding:28px;text-align:center;margin-top:14px;}
+.win-box{background:rgba(76,175,130,.08);border:2px solid #4caf82;border-radius:16px;padding:28px;text-align:center;margin-top:14px;display:none;}
+.win-box.show{display:block;}
 .win-emoji{font-size:52px;display:block;margin-bottom:12px;}
 .win-title{font-family:'Playfair Display',serif;font-size:26px;color:#4caf82;margin-bottom:12px;}
-.win-stats{display:flex;gap:20px;justify-content:center;margin-bottom:14px;flex-wrap:wrap;}
+.win-stats{display:flex;gap:24px;justify-content:center;margin-bottom:14px;flex-wrap:wrap;}
 .ws-n{font-family:'Fredoka One',cursive;font-size:30px;color:#c9a84c;display:block;}
 .ws-l{font-size:12px;color:#c8c4bc;}
 .win-bio{background:#111;border:1px solid #1a2e1a;border-radius:10px;padding:14px;font-size:13px;color:#c8c4bc;line-height:1.7;text-align:left;margin-bottom:14px;}
@@ -112,9 +107,9 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
     </button>
   </div>
 
-  <div class="ow-panel" id="owPanel">
-    <div class="section" style="margin-top:14px;">
-      <div class="section-label">Choose exactly 6 OneWords to play</div>
+  <div class="panel" id="owPanel">
+    <div class="ow-section">
+      <div class="ow-label">Choose exactly 6 OneWords to play</div>
       <div class="ow-wrap">
         <button class="wbtn" onclick="toggleW('ABSORB',this)">ABSORB</button>
         <button class="wbtn" onclick="toggleW('ADAPT',this)">ADAPT</button>
@@ -143,28 +138,27 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
         <button class="wbtn" onclick="toggleW('TRANSFORM',this)">TRANSFORM</button>
       </div>
       <div class="counter" id="counter">0 of 6 selected</div>
-      <button class="sbtn off" id="startBtn" onclick="startGame()">🎳 Start Game</button>
+      <button class="sbtn off" id="startBtn" onclick="startGame()">&#127183; Start Game</button>
     </div>
   </div>
 
-  <div id="dbg" style="font-family:monospace;font-size:11px;color:#4caf82;padding:8px;background:#0d0d0d;border-radius:6px;margin-top:8px;display:none;word-break:break-all;"></div>
-  <div class="game-panel" id="gamePanel">
+  <div class="panel" id="gamePanel">
     <div class="stats">
       <div class="stat"><span class="stat-n" id="sTime">0</span><span class="stat-l">Seconds</span></div>
       <div class="stat"><span class="stat-n" id="sMoves">0</span><span class="stat-l">Moves</span></div>
       <div class="stat"><span class="stat-n" id="sMatch">0</span><span class="stat-l">Matched</span></div>
       <div class="stat"><span class="stat-n" id="sScore">0</span><span class="stat-l">Points</span></div>
-      <button class="rbtn" onclick="startGame()">↻ Reset</button>
+      <button class="rbtn" onclick="startGame()">&#8635; Reset</button>
     </div>
     <div class="img-box">
-      <div class="img-lbl">🌞 Reveal the hidden image &mdash; each match uncovers a tile!</div>
+      <div class="img-lbl">&#127774; Reveal the hidden image &mdash; each match uncovers tiles!</div>
       <div class="img-grid" id="imgGrid"></div>
     </div>
     <div class="card-grid" id="cardGrid"></div>
   </div>
 
-  <div class="win-panel" id="winPanel">
-    <span class="win-emoji">🎉</span>
+  <div class="win-box" id="winBox">
+    <span class="win-emoji">&#127881;</span>
     <div class="win-title">You matched them all!</div>
     <div class="win-stats">
       <div><span class="ws-n" id="wTime">0</span><span class="ws-l">seconds</span></div>
@@ -172,7 +166,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
       <div><span class="ws-n" id="wScore">0</span><span class="ws-l">points</span></div>
     </div>
     <div class="win-bio" id="winBio"></div>
-    <button class="again-btn" onclick="resetAll()">🎳 Play Again</button>
+    <button class="again-btn" onclick="resetAll()">&#127183; Play Again</button>
   </div>
 
 </div>
@@ -181,218 +175,171 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 </div>
 
 <script>
-var SCI = {ABSORB:'Plants absorb carbon, water, and nutrients to sustain ecosystems.',ADAPT:'Species adapt to changing environments through evolution.',ANCHOR:'Root systems anchor soil, preventing erosion.',BALANCE:'Ecosystems depend on balance between predators and prey.',BLOOM:'Flowers bloom in response to light and temperature.',BREATHE:'Photosynthesis and respiration are the breath of Earth.',CLEAR:'Clear water and skies signal a healthy environment.',CONNECT:'Food webs connect every organism in an ecosystem.',CYCLE:'Water, carbon, and nitrogen move in continuous cycles.',EMERGE:'Species emerge from dormancy when conditions are right.',FILTER:'Wetlands filter toxins and pollutants from water.',FLOW:'Rivers carry energy and life across landscapes.',GROW:'Growth requires sunlight, nutrients, water, and time.',HEAL:'Ecosystems heal through succession and regeneration.',MIGRATE:'Animals migrate in response to temperature and food.',PERSIST:'Resilient species persist through drought and climate shifts.',RENEW:'Forests renew after fire through decomposition.',RESTORE:'Restoration rebuilds what human impact has damaged.',RETURN:'Salmon return to birth streams to complete their cycle.',RISE:'Sea levels rise as global temperatures increase.',ROOT:'Deep roots stabilize plants during periods of drought.',SHINE:'The sun powers all life through photosynthesis.',SUSTAIN:'Sustainability keeps ecosystems viable for future generations.',THRIVE:'Species thrive where their needs are consistently met.',TRANSFORM:'Metamorphosis transforms living matter into something new.'};
+var SCI={ABSORB:'Plants absorb carbon, water, and nutrients to sustain life.',ADAPT:'Species adapt to changing environments through evolution.',ANCHOR:'Root systems anchor soil and prevent erosion.',BALANCE:'Ecosystems need balance between predators and prey.',BLOOM:'Plants bloom in response to light and temperature.',BREATHE:'Photosynthesis and respiration are the breath of Earth.',CLEAR:'Clear water and air signal a healthy environment.',CONNECT:'Food webs connect every organism in an ecosystem.',CYCLE:'Water, carbon, and nitrogen move in continuous cycles.',EMERGE:'Species emerge from dormancy when conditions are right.',FILTER:'Wetlands filter toxins and pollutants from water.',FLOW:'Rivers carry energy and life across landscapes.',GROW:'Growth requires sunlight, nutrients, water, and time.',HEAL:'Ecosystems heal through succession and regeneration.',MIGRATE:'Animals migrate in response to temperature and food.',PERSIST:'Resilient species persist through drought and climate shifts.',RENEW:'Forests renew after fire through decomposition.',RESTORE:'Restoration rebuilds what human impact has damaged.',RETURN:'Salmon return to birth streams to complete their cycle.',RISE:'Sea levels rise as global temperatures increase.',ROOT:'Deep roots stabilize plants during periods of drought.',SHINE:'The sun powers all life through photosynthesis.',SUSTAIN:'Sustainability keeps ecosystems viable for future generations.',THRIVE:'Species thrive where their needs are consistently met.',TRANSFORM:'Metamorphosis transforms living matter into something new.'};
 
-var SEL = {ABSORB:'Taking in new experiences with an open and curious mind.',ADAPT:'Adjusting your approach when life feels uncertain.',ANCHOR:'Finding people and practices that keep you grounded.',BALANCE:'Maintaining balance between work, rest, and relationships.',BLOOM:'Thriving when your environment meets your essential needs.',BREATHE:'Breath is the fastest tool for calming your nervous system.',CLEAR:'Clarity comes when we slow down and release what is not ours.',CONNECT:'Healthy relationships and belonging are essential to well-being.',CYCLE:'Life moves in cycles of rest, effort, grief, and renewal.',EMERGE:'Growth happens gradually, then you emerge stronger than before.',FILTER:'Filtering out negativity so you can focus on what truly matters.',FLOW:'Finding your flow state where effort feels completely effortless.',GROW:'Personal growth requires the same patience ecosystems demand.',HEAL:'Healing is not linear for people or for nature. Both need time.',MIGRATE:'Transitions and change are a natural part of every life journey.',PERSIST:'Persistence through difficulty builds strength and character.',RENEW:'Rest and recovery are how we renew our energy and purpose.',RESTORE:'Restoring relationships and self-trust after hard seasons.',RETURN:'Returning to your values after feeling lost is always possible.',RISE:'Rising above challenges without denying they ever existed.',ROOT:'Your roots in family and values keep you stable when life shifts.',SHINE:'Letting your authentic self shine is a gift to the world.',SUSTAIN:'Building daily habits that sustain your mental and physical health.',THRIVE:'You deserve environments where you can truly and fully thrive.',TRANSFORM:'Every challenge you survive has the power to transform you.'};
+var SEL={ABSORB:'Taking in new experiences with an open and curious mind.',ADAPT:'Adjusting your approach when life feels uncertain.',ANCHOR:'Finding people and practices that keep you grounded.',BALANCE:'Maintaining balance between work, rest, and relationships.',BLOOM:'Thriving when your environment meets your essential needs.',BREATHE:'Breath is the fastest tool for calming your nervous system.',CLEAR:'Clarity comes when we slow down and release what is not ours.',CONNECT:'Healthy relationships and belonging are essential to well-being.',CYCLE:'Life moves in cycles of rest, effort, grief, and renewal.',EMERGE:'Growth happens gradually, then you emerge stronger.',FILTER:'Filtering out negativity so you can focus on what matters.',FLOW:'Finding your flow state where effort feels effortless.',GROW:'Personal growth requires the same patience ecosystems demand.',HEAL:'Healing is not linear for people or nature. Both need time.',MIGRATE:'Transitions and change are a natural part of every journey.',PERSIST:'Persistence through difficulty builds strength and character.',RENEW:'Rest and recovery are how we renew our energy and purpose.',RESTORE:'Restoring relationships and self-trust after hard seasons.',RETURN:'Returning to your values after feeling lost is always possible.',RISE:'Rising above challenges without denying they ever existed.',ROOT:'Your roots in family and values keep you stable when life shifts.',SHINE:'Letting your authentic self shine is a gift to the world.',SUSTAIN:'Building daily habits that sustain your mental health.',THRIVE:'You deserve environments where you can truly and fully thrive.',TRANSFORM:'Every challenge you survive has the power to transform you.'};
 
-var ZOO = {ABSORB:{e:'🌿',n:'Mangrove'},ADAPT:{e:'🦎',n:'Chameleon'},ANCHOR:{e:'🐢',n:'Sea Turtle'},BALANCE:{e:'🦁',n:'Lion'},BLOOM:{e:'🦋',n:'Butterfly'},BREATHE:{e:'🐟',n:'Whale'},CLEAR:{e:'🐙',n:'Elephant'},CONNECT:{e:'🐼',n:'Chimpanzee'},CYCLE:{e:'🐠',n:'Salmon'},EMERGE:{e:'🐸',n:'Tree Frog'},FILTER:{e:'🐬',n:'Whale Shark'},FLOW:{e:'🦦',n:'Otter'},GROW:{e:'🦒',n:'Giraffe'},HEAL:{e:'🐻',n:'Bear'},MIGRATE:{e:'🦆',n:'Arctic Tern'},PERSIST:{e:'🦖',n:'Komodo Dragon'},RENEW:{e:'🦎',n:'Salamander'},RESTORE:{e:'🐘',n:'Elephant'},RETURN:{e:'🐡',n:'Clownfish'},RISE:{e:'🦅',n:'Eagle'},ROOT:{e:'🐎',n:'Horse'},SHINE:{e:'🦚',n:'Peacock'},SUSTAIN:{e:'🐍',n:'Python'},THRIVE:{e:'🐇',n:'Rabbit'},TRANSFORM:{e:'🐛',n:'Caterpillar'}};
+var ZOO={ABSORB:{e:'🌿',n:'Mangrove'},ADAPT:{e:'🦎',n:'Chameleon'},ANCHOR:{e:'🐢',n:'Sea Turtle'},BALANCE:{e:'🦁',n:'Lion'},BLOOM:{e:'🦋',n:'Butterfly'},BREATHE:{e:'🐋',n:'Whale'},CLEAR:{e:'🐘',n:'Elephant'},CONNECT:{e:'🐒',n:'Chimp'},CYCLE:{e:'🐟',n:'Salmon'},EMERGE:{e:'🐸',n:'Tree Frog'},FILTER:{e:'🦈',n:'Whale Shark'},FLOW:{e:'🦦',n:'Otter'},GROW:{e:'🦒',n:'Giraffe'},HEAL:{e:'🐻',n:'Bear'},MIGRATE:{e:'🦅',n:'Eagle'},PERSIST:{e:'🐊',n:'Crocodile'},RENEW:{e:'🦎',n:'Salamander'},RESTORE:{e:'🐘',n:'Elephant'},RETURN:{e:'🐡',n:'Clownfish'},RISE:{e:'🦅',n:'Eagle'},ROOT:{e:'🐎',n:'Horse'},SHINE:{e:'🦚',n:'Peacock'},SUSTAIN:{e:'🐍',n:'Python'},THRIVE:{e:'🐇',n:'Rabbit'},TRANSFORM:{e:'🐛',n:'Caterpillar'}};
 
-var TC = ['#87CEEB','#87CEEB','#4caf82','#4caf82','#87CEEB','#87CEEB','#4caf82','#F5C842','#D4854A','#D4854A','#F5C842','#4caf82','#4caf82','#c9a84c','#c9a84c','#c9a84c','#87CEEB','#87CEEB','#4caf82','#5b9bd5','#5b9bd5','#4caf82','#c9a84c','#c9a84c','#F5C842','#F5C842','#D4854A','#4caf82','#87CEEB','#87CEEB','#87CEEB','#4caf82','#4caf82','#c9a84c','#c9a84c','#87CEEB'];
+var TC=['#87CEEB','#87CEEB','#4caf82','#4caf82','#87CEEB','#87CEEB','#4caf82','#F5C842','#D4854A','#D4854A','#F5C842','#4caf82','#4caf82','#c9a84c','#c9a84c','#87CEEB','#87CEEB','#4caf82','#5b9bd5','#5b9bd5','#4caf82','#c9a84c','#F5C842','#F5C842','#D4854A','#4caf82','#87CEEB','#87CEEB','#4caf82','#4caf82','#c9a84c','#c9a84c','#87CEEB','#87CEEB','#4caf82','#4caf82'];
 
-var mode = '';
-var chosen = [];
-var cards = [];
-var flipped = [];
-var matched = 0;
-var moves = 0;
-var score = 0;
-var secs = 0;
-var ticker = null;
-var canFlip = true;
+var mode='',chosen=[],cards=[],flipped=[],matched=0,moves=0,score=0,secs=0,ticker=null,canFlip=true;
 
 function pickMode(m) {
-  mode = m;
-  chosen = [];
-  var mbs = document.getElementsByClassName('mbtn');
-  for (var i = 0; i < mbs.length; i++) { mbs[i].className = 'mbtn'; }
-  document.getElementById('mb-' + m).className = 'mbtn active';
-  var wbs = document.getElementsByClassName('wbtn');
-  for (var j = 0; j < wbs.length; j++) { wbs[j].className = 'wbtn'; }
-  document.getElementById('counter').textContent = '0 of 6 selected';
-  document.getElementById('startBtn').className = 'sbtn off';
-  document.getElementById('owPanel').className = 'ow-panel show';
-  document.getElementById('gamePanel').className = 'game-panel';
-  document.getElementById('winPanel').className = 'win-panel';
+  mode=m; chosen=[];
+  var bs=document.getElementsByClassName('mbtn');
+  for(var i=0;i<bs.length;i++) bs[i].className='mbtn';
+  document.getElementById('mb-'+m).className='mbtn active';
+  var ws=document.getElementsByClassName('wbtn');
+  for(var j=0;j<ws.length;j++) ws[j].className='wbtn';
+  document.getElementById('counter').textContent='0 of 6 selected';
+  document.getElementById('startBtn').className='sbtn off';
+  document.getElementById('owPanel').className='panel show';
+  document.getElementById('gamePanel').className='panel';
+  document.getElementById('winBox').className='win-box';
+  document.getElementById('owPanel').scrollIntoView({behavior:'smooth'});
 }
 
-function toggleW(w, btn) {
-  var idx = chosen.indexOf(w);
-  if (idx !== -1) {
-    chosen.splice(idx, 1);
-    btn.className = 'wbtn';
-  } else {
-    if (chosen.length >= 6) { return; }
-    chosen.push(w);
-    btn.className = 'wbtn on';
-  }
-  document.getElementById('counter').textContent = chosen.length + ' of 6 selected';
-  var sb = document.getElementById('startBtn');
-  if (chosen.length >= 6) { sb.className = 'sbtn'; } else { sb.className = 'sbtn off'; }
+function toggleW(w,btn) {
+  var idx=chosen.indexOf(w);
+  if(idx!==-1){chosen.splice(idx,1);btn.className='wbtn';}
+  else{if(chosen.length>=6)return;chosen.push(w);btn.className='wbtn on';}
+  document.getElementById('counter').textContent=chosen.length+' of 6 selected';
+  document.getElementById('startBtn').className=chosen.length>=6?'sbtn':'sbtn off';
 }
 
 function startGame() {
-  if (chosen.length < 6) { return; }
-  if (ticker) { clearInterval(ticker); }
-  flipped = []; matched = 0; moves = 0; score = 0; secs = 0; canFlip = true;
-  document.getElementById('sTime').textContent = '0';
-  document.getElementById('sMoves').textContent = '0';
-  document.getElementById('sMatch').textContent = '0';
-  document.getElementById('sScore').textContent = '0';
-  document.getElementById('winPanel').className = 'win-panel';
+  if(chosen.length<6)return;
+  if(ticker)clearInterval(ticker);
+  flipped=[];matched=0;moves=0;score=0;secs=0;canFlip=true;
+  document.getElementById('sTime').textContent='0';
+  document.getElementById('sMoves').textContent='0';
+  document.getElementById('sMatch').textContent='0';
+  document.getElementById('sScore').textContent='0';
+  document.getElementById('winBox').className='win-box';
 
-  var pairs = [];
-  for (var i = 0; i < chosen.length; i++) {
-    pairs.push({w: chosen[i], side: 'word'});
-    pairs.push({w: chosen[i], side: 'match'});
+  var pairs=[];
+  for(var i=0;i<chosen.length;i++){
+    pairs.push({w:chosen[i],side:'word'});
+    pairs.push({w:chosen[i],side:'match'});
   }
-  for (var i = pairs.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var t = pairs[i]; pairs[i] = pairs[j]; pairs[j] = t;
-  }
-  cards = pairs;
+  for(var i=pairs.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=pairs[i];pairs[i]=pairs[j];pairs[j]=t;}
+  cards=pairs;
 
   buildImgGrid();
-  buildCardGrid();
-  document.getElementById('gamePanel').className = 'game-panel show';
-  document.getElementById('dbg').style.display = 'block';
-  document.getElementById('gamePanel').scrollIntoView({behavior: 'smooth'});
-
-  ticker = setInterval(function() {
-    secs++;
-    document.getElementById('sTime').textContent = secs;
-  }, 1000);
+  buildCards();
+  document.getElementById('gamePanel').className='panel show';
+  document.getElementById('gamePanel').scrollIntoView({behavior:'smooth'});
+  ticker=setInterval(function(){secs++;document.getElementById('sTime').textContent=secs;},1000);
 }
 
 function buildImgGrid() {
-  var g = document.getElementById('imgGrid');
-  g.innerHTML = '';
-  for (var i = 0; i < TC.length; i++) {
-    var d = document.createElement('div');
-    d.className = 'tile';
-    d.id = 'T' + i;
-    d.setAttribute('data-c', TC[i]);
-    g.appendChild(d);
+  var g=document.getElementById('imgGrid');
+  g.innerHTML='';
+  for(var i=0;i<TC.length;i++){
+    var t=document.createElement('div');
+    t.className='tile';
+    t.id='T'+i;
+    t.setAttribute('data-c',TC[i]);
+    g.appendChild(t);
   }
 }
 
-function buildCardGrid() {
-  var g = document.getElementById('cardGrid');
-  g.innerHTML = '';
-  var cols = Math.ceil(Math.sqrt(cards.length * 1.4));
-  g.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
-  for (var i = 0; i < cards.length; i++) {
-    var c = cards[i];
-    var card = document.createElement('div');
-    card.className = 'card';
-    card.id = 'card' + i;
-    (function(idx) {
-      card.addEventListener('click', function() {
-        document.getElementById('dbg').textContent = 'CLICK idx=' + idx + ' canFlip=' + canFlip + ' flipped=' + flipped.length;
-        flipCard(idx);
-      });
-    })(i);
-    var back = document.createElement('div');
-    back.className = 'card-back';
-    back.textContent = '●';
+function buildCards() {
+  var g=document.getElementById('cardGrid');
+  g.innerHTML='';
+  var cols=Math.ceil(Math.sqrt(cards.length*1.4));
+  g.style.gridTemplateColumns='repeat('+cols+',1fr)';
+  for(var i=0;i<cards.length;i++){
+    var c=cards[i];
+    var card=document.createElement('div');
+    card.className='card';
+    var back=document.createElement('div');
+    back.className='cb';
+    back.textContent='\u25cf';
     card.appendChild(back);
-    var front = document.createElement('div');
-    front.className = 'card-front';
-    if (c.side === 'word') {
-      front.innerHTML = '<span class="word-f">' + c.w + '</span>';
-    } else if (mode === 'zoo') {
-      front.innerHTML = '<div class="zoo-f"><span class="zoo-e">' + ZOO[c.w].e + '</span><span class="zoo-n">' + ZOO[c.w].n + '</span></div>';
+    var front=document.createElement('div');
+    front.className='cf';
+    if(c.side==='word'){
+      front.innerHTML='<span class="word-f">'+c.w+'</span>';
+    } else if(mode==='zoo'){
+      front.innerHTML='<div class="zoo-f"><span class="zoo-e">'+ZOO[c.w].e+'</span><span class="zoo-n">'+ZOO[c.w].n+'</span></div>';
     } else {
-      var txt = mode === 'science' ? SCI[c.w] : SEL[c.w];
-      front.innerHTML = '<span class="def-f">' + txt + '</span>';
+      front.innerHTML='<span class="def-f">'+(mode==='science'?SCI[c.w]:SEL[c.w])+'</span>';
     }
     card.appendChild(front);
+    (function(el,idx){
+      el.addEventListener('click',function(){
+        if(!canFlip)return;
+        if(el.classList.contains('match'))return;
+        if(flipped.indexOf(idx)!==-1)return;
+        if(flipped.length>=2)return;
+        el.classList.add('flip');
+        flipped.push(idx);
+        if(flipped.length===2){
+          moves++;
+          document.getElementById('sMoves').textContent=moves;
+          canFlip=false;
+          setTimeout(checkPair,900);
+        }
+      });
+    })(card,i);
     g.appendChild(card);
   }
 }
 
-function flipCard(idx) {
-  document.getElementById('dbg').textContent = 'flipCard(' + idx + ') called. canFlip=' + canFlip + ' flipped=' + flipped.length;
-  if (!canFlip) { return; }
-  var el = document.getElementById('card' + idx);
-  if (!el) { document.getElementById('dbg').textContent += ' NO ELEMENT FOUND'; return; }
-  if (el.classList.contains('match')) { return; }
-  if (flipped.indexOf(idx) !== -1) { return; }
-  if (flipped.length >= 2) { return; }
-  el.classList.add('flip');
-  document.getElementById('dbg').textContent += ' | added flip class. Has flip: ' + el.classList.contains('flip');
-  flipped.push(idx);
-  if (flipped.length === 2) {
-    moves++;
-    document.getElementById('sMoves').textContent = moves;
-    canFlip = false;
-    setTimeout(checkPair, 900);
-  }
-};
-
 function checkPair() {
-  var ca = document.getElementById('card' + flipped[0]);
-  var cb = document.getElementById('card' + flipped[1]);
-  if (cards[flipped[0]].w === cards[flipped[1]].w) {
-    ca.classList.add('match'); ca.classList.remove('flip');
-    cb.classList.add('match'); cb.classList.remove('flip');
+  var g=document.getElementById('cardGrid');
+  var ca=g.children[flipped[0]];
+  var cb=g.children[flipped[1]];
+  if(cards[flipped[0]].w===cards[flipped[1]].w){
+    ca.classList.add('match');ca.classList.remove('flip');
+    cb.classList.add('match');cb.classList.remove('flip');
     matched++;
-    var pts = Math.max(10, 100 - moves * 2 - secs);
-    score += pts;
-    document.getElementById('sMatch').textContent = matched;
-    document.getElementById('sScore').textContent = score;
+    var pts=Math.max(10,100-moves*2-secs);
+    score+=pts;
+    document.getElementById('sMatch').textContent=matched;
+    document.getElementById('sScore').textContent=score;
     revealTiles(matched);
-    if (matched === chosen.length) {
-      clearInterval(ticker);
-      setTimeout(showWin, 500);
-    }
+    if(matched===chosen.length){clearInterval(ticker);setTimeout(showWin,500);}
   } else {
-    ca.classList.add('wrong'); cb.classList.add('wrong');
-    setTimeout(function() {
-      ca.classList.remove('flip', 'wrong');
-      cb.classList.remove('flip', 'wrong');
-    }, 600);
+    ca.classList.add('wrong');cb.classList.add('wrong');
+    setTimeout(function(){ca.classList.remove('flip','wrong');cb.classList.remove('flip','wrong');},700);
   }
-  flipped = [];
-  canFlip = true;
+  flipped=[];canFlip=true;
 }
 
 function revealTiles(n) {
-  var per = Math.floor(TC.length / chosen.length);
-  var start = (n - 1) * per;
-  var end = (n === chosen.length) ? TC.length : start + per;
-  for (var i = start; i < end; i++) {
-    (function(idx) {
-      setTimeout(function() {
-        var t = document.getElementById('T' + idx);
-        if (t) { t.style.background = t.getAttribute('data-c'); }
-      }, idx * 50);
-    })(i);
+  var per=Math.floor(TC.length/chosen.length);
+  var start=(n-1)*per;
+  var end=n===chosen.length?TC.length:start+per;
+  for(var i=start;i<end;i++){
+    (function(idx){setTimeout(function(){
+      var t=document.getElementById('T'+idx);
+      if(t)t.style.background=t.getAttribute('data-c');
+    },idx*50);})(i);
   }
 }
 
 function showWin() {
-  document.getElementById('wTime').textContent = secs;
-  document.getElementById('wMoves').textContent = moves;
-  document.getElementById('wScore').textContent = score;
-  var bio = mode === 'science'
-    ? 'You matched all ' + chosen.length + ' science connections! These OneWords bridge the natural systems AP Biology studies with the human experiences we all share.'
-    : mode === 'sel'
-    ? 'You matched all ' + chosen.length + ' belonging connections! T.I.D.E. Coalition members carry these values into every school they serve.'
-    : 'You matched all ' + chosen.length + ' zoo animals! Every animal at the Norfolk Zoo is living proof that biology and belonging tell the same story.';
-  document.getElementById('winBio').textContent = bio;
-  document.getElementById('winPanel').className = 'win-panel show';
-  document.getElementById('winPanel').scrollIntoView({behavior: 'smooth'});
+  document.getElementById('wTime').textContent=secs;
+  document.getElementById('wMoves').textContent=moves;
+  document.getElementById('wScore').textContent=score;
+  var bio=mode==='science'?'You matched all '+chosen.length+' science connections! These OneWords bridge the natural systems AP Biology studies with the human experiences we all share.':mode==='sel'?'You matched all '+chosen.length+' belonging connections! T.I.D.E. Coalition members carry these values into every school they serve.':'You matched all '+chosen.length+' zoo animals! Every animal at the Norfolk Zoo proves that biology and belonging tell the same story.';
+  document.getElementById('winBio').textContent=bio;
+  document.getElementById('winBox').className='win-box show';
+  document.getElementById('winBox').scrollIntoView({behavior:'smooth'});
 }
 
 function resetAll() {
-  if (ticker) { clearInterval(ticker); }
-  mode = ''; chosen = [];
-  var mbs = document.getElementsByClassName('mbtn');
-  for (var i = 0; i < mbs.length; i++) { mbs[i].className = 'mbtn'; }
-  document.getElementById('owPanel').className = 'ow-panel';
-  document.getElementById('gamePanel').className = 'game-panel';
-  document.getElementById('winPanel').className = 'win-panel';
-  window.scrollTo({top: 0, behavior: 'smooth'});
+  if(ticker)clearInterval(ticker);
+  mode='';chosen=[];
+  var bs=document.getElementsByClassName('mbtn');
+  for(var i=0;i<bs.length;i++) bs[i].className='mbtn';
+  document.getElementById('owPanel').className='panel';
+  document.getElementById('gamePanel').className='panel';
+  document.getElementById('winBox').className='win-box';
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 </script>
 </body>
