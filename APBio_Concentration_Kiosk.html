@@ -245,6 +245,24 @@ function buildImgGrid() {
   }
 }
 
+window.flipCard=function(idx){
+  if(!canFlip)return;
+  var g=document.getElementById('cardGrid');
+  var el=g.children[idx];
+  if(!el)return;
+  if(el.classList.contains('match'))return;
+  if(flipped.indexOf(idx)!==-1)return;
+  if(flipped.length>=2)return;
+  el.classList.add('flip');
+  flipped.push(idx);
+  if(flipped.length===2){
+    moves++;
+    document.getElementById('sMoves').textContent=moves;
+    canFlip=false;
+    setTimeout(checkPair,900);
+  }
+};
+
 function buildCards() {
   var g=document.getElementById('cardGrid');
   g.innerHTML='';
@@ -268,22 +286,7 @@ function buildCards() {
       front.innerHTML='<span class="def-f">'+(mode==='science'?SCI[c.w]:SEL[c.w])+'</span>';
     }
     card.appendChild(front);
-    (function(el,idx){
-      el.addEventListener('click',function(){
-        if(!canFlip)return;
-        if(el.classList.contains('match'))return;
-        if(flipped.indexOf(idx)!==-1)return;
-        if(flipped.length>=2)return;
-        el.classList.add('flip');
-        flipped.push(idx);
-        if(flipped.length===2){
-          moves++;
-          document.getElementById('sMoves').textContent=moves;
-          canFlip=false;
-          setTimeout(checkPair,900);
-        }
-      });
-    })(card,i);
+    card.setAttribute('onclick','flipCard('+i+')');
     g.appendChild(card);
   }
 }
