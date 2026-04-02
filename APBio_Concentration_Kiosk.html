@@ -44,10 +44,6 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 .rbtn{background:transparent;border:1px solid #333;color:#666;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 12px;border-radius:8px;cursor:pointer;margin-left:auto;}
 .rbtn:hover{border-color:#D4537E;color:#D4537E;}
 
-.img-box{background:#0d0d0d;border:1px solid #1a2a3a;border-radius:12px;padding:14px;margin-bottom:12px;}
-.img-lbl{font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#c8c4bc;margin-bottom:10px;}
-.img-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;}
-.tile{height:12px;border-radius:2px;background:#1a2a3a;transition:background .4s;}
 
 .card-grid{display:grid;gap:10px;grid-auto-rows:100px;}
 .card{background:#0d0d0d;border:2px solid #1a2a3a;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:8px;text-align:center;overflow:hidden;width:100%;}
@@ -144,10 +140,6 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
       <div class="stat"><span class="stat-n" id="sScore">0</span><span class="stat-l">Points</span></div>
       <button class="rbtn" onclick="startGame()">&#8635; Reset</button>
     </div>
-    <div class="img-box">
-      <div class="img-lbl">&#127774; Reveal the hidden image &mdash; each match uncovers tiles!</div>
-      <div class="img-grid" id="imgGrid"></div>
-    </div>
     <div class="card-grid" id="cardGrid"></div>
   </div>
 
@@ -174,8 +166,6 @@ var SCI={ABSORB:'Plants absorb carbon, water, and nutrients to sustain life.',AD
 var SEL={ABSORB:'Taking in new experiences with an open and curious mind.',ADAPT:'Adjusting your approach when life feels uncertain.',ANCHOR:'Finding people and practices that keep you grounded.',BALANCE:'Maintaining balance between work, rest, and relationships.',BLOOM:'Thriving when your environment meets your essential needs.',BREATHE:'Breath is the fastest tool for calming your nervous system.',CLEAR:'Clarity comes when we slow down and release what is not ours.',CONNECT:'Healthy relationships and belonging are essential to well-being.',CYCLE:'Life moves in cycles of rest, effort, grief, and renewal.',EMERGE:'Growth happens gradually, then you emerge stronger.',FILTER:'Filtering out negativity so you can focus on what matters.',FLOW:'Finding your flow state where effort feels effortless.',GROW:'Personal growth requires the same patience ecosystems demand.',HEAL:'Healing is not linear for people or nature. Both need time.',MIGRATE:'Transitions and change are a natural part of every journey.',PERSIST:'Persistence through difficulty builds strength and character.',RENEW:'Rest and recovery are how we renew our energy and purpose.',RESTORE:'Restoring relationships and self-trust after hard seasons.',RETURN:'Returning to your values after feeling lost is always possible.',RISE:'Rising above challenges without denying they ever existed.',ROOT:'Your roots in family and values keep you stable when life shifts.',SHINE:'Letting your authentic self shine is a gift to the world.',SUSTAIN:'Building daily habits that sustain your mental health.',THRIVE:'You deserve environments where you can truly and fully thrive.',TRANSFORM:'Every challenge you survive has the power to transform you.'};
 
 var ZOO={ABSORB:{e:'🌿',n:'Mangrove'},ADAPT:{e:'🦎',n:'Chameleon'},ANCHOR:{e:'🐢',n:'Sea Turtle'},BALANCE:{e:'🦁',n:'Lion'},BLOOM:{e:'🦋',n:'Butterfly'},BREATHE:{e:'🐋',n:'Whale'},CLEAR:{e:'🐘',n:'Elephant'},CONNECT:{e:'🐒',n:'Chimp'},CYCLE:{e:'🐟',n:'Salmon'},EMERGE:{e:'🐸',n:'Tree Frog'},FILTER:{e:'🦈',n:'Whale Shark'},FLOW:{e:'🦦',n:'Otter'},GROW:{e:'🦒',n:'Giraffe'},HEAL:{e:'🐻',n:'Bear'},MIGRATE:{e:'🦅',n:'Eagle'},PERSIST:{e:'🐊',n:'Crocodile'},RENEW:{e:'🦎',n:'Salamander'},RESTORE:{e:'🐘',n:'Elephant'},RETURN:{e:'🐡',n:'Clownfish'},RISE:{e:'🦅',n:'Eagle'},ROOT:{e:'🐎',n:'Horse'},SHINE:{e:'🦚',n:'Peacock'},SUSTAIN:{e:'🐍',n:'Python'},THRIVE:{e:'🐇',n:'Rabbit'},TRANSFORM:{e:'🐛',n:'Caterpillar'}};
-
-var TC=['#87CEEB','#87CEEB','#4caf82','#4caf82','#87CEEB','#87CEEB','#4caf82','#F5C842','#D4854A','#D4854A','#F5C842','#4caf82','#4caf82','#c9a84c','#c9a84c','#87CEEB','#87CEEB','#4caf82','#5b9bd5','#5b9bd5','#4caf82','#c9a84c','#F5C842','#F5C842','#D4854A','#4caf82','#87CEEB','#87CEEB','#4caf82','#4caf82','#c9a84c','#c9a84c','#87CEEB','#87CEEB','#4caf82','#4caf82'];
 
 var mode='',chosen=[],cards=[],flipped=[],matched=0,moves=0,score=0,secs=0,ticker=null,canFlip=true;
 
@@ -220,23 +210,10 @@ function startGame() {
   for(var i=pairs.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=pairs[i];pairs[i]=pairs[j];pairs[j]=t;}
   cards=pairs;
 
-  buildImgGrid();
   buildCards();
   document.getElementById('gamePanel').className='panel show';
   document.getElementById('gamePanel').scrollIntoView({behavior:'smooth'});
   ticker=setInterval(function(){secs++;document.getElementById('sTime').textContent=secs;},1000);
-}
-
-function buildImgGrid() {
-  var g=document.getElementById('imgGrid');
-  g.innerHTML='';
-  for(var i=0;i<TC.length;i++){
-    var t=document.createElement('div');
-    t.className='tile';
-    t.id='T'+i;
-    t.setAttribute('data-c',TC[i]);
-    g.appendChild(t);
-  }
 }
 
 function buildCards() {
@@ -291,7 +268,6 @@ function checkPair() {
     score+=pts;
     document.getElementById('sMatch').textContent=matched;
     document.getElementById('sScore').textContent=score;
-    revealTiles(matched);
     if(matched===chosen.length){clearInterval(ticker);setTimeout(showWin,500);}
   } else {
     ca.classList.add('wrong');cb.classList.add('wrong');
@@ -304,18 +280,6 @@ function checkPair() {
     },700);
   }
   flipped=[];canFlip=true;
-}
-
-function revealTiles(n) {
-  var per=Math.floor(TC.length/chosen.length);
-  var start=(n-1)*per;
-  var end=n===chosen.length?TC.length:start+per;
-  for(var i=start;i<end;i++){
-    (function(idx){setTimeout(function(){
-      var t=document.getElementById('T'+idx);
-      if(t)t.style.background=t.getAttribute('data-c');
-    },idx*50);})(i);
-  }
 }
 
 function showWin() {
