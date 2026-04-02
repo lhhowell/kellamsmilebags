@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Teacher Guide &mdash; AP Bio &amp; T.I.D.E. Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#f8f7f4;color:#1a1a2e;min-height:100vh;padding:0 0 80px;}
+
+/* Hero */
+.hero{background:#1a1a2e;padding:48px 32px 44px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(76,175,130,.15) 0%,transparent 65%);pointer-events:none;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:4px;color:#4caf82;text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,48px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:12px;}
+.hero-title span{color:#c9a84c;}
+.hero-sub{font-size:15px;color:#8a9ab8;max-width:640px;margin:0 auto 20px;line-height:1.7;}
+.pill-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.pill{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;padding:6px 14px;border-radius:20px;}
+.pill-teal{background:rgba(76,175,130,.15);color:#4caf82;border:1px solid rgba(76,175,130,.3);}
+.pill-gold{background:rgba(201,168,76,.15);color:#c9a84c;border:1px solid rgba(201,168,76,.3);}
+.pill-pink{background:rgba(212,83,126,.15);color:#D4537E;border:1px solid rgba(212,83,126,.3);}
+
+/* Back btn */
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(76,175,130,.08);border:1px solid #4caf82;color:#4caf82;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;margin:24px 32px 0;}
+
+/* Layout */
+.content{max-width:860px;margin:0 auto;padding:0 32px;}
+
+/* Section headers */
+.section{margin-top:48px;}
+.section-tag{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#4caf82;margin-bottom:8px;}
+.section-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#1a1a2e;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid #e8e4dc;}
+
+/* Cards */
+.card{background:#fff;border:1px solid #e8e4dc;border-radius:14px;padding:24px;margin-bottom:14px;box-shadow:0 2px 8px rgba(26,26,46,.04);}
+.card-title{font-family:'Fredoka One',cursive;font-size:14px;letter-spacing:1px;color:#1a1a2e;margin-bottom:10px;}
+.card p{font-size:14px;color:#444;line-height:1.75;margin-bottom:10px;}
+.card p:last-child{margin-bottom:0;}
+
+/* Info blocks */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.info-block{background:#fff;border:1px solid #e8e4dc;border-radius:12px;padding:18px;}
+.info-block-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#888;margin-bottom:6px;}
+.info-block-value{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#1a1a2e;line-height:1.3;}
+.info-block-sub{font-size:12px;color:#888;margin-top:4px;}
+
+/* Group cards */
+.group-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.group-card{border-radius:12px;padding:20px;}
+.group-card.bio{background:#e8f5ee;border:1px solid #b8ddc8;}
+.group-card.tide{background:#fde8ef;border:1px solid #f4c0d1;}
+.group-card-tag{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.group-card.bio .group-card-tag{color:#1B7A78;}
+.group-card.tide .group-card-tag{color:#993556;}
+.group-card-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#1a1a2e;margin-bottom:8px;}
+.group-card p{font-size:13px;color:#555;line-height:1.65;}
+
+/* Translation table */
+.zoo-table{width:100%;border-collapse:collapse;font-size:13px;}
+.zoo-table th{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:10px 14px;text-align:left;background:#f0f8f4;color:#1B7A78;border-bottom:2px solid #b8ddc8;}
+.zoo-table td{padding:12px 14px;border-bottom:1px solid #f0f0e8;color:#444;line-height:1.55;vertical-align:top;}
+.zoo-table tr:last-child td{border-bottom:none;}
+.zoo-table tr:hover td{background:#fafaf6;}
+.zoo-num{font-family:'Fredoka One',cursive;font-size:13px;color:#1B7A78;font-weight:700;}
+
+/* Kiosk list */
+.kiosk-cat{margin-bottom:20px;}
+.kiosk-cat-title{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#888;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #e8e4dc;}
+.kiosk-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid #f5f5f0;}
+.kiosk-item:last-child{border-bottom:none;}
+.kiosk-icon{font-size:18px;flex-shrink:0;margin-top:2px;}
+.kiosk-name{font-family:'Fredoka One',cursive;font-size:13px;color:#1a1a2e;display:block;margin-bottom:3px;}
+.kiosk-desc{font-size:12px;color:#888;line-height:1.5;}
+.kiosk-link{font-size:11px;color:#4caf82;font-family:'Fredoka One',cursive;letter-spacing:1px;}
+
+/* Steps */
+.step-list{list-style:none;}
+.step-item{display:flex;gap:16px;margin-bottom:16px;align-items:flex-start;}
+.step-num{background:#1a1a2e;color:#c9a84c;font-family:'Fredoka One',cursive;font-size:14px;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.step-body{flex:1;}
+.step-title{font-family:'Fredoka One',cursive;font-size:14px;color:#1a1a2e;margin-bottom:4px;}
+.step-desc{font-size:13px;color:#555;line-height:1.65;}
+
+/* Timeline */
+.timeline{border-left:3px solid #e8e4dc;padding-left:24px;margin-left:12px;}
+.timeline-item{position:relative;margin-bottom:24px;}
+.timeline-item::before{content:'';position:absolute;left:-31px;top:6px;width:12px;height:12px;border-radius:50%;background:#4caf82;border:2px solid #fff;box-shadow:0 0 0 2px #4caf82;}
+.timeline-phase{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#4caf82;margin-bottom:4px;}
+.timeline-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#1a1a2e;margin-bottom:6px;}
+.timeline-desc{font-size:13px;color:#555;line-height:1.65;}
+
+/* Supply list */
+.supply-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.supply-item{background:#f8f7f4;border:1px solid #e8e4dc;border-radius:8px;padding:12px 14px;font-size:13px;color:#444;display:flex;align-items:center;gap:10px;}
+.supply-dot{width:8px;height:8px;border-radius:50%;background:#4caf82;flex-shrink:0;}
+
+/* Notes */
+.note{background:#fff9e6;border-left:4px solid #c9a84c;border-radius:4px;padding:14px 16px;font-size:13px;color:#555;line-height:1.65;margin-bottom:12px;}
+.note strong{color:#1a1a2e;}
+
+/* Links */
+.link-btn{display:inline-flex;align-items:center;gap:8px;background:#1a1a2e;color:#4caf82;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 18px;border-radius:8px;text-decoration:none;margin-top:10px;margin-right:8px;}
+.link-btn:hover{background:#2a2a4e;}
+
+/* Future Ready */
+.fr-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fr-item{background:#f0f8f4;border:1px solid #b8ddc8;border-radius:8px;padding:12px 14px;}
+.fr-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;margin-bottom:4px;}
+.fr-value{font-size:13px;color:#333;line-height:1.5;}
+
+.footer{text-align:center;padding:32px;margin-top:48px;border-top:1px solid #e8e4dc;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:12px;color:#aaa;letter-spacing:1px;}
+
+@media print{
+  body{background:#fff;}
+  .hero{background:#1a1a2e!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .back-btn{display:none;}
+  @page{size:letter;margin:.5in;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Teacher Guide</div>
+  <h1 class="hero-title">AP Biology &amp;<br><span>T.I.D.E. Coalition</span></h1>
+  <p class="hero-sub">Everything Elena O&rsquo;Brien needs to coordinate 20 Smile Bags for North Landing Elementary &mdash; from Zoo Project to bag assembly.</p>
+  <div class="pill-row">
+    <div class="pill pill-teal">&#128300; AP Biology &middot; 10 Bags</div>
+    <div class="pill pill-pink">&#128149; T.I.D.E. Coalition &middot; 10 Bags</div>
+    <div class="pill pill-gold">&#127981; North Landing Elementary &middot; K&ndash;5</div>
+  </div>
+</div>
+
+<a href="APBio_TIDE_Preview.html" class="back-btn">&#8592; Back to Overview</a>
+
+<div class="content">
+
+  <!-- PROJECT AT A GLANCE -->
+  <div class="section">
+    <div class="section-tag">Overview</div>
+    <div class="section-title">Project at a Glance</div>
+
+    <div class="info-grid">
+      <div class="info-block">
+        <div class="info-block-label">Total Bags</div>
+        <div class="info-block-value">20 Smile Bags</div>
+        <div class="info-block-sub">10 AP Biology &middot; 10 T.I.D.E. Coalition</div>
+      </div>
+      <div class="info-block">
+        <div class="info-block-label">Recipients</div>
+        <div class="info-block-value">North Landing Elementary</div>
+        <div class="info-block-sub">Grades K&ndash;5 &middot; Identified by counselors</div>
+      </div>
+      <div class="info-block">
+        <div class="info-block-label">Items Per Bag</div>
+        <div class="info-block-value">10 Items</div>
+        <div class="info-block-sub">5 core required + 5 from kiosk menu &middot; Min. 3 categories</div>
+      </div>
+      <div class="info-block">
+        <div class="info-block-label">Delivery Deadline</div>
+        <div class="info-block-value">May 30, 2026</div>
+        <div class="info-block-sub">All bags assembled &amp; delivered</div>
+      </div>
+    </div>
+
+    <div class="group-grid">
+      <div class="group-card bio">
+        <div class="group-card-tag">&#128300; AP Biology</div>
+        <div class="group-card-title">Class Assignment</div>
+        <p>AP Biology students connect their Norfolk Zoo capstone project to their Smile Bag. This counts as a <strong>class grade</strong> &mdash; not service points. Each student produces 10 items rooted in their Zoo Project observations, science, and empathy for a K&ndash;5 student.</p>
+      </div>
+      <div class="group-card tide">
+        <div class="group-card-tag">&#128149; T.I.D.E. Coalition</div>
+        <div class="group-card-title">Club Service Project</div>
+        <p>T.I.D.E. Coalition members build their bags as a <strong>club service project</strong> &mdash; no service points. Their items focus on belonging, inclusion, and wellness. Their bags carry the T.I.D.E. values of Togetherness, Inclusion, Diversity, and Equity into every elementary classroom they reach.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZOO PROJECT TRANSLATION -->
+  <div class="section">
+    <div class="section-tag">AP Biology</div>
+    <div class="section-title">Zoo Project &rarr; Bag Item Translation</div>
+    <div class="card">
+      <p>Each AP Biology Zoo Project option translates into a specific bag item. Students use their field observations, research, and zoo work as the foundation for their science contribution to the bag.</p>
+      <table class="zoo-table" style="margin-top:14px;">
+        <thead>
+          <tr>
+            <th>Option</th>
+            <th>Zoo Project</th>
+            <th>Bag Item</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="zoo-num">1</span></td><td>Behavioral Journal</td><td>A behavior scene puzzle or activity card the elementary student completes themselves</td></tr>
+          <tr><td><span class="zoo-num">2</span></td><td>Conservation Campaign</td><td>A conservation pledge card or awareness poster sized for a child&rsquo;s bedroom</td></tr>
+          <tr><td><span class="zoo-num">3</span></td><td>Comparative Anatomy</td><td>A labeled animal diagram or anatomy match card the elementary student fills in</td></tr>
+          <tr><td><span class="zoo-num">4</span></td><td>Habitat Design</td><td>A habitat coloring scene or build-your-own habitat activity card</td></tr>
+          <tr><td><span class="zoo-num">5</span></td><td>Food Web Analysis</td><td>A food web puzzle or drag-and-drop activity card the elementary student builds</td></tr>
+          <tr><td><span class="zoo-num">6</span></td><td>Species Profile</td><td>A trading-card style species profile the elementary student can keep and collect</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CORE BAG ITEMS -->
+  <div class="section">
+    <div class="section-tag">Every Bag</div>
+    <div class="section-title">5 Core Required Items</div>
+    <div class="card">
+      <p>Every bag &mdash; AP Biology and T.I.D.E. &mdash; must include these 5 items. They ensure every elementary student receives a complete, consistent experience regardless of who made the bag.</p>
+      <ul class="step-list" style="margin-top:16px;">
+        <li class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Zoo Project Bag Item</div>
+            <div class="step-desc">AP Bio only. Translate the Zoo Project into one physical item using the translation chart above. T.I.D.E. students substitute a belonging activity card from the Belonging Activity Builder kiosk.</div>
+          </div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Elementary Science Supply Bar + Bookmark</div>
+            <div class="step-desc">Visit the Elementary Science Supply Bar and choose 1&ndash;2 hands-on supplies. Use the Bookmark Builder Kiosk to design 1 bookmark connecting the supply to the student&rsquo;s OneWord. Bookmark + supplies go in the bag together.</div>
+          </div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Binary Coding or Cipher Activity</div>
+            <div class="step-desc">Design an original coding or decoding activity using the Binary Coding Kiosk, Secret Cipher Kiosk, or Color-by-Code Kiosk. Must be completable with crayons or a pencil by a K&ndash;5 student.</div>
+          </div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">OneWord Handwritten Letter</div>
+            <div class="step-desc">A warm, personal letter to the elementary student. Written on a 5&times;7 card or quality paper. Signed with first name only. This is the <strong>only handwritten item</strong> permitted in the bag.</div>
+          </div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <div class="step-title">OneWord Belonging Card</div>
+            <div class="step-desc">Use the Belonging Activity Builder to design an affirmation card, belonging prompt, kindness challenge, or common ground activity. Print the 1-up card for the bag &mdash; or use the 12-up sheet to produce extras for other bags.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- KIOSK MENU -->
+  <div class="section">
+    <div class="section-tag">Creation Kiosks</div>
+    <div class="section-title">AP Bio &amp; T.I.D.E. Kiosk Menu</div>
+    <div class="card">
+      <p>Students choose their remaining 5 items from the Creation Kiosk Menu, spanning at least 3 of the 4 categories. Here is a full summary of every available kiosk and what it produces.</p>
+
+      <div class="kiosk-cat" style="margin-top:16px;">
+        <div class="kiosk-cat-title">Science &amp; Discovery</div>
+        <div class="kiosk-item"><div class="kiosk-icon">&#128300;</div><div><span class="kiosk-name">Binary Coding Kiosk</span><span class="kiosk-desc">Students encode a OneWord in binary and generate a printable activity sheet. Elementary student decodes it using the reference chart. Connects to DNA and computer science.</span></div></div>
+        <div class="kiosk-item"><div class="kiosk-icon">&#128270;</div><div><span class="kiosk-name">Crack the Binary Code</span><span class="kiosk-desc">Make It: generates a printable binary code sheet with a science clue and answer blanks. Crack It: interactive decoder with hint button.</span></div></div>
+        <div class="kiosk-item"><div class="kiosk-icon">&#128013;</div><div><span class="kiosk-name">Secret Cipher Kiosk</span><span class="kiosk-desc">Encodes a OneWord using a zoo animal cipher theme. Elementary student decodes using a reference key.</span></div></div>
+        <div class="kiosk-item"><div class="kiosk-icon">&#127807;</div><div><span class="kiosk-name">Food Web Builder</span><span class="kiosk-desc">Make It: printable cut-and-sort food web activity. Build It: interactive drag-and-drop trophic levels. Three ecosystems: Savanna, Ocean, Forest.</span></div></div>
+        <div class="kiosk-item"><div class="kiosk-icon">&#128270;</div><div><span class="kiosk-name">Anatomy Match</span><span class="kiosk-desc">Make It: printable cut-and-sort anatomy matching sheet. Match It: drag features to correct animal. Four animal pairs connected to Zoo Project Option 3.</span></div></div>
+      </div>
+
+      <div class="kiosk-cat">
+        <div class="kiosk-cat-title">Coding &amp; Decoding</div>
+        <div class="kiosk-item"><div class="kiosk-icon">&#128290;</div><div><span class="kiosk-name">Pixel Art OneWord Generator</span><span class="kiosk-desc">Generates a OneWord in 5&times;7 pixel font on a terminal-style grid. Elementary student colors in the squares to reveal the hidden word. Printable B&amp;W sheet included.</span></div></div>
+        <div class="kiosk-item"><div class="kiosk-icon">&#127912;</div><div><span class="kiosk-name">Color-by-Code: Lion</span><span class="kiosk-desc">Make It: numbered coloring sheet of a cartoon lion with color key. Color It: interactive online coloring. AP Biology trophic cascade fact on win screen.</span></div></div>
+      </div>
+
+      <div class="kiosk-cat">
+        <div class="kiosk-cat-title">Design &amp; Print</div>
+        <div class="kiosk-item"><div class="kiosk-icon">&#127807;</div><div><span class="kiosk-name">Elementary Science Supply Bar</span><span class="kiosk-desc">Interactive display of 9 science supplies with OneWord connections. Students select 1&ndash;2 supplies and print the supply bar sign for their bag station.</span></div></div>
+      </div>
+
+      <div class="kiosk-cat">
+        <div class="kiosk-cat-title">Words &amp; Wellness</div>
+        <div class="kiosk-item"><div class="kiosk-icon">&#128149;</div><div><span class="kiosk-name">Belonging Activity Builder</span><span class="kiosk-desc">4 activity types: Affirmation Card, Belonging Prompt, Kindness Challenge, Common Ground. 25 OneWords &times; 4 types = 100 unique prompts. Print 1-up or 12-up sheet.</span></div></div>
+        <div class="kiosk-item"><div class="kiosk-icon">&#127183;</div><div><span class="kiosk-name">Concentration Memory Match</span><span class="kiosk-desc">Interactive-only. 3 modes: Science Match, Belonging Match, Zoo Animal Match. Timer, points, and win screen. For use at the kiosk station &mdash; not printed.</span></div></div>
+      </div>
+
+      <a href="APBio_TIDE_Kiosk_Menu.html" target="_blank" class="link-btn">&#127760; Open Full Kiosk Menu</a>
+    </div>
+  </div>
+
+  <!-- STUDENT WORKFLOW -->
+  <div class="section">
+    <div class="section-tag">Workflow</div>
+    <div class="section-title">Student Step-by-Step</div>
+    <div class="card">
+      <p>Both AP Biology and T.I.D.E. students follow the same general workflow. Direct them to the Student Guide for full details.</p>
+      <ul class="step-list" style="margin-top:16px;">
+        <li class="step-item"><div class="step-num">1</div><div class="step-body"><div class="step-title">Visit the Overview Site</div><div class="step-desc">Read the mission, understand the recipients, review who gets what. <a href="APBio_TIDE_Preview.html" target="_blank" style="color:#4caf82;">APBio_TIDE_Preview.html</a></div></div></li>
+        <li class="step-item"><div class="step-num">2</div><div class="step-body"><div class="step-title">Read the Student Guide</div><div class="step-desc">Review the Zoo Project translation chart, 5 core items, and kiosk instructions. <a href="APBio_TIDE_Student_Guide.html" target="_blank" style="color:#4caf82;">APBio_TIDE_Student_Guide.html</a></div></div></li>
+        <li class="step-item"><div class="step-num">3</div><div class="step-body"><div class="step-title">Choose a OneWord</div><div class="step-desc">Students select one of the 25 shared OneWords. All items in their bag connect back to this word.</div></div></li>
+        <li class="step-item"><div class="step-num">4</div><div class="step-body"><div class="step-title">Build the 5 Core Items</div><div class="step-desc">Zoo Project item, Science Supply Bar + Bookmark, Binary/Cipher activity, Handwritten letter, Belonging card.</div></div></li>
+        <li class="step-item"><div class="step-num">5</div><div class="step-body"><div class="step-title">Choose 5 More from the Kiosk Menu</div><div class="step-desc">Browse the 20-item kiosk menu and select 5 additional items across at least 3 categories. <a href="APBio_TIDE_Kiosk_Menu.html" target="_blank" style="color:#4caf82;">APBio_TIDE_Kiosk_Menu.html</a></div></div></li>
+        <li class="step-item"><div class="step-num">6</div><div class="step-body"><div class="step-title">Print, Assemble &amp; Submit</div><div class="step-desc">Print all digital items at the designated print station. Assemble the bag. Submit to teacher for review before delivery.</div></div></li>
+      </ul>
+      <a href="APBio_TIDE_Student_Guide.html" target="_blank" class="link-btn">&#128196; Open Student Guide</a>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="section">
+    <div class="section-tag">Logistics</div>
+    <div class="section-title">Suggested Timeline</div>
+    <div class="card">
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-phase">Phase 1 &mdash; Launch</div>
+          <div class="timeline-title">Introduce the Project</div>
+          <div class="timeline-desc">Share the Overview site with students. Walk through the Student Guide together. Assign or allow students to choose their OneWord. AP Bio students identify their Zoo Project option and corresponding bag item.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-phase">Phase 2 &mdash; Build</div>
+          <div class="timeline-title">Kiosk Work Sessions</div>
+          <div class="timeline-desc">Students work at kiosk stations to design, generate, and print their 10 items. Teacher circulates to review content for age-appropriateness before printing. Handwritten letters are completed last.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-phase">Phase 3 &mdash; Review</div>
+          <div class="timeline-title">Teacher Quality Check</div>
+          <div class="timeline-desc">Review each completed bag before it is sealed. Check that all 10 items are present, content is K&ndash;5 appropriate, and the handwritten letter is warm and encouraging. Return any items that need revision.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-phase">Phase 4 &mdash; Deliver</div>
+          <div class="timeline-title">Assembly &amp; Delivery by May 30, 2026</div>
+          <div class="timeline-desc">Completed bags are delivered to Laura Howell, ITS for final review and coordination with North Landing Elementary. Guidance counselors identify recipients and deliver bags at the right moment for each child.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRINTING -->
+  <div class="section">
+    <div class="section-tag">Printing</div>
+    <div class="section-title">What Gets Printed</div>
+    <div class="card">
+      <p>All kiosk-generated items are designed to print on standard 8.5&times;11 paper unless noted. Here are the recommended print settings for each item type.</p>
+      <div class="note" style="margin-top:14px;"><strong>Default print size:</strong> All activity sheets print at 8.5&times;11. Cut to 5&times;7 after printing if needed for the bag.</div>
+      <ul class="step-list" style="margin-top:8px;">
+        <li class="step-item"><div class="step-num" style="background:#4caf82;">&#128196;</div><div class="step-body"><div class="step-title">Binary / Cipher / Color-by-Code sheets</div><div class="step-desc">Print full page, B&amp;W is fine. Cut to 5&times;7 after printing. Laminate optional.</div></div></li>
+        <li class="step-item"><div class="step-num" style="background:#4caf82;">&#128196;</div><div class="step-body"><div class="step-title">Bookmark</div><div class="step-desc">Print full page, cut to bookmark size (approx 2&times;7 inches). Laminate recommended.</div></div></li>
+        <li class="step-item"><div class="step-num" style="background:#4caf82;">&#128196;</div><div class="step-body"><div class="step-title">Belonging Card (1-up)</div><div class="step-desc">Print full page, trim to card size. Heavy cardstock recommended.</div></div></li>
+        <li class="step-item"><div class="step-num" style="background:#4caf82;">&#128196;</div><div class="step-body"><div class="step-title">Belonging Card (12-up)</div><div class="step-desc">Prints 12 identical cards per sheet. Cut apart for use across multiple bags. Universal &mdash; no school name, shareable across all recipient schools.</div></div></li>
+        <li class="step-item"><div class="step-num" style="background:#4caf82;">&#128196;</div><div class="step-body"><div class="step-title">Food Web / Anatomy Match cut-and-sort</div><div class="step-desc">Print full page, B&amp;W. Elementary student cuts and sorts the pieces as the activity.</div></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SUPPLIES -->
+  <div class="section">
+    <div class="section-tag">Supplies</div>
+    <div class="section-title">What You&rsquo;ll Need</div>
+    <div class="card">
+      <div class="note"><strong>Science supplies</strong> for the Elementary Science Supply Bar are provided from Room D210&rsquo;s shared supply inventory. Students select 1&ndash;2 from the Supply Bar display.</div>
+      <div class="supply-grid" style="margin-top:14px;">
+        <div class="supply-item"><div class="supply-dot"></div>Color printer access</div>
+        <div class="supply-item"><div class="supply-dot"></div>Standard 8.5&times;11 paper</div>
+        <div class="supply-item"><div class="supply-dot"></div>Cardstock (for letters &amp; cards)</div>
+        <div class="supply-item"><div class="supply-dot"></div>Scissors &amp; paper trimmer</div>
+        <div class="supply-item"><div class="supply-dot"></div>Laminator (optional)</div>
+        <div class="supply-item"><div class="supply-dot"></div>Smile Bags (provided)</div>
+        <div class="supply-item"><div class="supply-dot"></div>Crayons &amp; colored pencils</div>
+        <div class="supply-item"><div class="supply-dot"></div>Stickers (from supply bar)</div>
+        <div class="supply-item"><div class="supply-dot"></div>Play-Doh (from supply bar)</div>
+        <div class="supply-item"><div class="supply-dot"></div>Ruler (from supply bar)</div>
+        <div class="supply-item"><div class="supply-dot"></div>Mini Notepad (from supply bar)</div>
+        <div class="supply-item"><div class="supply-dot"></div>Seeds (from supply bar)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUTURE READY -->
+  <div class="section">
+    <div class="section-tag">Standards</div>
+    <div class="section-title">Future Ready Virginia Beach</div>
+    <div class="card">
+      <div class="fr-grid">
+        <div class="fr-item"><div class="fr-label">&#128300; AP Biology</div><div class="fr-value">Thinkers &amp; Inquirers &middot; Personally &amp; Socially Responsible</div></div>
+        <div class="fr-item"><div class="fr-label">&#128149; T.I.D.E. Coalition</div><div class="fr-value">Cross-Culturally Competent &middot; Balanced Communicators &amp; Collaborators</div></div>
+        <div class="fr-item"><div class="fr-label">&#127760; Both Groups</div><div class="fr-value">Empathetic &middot; Community-minded &middot; Service-oriented</div></div>
+        <div class="fr-item"><div class="fr-label">&#127981; Operation Smile</div><div class="fr-value">Connected to global mission of bringing smiles to children who need them</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACTS -->
+  <div class="section">
+    <div class="section-tag">Contact</div>
+    <div class="section-title">Questions &amp; Support</div>
+    <div class="card">
+      <p>This project was designed and coordinated by the Kellam High School Instructional Technology Specialist. For questions about the website, kiosks, printing, or logistics, reach out directly.</p>
+      <div class="note" style="margin-top:14px;"><strong>Laura Howell</strong> &mdash; Instructional Technology Specialist &middot; Kellam High School &middot; Virginia Beach City Public Schools<br>Site: <a href="https://lhhowell.github.io/kellamsmilebags" target="_blank" style="color:#4caf82;">lhhowell.github.io/kellamsmilebags</a></div>
+      <a href="APBio_TIDE_Preview.html" target="_blank" class="link-btn">&#127760; Project Overview</a>
+      <a href="APBio_TIDE_Student_Guide.html" target="_blank" class="link-btn">&#128196; Student Guide</a>
+      <a href="APBio_TIDE_Kiosk_Menu.html" target="_blank" class="link-btn">&#128300; Kiosk Menu</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
+</div>
+
+</body>
+</html>
