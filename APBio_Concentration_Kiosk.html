@@ -277,28 +277,40 @@ function buildImgGrid() {
 
 function buildCardGrid() {
   var g = document.getElementById('cardGrid');
+  g.innerHTML = '';
   var cols = Math.ceil(Math.sqrt(cards.length * 1.4));
   g.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
-  var html = '';
   for (var i = 0; i < cards.length; i++) {
     var c = cards[i];
-    var frontHtml = '';
+    var card = document.createElement('div');
+    card.className = 'card';
+    card.id = 'card' + i;
+    (function(idx) {
+      card.addEventListener('click', function() {
+        document.getElementById('dbg').textContent = 'CLICK idx=' + idx + ' canFlip=' + canFlip + ' flipped=' + flipped.length;
+        flipCard(idx);
+      });
+    })(i);
+    var back = document.createElement('div');
+    back.className = 'card-back';
+    back.textContent = '●';
+    card.appendChild(back);
+    var front = document.createElement('div');
+    front.className = 'card-front';
     if (c.side === 'word') {
-      frontHtml = '<span class="word-f">' + c.w + '</span>';
+      front.innerHTML = '<span class="word-f">' + c.w + '</span>';
     } else if (mode === 'zoo') {
-      frontHtml = '<div class="zoo-f"><span class="zoo-e">' + ZOO[c.w].e + '</span><span class="zoo-n">' + ZOO[c.w].n + '</span></div>';
+      front.innerHTML = '<div class="zoo-f"><span class="zoo-e">' + ZOO[c.w].e + '</span><span class="zoo-n">' + ZOO[c.w].n + '</span></div>';
     } else {
-      frontHtml = '<span class="def-f">' + (mode === 'science' ? SCI[c.w] : SEL[c.w]) + '</span>';
+      var txt = mode === 'science' ? SCI[c.w] : SEL[c.w];
+      front.innerHTML = '<span class="def-f">' + txt + '</span>';
     }
-    html += '<div class="card" id="card' + i + '" onclick="flipCard(' + i + ')">' +
-      '<div class="card-back">&#9679;</div>' +
-      '<div class="card-front">' + frontHtml + '</div>' +
-    '</div>';
+    card.appendChild(front);
+    g.appendChild(card);
   }
-  g.innerHTML = html;
 }
 
-window.flipCard = function(idx) {
+function flipCard(idx) {
   document.getElementById('dbg').textContent = 'flipCard(' + idx + ') called. canFlip=' + canFlip + ' flipped=' + flipped.length;
   if (!canFlip) { return; }
   var el = document.getElementById('card' + idx);
