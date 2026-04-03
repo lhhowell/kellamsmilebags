@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Science Recipe Card Kiosk &mdash; Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:100vh;padding:0 0 60px;}
+.hero{background:#0a0f14;border-bottom:1px solid #1a2a1a;padding:40px 32px 36px;text-align:center;position:relative;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(76,175,130,.1) 0%,transparent 65%);pointer-events:none;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:4px;color:#4caf82;text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4.5vw,50px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:10px;}
+.hero-title span{color:#c9a84c;}
+.hero-sub{font-size:14px;color:#c8c4bc;max-width:580px;margin:0 auto;line-height:1.7;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(76,175,130,.06);border:1px solid #4caf82;color:#4caf82;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;margin:24px 24px 0;}
+
+.workspace{max-width:960px;margin:0 auto;padding:0 24px;}
+.step-card{background:#0d0d0d;border:1px solid #1a2a1a;border-radius:14px;padding:24px;margin-bottom:14px;margin-top:14px;}
+.step-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#1a4a1a;margin-bottom:8px;}
+.step-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:16px;}
+
+/* Model card */
+.model-banner{background:#0d1a0d;border:2px solid #4caf82;border-radius:14px;padding:20px 24px;margin-top:24px;margin-bottom:0;}
+.model-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#4caf82;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.model-label::after{content:'';flex:1;height:1px;background:#1a3a1a;}
+
+/* Recipe card styles - shared between model and print */
+.recipe-card{background:#fff;color:#111;border-radius:16px;padding:28px 28px 24px;font-family:'Nunito',sans-serif;position:relative;overflow:hidden;}
+.recipe-card::before{content:'';position:absolute;top:0;left:0;right:0;height:8px;background:linear-gradient(90deg,#4caf82,#c9a84c,#4caf82);}
+.recipe-header{display:flex;align-items:flex-start;gap:16px;margin-bottom:18px;padding-top:6px;}
+.recipe-icon{font-size:40px;flex-shrink:0;}
+.recipe-header-text{flex:1;}
+.recipe-kicker{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#4caf82;margin-bottom:4px;}
+.recipe-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:#111;line-height:1.1;margin-bottom:4px;}
+.recipe-from{font-size:12px;color:#999;font-style:italic;}
+
+.recipe-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+.recipe-section{background:#f8f7f4;border-radius:10px;padding:14px;}
+.recipe-section-full{background:#f8f7f4;border-radius:10px;padding:14px;margin-bottom:14px;}
+.recipe-section-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#4caf82;margin-bottom:8px;}
+.recipe-ingredient{display:flex;align-items:center;gap:8px;font-size:13px;color:#333;margin-bottom:6px;line-height:1.4;}
+.recipe-ingredient:last-child{margin-bottom:0;}
+.recipe-dot{width:8px;height:8px;border-radius:50%;background:#4caf82;flex-shrink:0;}
+.recipe-time{font-size:13px;color:#333;line-height:1.6;}
+.recipe-time strong{color:#111;display:block;}
+
+.recipe-steps{margin-bottom:16px;}
+.recipe-step{display:flex;gap:12px;margin-bottom:10px;align-items:flex-start;}
+.recipe-step-num{background:#1a1a2e;color:#c9a84c;font-family:'Fredoka One',cursive;font-size:12px;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.recipe-step-text{font-size:13px;color:#333;line-height:1.55;flex:1;}
+
+.recipe-watchfor{background:#e8f5ee;border-left:4px solid #4caf82;border-radius:4px;padding:12px 14px;margin-bottom:14px;}
+.recipe-watchfor-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;margin-bottom:6px;}
+.recipe-watchfor-text{font-size:13px;color:#333;line-height:1.6;}
+
+.recipe-secret{background:#fff9e6;border-left:4px solid #c9a84c;border-radius:4px;padding:12px 14px;margin-bottom:14px;}
+.recipe-secret-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#C8860A;margin-bottom:6px;}
+.recipe-secret-text{font-size:13px;color:#333;line-height:1.6;}
+
+.recipe-footer{text-align:center;padding-top:12px;border-top:1px solid #eee;font-size:10px;color:#ccc;font-family:'Fredoka One',cursive;letter-spacing:1px;}
+
+/* OneWord grid */
+.ow-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;}
+.ow-btn{background:#0a0f14;border:2px solid #1a2a1a;border-radius:8px;padding:9px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#c8c4bc;cursor:pointer;width:100%;text-align:center;}
+.ow-btn:hover{border-color:#c9a84c;color:#c9a84c;}
+.ow-btn.on{border-color:#4caf82;color:#4caf82;background:rgba(76,175,130,.1);}
+
+/* Supply selector */
+.supply-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+.supply-btn{background:#0a0f14;border:2px solid #1a2a1a;border-radius:12px;padding:14px;cursor:pointer;text-align:center;transition:all .2s;position:relative;}
+.supply-btn:hover{border-color:#4caf82;}
+.supply-btn.on{border-color:#4caf82;background:rgba(76,175,130,.1);}
+.supply-btn.disabled{opacity:.35;cursor:not-allowed;}
+.supply-btn-icon{font-size:24px;display:block;margin-bottom:6px;}
+.supply-btn-name{font-family:'Fredoka One',cursive;font-size:11px;color:#4caf82;display:block;margin-bottom:3px;}
+.supply-btn-desc{font-size:10px;color:#c8c4bc;line-height:1.4;}
+.supply-check{position:absolute;top:8px;right:8px;background:#4caf82;color:#fff;font-size:10px;border-radius:50%;width:18px;height:18px;display:none;align-items:center;justify-content:center;font-weight:700;}
+.supply-btn.on .supply-check{display:flex;}
+.supply-count{font-size:12px;color:#c8c4bc;margin-top:10px;}
+.supply-count span{color:#4caf82;font-weight:700;}
+
+/* Generate button */
+.gen-btn{width:100%;background:#4caf82;color:#111;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:3px;text-transform:uppercase;padding:16px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;font-weight:700;}
+.gen-btn:hover{background:#3d9e72;}
+.gen-btn.off{background:#1a2a1a;color:#333;cursor:not-allowed;}
+
+/* Print section */
+.print-section{display:none;margin-bottom:4px;}
+.print-section.show{display:block;}
+.print-btn{width:100%;background:#0a0f14;color:#4caf82;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:14px;border:1.5px solid #4caf82;border-radius:10px;cursor:pointer;transition:all .2s;margin-top:12px;}
+.print-btn:hover{background:#4caf82;color:#111;}
+
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #0a151f;max-width:960px;margin:32px auto 0;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:12px;color:#1a2a1a;letter-spacing:1px;}
+
+@media print{
+  body{background:#fff;padding:0;}
+  .hero,.back-btn,.workspace .step-card,.workspace .model-banner,.workspace .model-banner+*,.gen-btn,.print-btn,.footer{display:none!important;}
+  .print-section{display:block!important;}
+  .recipe-card{border-radius:0;box-shadow:none;}
+  @page{size:letter;margin:.4in;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">Smile Bags &middot; AP Bio &amp; T.I.D.E. &middot; Creation Kiosk</div>
+  <h1 class="hero-title">Science<br><span>Recipe Card</span></h1>
+  <p class="hero-sub">Design a mini science activity for your elementary student &mdash; like a recipe, but for discovering something amazing. They start at school, finish at home.</p>
+</div>
+
+<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to Kiosk Menu</a>
+
+<div class="workspace">
+
+  <!-- MODEL CARD -->
+  <div class="model-banner">
+    <div class="model-label">&#128300; Here is what your Science Recipe Card will look like</div>
+    <div class="recipe-card">
+      <div class="recipe-header">
+        <div class="recipe-icon">&#127807;</div>
+        <div class="recipe-header-text">
+          <div class="recipe-kicker">Your Science Recipe &middot; GROW</div>
+          <div class="recipe-title">The Growing Experiment</div>
+          <div class="recipe-from">From a Kellam High School student &mdash; made just for you &#128149;</div>
+        </div>
+      </div>
+      <div class="recipe-row">
+        <div class="recipe-section">
+          <div class="recipe-section-label">&#127985; You will need</div>
+          <div class="recipe-ingredient"><div class="recipe-dot"></div>Seeds</div>
+          <div class="recipe-ingredient"><div class="recipe-dot"></div>Ruler</div>
+          <div class="recipe-ingredient"><div class="recipe-dot"></div>Mini Notepad</div>
+        </div>
+        <div class="recipe-section">
+          <div class="recipe-section-label">&#9200; Time</div>
+          <div class="recipe-time"><strong>5 minutes today</strong> to get started</div>
+          <div class="recipe-time" style="margin-top:6px;"><strong>Check every day!</strong> Watch what happens</div>
+        </div>
+      </div>
+      <div class="recipe-steps">
+        <div class="recipe-section-label" style="font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#4caf82;margin-bottom:10px;">&#128196; Your steps</div>
+        <div class="recipe-step"><div class="recipe-step-num">1</div><div class="recipe-step-text">Find a sunny spot near a window at home &mdash; that will be your science station!</div></div>
+        <div class="recipe-step"><div class="recipe-step-num">2</div><div class="recipe-step-text">Place your seeds in a damp paper towel or a small cup of soil. You can even use a plastic bag taped to the window.</div></div>
+        <div class="recipe-step"><div class="recipe-step-num">3</div><div class="recipe-step-text">In your Mini Notepad, write today&rsquo;s date and draw what your seeds look like right now.</div></div>
+        <div class="recipe-step"><div class="recipe-step-num">4</div><div class="recipe-step-text">Check every day! Use your Ruler to measure any changes. Draw what you see in your notepad.</div></div>
+      </div>
+      <div class="recipe-watchfor">
+        <div class="recipe-watchfor-label">&#128064; Watch for</div>
+        <div class="recipe-watchfor-text">A tiny white root peeking out first &mdash; then a green shoot reaching toward the light. That&rsquo;s your seed deciding it&rsquo;s time to GROW!</div>
+      </div>
+      <div class="recipe-secret">
+        <div class="recipe-secret-label">&#129516; The science secret</div>
+        <div class="recipe-secret-text">Seeds know when conditions are right to grow &mdash; warmth, water, and light send signals to the seed to wake up. Scientists call this germination. You are watching biology happen in real time!</div>
+      </div>
+      <div class="recipe-footer">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>
+    </div>
+  </div>
+
+  <!-- STEP 1: ONEWORD -->
+  <div class="step-card">
+    <div class="step-num">Step 1 of 3</div>
+    <div class="step-title">Choose your OneWord</div>
+    <div class="ow-grid">
+      <button class="ow-btn" onclick="selectWord('ABSORB',this)">ABSORB</button>
+      <button class="ow-btn" onclick="selectWord('ADAPT',this)">ADAPT</button>
+      <button class="ow-btn" onclick="selectWord('ANCHOR',this)">ANCHOR</button>
+      <button class="ow-btn" onclick="selectWord('BALANCE',this)">BALANCE</button>
+      <button class="ow-btn" onclick="selectWord('BLOOM',this)">BLOOM</button>
+      <button class="ow-btn" onclick="selectWord('BREATHE',this)">BREATHE</button>
+      <button class="ow-btn" onclick="selectWord('CLEAR',this)">CLEAR</button>
+      <button class="ow-btn" onclick="selectWord('CONNECT',this)">CONNECT</button>
+      <button class="ow-btn" onclick="selectWord('CYCLE',this)">CYCLE</button>
+      <button class="ow-btn" onclick="selectWord('EMERGE',this)">EMERGE</button>
+      <button class="ow-btn" onclick="selectWord('FILTER',this)">FILTER</button>
+      <button class="ow-btn" onclick="selectWord('FLOW',this)">FLOW</button>
+      <button class="ow-btn" onclick="selectWord('GROW',this)">GROW</button>
+      <button class="ow-btn" onclick="selectWord('HEAL',this)">HEAL</button>
+      <button class="ow-btn" onclick="selectWord('MIGRATE',this)">MIGRATE</button>
+      <button class="ow-btn" onclick="selectWord('PERSIST',this)">PERSIST</button>
+      <button class="ow-btn" onclick="selectWord('RENEW',this)">RENEW</button>
+      <button class="ow-btn" onclick="selectWord('RESTORE',this)">RESTORE</button>
+      <button class="ow-btn" onclick="selectWord('RETURN',this)">RETURN</button>
+      <button class="ow-btn" onclick="selectWord('RISE',this)">RISE</button>
+      <button class="ow-btn" onclick="selectWord('ROOT',this)">ROOT</button>
+      <button class="ow-btn" onclick="selectWord('SHINE',this)">SHINE</button>
+      <button class="ow-btn" onclick="selectWord('SUSTAIN',this)">SUSTAIN</button>
+      <button class="ow-btn" onclick="selectWord('THRIVE',this)">THRIVE</button>
+      <button class="ow-btn" onclick="selectWord('TRANSFORM',this)">TRANSFORM</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: SUPPLIES -->
+  <div class="step-card">
+    <div class="step-num">Step 2 of 3</div>
+    <div class="step-title">Choose 2 or 3 supplies from your Science Supply Bar</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+      <div style="background:#0d1a0d;border:2px solid #4caf82;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:24px;margin-bottom:8px;">&#10003;</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#4caf82;margin-bottom:6px;">I already visited the Supply Bar</div>
+        <div style="font-size:12px;color:#c8c4bc;line-height:1.5;">Select the same supplies you physically chose at the Supply Bar station. Then generate your recipe card.</div>
+      </div>
+      <div style="background:#0d0d0d;border:2px solid #c9a84c;border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:24px;margin-bottom:8px;">&#128203;</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#c9a84c;margin-bottom:6px;">I haven't visited the Supply Bar yet</div>
+        <div style="font-size:12px;color:#c8c4bc;line-height:1.5;margin-bottom:10px;">Visit the Supply Bar first to pick your physical supplies, then come back here to generate your recipe card.</div>
+        <a href="APBio_Elementary_ScienceSupplyBar.html" style="display:inline-flex;align-items:center;gap:6px;background:#c9a84c;color:#111;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;border-radius:8px;text-decoration:none;">&#127807; Go to Supply Bar &#8594;</a>
+      </div>
+    </div>
+    <p style="font-size:12px;color:#c8c4bc;margin-bottom:14px;line-height:1.6;">&#8595; Whichever path you took, select your supplies below to generate your personalized recipe card:</p>
+    <div class="supply-grid">
+      <button class="supply-btn" onclick="toggleSupply('Crayons & Colored Pencils',this)">
+        <div class="supply-check">&#10003;</div>
+        <span class="supply-btn-icon">&#128396;</span>
+        <span class="supply-btn-name">Crayons &amp; Colored Pencils</span>
+        <span class="supply-btn-desc">For drawing, coloring, and recording observations</span>
+      </button>
+      <button class="supply-btn" onclick="toggleSupply('Stickers',this)">
+        <div class="supply-check">&#10003;</div>
+        <span class="supply-btn-icon">&#11088;</span>
+        <span class="supply-btn-name">Stickers</span>
+        <span class="supply-btn-desc">For labeling, marking progress, and celebrating</span>
+      </button>
+      <button class="supply-btn" onclick="toggleSupply('Play-Doh',this)">
+        <div class="supply-check">&#10003;</div>
+        <span class="supply-btn-icon">&#127758;</span>
+        <span class="supply-btn-name">Play-Doh</span>
+        <span class="supply-btn-desc">For modeling, sculpting, and hands-on exploration</span>
+      </button>
+      <button class="supply-btn" onclick="toggleSupply('Ruler',this)">
+        <div class="supply-check">&#10003;</div>
+        <span class="supply-btn-icon">&#128207;</span>
+        <span class="supply-btn-name">Ruler</span>
+        <span class="supply-btn-desc">For measuring growth, distance, and change over time</span>
+      </button>
+      <button class="supply-btn" onclick="toggleSupply('Mini Notepad',this)">
+        <div class="supply-check">&#10003;</div>
+        <span class="supply-btn-icon">&#128221;</span>
+        <span class="supply-btn-name">Mini Notepad</span>
+        <span class="supply-btn-desc">For recording observations like a real scientist</span>
+      </button>
+      <button class="supply-btn" onclick="toggleSupply('Rubber Bands',this)">
+        <div class="supply-check">&#10003;</div>
+        <span class="supply-btn-icon">&#128308;</span>
+        <span class="supply-btn-name">Rubber Bands</span>
+        <span class="supply-btn-desc">For testing elasticity, force, and simple machines</span>
+      </button>
+      <button class="supply-btn" onclick="toggleSupply('Seeds',this)">
+        <div class="supply-check">&#10003;</div>
+        <span class="supply-btn-icon">&#127807;</span>
+        <span class="supply-btn-name">Seeds</span>
+        <span class="supply-btn-desc">For growing, observing germination, and plant science</span>
+      </button>
+      <button class="supply-btn" onclick="toggleSupply('Mirror',this)">
+        <div class="supply-check">&#10003;</div>
+        <span class="supply-btn-icon">&#129359;</span>
+        <span class="supply-btn-name">Mirror</span>
+        <span class="supply-btn-desc">For exploring light, reflection, and symmetry</span>
+      </button>
+    </div>
+    <div class="supply-count" id="supplyCount">Select <span>2 or 3</span> supplies to continue</div>
+  </div>
+
+  <!-- STEP 3: GENERATE -->
+  <div class="step-card">
+    <div class="step-num">Step 3 of 3</div>
+    <div class="step-title">Generate your Science Recipe Card</div>
+    <button class="gen-btn off" id="genBtn" onclick="generateCard()">&#127380; Generate My Science Recipe Card</button>
+  </div>
+
+  <!-- PRINT SECTION -->
+  <div class="print-section" id="printSection">
+    <div class="recipe-card" id="printCard"></div>
+    <button class="print-btn" onclick="window.print()">&#128438; Print This Recipe Card</button>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
+</div>
+
+<script>
+
+var recipes = {
+  ABSORB:{
+    title:'The Sponge Science Experiment',icon:'&#128167;',
+    steps:[
+      'Find two small cups or containers at home and fill them both halfway with water.',
+      'Place a small piece of paper towel in one cup. Watch closely \u2014 what happens to the water level?',
+      'Try dipping different materials (a cloth, a sponge, paper) and record in your Mini Notepad what absorbs the most water.',
+      'Draw a chart showing which material absorbed the most and which absorbed the least.'
+    ],
+    watchfor:'The water level dropping as the material absorbs it \u2014 and the material getting heavier as it soaks the water up!',
+    secret:'Plants absorb water through tiny tubes in their roots called xylem. When you wring out a sponge, you are doing what a plant does every time the soil dries out. This is how forests survive droughts!'
+  },
+  ADAPT:{
+    title:'The Camouflage Challenge',icon:'&#129412;',
+    steps:[
+      'Use your Crayons to draw five small animal shapes on paper \u2014 any animal you like!',
+      'Color each animal to blend into a different background: one for grass, one for sand, one for snow, one for a tree, one for the ocean.',
+      'Cut them out and place each one on its matching background. Which is hardest to spot?',
+      'In your Mini Notepad, write which color worked best and why you think animals need to blend in.'
+    ],
+    watchfor:'Which animal disappears best into its background! The harder it is to find, the better the camouflage \u2014 just like real animals that have adapted to survive.',
+    secret:'Camouflage is one of nature\u2019s most powerful adaptations. Animals that blend in are harder for predators to find, so they survive longer and pass their colors to their babies. Over thousands of years, this makes whole species change color \u2014 that\u2019s evolution!'
+  },
+  ANCHOR:{
+    title:'The Root Strength Test',icon:'&#127807;',
+    steps:[
+      'Place a small pile of loose soil or sand on a piece of paper. Try to blow it gently \u2014 what happens?',
+      'Now press a few seeds or sticks into the soil so they stick up like tiny roots. Blow again.',
+      'Use your Ruler to measure how far the soil moved with and without your \u201croots\u201d.',
+      'Record your results in your Mini Notepad with drawings of both experiments.'
+    ],
+    watchfor:'How much less the soil moves when your roots are holding it! Even a few simple roots make a huge difference in keeping soil in place.',
+    secret:'Tree roots can spread as wide as the tree is tall \u2014 all underground where you can\u2019t see them. Without roots anchoring the soil, rain would wash everything away. This is called erosion, and it\u2019s one of the biggest problems in damaged ecosystems.'
+  },
+  BALANCE:{
+    title:'The Ecosystem Balance Game',icon:'&#9878;',
+    steps:[
+      'Use your Play-Doh to make three small figures: a plant, a small animal (like a rabbit), and a bigger animal (like a fox).',
+      'Line them up in order: plant \u2192 rabbit \u2192 fox. This is your food chain!',
+      'Now pretend all the foxes disappeared. Make more rabbits out of Play-Doh. What happens to the plants?',
+      'In your Mini Notepad, draw what the balance looks like when everything is equal vs. when one group disappears.'
+    ],
+    watchfor:'How removing one piece changes everything else! When the fox disappears, rabbits take over and eat all the plants. When plants disappear, rabbits starve. Every piece of the ecosystem matters.',
+    secret:'Scientists call this a trophic cascade \u2014 when removing one species sends ripple effects through the whole food web. This is why conservation matters so much. Losing even one species can unbalance an entire ecosystem!'
+  },
+  BLOOM:{
+    title:'The Color Mixing Garden',icon:'&#127804;',
+    steps:[
+      'Use your Crayons to draw five flower outlines on paper. Leave them uncolored for now.',
+      'Look at your Stickers \u2014 what colors do you have? Use them to decorate your flowers with patterns.',
+      'Now try mixing two crayon colors by layering them lightly on top of each other. What new colors can you make?',
+      'In your Mini Notepad, record every color combination you tried and what color it made.'
+    ],
+    watchfor:'Surprise colors appearing when you layer crayons! Yellow + blue = green. Red + blue = purple. Just like flowers have evolved specific colors to attract specific pollinators \u2014 bees see different colors than we do!',
+    secret:'Flowers bloom in specific colors for a reason: to attract the right pollinators. Bees are attracted to purple and blue. Butterflies love red and orange. Hummingbirds prefer bright red. The flower and the pollinator evolved together \u2014 each one shaping the other over millions of years!'
+  },
+  BREATHE:{
+    title:'The Breath Science Investigation',icon:'&#127981;',
+    steps:[
+      'Hold a small Mirror close to your mouth and breathe out slowly. What do you see on the mirror?',
+      'In your Mini Notepad, draw what the mirror looks like before and after you breathe on it.',
+      'Now breathe in and out five times quickly. Does the mirror fog up more or less than when you breathe slowly?',
+      'Try breathing on the mirror after running in place for 30 seconds. Record what changes.'
+    ],
+    watchfor:'The mirror fogging up with water vapor from your breath! Your lungs are removing carbon dioxide and water from your body with every single breath you take.',
+    secret:'When you breathe out, you release carbon dioxide \u2014 the same gas that plants breathe IN during photosynthesis. You and plants are breathing partners: you give them CO2, they give you oxygen. Every breath you take is part of the carbon cycle!'
+  },
+  CLEAR:{
+    title:'The Water Filtration Experiment',icon:'&#128167;',
+    steps:[
+      'Mix a small amount of soil into a cup of water to make \u201cdirty water.\u201d',
+      'Fold a piece of paper towel into a cone shape and place it in another cup.',
+      'Slowly pour your dirty water through the paper towel cone. Collect what comes through.',
+      'Compare the water before and after in your Mini Notepad with drawings. Is it clearer? What stayed in the filter?'
+    ],
+    watchfor:'The water becoming slightly clearer as it passes through your paper towel filter! The soil particles get trapped in the fibers while the water passes through.',
+    secret:'Wetlands are Earth\u2019s natural water filters. Plants, soil, and tiny microorganisms in wetlands remove pollutants from water before it reaches rivers and lakes. This is why protecting wetlands protects our drinking water!'
+  },
+  CONNECT:{
+    title:'The Food Web String Game',icon:'&#127760;',
+    steps:[
+      'In your Mini Notepad, draw five living things: the sun, a plant, a caterpillar, a bird, and a fox.',
+      'Use your Crayons to draw arrows showing who eats whom. The arrow goes FROM the food TO the eater.',
+      'Now cross out the caterpillar. What other animals are affected? Draw dotted lines to show the connection.',
+      'Count how many connections each living thing has. Which one is connected to the most others?'
+    ],
+    watchfor:'How everything is connected to everything else! When you remove one species, the ripple effect touches every other living thing in the web.',
+    secret:'Scientists call this a food web, and every living thing on Earth is part of one. Even YOU are connected \u2014 you eat plants or animals that ate other plants, all the way back to sunlight. Everything is connected through energy!'
+  },
+  CYCLE:{
+    title:'The Mini Water Cycle Experiment',icon:'&#9748;',
+    steps:[
+      'Pour a small amount of water into a clear plastic bag. Seal it tightly.',
+      'Tape the bag to a sunny window with a piece of tape.',
+      'Check the bag every hour \u2014 draw what you see in your Mini Notepad each time.',
+      'Use your Ruler to measure how high the water droplets travel up the bag over time.'
+    ],
+    watchfor:'Tiny water droplets forming on the top and sides of the bag! The sun heats the water, it evaporates into the air inside the bag, then cools and condenses back into droplets \u2014 just like rain!',
+    secret:'You just made a mini water cycle! The real water cycle works the same way: oceans evaporate, clouds form, rain falls, and the water flows back to the ocean. The water you drank today may have been part of a dinosaur\u2019s ocean millions of years ago!'
+  },
+  EMERGE:{
+    title:'The Seed Awakening Experiment',icon:'&#127807;',
+    steps:[
+      'Place two or three seeds on a damp paper towel. Fold the towel over them gently.',
+      'Slide the folded towel into a plastic bag. Seal it and place in a warm spot.',
+      'Check every day and draw what you see in your Mini Notepad. Use your Ruler to measure any growth.',
+      'When your seed cracks open and a tiny root appears, you have witnessed emergence!'
+    ],
+    watchfor:'The seed coat splitting open and a tiny white root emerging first, then a green shoot reaching upward. The root goes down, the shoot goes up \u2014 they always know which way to grow!',
+    secret:'Seeds can stay dormant (sleeping) for years, waiting for the right conditions to emerge. Some seeds need fire to crack open. Some need to pass through an animal\u2019s digestive system. Each plant evolved the exact conditions it needs to wake up!'
+  },
+  FILTER:{
+    title:'The Natural Filter Experiment',icon:'&#127807;',
+    steps:[
+      'Collect a handful of soil, a few pebbles, and some dry grass or leaves from outside if possible.',
+      'Layer them in a cup: pebbles on the bottom, soil in the middle, grass on top.',
+      'Slowly pour a small cup of \u201cdirty\u201d water (with a little food coloring) through your layers.',
+      'In your Mini Notepad, draw the before and after \u2014 did the color change? What got trapped?'
+    ],
+    watchfor:'The water coming through cleaner than when it went in! Each layer traps different particles \u2014 the grass catches big debris, the soil traps smaller particles, and the pebbles help the water flow.',
+    secret:'This is exactly how wetlands and soil filter water in nature. Layers of plants, soil, and rock act like a giant natural filter. Scientists are now building \u201cgreen infrastructure\u201d in cities that mimics this natural process to clean stormwater!'
+  },
+  FLOW:{
+    title:'The River Path Experiment',icon:'&#128167;',
+    steps:[
+      'Use your Play-Doh to build a small landscape with hills and valleys on a tray or plate.',
+      'Use your finger to carve a path \u2014 where do you think water would naturally flow?',
+      'Slowly drip a little water at the highest point. Did it follow your predicted path?',
+      'In your Mini Notepad, draw the path the water actually took. Was it different from what you expected?'
+    ],
+    watchfor:'The water always finding the lowest path \u2014 even carving new channels through your Play-Doh! Water always flows downhill and takes the path of least resistance.',
+    secret:'Rivers are shaped by this same force over millions of years. Water carves canyons, shapes mountains, and builds deltas. The Colorado River carved the Grand Canyon \u2014 one of the deepest gorges on Earth \u2014 just by flowing continuously downhill for millions of years!'
+  },
+  GROW:{
+    title:'The Growing Experiment',icon:'&#127807;',
+    steps:[
+      'Find a sunny spot near a window at home \u2014 that will be your science station!',
+      'Place your seeds in a damp paper towel or a small cup of soil. You can even use a plastic bag taped to the window.',
+      'In your Mini Notepad, write today\u2019s date and draw what your seeds look like right now.',
+      'Check every day! Use your Ruler to measure any changes. Draw what you see in your notepad.'
+    ],
+    watchfor:'A tiny white root peeking out first \u2014 then a green shoot reaching toward the light. That\u2019s your seed deciding it\u2019s time to GROW!',
+    secret:'Seeds know when conditions are right to grow \u2014 warmth, water, and light send signals to the seed to wake up. Scientists call this germination. You are watching biology happen in real time!'
+  },
+  HEAL:{
+    title:'The Ecosystem Recovery Experiment',icon:'&#127807;',
+    steps:[
+      'Use your Play-Doh to create a small garden scene: green plants, some soil, a few small creatures.',
+      'Now \u201cdisturb\u201d your garden \u2014 flatten some plants, mix up the soil, remove a creature.',
+      'Slowly rebuild it back to its original state. How long does it take? What was hardest to restore?',
+      'In your Mini Notepad, draw the before, during, and after. Write one sentence about what healing looks like.'
+    ],
+    watchfor:'How some parts of your garden recover quickly (soil settles back) while others are harder to restore (the creature you removed leaves a gap). Healing takes time \u2014 and some things can\u2019t be fully replaced.',
+    secret:'When forests burn or wetlands are damaged, they go through a process called ecological succession \u2014 plants and animals slowly return in a specific order. Pioneer species come first, then others follow. Full recovery can take hundreds of years, which is why protecting ecosystems matters so much!'
+  },
+  MIGRATE:{
+    title:'The Migration Map Experiment',icon:'&#128038;',
+    steps:[
+      'In your Mini Notepad, draw a simple map with a warm place at the bottom and a cold place at the top.',
+      'Use Stickers to mark five stops along a migration route from south to north.',
+      'Use your Ruler to measure the distance between each stop on your map. Which leg of the journey is longest?',
+      'Draw an animal making this journey and label what challenges it might face at each stop.'
+    ],
+    watchfor:'How far some animals travel just to find the right conditions to survive! Even your map will show that migration requires incredible energy and navigation across huge distances.',
+    secret:'Arctic terns migrate from the Arctic to the Antarctic and back every year \u2014 a round trip of about 44,000 miles. Scientists have discovered they use Earth\u2019s magnetic field like a built-in compass. Migration is one of the most remarkable behaviors in the animal kingdom!'
+  },
+  PERSIST:{
+    title:'The Endurance Experiment',icon:'&#128008;',
+    steps:[
+      'Fill a cup with water and add a Rubber Band around the outside. Stretch the rubber band \u2014 how many times before it snaps back perfectly?',
+      'Now try to balance a small object (like a pebble or a coin) on top of your finger for 60 seconds. Use your Ruler as a timer guide.',
+      'In your Mini Notepad, record how long you lasted and what made it hard. Try again \u2014 does practice help?',
+      'Write one sentence about what persistence means to you after doing this experiment.'
+    ],
+    watchfor:'Improvement with practice! The second time you try the balance challenge, you will likely last longer. Your brain and muscles are learning \u2014 that\u2019s persistence in action.',
+    secret:'Komodo dragons can go months without eating, surviving on stored body fat. Tardigrades (microscopic animals) can survive extreme heat, cold, radiation, and even the vacuum of space. Persistence and resilience are some of nature\u2019s most powerful survival strategies!'
+  },
+  RENEW:{
+    title:'The Regeneration Experiment',icon:'&#129454;',
+    steps:[
+      'Use your Play-Doh to make a small worm or lizard shape. Now carefully divide it in two.',
+      'In your Mini Notepad, draw both pieces. Label which part you think could regenerate into a new creature.',
+      'Slowly reshape one piece back into a complete creature. How long did it take? What was hardest to rebuild?',
+      'Write or draw: what does \u201crenewing\u201d look like for a plant, an animal, and a person?'
+    ],
+    watchfor:'How some shapes are easier to restore than others \u2014 just like in nature, some tissues regenerate quickly (skin heals fast) while others take much longer (bones, organs).',
+    secret:'Salamanders can regenerate entire limbs, including bones, muscles, nerves, and blood vessels \u2014 in just a few weeks. Scientists are studying how they do this to develop new medical treatments for humans. Nature has already solved many problems we are still figuring out!'
+  },
+  RESTORE:{
+    title:'The Habitat Restoration Project',icon:'&#128024;',
+    steps:[
+      'Use your Play-Doh to build a small habitat scene: trees, water, soil, animals.',
+      'Now remove half the trees and fill in the water with Play-Doh \u2014 this is the damaged habitat.',
+      'Slowly restore it: add trees back, reopen the water, return the animals. Which step matters most?',
+      'In your Mini Notepad, write a restoration plan \u2014 what would you restore first and why?'
+    ],
+    watchfor:'How connected everything is in your habitat \u2014 removing water affects the animals, removing trees affects the soil. Restoration requires thinking about the whole system, not just one piece.',
+    secret:'Habitat restoration is one of the most important fields in biology today. Scientists are replanting prairies, restoring wetlands, and reintroducing species that were once extinct in an area. Every restored ecosystem is a win for the entire planet!'
+  },
+  RETURN:{
+    title:'The Homing Instinct Experiment',icon:'&#128032;',
+    steps:[
+      'In your Mini Notepad, draw a simple map of your home or neighborhood. Mark your bedroom as \u201cStart.\u201d',
+      'Close your eyes and have someone move you to a different room. Can you find your way back using only memory?',
+      'Now try it outside \u2014 walk ten steps away from your front door with your eyes closed. Can you return without looking?',
+      'Write about what clues you used: sounds, smells, the feel of the ground under your feet.'
+    ],
+    watchfor:'How many senses you use to navigate even without sight! Smell, sound, and the feel of the ground all give you clues \u2014 the same senses animals use to return home across thousands of miles.',
+    secret:'Salmon use the unique smell of their birth stream to find their way home after years in the ocean. Sea turtles use Earth\u2019s magnetic field to return to the exact beach where they were born. Scientists are still discovering exactly how these navigation systems work!'
+  },
+  RISE:{
+    title:'The Air Lift Experiment',icon:'&#129413;',
+    steps:[
+      'Fold a piece of paper into a fan shape \u2014 fold back and forth in equal sections like an accordion.',
+      'Hold your fan flat and wave it up and down quickly. Can you feel the air moving beneath it?',
+      'Now hold it vertically (like a wing) and move it forward quickly. Does it feel different?',
+      'In your Mini Notepad, draw how you think a bird\u2019s wing creates lift to rise into the air.'
+    ],
+    watchfor:'How the angle of your fan changes the direction of the air you feel! When held flat, air pushes down. When angled like a wing, air flows faster over the top, creating lift \u2014 the same force that makes birds (and airplanes) rise!',
+    secret:'Eagles and hawks use rising columns of warm air called thermals to soar for hours without flapping their wings. By spreading their wings wide and catching a thermal, they can rise thousands of feet while barely moving a muscle. It\u2019s one of nature\u2019s most elegant energy-saving strategies!'
+  },
+  ROOT:{
+    title:'The Root Anchor Experiment',icon:'&#127807;',
+    steps:[
+      'Use your Play-Doh to make a small tree with a wide base of roots spreading out underground.',
+      'Now make a second tree with only a tiny single root straight down.',
+      'Gently push on each tree from the side. Which one holds its ground better?',
+      'In your Mini Notepad, draw both root systems and explain which design works best and why.'
+    ],
+    watchfor:'The tree with the wide, spreading root system staying stable while the narrow-rooted tree tips over easily! Wide, shallow roots catch more soil while deep roots find water during droughts.',
+    secret:'The largest organism on Earth isn\u2019t a blue whale or a giant sequoia \u2014 it\u2019s a massive network of tree roots and fungi called Armillaria in Oregon that covers over 2,385 acres. Trees share nutrients through their root networks, helping weaker neighbors survive. Forests are communities, not just collections of individual trees!'
+  },
+  SHINE:{
+    title:'The Light and Reflection Experiment',icon:'&#9728;',
+    steps:[
+      'Hold your Mirror in sunlight (or near a lamp) and try to reflect the light onto the wall or ceiling.',
+      'Can you make the reflected light move? Try tilting the mirror at different angles.',
+      'In your Mini Notepad, draw the path the light travels: from source \u2192 mirror \u2192 wall.',
+      'Try reflecting light through a glass of water. Does anything interesting happen to the light beam?'
+    ],
+    watchfor:'The reflected light moving when you tilt the mirror, and the light bending (refracting) when it passes through water! Water bends light, which is why a straw looks bent when placed in a glass of water.',
+    secret:'The sun\u2019s light travels 93 million miles in just 8 minutes to reach Earth. Plants capture this light energy through photosynthesis and turn it into food \u2014 the energy that powers almost every living thing on Earth. When you eat any plant or animal, you are eating stored sunlight!'
+  },
+  SUSTAIN:{
+    title:'The Sustainability Challenge',icon:'&#127807;',
+    steps:[
+      'In your Mini Notepad, draw a simple picture of what you ate today.',
+      'Use Stickers to mark each food item: green sticker for plants, yellow for animals that eat plants, red for animals that eat other animals.',
+      'Now use your Ruler to draw a line connecting each food to where it came from (farm, ocean, garden).',
+      'Count your stickers: how many green, yellow, and red? What does your food web look like?'
+    ],
+    watchfor:'How many steps it takes to get food to your plate \u2014 and how much energy is used at each step! Plants use sunlight most efficiently, which is why plant-based foods generally have a smaller environmental footprint.',
+    secret:'It takes about 10 pounds of plant material to produce 1 pound of beef, because energy is lost at each step of the food chain. This is called the 10% rule \u2014 only about 10% of energy passes from one trophic level to the next. Sustainable food systems try to minimize these energy losses!'
+  },
+  THRIVE:{
+    title:'The Ideal Conditions Experiment',icon:'&#127807;',
+    steps:[
+      'Set up three seed stations: one in bright light, one in a dark corner, one near a heat source.',
+      'Place one seed in a damp paper towel at each station. Check every day for three days.',
+      'In your Mini Notepad, draw what each seed looks like at day 1, 2, and 3. Use your Ruler to measure.',
+      'Which seed thrived most? What conditions did it have that the others didn\u2019t?'
+    ],
+    watchfor:'The seed in the warm, bright location growing fastest \u2014 because it has all the conditions it needs to thrive: light, warmth, and moisture. The others may grow slowly or not at all without the right combination.',
+    secret:'Every species has a specific set of conditions where it thrives best \u2014 scientists call this its ecological niche. When conditions change (like with climate change), species either adapt, migrate to find better conditions, or disappear. Understanding what makes each species thrive is essential for conservation!'
+  },
+  TRANSFORM:{
+    title:'The Metamorphosis Experiment',icon:'&#128027;',
+    steps:[
+      'Use your Play-Doh to make four shapes: a tiny egg, a caterpillar, a chrysalis, and a butterfly.',
+      'Line them up in order on a flat surface. This is complete metamorphosis \u2014 four totally different forms!',
+      'Now transform your caterpillar piece into a butterfly. What had to change? What stayed the same?',
+      'In your Mini Notepad, draw and label all four stages. Write one amazing fact about each stage.'
+    ],
+    watchfor:'How different each stage looks from the others \u2014 and yet it is the same creature throughout! The caterpillar essentially dissolves inside the chrysalis before reorganizing into a butterfly. Transformation is total and complete.',
+    secret:'Inside a chrysalis, the caterpillar\u2019s body breaks down almost entirely into a liquid \u2014 a biological soup of cells. Then those cells reorganize into a completely different body: wings, antennae, compound eyes. Scientists have discovered that butterflies can still remember things they learned as caterpillars, even after this total transformation!'
+  }
+};
+
+var selectedWord = '';
+var selectedSupplies = [];
+
+function selectWord(w, btn) {
+  selectedWord = w;
+  var btns = document.getElementsByClassName('ow-btn');
+  for (var i = 0; i < btns.length; i++) { btns[i].className = 'ow-btn'; }
+  btn.className = 'ow-btn on';
+  checkReady();
+}
+
+function toggleSupply(s, btn) {
+  var idx = selectedSupplies.indexOf(s);
+  if (idx !== -1) {
+    selectedSupplies.splice(idx, 1);
+    btn.className = 'supply-btn';
+  } else {
+    if (selectedSupplies.length >= 3) { return; }
+    selectedSupplies.push(s);
+    btn.className = 'supply-btn on';
+  }
+  var n = selectedSupplies.length;
+  document.getElementById('supplyCount').innerHTML = n === 0 ? 'Select <span>2 or 3</span> supplies to continue' : '<span>' + n + ' selected</span>' + (n < 2 ? ' \u2014 choose ' + (2-n) + ' more' : n === 3 ? ' \u2014 maximum reached' : ' \u2014 or choose one more');
+  checkReady();
+}
+
+function checkReady() {
+  var ready = selectedWord && selectedSupplies.length >= 2;
+  document.getElementById('genBtn').className = ready ? 'gen-btn' : 'gen-btn off';
+}
+
+function generateCard() {
+  if (!selectedWord || selectedSupplies.length < 2) { return; }
+  var r = recipes[selectedWord];
+  if (!r) { return; }
+
+  var suppliesHtml = '';
+  for (var i = 0; i < selectedSupplies.length; i++) {
+    suppliesHtml += '<div class="recipe-ingredient"><div class="recipe-dot"></div>' + selectedSupplies[i] + '</div>';
+  }
+
+  var stepsHtml = '';
+  for (var i = 0; i < r.steps.length; i++) {
+    stepsHtml += '<div class="recipe-step"><div class="recipe-step-num">' + (i+1) + '</div><div class="recipe-step-text">' + r.steps[i] + '</div></div>';
+  }
+
+  var html = '<div class="recipe-card">' +
+    '<div class="recipe-header">' +
+      '<div class="recipe-icon">' + r.icon + '</div>' +
+      '<div class="recipe-header-text">' +
+        '<div class="recipe-kicker">Your Science Recipe &middot; ' + selectedWord + '</div>' +
+        '<div class="recipe-title">' + r.title + '</div>' +
+        '<div class="recipe-from">From a Kellam High School student &mdash; made just for you &#128149;</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="recipe-row">' +
+      '<div class="recipe-section">' +
+        '<div class="recipe-section-label">&#127985; You will need</div>' +
+        suppliesHtml +
+      '</div>' +
+      '<div class="recipe-section">' +
+        '<div class="recipe-section-label">&#9200; Time</div>' +
+        '<div class="recipe-time"><strong>5 minutes today</strong> to get started</div>' +
+        '<div class="recipe-time" style="margin-top:6px;"><strong>Check every day!</strong> Watch what happens</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="recipe-steps">' +
+      '<div class="recipe-section-label" style="font-family:\'Fredoka One\',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#4caf82;margin-bottom:10px;">&#128196; Your steps</div>' +
+      stepsHtml +
+    '</div>' +
+    '<div class="recipe-watchfor">' +
+      '<div class="recipe-watchfor-label">&#128064; Watch for</div>' +
+      '<div class="recipe-watchfor-text">' + r.watchfor + '</div>' +
+    '</div>' +
+    '<div class="recipe-secret">' +
+      '<div class="recipe-secret-label">&#129516; The science secret</div>' +
+      '<div class="recipe-secret-text">' + r.secret + '</div>' +
+    '</div>' +
+    '<div class="recipe-footer">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>' +
+  '</div>';
+
+  document.getElementById('printCard').innerHTML = html;
+  document.getElementById('printSection').className = 'print-section show';
+  document.getElementById('printSection').scrollIntoView({behavior:'smooth'});
+  logRecipeCard();
+}
+
+var TRACKER_URL = 'https://script.google.com/macros/s/AKfycby2KBYbnyuesJFnzMRx77TiLma8rWfIpr-fC3In-vjUz8up-JVMyaQEmJSKqpsKtzcMhw/exec';
+
+function logRecipeCard() {
+  if (!TRACKER_URL || TRACKER_URL.indexOf('PASTE') !== -1) { return; }
+  fetch(TRACKER_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      group: 'AP Bio & TIDE',
+      kiosk: 'Science Recipe Card',
+      supply: selectedSupplies.join(', '),
+      oneword: selectedWord,
+      eventType: 'RECIPE_GENERATED'
+    })
+  }).catch(function(){});
+}
+</script>
+</body>
+</html>
