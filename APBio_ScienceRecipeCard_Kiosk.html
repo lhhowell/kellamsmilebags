@@ -160,121 +160,112 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
     </div>
   </div>
 
-  <!-- STEP 1: ONEWORD -->
-  <div class="step-card">
-    <div class="step-num">Step 1 of 3</div>
-    <div class="step-title">Choose your OneWord</div>
-    <div class="ow-grid">
-      <button class="ow-btn" onclick="selectWord('ABSORB',this)">ABSORB</button>
-      <button class="ow-btn" onclick="selectWord('ADAPT',this)">ADAPT</button>
-      <button class="ow-btn" onclick="selectWord('ANCHOR',this)">ANCHOR</button>
-      <button class="ow-btn" onclick="selectWord('BALANCE',this)">BALANCE</button>
-      <button class="ow-btn" onclick="selectWord('BLOOM',this)">BLOOM</button>
-      <button class="ow-btn" onclick="selectWord('BREATHE',this)">BREATHE</button>
-      <button class="ow-btn" onclick="selectWord('CLEAR',this)">CLEAR</button>
-      <button class="ow-btn" onclick="selectWord('CONNECT',this)">CONNECT</button>
-      <button class="ow-btn" onclick="selectWord('CYCLE',this)">CYCLE</button>
-      <button class="ow-btn" onclick="selectWord('EMERGE',this)">EMERGE</button>
-      <button class="ow-btn" onclick="selectWord('FILTER',this)">FILTER</button>
-      <button class="ow-btn" onclick="selectWord('FLOW',this)">FLOW</button>
-      <button class="ow-btn" onclick="selectWord('GROW',this)">GROW</button>
-      <button class="ow-btn" onclick="selectWord('HEAL',this)">HEAL</button>
-      <button class="ow-btn" onclick="selectWord('MIGRATE',this)">MIGRATE</button>
-      <button class="ow-btn" onclick="selectWord('PERSIST',this)">PERSIST</button>
-      <button class="ow-btn" onclick="selectWord('RENEW',this)">RENEW</button>
-      <button class="ow-btn" onclick="selectWord('RESTORE',this)">RESTORE</button>
-      <button class="ow-btn" onclick="selectWord('RETURN',this)">RETURN</button>
-      <button class="ow-btn" onclick="selectWord('RISE',this)">RISE</button>
-      <button class="ow-btn" onclick="selectWord('ROOT',this)">ROOT</button>
-      <button class="ow-btn" onclick="selectWord('SHINE',this)">SHINE</button>
-      <button class="ow-btn" onclick="selectWord('SUSTAIN',this)">SUSTAIN</button>
-      <button class="ow-btn" onclick="selectWord('THRIVE',this)">THRIVE</button>
-      <button class="ow-btn" onclick="selectWord('TRANSFORM',this)">TRANSFORM</button>
-    </div>
+  <!-- SUMMARY - populated from Supply Bar params -->
+  <div class="step-card" id="summaryCard" style="display:none;margin-top:14px;">
+    <div class="step-num">Your Selections from the Supply Bar</div>
+    <div class="step-title" id="summaryTitle"></div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;" id="summaryChips"></div>
+    <button class="gen-btn" id="genBtn" onclick="generateCard()" style="margin-top:18px;">&#127380; Generate My Science Recipe Card</button>
   </div>
 
-  <!-- STEP 2: SUPPLIES -->
-  <div class="step-card">
-    <div class="step-num">Step 2 of 3</div>
-    <div class="step-title">Choose 2 or 3 supplies from your Science Supply Bar</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
-      <div style="background:#0d1a0d;border:2px solid #4caf82;border-radius:12px;padding:16px;text-align:center;">
-        <div style="font-size:24px;margin-bottom:8px;">&#10003;</div>
-        <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#4caf82;margin-bottom:6px;">I already visited the Supply Bar</div>
-        <div style="font-size:12px;color:#c8c4bc;line-height:1.5;">Select the same supplies you physically chose at the Supply Bar station. Then generate your recipe card.</div>
-      </div>
-      <div style="background:#0d0d0d;border:2px solid #c9a84c;border-radius:12px;padding:16px;text-align:center;">
-        <div style="font-size:24px;margin-bottom:8px;">&#128203;</div>
-        <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#c9a84c;margin-bottom:6px;">I haven't visited the Supply Bar yet</div>
-        <div style="font-size:12px;color:#c8c4bc;line-height:1.5;margin-bottom:10px;">Visit the Supply Bar first to pick your physical supplies, then come back here to generate your recipe card.</div>
-        <a href="APBio_Elementary_ScienceSupplyBar.html" style="display:inline-flex;align-items:center;gap:6px;background:#c9a84c;color:#111;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;border-radius:8px;text-decoration:none;">&#127807; Go to Supply Bar &#8594;</a>
+  <!-- MANUAL SELECTION - shown only if no params passed -->
+  <div id="manualSection" style="display:none;">
+    <div class="step-card" style="margin-top:14px;">
+      <div class="step-num">Step 1 of 3</div>
+      <div class="step-title">Choose your OneWord</div>
+      <div class="step-desc">Select the OneWord that is guiding your Smile Bag.</div>
+      <div class="ow-grid">
+        <button class="ow-btn" onclick="selectWord('ABSORB',this)">ABSORB</button>
+        <button class="ow-btn" onclick="selectWord('ADAPT',this)">ADAPT</button>
+        <button class="ow-btn" onclick="selectWord('ANCHOR',this)">ANCHOR</button>
+        <button class="ow-btn" onclick="selectWord('BALANCE',this)">BALANCE</button>
+        <button class="ow-btn" onclick="selectWord('BLOOM',this)">BLOOM</button>
+        <button class="ow-btn" onclick="selectWord('BREATHE',this)">BREATHE</button>
+        <button class="ow-btn" onclick="selectWord('CLEAR',this)">CLEAR</button>
+        <button class="ow-btn" onclick="selectWord('CONNECT',this)">CONNECT</button>
+        <button class="ow-btn" onclick="selectWord('CYCLE',this)">CYCLE</button>
+        <button class="ow-btn" onclick="selectWord('EMERGE',this)">EMERGE</button>
+        <button class="ow-btn" onclick="selectWord('FILTER',this)">FILTER</button>
+        <button class="ow-btn" onclick="selectWord('FLOW',this)">FLOW</button>
+        <button class="ow-btn" onclick="selectWord('GROW',this)">GROW</button>
+        <button class="ow-btn" onclick="selectWord('HEAL',this)">HEAL</button>
+        <button class="ow-btn" onclick="selectWord('MIGRATE',this)">MIGRATE</button>
+        <button class="ow-btn" onclick="selectWord('PERSIST',this)">PERSIST</button>
+        <button class="ow-btn" onclick="selectWord('RENEW',this)">RENEW</button>
+        <button class="ow-btn" onclick="selectWord('RESTORE',this)">RESTORE</button>
+        <button class="ow-btn" onclick="selectWord('RETURN',this)">RETURN</button>
+        <button class="ow-btn" onclick="selectWord('RISE',this)">RISE</button>
+        <button class="ow-btn" onclick="selectWord('ROOT',this)">ROOT</button>
+        <button class="ow-btn" onclick="selectWord('SHINE',this)">SHINE</button>
+        <button class="ow-btn" onclick="selectWord('SUSTAIN',this)">SUSTAIN</button>
+        <button class="ow-btn" onclick="selectWord('THRIVE',this)">THRIVE</button>
+        <button class="ow-btn" onclick="selectWord('TRANSFORM',this)">TRANSFORM</button>
       </div>
     </div>
-    <p style="font-size:12px;color:#c8c4bc;margin-bottom:14px;line-height:1.6;">&#8595; Whichever path you took, select your supplies below to generate your personalized recipe card:</p>
-    <div class="supply-grid">
-      <button class="supply-btn" onclick="toggleSupply('Crayons & Colored Pencils',this)">
-        <div class="supply-check">&#10003;</div>
-        <span class="supply-btn-icon">&#128396;</span>
-        <span class="supply-btn-name">Crayons &amp; Colored Pencils</span>
-        <span class="supply-btn-desc">For drawing, coloring, and recording observations</span>
-      </button>
-      <button class="supply-btn" onclick="toggleSupply('Stickers',this)">
-        <div class="supply-check">&#10003;</div>
-        <span class="supply-btn-icon">&#11088;</span>
-        <span class="supply-btn-name">Stickers</span>
-        <span class="supply-btn-desc">For labeling, marking progress, and celebrating</span>
-      </button>
-      <button class="supply-btn" onclick="toggleSupply('Play-Doh',this)">
-        <div class="supply-check">&#10003;</div>
-        <span class="supply-btn-icon">&#127758;</span>
-        <span class="supply-btn-name">Play-Doh</span>
-        <span class="supply-btn-desc">For modeling, sculpting, and hands-on exploration</span>
-      </button>
-      <button class="supply-btn" onclick="toggleSupply('Ruler',this)">
-        <div class="supply-check">&#10003;</div>
-        <span class="supply-btn-icon">&#128207;</span>
-        <span class="supply-btn-name">Ruler</span>
-        <span class="supply-btn-desc">For measuring growth, distance, and change over time</span>
-      </button>
-      <button class="supply-btn" onclick="toggleSupply('Mini Notepad',this)">
-        <div class="supply-check">&#10003;</div>
-        <span class="supply-btn-icon">&#128221;</span>
-        <span class="supply-btn-name">Mini Notepad</span>
-        <span class="supply-btn-desc">For recording observations like a real scientist</span>
-      </button>
-      <button class="supply-btn" onclick="toggleSupply('Rubber Bands',this)">
-        <div class="supply-check">&#10003;</div>
-        <span class="supply-btn-icon">&#128308;</span>
-        <span class="supply-btn-name">Rubber Bands</span>
-        <span class="supply-btn-desc">For testing elasticity, force, and simple machines</span>
-      </button>
-      <button class="supply-btn" onclick="toggleSupply('Seeds',this)">
-        <div class="supply-check">&#10003;</div>
-        <span class="supply-btn-icon">&#127807;</span>
-        <span class="supply-btn-name">Seeds</span>
-        <span class="supply-btn-desc">For growing, observing germination, and plant science</span>
-      </button>
-      <button class="supply-btn" onclick="toggleSupply('Mirror',this)">
-        <div class="supply-check">&#10003;</div>
-        <span class="supply-btn-icon">&#129359;</span>
-        <span class="supply-btn-name">Mirror</span>
-        <span class="supply-btn-desc">For exploring light, reflection, and symmetry</span>
-      </button>
+    <div class="step-card">
+      <div class="step-num">Step 2 of 3</div>
+      <div class="step-title">Choose 2 or 3 supplies</div>
+      <div class="step-desc">Select the supplies you want to include. When done, click <strong style="color:#4caf82;">Generate My Science Recipe Card</strong> below.</div>
+      <div class="supply-grid">
+        <button class="supply-btn" onclick="toggleSupply('Crayons & Colored Pencils',this)">
+          <div class="supply-check">&#10003;</div>
+          <span class="supply-btn-icon">&#128396;</span>
+          <span class="supply-btn-name">Crayons &amp; Colored Pencils</span>
+          <span class="supply-btn-desc">For drawing and recording observations</span>
+        </button>
+        <button class="supply-btn" onclick="toggleSupply('Stickers',this)">
+          <div class="supply-check">&#10003;</div>
+          <span class="supply-btn-icon">&#11088;</span>
+          <span class="supply-btn-name">Stickers</span>
+          <span class="supply-btn-desc">For labeling and celebrating</span>
+        </button>
+        <button class="supply-btn" onclick="toggleSupply('Play-Doh',this)">
+          <div class="supply-check">&#10003;</div>
+          <span class="supply-btn-icon">&#127758;</span>
+          <span class="supply-btn-name">Play-Doh</span>
+          <span class="supply-btn-desc">For modeling and sculpting</span>
+        </button>
+        <button class="supply-btn" onclick="toggleSupply('Ruler',this)">
+          <div class="supply-check">&#10003;</div>
+          <span class="supply-btn-icon">&#128207;</span>
+          <span class="supply-btn-name">Ruler</span>
+          <span class="supply-btn-desc">For measuring change over time</span>
+        </button>
+        <button class="supply-btn" onclick="toggleSupply('Mini Notepad',this)">
+          <div class="supply-check">&#10003;</div>
+          <span class="supply-btn-icon">&#128221;</span>
+          <span class="supply-btn-name">Mini Notepad</span>
+          <span class="supply-btn-desc">For recording like a scientist</span>
+        </button>
+        <button class="supply-btn" onclick="toggleSupply('Rubber Bands',this)">
+          <div class="supply-check">&#10003;</div>
+          <span class="supply-btn-icon">&#128308;</span>
+          <span class="supply-btn-name">Rubber Bands</span>
+          <span class="supply-btn-desc">For testing force and elasticity</span>
+        </button>
+        <button class="supply-btn" onclick="toggleSupply('Seeds',this)">
+          <div class="supply-check">&#10003;</div>
+          <span class="supply-btn-icon">&#127807;</span>
+          <span class="supply-btn-name">Seeds</span>
+          <span class="supply-btn-desc">For growing and plant science</span>
+        </button>
+        <button class="supply-btn" onclick="toggleSupply('Mirror',this)">
+          <div class="supply-check">&#10003;</div>
+          <span class="supply-btn-icon">&#129359;</span>
+          <span class="supply-btn-name">Mirror</span>
+          <span class="supply-btn-desc">For light and reflection</span>
+        </button>
+      </div>
+      <div class="supply-count" id="supplyCount">Select <span>2 or 3</span> supplies to continue</div>
+      <button class="gen-btn off" id="genBtnManual" onclick="generateCard()" style="margin-top:14px;">&#127380; Generate My Science Recipe Card</button>
     </div>
-    <div class="supply-count" id="supplyCount">Select <span>2 or 3</span> supplies to continue</div>
-  </div>
-
-  <!-- STEP 3: GENERATE -->
-  <div class="step-card">
-    <div class="step-num">Step 3 of 3</div>
-    <div class="step-title">Generate your Science Recipe Card</div>
-    <button class="gen-btn off" id="genBtn" onclick="generateCard()">&#127380; Generate My Science Recipe Card</button>
   </div>
 
   <!-- PRINT SECTION -->
   <div class="print-section" id="printSection">
     <div class="recipe-card" id="printCard"></div>
     <button class="print-btn" onclick="window.print()">&#128438; Print This Recipe Card</button>
+  <a href="APBio_Elementary_ScienceSupplyBar.html" id="returnBtn" style="display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(91,155,213,.08);border:1.5px solid #5b9bd5;color:#5b9bd5;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:14px;border-radius:10px;text-decoration:none;margin-top:10px;">&#8592; Return to Supply Bar to create your Bookmark</a>
   </div>
 
 </div>
@@ -565,6 +556,35 @@ var recipes = {
 
 var selectedWord = '';
 var selectedSupplies = [];
+
+// Read params from Supply Bar
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var w = params.get('word');
+  var s = params.get('supplies');
+  if (w && s) {
+    // Came from Supply Bar - show summary card only
+    selectedWord = w;
+    var list = s.split(',');
+    for (var j = 0; j < list.length; j++) { selectedSupplies.push(list[j].trim()); }
+    // Populate summary card
+    document.getElementById('summaryTitle').innerHTML =
+      '<span style="font-family:Fredoka One,cursive;font-size:22px;color:#c9a84c;letter-spacing:2px;">' + w + '</span>';
+    var chips = document.getElementById('summaryChips');
+    for (var k = 0; k < selectedSupplies.length; k++) {
+      var chip = document.createElement('span');
+      chip.style.cssText = 'background:#0d1a0d;border:1px solid #4caf82;border-radius:20px;padding:6px 14px;font-family:Fredoka One,cursive;font-size:11px;color:#4caf82;letter-spacing:1px;';
+      chip.textContent = selectedSupplies[k];
+      chips.appendChild(chip);
+    }
+    document.getElementById('summaryCard').style.display = 'block';
+    document.getElementById('manualSection').style.display = 'none';
+  } else {
+    // No params - show manual selection
+    document.getElementById('summaryCard').style.display = 'none';
+    document.getElementById('manualSection').style.display = 'block';
+  }
+})();
 
 function selectWord(w, btn) {
   selectedWord = w;
