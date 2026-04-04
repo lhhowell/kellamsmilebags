@@ -68,12 +68,12 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
 
 /* REFERENCE CHART */
 .ref-toggle{font-size:.72rem;font-weight:800;color:var(--dna1,#1565C0);cursor:pointer;text-decoration:underline;text-align:center;display:block;margin-bottom:8px;}
-.ref-chart{display:none;background:#F8F9FA;border-radius:10px;padding:12px;border:1.5px solid #e8ddd0;}
+.ref-chart{display:none;background:#F8F9FA;border-radius:10px;padding:16px;border:1.5px solid #e8ddd0;}
 .ref-chart.open{display:block;}
-.ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:4px;}
-.ref-row{display:flex;align-items:center;gap:6px;padding:2px 4px;border-radius:4px;}
-.ref-letter{font-family:'Fredoka One',cursive;font-size:.8rem;color:var(--navy);width:16px;}
-.ref-binary{font-family:'Share Tech Mono',monospace;font-size:.62rem;color:#555;}
+.ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;}
+.ref-row{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:6px;background:#f8f6f2;}
+.ref-letter{font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--navy);width:22px;}
+.ref-binary{font-family:'Share Tech Mono',monospace;font-size:.85rem;color:#333;font-weight:700;}
 
 /* COOKIE PREVIEW */
 .cookie-stage{display:flex;flex-direction:column;align-items:center;gap:12px;padding:14px 0;}
@@ -137,6 +137,44 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
   body *{visibility:hidden;}
   #printArea,#printArea *{visibility:visible;}
   #printArea{position:fixed;top:0;left:0;width:100%;}
+}
+
+/* ── SIDE BY SIDE RESULT ── */
+.result-split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:14px;}
+.split-panel{display:flex;flex-direction:column;gap:0;}
+.split-panel-lbl{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--light);margin-bottom:8px;text-align:center;}
+
+/* SHAPE TOGGLE */
+.shape-toggle{display:flex;gap:6px;justify-content:center;margin-bottom:12px;}
+.shape-btn{padding:5px 14px;border-radius:20px;border:2px solid #e8ddd0;background:#fdfaf6;font-family:'Nunito',sans-serif;font-weight:800;font-size:.68rem;color:var(--navy);cursor:pointer;transition:all .15s;}
+.shape-btn.active{background:var(--navy);color:var(--gold);border-color:var(--navy);}
+
+/* COLORING PALETTE */
+.color-palette{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;padding:8px 0;}
+.pal-swatch{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:all .14s;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.pal-swatch:hover{transform:scale(1.15);}
+.pal-swatch.picked{border-color:var(--navy);transform:scale(1.2);box-shadow:0 0 0 2px rgba(255,255,255,.5),0 2px 8px rgba(0,0,0,.3);}
+
+/* COLORING COOKIE WRAPPER */
+.coloring-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;background:white;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);border:1.5px solid #f0e8dc;}
+#coloringCanvas{border-radius:10px;cursor:crosshair;display:block;max-width:100%;box-shadow:0 4px 16px rgba(0,0,0,.12);}
+
+/* COLORING ACTIONS */
+.color-actions{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;}
+.btn-color-action{padding:6px 12px;border-radius:20px;border:1.5px solid #e8ddd0;background:white;color:var(--mid);font-family:'Nunito',sans-serif;font-weight:800;font-size:.65rem;cursor:pointer;transition:all .14s;}
+.btn-color-action:hover{border-color:var(--light);color:var(--navy);}
+.btn-print-color{padding:6px 14px;border-radius:20px;border:none;background:var(--navy);color:var(--gold);font-family:'Nunito',sans-serif;font-weight:900;font-size:.65rem;cursor:pointer;transition:all .14s;}
+.btn-print-color:hover{background:var(--navy2);}
+
+/* Print coloring sheet */
+@media print{
+  .no-print{display:none!important;}
+  #colorPrintArea{display:block!important;}
+}
+#colorPrintArea{display:none;}
+
+@media(max-width:600px){
+  .result-split{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -252,18 +290,55 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
 </div>
 
 <!-- S3: RESULT -->
-<div class="screen" id="scr3">
+<div class="screen" id="scr3" style="max-width:960px;">
   <div class="scr-hd">
     <div class="step-pill">Step 3 of 3 · Code Cracked!</div>
     <h2>Cookie Unlocked! 🍪🎉</h2>
-    <p>Your binary code revealed a secret decoration!</p>
+    <p>Your binary code is cracked — now color your cookie!</p>
   </div>
-  <div id="printArea">
-    <div class="result-card" id="resultCard"></div>
+
+  <div class="result-split">
+    <!-- LEFT: Result card -->
+    <div class="split-panel">
+      <div class="split-panel-lbl">📋 Your Result Card</div>
+      <div id="printArea">
+        <div class="result-card" id="resultCard"></div>
+      </div>
+      <div style="margin-top:10px;">
+        <button class="btn-print no-print" onclick="printResultCard()" style="width:100%;padding:10px;border-radius:10px;border:2px solid var(--navy);background:white;color:var(--navy);font-family:'Nunito',sans-serif;font-weight:900;font-size:.82rem;cursor:pointer;">🖨️ Print Result Card</button>
+      </div>
+    </div>
+
+    <!-- RIGHT: Interactive coloring -->
+    <div class="split-panel">
+      <div class="split-panel-lbl">🎨 Color Your Cookie!</div>
+      <div class="coloring-wrap">
+        <!-- Shape toggle -->
+        <div class="shape-toggle no-print">
+          <button class="shape-btn active" id="shapeRound" onclick="switchShape('round')">🔵 Round</button>
+          <button class="shape-btn" id="shapeWord" onclick="switchShape('word')">🔤 Word Shape</button>
+        </div>
+        <!-- Canvas -->
+        <canvas id="coloringCanvas" width="260" height="260"></canvas>
+        <!-- Palette -->
+        <div class="color-palette no-print" id="colorPalette"></div>
+        <!-- Actions -->
+        <div class="color-actions no-print">
+          <button class="btn-color-action" onclick="undoColoring()">↩️ Undo</button>
+          <button class="btn-color-action" onclick="resetColoring()">🔄 Reset</button>
+          <button class="btn-print-color" onclick="printColorSheet()">🖨️ Print Sheet</button>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="nav-row">
+
+  <!-- Hidden print area for coloring sheet -->
+  <div id="colorPrintArea" style="display:none;">
+    <canvas id="printCanvas" width="520" height="580"></canvas>
+  </div>
+
+  <div class="nav-row no-print">
     <button class="btn-back" onclick="goTo(2)">← Decode Again</button>
-    <button class="btn-print" onclick="window.print()">🖨️ Print</button>
     <button class="btn-submit" onclick="submitCode()">✅ Submit!</button>
   </div>
 </div>
@@ -870,6 +945,456 @@ function restart(){
 
 function show(id){document.getElementById(id).classList.add('show');}
 function hide(id){document.getElementById(id).classList.remove('show');}
+
+
+/* ══ COLORING SHEET SYSTEM ════════════════════════════════════ */
+let coloringShape = 'round';
+let selectedPalColor = '#FF8F00';
+let coloringHistory = [];
+const MAX_HISTORY = 20;
+
+const COLORING_PALETTE = [
+  '#FF8F00','#F9A825','#FFF9C4','#FFFFFF',
+  '#1565C0','#90CAF9','#E3F2FD','#2D7A4F',
+  '#A5D6A7','#E91E63','#FCE4EC','#6A1B9A',
+  '#CE93D8','#B71C1C','#FFCDD2','#3E2723',
+  '#D7CCC8','#00796B','#B2DFDB','#37474F',
+];
+
+function buildColorPalette() {
+  const pal = document.getElementById('colorPalette');
+  pal.innerHTML = '';
+  COLORING_PALETTE.forEach(c => {
+    const sw = document.createElement('button');
+    sw.className = 'pal-swatch' + (c === selectedPalColor ? ' picked' : '');
+    sw.style.background = c;
+    sw.style.outline = c === '#FFFFFF' ? '1.5px solid #ccc' : '';
+    sw.title = c;
+    sw.onclick = () => {
+      selectedPalColor = c;
+      document.querySelectorAll('.pal-swatch').forEach(s => s.classList.remove('picked'));
+      sw.classList.add('picked');
+    };
+    pal.appendChild(sw);
+  });
+}
+
+function switchShape(shape) {
+  coloringShape = shape;
+  document.getElementById('shapeRound').classList.toggle('active', shape === 'round');
+  document.getElementById('shapeWord').classList.toggle('active', shape === 'word');
+  drawColoringCookie();
+  coloringHistory = [];
+  saveColoringHistory();
+}
+
+function drawColoringCookie() {
+  const canvas = document.getElementById('coloringCanvas');
+  const ctx = canvas.getContext('2d');
+  const d = BAKE_DATA[S.word];
+  if (!d) return;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  if (coloringShape === 'round') {
+    drawRoundColoringCookie(ctx, d);
+  } else {
+    drawWordColoringCookie(ctx, d);
+  }
+}
+
+function drawRoundColoringCookie(ctx, d) {
+  const cx = 130, cy = 130, r = 110;
+  const STROKE = '#111';
+  const SW = 2.5;
+
+  // Outer cookie shape
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.fillStyle = 'white';
+  ctx.fill();
+  ctx.strokeStyle = STROKE;
+  ctx.lineWidth = SW;
+  ctx.stroke();
+
+  // Pattern regions based on word
+  drawColoringPattern(ctx, d, cx, cy, r, STROKE, SW);
+
+  // Word label at bottom
+  ctx.font = 'bold 13px Nunito, sans-serif';
+  ctx.fillStyle = '#aaa';
+  ctx.textAlign = 'center';
+  ctx.fillText(S.word.toUpperCase() + ' · ' + d.code, cx, cy + r + 18);
+}
+
+function drawColoringPattern(ctx, d, cx, cy, r, stroke, sw) {
+  ctx.strokeStyle = stroke;
+  ctx.lineWidth = sw;
+
+  switch(d.pattern) {
+    case 'heart':
+      // Center heart region
+      ctx.beginPath();
+      ctx.moveTo(cx, cy + 28);
+      ctx.bezierCurveTo(cx - 50, cy - 12, cx - 62, cy - 50, cx, cy - 18);
+      ctx.bezierCurveTo(cx + 62, cy - 50, cx + 50, cy - 12, cx, cy + 28);
+      ctx.closePath();
+      ctx.fillStyle = 'white'; ctx.fill();
+      ctx.stroke();
+      // Dot ring (5 dots)
+      for (let i = 0; i < 5; i++) {
+        const a = (i * 72 - 90) * Math.PI / 180;
+        const dx = cx + 74 * Math.cos(a), dy = cy + 74 * Math.sin(a);
+        ctx.beginPath(); ctx.arc(dx, dy, 7, 0, Math.PI * 2);
+        ctx.fillStyle = 'white'; ctx.fill(); ctx.stroke();
+      }
+      break;
+    case 'swirl':
+      // Spiral regions (3 band zones)
+      for (let band = 1; band <= 3; band++) {
+        ctx.beginPath();
+        ctx.arc(cx, cy, r * (band / 3.5), 0, Math.PI * 2);
+        ctx.fillStyle = 'white'; ctx.fill(); ctx.stroke();
+      }
+      break;
+    case 'wave':
+      // Horizontal wave bands
+      [-40, -13, 14, 41].forEach(yOff => {
+        ctx.beginPath();
+        ctx.save();
+        ctx.beginPath(); ctx.arc(cx, cy, r - 5, 0, Math.PI * 2); ctx.clip();
+        ctx.beginPath();
+        ctx.moveTo(cx - r, cy + yOff);
+        for (let x = -r; x <= r; x += 5) {
+          ctx.lineTo(cx + x, cy + yOff + 14 * Math.sin((x / r) * Math.PI * 2));
+        }
+        ctx.stroke();
+        ctx.restore();
+      });
+      break;
+    case 'rays':
+    case 'sunrise':
+      // Ray sections
+      for (let i = 0; i < 8; i++) {
+        const a1 = (i * 45 - 90) * Math.PI / 180;
+        const a2 = ((i + 1) * 45 - 90) * Math.PI / 180;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, r - 5, a1, a2);
+        ctx.closePath();
+        ctx.fillStyle = 'white'; ctx.fill(); ctx.stroke();
+      }
+      break;
+    case 'petals':
+      // 6 petal regions
+      for (let i = 0; i < 6; i++) {
+        const a = i * (Math.PI / 3);
+        const px = cx + 54 * Math.cos(a), py = cy + 54 * Math.sin(a);
+        ctx.save();
+        ctx.translate(px, py);
+        ctx.rotate(a);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 22, 11, 0, 0, Math.PI * 2);
+        ctx.fillStyle = 'white'; ctx.fill(); ctx.stroke();
+        ctx.restore();
+      }
+      // Center circle
+      ctx.beginPath(); ctx.arc(cx, cy, 14, 0, Math.PI * 2);
+      ctx.fillStyle = 'white'; ctx.fill(); ctx.stroke();
+      break;
+    case 'split':
+      // Left/right halves
+      ctx.save();
+      ctx.beginPath(); ctx.arc(cx, cy, r - 5, 0, Math.PI * 2); ctx.clip();
+      ctx.beginPath(); ctx.rect(cx, cy - r, r, r * 2);
+      ctx.fillStyle = 'white'; ctx.fill(); ctx.stroke();
+      ctx.restore();
+      ctx.beginPath(); ctx.moveTo(cx, cy - r); ctx.lineTo(cx, cy + r);
+      ctx.strokeStyle = stroke; ctx.lineWidth = sw + 1; ctx.stroke();
+      ctx.lineWidth = sw;
+      break;
+    case 'stripes':
+      // 5 horizontal stripe regions
+      ctx.save();
+      ctx.beginPath(); ctx.arc(cx, cy, r - 5, 0, Math.PI * 2); ctx.clip();
+      [-56, -28, 0, 28, 56].forEach(y => {
+        ctx.beginPath();
+        ctx.rect(cx - r, cy + y - 12, r * 2, 24);
+        ctx.fillStyle = 'white'; ctx.fill(); ctx.stroke();
+      });
+      ctx.restore();
+      break;
+    case 'anchor':
+      // Anchor shape
+      ctx.strokeStyle = stroke; ctx.lineWidth = sw + 1.5;
+      // Ring
+      ctx.beginPath(); ctx.arc(cx, cy - 28, 15, 0, Math.PI * 2);
+      ctx.fillStyle = 'white'; ctx.fill(); ctx.stroke();
+      // Shaft
+      ctx.beginPath(); ctx.moveTo(cx, cy - 13); ctx.lineTo(cx, cy + 38);
+      ctx.stroke();
+      // Arms
+      ctx.beginPath();
+      ctx.arc(cx, cy + 38, 28, 0, Math.PI);
+      ctx.stroke();
+      // Crossbar
+      ctx.beginPath(); ctx.moveTo(cx - 38, cy - 28); ctx.lineTo(cx + 38, cy - 28);
+      ctx.stroke();
+      ctx.lineWidth = sw;
+      break;
+    case 'stars':
+      // Large star + 4 small stars
+      [[cx,cy,35],[cx-62,cy-38,12],[cx+64,cy-36,10],[cx-50,cy+56,12],[cx+52,cy+54,10]].forEach(([x,y,s],i) => {
+        ctx.beginPath();
+        const pts = 8;
+        for (let j = 0; j < pts * 2; j++) {
+          const rad = j % 2 === 0 ? s : s * 0.4;
+          const ang = (j * Math.PI / pts) - Math.PI / 2;
+          if (j === 0) ctx.moveTo(x + rad * Math.cos(ang), y + rad * Math.sin(ang));
+          else ctx.lineTo(x + rad * Math.cos(ang), y + rad * Math.sin(ang));
+        }
+        ctx.closePath();
+        ctx.fillStyle = 'white'; ctx.fill(); ctx.stroke();
+      });
+      break;
+    case 'pinwheel':
+      // 4 pinwheel blades
+      for (let i = 0; i < 4; i++) {
+        const a = (i * 90) * Math.PI / 180;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, r * 0.82, a, a + 0.75);
+        ctx.closePath();
+        ctx.fillStyle = 'white'; ctx.fill(); ctx.stroke();
+      }
+      ctx.beginPath(); ctx.arc(cx, cy, 10, 0, Math.PI * 2);
+      ctx.fillStyle = 'white'; ctx.fill(); ctx.stroke();
+      break;
+    case 'butterfly':
+      // 4 wing regions
+      [[cx-34,-22,-22],[cx+34,-22,22],[cx-25,26,18],[cx+25,26,-18]].forEach(([wx,wy,rot]) => {
+        ctx.save();
+        ctx.translate(wx, cy + wy);
+        ctx.rotate(rot * Math.PI / 180);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 32, 20, 0, 0, Math.PI * 2);
+        ctx.fillStyle = 'white'; ctx.fill(); ctx.stroke();
+        ctx.restore();
+      });
+      ctx.beginPath(); ctx.moveTo(cx, cy - 46); ctx.lineTo(cx, cy + 46);
+      ctx.strokeStyle = stroke; ctx.lineWidth = sw; ctx.stroke();
+      break;
+    default:
+      // Generic zones: inner circle + outer ring
+      ctx.beginPath(); ctx.arc(cx, cy, r * 0.5, 0, Math.PI * 2);
+      ctx.fillStyle = 'white'; ctx.fill(); ctx.stroke();
+      // 6 edge dots
+      for (let i = 0; i < 6; i++) {
+        const a = i * (Math.PI / 3);
+        const dx = cx + 80 * Math.cos(a), dy = cy + 80 * Math.sin(a);
+        ctx.beginPath(); ctx.arc(dx, dy, 8, 0, Math.PI * 2);
+        ctx.fillStyle = 'white'; ctx.fill(); ctx.stroke();
+      }
+  }
+}
+
+function drawWordColoringCookie(ctx, d) {
+  const word = S.word.toUpperCase();
+  const len = word.length;
+  const W = 260, H = 130;
+  const cx = W / 2, cy = H / 2;
+  const radius = 18;
+
+  // Outer rounded rect
+  roundRect(ctx, 5, 30, W - 10, H - 10, radius);
+  ctx.fillStyle = 'white'; ctx.fill();
+  ctx.strokeStyle = '#111'; ctx.lineWidth = 3; ctx.stroke();
+
+  // Inner line
+  roundRect(ctx, 13, 38, W - 26, H - 26, radius - 6);
+  ctx.strokeStyle = '#555'; ctx.lineWidth = 1.5; ctx.stroke();
+
+  // Word text (outlines only — colorable)
+  const fs = len <= 5 ? 52 : len <= 7 ? 42 : len <= 9 ? 34 : 27;
+  ctx.font = `bold ${fs}px "Fredoka One", cursive`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.strokeStyle = '#111';
+  ctx.lineWidth = 5;
+  ctx.strokeText(word, cx, cy + 30);
+  ctx.fillStyle = 'white';
+  ctx.fillText(word, cx, cy + 30);
+
+  // Label
+  ctx.font = '11px Nunito, sans-serif';
+  ctx.fillStyle = '#aaa';
+  ctx.textAlign = 'center';
+  ctx.fillText(S.word + ' · ' + d.code, cx, 22);
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+/* ── FLOOD FILL ── */
+document.getElementById('coloringCanvas')?.addEventListener('click', (e) => {
+  const canvas = document.getElementById('coloringCanvas');
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const x = Math.round((e.clientX - rect.left) * scaleX);
+  const y = Math.round((e.clientY - rect.top) * scaleY);
+  saveColoringHistory();
+  floodFillCanvas(canvas, x, y, selectedPalColor);
+});
+
+function hexToRgba(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return [r, g, b, 255];
+}
+
+function colorsNear(d, i, tr, tg, tb, tol = 28) {
+  return Math.abs(d[i]-tr) + Math.abs(d[i+1]-tg) + Math.abs(d[i+2]-tb) < tol;
+}
+
+function isOutlinePixel(d, i) {
+  return d[i] < 80 && d[i+1] < 80 && d[i+2] < 80;
+}
+
+function floodFillCanvas(canvas, startX, startY, fillHex) {
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const imageData = ctx.getImageData(0, 0, W, H);
+  const data = imageData.data;
+  const si = (startY * W + startX) * 4;
+  if (isOutlinePixel(data, si)) return;
+  const [tr, tg, tb] = [data[si], data[si+1], data[si+2]];
+  const [fr, fg, fb] = hexToRgba(fillHex);
+  if (colorsNear(data, si, fr, fg, fb, 5)) return;
+  const visited = new Uint8ClampedArray(W * H);
+  const stack = [startX + startY * W];
+  while (stack.length > 0) {
+    const pos = stack.pop();
+    const x = pos % W, y = (pos / W) | 0;
+    if (x < 0 || x >= W || y < 0 || y >= H) continue;
+    if (visited[pos]) continue;
+    const idx = pos * 4;
+    if (isOutlinePixel(data, idx)) continue;
+    if (!colorsNear(data, idx, tr, tg, tb)) continue;
+    visited[pos] = 1;
+    data[idx] = fr; data[idx+1] = fg; data[idx+2] = fb; data[idx+3] = 255;
+    stack.push(pos+1, pos-1, pos+W, pos-W);
+  }
+  ctx.putImageData(imageData, 0, 0);
+}
+
+/* ── HISTORY ── */
+function saveColoringHistory() {
+  const canvas = document.getElementById('coloringCanvas');
+  const snap = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+  coloringHistory.push(snap);
+  if (coloringHistory.length > MAX_HISTORY) coloringHistory.shift();
+}
+
+function undoColoring() {
+  if (coloringHistory.length <= 1) return;
+  coloringHistory.pop();
+  const canvas = document.getElementById('coloringCanvas');
+  canvas.getContext('2d').putImageData(coloringHistory[coloringHistory.length - 1], 0, 0);
+}
+
+function resetColoring() {
+  coloringHistory = [];
+  drawColoringCookie();
+  saveColoringHistory();
+}
+
+/* ── PRINT COLORING SHEET ── */
+function printResultCard() {
+  const prev = document.getElementById('colorPrintArea').style.display;
+  document.getElementById('colorPrintArea').style.display = 'none';
+  window.print();
+  document.getElementById('colorPrintArea').style.display = prev;
+}
+
+function printColorSheet() {
+  const canvas = document.getElementById('coloringCanvas');
+  const printCanvas = document.getElementById('printCanvas');
+  const pctx = printCanvas.getContext('2d');
+  const d = BAKE_DATA[S.word];
+
+  // White background
+  pctx.fillStyle = 'white';
+  pctx.fillRect(0, 0, printCanvas.width, printCanvas.height);
+
+  // Header
+  pctx.font = 'bold 14px Nunito, sans-serif';
+  pctx.fillStyle = '#1A2744';
+  pctx.textAlign = 'center';
+  pctx.fillText('🍪 Bake the Code · Cookie Coloring Sheet', printCanvas.width/2, 28);
+
+  pctx.font = '12px Nunito, sans-serif';
+  pctx.fillStyle = '#7A3E10';
+  pctx.fillText(S.word.toUpperCase() + ' · Code: ' + d.code + ' · ' + S.name, printCanvas.width/2, 48);
+
+  // Scale and center the colored canvas
+  const scale = 1.8;
+  const offsetX = (printCanvas.width - canvas.width * scale) / 2;
+  pctx.drawImage(canvas, offsetX, 68, canvas.width * scale, canvas.height * scale);
+
+  // Decoration scheme below
+  pctx.font = 'italic 11px Nunito, sans-serif';
+  pctx.fillStyle = '#555';
+  pctx.textAlign = 'center';
+  pctx.fillText('"' + d.desc + '"', printCanvas.width/2, 68 + canvas.height * scale + 22);
+
+  // Footer
+  pctx.font = '9px Nunito, sans-serif';
+  pctx.fillStyle = '#bbb';
+  pctx.fillText('💻 Bake the Code · Smile Bags · Culinary Arts with Ms. Sayers · Spring 2026', printCanvas.width/2, printCanvas.height - 10);
+
+  // Show print area and print
+  const printArea = document.getElementById('colorPrintArea');
+  const resultArea = document.getElementById('printArea');
+  printArea.style.display = 'block';
+  resultArea.style.display = 'none';
+  window.print();
+  printArea.style.display = 'none';
+  resultArea.style.display = 'block';
+}
+
+/* ── INIT COLORING when result screen loads ── */
+const _origBuildResultCard = buildResultCard;
+buildResultCard = function() {
+  _origBuildResultCard();
+  setTimeout(() => {
+    buildColorPalette();
+    drawColoringCookie();
+    coloringHistory = [];
+    saveColoringHistory();
+    // Pre-set palette to match word's frost color
+    const d = BAKE_DATA[S.word];
+    if (d && d.frost) {
+      selectedPalColor = d.frost;
+      buildColorPalette();
+    }
+  }, 100);
+};
+
 </script>
 </body>
 </html>
