@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNA Flavor Pairing Lab · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#1A2744;--navy2:#223366;--gold:#E8A820;--gold2:#F5CC70;
+  --cream:#FFF8EE;--mid:#7A3E10;--light:#C87A2F;
+  --success:#2D7A4F;--radius:14px;--shadow:0 6px 28px rgba(0,0,0,0.11);
+  --dna1:#1565C0;--dna2:#6A1B9A;--dna3:#00838F;--dna4:#E65100;
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;overflow-x:hidden;}
+
+/* HEADER */
+.hdr{background:var(--navy);padding:11px 22px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 14px rgba(0,0,0,.32);position:sticky;top:0;z-index:100;}
+.hdr-brand{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--gold);}
+.hdr-sub{font-size:.58rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-top:1px;}
+.hdr-badge{background:var(--gold);color:var(--navy);font-weight:900;font-size:.58rem;padding:3px 10px;border-radius:20px;letter-spacing:.07em;text-transform:uppercase;}
+
+/* SCREENS */
+.screen{display:none;max-width:700px;margin:0 auto;padding:22px 16px 60px;animation:fadeUp .25s ease;}
+.screen.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* SCREEN HEADER */
+.scr-hd{text-align:center;margin-bottom:18px;}
+.step-pill{display:inline-block;background:var(--navy);color:var(--gold);font-size:.56rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;padding:3px 12px;border-radius:20px;margin-bottom:8px;}
+.scr-hd h2{font-family:'Baloo 2',cursive;font-size:1.5rem;color:var(--navy);font-weight:800;line-height:1.2;}
+.scr-hd p{color:var(--mid);font-size:.84rem;margin-top:4px;font-weight:600;}
+
+/* CARDS */
+.card{background:white;border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow);border:1.5px solid #f0e8dc;}
+.card-lbl{font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--light);margin-bottom:10px;}
+
+/* FIELDS */
+.field-lbl{font-size:.76rem;font-weight:700;color:var(--navy);margin-bottom:4px;display:block;}
+.field-inp{width:100%;padding:10px 12px;border-radius:10px;border:2px solid #e8ddd0;font-family:'Nunito',sans-serif;font-size:.94rem;font-weight:700;color:var(--navy);outline:none;transition:border-color .15s;background:#fdfaf6;margin-bottom:12px;}
+.field-inp:focus{border-color:var(--gold);background:white;}
+
+/* MODE SELECTOR */
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px;}
+.mode-card{background:white;border:2.5px solid #e8ddd0;border-radius:var(--radius);padding:18px 14px 14px;cursor:pointer;transition:all .18s;position:relative;box-shadow:var(--shadow);}
+.mode-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.14);}
+.mode-card.m1:hover,.mode-card.m1.sel{border-color:var(--dna1);background:#F0F7FF;}
+.mode-card.m2:hover,.mode-card.m2.sel{border-color:var(--dna2);background:#F5F0FF;}
+.mode-card.m3:hover,.mode-card.m3.sel{border-color:var(--dna3);background:#F0FAFA;}
+.mode-card.m4:hover,.mode-card.m4.sel{border-color:var(--dna4);background:#FFF5F0;}
+.mc-num{position:absolute;top:10px;right:12px;font-family:'Fredoka One',cursive;font-size:.7rem;opacity:.3;}
+.mc-ico{font-size:2rem;display:block;margin-bottom:8px;}
+.mc-name{font-family:'Baloo 2',cursive;font-size:.95rem;font-weight:800;color:var(--navy);margin-bottom:4px;}
+.mc-desc{font-size:.68rem;color:#999;line-height:1.4;font-weight:600;}
+.mc-flow{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:8px;}
+.mc-step{font-size:.58rem;padding:2px 6px;border-radius:6px;font-weight:700;}
+.m1 .mc-step{background:#E3F2FD;color:var(--dna1);}
+.m2 .mc-step{background:#EDE7F6;color:var(--dna2);}
+.m3 .mc-step{background:#E0F7FA;color:var(--dna3);}
+.m4 .mc-step{background:#FFF3E0;color:var(--dna4);}
+.mc-arr{font-size:.6rem;color:#ccc;}
+
+/* WORD GRID */
+.word-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;}
+.word-btn{padding:7px 4px;border-radius:9px;border:2px solid #e8ddd0;background:#fdfaf6;font-family:'Nunito',sans-serif;font-weight:700;font-size:.66rem;color:var(--navy);cursor:pointer;transition:all .15s;text-align:center;}
+.word-btn:hover{border-color:var(--gold);background:#fff8ee;transform:scale(1.04);}
+.word-btn.sel{background:var(--navy);color:var(--gold);border-color:var(--navy);}
+
+/* INGREDIENT GRID */
+.ing-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;}
+.ing-btn{padding:8px 4px;border-radius:10px;border:2px solid #e8ddd0;background:#fdfaf6;cursor:pointer;transition:all .15s;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.ing-btn:hover{border-color:var(--gold);transform:scale(1.05);}
+.ing-btn.sel-a{background:#E3F2FD;border-color:var(--dna1);}
+.ing-btn.sel-b{background:#EDE7F6;border-color:var(--dna2);}
+.ing-btn.sel-surprise{background:#FFF3E0;border-color:var(--dna4);}
+.ing-icon{font-size:1.5rem;}
+.ing-name{font-size:.58rem;font-weight:800;color:var(--navy);}
+
+/* DNA STRAND DISPLAY */
+.dna-strand{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;}
+.dna-pill{font-family:'Share Tech Mono',monospace;font-size:.65rem;padding:4px 10px;border-radius:20px;font-weight:700;border:1.5px solid;}
+.dna-shared{background:#E8F5E9;color:#1B5E20;border-color:#81C784;}
+.dna-unique{background:#F5F5F5;color:#666;border-color:#ddd;}
+
+/* PAIRING RESULTS */
+.pairing-result{border-radius:var(--radius);overflow:hidden;margin-bottom:12px;box-shadow:var(--shadow);}
+.pr-header{padding:16px 18px;text-align:center;}
+.pr-verdict{font-family:'Fredoka One',cursive;font-size:1.6rem;margin-bottom:4px;}
+.pr-score{font-size:.8rem;font-weight:700;opacity:.85;}
+.pr-pair-display{display:flex;align-items:center;justify-content:center;gap:12px;margin:10px 0;}
+.pr-food{text-align:center;}
+.pr-food-icon{font-size:2.2rem;}
+.pr-food-name{font-size:.72rem;font-weight:800;color:var(--navy);margin-top:3px;}
+.pr-plus{font-size:1.4rem;color:#ccc;}
+.pr-body{background:white;padding:14px 16px;}
+.pr-section{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--light);margin-bottom:7px;margin-top:12px;}
+.pr-why{font-size:.8rem;font-weight:600;color:var(--navy);line-height:1.6;font-style:italic;}
+.pr-recipe-box{background:#FFF8EE;border-radius:10px;padding:12px 14px;border-left:3px solid var(--gold);margin-top:8px;}
+.pr-recipe-title{font-family:'Baloo 2',cursive;font-size:.9rem;font-weight:800;color:var(--navy);margin-bottom:6px;}
+.pr-recipe-steps{font-size:.75rem;color:var(--mid);line-height:1.7;font-weight:600;}
+.pr-footer{font-size:.58rem;text-align:center;color:#ccc;margin-top:12px;font-weight:600;letter-spacing:.05em;}
+
+/* SURPRISE CARDS */
+.surprise-grid{display:flex;flex-direction:column;gap:10px;}
+.surprise-card{background:white;border-radius:var(--radius);padding:14px;border:1.5px solid #f0e8dc;box-shadow:var(--shadow);}
+.sc-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.sc-icons{font-size:1.6rem;}
+.sc-title{font-family:'Baloo 2',cursive;font-size:.9rem;font-weight:800;color:var(--navy);}
+.sc-shock{font-size:.6rem;padding:2px 8px;border-radius:20px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;}
+.shock-high{background:#FFEBEE;color:#C62828;}
+.shock-mid{background:#FFF3E0;color:#E65100;}
+.sc-science{font-size:.74rem;color:var(--mid);line-height:1.5;font-weight:600;font-style:italic;}
+
+/* AI RESPONSE */
+.ai-response-box{background:linear-gradient(135deg,#F0FAFA,#E8F5E9);border:1.5px solid #80CBC4;border-radius:var(--radius);padding:16px;margin-bottom:12px;}
+.ai-label{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--dna3);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.ai-text{font-size:.82rem;color:var(--navy);line-height:1.7;font-weight:600;}
+
+
+/* NAV */
+.nav-row{display:flex;gap:10px;margin-top:18px;}
+.btn-back{flex:0 0 auto;padding:11px 16px;border-radius:10px;border:2px solid #e8ddd0;background:white;color:var(--mid);font-family:'Nunito',sans-serif;font-weight:800;font-size:.84rem;cursor:pointer;transition:all .15s;}
+.btn-back:hover{border-color:var(--light);color:var(--navy);}
+.btn-next{flex:1;padding:13px 18px;border-radius:10px;border:none;background:var(--navy);color:var(--gold);font-family:'Nunito',sans-serif;font-weight:900;font-size:.9rem;cursor:pointer;transition:all .15s;}
+.btn-next:hover{background:var(--navy2);transform:translateY(-1px);}
+.btn-next:disabled{opacity:.35;cursor:default;transform:none;}
+.btn-submit{flex:1;padding:13px 18px;border-radius:10px;border:none;background:var(--success);color:white;font-family:'Nunito',sans-serif;font-weight:900;font-size:.9rem;cursor:pointer;transition:all .15s;}
+.btn-submit:hover{background:#235f3e;}
+.btn-print{flex:0 0 auto;padding:13px 18px;border-radius:10px;border:2px solid var(--navy);background:white;color:var(--navy);font-family:'Nunito',sans-serif;font-weight:900;font-size:.9rem;cursor:pointer;transition:all .15s;}
+.btn-print:hover{background:var(--navy);color:var(--gold);}
+
+/* MISC */
+.hint{font-size:.72rem;color:#9B6030;font-style:italic;font-weight:600;margin-bottom:8px;line-height:1.5;}
+.err-msg{color:#c0392b;font-size:.74rem;font-weight:700;margin-top:-5px;margin-bottom:5px;display:none;}
+.err-msg.show{display:block;}
+.loading-wrap{text-align:center;padding:60px 0;}
+.spin-ring{display:inline-block;width:44px;height:44px;border:5px solid #e8ddd0;border-top-color:var(--navy);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.success-wrap{text-align:center;padding:28px 0;}
+.success-icon{font-size:3.6rem;display:block;margin-bottom:12px;}
+.success-title{font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--success);margin-bottom:6px;}
+.success-msg{color:var(--mid);font-size:.86rem;font-weight:600;line-height:1.6;margin-bottom:16px;}
+.btn-restart{padding:12px 26px;border-radius:10px;border:2.5px solid var(--navy);background:white;color:var(--navy);font-family:'Nunito',sans-serif;font-weight:900;font-size:.86rem;cursor:pointer;transition:all .15s;}
+.btn-restart:hover{background:var(--navy);color:var(--gold);}
+.lab-badge{display:inline-block;font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:3px 10px;border-radius:20px;margin-bottom:8px;}
+
+@media(max-width:500px){
+  .mode-grid{grid-template-columns:1fr;}
+  .word-grid{grid-template-columns:repeat(4,1fr);}
+  .ing-grid{grid-template-columns:repeat(4,1fr);}
+}
+
+@media print{
+  @page{size:6in 4in;margin:.25in;}
+  body *{visibility:hidden;}
+  #printCard,#printCard *{visibility:visible;}
+  #printCard{position:fixed;top:0;left:0;width:100%;}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div>
+    <div class="hdr-brand">🧬 DNA Flavor Pairing Lab · Smile Bags</div>
+    <div class="hdr-sub">Culinary Arts · Molecular Gastronomy · Spring 2026</div>
+  </div>
+  <div class="hdr-badge">Ms. Sayers</div>
+</header>
+
+<!-- S0: NAME -->
+<div class="screen active" id="scr0">
+  <div class="scr-hd">
+    <div class="step-pill">Welcome to the DNA Flavor Lab 🧬</div>
+    <h2>Who's in the lab today? 🔬</h2>
+    <p>Enter your name to get started!</p>
+  </div>
+  <div class="card">
+    <label class="field-lbl" for="iFirst">First Name</label>
+    <input class="field-inp" id="iFirst" type="text" placeholder="e.g. Jordan" autocomplete="off"/>
+    <div class="err-msg" id="nameErr">Please enter your first name!</div>
+    <label class="field-lbl" for="iLast">Last Name Initial</label>
+    <input class="field-inp" id="iLast" type="text" placeholder="e.g. T" maxlength="1" autocomplete="off"/>
+    <div class="err-msg" id="lastErr">Please enter your last name initial!</div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-next" onclick="v0()">Enter the Lab →</button>
+  </div>
+</div>
+
+<!-- S1: MODE SELECTOR -->
+<div class="screen" id="scr1">
+  <div class="scr-hd">
+    <div class="step-pill">Choose Your Lab Station 🧪</div>
+    <h2>Which experiment today? 🔬</h2>
+    <p>All four stations lead to a printable Flavor Pairing Card!</p>
+  </div>
+  <div class="card">
+    <div class="mode-grid">
+
+      <div class="mode-card m1" onclick="selectMode(1,this)">
+        <div class="mc-num">01</div>
+        <span class="mc-ico">🌱</span>
+        <div class="mc-name">Word Lab</div>
+        <div class="mc-desc">Your OneWord unlocks a hero ingredient and its surprising flavor DNA.</div>
+        <div class="mc-flow">
+          <span class="mc-step">Pick a Word</span><span class="mc-arr">→</span>
+          <span class="mc-step">See Flavor DNA</span><span class="mc-arr">→</span>
+          <span class="mc-step">Pairings!</span>
+        </div>
+      </div>
+
+      <div class="mode-card m2" onclick="selectMode(2,this)">
+        <div class="mc-num">02</div>
+        <span class="mc-ico">⚗️</span>
+        <div class="mc-name">Pairing Test</div>
+        <div class="mc-desc">Pick two ingredients — are they a molecular match? Science decides.</div>
+        <div class="mc-flow">
+          <span class="mc-step">Ingredient A</span><span class="mc-arr">→</span>
+          <span class="mc-step">Ingredient B</span><span class="mc-arr">→</span>
+          <span class="mc-step">The Verdict!</span>
+        </div>
+      </div>
+
+      <div class="mode-card m3" onclick="selectMode(3,this)">
+        <div class="mc-num">03</div>
+        <span class="mc-ico">🔬</span>
+        <div class="mc-name">Science Lab</div>
+        <div class="mc-desc">Deep-dive molecular gastronomy science report for your OneWord.</div>
+        <div class="mc-flow">
+          <span class="mc-step">Pick a Word</span><span class="mc-arr">→</span>
+          <span class="mc-step">Science Report</span><span class="mc-arr">→</span>
+          <span class="mc-step">Science Card</span>
+        </div>
+      </div>
+
+      <div class="mode-card m4" onclick="selectMode(4,this)">
+        <div class="mc-num">04</div>
+        <span class="mc-ico">🔬</span>
+        <div class="mc-name">Surprise Lab</div>
+        <div class="mc-desc">Pick any food — discover three scientifically shocking flavor partners.</div>
+        <div class="mc-flow">
+          <span class="mc-step">Pick a Food</span><span class="mc-arr">→</span>
+          <span class="mc-step">Mind Blown</span><span class="mc-arr">→</span>
+          <span class="mc-step">Recipe Idea</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="err-msg" id="modeErr" style="margin-top:10px;">Please choose a lab station!</div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goTo(0)">← Back</button>
+    <button class="btn-next" onclick="v1()">Start the Experiment →</button>
+  </div>
+</div>
+
+<!-- S2A: WORD LAB — Pick Word -->
+<div class="screen" id="scr2a">
+  <div class="scr-hd">
+    <div class="lab-badge" style="background:#E3F2FD;color:var(--dna1);">🌱 Word Lab</div>
+    <h2>Choose your OneWord 🌟</h2>
+    <p>Your word unlocks its hero ingredient and flavor DNA!</p>
+  </div>
+  <div class="card">
+    <div class="card-lbl">The 25 OneWords</div>
+    <div class="word-grid" id="wordGrid2a"></div>
+    <div class="err-msg" id="wordErr2a">Please choose a word!</div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goTo(1)">← Back</button>
+    <button class="btn-next" onclick="v2a()">Reveal Flavor DNA →</button>
+  </div>
+</div>
+
+<!-- S2B: WORD LAB — Results -->
+<div class="screen" id="scr2b">
+  <div class="scr-hd">
+    <div class="lab-badge" style="background:#E3F2FD;color:var(--dna1);">🌱 Word Lab Results</div>
+    <h2 id="wordLabTitle">Flavor DNA Unlocked! 🧬</h2>
+  </div>
+  <div id="wordLabResult"></div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goTo('2a')">← Try Another Word</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Print</button>
+    <button class="btn-submit" onclick="submitResult('wordlab')">✅ Submit!</button>
+  </div>
+</div>
+
+<!-- S3A: PAIRING TEST — Pick Ingredient A -->
+<div class="screen" id="scr3a">
+  <div class="scr-hd">
+    <div class="lab-badge" style="background:#EDE7F6;color:var(--dna2);">⚗️ Pairing Test</div>
+    <h2>Pick Ingredient A 🔵</h2>
+    <p>Choose your first ingredient for the compatibility test!</p>
+  </div>
+  <div class="card">
+    <div class="card-lbl">Choose Ingredient A</div>
+    <div class="ing-grid" id="ingGridA"></div>
+    <div class="err-msg" id="ingErrA">Please choose an ingredient!</div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goTo(1)">← Back</button>
+    <button class="btn-next" onclick="v3a()">Next — Pick Ingredient B →</button>
+  </div>
+</div>
+
+<!-- S3B: PAIRING TEST — Pick Ingredient B -->
+<div class="screen" id="scr3b">
+  <div class="scr-hd">
+    <div class="lab-badge" style="background:#EDE7F6;color:var(--dna2);">⚗️ Pairing Test</div>
+    <h2>Now pick Ingredient B 🟣</h2>
+    <p>Will these two share flavor compounds? Science will tell!</p>
+  </div>
+  <div class="card">
+    <div class="card-lbl">Choose Ingredient B (different from A)</div>
+    <div class="ing-grid" id="ingGridB"></div>
+    <div class="err-msg" id="ingErrB">Please choose a different ingredient!</div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goTo('3a')">← Change Ingredient A</button>
+    <button class="btn-next" onclick="v3b()">Run the Pairing Test! →</button>
+  </div>
+</div>
+
+<!-- S3C: PAIRING TEST — Results -->
+<div class="screen" id="scr3c">
+  <div class="scr-hd">
+    <div class="lab-badge" style="background:#EDE7F6;color:var(--dna2);">⚗️ Pairing Test Results</div>
+    <h2>The Verdict is In! ⚗️</h2>
+  </div>
+  <div id="pairingResult"></div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goTo('3a')">← Try Another Pair</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Print</button>
+    <button class="btn-submit" onclick="submitResult('pairingtest')">✅ Submit!</button>
+  </div>
+</div>
+
+<!-- S4A: AI SCIENCE LAB — Pick Word -->
+<div class="screen" id="scr4a">
+  <div class="scr-hd">
+    <div class="lab-badge" style="background:#E0F7FA;color:var(--dna3);">🔬 Science Lab</div>
+    <h2>Choose your OneWord 🧬</h2>
+    <p>AI will explain the molecular gastronomy science behind your word!</p>
+  </div>
+  <div class="card">
+    <div class="card-lbl">The 25 OneWords</div>
+    <div class="word-grid" id="wordGrid4a"></div>
+    <div class="err-msg" id="wordErr4a">Please choose a word!</div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goTo(1)">← Back</button>
+    <button class="btn-next" onclick="v4a()">Ask the AI →</button>
+  </div>
+</div>
+
+<!-- S4B: AI SCIENCE LAB — Results -->
+<div class="screen" id="scr4b">
+  <div class="scr-hd">
+    <div class="lab-badge" style="background:#E0F7FA;color:var(--dna3);">🔬 Science Lab Results</div>
+    <h2 id="aiLabTitle">AI Science Report 🔬</h2>
+  </div>
+  <div id="aiLabResult"></div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goTo('4a')">← Try Another Word</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Print</button>
+    <button class="btn-submit" onclick="submitResult('aisciencelab')">✅ Submit!</button>
+  </div>
+</div>
+
+<!-- S5A: SURPRISE LAB — Pick Food -->
+<div class="screen" id="scr5a">
+  <div class="scr-hd">
+    <div class="lab-badge" style="background:#FFF3E0;color:var(--dna4);">🔬 Surprise Lab</div>
+    <h2>Pick any food! 🤯</h2>
+    <p>You might not believe what it secretly pairs with...</p>
+  </div>
+  <div class="card">
+    <div class="card-lbl">Choose an Ingredient</div>
+    <div class="ing-grid" id="ingGridS"></div>
+    <div class="err-msg" id="ingErrS">Please choose an ingredient!</div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goTo(1)">← Back</button>
+    <button class="btn-next" onclick="v5a()">Reveal My Surprises! →</button>
+  </div>
+</div>
+
+<!-- S5B: SURPRISE LAB — Results -->
+<div class="screen" id="scr5b">
+  <div class="scr-hd">
+    <div class="lab-badge" style="background:#FFF3E0;color:var(--dna4);">🔬 Surprise Lab Results</div>
+    <h2>Surprise! 🤯</h2>
+  </div>
+  <div id="surpriseResult"></div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goTo('5a')">← Try Another Food</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Print</button>
+    <button class="btn-submit" onclick="submitResult('surpriselab')">✅ Submit!</button>
+  </div>
+</div>
+
+<!-- S6: LOADING -->
+<div class="screen" id="scr6">
+  <div class="loading-wrap">
+    <div class="spin-ring"></div>
+    <p style="margin-top:16px;font-weight:700;color:var(--mid);">Logging your experiment...</p>
+  </div>
+</div>
+
+<!-- S7: SUCCESS -->
+<div class="screen" id="scr7">
+  <div class="success-wrap">
+    <span class="success-icon">🧬</span>
+    <div class="success-title">Experiment Complete!</div>
+    <div class="success-msg">Your flavor pairing has been logged!<br>Print your card and keep exploring the science of food. 🔬</div>
+    <button class="btn-restart" onclick="restart()">← Run Another Experiment</button>
+  </div>
+</div>
+
+<!-- HIDDEN PRINT AREA -->
+<div id="printCard" style="display:none;"></div>
+
+<script>
+/* ══ SUBMIT URL ════════════════════════════════════════════════
+   Same spreadsheet as Recipe Card — paste that same URL here
+═══════════════════════════════════════════════════════════════ */
+const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbwWt_CWgjEPuEqjcqLSh8pgzfdVtoWfu8EXXRZS-6HnfXwWbpwty8hww5I9N4idfCQA/exec';
+
+/* ══ AI SCIENCE LAB: pre-written content, no API needed ════════ */
+
+/* ══ 25 ONEWORDS ══════════════════════════════════════════════ */
+const WORDS = [
+  'Absorb','Adapt','Anchor','Balance','Bloom',
+  'Breathe','Clear','Connect','Cycle','Emerge',
+  'Filter','Flow','Grow','Heal','Migrate',
+  'Persist','Renew','Restore','Return','Rise',
+  'Root','Shine','Sustain','Thrive','Transform'
+];
+
+/* ══ INGREDIENT DATABASE ══════════════════════════════════════
+   Real molecular gastronomy flavor compounds per ingredient
+═══════════════════════════════════════════════════════════════ */
+const INGS = {
+  'Strawberry': {icon:'🍓',compounds:['Furaneol','Linalool','Ethyl butanoate','Mesifurane'],color:'#C62828'},
+  'Chocolate':  {icon:'🍫',compounds:['Pyrazines','Linalool','Vanillin','Theobromine'],color:'#4E342E'},
+  'Coffee':     {icon:'☕',compounds:['Pyrazines','Furans','Diacetyl','Caffeol'],color:'#3E2723'},
+  'Parmesan':   {icon:'🧀',compounds:['Furaneol','Butyric acid','Linalool','Pyrazines'],color:'#F9A825'},
+  'Vanilla':    {icon:'🍦',compounds:['Vanillin','Diacetyl','Eugenol','Linalool'],color:'#FF8F00'},
+  'Lavender':   {icon:'💜',compounds:['Linalool','Ocimene','Camphor','Geraniol'],color:'#7B1FA2'},
+  'Lemon':      {icon:'🍋',compounds:['Limonene','Linalool','Citral','Terpineol'],color:'#F9A825'},
+  'Garlic':     {icon:'🧄',compounds:['Pyrazines','Allicin','Furans','Allyl sulfide'],color:'#757575'},
+  'Butter':     {icon:'🧈',compounds:['Diacetyl','Butyric acid','Vanillin','Linalool'],color:'#FF8F00'},
+  'Truffle':    {icon:'🍄',compounds:['Dimethyl sulfide','Androstenol','Octenol','Linalool'],color:'#5D4037'},
+  'Caramel':    {icon:'🍮',compounds:['Furaneol','Diacetyl','Pyrazines','Maltol'],color:'#E65100'},
+  'Blue Cheese':{icon:'🫙',compounds:['Diacetyl','Butyric acid','Pyrazines','Heptan-2-one'],color:'#1565C0'},
+  'Raspberry':  {icon:'🫐',compounds:['Vanillin','Linalool','Furaneol','Raspberry ketone'],color:'#AD1457'},
+  'Basil':      {icon:'🌿',compounds:['Linalool','Eugenol','Limonene','Ocimene'],color:'#2E7D32'},
+  'Cinnamon':   {icon:'🟤',compounds:['Eugenol','Cinnamaldehyde','Linalool','Coumarin'],color:'#BF360C'},
+  'Beef':       {icon:'🥩',compounds:['Pyrazines','Furaneol','Furans','Lactones'],color:'#B71C1C'},
+  'Rose':       {icon:'🌹',compounds:['Linalool','Geraniol','Citronellol','Phenylethanol'],color:'#E91E63'},
+  'Pineapple':  {icon:'🍍',compounds:['Furaneol','Ethyl butanoate','Linalool','Allyl hexanoate'],color:'#F9A825'},
+  'Ginger':     {icon:'🫚',compounds:['Zingerone','Limonene','Linalool','Bisabolene'],color:'#FF8F00'},
+  'Mushroom':   {icon:'🍄',compounds:['Octenol','Dimethyl sulfide','Furans','Linalool'],color:'#795548'},
+  'Honey':      {icon:'🍯',compounds:['Furaneol','Linalool','Phenylacetic acid','Benzaldehyde'],color:'#FF8F00'},
+  'Avocado':    {icon:'🥑',compounds:['Hexanal','Limonene','Linalool','Nerolidol'],color:'#2E7D32'},
+  'Beet':       {icon:'🩺',compounds:['Geosmin','Furaneol','Limonene','Linalool'],color:'#880E4F'},
+  'Mint':       {icon:'🌱',compounds:['Menthol','Limonene','Linalool','Pulegone'],color:'#00796B'},
+  'Banana':     {icon:'🍌',compounds:['Isoamyl acetate','Linalool','Eugenol','Furaneol'],color:'#F9A825'},
+};
+
+const ING_NAMES = Object.keys(INGS);
+
+/* ══ WORD LAB DATA ════════════════════════════════════════════
+   Each OneWord → hero ingredient + connection + pairings
+═══════════════════════════════════════════════════════════════ */
+const WORD_LAB = {
+  Absorb:   {hero:'Sponge Cake',heroIng:'Vanilla',why:'Like ABSORB, sponge cake soaks up every flavor it meets — syrup, cream, fruit juices.',pairs:['Raspberry','Lemon','Cinnamon'],recipe:'Vanilla sponge soaked in raspberry coulis — layer with lemon cream and cinnamon dust.'},
+  Adapt:    {hero:'Egg',heroIng:'Butter',why:'Eggs ADAPT to any cooking method — scrambled, poached, baked — sharing butter\'s diacetyl in every form.',pairs:['Truffle','Mushroom','Parmesan'],recipe:'Buttery scrambled eggs with shaved truffle and a dusting of aged parmesan.'},
+  Anchor:   {hero:'Sea Salt',heroIng:'Caramel',why:'Salt ANCHORS every flavor it meets. Caramel and salt share furaneol — together they hold each other steady.',pairs:['Chocolate','Vanilla','Blue Cheese'],recipe:'Sea salt caramel chocolate tart — the salt anchors the sweetness of both.'},
+  Balance:  {hero:'Lemon',heroIng:'Lemon',why:'Lemon is BALANCE itself — acid that brightens, citrus that lifts. Its limonene pairs with opposites.',pairs:['Lavender','Basil','Vanilla'],recipe:'Lemon tart with lavender cream and fresh basil oil drizzled over the top.'},
+  Bloom:    {hero:'Strawberry',heroIng:'Strawberry',why:'Strawberry BLOOMs with furaneol — the same compound in caramel, parmesan, and pineapple. Shocking but real!',pairs:['Parmesan','Caramel','Pineapple'],recipe:'Strawberry bruschetta with shaved parmesan and a caramel balsamic drizzle.'},
+  Breathe:  {hero:'Mint',heroIng:'Mint',why:'Mint makes us BREATHE — menthol activates cold receptors, creating that rush of fresh air we feel with every inhale.',pairs:['Chocolate','Lemon','Lavender'],recipe:'Dark chocolate pots with mint infused cream and a lavender-lemon sugar crust.'},
+  Clear:    {hero:'Cucumber',heroIng:'Lemon',why:'CLEAR water, clear skies — cucumber and lemon share limonene and linalool, creating pure, transparent flavor.',pairs:['Mint','Ginger','Basil'],recipe:'Cucumber lemon granita with ginger syrup and torn fresh basil.'},
+  Connect:  {hero:'Caramel',heroIng:'Caramel',why:'Caramel CONNECTs everything — its furaneol + diacetyl is shared by strawberry, coffee, and blue cheese. The great connector!',pairs:['Coffee','Blue Cheese','Strawberry'],recipe:'Caramel affogato — espresso poured over caramel ice cream with blue cheese crumble.'},
+  Cycle:    {hero:'Sourdough',heroIng:'Butter',why:'Sourdough is the eternal CYCLE — yeast feeds, rises, bakes, and begins again. Its furans pair with butter and honey.',pairs:['Butter','Honey','Mushroom'],recipe:'Sourdough tartine with cultured butter, wild honey, and sautéed mushrooms.'},
+  Emerge:   {hero:'Chocolate',heroIng:'Chocolate',why:'From cocoa bean to chocolate — EMERGE is the transformation. Its pyrazines connect it to coffee, cheese, and lavender.',pairs:['Coffee','Blue Cheese','Lavender'],recipe:'Dark chocolate mousse with espresso gel and a blue cheese-lavender crumble.'},
+  Filter:   {hero:'Green Tea',heroIng:'Lemon',why:'Tea is filtered through patience. Its linalool — shared with lemon, lavender, and basil — is revealed through gentle steeping.',pairs:['Lemon','Lavender','Basil'],recipe:'Green tea panna cotta with lemon curd, lavender honey, and micro basil.'},
+  Flow:     {hero:'Honey',heroIng:'Honey',why:'FLOW is honey\'s nature — it never stops moving. Its furaneol and linalool connect it beautifully to lavender and blue cheese.',pairs:['Lavender','Blue Cheese','Ginger'],recipe:'Honey lavender cheesecake with ginger crust and blue cheese honey drizzle.'},
+  Grow:     {hero:'Carrot',heroIng:'Ginger',why:'Carrots GROW underground, pulling minerals through the earth. Their shared limonene with ginger and orange is the taste of growing.',pairs:['Ginger','Cinnamon','Honey'],recipe:'Roasted carrot soup with ginger cream, cinnamon oil, and honeycomb crumble.'},
+  Heal:     {hero:'Ginger',heroIng:'Ginger',why:'HEAL through food is ancient wisdom. Ginger\'s zingerone + limonene has been used medicinally for 5,000 years — and pairs beautifully with lemon.',pairs:['Lemon','Honey','Cinnamon'],recipe:'Ginger honey lemon tart with cinnamon pastry cream and candied ginger.'},
+  Migrate:  {hero:'Spice Blend',heroIng:'Cinnamon',why:'Spices MIGRATED trade routes for centuries. Cinnamon\'s eugenol connects it to chocolate and raspberry — a meeting of civilizations.',pairs:['Chocolate','Raspberry','Basil'],recipe:'Cinnamon dark chocolate tart with raspberry coulis and crystallized basil.'},
+  Persist:  {hero:'Coffee',heroIng:'Coffee',why:'PERSIST like coffee — the compound that never gives up. Its pyrazines are shared by garlic, beef, and parmesan. An unlikely family!',pairs:['Garlic','Beef','Parmesan'],recipe:'Coffee-rubbed beef tenderloin with roasted garlic jus and parmesan frico.'},
+  Renew:    {hero:'Lemon',heroIng:'Lemon',why:'RENEW like a spring morning — lemon\'s limonene and linalool connect it to rosemary, lavender, and vanilla in a fresh start.',pairs:['Lavender','Vanilla','Basil'],recipe:'Lemon olive oil cake with lavender glaze, vanilla cream, and basil sugar.'},
+  Restore:  {hero:'Chicken Broth',heroIng:'Mushroom',why:'RESTORE through warmth and depth — chicken broth\'s furans connect to mushroom and truffle, creating layered restoration.',pairs:['Mushroom','Truffle','Ginger'],recipe:'Mushroom consommé with truffle oil, shaved ginger, and crispy shallots.'},
+  Return:   {hero:'Vanilla',heroIng:'Vanilla',why:'RETURN to where you began — vanilla\'s vanillin is home. It connects to raspberry, cinnamon, and coconut — the flavors of memory.',pairs:['Raspberry','Cinnamon','Banana'],recipe:'Vanilla custard with warm cinnamon-raspberry sauce and caramelized banana.'},
+  Rise:     {hero:'Bread',heroIng:'Butter',why:'RISE is the miracle of yeast — alive, breathing, lifting dough upward. Bread\'s furans and diacetyl connect it to butter and honey.',pairs:['Butter','Honey','Truffle'],recipe:'Brioche with cultured butter, truffle honey, and flaky sea salt — the ultimate rise.'},
+  Root:     {hero:'Beet',heroIng:'Beet',why:'ROOT means earthy depth. Beet\'s geosmin is literally the smell of earth after rain — and connects it to chocolate and ginger.',pairs:['Chocolate','Ginger','Blue Cheese'],recipe:'Beet and chocolate flourless cake with ginger cream and blue cheese curl.'},
+  Shine:    {hero:'Butter',heroIng:'Butter',why:'SHINE is butter\'s superpower — it creates gloss, reflects light, and carries flavor. Its diacetyl connects it to caramel and vanilla.',pairs:['Caramel','Vanilla','Truffle'],recipe:'Brown butter tart with vanilla caramel and shaved white truffle to finish.'},
+  Sustain:  {hero:'Oats',heroIng:'Honey',why:'SUSTAIN means slow, steady energy. Oats and honey share linalool — a calming, sustaining compound that keeps you going.',pairs:['Honey','Cinnamon','Banana'],recipe:'Oat milk panna cotta with cinnamon honey sauce and caramelized banana.'},
+  Thrive:   {hero:'Avocado',heroIng:'Avocado',why:'THRIVE at your peak — avocado\'s hexanal and linalool connect it surprisingly to chocolate, coffee, and lemon.',pairs:['Chocolate','Lemon','Coffee'],recipe:'Avocado chocolate mousse with espresso and lemon zest — creamy and shocking.'},
+  Transform:{hero:'Egg',heroIng:'Vanilla',why:'TRANSFORM — plain eggs become soufflé, curd, meringue. Their vanillin and diacetyl connect them to vanilla, truffle, and parmesan.',pairs:['Truffle','Parmesan','Vanilla'],recipe:'Egg yolk truffle pasta finished with parmesan and vanilla butter — total transformation.'},
+};
+
+/* ══ SURPRISE PAIRINGS ════════════════════════════════════════
+   Pre-curated shocking pairs per ingredient
+═══════════════════════════════════════════════════════════════ */
+const SURPRISES = {
+  'Strawberry': [
+    {partner:'Parmesan',shared:'Furaneol',shock:'high',science:'Both strawberries and parmesan are packed with furaneol — the same sweet-caramel molecule. Shock your guests with a strawberry parmesan crostini!',recipe:'Sliced strawberries on grilled bread with shaved parmesan and cracked pepper.'},
+    {partner:'Balsamic+Pepper',shared:'Furaneol + Pyrazines',shock:'mid',science:'The browning compounds in balsamic vinegar mirror strawberry\'s own sweet molecules. That\'s why this combo has been a fine dining staple for decades.',recipe:'Strawberry carpaccio with aged balsamic, black pepper, and micro basil.'},
+    {partner:'Pineapple',shared:'Furaneol + Linalool',shock:'mid',science:'Strawberry and pineapple share two major compounds — they are molecular twins! A duo that intensifies rather than competes.',recipe:'Strawberry-pineapple agua fresca with lime zest and tajín rim.'},
+  ],
+  'Chocolate': [
+    {partner:'Blue Cheese',shared:'Pyrazines + Diacetyl',shock:'high',science:'Fermentation creates pyrazines in both dark chocolate and blue cheese. They share the same complex aromatic backbone — try it!',recipe:'Dark chocolate bark with blue cheese crumble, walnuts, and sea salt.'},
+    {partner:'Coffee',shared:'Pyrazines + Furans',shock:'mid',science:'Both are roasted — and roasting creates pyrazines and furans. Chocolate and coffee are literally made of the same molecules.',recipe:'Mocha truffles: dark chocolate ganache with espresso and fleur de sel.'},
+    {partner:'Avocado',shared:'Linalool + Linalool',shock:'high',science:'Avocado contains linalool — the same floral compound in chocolate. Blended together, they become something impossibly creamy and rich.',recipe:'Avocado chocolate mousse: blend dark chocolate, avocado, honey, and sea salt.'},
+  ],
+  'Coffee': [
+    {partner:'Garlic',shared:'Pyrazines',shock:'high',science:'Both coffee and garlic develop pyrazines through heat — roasting and sautéing. A coffee-garlic rub on steak is molecular gastronomy genius.',recipe:'Coffee-garlic crusted rib eye with herb butter and parmesan frico.'},
+    {partner:'Parmesan',shared:'Pyrazines + Furaneol',shock:'high',science:'Parmesan\'s complex aging creates pyrazines that match roasted coffee exactly. Coffee parmesan risotto is a real dish at Michelin-starred restaurants.',recipe:'Coffee parmesan risotto with crispy prosciutto and micro herbs.'},
+    {partner:'Lemon',shared:'Linalool',shock:'mid',science:'Lemon and coffee share linalool — the floral-citrus compound. Ethiopian coffees naturally taste lemony because of it!',recipe:'Iced lemon espresso: cold brew + lemon syrup + zest + oat milk.'},
+  ],
+  'Butter': [
+    {partner:'Truffle',shared:'Linalool + Diacetyl',shock:'high',science:'Butter and truffle both carry linalool and diacetyl — a bridge of floral-fatty molecules. This is why truffle butter is one of the most perfect foods.',recipe:'Truffle compound butter on sourdough with flaky salt and fresh chives.'},
+    {partner:'Blue Cheese',shared:'Butyric acid + Diacetyl',shock:'high',science:'Butyric acid is what gives butter its buttery smell — and blue cheese gets its sharp, funky note from the exact same molecule.',recipe:'Blue cheese compound butter on steak with caramelized onions and thyme.'},
+    {partner:'Caramel',shared:'Diacetyl + Furaneol',shock:'mid',science:'Caramelization literally transforms butter\'s own compounds. Brown butter is caramel in its purest, most elegant form.',recipe:'Brown butter caramel sauce: butter browned until nutty + cream + sea salt.'},
+  ],
+  'Lemon': [
+    {partner:'Lavender',shared:'Linalool + Limonene',shock:'mid',science:'Lemon and lavender share two major compounds — linalool and limonene. Their pairing is science confirmed, not just tradition!',recipe:'Lemon lavender shortbread with lavender sugar and lemon glaze.'},
+    {partner:'Basil',shared:'Linalool + Limonene',shock:'mid',science:'Basil is a lemon by another name — sharing the same citrus-floral backbone. Lemon-basil vinaigrette is one of the most scientifically logical pairings.',recipe:'Lemon basil pasta: butter + zest + torn basil + parmesan. No sauce needed.'},
+    {partner:'Vanilla',shared:'Linalool',shock:'mid',science:'Both contain linalool — the floral molecule that makes each smell fresh and clean. Lemon vanilla custard is as scientifically correct as it is delicious.',recipe:'Lemon vanilla posset: lemon juice sets the cream — no egg, no gelatin needed.'},
+  ],
+  'Parmesan': [
+    {partner:'Strawberry',shared:'Furaneol + Linalool',shock:'high',science:'Furaneol — the molecule responsible for sweet caramel-fruit notes — appears in both ripe strawberries AND aged parmesan. This pairing stunned the food world.',recipe:'Strawberry parmesan crostini with honey, cracked pepper, and fresh basil.'},
+    {partner:'Coffee',shared:'Pyrazines + Furaneol',shock:'high',science:'Parmesan\'s long fermentation and coffee\'s roasting both produce pyrazines. Coffee parmesan risotto exists at Michelin-starred restaurants for this reason.',recipe:'Parmesan espresso crisps — frico mixed with espresso powder and thyme.'},
+    {partner:'Caramel',shared:'Furaneol + Diacetyl',shock:'mid',science:'The browning of both cheese and caramel creates furaneol — they are built from the same sweet-nutty molecules.',recipe:'Parmesan caramel popcorn — sweet, salty, nutty, shocking.'},
+  ],
+  'Honey': [
+    {partner:'Blue Cheese',shared:'Diacetyl + Linalool',shock:'high',science:'Honey and blue cheese both carry diacetyl — a buttery-creamy molecule that bridges their seemingly opposite natures. Honey on blue cheese is ancient wisdom backed by science.',recipe:'Blue cheese honey flatbread with walnuts, rosemary, and a drizzle of wildflower honey.'},
+    {partner:'Lavender',shared:'Linalool + Geraniol',shock:'mid',science:'Honey and lavender are molecular siblings — bees collect lavender nectar specifically because they share linalool. Lavender honey is not an accident.',recipe:'Lavender honey panna cotta with honeycomb and fresh thyme.'},
+    {partner:'Ginger',shared:'Linalool + Furaneol',shock:'mid',science:'Ginger\'s heat and honey\'s sweetness are modulated by shared linalool — a calming floral note that makes them work together seamlessly.',recipe:'Ginger honey poached pears with cardamom cream and candied ginger.'},
+  ],
+  'Mushroom': [
+    {partner:'Chocolate',shared:'Pyrazines + Furans',shock:'high',science:'Both mushrooms and dark chocolate develop complex pyrazines through cooking and fermentation. Mushroom chocolate mole is a legitimate Mexican culinary tradition.',recipe:'Dark chocolate mushroom mole sauce over chicken — earthy, complex, magnificent.'},
+    {partner:'Coffee',shared:'Pyrazines + Furans',shock:'high',science:'Roasted mushrooms and roasted coffee share the same Maillard reaction byproducts. Mushroom coffee lattes have actually gone mainstream for this reason.',recipe:'Mushroom broth coffee: shiitake stock + espresso + oat milk + sea salt.'},
+    {partner:'Vanilla',shared:'Linalool',shock:'mid',science:'Wild mushrooms carry linalool — the floral compound most associated with vanilla and lavender. Vanilla mushroom risotto sounds strange. It tastes transcendent.',recipe:'Vanilla mushroom risotto: arborio + mushroom stock + a split vanilla bean.'},
+  ],
+  'Vanilla': [
+    {partner:'Raspberry',shared:'Vanillin + Linalool',shock:'mid',science:'Raspberries naturally produce vanillin — the primary molecule in vanilla extract. They are scientifically the same flavor family.',recipe:'Raspberry vanilla mille-feuille with pastry cream and fresh raspberries.'},
+    {partner:'Truffle',shared:'Linalool + Vanillin',shock:'high',science:'White truffles and vanilla both carry linalool and vanillin — intensely aromatic compounds that share floral, creamy depth.',recipe:'White truffle vanilla butter pasta: tagliolini + truffle + vanilla + parmesan.'},
+    {partner:'Cinnamon',shared:'Eugenol + Vanillin',shock:'mid',science:'Eugenol — the warm spice molecule in cinnamon — also appears in vanilla. They are natural blending partners at the molecular level.',recipe:'Cinnamon vanilla brown butter cake with spiced cream and maple glaze.'},
+  ],
+  'Avocado': [
+    {partner:'Chocolate',shared:'Linalool',shock:'high',science:'Avocado\'s linalool is shared with dark chocolate — giving both a floral, creamy depth. Avocado chocolate mousse requires no dairy and shocks everyone.',recipe:'Avocado dark chocolate mousse: 2 avocados + 4 oz melted chocolate + honey + sea salt.'},
+    {partner:'Coffee',shared:'Linalool + Hexanal',shock:'high',science:'Coffee and avocado share hexanal and linalool — compounds that create grassiness and floral depth. Avocado coffee smoothies are not just trendy — they\'re scientific.',recipe:'Avocado cold brew smoothie: avocado + cold brew + oat milk + honey + cacao.'},
+    {partner:'Lemon',shared:'Limonene + Linalool',shock:'mid',science:'Avocado\'s creamy fat is cut by lemon\'s limonene — the molecule that creates that sharp, bright sensation. They were made for each other.',recipe:'Avocado lemon tart: avocado curd in a buttery crust with lemon zest whipped cream.'},
+  ],
+  'Ginger': [
+    {partner:'Chocolate',shared:'Linalool + Zingerone',shock:'mid',science:'Ginger\'s zingerone is created by cooking — the same process that releases pyrazines in chocolate. Ginger chocolate is not just warm, it is molecular magic.',recipe:'Dark chocolate ginger truffles with candied ginger and cayenne.'},
+    {partner:'Lavender',shared:'Linalool',shock:'mid',science:'Both ginger and lavender carry linalool — the calming-floral compound. Together they create an aromatic balance of warm and cool.',recipe:'Ginger lavender shortbread with lavender glaze and crystallized ginger.'},
+    {partner:'Lemon',shared:'Limonene + Linalool',shock:'mid',science:'Ginger and lemon share two primary compounds — their pairing is written in molecular code. Ginger lemonade is ancient medicine that happens to be delicious.',recipe:'Ginger lemon shrub: ginger + lemon + apple cider vinegar + honey. Add to sparkling water.'},
+  ],
+  'Mint': [
+    {partner:'Chocolate',shared:'Linalool',shock:'mid',science:'Mint and chocolate share linalool — the floral compound that makes mint smell fresh and chocolate smell rich. Mint chocolate is molecular destiny.',recipe:'Dark chocolate mint ganache tart with mint sugar crust and fresh mint oil.'},
+    {partner:'Lemon',shared:'Limonene + Linalool',shock:'mid',science:'Mint and lemon share both limonene and linalool — two of the most important flavor compounds. Mint lemonade is practically one ingredient.',recipe:'Mint lemonade ice pops: lemon juice + honey + mint + freeze in molds.'},
+    {partner:'Parmesan',shared:'Linalool',shock:'high',science:'Surprising but real — mint and parmesan share linalool. Italian cuisine has always used fresh mint with parmesan on pasta. Now you know why!',recipe:'Minted pea and parmesan pasta: fresh peas + mint + parmesan + lemon + pasta water.'},
+  ],
+  'Banana': [
+    {partner:'Vanilla',shared:'Isoamyl acetate + Linalool',shock:'mid',science:'Artificial banana flavor (isoamyl acetate) was designed to mimic vanilla compounds — they are molecularly related. Banana foster is not a coincidence.',recipe:'Banana foster: brown butter + brown sugar + banana + vanilla + rum flambé over ice cream.'},
+    {partner:'Cinnamon',shared:'Eugenol + Linalool',shock:'mid',science:'Banana and cinnamon share eugenol and linalool — warm, spicy, and sweet molecules that create perfect harmony when cooked together.',recipe:'Cinnamon banana bread with brown butter glaze and cinnamon sugar crust.'},
+    {partner:'Blue Cheese',shared:'Butyric acid',shock:'high',science:'Overripe banana produces butyric acid — the same funky molecule in blue cheese. A cheese board with banana is more scientific than you\'d think!',recipe:'Blue cheese banana bruschetta with honey, walnuts, and fresh thyme on grilled bread.'},
+  ],
+  'Truffle': [
+    {partner:'Chocolate',shared:'Linalool + Pyrazines',shock:'high',science:'Truffles and dark chocolate share complex aromatic compounds created by microbial fermentation. Chocolate truffle is not just a name — it is molecular kinship.',recipe:'Dark chocolate truffle ganache: cream + chocolate + truffle oil + sea salt.'},
+    {partner:'Vanilla',shared:'Linalool + Vanillin',shock:'high',science:'White truffles carry vanillin and linalool — the same primary compounds as vanilla. White truffle pasta with a hint of vanilla is one of the rarest flavor pairings.',recipe:'White truffle tagliolini with butter, parmesan, and a split vanilla bean in the sauce.'},
+    {partner:'Lemon',shared:'Linalool',shock:'mid',science:'Truffles and lemon both contain linalool — the floral molecule that creates brightness. A squeeze of lemon on truffle pasta is science, not accident.',recipe:'Truffle lemon risotto: arborio + white wine + truffle + lemon zest + butter + parmesan.'},
+  ],
+  'Lavender': [
+    {partner:'Chocolate',shared:'Linalool',shock:'mid',science:'Lavender and chocolate share linalool — a floral-creamy molecule. Lavender dark chocolate is used by every serious chocolatier because the science demands it.',recipe:'Lavender dark chocolate bark with sea salt, lavender buds, and roasted almonds.'},
+    {partner:'Lemon',shared:'Linalool + Limonene',shock:'mid',science:'Both lavender and lemon are built on linalool and limonene — twin citrus-floral molecules. Lemon lavender is one of the most scientifically confirmed pairings.',recipe:'Lemon lavender loaf cake with lavender glaze and lemon curd center.'},
+    {partner:'Honey',shared:'Linalool + Geraniol',shock:'mid',science:'Bees make lavender honey naturally because lavender and honey share linalool and geraniol. Lavender honey is molecular harmony that bees discovered first.',recipe:'Lavender honey semifreddo with honeycomb crunch and fresh lavender.'},
+  ],
+  'Rose': [
+    {partner:'Lychee',shared:'Geraniol',shock:'mid',science:'Rose and lychee share geraniol — the primary compound that creates their identical floral perfume. Rose water in lychee desserts is perfection.',recipe:'Lychee rose panna cotta with rose syrup and crystallized rose petals.'},
+    {partner:'Raspberry',shared:'Linalool + Geraniol',shock:'mid',science:'Raspberry\'s linalool and geraniol overlap perfectly with rose. Red rose raspberry jam is the most scientifically correct preserve you can make.',recipe:'Rose raspberry tart with pistachio frangipane and rose water cream.'},
+    {partner:'Vanilla',shared:'Linalool + Geraniol',shock:'mid',science:'Rose and vanilla share linalool and geraniol — both floral-sweet molecules. Rose vanilla is one of the most elegant compound butter combinations.',recipe:'Rose vanilla cream puffs with rose water pastry cream and vanilla glaze.'},
+  ],
+  'Blue Cheese': [
+    {partner:'Honey',shared:'Diacetyl + Linalool',shock:'mid',science:'Honey and blue cheese both carry diacetyl — a buttery-creamy bridge molecule. This ancient pairing appears on every sophisticated cheese board because the chemistry is undeniable.',recipe:'Blue cheese honey tart with walnut crust and fig jam — elegance on a plate.'},
+    {partner:'Chocolate',shared:'Pyrazines + Diacetyl',shock:'high',science:'The fermentation that creates blue cheese also produces the same pyrazines found in dark chocolate. Chocolate blue cheese fudge has appeared at competition level pastry.',recipe:'Dark chocolate blue cheese truffles with cocoa powder, sea salt, and walnuts.'},
+    {partner:'Strawberry',shared:'Furaneol',shock:'high',science:'Both aged blue cheese and ripe strawberry produce furaneol — the sweet caramel molecule. Strawberry blue cheese crostini has been stunning restaurant guests for years.',recipe:'Strawberry blue cheese crostini with honey, cracked pepper, and fresh basil.'},
+  ],
+  'Pineapple': [
+    {partner:'Cheddar',shared:'Furaneol + Butyric acid',shock:'high',science:'Pineapple and cheddar share furaneol and butyric acid — the same sweet-funky molecules. Hawaiian pizza is scientifically correct, even if controversial!',recipe:'Pineapple cheddar quesadilla with jalapeño and cilantro — sweet, sharp, perfect.'},
+    {partner:'Vanilla',shared:'Linalool + Furaneol',shock:'mid',science:'Pineapple and vanilla share linalool and furaneol — tropical-sweet molecules that create effortless harmony. Pineapple vanilla upside-down cake is pure molecular logic.',recipe:'Pineapple vanilla upside-down cake with brown butter caramel and cream.'},
+    {partner:'Mint',shared:'Linalool',shock:'mid',science:'Pineapple and mint share linalool — the floral-fresh compound. Together they create a tropical freshness that is addictively light.',recipe:'Pineapple mint agua fresca with lime zest and tajín rim.'},
+  ],
+  'Caramel': [
+    {partner:'Coffee',shared:'Pyrazines + Diacetyl',shock:'mid',science:'Caramelization and coffee roasting both create pyrazines and diacetyl — the same browning compounds. Caramel coffee is one molecule recognizing another.',recipe:'Salted caramel cold brew: espresso + caramel sauce + sea salt + milk over ice.'},
+    {partner:'Strawberry',shared:'Furaneol',shock:'mid',science:'Furaneol is the molecule that makes caramel taste caramel-y — and it appears naturally in ripe strawberries. Strawberry caramel is two expressions of one molecule.',recipe:'Strawberry caramel tart with salted caramel layer, fresh strawberry, and vanilla cream.'},
+    {partner:'Beet',shared:'Furaneol',shock:'high',science:'Roasted beets produce furaneol through caramelization — the exact same molecule in caramel. Beet caramel sauce is real, surprising, and extraordinary.',recipe:'Roasted beet caramel: blend roasted beets with brown sugar + butter + cream + salt.'},
+  ],
+  'Raspberry': [
+    {partner:'Vanilla',shared:'Vanillin + Linalool',shock:'mid',science:'Raspberries naturally produce vanillin — the exact molecule in vanilla. Raspberry vanilla is not just a flavor — it is the same compound in two different disguises.',recipe:'Raspberry vanilla Napoleon with flaky pastry, vanilla cream, and fresh raspberries.'},
+    {partner:'Truffle',shared:'Linalool',shock:'high',science:'Both black truffle and raspberry carry linalool — a floral-dark compound that creates unexpected depth. Raspberry truffle vinaigrette is a chef\'s secret.',recipe:'Raspberry truffle vinaigrette: raspberry reduction + truffle oil + shallot + sherry vinegar.'},
+    {partner:'Basil',shared:'Linalool + Limonene',shock:'mid',science:'Raspberry and basil share linalool and limonene — sweet-floral molecules that lift each other. Fresh basil on raspberries in Italian cuisine is molecular gastronomy before it had a name.',recipe:'Raspberry basil granita with lemon zest and micro basil to finish.'},
+  ],
+  'Beet': [
+    {partner:'Chocolate',shared:'Furaneol + Geosmin',shock:'high',science:'Roasted beets develop furaneol — the same sweet molecule in chocolate — while geosmin gives both an earthy depth. Beet chocolate cake is actually a molecular match!',recipe:'Dark chocolate beet cake: replace half the flour with pureed beet for depth and moisture.'},
+    {partner:'Blue Cheese',shared:'Furaneol',shock:'high',science:'Both roasted beet and blue cheese produce furaneol through their respective processes. Beet and blue cheese salad is not just delicious — it is written in chemistry.',recipe:'Roasted beet blue cheese salad with walnuts, honey, and champagne vinaigrette.'},
+    {partner:'Orange',shared:'Limonene + Furaneol',shock:'mid',science:'Beet and orange share limonene and furaneol — bright citrus molecules that cut through earthy depth. This pairing shows up across Scandinavian and Middle Eastern cuisine.',recipe:'Beet orange salad with cardamom yogurt, pistachios, and orange blossom honey.'},
+  ],
+  'Cinnamon': [
+    {partner:'Chocolate',shared:'Eugenol + Linalool',shock:'mid',science:'Cinnamon\'s eugenol appears in dark chocolate and in clove. Mexican hot chocolate has always included cinnamon — the science confirms this ancient wisdom.',recipe:'Mexican dark chocolate with cinnamon, ancho chile, and brown sugar — ancient and perfect.'},
+    {partner:'Raspberry',shared:'Linalool + Eugenol',shock:'mid',science:'Cinnamon and raspberry share linalool and eugenol — warm spice notes that appear in both. Raspberry cinnamon pie is one of the most underrated flavor combinations.',recipe:'Cinnamon raspberry galette with almond frangipane and cinnamon sugar crust.'},
+    {partner:'Mushroom',shared:'Linalool',shock:'high',science:'Cinnamon and earthy mushrooms both carry linalool — surprising, but this appears in Moroccan tagines where cinnamon + mushrooms create extraordinary depth.',recipe:'Mushroom cinnamon tagine with saffron, preserved lemon, and couscous.'},
+  ],
+};
+
+/* ══ STATE ════════════════════════════════════════════════════ */
+const S = {
+  name:'', mode:0,
+  word:'', ingA:'', ingB:'', ingSurprise:'',
+  resultMode:'', resultSummary:''
+};
+
+/* ══ NAV ══════════════════════════════════════════════════════ */
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('scr'+id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ══ STEP 0: NAME ════════════════════════════════════════════ */
+function v0() {
+  const f=document.getElementById('iFirst').value.trim();
+  const l=document.getElementById('iLast').value.trim().toUpperCase();
+  let ok=true;
+  if(!f){show('nameErr');ok=false;}else hide('nameErr');
+  if(!l){show('lastErr');ok=false;}else hide('lastErr');
+  if(!ok)return;
+  S.name=f+' '+l+'.';
+  goTo(1);
+}
+
+/* ══ STEP 1: MODE SELECT ══════════════════════════════════════ */
+function selectMode(n,el){
+  S.mode=n;
+  document.querySelectorAll('.mode-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function v1(){
+  if(!S.mode){show('modeErr');return;} hide('modeErr');
+  S.word=''; S.ingA=''; S.ingB=''; S.ingSurprise='';
+  if(S.mode===1){buildWordGrid('wordGrid2a','2a'); goTo('2a');}
+  else if(S.mode===2){buildIngGrid('ingGridA','A'); goTo('3a');}
+  else if(S.mode===3){buildWordGrid('wordGrid4a','4a'); goTo('4a');}
+  else if(S.mode===4){buildIngGrid('ingGridS','S'); goTo('5a');}
+}
+
+/* ══ WORD GRID BUILDER ════════════════════════════════════════ */
+function buildWordGrid(gridId,mode){
+  const g=document.getElementById(gridId); g.innerHTML='';
+  WORDS.forEach(w=>{
+    const b=document.createElement('button');
+    b.className='word-btn';
+    b.textContent=w;
+    b.onclick=()=>{
+      S.word=w;
+      document.querySelectorAll('#'+gridId+' .word-btn').forEach(x=>x.classList.remove('sel'));
+      b.classList.add('sel');
+    };
+    g.appendChild(b);
+  });
+}
+
+/* ══ INGREDIENT GRID BUILDER ══════════════════════════════════ */
+function buildIngGrid(gridId,slot){
+  const g=document.getElementById(gridId); g.innerHTML='';
+  ING_NAMES.forEach(name=>{
+    const ing=INGS[name];
+    const b=document.createElement('button');
+    b.className='ing-btn';
+    b.innerHTML=`<span class="ing-icon">${ing.icon}</span><span class="ing-name">${name}</span>`;
+    b.onclick=()=>{
+      if(slot==='A'){S.ingA=name; document.querySelectorAll('#ingGridA .ing-btn').forEach(x=>x.classList.remove('sel-a')); b.classList.add('sel-a');}
+      else if(slot==='B'){S.ingB=name; document.querySelectorAll('#ingGridB .ing-btn').forEach(x=>x.classList.remove('sel-b')); b.classList.add('sel-b');}
+      else if(slot==='S'){S.ingSurprise=name; document.querySelectorAll('#ingGridS .ing-btn').forEach(x=>x.classList.remove('sel-surprise')); b.classList.add('sel-surprise');}
+    };
+    g.appendChild(b);
+  });
+}
+
+/* ══ MODE 1: WORD LAB ═════════════════════════════════════════ */
+function v2a(){
+  if(!S.word){show('wordErr2a');return;} hide('wordErr2a');
+  const wd=WORD_LAB[S.word];
+  const heroIng=INGS[wd.heroIng]||{icon:'🍪',compounds:['Furaneol','Linalool']};
+  const pairData=wd.pairs.map(p=>{
+    const pi=INGS[p]||{icon:'🍪',compounds:[]};
+    const shared=heroIng.compounds.filter(c=>pi.compounds.includes(c));
+    return {name:p, icon:pi.icon, shared};
+  });
+
+  document.getElementById('wordLabTitle').textContent=S.word.toUpperCase()+' Flavor DNA 🧬';
+
+  let pairCards=pairData.map(p=>`
+    <div style="display:flex;align-items:center;gap:10px;background:#F8F4FF;border-radius:10px;padding:10px 12px;border:1.5px solid #D1C4E9;">
+      <span style="font-size:1.6rem;">${p.icon}</span>
+      <div>
+        <div style="font-family:'Baloo 2',cursive;font-size:.88rem;font-weight:800;color:var(--navy);">${p.name}</div>
+        <div style="font-size:.65rem;color:var(--dna2);font-weight:700;">Shared: ${p.shared.join(', ')||'Surprise pairing!'}</div>
+      </div>
+    </div>`).join('');
+
+  let dnaHtml=heroIng.compounds.map(c=>`<span class="dna-pill dna-shared">${c}</span>`).join('');
+
+  document.getElementById('wordLabResult').innerHTML=`
+    <div id="printCard">
+    <div class="pairing-result">
+      <div class="pr-header" style="background:var(--dna1);">
+        <div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.6);margin-bottom:6px;">Word Lab · ${S.name}</div>
+        <div style="font-size:2rem;margin-bottom:4px;">${INGS[wd.heroIng]?.icon||'🧬'}</div>
+        <div class="pr-verdict" style="color:#FFD54F;">${S.word.toUpperCase()}</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.85);font-weight:700;margin-top:4px;">Hero Ingredient: ${wd.hero}</div>
+      </div>
+      <div class="pr-body">
+        <div class="pr-section">The Science</div>
+        <div class="pr-why">"${wd.why}"</div>
+        <div class="pr-section">Flavor DNA Compounds</div>
+        <div class="dna-strand">${dnaHtml}</div>
+        <div class="pr-section">Surprising Flavor Partners</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">${pairCards}</div>
+        <div class="pr-recipe-box">
+          <div class="pr-recipe-title">🍴 Pairing Recipe Idea</div>
+          <div class="pr-recipe-steps">${wd.recipe}</div>
+        </div>
+        <div class="pr-footer">🧬 DNA Flavor Pairing Lab · Smile Bags · Culinary Arts with Ms. Sayers · Spring 2026</div>
+      </div>
+    </div>
+    </div>`;
+
+  S.resultMode='Word Lab'; S.resultSummary=S.word+' → '+wd.pairs.join(', ');
+  goTo('2b');
+}
+
+/* ══ MODE 2: PAIRING TEST ═════════════════════════════════════ */
+function v3a(){
+  if(!S.ingA){show('ingErrA');return;} hide('ingErrA');
+  buildIngGrid('ingGridB','B');
+  goTo('3b');
+}
+
+function v3b(){
+  if(!S.ingB||S.ingB===S.ingA){show('ingErrB');return;} hide('ingErrB');
+  const a=INGS[S.ingA]; const b=INGS[S.ingB];
+  const shared=a.compounds.filter(c=>b.compounds.includes(c));
+  const score=Math.round((shared.length/Math.max(a.compounds.length,b.compounds.length))*100);
+  const isMatch=shared.length>=2;
+  const verdict=shared.length>=3?'Perfect Match! 🔥':shared.length>=2?'Strong Pairing! ✨':shared.length===1?'Weak Bond 🤔':'No Match ❌';
+  const color=shared.length>=3?'#2D7A4F':shared.length>=2?'#1565C0':shared.length===1?'#E65100':'#B71C1C';
+
+  let sharedDNA=shared.map(c=>`<span class="dna-pill dna-shared">${c}</span>`).join('');
+  let aUnique=a.compounds.filter(c=>!shared.includes(c)).map(c=>`<span class="dna-pill dna-unique">${c}</span>`).join('');
+  let bUnique=b.compounds.filter(c=>!shared.includes(c)).map(c=>`<span class="dna-pill dna-unique">${c}</span>`).join('');
+
+  const science=shared.length>=2
+    ?`${S.ingA} and ${S.ingB} share ${shared.join(' and ')} — flavor compounds that create genuine molecular harmony. Top chefs pair these intentionally!`
+    :shared.length===1
+    ?`${S.ingA} and ${S.ingB} share just ${shared[0]}. A weak but real molecular connection — could work with the right technique.`
+    :`${S.ingA} and ${S.ingB} share no major flavor compounds. These are opposites — which in cooking can still create contrast!`;
+
+  const recipe=shared.length>=2
+    ?`Try: ${S.ingA} + ${S.ingB} — bring them together in a dish that lets both shine. The shared ${shared[0]} will bridge the gap beautifully.`
+    :`Contrast dish: use ${S.ingA} and ${S.ingB} as opposites — one as the feature, one as the accent. Contrast can be as powerful as harmony.`;
+
+  document.getElementById('pairingResult').innerHTML=`
+    <div id="printCard">
+    <div class="pairing-result">
+      <div class="pr-header" style="background:${color};">
+        <div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.6);margin-bottom:8px;">Pairing Test · ${S.name}</div>
+        <div class="pr-pair-display">
+          <div class="pr-food"><div class="pr-food-icon">${a.icon}</div><div class="pr-food-name" style="color:rgba(255,255,255,.85)">${S.ingA}</div></div>
+          <span style="font-size:1.6rem;color:rgba(255,255,255,.5)">+</span>
+          <div class="pr-food"><div class="pr-food-icon">${b.icon}</div><div class="pr-food-name" style="color:rgba(255,255,255,.85)">${S.ingB}</div></div>
+        </div>
+        <div class="pr-verdict" style="color:white;">${verdict}</div>
+        <div class="pr-score" style="color:rgba(255,255,255,.75)">Compatibility: ${score}% · ${shared.length} shared compound${shared.length!==1?'s':''}</div>
+      </div>
+      <div class="pr-body">
+        <div class="pr-section">Shared Flavor DNA ${shared.length>0?'🔗':''}</div>
+        <div class="dna-strand">${sharedDNA||'<span class="dna-pill dna-unique">No shared compounds found</span>'}</div>
+        ${aUnique?`<div class="pr-section">${S.ingA} Only</div><div class="dna-strand">${aUnique}</div>`:''}
+        ${bUnique?`<div class="pr-section">${S.ingB} Only</div><div class="dna-strand">${bUnique}</div>`:''}
+        <div class="pr-section">The Science</div>
+        <div class="pr-why">"${science}"</div>
+        <div class="pr-recipe-box">
+          <div class="pr-recipe-title">🍴 Pairing Idea</div>
+          <div class="pr-recipe-steps">${recipe}</div>
+        </div>
+        <div class="pr-footer">🧬 DNA Flavor Pairing Lab · Smile Bags · Culinary Arts with Ms. Sayers · Spring 2026</div>
+      </div>
+    </div>
+    </div>`;
+
+  S.resultMode='Pairing Test'; S.resultSummary=S.ingA+' + '+S.ingB+' ('+score+'% match)';
+  goTo('3c');
+}
+
+/* ══ MODE 3: AI SCIENCE LAB ═══════════════════════════════════ */
+function v4a(){
+  if(!S.word){show('wordErr4a');return;} hide('wordErr4a');
+  document.getElementById('aiLabTitle').textContent='AI Science Report: '+S.word+' 🔬';
+  document.getElementById('aiLabResult').innerHTML=`
+    <div class="ai-response-box">
+      <div class="ai-label">🤖 AI is analyzing the molecular gastronomy of <strong>${S.word}</strong>...</div>
+      <div class="ai-loading"><div class="ai-dots"><span></span><span></span><span></span></div></div>
+    </div>`;
+  goTo('4b');
+  runAI();
+}
+
+/* ══ PRE-WRITTEN SCIENCE REPORTS — one per word ══════════════════
+   Option 1 (Apps Script Proxy) stored for future projects.
+   These curated reports work offline, behind any school filter.
+══════════════════════════════════════════════════════════════ */
+const SCIENCE_REPORTS = {
+  Absorb:   'Sponge cake is ABSORB in action — its open cellular structure, created by trapped air bubbles, soaks up syrup through capillary action. The vanillin in vanilla bonds readily with the fat molecules in the cake, meaning flavor literally absorbs into every cell. This is why a plain sponge drizzled with fruit syrup tastes richer than either ingredient alone.',
+  Adapt:    'Eggs are the ultimate ADAPT ingredient — the proteins in an egg white (albumin) change structure depending on heat, acid, or agitation. At 140°F they coagulate into scrambled eggs; whipped with sugar they become meringue; mixed with acid they curl into a foam. Same molecule, infinite adaptations — driven entirely by conditions.',
+  Anchor:   'Salt does not just add flavor — it anchors it. Sodium ions suppress bitter compounds (like those in dark chocolate and coffee) while amplifying sweet and savory notes. The shared furaneol molecule in salted caramel and dark chocolate is why sea salt on chocolate is not a trend — it is chemistry: the salt anchors furaneol\'s caramel sweetness in both ingredients simultaneously.',
+  Balance:  'Lemon is BALANCE personified. Its limonene creates brightness while its citric acid suppresses bitterness — the same role salt plays, but through acidity instead. When lemon juice hits a dish, it raises the perception of sweetness without adding sugar. Pairing it with lavender (also rich in limonene) doubles this brightening effect — two citrus molecules amplifying each other.',
+  Bloom:    'Strawberries BLOOM with furaneol — the same caramel-sweet molecule found in ripe pineapple, aged parmesan, and caramel. When a strawberry reaches peak ripeness, furaneol concentration spikes dramatically, creating that intense sweetness. This is why strawberry and parmesan (seemingly opposite) taste magnificent together — they are both expressing the same molecular peak of ripeness.',
+  Breathe:  'Mint makes us BREATHE because menthol activates TRPM8 receptors — the same cold-sensing receptors triggered by actual low temperatures. Your brain receives a "cold" signal even though nothing is cold. Menthol also shares linalool with chocolate, which is why mint chocolate is not just tradition — linalool creates a floral bridge between the two that makes them inseparable.',
+  Clear:    'The clearest flavors are the cleanest molecules. Cucumber\'s hexanal — a six-carbon aldehyde — is one of the simplest aroma molecules in food, which is why cucumber tastes so pure and CLEAR. Lemon\'s limonene is equally simple. When two simple-molecule ingredients combine, the result is transparency of flavor — nothing muddied, nothing hidden.',
+  Connect:  'Caramel is the great CONNECTOR because the Maillard reaction that creates it also creates furaneol, diacetyl, and pyrazines — compounds shared by strawberries, butter, coffee, and blue cheese. Caramel is not one molecule — it is a family of 300+ compounds, many of which appear in completely unrelated foods. That molecular generosity is why caramel connects everything.',
+  Cycle:    'Sourdough is CYCLE made edible. Wild yeast consumes flour starches, produces CO₂ (which raises the bread) and ethanol, then dies in the oven — only for a saved piece of starter to begin again. The furans created during baking are the same compounds in roasted coffee and caramelized butter, which is why sourdough + butter + honey is one of the most molecularly complete flavor experiences in cooking.',
+  Emerge:   'Chocolate EMERGES through transformation: raw cacao beans are bitter, astringent, and barely recognizable. Fermentation, roasting, and conching create 600+ flavor compounds from scratch — including pyrazines (also in roasted coffee), linalool (also in lavender), and vanillin (also in raspberries). The finished chocolate shares compounds with ingredients that never touched the original bean.',
+  Filter:   'Tea is FILTER as a culinary technique. Steeping extracts water-soluble compounds (catechins, linalool, caffeine) while leaving behind fiber and tannins — a molecular filter. Linalool, tea\'s primary floral compound, is shared with lemon, lavender, and basil, which is why these pairings appear across every tea culture on earth. The filter reveals the molecules they share.',
+  Flow:     'Honey\'s FLOW is a function of its water content — at 17-20% water, honey has a viscosity that allows it to flow but resists crystallization. Its furaneol (shared with caramel and strawberry) and linalool (shared with lavender) mean honey bridges sweet and floral flavor worlds effortlessly. When honey meets blue cheese — which also carries diacetyl and linalool — the pairing is not contrast but molecular recognition.',
+  Grow:     'Carrots GROW by converting sunlight to sugars underground, producing limonene (a citrus terpene) and furaneol (a sweet caramel compound) as they mature. This is why roasted carrots taste sweeter than raw — heat caramelizes the sugars and concentrates furaneol. Ginger, which shares limonene with carrots, amplifies the carrot\'s existing citrus-spice notes rather than competing with them.',
+  Heal:     'Ginger\'s HEALING comes from gingerols — pungent phenol compounds that inhibit inflammatory enzymes. When ginger is cooked or dried, gingerols convert to zingerone, which is milder and sweeter. Zingerone shares limonene and linalool with lemon and honey, which is why these three have been combined in every traditional medicine system independently — the molecular compatibility is ancient and universal.',
+  Migrate:  'Spices MIGRATED trade routes because their volatile aroma compounds — eugenol in cinnamon and clove, limonene in coriander and cardamom — survive long journeys intact. These terpenes and phenols are molecularly stable and aromatic at room temperature. When cinnamon\'s eugenol meets chocolate\'s linalool, two migration routes from Asia and the Americas converge in one molecule-to-molecule recognition.',
+  Persist:  'Coffee PERSISTs through any obstacle because caffeine is a molecularly stable alkaloid — it survives roasting, brewing, and digestion largely unchanged. But the flavor compounds created by roasting (pyrazines) are shared by garlic, beef, and parmesan — all of which also develop pyrazines through browning. A coffee rub on steak is not fusion experimentation; it is two ingredients completing the same molecular sentence.',
+  Renew:    'Lemon\'s RENEWAL comes from limonene — a terpene so volatile it evaporates at room temperature, carrying its fresh scent into the air before you even cut the fruit. This is why lemon zest (where limonene lives in the oil glands) transforms a dish instantly. Limonene is shared with lavender and rosemary, which is why a lemon-herb vinaigrette tastes like spring — three sources of the same renewing molecule.',
+  Restore:  'Chicken broth RESTORES because bones release collagen during slow simmering, which converts to gelatin — a protein that coats the mouth and creates that silky, satisfying mouthfeel. The Maillard reaction during roasting creates furans shared with mushrooms and truffle, adding depth. Science has confirmed what every grandmother knew: the longer it simmers, the more compounds are released and the more restorative it becomes.',
+  Return:   'Vanilla is the flavor we RETURN to because vanillin — its primary compound — triggers dopamine release in the brain, associated with comfort and reward. Vanillin appears naturally in raspberries, cinnamon, and cloves, which is why desserts combining these feel familiar even when they are brand new. We are not returning to the dish — we are returning to the molecule.',
+  Rise:     'Bread RISEs because Saccharomyces cerevisiae (baker\'s yeast) consumes sugars and exhales CO₂ — a living organism inflating the dough from within. The furans and diacetyl created during baking are shared with butter and caramel, which is why fresh bread with butter is one of the most universally craved smells in human culture. The yeast creates flavor compounds that perfectly complement the fat it will be eaten with.',
+  Root:     'Beet\'s earthy ROOT flavor comes from geosmin — the same molecule produced by soil bacteria after rain, responsible for that unmistakable wet-earth smell. Humans can detect geosmin at 5 parts per trillion — one of our most sensitive molecular receptors. Beet\'s furaneol (also in caramel and chocolate) is why roasted beet and chocolate pair so naturally: underneath the earth, there is sweetness.',
+  Shine:    'Butter SHINES because its fat molecules reflect light when emulsified properly — this is the basis of pan sauces and the French technique of monter au beurre (finishing with butter). Diacetyl, butter\'s primary flavor compound, is shared with caramel and blue cheese, which is why a good brown butter sauce tastes simultaneously nutty, sweet, and complex. The shine is both visual and molecular.',
+  Sustain:  'Oats SUSTAIN because their beta-glucan fiber slows glucose absorption — releasing energy steadily rather than in a spike. Paired with honey (furaneol + linalool) and cinnamon (eugenol), the molecular combination creates not just sustained energy but a flavor profile that remains satisfying long after eating. Linalool, shared by all three, is a calming compound — sustained flavor and sustained calm in one bowl.',
+  Thrive:   'Avocado THRIVEs nutritionally because its monounsaturated fats (oleic acid) are among the most bioavailable in any food. Its hexanal — a six-carbon aldehyde — creates that distinctive green-creamy aroma, and is also present in fresh-cut grass and green apples. Linalool, shared with chocolate and coffee, makes avocado a surprising but scientifically logical bridge between savory and sweet in any dish.',
+  Transform:'The egg is TRANSFORM — raw, it is a liquid membrane surrounding potential. Heat denatures albumin proteins, turning clear to white. Sugar and agitation fold air into meringue. Acid curdles it into custard. Each transformation creates different compounds: diacetyl in a fried egg, vanillin in a custard, linalool in a soufflé. The egg does not change what it is — it reveals what it was always capable of becoming.',
+};
+
+function runAI(){
+  const wd=WORD_LAB[S.word]||{};
+  const heroIng=INGS[wd.heroIng||'Vanilla']||{icon:'🧬',compounds:['Linalool','Furaneol']};
+  const sciText=SCIENCE_REPORTS[S.word]||'The molecular gastronomy of '+S.word+' is rich with flavor science — every ingredient connected to this word shares surprising compounds with its partners.';
+  let dnaHtml=heroIng.compounds.map(c=>`<span class="dna-pill dna-shared">${c}</span>`).join('');
+
+  document.getElementById('aiLabResult').innerHTML=`
+    <div id="printCard">
+    <div class="pairing-result">
+      <div class="pr-header" style="background:var(--dna3);">
+        <div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.6);margin-bottom:6px;">Science Lab · ${S.name}</div>
+        <div style="font-size:2rem;margin-bottom:4px;">🔬</div>
+        <div class="pr-verdict" style="color:white;">${S.word.toUpperCase()}</div>
+        <div style="font-size:.75rem;color:rgba(255,255,255,.75);margin-top:4px;font-weight:700;">Molecular Gastronomy Science Report</div>
+      </div>
+      <div class="pr-body">
+        <div class="ai-response-box" style="margin-bottom:12px;">
+          <div class="ai-label">🔬 Molecular Gastronomy Analysis</div>
+          <div class="ai-text">${sciText}</div>
+        </div>
+        <div class="pr-section">Key Flavor Compounds in ${wd.hero||S.word}</div>
+        <div class="dna-strand">${dnaHtml}</div>
+        ${wd.recipe?`<div class="pr-recipe-box"><div class="pr-recipe-title">🍴 Suggested Experiment</div><div class="pr-recipe-steps">${wd.recipe}</div></div>`:''}
+        <div class="pr-footer">🧬 DNA Flavor Pairing Lab · Smile Bags · Culinary Arts with Ms. Sayers · Spring 2026</div>
+      </div>
+    </div>
+    </div>`;
+  S.resultMode='Science Lab'; S.resultSummary=S.word+' — molecular gastronomy analysis';
+}
+
+/* ══ MODE 4: SURPRISE LAB ═════════════════════════════════════ */
+function v5a(){
+  if(!S.ingSurprise){show('ingErrS');return;} hide('ingErrS');
+  const ing=INGS[S.ingSurprise];
+  const surprises=SURPRISES[S.ingSurprise];
+
+  if(!surprises){
+    document.getElementById('surpriseResult').innerHTML=`<div class="card"><p style="color:var(--mid);font-style:italic;">Surprise data coming soon for ${S.ingSurprise}! Try another ingredient.</p></div>`;
+    goTo('5b'); return;
+  }
+
+  let cards=surprises.map(s=>`
+    <div class="surprise-card">
+      <div class="sc-header">
+        <div class="sc-icons">${ing.icon} + ${INGS[s.partner.split('+')[0].trim()]?.icon||'🧪'}</div>
+        <div>
+          <div class="sc-title">${S.ingSurprise} + ${s.partner}</div>
+          <span class="sc-shock ${s.shock==='high'?'shock-high':'shock-mid'}">${s.shock==='high'?'🤯 High Shock Factor':'😮 Surprising'}</span>
+        </div>
+      </div>
+      <div style="font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--light);margin-bottom:4px;">Shared Compound: ${s.shared}</div>
+      <div class="sc-science">"${s.science}"</div>
+      <div class="pr-recipe-box" style="margin-top:8px;">
+        <div class="pr-recipe-title" style="font-size:.78rem;">🍴 Try It</div>
+        <div class="pr-recipe-steps" style="font-size:.72rem;">${s.recipe}</div>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('surpriseResult').innerHTML=`
+    <div id="printCard">
+    <div class="pairing-result">
+      <div class="pr-header" style="background:var(--dna4);">
+        <div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.6);margin-bottom:6px;">Surprise Lab · ${S.name}</div>
+        <div style="font-size:2.4rem;margin-bottom:4px;">${ing.icon}</div>
+        <div class="pr-verdict" style="color:white;">${S.ingSurprise}</div>
+        <div style="font-size:.76rem;color:rgba(255,255,255,.75);margin-top:4px;font-weight:700;">3 Scientifically Shocking Pairings</div>
+      </div>
+      <div class="pr-body">
+        <div class="pr-section">Flavor DNA of ${S.ingSurprise}</div>
+        <div class="dna-strand">${ing.compounds.map(c=>`<span class="dna-pill dna-shared">${c}</span>`).join('')}</div>
+        <div class="pr-section">Your Surprising Partners</div>
+        <div class="surprise-grid">${cards}</div>
+        <div class="pr-footer">🧬 DNA Flavor Pairing Lab · Smile Bags · Culinary Arts with Ms. Sayers · Spring 2026</div>
+      </div>
+    </div>
+    </div>`;
+
+  S.resultMode='Surprise Lab'; S.resultSummary=S.ingSurprise+' → '+surprises.map(s=>s.partner).join(', ');
+  goTo('5b');
+}
+
+/* ══ SUBMIT ═══════════════════════════════════════════════════ */
+async function submitResult(mode){
+  goTo(6);
+  const payload={
+    studentName:S.name, mode:S.resultMode,
+    summary:S.resultSummary,
+    timestamp:new Date().toLocaleString('en-US',{timeZone:'America/New_York'})
+  };
+  try{await fetch(SUBMIT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});}catch(e){console.warn(e);}
+  goTo(7);
+}
+
+/* ══ RESTART ══════════════════════════════════════════════════ */
+function restart(){
+  S.mode=0; S.word=''; S.ingA=''; S.ingB=''; S.ingSurprise='';
+  document.querySelectorAll('.mode-card').forEach(c=>c.classList.remove('sel'));
+  goTo(1);
+}
+
+function show(id){document.getElementById(id).classList.add('show');}
+function hide(id){document.getElementById(id).classList.remove('show');}
+</script>
+</body>
+</html>

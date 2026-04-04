@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Culinary Arts Kiosk · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#1A2744; --navy2:#223366; --gold:#E8A820; --gold2:#F5CC70;
+  --cream:#FFF8EE; --mid:#7A3E10; --light:#C87A2F;
+  --success:#2D7A4F; --radius:14px; --shadow:0 6px 28px rgba(0,0,0,0.12);
+}
+body { font-family:'Nunito',sans-serif; background:var(--cream); min-height:100vh; overflow-x:hidden; }
+
+/* HEADER */
+.hdr { background:var(--navy); padding:12px 24px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 3px 14px rgba(0,0,0,.32); position:sticky; top:0; z-index:100; }
+.hdr-brand { font-family:'Fredoka One',cursive; font-size:1.1rem; color:var(--gold); }
+.hdr-sub   { font-size:.6rem; color:rgba(255,255,255,.4); text-transform:uppercase; letter-spacing:.12em; margin-top:1px; }
+.hdr-badge { background:var(--gold); color:var(--navy); font-weight:900; font-size:.6rem; padding:4px 11px; border-radius:20px; letter-spacing:.08em; text-transform:uppercase; }
+
+/* SCREENS */
+.screen { display:none; max-width:680px; margin:0 auto; padding:24px 18px 60px; animation:fadeUp .25s ease; }
+.screen.active { display:block; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+/* MENU */
+.menu-intro { text-align:center; padding:22px 0 16px; }
+.menu-intro .icon { font-size:3.2rem; display:block; margin-bottom:10px; }
+.menu-intro h1 { font-family:'Fredoka One',cursive; font-size:1.9rem; color:var(--navy); }
+.menu-intro p  { color:var(--mid); font-size:.9rem; margin-top:5px; font-weight:600; }
+.menu-grid { display:grid; grid-template-columns:1fr 1fr; gap:13px; margin-top:18px; }
+.menu-card { background:white; border:2.5px solid #e8ddd0; border-radius:var(--radius); padding:20px 14px 16px; cursor:pointer; transition:all .18s; text-align:center; position:relative; box-shadow:var(--shadow); }
+.menu-card:hover:not(.locked) { border-color:var(--gold); transform:translateY(-3px); box-shadow:0 10px 30px rgba(0,0,0,.14); }
+.menu-card.locked  { opacity:.45; cursor:default; }
+.menu-card.featured { border-color:var(--gold); background:linear-gradient(135deg,#fffbf2,#fff8ee); }
+.mc-letter { position:absolute; top:9px; left:13px; font-family:'Fredoka One',cursive; font-size:.72rem; color:var(--gold); }
+.mc-icon   { font-size:2.2rem; display:block; margin-bottom:9px; }
+.mc-title  { font-family:'Baloo 2',cursive; font-size:.95rem; font-weight:800; color:var(--navy); line-height:1.2; }
+.mc-desc   { font-size:.68rem; color:#999; margin-top:4px; line-height:1.4; font-weight:600; }
+.mc-pill   { display:inline-block; margin-top:7px; font-size:.56rem; font-weight:800; text-transform:uppercase; letter-spacing:.07em; padding:3px 9px; border-radius:20px; }
+.pill-on  { background:#E8F5E9; color:var(--success); }
+.pill-off { background:#F5F5F5; color:#bbb; }
+
+/* SCREEN HEADER */
+.scr-hd { text-align:center; margin-bottom:20px; }
+.step-pill { display:inline-block; background:var(--navy); color:var(--gold); font-size:.58rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; padding:3px 12px; border-radius:20px; margin-bottom:9px; }
+.scr-hd h2 { font-family:'Baloo 2',cursive; font-size:1.55rem; color:var(--navy); font-weight:800; line-height:1.2; }
+.scr-hd p  { color:var(--mid); font-size:.86rem; margin-top:4px; font-weight:600; }
+
+/* CARDS */
+.card { background:white; border-radius:var(--radius); padding:18px; margin-bottom:13px; box-shadow:var(--shadow); border:1.5px solid #f0e8dc; }
+.card-lbl { font-size:.66rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; color:var(--light); margin-bottom:11px; }
+
+/* FIELDS */
+.field-lbl { font-size:.78rem; font-weight:700; color:var(--navy); margin-bottom:4px; display:block; }
+.field-inp { width:100%; padding:11px 13px; border-radius:10px; border:2px solid #e8ddd0; font-family:'Nunito',sans-serif; font-size:.97rem; font-weight:700; color:var(--navy); outline:none; transition:border-color .15s; background:#fdfaf6; margin-bottom:13px; }
+.field-inp:focus { border-color:var(--gold); background:white; }
+
+/* LEVEL PICKER */
+.level-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+.level-card {
+  background:#fdfaf6; border:2.5px solid #e8ddd0; border-radius:12px;
+  padding:18px 10px 14px; cursor:pointer; transition:all .18s; text-align:center;
+}
+.level-card:hover   { border-color:var(--gold); transform:translateY(-2px); }
+.level-card.selected { border-color:var(--navy); background:#fff8ee; }
+.level-card .lc-icon  { font-size:2rem; display:block; margin-bottom:7px; }
+.level-card .lc-title { font-family:'Baloo 2',cursive; font-size:.9rem; font-weight:800; color:var(--navy); }
+.level-card .lc-sub   { font-size:.6rem; color:#aaa; font-weight:600; margin-top:3px; }
+.level-card .lc-badge { display:inline-block; margin-top:6px; font-size:.55rem; font-weight:800; text-transform:uppercase; letter-spacing:.07em; padding:2px 8px; border-radius:20px; }
+.badge-img  { background:#FFF3E0; color:#E65100; }
+.badge-word { background:#E8F5E9; color:var(--success); }
+
+/* WORD GRID */
+.word-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; }
+.word-btn { padding:8px 4px; border-radius:9px; border:2px solid #e8ddd0; background:#fdfaf6; font-family:'Nunito',sans-serif; font-weight:700; font-size:.68rem; color:var(--navy); cursor:pointer; transition:all .15s; text-align:center; }
+.word-btn:hover   { border-color:var(--gold); background:#fff8ee; transform:scale(1.04); }
+.word-btn.selected { background:var(--navy); color:var(--gold); border-color:var(--navy); transform:scale(1.06); }
+
+/* CUTTER REVEAL */
+.cutter-reveal { margin-top:16px; background:linear-gradient(135deg,#f8f4ee,#fff8f0); border:2px solid var(--gold2); border-radius:var(--radius); padding:20px 16px 14px; text-align:center; display:none; animation:popIn .3s cubic-bezier(.34,1.56,.64,1); }
+.cutter-reveal.visible { display:block; }
+@keyframes popIn { from{opacity:0;transform:scale(.9)} to{opacity:1;transform:scale(1)} }
+.cutter-reveal-lbl { font-size:.62rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; color:var(--light); margin-bottom:10px; }
+.cutter-type-badge { display:inline-block; font-size:.6rem; font-weight:800; text-transform:uppercase; letter-spacing:.07em; padding:3px 10px; border-radius:20px; margin-bottom:10px; }
+.ctb-img  { background:#FFF3E0; color:#E65100; }
+.ctb-word { background:#E3F2FD; color:#1565C0; }
+.cutter-img-wrap { display:flex; align-items:center; justify-content:center; min-height:120px; padding:8px 0; }
+.cutter-img-wrap img { max-width:300px; max-height:130px; width:100%; filter:drop-shadow(0 4px 12px rgba(0,0,0,.15)); }
+.cutter-reveal-hint { font-size:.65rem; color:#bbb; font-style:italic; margin-top:8px; }
+
+/* COLOR SCREEN */
+.big-cutter-wrap { display:flex; flex-direction:column; align-items:center; padding:10px 0 6px; gap:8px; }
+.big-cutter-label { font-family:'Fredoka One',cursive; font-size:1rem; color:var(--navy); letter-spacing:.06em; }
+.big-cutter-type  { font-size:.65rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em; }
+.color-grid { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; padding:4px 0; }
+.color-btn { display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 10px; border-radius:10px; border:2.5px solid transparent; background:#fdfaf6; cursor:pointer; transition:all .15s; min-width:72px; }
+.color-btn:hover   { border-color:var(--gold); transform:translateY(-2px); }
+.color-btn.selected { border-color:var(--navy); background:#fff8ee; }
+.color-circle { width:44px; height:44px; border-radius:50%; box-shadow:0 2px 8px rgba(0,0,0,.18); border:2px solid rgba(0,0,0,.07); }
+.color-name   { font-size:.64rem; font-weight:800; color:var(--navy); text-align:center; }
+
+/* CONFIRM */
+.confirm-card { background:linear-gradient(135deg,#fff8ee,#fffbf5); border:2.5px solid var(--gold); border-radius:var(--radius); padding:22px 18px; margin-bottom:16px; box-shadow:0 6px 24px rgba(232,168,32,.16); }
+.confirm-cutter-center { display:flex; justify-content:center; margin-bottom:18px; }
+.confirm-rows { display:flex; flex-direction:column; gap:8px; }
+.confirm-row  { display:flex; align-items:center; gap:10px; background:white; border-radius:9px; padding:10px 14px; border:1.5px solid #f0e8dc; }
+.cr-lbl { font-size:.62rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em; color:var(--light); width:72px; flex-shrink:0; }
+.cr-val { font-size:.88rem; font-weight:800; color:var(--navy); }
+.cr-dot { width:22px; height:22px; border-radius:50%; border:1.5px solid rgba(0,0,0,.1); flex-shrink:0; }
+
+/* NAV */
+.nav-row { display:flex; gap:10px; margin-top:20px; }
+.btn-back { flex:0 0 auto; padding:12px 18px; border-radius:10px; border:2px solid #e8ddd0; background:white; color:var(--mid); font-family:'Nunito',sans-serif; font-weight:800; font-size:.86rem; cursor:pointer; transition:all .15s; }
+.btn-back:hover { border-color:var(--light); color:var(--navy); }
+.btn-next { flex:1; padding:14px 18px; border-radius:10px; border:none; background:var(--navy); color:var(--gold); font-family:'Nunito',sans-serif; font-weight:900; font-size:.92rem; cursor:pointer; transition:all .15s; }
+.btn-next:hover    { background:var(--navy2); transform:translateY(-1px); box-shadow:0 6px 16px rgba(26,39,68,.22); }
+.btn-next:disabled { opacity:.35; cursor:default; transform:none; box-shadow:none; }
+.btn-submit { flex:1; padding:15px 18px; border-radius:10px; border:none; background:var(--success); color:white; font-family:'Nunito',sans-serif; font-weight:900; font-size:.95rem; cursor:pointer; transition:all .15s; }
+.btn-submit:hover { background:#235f3e; transform:translateY(-1px); }
+
+/* SUCCESS */
+.success-wrap  { text-align:center; padding:28px 0; }
+.success-icon  { font-size:3.8rem; display:block; margin-bottom:12px; }
+.success-title { font-family:'Fredoka One',cursive; font-size:1.9rem; color:var(--success); margin-bottom:7px; }
+.success-msg   { color:var(--mid); font-size:.88rem; font-weight:600; line-height:1.6; margin-bottom:18px; }
+.btn-restart   { padding:13px 28px; border-radius:10px; border:2.5px solid var(--navy); background:white; color:var(--navy); font-family:'Nunito',sans-serif; font-weight:900; font-size:.88rem; cursor:pointer; transition:all .15s; }
+.btn-restart:hover { background:var(--navy); color:var(--gold); }
+
+/* LOADING */
+.loading-wrap { text-align:center; padding:60px 0; }
+.spin-ring     { display:inline-block; width:46px; height:46px; border:5px solid #e8ddd0; border-top-color:var(--navy); border-radius:50%; animation:spin .7s linear infinite; }
+@keyframes spin { to{transform:rotate(360deg)} }
+
+/* MISC */
+.hint    { font-size:.73rem; color:#9B6030; font-style:italic; font-weight:600; margin-bottom:9px; line-height:1.5; }
+.err-msg { color:#c0392b; font-size:.76rem; font-weight:700; margin-top:-6px; margin-bottom:6px; display:none; }
+.err-msg.show { display:block; }
+
+@media (max-width:480px) {
+  .menu-grid  { grid-template-columns:1fr; }
+  .level-grid { grid-template-columns:1fr; }
+  .word-grid  { grid-template-columns:repeat(4,1fr); }
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div>
+    <div class="hdr-brand">🍪 Culinary Arts · Smile Bags</div>
+    <div class="hdr-sub">Word &amp; Wonder Experience · Spring 2026</div>
+  </div>
+  <div class="hdr-badge">Ms. Sayers</div>
+</header>
+
+<!-- ══ SCREEN 0 — MENU ══ -->
+<div class="screen active" id="scr0">
+  <div class="menu-intro">
+    <span class="icon">🍪</span>
+    <h1>Culinary Arts Kiosk</h1>
+    <p>Choose your activity to get started!</p>
+  </div>
+  <div class="menu-grid">
+    <div class="menu-card featured" onclick="goTo(1)">
+      <div class="mc-letter">A</div>
+      <span class="mc-icon">🖨️</span>
+      <div class="mc-title">Cookie Cutter Order</div>
+      <div class="mc-desc">Choose your OneWord &amp; filament color — gets 3D printed on the Bambu!</div>
+      <span class="mc-pill pill-on">Open Now</span>
+    </div>
+    <div class="menu-card locked">
+      <div class="mc-letter">B</div>
+      <span class="mc-icon">📖</span>
+      <div class="mc-title">OneWord Recipe Card</div>
+      <div class="mc-desc">Build a simple recipe connected to your word's meaning.</div>
+      <span class="mc-pill pill-off">Coming Soon</span>
+    </div>
+    <div class="menu-card locked">
+      <div class="mc-letter">C</div>
+      <span class="mc-icon">🧬</span>
+      <div class="mc-title">DNA Flavor Pairing</div>
+      <div class="mc-desc">Molecular gastronomy — shared flavor compounds.</div>
+      <span class="mc-pill pill-off">Coming Soon</span>
+    </div>
+    <div class="menu-card locked">
+      <div class="mc-letter">D</div>
+      <span class="mc-icon">💻</span>
+      <div class="mc-title">Bake the Code</div>
+      <div class="mc-desc">Decode binary into cookie decoration instructions.</div>
+      <span class="mc-pill pill-off">Coming Soon</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCREEN 1 — NAME + TEACHER ══ -->
+<div class="screen" id="scr1">
+  <div class="scr-hd">
+    <div class="step-pill">Step 1 of 4 · Cookie Cutter Order</div>
+    <h2>Let's start with you! 👋</h2>
+    <p>Tell us your name and your teacher.</p>
+  </div>
+  <div class="card">
+    <label class="field-lbl" for="iName">Your First Name</label>
+    <input class="field-inp" id="iName" type="text" placeholder="Type your first name..." autocomplete="off"/>
+    <div class="err-msg" id="nameErr">Please enter your first name!</div>
+    <label class="field-lbl" for="iTeacher">Your Teacher</label>
+    <select class="field-inp" id="iTeacher">
+      <option value="">— Select your teacher —</option>
+      <option value="Ms. Sayers" data-level="High School">Ms. Sayers</option>
+    </select>
+    <div class="err-msg" id="teacherErr">Please select your teacher!</div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goTo(0)">← Back</button>
+    <button class="btn-next" onclick="validateStep1()">Next — Choose Bag Level →</button>
+  </div>
+</div>
+
+<!-- ══ SCREEN 2 — RECIPIENT LEVEL ══ -->
+<div class="screen" id="scr2">
+  <div class="scr-hd">
+    <div class="step-pill">Step 2 of 4 · Cookie Cutter Order</div>
+    <h2>Who is this bag for? 🎁</h2>
+    <p>This determines the shape of your cookie cutter!</p>
+  </div>
+
+  <div class="card">
+    <div class="card-lbl">Choose the Recipient Level</div>
+    <div class="level-grid">
+      <div class="level-card" id="lvl-elem" onclick="selectLevel('Elementary')">
+        <span class="lc-icon">🎒</span>
+        <div class="lc-title">Elementary</div>
+        <div class="lc-sub">Grades K–5</div>
+        <span class="lc-badge badge-img">Image Shape</span>
+      </div>
+      <div class="level-card" id="lvl-mid" onclick="selectLevel('Middle School')">
+        <span class="lc-icon">📚</span>
+        <div class="lc-title">Middle School</div>
+        <div class="lc-sub">Grades 6–8</div>
+        <span class="lc-badge badge-img">Image Shape</span>
+      </div>
+      <div class="level-card" id="lvl-hs" onclick="selectLevel('High School')">
+        <span class="lc-icon">🎓</span>
+        <div class="lc-title">High School</div>
+        <div class="lc-sub">Grades 9–12</div>
+        <span class="lc-badge badge-word">Word Shape</span>
+      </div>
+    </div>
+    <div class="err-msg" id="levelErr" style="margin-top:10px;">Please choose a recipient level!</div>
+
+    <!-- Level type explainer — appears on selection -->
+    <div id="levelExplainer" style="display:none;margin-top:14px;padding:12px 14px;border-radius:10px;border:1.5px solid #f0e8dc;background:#fdfaf6;">
+      <div id="levelExplainerText" style="font-size:.78rem;font-weight:700;color:var(--navy);line-height:1.6;"></div>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn-back" onclick="goTo(1)">← Back</button>
+    <button class="btn-next" id="btnLevelNext" onclick="validateStep2()" disabled>Next — Choose Your Word →</button>
+  </div>
+</div>
+
+<!-- ══ SCREEN 3 — CHOOSE WORD → CUTTER APPEARS ══ -->
+<div class="screen" id="scr3">
+  <div class="scr-hd">
+    <div class="step-pill">Step 3 of 4 · Cookie Cutter Order</div>
+    <h2>Choose your OneWord 🌟</h2>
+    <p>Tap a word — your cookie cutter shape will appear!</p>
+  </div>
+  <div class="card">
+    <div class="card-lbl">The 25 OneWords</div>
+    <div class="word-grid" id="wordGrid"></div>
+    <div class="err-msg" id="wordErr">Please choose a word first!</div>
+
+    <!-- CUTTER REVEAL -->
+    <div class="cutter-reveal" id="cutterReveal">
+      <div class="cutter-reveal-lbl" id="crLabel">Your Cookie Cutter Shape</div>
+      <div class="cutter-type-badge" id="crTypeBadge"></div>
+      <div class="cutter-img-wrap" id="cutterImgWrap"></div>
+      <div class="cutter-reveal-hint" id="crHint"></div>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goTo(2)">← Back</button>
+    <button class="btn-next" id="btnWordNext" onclick="validateStep3()" disabled>Next — Choose Your Color →</button>
+  </div>
+</div>
+
+<!-- ══ SCREEN 4 — CHOOSE COLOR ══ -->
+<div class="screen" id="scr4">
+  <div class="scr-hd">
+    <div class="step-pill">Step 4 of 4 · Cookie Cutter Order</div>
+    <h2>Pick your color! 🎨</h2>
+    <p>This is the filament color your cutter will be printed in.</p>
+  </div>
+  <div class="card">
+    <div class="card-lbl">Your Cutter Preview</div>
+    <div class="big-cutter-wrap">
+      <div class="cutter-img-wrap" id="bigCutterWrap" style="min-height:140px;"></div>
+      <div class="big-cutter-label" id="bigCutterLabel"></div>
+      <div class="big-cutter-type"  id="bigCutterType"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-lbl">Available Filament Colors</div>
+    <div class="hint">These are the actual Bambu Lab filament colors. What you pick is what gets printed!</div>
+    <div class="color-grid" id="colorGrid"></div>
+    <div class="err-msg" id="colorErr">Please choose a color!</div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goTo(3)">← Back</button>
+    <button class="btn-next" onclick="validateStep4()">Review My Order →</button>
+  </div>
+</div>
+
+<!-- ══ SCREEN 5 — CONFIRM ══ -->
+<div class="screen" id="scr5">
+  <div class="scr-hd">
+    <div class="step-pill">Review · Cookie Cutter Order</div>
+    <h2>Does this look right? ✅</h2>
+    <p>Check your order before sending it to Ms. Sayers!</p>
+  </div>
+  <div class="confirm-card">
+    <div class="confirm-cutter-center">
+      <div class="cutter-img-wrap" id="confirmCutterWrap" style="min-height:120px;"></div>
+    </div>
+    <div class="confirm-rows">
+      <div class="confirm-row"><div class="cr-lbl">Name</div><div class="cr-val" id="cf-name">—</div></div>
+      <div class="confirm-row"><div class="cr-lbl">Teacher</div><div class="cr-val" id="cf-teacher">—</div></div>
+      <div class="confirm-row"><div class="cr-lbl">Bag For</div><div class="cr-val" id="cf-level">—</div></div>
+      <div class="confirm-row"><div class="cr-lbl">Word</div><div class="cr-val" id="cf-word">—</div></div>
+      <div class="confirm-row"><div class="cr-lbl">Shape</div><div class="cr-val" id="cf-shape">—</div></div>
+      <div class="confirm-row">
+        <div class="cr-lbl">Color</div>
+        <div style="display:flex;align-items:center;gap:9px;flex:1;">
+          <div class="cr-dot" id="cf-dot"></div>
+          <div class="cr-val" id="cf-color">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hint" style="text-align:center;">Once submitted, Ms. Sayers will print your cookie cutter on the Bambu Lab 3D printer! 🖨️</div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goTo(4)">← Change Something</button>
+    <button class="btn-submit" onclick="submitOrder()">🍪 Submit My Order!</button>
+  </div>
+</div>
+
+<!-- ══ SCREEN 6 — LOADING ══ -->
+<div class="screen" id="scr6">
+  <div class="loading-wrap">
+    <div class="spin-ring"></div>
+    <p style="margin-top:18px;font-weight:700;color:var(--mid);">Sending your order...</p>
+  </div>
+</div>
+
+<!-- ══ SCREEN 7 — SUCCESS ══ -->
+<div class="screen" id="scr7">
+  <div class="success-wrap">
+    <span class="success-icon">🎉</span>
+    <div class="success-title">Order Submitted!</div>
+    <div class="success-msg">Your cookie cutter order is logged!<br>Ms. Sayers will print it on the Bambu Lab 3D printer.<br>Watch for your cutter in a Smile Bag! 🍪</div>
+    <div class="card" style="text-align:left;margin-bottom:20px;">
+      <div class="card-lbl">Your Order</div>
+      <div class="confirm-rows">
+        <div class="confirm-row"><div class="cr-lbl">Name</div><div class="cr-val" id="s-name">—</div></div>
+        <div class="confirm-row"><div class="cr-lbl">Bag For</div><div class="cr-val" id="s-level">—</div></div>
+        <div class="confirm-row"><div class="cr-lbl">Word</div><div class="cr-val" id="s-word">—</div></div>
+        <div class="confirm-row"><div class="cr-lbl">Shape</div><div class="cr-val" id="s-shape">—</div></div>
+        <div class="confirm-row">
+          <div class="cr-lbl">Color</div>
+          <div style="display:flex;align-items:center;gap:9px;flex:1;">
+            <div class="cr-dot" id="s-dot"></div>
+            <div class="cr-val" id="s-color">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="btn-restart" onclick="restart()">← Start a New Order</button>
+  </div>
+</div>
+
+<script>
+/* ══ APPS SCRIPT URL ══════════════════════════════════════════
+   Paste your deployed Apps Script URL here after setup.
+══════════════════════════════════════════════════════════════ */
+const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbxXnXVRuiW_XsoY14dqKvfEDNjw58PfObH3ojCwWGeOLZyt4pZxBuzbhOk1Q5p9UnHo/exec';
+
+/* ══ 25 ONEWORDS ══════════════════════════════════════════════ */
+const WORDS = [
+  'Absorb','Adapt','Anchor','Balance','Bloom',
+  'Breathe','Clear','Connect','Cycle','Emerge',
+  'Filter','Flow','Grow','Heal','Migrate',
+  'Persist','Renew','Restore','Return','Rise',
+  'Root','Shine','Sustain','Thrive','Transform'
+];
+
+/* ══ FILAMENT COLORS ══════════════════════════════════════════ */
+const COLORS = [
+  { name:'Red',    hex:'#CC0000' },
+  { name:'Grey',   hex:'#808080' },
+  { name:'Green',  hex:'#2D6A2D' },
+  { name:'Gold',   hex:'#C8860A' },
+  { name:'Blue',   hex:'#1565C0' },
+  { name:'Silver', hex:'#A8A9AD' },
+  { name:'White',  hex:'#F5F5F5' },
+];
+
+/* ══ CUTTER IMAGES ════════════════════════════════════════════
+   HOW TO SWAP IN REAL IMAGES:
+   Set the path for each word's image cutter and/or word cutter.
+   Leave as '' to use the built-in SVG placeholder.
+
+   IMAGE cutter  = thematic shape (cloud, anchor, flower, etc.)
+   WORD cutter   = text-shaped cookie cutter (High School)
+══════════════════════════════════════════════════════════════ */
+const CUTTER_IMG = {
+  Absorb:'', Adapt:'', Anchor:'', Balance:'', Bloom:'',
+  Breathe:'', Clear:'', Connect:'', Cycle:'', Emerge:'',
+  Filter:'', Flow:'', Grow:'', Heal:'', Migrate:'',
+  Persist:'', Renew:'', Restore:'', Return:'', Rise:'',
+  Root:'', Shine:'', Sustain:'', Thrive:'', Transform:''
+};
+const CUTTER_WORD = {
+  Absorb:'', Adapt:'', Anchor:'', Balance:'', Bloom:'',
+  Breathe:'', Clear:'', Connect:'', Cycle:'', Emerge:'',
+  Filter:'', Flow:'', Grow:'', Heal:'', Migrate:'',
+  Persist:'', Renew:'', Restore:'', Return:'', Rise:'',
+  Root:'', Shine:'', Sustain:'', Thrive:'', Transform:''
+};
+
+/* ══ WORD → SHAPE ICON (for image-type SVG placeholder) ══════ */
+const SHAPE_ICONS = {
+  Absorb:'☁️', Adapt:'🐸', Anchor:'⚓', Balance:'⚖️', Bloom:'🌸',
+  Breathe:'🌀', Clear:'💧', Connect:'🔗', Cycle:'♻️', Emerge:'🦋',
+  Filter:'🌿', Flow:'〰️', Grow:'🌱', Heal:'❤️', Migrate:'🐦',
+  Persist:'🐢', Renew:'☀️', Restore:'🌳', Return:'🏠', Rise:'🎈',
+  Root:'🌰', Shine:'✨', Sustain:'🌍', Thrive:'🏆', Transform:'🦋'
+};
+const SHAPE_LABELS = {
+  Absorb:'Rain Cloud', Adapt:'Frog', Anchor:'Anchor', Balance:'Balance Scale', Bloom:'Flower',
+  Breathe:'Swirl', Clear:'Water Drop', Connect:'Linked Rings', Cycle:'Cycle Arrow', Emerge:'Butterfly',
+  Filter:'Leaf', Flow:'Wave', Grow:'Seedling', Heal:'Heart', Migrate:'Bird in Flight',
+  Persist:'Turtle', Renew:'Sun', Restore:'Tree', Return:'House', Rise:'Hot Air Balloon',
+  Root:'Acorn', Shine:'Starburst', Sustain:'Globe', Thrive:'Trophy', Transform:'Chrysalis'
+};
+
+/* ══ STATE ════════════════════════════════════════════════════ */
+const S = { name:'', teacher:'', level:'', word:'', color:'', colorHex:'' };
+
+/* ══ NAV ══════════════════════════════════════════════════════ */
+function goTo(n) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('scr' + n).classList.add('active');
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+/* ══ LEVEL HELPERS ════════════════════════════════════════════ */
+function isImageLevel(level) { return level === 'Elementary' || level === 'Middle School'; }
+function cutterTypeLabel(level) { return isImageLevel(level) ? 'Image Shape' : 'Word Shape'; }
+function cutterTypeBadgeClass(level) { return isImageLevel(level) ? 'ctb-img' : 'ctb-word'; }
+
+/* ══ SVG BUILDERS ═════════════════════════════════════════════ */
+
+// Image-style cutter SVG (woodcut-inspired bold silhouette + icon)
+function buildImageSVG(word, fillHex) {
+  const fill   = fillHex || '#E8D5B0';
+  const border = darken(fill, 45);
+  const icon   = SHAPE_ICONS[word]  || '🍪';
+  const label  = SHAPE_LABELS[word] || word;
+  const textClr = isLight(fill) ? '#333' : '#fff';
+
+  return `<svg viewBox="0 0 220 200" xmlns="http://www.w3.org/2000/svg"
+    style="max-width:220px;width:100%;filter:drop-shadow(0 4px 14px rgba(0,0,0,.18));">
+    <!-- Cookie base — rounded organic shape -->
+    <ellipse cx="110" cy="106" rx="98" ry="82" fill="${fill}" stroke="${border}" stroke-width="4"/>
+    <!-- Inner detail ring -->
+    <ellipse cx="110" cy="106" rx="84" ry="68" fill="none" stroke="${adjustAlpha(border,.3)}" stroke-width="2" stroke-dasharray="5 3"/>
+    <!-- Large icon -->
+    <text x="110" y="118" font-size="68" text-anchor="middle" dominant-baseline="middle"
+      style="filter:drop-shadow(0 2px 4px rgba(0,0,0,.15))">${icon}</text>
+    <!-- Shape label pill at bottom -->
+    <rect x="55" y="170" width="110" height="22" rx="11" fill="${border}" opacity="0.85"/>
+    <text x="110" y="185" font-family="Nunito,sans-serif" font-size="11" font-weight="800"
+      text-anchor="middle" fill="white" letter-spacing="0.5">${label.toUpperCase()}</text>
+    <!-- Word tag at top -->
+    <rect x="60" y="8" width="100" height="20" rx="10" fill="${border}"/>
+    <text x="110" y="22" font-family="Fredoka One,cursive" font-size="13"
+      text-anchor="middle" fill="white">${word.toUpperCase()}</text>
+  </svg>`;
+}
+
+// Word-style cutter SVG (text cookie cutter shape)
+function buildWordSVG(word, fillHex) {
+  const fill   = fillHex || '#e0d8cc';
+  const border = darken(fill, 45);
+  const textClr = isLight(fill) ? '#333' : '#fff';
+  const len = word.length;
+  const W   = Math.max(200, len * 26 + 60);
+  const H   = 88;
+  const R   = 20;
+  const fs  = len <= 5 ? 42 : len <= 7 ? 34 : len <= 9 ? 28 : 23;
+
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"
+    style="max-width:${W}px;width:100%;filter:drop-shadow(0 4px 14px rgba(0,0,0,.18));">
+    <rect x="5" y="5" width="${W-10}" height="${H-10}" rx="${R}" ry="${R}"
+      fill="${fill}" stroke="${border}" stroke-width="4"/>
+    <rect x="13" y="13" width="${W-26}" height="${H-26}" rx="${R-7}" ry="${R-7}"
+      fill="none" stroke="${adjustAlpha(border,.28)}" stroke-width="1.8"/>
+    <text x="${W/2}" y="${H/2 + fs*.36}"
+      font-family="Fredoka One,cursive" font-size="${fs}"
+      text-anchor="middle" fill="${textClr}" letter-spacing="1.5">${word.toUpperCase()}</text>
+  </svg>`;
+}
+
+function darken(hex, amt) {
+  if (!hex||hex.length<7) return '#888';
+  return '#'+[1,3,5].map(i=>Math.max(0,parseInt(hex.slice(i,i+2),16)-amt).toString(16).padStart(2,'0')).join('');
+}
+function adjustAlpha(hex, a) {
+  if (!hex||hex.length<7) return `rgba(100,60,20,${a})`;
+  return `rgba(${parseInt(hex.slice(1,3),16)},${parseInt(hex.slice(3,5),16)},${parseInt(hex.slice(5,7),16)},${a})`;
+}
+function isLight(hex) {
+  if (!hex||hex.length<7) return false;
+  return (parseInt(hex.slice(1,3),16)*.299+parseInt(hex.slice(3,5),16)*.587+parseInt(hex.slice(5,7),16)*.114)>155;
+}
+
+/* ══ RENDER CUTTER ════════════════════════════════════════════ */
+function renderCutter(containerId, word, level, fillHex) {
+  const el = document.getElementById(containerId);
+  if (!el || !word) return;
+  const imgType  = isImageLevel(level);
+  const imgSrc   = imgType ? CUTTER_IMG[word] : CUTTER_WORD[word];
+  if (imgSrc) {
+    el.innerHTML = `<img src="${imgSrc}" alt="${word} cookie cutter" style="max-width:300px;max-height:140px;width:100%;filter:drop-shadow(0 4px 12px rgba(0,0,0,.15));">`;
+  } else {
+    el.innerHTML = imgType ? buildImageSVG(word, fillHex) : buildWordSVG(word, fillHex);
+  }
+}
+
+/* ══ WORD GRID ════════════════════════════════════════════════ */
+function buildWordGrid() {
+  const g = document.getElementById('wordGrid');
+  g.innerHTML = '';
+  WORDS.forEach(w => {
+    const btn = document.createElement('button');
+    btn.className = 'word-btn' + (S.word===w?' selected':'');
+    btn.textContent = w;
+    btn.onclick = () => selectWord(w, btn);
+    g.appendChild(btn);
+  });
+}
+
+function selectWord(word, btn) {
+  S.word = word;
+  S.color = ''; S.colorHex = '';
+  document.querySelectorAll('.word-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+
+  const reveal = document.getElementById('cutterReveal');
+  reveal.classList.add('visible');
+
+  const isImg = isImageLevel(S.level);
+  document.getElementById('crLabel').textContent = word.toUpperCase() + ' · Cookie Cutter Shape';
+  const badge = document.getElementById('crTypeBadge');
+  badge.textContent   = isImg ? '🎨 Image Shape — ' + (SHAPE_LABELS[word]||'') : '🔤 Word Shape';
+  badge.className     = 'cutter-type-badge ' + (isImg ? 'ctb-img' : 'ctb-word');
+  document.getElementById('crHint').textContent = (CUTTER_IMG[word]||CUTTER_WORD[word])
+    ? '' : 'Placeholder preview — actual printed cutter may vary slightly';
+
+  renderCutter('cutterImgWrap', word, S.level, null);
+  document.getElementById('btnWordNext').disabled = false;
+  reveal.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+/* ══ COLOR GRID ═══════════════════════════════════════════════ */
+function buildColorGrid() {
+  const g = document.getElementById('colorGrid');
+  g.innerHTML = '';
+  COLORS.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'color-btn' + (S.color===c.name?' selected':'');
+    btn.innerHTML = `<div class="color-circle" style="background:${c.hex};${c.hex==='#F5F5F5'?'border:2px solid #ccc;':''}"></div><div class="color-name">${c.name}</div>`;
+    btn.onclick = () => selectColor(c, btn);
+    g.appendChild(btn);
+  });
+}
+
+function selectColor(c, btn) {
+  S.color = c.name; S.colorHex = c.hex;
+  document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  renderCutter('bigCutterWrap', S.word, S.level, c.hex);
+}
+
+/* ══ LEVEL SELECTION ══════════════════════════════════════════ */
+function selectLevel(level) {
+  S.level = level;
+  S.word = ''; S.color = ''; S.colorHex = '';
+  ['elem','mid','hs'].forEach(id => document.getElementById('lvl-'+id).classList.remove('selected'));
+  const map = { 'Elementary':'elem', 'Middle School':'mid', 'High School':'hs' };
+  document.getElementById('lvl-'+map[level]).classList.add('selected');
+
+  const isImg = isImageLevel(level);
+  const expl  = document.getElementById('levelExplainer');
+  const txt   = document.getElementById('levelExplainerText');
+  expl.style.display = 'block';
+  txt.innerHTML = isImg
+    ? `<strong>🎨 Image-shaped cutter selected!</strong><br>Your cookie cutter will be a fun thematic shape that represents your OneWord — perfect for a younger student's Smile Bag!`
+    : `<strong>🔤 Word-shaped cutter selected!</strong><br>Your cookie cutter will be shaped like your OneWord in bold letters — a sophisticated design for a high school Smile Bag!`;
+  expl.style.background = isImg ? '#FFF8F0' : '#F0F4FF';
+  expl.style.borderColor = isImg ? '#FFD0A0' : '#B0C4F0';
+
+  document.getElementById('btnLevelNext').disabled = false;
+}
+
+/* ══ VALIDATION ═══════════════════════════════════════════════ */
+function validateStep1() {
+  const name    = document.getElementById('iName').value.trim();
+  const teacher = document.getElementById('iTeacher').value;
+  let ok = true;
+  if (!name)    { show('nameErr');    ok = false; } else hide('nameErr');
+  if (!teacher) { show('teacherErr'); ok = false; } else hide('teacherErr');
+  if (!ok) return;
+  S.name = name; S.teacher = teacher;
+
+  // Auto-pre-select level from teacher's data-level attribute
+  const sel = document.getElementById('iTeacher');
+  const autoLevel = sel.options[sel.selectedIndex].dataset.level;
+  if (autoLevel) {
+    selectLevel(autoLevel);
+    // skip level screen if auto-determined? — keeping both available per specs
+  }
+  goTo(2);
+}
+
+function validateStep2() {
+  if (!S.level) { show('levelErr'); return; }
+  hide('levelErr');
+  goTo(3);
+  buildWordGrid();
+  if (S.word) {
+    document.getElementById('cutterReveal').classList.add('visible');
+    renderCutter('cutterImgWrap', S.word, S.level, null);
+    document.getElementById('btnWordNext').disabled = false;
+  }
+}
+
+function validateStep3() {
+  if (!S.word) { show('wordErr'); return; }
+  hide('wordErr');
+  goTo(4);
+  buildColorGrid();
+  document.getElementById('bigCutterLabel').textContent = S.word;
+  const isImg = isImageLevel(S.level);
+  const typeEl = document.getElementById('bigCutterType');
+  typeEl.textContent   = isImg ? ('🎨 Image Shape — ' + (SHAPE_LABELS[S.word]||'')) : '🔤 Word Shape';
+  typeEl.style.color   = isImg ? '#E65100' : '#1565C0';
+  renderCutter('bigCutterWrap', S.word, S.level, S.colorHex || null);
+}
+
+function validateStep4() {
+  if (!S.color) { show('colorErr'); return; }
+  hide('colorErr');
+  buildConfirm(); goTo(5);
+}
+
+/* ══ CONFIRM ══════════════════════════════════════════════════ */
+function buildConfirm() {
+  const isImg = isImageLevel(S.level);
+  document.getElementById('cf-name').textContent    = S.name;
+  document.getElementById('cf-teacher').textContent = S.teacher;
+  document.getElementById('cf-level').textContent   = S.level;
+  document.getElementById('cf-word').textContent    = S.word;
+  document.getElementById('cf-shape').textContent   = isImg ? ('Image Shape — ' + (SHAPE_LABELS[S.word]||'')) : 'Word Shape';
+  document.getElementById('cf-color').textContent   = S.color;
+  document.getElementById('cf-dot').style.background = S.colorHex;
+  renderCutter('confirmCutterWrap', S.word, S.level, S.colorHex);
+}
+
+/* ══ SUBMIT ═══════════════════════════════════════════════════ */
+async function submitOrder() {
+  goTo(6);
+  const isImg = isImageLevel(S.level);
+  const payload = {
+    studentName:  S.name,
+    teacher:      S.teacher,
+    recipientLevel: S.level,
+    word:         S.word,
+    cutterType:   isImg ? ('Image — ' + (SHAPE_LABELS[S.word]||S.word)) : 'Word Shape',
+    color:        S.color,
+    colorHex:     S.colorHex,
+    timestamp:    new Date().toLocaleString('en-US', { timeZone:'America/New_York' })
+  };
+  try {
+    await fetch(SUBMIT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+  } catch(e) { console.warn(e); }
+
+  document.getElementById('s-name').textContent  = S.name;
+  document.getElementById('s-level').textContent = S.level;
+  document.getElementById('s-word').textContent  = S.word;
+  document.getElementById('s-shape').textContent = isImg ? ('Image — ' + (SHAPE_LABELS[S.word]||'')) : 'Word Shape';
+  document.getElementById('s-color').textContent = S.color;
+  document.getElementById('s-dot').style.background = S.colorHex;
+  goTo(7);
+}
+
+/* ══ RESTART ══════════════════════════════════════════════════ */
+function restart() {
+  Object.keys(S).forEach(k => S[k]='');
+  document.getElementById('iName').value = '';
+  document.getElementById('iTeacher').value = '';
+  document.getElementById('cutterReveal').classList.remove('visible');
+  document.getElementById('btnWordNext').disabled = true;
+  document.getElementById('btnLevelNext').disabled = true;
+  document.getElementById('levelExplainer').style.display = 'none';
+  ['elem','mid','hs'].forEach(id => document.getElementById('lvl-'+id).classList.remove('selected'));
+  goTo(0);
+}
+
+function show(id) { document.getElementById(id).classList.add('show'); }
+function hide(id) { document.getElementById(id).classList.remove('show'); }
+</script>
+</body>
+</html>

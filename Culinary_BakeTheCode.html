@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bake the Code · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#1A2744;--navy2:#223366;--gold:#E8A820;--gold2:#F5CC70;
+  --cream:#FFF8EE;--mid:#7A3E10;--light:#C87A2F;
+  --success:#2D7A4F;--code:#1B5E20;--radius:14px;
+  --shadow:0 6px 28px rgba(0,0,0,0.11);
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;overflow-x:hidden;}
+
+.hdr{background:var(--navy);padding:11px 22px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 14px rgba(0,0,0,.32);position:sticky;top:0;z-index:100;}
+.hdr-brand{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--gold);}
+.hdr-sub{font-size:.58rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-top:1px;}
+.hdr-badge{background:var(--gold);color:var(--navy);font-weight:900;font-size:.58rem;padding:3px 10px;border-radius:20px;letter-spacing:.07em;text-transform:uppercase;}
+
+.screen{display:none;max-width:700px;margin:0 auto;padding:22px 16px 60px;animation:fadeUp .25s ease;}
+.screen.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.scr-hd{text-align:center;margin-bottom:18px;}
+.step-pill{display:inline-block;background:var(--navy);color:var(--gold);font-size:.56rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;padding:3px 12px;border-radius:20px;margin-bottom:8px;}
+.scr-hd h2{font-family:'Baloo 2',cursive;font-size:1.5rem;color:var(--navy);font-weight:800;line-height:1.2;}
+.scr-hd p{color:var(--mid);font-size:.84rem;margin-top:4px;font-weight:600;}
+
+.card{background:white;border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow);border:1.5px solid #f0e8dc;}
+.card-lbl{font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--light);margin-bottom:10px;}
+
+.field-lbl{font-size:.76rem;font-weight:700;color:var(--navy);margin-bottom:4px;display:block;}
+.field-inp{width:100%;padding:10px 12px;border-radius:10px;border:2px solid #e8ddd0;font-family:'Nunito',sans-serif;font-size:.94rem;font-weight:700;color:var(--navy);outline:none;transition:border-color .15s;background:#fdfaf6;margin-bottom:12px;}
+.field-inp:focus{border-color:var(--gold);background:white;}
+
+.word-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;}
+.word-btn{padding:7px 4px;border-radius:9px;border:2px solid #e8ddd0;background:#fdfaf6;font-family:'Nunito',sans-serif;font-weight:700;font-size:.66rem;color:var(--navy);cursor:pointer;transition:all .15s;text-align:center;}
+.word-btn:hover{border-color:var(--gold);background:#fff8ee;transform:scale(1.04);}
+.word-btn.sel{background:var(--navy);color:var(--gold);border-color:var(--navy);}
+
+/* BINARY DISPLAY */
+.binary-display{background:#0D1117;border-radius:var(--radius);padding:18px 14px;margin-bottom:14px;font-family:'Share Tech Mono',monospace;}
+.binary-word-label{font-size:.6rem;color:#58A6FF;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px;}
+.binary-groups{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
+.binary-group{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.binary-group-label{font-size:.58rem;color:#8B949E;font-weight:700;}
+.binary-bits{display:flex;gap:2px;}
+.bit{width:18px;height:22px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;border-radius:3px;transition:all .3s;}
+.bit-0{color:#30A46C;background:#0D2B1A;}
+.bit-1{color:#58A6FF;background:#0D1D3A;}
+.bit-solved{color:#F9A825!important;background:#2D1F00!important;animation:bitFlash .4s ease;}
+@keyframes bitFlash{0%{transform:scale(1.3)}100%{transform:scale(1)}}
+.letter-reveal{font-family:'Fredoka One',cursive;font-size:1.8rem;color:#F9A825;margin-top:4px;min-height:2rem;transition:all .3s;}
+
+/* DECODER INPUTS */
+.decoder-row{display:flex;gap:10px;justify-content:center;margin:14px 0;}
+.decoder-cell{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.decoder-input{width:52px;height:52px;text-align:center;font-family:'Fredoka One',cursive;font-size:1.6rem;border-radius:10px;border:2.5px solid #e8ddd0;background:#fdfaf6;color:var(--navy);outline:none;text-transform:uppercase;transition:all .2s;cursor:text;}
+.decoder-input:focus{border-color:var(--gold);background:#fffbf2;}
+.decoder-input.correct{border-color:var(--success);background:#E8F5E9;color:var(--success);animation:bounce .3s ease;}
+.decoder-input.wrong{border-color:#c0392b;background:#FDEDEC;animation:shake .3s ease;}
+@keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.decoder-pos{font-size:.58rem;font-weight:800;text-transform:uppercase;color:#aaa;letter-spacing:.06em;}
+
+/* REFERENCE CHART */
+.ref-toggle{font-size:.72rem;font-weight:800;color:var(--dna1,#1565C0);cursor:pointer;text-decoration:underline;text-align:center;display:block;margin-bottom:8px;}
+.ref-chart{display:none;background:#F8F9FA;border-radius:10px;padding:12px;border:1.5px solid #e8ddd0;}
+.ref-chart.open{display:block;}
+.ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:4px;}
+.ref-row{display:flex;align-items:center;gap:6px;padding:2px 4px;border-radius:4px;}
+.ref-letter{font-family:'Fredoka One',cursive;font-size:.8rem;color:var(--navy);width:16px;}
+.ref-binary{font-family:'Share Tech Mono',monospace;font-size:.62rem;color:#555;}
+
+/* COOKIE PREVIEW */
+.cookie-stage{display:flex;flex-direction:column;align-items:center;gap:12px;padding:14px 0;}
+.cookie-svg-wrap{position:relative;}
+.cookie-svg-wrap svg{filter:drop-shadow(0 6px 16px rgba(0,0,0,.2));}
+.progress-bar-wrap{width:100%;max-width:260px;}
+.progress-bar-label{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--light);text-align:center;margin-bottom:5px;}
+.progress-bar{height:8px;background:#f0e8dc;border-radius:10px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),#F5CC70);border-radius:10px;transition:width .4s ease;}
+.cookie-word{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--navy);letter-spacing:.08em;}
+
+/* HINT / REVEAL */
+.action-row{display:flex;gap:8px;justify-content:center;margin-top:10px;}
+.btn-hint{padding:8px 16px;border-radius:20px;border:1.5px solid #e8ddd0;background:white;color:var(--mid);font-family:'Nunito',sans-serif;font-weight:800;font-size:.72rem;cursor:pointer;transition:all .15s;}
+.btn-hint:hover{border-color:var(--light);}
+.btn-reveal{padding:8px 16px;border-radius:20px;border:1.5px solid #e8ddd0;background:white;color:#888;font-family:'Nunito',sans-serif;font-weight:700;font-size:.72rem;cursor:pointer;transition:all .15s;}
+.btn-reveal:hover{color:var(--navy);}
+
+/* RESULT CARD */
+.result-card{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:12px;}
+.rc-header{padding:18px;text-align:center;}
+.rc-word{font-family:'Fredoka One',cursive;font-size:2rem;letter-spacing:.08em;}
+.rc-code{font-family:'Share Tech Mono',monospace;font-size:.85rem;margin-top:4px;opacity:.8;}
+.rc-body{background:white;padding:16px 18px;}
+.rc-section{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--light);margin-bottom:7px;margin-top:12px;}
+.rc-desc{font-size:.8rem;font-weight:600;color:var(--navy);line-height:1.6;font-style:italic;}
+.rc-steps{font-size:.78rem;color:var(--mid);line-height:1.8;font-weight:600;}
+.rc-binary-box{background:#0D1117;border-radius:10px;padding:12px;font-family:'Share Tech Mono',monospace;font-size:.62rem;color:#58A6FF;line-height:2;word-break:break-all;}
+.rc-footer{font-size:.58rem;text-align:center;color:#ccc;margin-top:14px;font-weight:600;letter-spacing:.05em;}
+
+/* NAV */
+.nav-row{display:flex;gap:10px;margin-top:18px;}
+.btn-back{flex:0 0 auto;padding:11px 16px;border-radius:10px;border:2px solid #e8ddd0;background:white;color:var(--mid);font-family:'Nunito',sans-serif;font-weight:800;font-size:.84rem;cursor:pointer;transition:all .15s;}
+.btn-back:hover{border-color:var(--light);color:var(--navy);}
+.btn-next{flex:1;padding:13px 18px;border-radius:10px;border:none;background:var(--navy);color:var(--gold);font-family:'Nunito',sans-serif;font-weight:900;font-size:.9rem;cursor:pointer;transition:all .15s;}
+.btn-next:hover{background:var(--navy2);transform:translateY(-1px);}
+.btn-next:disabled{opacity:.35;cursor:default;transform:none;}
+.btn-submit{flex:1;padding:13px 18px;border-radius:10px;border:none;background:var(--success);color:white;font-family:'Nunito',sans-serif;font-weight:900;font-size:.9rem;cursor:pointer;transition:all .15s;}
+.btn-submit:hover{background:#235f3e;}
+.btn-print{flex:0 0 auto;padding:13px 16px;border-radius:10px;border:2px solid var(--navy);background:white;color:var(--navy);font-family:'Nunito',sans-serif;font-weight:900;font-size:.88rem;cursor:pointer;transition:all .15s;}
+.btn-print:hover{background:var(--navy);color:var(--gold);}
+
+.hint{font-size:.72rem;color:#9B6030;font-style:italic;font-weight:600;margin-bottom:8px;line-height:1.5;}
+.err-msg{color:#c0392b;font-size:.74rem;font-weight:700;margin-top:-5px;margin-bottom:5px;display:none;}
+.err-msg.show{display:block;}
+.loading-wrap{text-align:center;padding:60px 0;}
+.spin-ring{display:inline-block;width:44px;height:44px;border:5px solid #e8ddd0;border-top-color:var(--navy);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.success-wrap{text-align:center;padding:28px 0;}
+.success-icon{font-size:3.6rem;display:block;margin-bottom:12px;}
+.success-title{font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--success);margin-bottom:6px;}
+.success-msg{color:var(--mid);font-size:.86rem;font-weight:600;line-height:1.6;margin-bottom:16px;}
+.btn-restart{padding:12px 26px;border-radius:10px;border:2.5px solid var(--navy);background:white;color:var(--navy);font-family:'Nunito',sans-serif;font-weight:900;font-size:.86rem;cursor:pointer;transition:all .15s;}
+.btn-restart:hover{background:var(--navy);color:var(--gold);}
+
+@media(max-width:500px){.word-grid{grid-template-columns:repeat(4,1fr);}
+.binary-groups{gap:7px;}.bit{width:15px;height:19px;font-size:.65rem;}}
+
+@media print{
+  @page{size:6in 4in;margin:.25in;}
+  body *{visibility:hidden;}
+  #printArea,#printArea *{visibility:visible;}
+  #printArea{position:fixed;top:0;left:0;width:100%;}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div>
+    <div class="hdr-brand">💻 Bake the Code · Smile Bags</div>
+    <div class="hdr-sub">Culinary Arts · Binary Cookie Decoder · Spring 2026</div>
+  </div>
+  <div class="hdr-badge">Ms. Sayers</div>
+</header>
+
+<!-- S0: NAME -->
+<div class="screen active" id="scr0">
+  <div class="scr-hd">
+    <div class="step-pill">Welcome to Bake the Code 💻</div>
+    <h2>Who's cracking the code today? 🔐</h2>
+    <p>Every OneWord hides a secret cookie decoration in binary!</p>
+  </div>
+  <div class="card">
+    <label class="field-lbl" for="iFirst">First Name</label>
+    <input class="field-inp" id="iFirst" type="text" placeholder="e.g. Jordan" autocomplete="off"/>
+    <div class="err-msg" id="nameErr">Please enter your first name!</div>
+    <label class="field-lbl" for="iLast">Last Name Initial</label>
+    <input class="field-inp" id="iLast" type="text" placeholder="e.g. T" maxlength="1" autocomplete="off"/>
+    <div class="err-msg" id="lastErr">Please enter your last name initial!</div>
+  </div>
+  <div class="card" style="background:linear-gradient(135deg,#0D1117,#1B2333);border-color:#30363D;">
+    <div style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#58A6FF;margin-bottom:8px;">How It Works</div>
+    <div style="font-size:.76rem;color:#C9D1D9;font-weight:600;line-height:1.7;">
+      01. Pick your OneWord 🌟<br>
+      10. Decode the binary message using the reference chart 🔐<br>
+      11. Watch your cookie decorate itself letter by letter 🍪<br>
+      100. Print your Bake the Code card! 🖨️
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-next" onclick="v0()">Start Decoding →</button>
+  </div>
+</div>
+
+<!-- S1: WORD -->
+<div class="screen" id="scr1">
+  <div class="scr-hd">
+    <div class="step-pill">Step 1 of 3 · Bake the Code</div>
+    <h2>Choose your OneWord 🌟</h2>
+    <p>Your word contains a hidden binary decoration code!</p>
+  </div>
+  <div class="card">
+    <div class="card-lbl">The 25 OneWords</div>
+    <div class="word-grid" id="wordGrid"></div>
+    <div class="err-msg" id="wordErr">Please choose a word!</div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goTo(0)">← Back</button>
+    <button class="btn-next" onclick="v1()">Reveal the Binary Code →</button>
+  </div>
+</div>
+
+<!-- S2: DECODE -->
+<div class="screen" id="scr2">
+  <div class="scr-hd">
+    <div class="step-pill">Step 2 of 3 · Decode!</div>
+    <h2>Crack the code! 🔐</h2>
+    <p>Decode each binary group using the reference chart below.</p>
+  </div>
+
+  <!-- Binary display -->
+  <div class="binary-display">
+    <div class="binary-word-label" id="binaryLabel">DECODING: —</div>
+    <div class="binary-groups" id="binaryGroups"></div>
+  </div>
+
+  <!-- Cookie preview (progressive) -->
+  <div class="card">
+    <div class="card-lbl">Your Cookie — Decorating Live!</div>
+    <div class="cookie-stage">
+      <div class="cookie-svg-wrap">
+        <svg id="cookieSVG" width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-label" id="progressLabel">Decode letters to decorate!</div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      </div>
+      <div class="cookie-word" id="cookieWord"></div>
+    </div>
+  </div>
+
+  <!-- Decoder inputs -->
+  <div class="card">
+    <div class="card-lbl">Type Each Decoded Letter</div>
+    <div class="hint">Each group of 8 bits = one letter. Use the reference chart below!</div>
+    <div class="decoder-row" id="decoderRow"></div>
+    <div class="action-row">
+      <button class="btn-hint" onclick="toggleRef()">📖 Reference Chart</button>
+      <button class="btn-reveal" onclick="revealAll()">👁️ Reveal Answer</button>
+    </div>
+
+    <!-- Reference chart -->
+    <div style="margin-top:10px;">
+      <span class="ref-toggle" onclick="toggleRef()">Show / Hide Binary Reference Chart</span>
+      <div class="ref-chart" id="refChart">
+        <div class="ref-grid" id="refGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn-back" onclick="goTo(1)">← Change Word</button>
+    <button class="btn-next" id="btnDecode" onclick="goTo(3)" disabled>See My Decorated Cookie! →</button>
+  </div>
+</div>
+
+<!-- S3: RESULT -->
+<div class="screen" id="scr3">
+  <div class="scr-hd">
+    <div class="step-pill">Step 3 of 3 · Code Cracked!</div>
+    <h2>Cookie Unlocked! 🍪🎉</h2>
+    <p>Your binary code revealed a secret decoration!</p>
+  </div>
+  <div id="printArea">
+    <div class="result-card" id="resultCard"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goTo(2)">← Decode Again</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Print</button>
+    <button class="btn-submit" onclick="submitCode()">✅ Submit!</button>
+  </div>
+</div>
+
+<!-- S4: LOADING -->
+<div class="screen" id="scr4">
+  <div class="loading-wrap">
+    <div class="spin-ring"></div>
+    <p style="margin-top:16px;font-weight:700;color:var(--mid);">Logging your code...</p>
+  </div>
+</div>
+
+<!-- S5: SUCCESS -->
+<div class="screen" id="scr5">
+  <div class="success-wrap">
+    <span class="success-icon">💻</span>
+    <div class="success-title">Code Baked!</div>
+    <div class="success-msg">Your Bake the Code card has been logged!<br>Print it and show off your binary skills! 🍪🔐</div>
+    <button class="btn-restart" onclick="restart()">← Decode Another Word</button>
+  </div>
+</div>
+
+<script>
+const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbwWt_CWgjEPuEqjcqLSh8pgzfdVtoWfu8EXXRZS-6HnfXwWbpwty8hww5I9N4idfCQA/exec';
+
+const WORDS = [
+  'Absorb','Adapt','Anchor','Balance','Bloom',
+  'Breathe','Clear','Connect','Cycle','Emerge',
+  'Filter','Flow','Grow','Heal','Migrate',
+  'Persist','Renew','Restore','Return','Rise',
+  'Root','Shine','Sustain','Thrive','Transform'
+];
+
+/* ══ BAKE DATA — code + cookie decoration per word ═══════════ */
+const BAKE_DATA = {
+  Absorb:   {code:'SOAK',frost:'#1565C0',pattern:'swirl',   accent:'#90CAF9',desc:'Blue swirl frosting with water drop details — soaking color into every swirl!',steps:'1. Pipe blue royal icing in a spiral from the center outward.\n2. Add small teardrop-shaped blue candy pieces around the edge.\n3. Dust with silver shimmer sugar for the "absorbing" effect.'},
+  Adapt:    {code:'FLEX',frost:'#6A1B9A',pattern:'sections', accent:'#CE93D8',desc:'Multi-section frosting in purple and lavender — each section adapts to its neighbor!',steps:'1. Divide cookie into 4 sections with a toothpick.\n2. Flood alternate sections with purple and lavender royal icing.\n3. While wet, drag a toothpick across all sections to blend the edges.'},
+  Anchor:   {code:'HOLD',frost:'#1A2744',pattern:'anchor',   accent:'#E8A820',desc:'Navy base with gold anchor detail — steady and anchored!',steps:'1. Flood cookie with navy blue royal icing. Let dry completely.\n2. Pipe a gold anchor shape in the center using a #2 tip.\n3. Add a thin gold border around the cookie edge.'},
+  Balance:  {code:'EVEN',frost:'#ECEFF1',pattern:'split',    accent:'#3E2723',desc:'Half white, half chocolate — perfectly balanced on a golden center line!',steps:'1. Flood the left half with white royal icing, right half with chocolate.\n2. Let dry completely.\n3. Pipe a thin gold line exactly down the center — the balance point.'},
+  Bloom:    {code:'PINK',frost:'#E91E63',pattern:'petals',   accent:'#FCE4EC',desc:'Pink flower petals blooming on a white base — beautiful in every direction!',steps:'1. Flood cookie with white royal icing. Let dry.\n2. Pipe 5–6 pink petal shapes from center outward using a leaf tip.\n3. Add a yellow candy center. Dust with pink luster dust.'},
+  Breathe:  {code:'MINT',frost:'#00796B',pattern:'swirl',    accent:'#B2DFDB',desc:'Mint green swirl with white highlights — a breath of cool fresh flavor!',steps:'1. Pipe mint green icing in a swirl starting from center.\n2. While wet, pipe white dots in a spiral pattern over the green.\n3. Drag a toothpick through the dots to create a feathered effect.'},
+  Clear:    {code:'PURE',frost:'#F5F5F5',pattern:'crystal',  accent:'#B0BEC5',desc:'White glaze with crystal sugar — as clear and pure as water!',steps:'1. Flood cookie with thin white glaze (almost transparent).\n2. Immediately sprinkle coarse crystal or sanding sugar all over.\n3. Let dry — the crystals catch the light beautifully.'},
+  Connect:  {code:'LINK',frost:'#E65100',pattern:'circles',  accent:'#FFCC80',desc:'Two overlapping circles in warm orange and gold — different but bonded!',steps:'1. Pipe a left orange circle and a right gold circle, overlapping in the center.\n2. Fill the overlap with a blend of both colors.\n3. Outline each circle in white to make the connection stand out.'},
+  Cycle:    {code:'SPIN',frost:'#2E7D32',pattern:'pinwheel', accent:'#A5D6A7',desc:'Earth-tone pinwheel spinning through the natural color cycle!',steps:'1. Divide cookie into 4 pinwheel sections with curved lines.\n2. Alternate forest green and light green sections.\n3. Add a small yellow circle at the center — the spin point.'},
+  Emerge:   {code:'WING',frost:'#6A1B9A',pattern:'butterfly',accent:'#F48FB1',desc:'Purple and pink butterfly wings — emerging into something magnificent!',steps:'1. Flood the top half with purple, bottom half with pink icing.\n2. While wet, pipe white curved lines across both halves for wing detail.\n3. Add a thin white body line down the center.'},
+  Filter:   {code:'LEAF',frost:'#2D7A4F',pattern:'veins',    accent:'#A8D5B5',desc:'Deep green with white vein detail — filtered into elegance!',steps:'1. Flood cookie with forest green royal icing. Let dry completely.\n2. Pipe a white center vein running the length of the cookie.\n3. Pipe smaller veins branching left and right — like a real leaf.'},
+  Flow:     {code:'WAVE',frost:'#1565C0',pattern:'wave',     accent:'#90CAF9',desc:'Deep blue wave flowing from edge to edge — unstoppable!',steps:'1. Flood cookie with deep blue icing.\n2. While wet, pipe light blue icing in horizontal wave curves across the cookie.\n3. Drag a toothpick vertically through the waves for a ripple effect.'},
+  Grow:     {code:'SEED',frost:'#5D4037',pattern:'sprout',   accent:'#81C784',desc:'Rich brown earth with a bright green sprout reaching upward!',steps:'1. Flood the bottom third with brown (soil) and the top two-thirds with white.\n2. Pipe a green curved stem growing up from the brown section.\n3. Add two small green leaves branching from the stem.'},
+  Heal:     {code:'WARM',frost:'#FF8F00',pattern:'heart',    accent:'#FFF9C4',desc:'Warm gold base with a white heart center — healing from the inside out!',steps:'1. Flood cookie with warm gold royal icing. Let dry completely.\n2. Pipe a white heart shape in the center using a #3 tip.\n3. Add small white dots radiating outward from the heart.'},
+  Migrate:  {code:'BIRD',frost:'#00695C',pattern:'birds',    accent:'#80CBC4',desc:'Teal base with white bird silhouettes soaring across the cookie!',steps:'1. Flood cookie with teal royal icing. Let dry.\n2. Pipe 3–5 small white bird silhouettes in a V-formation.\n3. Add tiny white dots for stars or clouds around the birds.'},
+  Persist:  {code:'BOLD',frost:'#B71C1C',pattern:'stripes',  accent:'#FFCDD2',desc:'Bold red with determined white stripes — never giving up!',steps:'1. Flood cookie with bold red royal icing. Let dry.\n2. Pipe 4–5 parallel white horizontal stripes across the cookie.\n3. Add a small red dot or star at the center of each stripe.'},
+  Renew:    {code:'DAWN',frost:'#FF8F00',pattern:'sunrise',  accent:'#FFF9C4',desc:'Sunrise gradient from gold to soft yellow — the world beginning again!',steps:'1. Flood the bottom half with gold, top half with pale yellow icing.\n2. While wet, blend the colors where they meet with a toothpick.\n3. Pipe thin gold rays radiating upward from the center horizon.'},
+  Restore:  {code:'RICH',frost:'#8D6E63',pattern:'cozy',     accent:'#FFCCBC',desc:'Warm cinnamon tones with soft swirls — restored to wholeness!',steps:'1. Flood cookie with warm cinnamon brown icing.\n2. While wet, pipe light peach swirls in an overlapping pattern.\n3. Add small cinnamon-colored dots around the border.'},
+  Return:   {code:'HOME',frost:'#3E2723',pattern:'classic',  accent:'#D7CCC8',desc:'Classic chocolate chip pattern — the cookie you always come back to!',steps:'1. Flood cookie with rich chocolate brown icing.\n2. While wet, press mini chocolate chips into the surface randomly.\n3. Pipe small ivory dots between chips — the classic chip cookie, elevated.'},
+  Rise:     {code:'GOLD',frost:'#F9A825',pattern:'rays',     accent:'#FFF9C4',desc:'Bright gold base with rising sun rays reaching upward!',steps:'1. Flood cookie with bright gold royal icing. Let dry completely.\n2. Pipe pale yellow triangular rays radiating from the center.\n3. Add a small white circle at the very center — the sun!'},
+  Root:     {code:'DEEP',frost:'#4E342E',pattern:'roots',    accent:'#A1887F',desc:'Deep earth brown with root-line detail — grounded and reaching!',steps:'1. Flood cookie with deep espresso brown icing. Let dry.\n2. Pipe tan/cream root lines spreading from the center downward.\n3. Add small tan dots at the tip of each root — root tips reaching into earth.'},
+  Shine:    {code:'STAR',frost:'#F9A825',pattern:'stars',    accent:'#FFFFFF',desc:'Gold base with white starburst — shining in every direction!',steps:'1. Flood cookie with bright gold royal icing. Let dry.\n2. Pipe a large white 8-pointed star in the center.\n3. Add small white 4-pointed stars scattered around the large star.'},
+  Sustain:  {code:'LONG',frost:'#1B5E20',pattern:'bands',    accent:'#A5D6A7',desc:'Steady green gradient bands from edge to edge — sustained strength!',steps:'1. Pipe 4 horizontal bands of green in graduating shades (dark to light).\n2. Let dry between bands for clean edges.\n3. Add small white horizontal dashes in each band — like a sustainability graph.'},
+  Thrive:   {code:'LIVE',frost:'#AD1457',pattern:'rainbow',  accent:'#F8BBD0',desc:'Vibrant pink base with rainbow accent dots — thriving in full color!',steps:'1. Flood cookie with vibrant pink royal icing. Let dry.\n2. Pipe dots of red, orange, yellow, green, blue, and purple in a rainbow arc.\n3. Pipe tiny white dots between the color dots — full spectrum thriving!'},
+  Transform:{code:'GLOW',frost:'#7B1FA2',pattern:'gradient', accent:'#F48FB1',desc:'Purple to pink gradient — the transformation already underway!',steps:'1. Flood left half with purple, right half with pink royal icing.\n2. While wet, use a toothpick to swirl the colors where they meet.\n3. Pipe a thin white edge border — the transformation contained but glowing.'},
+};
+
+/* ══ ASCII BINARY MAP ════════════════════════════════════════ */
+const ASCII_BIN = {};
+'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach((l,i)=>{
+  ASCII_BIN[l] = (65+i).toString(2).padStart(8,'0');
+});
+
+/* ══ STATE ════════════════════════════════════════════════════ */
+const S = { name:'', word:'', decoded:[], revealed:false };
+
+/* ══ NAV ══════════════════════════════════════════════════════ */
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('scr'+id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ══ STEP 0 ═══════════════════════════════════════════════════ */
+function v0(){
+  const f=document.getElementById('iFirst').value.trim();
+  const l=document.getElementById('iLast').value.trim().toUpperCase();
+  if(!f){show('nameErr');return;}else hide('nameErr');
+  if(!l){show('lastErr');return;}else hide('lastErr');
+  S.name=f+' '+l+'.';
+  buildWordGrid(); goTo(1);
+}
+
+/* ══ WORD GRID ════════════════════════════════════════════════ */
+function buildWordGrid(){
+  const g=document.getElementById('wordGrid'); g.innerHTML='';
+  WORDS.forEach(w=>{
+    const b=document.createElement('button');
+    b.className='word-btn'+(S.word===w?' sel':'');
+    b.textContent=w;
+    b.onclick=()=>{S.word=w; document.querySelectorAll('.word-btn').forEach(x=>x.classList.remove('sel')); b.classList.add('sel');};
+    g.appendChild(b);
+  });
+}
+
+/* ══ STEP 1 ═══════════════════════════════════════════════════ */
+function v1(){
+  if(!S.word){show('wordErr');return;} hide('wordErr');
+  S.decoded=[];
+  S.revealed=false;
+  buildDecodeScreen();
+  goTo(2);
+}
+
+/* ══ BUILD DECODE SCREEN ══════════════════════════════════════ */
+function buildDecodeScreen(){
+  const d=BAKE_DATA[S.word];
+  const code=d.code;
+  document.getElementById('binaryLabel').textContent='DECODING: '+S.word.toUpperCase()+' → ????????';
+  document.getElementById('btnDecode').disabled=true;
+
+  // Build binary groups
+  const grpContainer=document.getElementById('binaryGroups');
+  grpContainer.innerHTML='';
+  code.split('').forEach((letter,i)=>{
+    const bin=ASCII_BIN[letter];
+    const grp=document.createElement('div');
+    grp.className='binary-group';
+    grp.innerHTML=`<div class="binary-label" style="font-size:.58rem;color:#8B949E;font-weight:700;margin-bottom:4px;">Bit ${i+1}</div>
+      <div class="binary-bits" id="bits${i}">${bin.split('').map(b=>`<div class="bit bit-${b}">${b}</div>`).join('')}</div>
+      <div class="letter-reveal" id="reveal${i}">?</div>`;
+    grpContainer.appendChild(grp);
+  });
+
+  // Build decoder inputs
+  const dr=document.getElementById('decoderRow'); dr.innerHTML='';
+  code.split('').forEach((_,i)=>{
+    const cell=document.createElement('div');
+    cell.className='decoder-cell';
+    cell.innerHTML=`<div class="decoder-pos">Letter ${i+1}</div>
+      <input class="decoder-input" id="dinput${i}" maxlength="1" type="text" autocomplete="off"
+        oninput="checkLetter(${i},this)"/>`;
+    dr.appendChild(cell);
+  });
+
+  // Draw blank cookie
+  drawCookie(0);
+  document.getElementById('progressFill').style.width='0%';
+  document.getElementById('progressLabel').textContent='Decode letters to decorate!';
+  document.getElementById('cookieWord').textContent='';
+
+  // Build reference chart
+  buildRefChart();
+}
+
+/* ══ CHECK LETTER ═════════════════════════════════════════════ */
+function checkLetter(idx, inp){
+  const d=BAKE_DATA[S.word];
+  const correct=d.code[idx].toUpperCase();
+  const typed=inp.value.toUpperCase();
+  inp.value=typed;
+  if(!typed) return;
+
+  if(typed===correct){
+    inp.classList.remove('wrong');
+    inp.classList.add('correct');
+    inp.disabled=true;
+
+    // Light up binary bits
+    const bits=document.getElementById('bits'+idx).querySelectorAll('.bit');
+    bits.forEach(b=>b.classList.add('bit-solved'));
+
+    // Reveal letter
+    const rev=document.getElementById('reveal'+idx);
+    rev.textContent=correct;
+    rev.style.color='#F9A825';
+
+    // Track decoded
+    if(!S.decoded.includes(idx)) S.decoded.push(idx);
+
+    // Update cookie progressively
+    drawCookie(S.decoded.length);
+    const pct=Math.round((S.decoded.length/d.code.length)*100);
+    document.getElementById('progressFill').style.width=pct+'%';
+
+    const labels=['Decode more letters!','Looking good! Keep going!','Almost there — one more!','Cookie complete! 🎉'];
+    document.getElementById('progressLabel').textContent=labels[Math.min(S.decoded.length-1,3)];
+
+    if(S.decoded.length===d.code.length){
+      // All decoded!
+      document.getElementById('binaryLabel').textContent='DECODED: '+S.word.toUpperCase()+' → '+d.code+' ✓';
+      document.getElementById('cookieWord').textContent=S.word+' = '+d.code;
+      document.getElementById('btnDecode').disabled=false;
+      buildResultCard();
+    } else {
+      // Focus next input
+      const next=document.getElementById('dinput'+(idx+1));
+      if(next) setTimeout(()=>next.focus(),200);
+    }
+  } else {
+    inp.classList.add('wrong');
+    setTimeout(()=>{
+      inp.classList.remove('wrong');
+      inp.value='';
+    },600);
+  }
+}
+
+/* ══ REVEAL ALL ═══════════════════════════════════════════════ */
+function revealAll(){
+  const d=BAKE_DATA[S.word];
+  d.code.split('').forEach((_,i)=>{
+    if(!S.decoded.includes(i)){
+      const inp=document.getElementById('dinput'+i);
+      inp.value=d.code[i];
+      inp.classList.add('correct');
+      inp.disabled=true;
+      document.getElementById('bits'+i).querySelectorAll('.bit').forEach(b=>b.classList.add('bit-solved'));
+      document.getElementById('reveal'+i).textContent=d.code[i];
+      S.decoded.push(i);
+    }
+  });
+  S.revealed=true;
+  drawCookie(d.code.length);
+  document.getElementById('progressFill').style.width='100%';
+  document.getElementById('progressLabel').textContent='Cookie complete! 🎉';
+  document.getElementById('binaryLabel').textContent='DECODED: '+S.word.toUpperCase()+' → '+d.code+' ✓';
+  document.getElementById('cookieWord').textContent=S.word+' = '+d.code;
+  document.getElementById('btnDecode').disabled=false;
+  buildResultCard();
+}
+
+/* ══ TOGGLE REFERENCE CHART ═══════════════════════════════════ */
+function toggleRef(){
+  const c=document.getElementById('refChart');
+  c.classList.toggle('open');
+}
+
+function buildRefChart(){
+  const g=document.getElementById('refGrid'); g.innerHTML='';
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(letter=>{
+    const row=document.createElement('div');
+    row.className='ref-row';
+    row.innerHTML=`<span class="ref-letter">${letter}</span><span class="ref-binary">${ASCII_BIN[letter]}</span>`;
+    g.appendChild(row);
+  });
+}
+
+/* ══ COOKIE SVG DRAWER ════════════════════════════════════════ */
+function drawCookie(step){
+  const d=BAKE_DATA[S.word]||{frost:'#D7CCC8',accent:'#A1887F',pattern:'blank'};
+  const svg=document.getElementById('cookieSVG');
+  const cx=100,cy=100,r=88;
+
+  let content='';
+
+  // Cookie base (always shown)
+  content+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="#C8860A" stroke="#8D6018" stroke-width="3"/>`;
+  content+=`<circle cx="${cx}" cy="${cy}" r="${r-4}" fill="#D4922A" stroke="none" opacity="0.5"/>`;
+
+  // Step 1+: frosting base
+  if(step>=1){
+    content+=`<circle cx="${cx}" cy="${cy}" r="${r-8}" fill="${d.frost}" opacity="${step>=2?1:0.7}"/>`;
+  }
+
+  // Step 2+: pattern
+  if(step>=2){
+    content+=getPatternSVG(d.pattern, d.frost, d.accent, cx, cy, r-8);
+  }
+
+  // Step 3+: accent details
+  if(step>=3){
+    content+=getAccentSVG(d.pattern, d.accent, cx, cy, r-8);
+  }
+
+  // Step 4: completion sparkles
+  if(step>=4){
+    const sparkPositions=[[cx,cy-70],[cx+60,cy-40],[cx+65,cy+40],[cx,cy+72],[cx-62,cy+38],[cx-62,cy-38]];
+    sparkPositions.forEach(([x,y])=>{
+      content+=`<polygon points="${sparkle(x,y,8)}" fill="${d.accent}" opacity="0.9"/>`;
+    });
+    // Word label
+    content+=`<text x="${cx}" y="${cy+110}" font-family="Fredoka One,cursive" font-size="12" text-anchor="middle" fill="${d.frost}" opacity="0.8">${d.code}</text>`;
+  }
+
+  // Cookie edge rim
+  content+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#8D6018" stroke-width="2.5"/>`;
+
+  svg.innerHTML=content;
+}
+
+function getPatternSVG(pattern,frost,accent,cx,cy,r){
+  switch(pattern){
+    case 'swirl': return spiralSVG(cx,cy,r,accent);
+    case 'wave':  return waveSVG(cx,cy,r,accent);
+    case 'rays':  return raysSVG(cx,cy,r,accent);
+    case 'split': return splitSVG(cx,cy,r,frost,accent);
+    case 'stripes': return stripesSVG(cx,cy,r,accent);
+    case 'bands': return bandsSVG(cx,cy,r,accent);
+    case 'gradient': return gradientSVG(cx,cy,r,frost,accent);
+    default: return '';
+  }
+}
+
+function getAccentSVG(pattern,accent,cx,cy,r){
+  switch(pattern){
+    case 'petals':   return petalsSVG(cx,cy,accent);
+    case 'heart':    return heartSVG(cx,cy,accent);
+    case 'stars':    return starsSVG(cx,cy,accent);
+    case 'anchor':   return anchorSVG(cx,cy,accent);
+    case 'butterfly':return butterflySVG(cx,cy,accent);
+    case 'crystal':  return crystalSVG(cx,cy,accent);
+    case 'circles':  return circlesSVG(cx,cy,accent);
+    case 'pinwheel': return pinwheelSVG(cx,cy,accent);
+    case 'sprout':   return sproutSVG(cx,cy,accent);
+    case 'veins':    return veinsSVG(cx,cy,accent);
+    case 'birds':    return birdsSVG(cx,cy,accent);
+    case 'roots':    return rootsSVG(cx,cy,accent);
+    case 'classic':  return chipsSVG(cx,cy,accent);
+    case 'rainbow':  return rainbowDotsSVG(cx,cy);
+    case 'sections': return sectionsSVG(cx,cy,accent);
+    case 'sunrise':  return sunriseSVG(cx,cy,accent);
+    case 'cozy':     return cozySVG(cx,cy,accent);
+    default: return dotsSVG(cx,cy,accent);
+  }
+}
+
+/* PATTERN HELPERS */
+function spiralSVG(cx,cy,r,c){
+  let d='M'+cx+','+cy;
+  for(let a=0;a<720;a+=15){
+    const rad=(a*Math.PI/180);
+    const dist=(a/720)*r*0.9;
+    d+=' L'+(cx+dist*Math.cos(rad)).toFixed(1)+','+(cy+dist*Math.sin(rad)).toFixed(1);
+  }
+  return `<path d="${d}" fill="none" stroke="${c}" stroke-width="3" opacity="0.6"/>`;
+}
+
+function waveSVG(cx,cy,r,c){
+  let out='';
+  [-24,-8,8,24].forEach(yOff=>{
+    let d=`M${cx-r},${cy+yOff}`;
+    for(let x=-r;x<=r;x+=5){
+      const y=cy+yOff+12*Math.sin((x/r)*Math.PI*2);
+      d+=` L${cx+x},${y.toFixed(1)}`;
+    }
+    out+=`<path d="${d}" fill="none" stroke="${c}" stroke-width="3.5" opacity="0.55"/>`;
+  });
+  return out;
+}
+
+function raysSVG(cx,cy,r,c){
+  let out='';
+  for(let a=0;a<360;a+=30){
+    const rad=a*Math.PI/180;
+    out+=`<line x1="${cx}" y1="${cy}" x2="${(cx+r*Math.cos(rad)).toFixed(1)}" y2="${(cy+r*Math.sin(rad)).toFixed(1)}" stroke="${c}" stroke-width="3" opacity="0.5"/>`;
+  }
+  return out;
+}
+
+function stripesSVG(cx,cy,r,c){
+  let out='';
+  [-48,-24,0,24,48].forEach(yOff=>{
+    out+=`<rect x="${cx-r}" y="${cy+yOff-5}" width="${r*2}" height="10" fill="${c}" opacity="0.4"/>`;
+  });
+  return out;
+}
+
+function bandsSVG(cx,cy,r,c){
+  const shades=['#1B5E20','#2E7D32','#388E3C','#43A047'];
+  let out='';
+  shades.forEach((shade,i)=>{
+    const y=cy-r+(i/shades.length)*r*2;
+    const h=(r*2)/shades.length;
+    out+=`<rect x="${cx-r}" y="${y.toFixed(1)}" width="${r*2}" height="${(h+1).toFixed(1)}" fill="${shade}" opacity="0.7"/>`;
+  });
+  return `<clipPath id="cc"><circle cx="${cx}" cy="${cy}" r="${r}"/></clipPath><g clip-path="url(#cc)">${out}</g>`;
+}
+
+function splitSVG(cx,cy,r,f,a){
+  return `<clipPath id="cc2"><circle cx="${cx}" cy="${cy}" r="${r}"/></clipPath>
+    <g clip-path="url(#cc2)">
+      <rect x="${cx}" y="${cy-r}" width="${r}" height="${r*2}" fill="${a}" opacity="0.9"/>
+    </g>
+    <line x1="${cx}" y1="${cy-r}" x2="${cx}" y2="${cy+r}" stroke="#E8A820" stroke-width="3"/>`;
+}
+
+function gradientSVG(cx,cy,r,f,a){
+  return `<defs><linearGradient id="grad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="${f}"/>
+    <stop offset="100%" stop-color="${a}"/>
+  </linearGradient></defs>
+  <clipPath id="cc3"><circle cx="${cx}" cy="${cy}" r="${r}"/></clipPath>
+  <rect x="${cx-r}" y="${cy-r}" width="${r*2}" height="${r*2}" fill="url(#grad)" clip-path="url(#cc3)"/>`;
+}
+
+function petalsSVG(cx,cy,c){
+  let out='';
+  for(let i=0;i<6;i++){
+    const a=i*(Math.PI/3);
+    const px=(cx+45*Math.cos(a)).toFixed(1);
+    const py=(cy+45*Math.sin(a)).toFixed(1);
+    out+=`<ellipse cx="${px}" cy="${py}" rx="18" ry="9" fill="${c}" opacity="0.85" transform="rotate(${i*60},${px},${py})"/>`;
+  }
+  out+=`<circle cx="${cx}" cy="${cy}" r="12" fill="#FFF9C4"/>`;
+  return out;
+}
+
+function heartSVG(cx,cy,c){
+  return `<path d="M${cx},${cy+22} C${cx-40},${cy-10} ${cx-50},${cy-40} ${cx},${cy-15} C${cx+50},${cy-40} ${cx+40},${cy-10} ${cx},${cy+22} Z" fill="${c}" opacity="0.9"/>`;
+}
+
+function starsSVG(cx,cy,c){
+  let out='';
+  [[cx,cy,28],[cx-52,cy-32,12],[cx+54,cy-30,10],[cx-40,cy+50,14],[cx+42,cy+48,10]].forEach(([x,y,s])=>{
+    out+=`<polygon points="${starPts(x,y,s,s*0.4,8)}" fill="${c}" opacity="0.9"/>`;
+  });
+  return out;
+}
+
+function anchorSVG(cx,cy,c){
+  return `<g fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round">
+    <circle cx="${cx}" cy="${cy-20}" r="12"/>
+    <line x1="${cx}" y1="${cy-8}" x2="${cx}" y2="${cy+30}"/>
+    <path d="M${cx-22},${cy+30} A22,22,0,0,0,${cx+22},${cy+30}"/>
+    <line x1="${cx-30}" y1="${cy-20}" x2="${cx+30}" y2="${cy-20}"/>
+  </g>`;
+}
+
+function butterflySVG(cx,cy,c){
+  return `<ellipse cx="${cx-28}" cy="${cy-18}" rx="26" ry="18" fill="${c}" opacity="0.75" transform="rotate(-20,${cx-28},${cy-18})"/>
+    <ellipse cx="${cx+28}" cy="${cy-18}" rx="26" ry="18" fill="${c}" opacity="0.75" transform="rotate(20,${cx+28},${cy-18})"/>
+    <ellipse cx="${cx-20}" cy="${cy+22}" rx="16" ry="12" fill="${c}" opacity="0.65" transform="rotate(20,${cx-20},${cy+22})"/>
+    <ellipse cx="${cx+20}" cy="${cy+22}" rx="16" ry="12" fill="${c}" opacity="0.65" transform="rotate(-20,${cx+20},${cy+22})"/>
+    <line x1="${cx}" y1="${cy-40}" x2="${cx}" y2="${cy+38}" stroke="#333" stroke-width="2.5"/>`;
+}
+
+function crystalSVG(cx,cy,c){
+  let out='';
+  const pts=[[cx,cy-50],[cx+50,cy-20],[cx+48,cy+28],[cx,cy+55],[cx-48,cy+26],[cx-50,cy-22],[cx,cy],[cx+24,cy-36],[cx+36,cy+16],[cx-24,cy+40],[cx-36,cy+16],[cx+24,cy+40]];
+  pts.forEach(([x,y])=>{ out+=`<polygon points="${sparkle(x,y,7)}" fill="${c}" opacity="0.7"/>`;});
+  return out;
+}
+
+function circlesSVG(cx,cy,c){
+  return `<circle cx="${cx-22}" cy="${cy}" r="30" fill="${c}" opacity="0.45"/>
+    <circle cx="${cx+22}" cy="${cy}" r="30" fill="${c}" opacity="0.45"/>
+    <circle cx="${cx-22}" cy="${cy}" r="30" fill="none" stroke="${c}" stroke-width="2.5"/>
+    <circle cx="${cx+22}" cy="${cy}" r="30" fill="none" stroke="${c}" stroke-width="2.5"/>`;
+}
+
+function pinwheelSVG(cx,cy,c){
+  let out='';
+  for(let i=0;i<4;i++){
+    const a=(i*90)*Math.PI/180;
+    const x1=(cx+12*Math.cos(a)).toFixed(1),y1=(cy+12*Math.sin(a)).toFixed(1);
+    const x2=(cx+72*Math.cos(a+0.8)).toFixed(1),y2=(cy+72*Math.sin(a+0.8)).toFixed(1);
+    const x3=(cx+72*Math.cos(a+1.4)).toFixed(1),y3=(cy+72*Math.sin(a+1.4)).toFixed(1);
+    out+=`<path d="M${cx},${cy} Q${x1},${y1} ${x2},${y2} L${x3},${y3} Z" fill="${c}" opacity="${i%2?0.5:0.75}"/>`;
+  }
+  out+=`<circle cx="${cx}" cy="${cy}" r="8" fill="#FFF9C4"/>`;
+  return out;
+}
+
+function sproutSVG(cx,cy,c){
+  return `<line x1="${cx}" y1="${cy+35}" x2="${cx}" y2="${cy-35}" stroke="${c}" stroke-width="4" stroke-linecap="round"/>
+    <ellipse cx="${cx-20}" cy="${cy}" rx="18" ry="10" fill="${c}" opacity="0.8" transform="rotate(-30,${cx-20},${cy})"/>
+    <ellipse cx="${cx+20}" cy="${cy-18}" rx="18" ry="10" fill="${c}" opacity="0.8" transform="rotate(30,${cx+20},${cy-18})"/>`;
+}
+
+function veinsSVG(cx,cy,c){
+  let out=`<line x1="${cx}" y1="${cy-72}" x2="${cx}" y2="${cy+72}" stroke="${c}" stroke-width="3.5" stroke-linecap="round"/>`;
+  [-52,-30,-10,10,30,52].forEach((yOff,i)=>{
+    const dir=i%2===0?-1:1;
+    out+=`<line x1="${cx}" y1="${cy+yOff}" x2="${cx+dir*44}" y2="${cy+yOff-18}" stroke="${c}" stroke-width="2" stroke-linecap="round" opacity="0.8"/>`;
+  });
+  return out;
+}
+
+function birdsSVG(cx,cy,c){
+  return `<path d="M${cx-40},${cy-20} Q${cx-28},${cy-32} ${cx-16},${cy-20}" fill="none" stroke="${c}" stroke-width="2.5"/>
+    <path d="M${cx},${cy} Q${cx+12},${cy-12} ${cx+24},${cy}" fill="none" stroke="${c}" stroke-width="2.5"/>
+    <path d="M${cx+28},${cy-28} Q${cx+42},${cy-42} ${cx+56},${cy-28}" fill="none" stroke="${c}" stroke-width="2.5"/>
+    <path d="M${cx-60},${cy+18} Q${cx-46},${cy+6} ${cx-32},${cy+18}" fill="none" stroke="${c}" stroke-width="2.5"/>
+    <path d="M${cx+40},${cy+24} Q${cx+54},${cy+12} ${cx+68},${cy+24}" fill="none" stroke="${c}" stroke-width="2.5"/>`;
+}
+
+function rootsSVG(cx,cy,c){
+  return `<line x1="${cx}" y1="${cy-20}" x2="${cx}" y2="${cy+50}" stroke="${c}" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="${cx}" y1="${cy+20}" x2="${cx-40}" y2="${cy+60}" stroke="${c}" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="${cx}" y1="${cy+10}" x2="${cx+38}" y2="${cy+55}" stroke="${c}" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="${cx-20}" y1="${cy+40}" x2="${cx-50}" y2="${cy+30}" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="${cx+18}" y1="${cy+38}" x2="${cx+50}" y2="${cy+28}" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/>`;
+}
+
+function chipsSVG(cx,cy,c){
+  const pts=[[cx-30,cy-30],[cx+28,cy-20],[cx-10,cy-50],[cx+10,cy+30],[cx-40,cy+20],[cx+45,cy+15],[cx,cy-5],[cx-20,cy+55],[cx+30,cy-55]];
+  return pts.slice(0,7).map(([x,y])=>`<ellipse cx="${x}" cy="${y}" rx="10" ry="8" fill="${c}" opacity="0.9"/>`).join('');
+}
+
+function rainbowDotsSVG(cx,cy){
+  const cols=['#EF5350','#FF9800','#FFEE58','#66BB6A','#42A5F5','#7E57C2'];
+  let out='';
+  cols.forEach((col,i)=>{
+    const a=(-50+i*20)*Math.PI/180;
+    const r=56;
+    out+=`<circle cx="${(cx+r*Math.cos(a)).toFixed(1)}" cy="${(cy-40+r*Math.sin(a)).toFixed(1)}" r="9" fill="${col}" opacity="0.9"/>`;
+  });
+  return out;
+}
+
+function sectionsSVG(cx,cy,c){
+  return `<clipPath id="cc4"><circle cx="${cx}" cy="${cy}" r="80"/></clipPath>
+    <g clip-path="url(#cc4)">
+      <rect x="${cx-80}" y="${cy-80}" width="80" height="80" fill="${c}" opacity="0.7"/>
+      <rect x="${cx}" y="${cy}" width="80" height="80" fill="${c}" opacity="0.7"/>
+    </g>
+    <line x1="${cx}" y1="${cy-80}" x2="${cx}" y2="${cy+80}" stroke="white" stroke-width="2.5"/>
+    <line x1="${cx-80}" y1="${cy}" x2="${cx+80}" y2="${cy}" stroke="white" stroke-width="2.5"/>`;
+}
+
+function sunriseSVG(cx,cy,c){
+  let out='';
+  for(let i=0;i<8;i++){
+    const a=(-90+i*22.5-22.5)*Math.PI/180;
+    out+=`<line x1="${cx}" y1="${cy+10}" x2="${(cx+72*Math.cos(a)).toFixed(1)}" y2="${(cy+72*Math.sin(a)).toFixed(1)}" stroke="${c}" stroke-width="5" stroke-linecap="round" opacity="0.5"/>`;
+  }
+  out+=`<circle cx="${cx}" cy="${cy+10}" r="20" fill="${c}" opacity="0.9"/>`;
+  return out;
+}
+
+function cozySVG(cx,cy,c){
+  let out='';
+  [[cx-15,cy-20,35],[cx+20,cy+15,28],[cx-25,cy+30,22]].forEach(([x,y,r])=>{
+    out+=`<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r*0.7}" fill="${c}" opacity="0.45"/>`;
+  });
+  return out;
+}
+
+function dotsSVG(cx,cy,c){
+  let out='';
+  for(let i=0;i<8;i++){
+    const a=i*(Math.PI/4);
+    out+=`<circle cx="${(cx+55*Math.cos(a)).toFixed(1)}" cy="${(cy+55*Math.sin(a)).toFixed(1)}" r="6" fill="${c}" opacity="0.8"/>`;
+  }
+  return out;
+}
+
+function starPts(cx,cy,outerR,innerR,n){
+  return Array.from({length:n*2},(_,i)=>{
+    const r=i%2===0?outerR:innerR;
+    const a=(i*Math.PI/n)-Math.PI/2;
+    return `${(cx+r*Math.cos(a)).toFixed(1)},${(cy+r*Math.sin(a)).toFixed(1)}`;
+  }).join(' ');
+}
+
+function sparkle(cx,cy,r){
+  return Array.from({length:8},(_,i)=>{
+    const outerR=i%2===0?r:r*0.3;
+    const a=(i*45)*Math.PI/180;
+    return `${(cx+outerR*Math.cos(a)).toFixed(1)},${(cy+outerR*Math.sin(a)).toFixed(1)}`;
+  }).join(' ');
+}
+
+/* ══ RESULT CARD ══════════════════════════════════════════════ */
+function buildResultCard(){
+  const d=BAKE_DATA[S.word];
+  const bin=d.code.split('').map(l=>ASCII_BIN[l]).join(' ');
+  const headerClr=d.frost;
+  const isLight=(hex)=>{if(!hex||hex.length<7)return false;return (parseInt(hex.slice(1,3),16)*0.299+parseInt(hex.slice(3,5),16)*0.587+parseInt(hex.slice(5,7),16)*0.114)>155;};
+  const txtClr=isLight(headerClr)?'#1A2744':'white';
+
+  document.getElementById('resultCard').innerHTML=`
+    <div class="rc-header" style="background:${headerClr};">
+      <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:${isLight(headerClr)?'rgba(0,0,0,0.5)':'rgba(255,255,255,0.6)'};margin-bottom:6px;">Bake the Code · ${S.name}</div>
+      <div class="rc-word" style="color:${txtClr};">${S.word.toUpperCase()}</div>
+      <div class="rc-code" style="color:${isLight(headerClr)?'rgba(0,0,0,0.65)':'rgba(255,255,255,0.8)'};">Decoded: ${d.code} ${S.revealed?'(revealed)':'✓'}</div>
+    </div>
+    <div class="rc-body">
+      <div class="rc-section">The Binary Code</div>
+      <div class="rc-binary-box">${bin}</div>
+      <div class="rc-section">Your Decoration Scheme</div>
+      <div class="rc-desc">"${d.desc}"</div>
+      <div class="rc-section">Decoration Instructions</div>
+      <div class="rc-steps">${d.steps.replace(/\n/g,'<br>')}</div>
+      <div class="rc-footer">💻 Bake the Code · Smile Bags · Culinary Arts with Ms. Sayers · Spring 2026</div>
+    </div>`;
+}
+
+/* ══ SUBMIT ═══════════════════════════════════════════════════ */
+async function submitCode(){
+  goTo(4);
+  const d=BAKE_DATA[S.word];
+  const payload={
+    studentName:S.name, word:S.word,
+    code:d.code, revealed:S.revealed,
+    timestamp:new Date().toLocaleString('en-US',{timeZone:'America/New_York'})
+  };
+  try{await fetch(SUBMIT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});}catch(e){console.warn(e);}
+  goTo(5);
+}
+
+/* ══ RESTART ══════════════════════════════════════════════════ */
+function restart(){
+  S.word=''; S.decoded=[]; S.revealed=false;
+  buildWordGrid();
+  goTo(1);
+}
+
+function show(id){document.getElementById(id).classList.add('show');}
+function hide(id){document.getElementById(id).classList.remove('show');}
+</script>
+</body>
+</html>
