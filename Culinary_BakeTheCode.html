@@ -133,10 +133,16 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
 .binary-groups{gap:7px;}.bit{width:15px;height:19px;font-size:.65rem;}}
 
 @media print{
-  @page{size:6in 4in;margin:.25in;}
-  body *{visibility:hidden;}
-  #printArea,#printArea *{visibility:visible;}
-  #printArea{position:fixed;top:0;left:0;width:100%;}
+  @page{size:letter portrait;margin:.4in;}
+  body *{visibility:hidden !important;}
+  .print-target,
+  .print-target *{visibility:visible !important;}
+  .print-target{
+    position:fixed!important;
+    top:0!important;left:0!important;
+    width:100%!important;
+    background:white!important;
+  }
 }
 
 /* ── SIDE BY SIDE RESULT ── */
@@ -167,10 +173,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
 .btn-print-color:hover{background:var(--navy2);}
 
 /* Print coloring sheet */
-@media print{
-  .no-print{display:none!important;}
-  #colorPrintArea{display:block!important;}
-}
+/* print handled above */
 #colorPrintArea{display:none;}
 
 @media(max-width:600px){
@@ -1153,65 +1156,66 @@ function resetColoring() {
 
 /* ── PRINT COLORING SHEET ── */
 function printResultCard() {
-  const printArea = document.getElementById('colorPrintArea');
-  const prevDisplay = printArea.style.display;
-  printArea.style.display = 'none';
-  window.print();
-  printArea.style.display = prevDisplay;
+  // Convert result card to printable window
+  const card = document.getElementById('resultCard');
+  const d = BAKE_DATA[S.word];
+  const win = window.open('','_blank','width=700,height=600');
+  win.document.write(`<!DOCTYPE html><html><head>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
+    <style>
+      *{box-sizing:border-box;margin:0;padding:0;}
+      body{font-family:'Nunito',sans-serif;background:white;padding:24px;}
+      .rc-header{padding:20px;text-align:center;border-radius:12px 12px 0 0;}
+      .rc-word{font-family:'Fredoka One',cursive;font-size:2.2rem;letter-spacing:.08em;}
+      .rc-code{font-family:monospace;font-size:.9rem;margin-top:4px;opacity:.85;}
+      .rc-body{background:white;padding:16px;border:1px solid #eee;border-radius:0 0 12px 12px;}
+      .rc-section{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#C87A2F;margin-bottom:6px;margin-top:12px;}
+      .rc-binary-box{background:#0D1117;border-radius:8px;padding:10px;font-family:monospace;font-size:.7rem;color:#58A6FF;word-break:break-all;}
+      .rc-desc{font-size:.82rem;font-weight:600;color:#1A2744;line-height:1.6;font-style:italic;}
+      .rc-steps{font-size:.8rem;color:#7A3E10;line-height:1.8;font-weight:600;}
+      .rc-footer{font-size:.58rem;text-align:center;color:#ccc;margin-top:14px;}
+    </style>
+  </head><body>${card.outerHTML}
+  <script>window.onload=function(){window.print();setTimeout(()=>window.close(),1000);}<\/script>
+  </body></html>`);
+  win.document.close();
 }
 
 function printColorSheet() {
   const canvas = document.getElementById('coloringCanvas');
-  const printCanvas = document.getElementById('printCanvas');
-  const pctx = printCanvas.getContext('2d');
   const d = BAKE_DATA[S.word];
+  if (!d) return;
 
-  pctx.fillStyle = 'white';
-  pctx.fillRect(0, 0, printCanvas.width, printCanvas.height);
+  // Capture canvas as image data URL
+  const imgDataUrl = canvas.toDataURL('image/png');
 
-  // Header
-  pctx.font = 'bold 15px Nunito, sans-serif';
-  pctx.fillStyle = '#1A2744';
-  pctx.textAlign = 'center';
-  pctx.fillText('Bake the Code · Cookie Decoration Plan', printCanvas.width/2, 30);
-  pctx.font = '11px Nunito, sans-serif';
-  pctx.fillStyle = '#7A3E10';
-  pctx.fillText(S.word.toUpperCase() + ' · Code: ' + d.code + ' · Made by ' + S.name, printCanvas.width/2, 50);
-
-  // Draw canvas scaled up centered
-  const scale = 1.85;
-  const imgW = canvas.width * scale;
-  const imgH = canvas.height * scale;
-  const offsetX = (printCanvas.width - imgW) / 2;
-  pctx.drawImage(canvas, offsetX, 65, imgW, imgH);
-
-  // Description
-  pctx.font = 'italic 11px Georgia, serif';
-  pctx.fillStyle = '#555';
-  pctx.textAlign = 'center';
-  const descY = 65 + imgH + 22;
-  pctx.fillText('"' + d.desc + '"', printCanvas.width/2, descY);
-
-  // Steps
-  pctx.font = '10px Nunito, sans-serif';
-  pctx.fillStyle = '#333';
-  d.steps.split('\n').forEach((step, i) => {
-    pctx.fillText(step, printCanvas.width/2, descY + 18 + i * 16);
-  });
-
-  // Footer
-  pctx.font = '8px Nunito, sans-serif';
-  pctx.fillStyle = '#bbb';
-  pctx.fillText('Bake the Code · Smile Bags · Culinary Arts with Ms. Sayers · Spring 2026', printCanvas.width/2, printCanvas.height - 8);
-
-  // Show print area, hide result card, print
-  const printArea = document.getElementById('colorPrintArea');
-  const resultArea = document.getElementById('printArea');
-  printArea.style.display = 'block';
-  resultArea.style.display = 'none';
-  window.print();
-  printArea.style.display = 'none';
-  resultArea.style.display = 'block';
+  const win = window.open('','_blank','width=700,height=800');
+  win.document.write(`<!DOCTYPE html><html><head>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+      *{box-sizing:border-box;margin:0;padding:0;}
+      body{font-family:'Nunito',sans-serif;background:white;padding:28px;max-width:680px;margin:0 auto;}
+      h1{font-family:'Fredoka One',cursive;font-size:1.8rem;color:#1A2744;text-align:center;margin-bottom:4px;}
+      .sub{font-size:.82rem;color:#7A3E10;text-align:center;margin-bottom:16px;font-weight:700;}
+      .cookie-img{display:block;margin:0 auto;max-width:320px;width:100%;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.12);}
+      .desc{font-style:italic;text-align:center;color:#555;font-size:.85rem;margin:16px 0 8px;line-height:1.5;}
+      .steps{font-size:.8rem;color:#333;line-height:1.9;margin-top:8px;}
+      .step{padding:4px 0;border-bottom:1px solid #f0e8dc;}
+      .footer{font-size:.6rem;color:#ccc;text-align:center;margin-top:20px;}
+      @media print{@page{size:letter portrait;margin:.4in;}}
+    </style>
+  </head><body>
+    <h1>${S.word} — ${d.code}</h1>
+    <div class="sub">Bake the Code · Cookie Decoration Plan · Made by ${S.name}</div>
+    <img class="cookie-img" src="${imgDataUrl}" alt="Cookie coloring design"/>
+    <div class="desc">"${d.desc}"</div>
+    <div class="steps">
+      ${d.steps.split('\n').map(s=>`<div class="step">${s}</div>`).join('')}
+    </div>
+    <div class="footer">Bake the Code · Smile Bags · Culinary Arts with Ms. Sayers · Spring 2026</div>
+    <script>window.onload=function(){window.print();setTimeout(()=>window.close(),1500);}<\/script>
+  </body></html>`);
+  win.document.close();
 }
 
 /* ── INIT when result screen loads ── */
