@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>DNA Recipe Decoder &mdash; Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:100vh;padding:0 0 60px;}
+.hero{background:#0a0f14;border-bottom:1px solid #1a2a1a;padding:40px 32px 36px;text-align:center;position:relative;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(212,83,126,.1) 0%,transparent 65%);pointer-events:none;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:4px;color:#D4537E;text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4.5vw,50px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:10px;}
+.hero-title span{color:#c9a84c;}
+.hero-sub{font-size:14px;color:#c8c4bc;max-width:600px;margin:0 auto;line-height:1.7;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #D4537E;color:#D4537E;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;margin:24px 24px 0;}
+
+/* Mode tabs */
+.mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:0;background:#111;border:1px solid #1a1a2e;border-radius:12px;overflow:hidden;max-width:900px;margin:24px auto 0;}
+.mode-tab{padding:18px 24px;text-align:center;cursor:pointer;border:none;background:transparent;color:#444;width:100%;transition:all .2s;}
+.mode-tab.active{background:#1a1a2e;}
+.mode-tab-icon{font-size:22px;display:block;margin-bottom:6px;}
+.mode-tab-title{font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;color:inherit;display:block;margin-bottom:4px;}
+.mode-tab.active.make .mode-tab-title{color:#c9a84c;}
+.mode-tab.active.crack .mode-tab-title{color:#D4537E;}
+.mode-tab-desc{font-size:12px;color:#333;line-height:1.4;}
+.mode-tab.active .mode-tab-desc{color:#c8c4bc;}
+
+.workspace{max-width:900px;margin:0 auto;padding:0 24px;}
+.mode-panel{display:none;padding-top:20px;}
+.mode-panel.active{display:block;}
+.step-card{background:#0d0d0d;border:1px solid #1a2a3a;border-radius:14px;padding:24px;margin-bottom:14px;}
+.step-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#3a1a4a;margin-bottom:8px;}
+.step-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:16px;}
+
+/* OneWord grid */
+.ow-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;}
+.ow-btn{background:#0a0f14;border:2px solid #1a2a3a;border-radius:8px;padding:9px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#c8c4bc;cursor:pointer;width:100%;text-align:center;}
+.ow-btn:hover{border-color:#c9a84c;color:#c9a84c;}
+.ow-btn.on{border-color:#D4537E;color:#D4537E;background:rgba(212,83,126,.08);}
+
+.gen-btn{width:100%;background:#D4537E;color:#fff;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:3px;text-transform:uppercase;padding:16px;border:none;border-radius:10px;cursor:pointer;font-weight:700;}
+.gen-btn:hover{background:#c3426d;}
+.gen-btn.off{background:#1a1a2e;color:#333;cursor:not-allowed;}
+
+/* DNA Key display */
+.dna-key{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;}
+.dna-key-card{background:#0a0f14;border:1px solid #1a2a3a;border-radius:10px;padding:12px;text-align:center;}
+.dna-key-ingredient{font-size:24px;display:block;margin-bottom:4px;}
+.dna-key-letter{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;color:#c9a84c;}
+.dna-key-name{font-size:10px;color:#c8c4bc;margin-top:2px;}
+
+/* Print sheet */
+.print-section{display:none;background:#fff;color:#111;border-radius:12px;padding:32px;margin-bottom:4px;position:relative;}
+.print-section.show{display:block;}
+.print-section::before{content:'PREVIEW';position:absolute;top:12px;right:16px;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;color:#eee;}
+
+.print-header{text-align:center;margin-bottom:24px;}
+.print-title{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:#111;text-transform:uppercase;letter-spacing:2px;line-height:1.1;margin-bottom:8px;}
+.print-from{font-size:12px;color:#999;font-style:italic;margin-bottom:16px;}
+.print-divider{border:none;border-top:3px solid #D4537E;width:60px;margin:0 auto 16px;}
+
+.print-clue{background:#fdf0f4;border-left:4px solid #D4537E;border-radius:4px;padding:12px 16px;font-size:14px;color:#333;line-height:1.65;margin-bottom:20px;text-align:left;}
+
+/* Encoded message */
+.print-encoded{background:#f8f7f4;border:2px dashed #ccc;border-radius:8px;padding:16px 20px;margin-bottom:20px;text-align:center;}
+.print-encoded-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#D4537E;margin-bottom:12px;}
+.print-encoded-groups{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:8px;}
+.print-encoded-group{background:#fff;border:2px solid #D4537E;border-radius:8px;padding:6px 10px;text-align:center;min-width:60px;}
+.print-encoded-pair{font-size:20px;display:block;line-height:1;}
+.print-encoded-blank{width:32px;height:24px;border-bottom:2px solid #111;display:inline-block;margin-top:4px;}
+
+/* Decoder key */
+.print-key-title{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#333;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #eee;}
+.print-key-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:20px;}
+.print-key-item{background:#f8f7f4;border-radius:6px;padding:8px;text-align:center;}
+.print-key-emoji{font-size:18px;display:block;margin-bottom:2px;}
+.print-key-code{font-family:'Courier New',monospace;font-size:11px;color:#D4537E;display:block;}
+.print-key-letter{font-family:'Fredoka One',cursive;font-size:13px;color:#111;}
+
+/* Answer blanks */
+.print-answer{margin-bottom:20px;text-align:center;}
+.print-answer-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#999;margin-bottom:12px;}
+.print-answer-blanks{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.print-blank{width:40px;height:40px;border-bottom:2px solid #111;display:flex;align-items:flex-end;justify-content:center;padding-bottom:2px;}
+
+/* Bio connection */
+.print-bio{background:#f0fff4;border-left:4px solid #4caf82;border-radius:4px;padding:14px 16px;margin-bottom:16px;}
+.print-bio-title{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;margin-bottom:6px;}
+.print-bio-text{font-size:12px;color:#444;line-height:1.65;}
+.print-culinary{background:#fff9e6;border-left:4px solid #c9a84c;border-radius:4px;padding:14px 16px;}
+.print-culinary-title{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#C8860A;margin-bottom:6px;}
+.print-culinary-text{font-size:12px;color:#444;line-height:1.65;}
+.print-footer-sig{text-align:center;margin-top:16px;font-size:10px;color:#ccc;font-family:'Fredoka One',cursive;letter-spacing:1px;}
+
+.print-btn{width:100%;background:#0a0f14;color:#D4537E;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:14px;border:1.5px solid #D4537E;border-radius:10px;cursor:pointer;transition:all .2s;margin-top:12px;}
+.print-btn:hover{background:#D4537E;color:#fff;}
+
+/* CRACK IT mode */
+.crack-card{background:#0d0d0d;border:1px solid #1a2a3a;border-radius:14px;padding:24px;margin-bottom:14px;}
+.crack-clue{font-size:14px;color:#c8c4bc;font-style:italic;line-height:1.65;padding:14px 18px;background:#111;border:1px solid #1a2a3a;border-radius:8px;margin-bottom:16px;text-align:center;}
+.crack-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#3a1a4a;margin-bottom:12px;}
+.crack-groups{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
+.crack-group{background:#111;border:2px solid #1a2a3a;border-radius:10px;padding:10px 14px;text-align:center;min-width:70px;}
+.crack-pair{font-size:24px;display:block;margin-bottom:8px;line-height:1;}
+.crack-input{width:44px;height:38px;background:#0d0d0d;border:1.5px solid #1a2a3a;border-radius:8px;text-align:center;font-family:'Fredoka One',cursive;font-size:18px;color:#fff;outline:none;text-transform:uppercase;transition:border-color .2s;}
+.crack-input:focus{border-color:#D4537E;}
+.crack-input.correct{border-color:#4caf82;background:rgba(76,175,130,.1);color:#4caf82;}
+.crack-input.wrong{border-color:#D4537E;background:rgba(212,83,126,.08);}
+
+/* Key reference */
+.key-ref{background:#0d0d0d;border:1px solid #1a2a3a;border-radius:12px;padding:20px;margin-bottom:14px;display:none;}
+.key-ref.show{display:block;}
+.key-ref-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#c8c4bc;margin-bottom:12px;}
+.key-ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;}
+.key-ref-item{background:#111;border:1px solid #1a2a3a;border-radius:8px;padding:8px;text-align:center;cursor:pointer;transition:all .2s;}
+.key-ref-item:hover{border-color:#D4537E;}
+.key-ref-item.highlight{border-color:#4caf82;background:rgba(76,175,130,.08);}
+.key-ref-emoji{font-size:16px;display:block;margin-bottom:2px;}
+.key-ref-code{font-size:9px;color:#D4537E;font-family:'Courier New',monospace;display:block;}
+.key-ref-letter{font-family:'Fredoka One',cursive;font-size:13px;color:#c9a84c;}
+
+.action-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
+.check-btn{background:#D4537E;color:#fff;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:12px 24px;border:none;border-radius:10px;cursor:pointer;font-weight:700;}
+.hint-btn{background:transparent;border:1.5px solid #c9a84c;color:#c9a84c;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:12px 20px;border-radius:10px;cursor:pointer;}
+.hint-count{font-size:12px;color:#c8c4bc;}
+
+.celebrate{display:none;background:rgba(212,83,126,.08);border:2px solid #D4537E;border-radius:14px;padding:28px;text-align:center;margin-top:14px;}
+.celebrate.show{display:block;}
+.celebrate-emoji{font-size:48px;display:block;margin-bottom:14px;}
+.celebrate-title{font-family:'Playfair Display',serif;font-size:26px;color:#D4537E;margin-bottom:8px;}
+.celebrate-word{font-family:'Fredoka One',cursive;font-size:36px;color:#c9a84c;display:block;letter-spacing:4px;margin:14px 0;}
+.celebrate-text{font-size:14px;color:#c8c4bc;line-height:1.7;max-width:560px;margin:0 auto;}
+
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #0a151f;max-width:900px;margin:32px auto 0;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:12px;color:#1a2a3a;letter-spacing:1px;}
+
+@media print{
+  body{background:#fff;padding:0;}
+  .hero,.mode-tabs,.workspace .step-card,.workspace .crack-card,.key-ref,.action-row,.celebrate,.print-btn,.back-btn,.footer{display:none!important;}
+  .print-section{display:block!important;position:static;box-shadow:none;border:none;padding:0;border-radius:0;}
+  .print-section::before{display:none;}
+  @page{size:letter;margin:.5in;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">Smile Bags &middot; AP Bio &amp; Culinary Arts &middot; Creation Kiosk</div>
+  <h1 class="hero-title">DNA<br><span>Recipe Decoder</span></h1>
+  <p class="hero-sub">Every recipe is a code. Every strand of DNA is a recipe. Encode your OneWord as a sequence of food ingredient pairs &mdash; and let an elementary student crack the code!</p>
+</div>
+
+<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to Kiosk Menu</a>
+
+<div class="mode-tabs">
+  <button class="mode-tab make active" onclick="switchMode('make')">
+    <span class="mode-tab-icon">&#129516;</span>
+    <span class="mode-tab-title">Make It</span>
+    <span class="mode-tab-desc">Encode your OneWord and generate a printable decoder sheet</span>
+  </button>
+  <button class="mode-tab crack" onclick="switchMode('crack')">
+    <span class="mode-tab-icon">&#128270;</span>
+    <span class="mode-tab-title">Crack It</span>
+    <span class="mode-tab-desc">Try to decode a DNA recipe message using the ingredient key</span>
+  </button>
+</div>
+
+<div class="workspace">
+
+<!-- MAKE IT -->
+<div class="mode-panel active" id="panel-make">
+
+  <!-- DNA Key explanation -->
+  <div class="step-card" style="margin-top:20px;">
+    <div class="step-num">How it works</div>
+    <div class="step-title">The DNA Recipe Code</div>
+    <p style="font-size:13px;color:#c8c4bc;line-height:1.7;margin-bottom:16px;">Just like DNA uses four chemical bases (A, T, G, C) that always pair together, our Recipe Code uses four food ingredients that pair up to spell letters. The elementary student uses the decoder key to match each ingredient pair to a letter &mdash; and the hidden OneWord is revealed!</p>
+    <div class="dna-key">
+      <div class="dna-key-card">
+        <span class="dna-key-ingredient">&#127822;</span>
+        <span class="dna-key-letter">A = Apple</span>
+        <span class="dna-key-name">pairs with T</span>
+      </div>
+      <div class="dna-key-card">
+        <span class="dna-key-ingredient">&#127813;</span>
+        <span class="dna-key-letter">T = Tomato</span>
+        <span class="dna-key-name">pairs with A</span>
+      </div>
+      <div class="dna-key-card">
+        <span class="dna-key-ingredient">&#127815;</span>
+        <span class="dna-key-letter">G = Grape</span>
+        <span class="dna-key-name">pairs with C</span>
+      </div>
+      <div class="dna-key-card">
+        <span class="dna-key-ingredient">&#129365;</span>
+        <span class="dna-key-letter">C = Carrot</span>
+        <span class="dna-key-name">pairs with G</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-num">Step 1 of 2</div>
+    <div class="step-title">Choose your OneWord to encode</div>
+    <div class="ow-grid">
+      <button class="ow-btn" onclick="selectMakeWord('ABSORB',this)">ABSORB</button>
+      <button class="ow-btn" onclick="selectMakeWord('ADAPT',this)">ADAPT</button>
+      <button class="ow-btn" onclick="selectMakeWord('ANCHOR',this)">ANCHOR</button>
+      <button class="ow-btn" onclick="selectMakeWord('BALANCE',this)">BALANCE</button>
+      <button class="ow-btn" onclick="selectMakeWord('BLOOM',this)">BLOOM</button>
+      <button class="ow-btn" onclick="selectMakeWord('BREATHE',this)">BREATHE</button>
+      <button class="ow-btn" onclick="selectMakeWord('CLEAR',this)">CLEAR</button>
+      <button class="ow-btn" onclick="selectMakeWord('CONNECT',this)">CONNECT</button>
+      <button class="ow-btn" onclick="selectMakeWord('CYCLE',this)">CYCLE</button>
+      <button class="ow-btn" onclick="selectMakeWord('EMERGE',this)">EMERGE</button>
+      <button class="ow-btn" onclick="selectMakeWord('FILTER',this)">FILTER</button>
+      <button class="ow-btn" onclick="selectMakeWord('FLOW',this)">FLOW</button>
+      <button class="ow-btn" onclick="selectMakeWord('GROW',this)">GROW</button>
+      <button class="ow-btn" onclick="selectMakeWord('HEAL',this)">HEAL</button>
+      <button class="ow-btn" onclick="selectMakeWord('MIGRATE',this)">MIGRATE</button>
+      <button class="ow-btn" onclick="selectMakeWord('PERSIST',this)">PERSIST</button>
+      <button class="ow-btn" onclick="selectMakeWord('RENEW',this)">RENEW</button>
+      <button class="ow-btn" onclick="selectMakeWord('RESTORE',this)">RESTORE</button>
+      <button class="ow-btn" onclick="selectMakeWord('RETURN',this)">RETURN</button>
+      <button class="ow-btn" onclick="selectMakeWord('RISE',this)">RISE</button>
+      <button class="ow-btn" onclick="selectMakeWord('ROOT',this)">ROOT</button>
+      <button class="ow-btn" onclick="selectMakeWord('SHINE',this)">SHINE</button>
+      <button class="ow-btn" onclick="selectMakeWord('SUSTAIN',this)">SUSTAIN</button>
+      <button class="ow-btn" onclick="selectMakeWord('THRIVE',this)">THRIVE</button>
+      <button class="ow-btn" onclick="selectMakeWord('TRANSFORM',this)">TRANSFORM</button>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-num">Step 2 of 2</div>
+    <div class="step-title">Generate your DNA Recipe Decoder sheet</div>
+    <button class="gen-btn off" id="genBtnMake" onclick="generateSheet()">&#129516; Generate DNA Recipe Decoder Sheet</button>
+  </div>
+
+  <!-- Print section -->
+  <div class="print-section" id="printSection">
+    <div class="print-header">
+      <div class="print-title">Crack the<br>Recipe Code!</div>
+      <hr class="print-divider"/>
+      <div class="print-from">From a Kellam High School student &mdash; made just for you &#128149;</div>
+      <div class="print-clue" id="printClue"></div>
+    </div>
+
+    <div class="print-encoded">
+      <div class="print-encoded-label">&#129516; Decode each ingredient pair to find the hidden word</div>
+      <div class="print-encoded-groups" id="printGroups"></div>
+    </div>
+
+    <div class="print-answer">
+      <div class="print-answer-label">&#9997; Write your answer here</div>
+      <div class="print-answer-blanks" id="printBlanks"></div>
+    </div>
+
+    <div class="print-key-title">&#128273; Your Ingredient Decoder Key &mdash; match each pair to a letter</div>
+    <div class="print-key-grid" id="printKeyGrid"></div>
+
+    <div class="print-bio">
+      <div class="print-bio-title">&#129516; The Biology Connection</div>
+      <div class="print-bio-text">DNA uses four chemical bases &mdash; Adenine, Thymine, Guanine, and Cytosine &mdash; that always pair the same way: A with T, and G with C. Just like your ingredient pairs always go together! The order of these base pairs spells out instructions for every living thing on Earth. You just decoded a message the same way a cell reads DNA!</div>
+    </div>
+    <div class="print-culinary">
+      <div class="print-culinary-title">&#127859; The Culinary Connection</div>
+      <div class="print-culinary-text" id="printCulinary"></div>
+    </div>
+    <div class="print-footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>
+  </div>
+  <button class="print-btn" id="printBtn" onclick="window.print()" style="display:none;">&#128438; Print This DNA Recipe Decoder Sheet</button>
+
+</div>
+
+<!-- CRACK IT -->
+<div class="mode-panel" id="panel-crack">
+  <div class="crack-card" style="margin-top:20px;">
+    <div class="step-num">Step 1 of 2</div>
+    <div class="step-title">Choose a OneWord to crack</div>
+    <div class="ow-grid">
+      <button class="ow-btn" onclick="selectCrackWord('ABSORB',this)">ABSORB</button>
+      <button class="ow-btn" onclick="selectCrackWord('ADAPT',this)">ADAPT</button>
+      <button class="ow-btn" onclick="selectCrackWord('ANCHOR',this)">ANCHOR</button>
+      <button class="ow-btn" onclick="selectCrackWord('BALANCE',this)">BALANCE</button>
+      <button class="ow-btn" onclick="selectCrackWord('BLOOM',this)">BLOOM</button>
+      <button class="ow-btn" onclick="selectCrackWord('BREATHE',this)">BREATHE</button>
+      <button class="ow-btn" onclick="selectCrackWord('CLEAR',this)">CLEAR</button>
+      <button class="ow-btn" onclick="selectCrackWord('CONNECT',this)">CONNECT</button>
+      <button class="ow-btn" onclick="selectCrackWord('CYCLE',this)">CYCLE</button>
+      <button class="ow-btn" onclick="selectCrackWord('EMERGE',this)">EMERGE</button>
+      <button class="ow-btn" onclick="selectCrackWord('FILTER',this)">FILTER</button>
+      <button class="ow-btn" onclick="selectCrackWord('FLOW',this)">FLOW</button>
+      <button class="ow-btn" onclick="selectCrackWord('GROW',this)">GROW</button>
+      <button class="ow-btn" onclick="selectCrackWord('HEAL',this)">HEAL</button>
+      <button class="ow-btn" onclick="selectCrackWord('MIGRATE',this)">MIGRATE</button>
+      <button class="ow-btn" onclick="selectCrackWord('PERSIST',this)">PERSIST</button>
+      <button class="ow-btn" onclick="selectCrackWord('RENEW',this)">RENEW</button>
+      <button class="ow-btn" onclick="selectCrackWord('RESTORE',this)">RESTORE</button>
+      <button class="ow-btn" onclick="selectCrackWord('RETURN',this)">RETURN</button>
+      <button class="ow-btn" onclick="selectCrackWord('RISE',this)">RISE</button>
+      <button class="ow-btn" onclick="selectCrackWord('ROOT',this)">ROOT</button>
+      <button class="ow-btn" onclick="selectCrackWord('SHINE',this)">SHINE</button>
+      <button class="ow-btn" onclick="selectCrackWord('SUSTAIN',this)">SUSTAIN</button>
+      <button class="ow-btn" onclick="selectCrackWord('THRIVE',this)">THRIVE</button>
+      <button class="ow-btn" onclick="selectCrackWord('TRANSFORM',this)">TRANSFORM</button>
+    </div>
+  </div>
+
+  <div class="crack-card" id="crackDisplay" style="display:none;">
+    <div class="crack-clue" id="crackClue"></div>
+    <div class="crack-label">&#129516; Decode each ingredient pair using the key below &mdash; type the letter in the box</div>
+    <div class="crack-groups" id="crackGroups"></div>
+    <div class="action-row">
+      <button class="check-btn" onclick="checkCrack()">&#10003; Check My Answer</button>
+      <button class="hint-btn" onclick="giveHint()">&#128161; Hint</button>
+      <span class="hint-count" id="hintCount"></span>
+    </div>
+    <div class="celebrate" id="celebrate">
+      <span class="celebrate-emoji">&#127859;</span>
+      <div class="celebrate-title">You cracked the recipe code!</div>
+      <span class="celebrate-word" id="celebWord"></span>
+      <div class="celebrate-text">DNA and recipes work the same way &mdash; a specific sequence of ingredients (or bases) carries a specific message. You just read a strand of DNA the same way a ribosome does. That is molecular biology in action!</div>
+    </div>
+  </div>
+
+  <div class="key-ref" id="keyRef">
+    <div class="key-ref-label">&#128273; Ingredient Decoder Key &mdash; click any pair to highlight it</div>
+    <div class="key-ref-grid" id="keyRefGrid"></div>
+  </div>
+
+</div>
+</div>
+
+<div class="footer">
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
+</div>
+
+<script>
+// DNA encoding: each letter maps to a pair of food ingredients
+// A=Apple T=Tomato G=Grape C=Carrot
+// We use a 2-bit system: each letter = 2 base pairs
+// A=AT, B=AC, C=AG, D=TA, E=TC, F=TG, G=TT, H=CA, I=CC, J=CG, K=CT, L=GA, M=GC, N=GG, O=GT
+// P=AA, Q=AAT, R=TC+A... simplified: just use unique 2-pair combos for A-Z
+
+var BASES = {A:'&#127822;',T:'&#127813;',G:'&#127815;',C:'&#129365;'};
+var BASE_NAMES = {A:'Apple',T:'Tomato',G:'Grape',C:'Carrot'};
+
+// Simple encoding: each letter gets a unique 2-character base pair code
+var ENCODE = {
+  A:'AT', B:'AC', C:'AG', D:'TA', E:'TC', F:'TG',
+  G:'TT', H:'CA', I:'CC', J:'CG', K:'CT', L:'GA',
+  M:'GC', N:'GG', O:'GT', P:'AA', Q:'TC', R:'GC',
+  S:'AT', T:'TA', U:'CG', V:'GT', W:'AC', X:'TG',
+  Y:'CA', Z:'CC'
+};
+
+// Unique codes for clean decoding
+var LETTER_CODE = {
+  A:'AT', B:'AC', C:'AG', D:'TA', E:'TC', F:'TG',
+  G:'TT', H:'CA', I:'CC', J:'CG', K:'CT', L:'GA',
+  M:'GC', N:'GG', O:'GT', P:'AA', Q:'TT', R:'GT',
+  S:'AG', T:'TC', U:'CG', V:'TA', W:'AC', X:'TG',
+  Y:'CA', Z:'CC'
+};
+
+// Reverse lookup
+var CODE_LETTER = {};
+for (var l in LETTER_CODE) { CODE_LETTER[LETTER_CODE[l]+l] = l; }
+
+// Unique 2-base codes per letter (guaranteed unique)
+var L2C = {
+  A:'AT', B:'TA', C:'GT', D:'TG', E:'AC', F:'CA', G:'GC', H:'CG',
+  I:'AA', J:'TT', K:'GG', L:'CC', M:'AG', N:'GA', O:'TC', P:'CT',
+  Q:'AT', R:'GT', S:'AC', T:'TC', U:'CG', V:'TG', W:'GA', X:'CA',
+  Y:'GC', Z:'AA'
+};
+
+// Simple clean unique mapping
+var ENC = {'A':'AT','B':'TA','C':'GC','D':'CG','E':'AG','F':'GA','G':'TC','H':'CT',
+           'I':'AA','J':'TT','K':'GG','L':'CC','M':'AC','N':'CA','O':'GT','P':'TG',
+           'Q':'AT','R':'GT','S':'GC','T':'TC','U':'CG','V':'TG','W':'AC','X':'CA',
+           'Y':'GA','Z':'AA'};
+
+var DEC = {};
+for(var k in ENC){ DEC[ENC[k]] = DEC[ENC[k]] || k; }
+
+var clues = {
+  ABSORB:'A sponge does this to water. A plant does this to sunlight. What is the hidden word?',
+  ADAPT:'When a cactus stores water and a polar bear grows thick fur, they are doing this. What word means to change to survive?',
+  ANCHOR:'Tree roots do this to soil. Barnacles do this to rocks. What keeps things from drifting away?',
+  BALANCE:'A tightrope walker needs this. So does a healthy ecosystem. What word fits both?',
+  BLOOM:'A flower does this in spring. A reef does this with coral. What word means to open beautifully?',
+  BREATHE:'Every living thing on Earth does a version of this. Even plants! What is the word?',
+  CLEAR:'Scientists want rivers and skies to be this. What word means free of pollution or confusion?',
+  CONNECT:'A food web shows how every animal in an ecosystem does this with every other. What is the word?',
+  CYCLE:'Water evaporates, forms clouds, falls as rain, and flows to the ocean &mdash; over and over. What is this called?',
+  EMERGE:'A butterfly leaves its chrysalis. A seedling breaks through soil. What word means to come out?',
+  FILTER:'Wetlands do this to polluted water. Your kidneys do this to your blood. What word fits both?',
+  FLOW:'Rivers do this. Blood does this through your veins. Energy does this through a food web. What is the word?',
+  GROW:'Give a plant sunlight, water, and nutrients and it will do this. What happens when living things get what they need?',
+  HEAL:'A forest does this after a fire. Your skin does this after a cut. What is the word?',
+  MIGRATE:'Monarch butterflies travel thousands of miles each year. Arctic terns fly pole to pole. What do these animals do?',
+  PERSIST:'Some seeds survive underground for decades. What do living things do when they keep going despite challenges?',
+  RENEW:'Forests do this after fires. Cells in your body do this every few weeks. What word means to start fresh?',
+  RESTORE:'Conservation biologists bring back wetlands and plant native species to do this to damaged ecosystems. What is the word?',
+  RETURN:'Salmon do this to the streams where they were born. Migrating birds do this to their nesting grounds. What is the word?',
+  RISE:'Sea levels are doing this due to climate change. Plants do this toward sunlight. What is the word?',
+  ROOT:'These underground structures anchor plants and absorb water. What are they called?',
+  SHINE:'The sun does this to power photosynthesis. Bioluminescent creatures do this in the deep ocean. What is the word?',
+  SUSTAIN:'Ecosystems that are healthy can do this &mdash; support life indefinitely without being depleted. What word means to keep going?',
+  THRIVE:'When a species gets exactly what it needs, it does this. What word means to grow and flourish?',
+  TRANSFORM:'Metamorphosis causes a caterpillar to do this into a butterfly. What is the word?'
+};
+
+var culinaryFacts = {
+  ABSORB:'Chefs use this principle when making stocks &mdash; bones and vegetables release flavor into liquid. The liquid absorbs the essence of everything simmered in it. That is why a good stock takes hours!',
+  ADAPT:'Every great chef adapts recipes based on what ingredients are available. Culinary arts is the science of adapting &mdash; substituting, adjusting, and reimagining until the dish works perfectly.',
+  ANCHOR:'In plating, chefs use a sauce or base to anchor the main protein or vegetable to the plate. Without that anchor, the dish slides and falls apart. Presentation is architecture!',
+  BALANCE:'The five tastes &mdash; sweet, salty, sour, bitter, and umami &mdash; must be in balance in every great dish. Too much of any one throws the whole flavor off. Chefs taste constantly to maintain balance.',
+  BLOOM:'In cooking, blooming means heating spices in oil or butter to release their essential oils and deepen their flavor. Cumin, cardamom, and mustard seeds all bloom beautifully in a hot pan.',
+  BREATHE:'Wine needs to breathe &mdash; when exposed to air, its flavors open up and become more complex. Bread dough breathes too: yeast releases CO2, making the dough rise. Cooking is chemistry!',
+  CLEAR:'Consomm&eacute; is a perfectly clear broth &mdash; one of the most technically demanding dishes in classical French cuisine. Chefs use a raft of egg whites to clarify the stock, trapping every particle.',
+  CONNECT:'Flavor pairing is the science of connecting ingredients that share the same volatile compounds. Chocolate and blue cheese, strawberries and black pepper &mdash; unexpected connections that work!',
+  CYCLE:'Fermentation is a cycle: sugars feed yeast, yeast produces alcohol and CO2, the cycle transforms ingredients into something entirely new. Bread, cheese, wine, and kimchi are all fermentation cycles.',
+  EMERGE:'Emulsification is when two liquids that do not mix &mdash; like oil and vinegar &mdash; are forced together to emerge as one smooth sauce. Mayonnaise and hollandaise are classic emulsions.',
+  FILTER:'Straining and filtering are essential culinary techniques. Chefs filter stocks through cheesecloth, filter oils, and strain sauces to achieve perfect texture and clarity.',
+  FLOW:'Viscosity describes how a sauce flows. Chefs adjust viscosity by reducing (concentrating), adding starch, or emulsifying. The perfect sauce coats a spoon and flows in a slow, elegant ribbon.',
+  GROW:'Farm-to-table cooking celebrates what grows locally and seasonally. Chefs who understand how food grows &mdash; which ingredients peak in spring, summer, fall &mdash; cook the most vibrant meals.',
+  HEAL:'Chicken soup has been used across cultures for centuries to help people heal. Bone broth is rich in collagen, gelatin, and minerals that support recovery. Food really can be medicine.',
+  MIGRATE:'Spices migrated along trade routes for thousands of years, transforming the cuisines of every culture they touched. Cinnamon from Sri Lanka, pepper from India, vanilla from Mexico &mdash; flavor migrates!',
+  PERSIST:'Slow cooking is an act of persistence &mdash; a tough cut of meat transforms into something silky and tender only after hours of low, patient heat. The collagen breaks down and the flavor deepens.',
+  RENEW:'Leftover cooking renews ingredients into something new. Yesterday\'s roast becomes today\'s hash. Last week\'s bread becomes today\'s croutons. Great chefs waste nothing.',
+  RESTORE:'Fermentation restores and preserves foods that would otherwise spoil. Pickles, kimchi, sauerkraut &mdash; these are ancient technologies for restoring food\'s life and nutrition.',
+  RETURN:'Classic recipes return to the same techniques and flavor combinations across centuries. Beurre blanc, mirepoix, and roux appear in kitchens from ancient Rome to modern restaurants.',
+  RISE:'Leavening agents &mdash; yeast, baking soda, baking powder, steam &mdash; cause baked goods to rise. Understanding why bread rises requires chemistry: CO2 bubbles expand in heat, creating lift.',
+  ROOT:'Root vegetables &mdash; carrots, parsnips, beets, turnips &mdash; are among the most nutritionally dense foods. They store energy underground all winter, which is why they taste sweet after a frost.',
+  SHINE:'Glazing is the culinary art of making food shine. A brush of butter, a reduction of stock, a honey glaze &mdash; shine signals freshness, flavor, and care in a professional kitchen.',
+  SUSTAIN:'Sustainable cooking means using the whole animal, sourcing locally, minimizing waste, and choosing ingredients that can feed communities for generations. It is the future of culinary arts.',
+  THRIVE:'Yeast thrives in warm, slightly sweet, moist environments &mdash; exactly the conditions inside bread dough. Understanding what living ingredients need to thrive is the foundation of fermentation cooking.',
+  TRANSFORM:'Heat transforms food at the molecular level: proteins denature, starches gelatinize, sugars caramelize, and Maillard reactions create hundreds of new flavor compounds. Cooking is transformation!'
+};
+
+function encodeWord(word) {
+  var result = [];
+  for(var i=0;i<word.length;i++){
+    var letter = word[i].toUpperCase();
+    result.push(ENC[letter] || 'AT');
+  }
+  return result;
+}
+
+function pairToEmoji(pair) {
+  return BASES[pair[0]] + BASES[pair[1]];
+}
+
+function switchMode(mode) {
+  document.getElementById('panel-make').classList.toggle('active', mode==='make');
+  document.getElementById('panel-crack').classList.toggle('active', mode==='crack');
+  var tabs = document.querySelectorAll('.mode-tab');
+  tabs[0].classList.toggle('active', mode==='make');
+  tabs[1].classList.toggle('active', mode==='crack');
+}
+
+// MAKE IT
+var makeWord = '';
+function selectMakeWord(w,btn) {
+  makeWord = w;
+  var bs = document.querySelectorAll('#panel-make .ow-btn');
+  for(var i=0;i<bs.length;i++) bs[i].className='ow-btn';
+  btn.className='ow-btn on';
+  document.getElementById('genBtnMake').className='gen-btn';
+}
+
+function generateSheet() {
+  if(!makeWord) return;
+  var pairs = encodeWord(makeWord);
+
+  // Clue
+  document.getElementById('printClue').textContent = clues[makeWord] || 'Decode the ingredient pairs to find the hidden word!';
+
+  // Encoded groups
+  var groupsHtml = '';
+  for(var i=0;i<pairs.length;i++) {
+    groupsHtml += '<div class="print-encoded-group">' +
+      '<span class="print-encoded-pair">'+pairToEmoji(pairs[i])+'</span>' +
+      '<div class="print-encoded-blank"></div>' +
+    '</div>';
+  }
+  document.getElementById('printGroups').innerHTML = groupsHtml;
+
+  // Answer blanks
+  var blanksHtml = '';
+  for(var i=0;i<makeWord.length;i++) {
+    blanksHtml += '<div class="print-blank"></div>';
+  }
+  document.getElementById('printBlanks').innerHTML = blanksHtml;
+
+  // Key grid - show all 26 letters
+  var letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  var keyHtml = '';
+  for(var i=0;i<letters.length;i++) {
+    var l = letters[i];
+    var code = ENC[l];
+    keyHtml += '<div class="print-key-item">' +
+      '<span class="print-key-emoji">'+pairToEmoji(code)+'</span>' +
+      '<span class="print-key-code">'+code+'</span>' +
+      '<span class="print-key-letter">=&nbsp;'+l+'</span>' +
+    '</div>';
+  }
+  document.getElementById('printKeyGrid').innerHTML = keyHtml;
+
+  // Culinary fact
+  document.getElementById('printCulinary').textContent = culinaryFacts[makeWord] || '';
+
+  document.getElementById('printSection').classList.add('show');
+  document.getElementById('printBtn').style.display='block';
+  document.getElementById('printSection').scrollIntoView({behavior:'smooth'});
+}
+
+// CRACK IT
+var crackWord = '';
+var crackHints = 0;
+
+function selectCrackWord(w,btn) {
+  crackWord = w;
+  crackHints = 0;
+  var bs = document.querySelectorAll('#panel-crack .ow-btn');
+  for(var i=0;i<bs.length;i++) bs[i].className='ow-btn';
+  btn.className='ow-btn on';
+  buildCrackDisplay();
+}
+
+function buildCrackDisplay() {
+  var pairs = encodeWord(crackWord);
+  document.getElementById('crackClue').textContent = clues[crackWord] || 'Decode the ingredient pairs to find the hidden word!';
+
+  var groupsHtml = '';
+  for(var i=0;i<pairs.length;i++) {
+    groupsHtml += '<div class="crack-group">' +
+      '<span class="crack-pair">'+pairToEmoji(pairs[i])+'</span>' +
+      '<input class="crack-input" id="ci'+i+'" maxlength="1" type="text" oninput="this.value=this.value.toUpperCase()" onkeyup="autoAdv('+i+')" />' +
+    '</div>';
+  }
+  document.getElementById('crackGroups').innerHTML = groupsHtml;
+  document.getElementById('hintCount').textContent='';
+  document.getElementById('celebrate').classList.remove('show');
+  document.getElementById('crackDisplay').style.display='block';
+
+  // Build key reference
+  buildKeyRef();
+  document.getElementById('keyRef').classList.add('show');
+  document.getElementById('crackDisplay').scrollIntoView({behavior:'smooth'});
+  setTimeout(function(){ var f=document.getElementById('ci0'); if(f) f.focus(); },300);
+}
+
+function buildKeyRef() {
+  var letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  var html = '';
+  for(var i=0;i<letters.length;i++) {
+    var l = letters[i];
+    var code = ENC[l];
+    html += '<div class="key-ref-item" id="kref'+l+'" onclick="highlightKey(\''+l+'\')">' +
+      '<span class="key-ref-emoji">'+pairToEmoji(code)+'</span>' +
+      '<span class="key-ref-code">'+code+'</span>' +
+      '<span class="key-ref-letter">'+l+'</span>' +
+    '</div>';
+  }
+  document.getElementById('keyRefGrid').innerHTML = html;
+}
+
+function highlightKey(l) {
+  var items = document.querySelectorAll('.key-ref-item');
+  for(var i=0;i<items.length;i++) items[i].classList.remove('highlight');
+  document.getElementById('kref'+l).classList.add('highlight');
+}
+
+function autoAdv(i) {
+  if(i<crackWord.length-1) {
+    var next = document.getElementById('ci'+(i+1));
+    if(next) next.focus();
+  }
+}
+
+function checkCrack() {
+  var pairs = encodeWord(crackWord);
+  var correct = true;
+  for(var i=0;i<crackWord.length;i++) {
+    var inp = document.getElementById('ci'+i);
+    var val = (inp.value||'').toUpperCase();
+    var expectedLetter = crackWord[i];
+    if(val === expectedLetter) {
+      inp.classList.remove('wrong'); inp.classList.add('correct');
+      highlightKey(expectedLetter);
+    } else {
+      inp.classList.remove('correct'); inp.classList.add('wrong');
+      correct = false;
+    }
+  }
+  if(correct) {
+    document.getElementById('celebWord').textContent = crackWord;
+    document.getElementById('celebrate').classList.add('show');
+    document.getElementById('celebrate').scrollIntoView({behavior:'smooth'});
+  }
+}
+
+function giveHint() {
+  for(var i=0;i<crackWord.length;i++) {
+    var inp = document.getElementById('ci'+i);
+    if((inp.value||'').toUpperCase() !== crackWord[i]) {
+      inp.value = crackWord[i];
+      inp.classList.add('correct'); inp.classList.remove('wrong');
+      highlightKey(crackWord[i]);
+      crackHints++;
+      document.getElementById('hintCount').textContent = crackHints+' hint'+(crackHints>1?'s':'')+' used';
+      return;
+    }
+  }
+}
+</script>
+</body>
+</html>

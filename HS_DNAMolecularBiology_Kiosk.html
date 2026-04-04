@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>DNA Molecular Biology Kiosk &mdash; Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#0a0a14;color:#fff;min-height:100vh;padding:0 0 60px;}
+.hero{background:#0a0a14;border-bottom:1px solid #2a1a3a;padding:40px 32px 36px;text-align:center;position:relative;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(107,63,158,.15) 0%,transparent 65%);pointer-events:none;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:4px;color:#9F77DD;text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,48px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:10px;}
+.hero-title span{color:#c9a84c;}
+.hero-sub{font-size:14px;color:#c8c4bc;max-width:620px;margin:0 auto;line-height:1.7;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #9F77DD;color:#9F77DD;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;margin:24px 24px 0;}
+
+/* Challenge tabs */
+.challenge-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:#111;border:1px solid #2a1a3a;border-radius:12px;overflow:hidden;max-width:960px;margin:24px auto 0;}
+.ctab{padding:14px 10px;text-align:center;cursor:pointer;border:none;background:transparent;color:#444;width:100%;transition:all .2s;border-right:1px solid #1a1a2e;}
+.ctab:last-child{border-right:none;}
+.ctab.active{background:#1a0a2a;color:#9F77DD;}
+.ctab-num{font-family:'Fredoka One',cursive;font-size:18px;display:block;margin-bottom:4px;}
+.ctab-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;display:block;margin-bottom:2px;}
+.ctab.active .ctab-label{color:#9F77DD;}
+.ctab-desc{font-size:10px;color:#333;line-height:1.3;}
+.ctab.active .ctab-desc{color:#c8c4bc;}
+
+.workspace{max-width:960px;margin:0 auto;padding:0 24px;}
+.challenge-panel{display:none;padding-top:20px;}
+.challenge-panel.active{display:block;}
+.step-card{background:#0d0d14;border:1px solid #2a1a3a;border-radius:14px;padding:24px;margin-bottom:14px;}
+.step-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#3a1a5a;margin-bottom:8px;}
+.step-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:12px;}
+.step-desc{font-size:13px;color:#c8c4bc;line-height:1.65;margin-bottom:16px;}
+
+/* OneWord grid */
+.ow-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;}
+.ow-btn{background:#0a0a14;border:2px solid #2a1a3a;border-radius:8px;padding:9px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#c8c4bc;cursor:pointer;width:100%;text-align:center;}
+.ow-btn:hover{border-color:#c9a84c;color:#c9a84c;}
+.ow-btn.on{border-color:#9F77DD;color:#9F77DD;background:rgba(107,63,158,.1);}
+
+.gen-btn{width:100%;background:#9F77DD;color:#fff;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:3px;text-transform:uppercase;padding:16px;border:none;border-radius:10px;cursor:pointer;font-weight:700;}
+.gen-btn:hover{background:#8060cc;}
+.gen-btn.off{background:#1a1a2e;color:#333;cursor:not-allowed;}
+
+/* Base displays */
+.strand-display{background:#000;border:1px solid #2a1a3a;border-radius:12px;padding:18px;margin-bottom:14px;}
+.strand-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#9F77DD;margin-bottom:12px;}
+.strand-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+.base-box{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:14px;font-weight:700;}
+.bA{background:#1B7A78;color:#9FE1CB;}
+.bT{background:#C8860A;color:#FFF3D6;}
+.bG{background:#6B3F9E;color:#EDE4F7;}
+.bC{background:#B5446E;color:#FDE8EF;}
+.bU{background:#D85A30;color:#FAECE7;}
+
+/* Input boxes */
+.input-box{width:32px;height:32px;border-radius:6px;border:2px solid #2a1a3a;background:#0a0a14;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;}
+.input-box:hover{border-color:#9F77DD;}
+.input-box.filled-A{background:#1B7A78;color:#9FE1CB;border-color:#1B7A78;}
+.input-box.filled-T{background:#C8860A;color:#FFF3D6;border-color:#C8860A;}
+.input-box.filled-G{background:#6B3F9E;color:#EDE4F7;border-color:#6B3F9E;}
+.input-box.filled-C{background:#B5446E;color:#FDE8EF;border-color:#B5446E;}
+.input-box.filled-U{background:#D85A30;color:#FAECE7;border-color:#D85A30;}
+.input-box.correct{border-color:#4caf82!important;}
+.input-box.wrong{border-color:#D4537E!important;animation:shake .3s;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-3px);}75%{transform:translateX(3px);};}
+
+/* Base selector */
+.base-picker{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.bpick{width:44px;height:44px;border-radius:8px;border:2px solid transparent;cursor:pointer;font-family:'Fredoka One',cursive;font-size:16px;font-weight:700;transition:all .2s;}
+.bpick:hover{transform:scale(1.1);}
+.bpick.active{border-color:#fff!important;transform:scale(1.15);}
+
+/* Codon table */
+.codon-table{font-size:11px;overflow-x:auto;margin-bottom:14px;}
+.codon-table table{border-collapse:collapse;width:100%;}
+.codon-table th{background:#1a0a2a;color:#9F77DD;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;padding:8px;border:1px solid #2a1a3a;text-align:center;}
+.codon-table td{padding:6px 8px;border:1px solid #1a1a2e;text-align:center;font-family:'Courier New',monospace;font-size:11px;color:#c8c4bc;}
+.codon-table tr:hover td{background:#1a0a2a;}
+.codon-highlight{background:rgba(159,119,221,.2)!important;color:#9F77DD!important;}
+
+/* Amino acid display */
+.aa-display{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.aa-box{background:#1a0a2a;border:1px solid #2a1a3a;border-radius:8px;padding:8px 12px;text-align:center;min-width:60px;}
+.aa-codon{font-family:'Courier New',monospace;font-size:11px;color:#9F77DD;display:block;margin-bottom:3px;}
+.aa-name{font-size:11px;color:#c8c4bc;display:block;margin-bottom:3px;}
+.aa-input{width:36px;height:32px;background:#0a0a14;border:1.5px solid #2a1a3a;border-radius:6px;text-align:center;font-family:'Fredoka One',cursive;font-size:14px;color:#fff;outline:none;}
+
+/* Results */
+.result{display:none;border-radius:14px;padding:24px;text-align:center;margin-top:14px;}
+.result.show{display:block;}
+.result.correct{background:rgba(76,175,130,.08);border:2px solid #4caf82;}
+.result.wrong{background:rgba(212,83,126,.08);border:2px solid #D4537E;}
+.result-emoji{font-size:42px;display:block;margin-bottom:12px;}
+.result-title{font-family:'Playfair Display',serif;font-size:20px;margin-bottom:8px;}
+.result.correct .result-title{color:#4caf82;}
+.result.wrong .result-title{color:#D4537E;}
+.result-text{font-size:13px;color:#c8c4bc;line-height:1.7;max-width:580px;margin:0 auto;}
+
+.check-btn{background:#9F77DD;color:#fff;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:12px 24px;border:none;border-radius:10px;cursor:pointer;font-weight:700;margin-top:12px;}
+.next-btn{background:transparent;border:1.5px solid #9F77DD;color:#9F77DD;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:12px 20px;border-radius:10px;cursor:pointer;margin-top:12px;margin-left:10px;}
+
+/* Progress */
+.progress-bar{background:#1a1a2e;border-radius:8px;height:6px;margin-bottom:20px;overflow:hidden;}
+.progress-fill{background:linear-gradient(90deg,#6B3F9E,#9F77DD);height:100%;border-radius:8px;transition:width .5s;}
+
+/* Print */
+.print-section{display:none;background:#fff;color:#111;border-radius:12px;padding:28px;margin-bottom:4px;position:relative;}
+.print-section.show{display:block;}
+.print-btn{width:100%;background:#0a0a14;color:#9F77DD;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:14px;border:1.5px solid #9F77DD;border-radius:10px;cursor:pointer;margin-top:12px;}
+
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #0a0a1f;max-width:960px;margin:32px auto 0;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:12px;color:#1a1a3a;letter-spacing:1px;}
+
+@media print{
+  body{background:#fff;padding:0;}
+  .hero,.challenge-tabs,.workspace .step-card,.workspace .strand-display,.check-btn,.next-btn,.result,.print-btn,.back-btn,.footer{display:none!important;}
+  .print-section{display:block!important;position:static;box-shadow:none;border:none;padding:0;border-radius:0;}
+  @page{size:letter;margin:.5in;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">Smile Bags &middot; AP Biology &middot; High School Edition</div>
+  <h1 class="hero-title">DNA to Protein:<br><span>The Full Central Dogma</span></h1>
+  <p class="hero-sub">Four steps. One hidden OneWord. Start with a DNA template strand, transcribe to mRNA, translate using the real codon table, and decode the amino acid sequence &mdash; or watch everything collapse with a frameshift mutation.</p>
+</div>
+
+<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to AP Bio Kiosk Menu</a>
+
+<div class="challenge-tabs">
+  <button class="ctab active" id="ctab1" onclick="switchChallenge(1)">
+    <span class="ctab-num">&#129516;</span>
+    <span class="ctab-label">Step 1</span>
+    <span class="ctab-desc">Complementary Strand</span>
+  </button>
+  <button class="ctab" id="ctab2" onclick="switchChallenge(2)">
+    <span class="ctab-num">&#128203;</span>
+    <span class="ctab-label">Step 2</span>
+    <span class="ctab-desc">Transcription → mRNA</span>
+  </button>
+  <button class="ctab" id="ctab3" onclick="switchChallenge(3)">
+    <span class="ctab-num">&#128300;</span>
+    <span class="ctab-label">Step 3</span>
+    <span class="ctab-desc">Translation → Amino Acids</span>
+  </button>
+  <button class="ctab" id="ctab4" onclick="switchChallenge(4)">
+    <span class="ctab-num">&#127787;</span>
+    <span class="ctab-label">Step 4</span>
+    <span class="ctab-desc">Frameshift Mutation</span>
+  </button>
+</div>
+
+<div class="workspace">
+
+  <!-- WORD SELECTOR - shared -->
+  <div class="step-card" style="margin-top:20px;">
+    <div class="step-num">Choose your OneWord</div>
+    <div class="step-title">Select the word you want to encode through the Central Dogma</div>
+    <div class="ow-grid">
+      <button class="ow-btn" onclick="selectWord('ABSORB',this)">ABSORB</button>
+      <button class="ow-btn" onclick="selectWord('ADAPT',this)">ADAPT</button>
+      <button class="ow-btn" onclick="selectWord('ANCHOR',this)">ANCHOR</button>
+      <button class="ow-btn" onclick="selectWord('BALANCE',this)">BALANCE</button>
+      <button class="ow-btn" onclick="selectWord('BLOOM',this)">BLOOM</button>
+      <button class="ow-btn" onclick="selectWord('BREATHE',this)">BREATHE</button>
+      <button class="ow-btn" onclick="selectWord('CLEAR',this)">CLEAR</button>
+      <button class="ow-btn" onclick="selectWord('CONNECT',this)">CONNECT</button>
+      <button class="ow-btn" onclick="selectWord('CYCLE',this)">CYCLE</button>
+      <button class="ow-btn" onclick="selectWord('EMERGE',this)">EMERGE</button>
+      <button class="ow-btn" onclick="selectWord('FILTER',this)">FILTER</button>
+      <button class="ow-btn" onclick="selectWord('FLOW',this)">FLOW</button>
+      <button class="ow-btn" onclick="selectWord('GROW',this)">GROW</button>
+      <button class="ow-btn" onclick="selectWord('HEAL',this)">HEAL</button>
+      <button class="ow-btn" onclick="selectWord('MIGRATE',this)">MIGRATE</button>
+      <button class="ow-btn" onclick="selectWord('PERSIST',this)">PERSIST</button>
+      <button class="ow-btn" onclick="selectWord('RENEW',this)">RENEW</button>
+      <button class="ow-btn" onclick="selectWord('RESTORE',this)">RESTORE</button>
+      <button class="ow-btn" onclick="selectWord('RETURN',this)">RETURN</button>
+      <button class="ow-btn" onclick="selectWord('RISE',this)">RISE</button>
+      <button class="ow-btn" onclick="selectWord('ROOT',this)">ROOT</button>
+      <button class="ow-btn" onclick="selectWord('SHINE',this)">SHINE</button>
+      <button class="ow-btn" onclick="selectWord('SUSTAIN',this)">SUSTAIN</button>
+      <button class="ow-btn" onclick="selectWord('THRIVE',this)">THRIVE</button>
+      <button class="ow-btn" onclick="selectWord('TRANSFORM',this)">TRANSFORM</button>
+    </div>
+    <div class="progress-bar" style="margin-top:16px;"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div id="progressLabel" style="font-family:'Fredoka One',cursive;font-size:11px;color:#3a2a5a;letter-spacing:1px;">Select a word to begin</div>
+  </div>
+
+  <!-- STEP 1: COMPLEMENTARY STRAND -->
+  <div class="challenge-panel active" id="cp1">
+    <div class="step-card">
+      <div class="step-num">Step 1 &mdash; DNA Replication Rule</div>
+      <div class="step-title">Write the Complementary DNA Strand</div>
+      <div class="step-desc">Given the template (sense) strand below, write the complementary (antisense) strand using base pairing rules: A pairs with T, T pairs with A, G pairs with C, C pairs with G. Click each base selector then click a position to fill it in.</div>
+    </div>
+
+    <div class="strand-display" id="sd1" style="display:none;">
+      <div class="strand-label">&#129516; Template (Sense) Strand &mdash; 5&prime; to 3&prime;</div>
+      <div class="strand-row" id="templateStrand"></div>
+      <div class="strand-label" style="margin-top:14px;">&#128221; Your Complementary Strand &mdash; click to fill</div>
+      <div class="strand-row" id="compInputs"></div>
+      <div class="base-picker" style="margin-top:12px;">
+        <button class="bpick bA" onclick="pickBase('A',this)">A</button>
+        <button class="bpick bT" onclick="pickBase('T',this)">T</button>
+        <button class="bpick bG" onclick="pickBase('G',this)">G</button>
+        <button class="bpick bC" onclick="pickBase('C',this)">C</button>
+      </div>
+      <button class="check-btn" onclick="checkComp()">&#10003; Check Complementary Strand</button>
+      <div class="result" id="compResult">
+        <span class="result-emoji" id="compEmoji"></span>
+        <div class="result-title" id="compTitle"></div>
+        <div class="result-text" id="compText"></div>
+        <button class="next-btn" id="compNext" onclick="switchChallenge(2)" style="display:none;">Continue to Step 2: Transcription &#8594;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: TRANSCRIPTION -->
+  <div class="challenge-panel" id="cp2">
+    <div class="step-card">
+      <div class="step-num">Step 2 &mdash; Transcription</div>
+      <div class="step-title">Transcribe DNA to mRNA</div>
+      <div class="step-desc">RNA polymerase reads the template strand and builds the mRNA strand. The rules: A→U, T→A, G→C, C→G. Note: RNA uses Uracil (U) instead of Thymine (T)!</div>
+    </div>
+    <div class="strand-display" id="sd2" style="display:none;">
+      <div class="strand-label">&#129516; Template Strand (read 3&prime; to 5&prime;)</div>
+      <div class="strand-row" id="transcribeTemplate"></div>
+      <div class="strand-label" style="margin-top:14px;">&#128203; Your mRNA Strand &mdash; click to fill (5&prime; to 3&prime;)</div>
+      <div class="strand-row" id="mrnaInputs"></div>
+      <div class="base-picker" style="margin-top:12px;">
+        <button class="bpick bA" onclick="pickBase('A',this)">A</button>
+        <button class="bpick bU" onclick="pickBase('U',this)" style="background:#D85A30;color:#FAECE7;">U</button>
+        <button class="bpick bG" onclick="pickBase('G',this)">G</button>
+        <button class="bpick bC" onclick="pickBase('C',this)">C</button>
+      </div>
+      <button class="check-btn" onclick="checkTranscription()">&#10003; Check mRNA Strand</button>
+      <div class="result" id="transResult">
+        <span class="result-emoji" id="transEmoji"></span>
+        <div class="result-title" id="transTitle"></div>
+        <div class="result-text" id="transText"></div>
+        <button class="next-btn" id="transNext" onclick="switchChallenge(3)" style="display:none;">Continue to Step 3: Translation &#8594;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: TRANSLATION -->
+  <div class="challenge-panel" id="cp3">
+    <div class="step-card">
+      <div class="step-num">Step 3 &mdash; Translation</div>
+      <div class="step-title">Translate mRNA Codons to Decode the OneWord</div>
+      <div class="step-desc">Each 3-base codon in the mRNA codes for one letter of the hidden OneWord. Use the codon table below to find which letter each codon represents, then decode the hidden word!</div>
+    </div>
+    <div class="step-card" id="sd3" style="display:none;">
+      <div class="strand-label" style="color:#9F77DD;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;">&#128203; Your mRNA Codons</div>
+      <div class="aa-display" id="codonDisplay"></div>
+      <div class="strand-label" style="color:#9F77DD;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;margin:16px 0 10px;">&#128273; Codon → Letter Decoder Table</div>
+      <div class="codon-table" id="codonTable"></div>
+      <button class="check-btn" onclick="checkTranslation()">&#10003; Check My Translation</button>
+      <div class="result" id="translaResult">
+        <span class="result-emoji" id="translaEmoji"></span>
+        <div class="result-title" id="translaTitle"></div>
+        <div class="result-text" id="translaText"></div>
+        <button class="next-btn" id="translaNext" onclick="switchChallenge(4)" style="display:none;">Challenge Mode: Frameshift Mutation &#8594;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: FRAMESHIFT MUTATION -->
+  <div class="challenge-panel" id="cp4">
+    <div class="step-card">
+      <div class="step-num">Step 4 &mdash; Frameshift Mutation</div>
+      <div class="step-title">What Happens When One Base is Deleted?</div>
+      <div class="step-desc">A frameshift mutation occurs when a single base is inserted or deleted from the DNA strand. This shifts the entire reading frame &mdash; every codon after the mutation changes. Decode the mutated strand and compare it to the original. How much did ONE deletion change the message?</div>
+    </div>
+    <div class="step-card" id="sd4" style="display:none;">
+      <div class="strand-label" style="color:#9F77DD;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;">&#129516; Original mRNA (correct)</div>
+      <div class="strand-row" id="origMRNA"></div>
+      <div style="font-family:'Fredoka One',cursive;font-size:11px;color:#4caf82;margin:8px 0 16px;">Decodes to: <span id="origWord" style="color:#c9a84c;letter-spacing:2px;"></span></div>
+
+      <div class="strand-label" style="color:#D4537E;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;">&#127787; Frameshift mRNA (1 base deleted at position 4)</div>
+      <div class="strand-row" id="frameMRNA"></div>
+      <div style="font-family:'Fredoka One',cursive;font-size:11px;color:#D4537E;margin:8px 0 8px;">New codons: <span id="framecodons" style="font-family:'Courier New',monospace;font-size:12px;"></span></div>
+
+      <div style="background:#1a0a14;border:1px solid #D4537E;border-radius:10px;padding:16px;margin-top:10px;">
+        <div style="font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#D4537E;margin-bottom:8px;">&#128270; What does the mutated strand decode to?</div>
+        <div id="frameDecodeInputs" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;"></div>
+        <button class="check-btn" onclick="checkFrameshift()">&#10003; Check My Answer</button>
+      </div>
+      <div class="result" id="frameResult">
+        <span class="result-emoji" id="frameEmoji"></span>
+        <div class="result-title" id="frameTitle"></div>
+        <div class="result-text" id="frameText"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
+</div>
+
+<script>
+// DNA encoding: each letter = 3-base codon (mRNA codon)
+// We define mRNA codons for each letter A-Z
+var CODON_FOR_LETTER = {
+  A:'GCU',B:'UGU',C:'GAU',D:'GAA',E:'GAG',F:'UUU',
+  G:'GGU',H:'CAU',I:'AUU',J:'AAU',K:'AAA',L:'CUU',
+  M:'AUG',N:'AAU',O:'CAA',P:'CCU',Q:'CAG',R:'CGU',
+  S:'AGU',T:'ACU',U:'UGG',V:'GUU',W:'UGG',X:'GAU',
+  Y:'UAU',Z:'GCG'
+};
+
+var LETTER_FOR_CODON = {};
+for(var l in CODON_FOR_LETTER) LETTER_FOR_CODON[CODON_FOR_LETTER[l]] = l;
+
+var COMPLEMENT = {A:'T',T:'A',G:'C',C:'G'};
+var DNA_TO_MRNA = {A:'U',T:'A',G:'C',C:'G'};
+
+var currentWord = '';
+var templateStrand = [];
+var mrnaStrand = [];
+var currentPickedBase = '';
+var compFilled = {};
+var mrnaFilled = {};
+var stepsCompleted = 0;
+
+function switchChallenge(n) {
+  for(var i=1;i<=4;i++) {
+    document.getElementById('cp'+i).classList.toggle('active', i===n);
+    document.getElementById('ctab'+i).classList.toggle('active', i===n);
+  }
+  if(currentWord) buildStepDisplay(n);
+}
+
+function selectWord(w, btn) {
+  currentWord = w;
+  var bs = document.querySelectorAll('.ow-btn');
+  for(var i=0;i<bs.length;i++) bs[i].className='ow-btn';
+  btn.className='ow-btn on';
+  stepsCompleted = 0;
+  updateProgress();
+
+  // Build template strand: convert word to DNA template
+  templateStrand = [];
+  mrnaStrand = [];
+  for(var i=0;i<w.length;i++) {
+    var codon = CODON_FOR_LETTER[w[i]] || 'GCU';
+    // mRNA codon → template DNA (complement, U→T)
+    for(var j=0;j<codon.length;j++) {
+      var mBase = codon[j];
+      var tBase = (mBase==='U')?'A':(mBase==='A'?'T':mBase==='G'?'C':'G');
+      templateStrand.push(tBase);
+      mrnaStrand.push(mBase);
+    }
+  }
+  compFilled = {}; mrnaFilled = {};
+  buildStepDisplay(1);
+  document.getElementById('progressLabel').textContent = 'Working on: ' + w;
+}
+
+function buildStepDisplay(step) {
+  if(!currentWord) return;
+  if(step===1) buildStep1();
+  else if(step===2) buildStep2();
+  else if(step===3) buildStep3();
+  else if(step===4) buildStep4();
+}
+
+function buildStep1() {
+  var html = '';
+  for(var i=0;i<templateStrand.length;i++) {
+    html += '<div class="base-box b'+templateStrand[i]+'">'+templateStrand[i]+'</div>';
+    if((i+1)%3===0 && i<templateStrand.length-1) html += '<div style="width:8px;"></div>';
+  }
+  document.getElementById('templateStrand').innerHTML = html;
+
+  var inputHtml = '';
+  for(var i=0;i<templateStrand.length;i++) {
+    var filled = compFilled[i];
+    var cls = filled ? 'input-box filled-'+filled : 'input-box';
+    inputHtml += '<div class="'+cls+'" id="ci'+i+'" onclick="fillComp('+i+')">'+(filled||'?')+'</div>';
+    if((i+1)%3===0 && i<templateStrand.length-1) inputHtml += '<div style="width:8px;"></div>';
+  }
+  document.getElementById('compInputs').innerHTML = inputHtml;
+  document.getElementById('sd1').style.display='block';
+  document.getElementById('compResult').className='result';
+}
+
+function buildStep2() {
+  var compStrand = [];
+  for(var i=0;i<templateStrand.length;i++) compStrand.push(COMPLEMENT[templateStrand[i]]);
+
+  var html = '';
+  for(var i=0;i<compStrand.length;i++) {
+    html += '<div class="base-box b'+compStrand[i]+'">'+compStrand[i]+'</div>';
+    if((i+1)%3===0 && i<compStrand.length-1) html += '<div style="width:8px;"></div>';
+  }
+  document.getElementById('transcribeTemplate').innerHTML = html;
+
+  var inputHtml = '';
+  for(var i=0;i<mrnaStrand.length;i++) {
+    var filled = mrnaFilled[i];
+    var cls = filled ? 'input-box filled-'+filled : 'input-box';
+    inputHtml += '<div class="'+cls+'" id="mi'+i+'" onclick="fillMRNA('+i+')">'+(filled||'?')+'</div>';
+    if((i+1)%3===0 && i<mrnaStrand.length-1) inputHtml += '<div style="width:8px;"></div>';
+  }
+  document.getElementById('mrnaInputs').innerHTML = inputHtml;
+  document.getElementById('sd2').style.display='block';
+  document.getElementById('transResult').className='result';
+}
+
+function buildStep3() {
+  // Show codons
+  var codonHtml = '';
+  for(var i=0;i<currentWord.length;i++) {
+    var codon = CODON_FOR_LETTER[currentWord[i]] || 'GCU';
+    codonHtml += '<div class="aa-box">' +
+      '<span class="aa-codon">'+codon+'</span>' +
+      '<span class="aa-name">= ?</span>' +
+      '<input class="aa-input" id="ai'+i+'" maxlength="1" type="text" oninput="this.value=this.value.toUpperCase()" />' +
+    '</div>';
+  }
+  document.getElementById('codonDisplay').innerHTML = codonHtml;
+
+  // Build codon table
+  var tableHtml = '<table><tr><th>mRNA Codon</th><th>Letter</th><th>mRNA Codon</th><th>Letter</th><th>mRNA Codon</th><th>Letter</th></tr>';
+  var entries = Object.keys(CODON_FOR_LETTER);
+  var perCol = Math.ceil(entries.length / 3);
+  for(var r=0;r<perCol;r++) {
+    tableHtml += '<tr>';
+    for(var c=0;c<3;c++) {
+      var idx = c*perCol + r;
+      if(idx < entries.length) {
+        var letter = entries[idx];
+        var codon = CODON_FOR_LETTER[letter];
+        tableHtml += '<td id="ct'+codon+'">'+codon+'</td><td><strong>'+letter+'</strong></td>';
+      } else {
+        tableHtml += '<td></td><td></td>';
+      }
+    }
+    tableHtml += '</tr>';
+  }
+  tableHtml += '</table>';
+  document.getElementById('codonTable').innerHTML = tableHtml;
+  document.getElementById('sd3').style.display='block';
+  document.getElementById('translaResult').className='result';
+}
+
+function buildStep4() {
+  // Original mRNA
+  var origHtml = '';
+  for(var i=0;i<mrnaStrand.length;i++) {
+    origHtml += '<div class="base-box b'+mrnaStrand[i]+'">'+mrnaStrand[i]+'</div>';
+    if((i+1)%3===0 && i<mrnaStrand.length-1) origHtml += '<div style="width:8px;"></div>';
+  }
+  document.getElementById('origMRNA').innerHTML = origHtml;
+  document.getElementById('origWord').textContent = currentWord;
+
+  // Frameshift: delete position 3 (0-indexed)
+  var mutated = mrnaStrand.slice();
+  mutated.splice(3, 1); // delete base at position 4
+
+  var frameHtml = '';
+  for(var i=0;i<mutated.length;i++) {
+    var cls = i===3 ? 'base-box b'+mutated[i]+'" style="border:2px solid #D4537E' : 'base-box b'+mutated[i];
+    frameHtml += '<div class="'+cls+'">'+mutated[i]+'</div>';
+    if((i+1)%3===0 && i<mutated.length-1) frameHtml += '<div style="width:8px;"></div>';
+  }
+  document.getElementById('frameMRNA').innerHTML = frameHtml;
+
+  // New codons
+  var newCodons = [];
+  for(var i=0;i<mutated.length-2;i+=3) {
+    newCodons.push(mutated[i]+mutated[i+1]+mutated[i+2]);
+  }
+  document.getElementById('framecodons').textContent = newCodons.join(' | ');
+
+  // Decode new codons to letters
+  var frameWord = '';
+  for(var i=0;i<newCodons.length;i++) {
+    frameWord += LETTER_FOR_CODON[newCodons[i]] || '?';
+  }
+
+  var inputHtml = '';
+  for(var i=0;i<newCodons.length;i++) {
+    inputHtml += '<input id="fi'+i+'" maxlength="1" type="text" oninput="this.value=this.value.toUpperCase()" style="width:38px;height:38px;background:#0a0a14;border:1.5px solid #2a1a3a;border-radius:6px;text-align:center;font-family:Fredoka One,cursive;font-size:16px;color:#fff;outline:none;" />';
+  }
+  document.getElementById('frameDecodeInputs').innerHTML = inputHtml;
+  document.getElementById('sd4').setAttribute('data-frameword', frameWord);
+  document.getElementById('sd4').style.display='block';
+  document.getElementById('frameResult').className='result';
+}
+
+function pickBase(b, btn) {
+  currentPickedBase = b;
+  var pbs = document.querySelectorAll('.bpick');
+  for(var i=0;i<pbs.length;i++) pbs[i].classList.remove('active');
+  btn.classList.add('active');
+}
+
+function fillComp(idx) {
+  if(!currentPickedBase) return;
+  compFilled[idx] = currentPickedBase;
+  var el = document.getElementById('ci'+idx);
+  el.className = 'input-box filled-'+currentPickedBase;
+  el.textContent = currentPickedBase;
+}
+
+function fillMRNA(idx) {
+  if(!currentPickedBase) return;
+  mrnaFilled[idx] = currentPickedBase;
+  var el = document.getElementById('mi'+idx);
+  el.className = 'input-box filled-'+currentPickedBase;
+  el.textContent = currentPickedBase;
+}
+
+function checkComp() {
+  var correct = true;
+  for(var i=0;i<templateStrand.length;i++) {
+    var expected = COMPLEMENT[templateStrand[i]];
+    var filled = compFilled[i];
+    var el = document.getElementById('ci'+i);
+    if(filled === expected) {
+      el.classList.add('correct');
+    } else {
+      el.classList.add('wrong');
+      correct = false;
+    }
+  }
+  var r = document.getElementById('compResult');
+  r.className = 'result show '+(correct?'correct':'wrong');
+  document.getElementById('compEmoji').textContent = correct?'\u{1F9EC}':'\u{1F4A1}';
+  document.getElementById('compTitle').textContent = correct?'Perfect complementary strand!':'Check the highlighted bases.';
+  document.getElementById('compText').textContent = correct?
+    'You correctly applied base pairing rules: A-T and G-C. This is exactly how DNA replication works \u2014 each strand serves as a template for building a new complementary strand.' :
+    'Remember: A pairs with T, T pairs with A, G pairs with C, C pairs with G. Check the red positions.';
+  if(correct) { document.getElementById('compNext').style.display='inline-block'; stepsCompleted=Math.max(stepsCompleted,1); updateProgress(); }
+}
+
+function checkTranscription() {
+  var correct = true;
+  for(var i=0;i<mrnaStrand.length;i++) {
+    var expected = mrnaStrand[i];
+    var filled = mrnaFilled[i];
+    var el = document.getElementById('mi'+i);
+    if(filled === expected) { el.classList.add('correct'); }
+    else { el.classList.add('wrong'); correct = false; }
+  }
+  var r = document.getElementById('transResult');
+  r.className = 'result show '+(correct?'correct':'wrong');
+  document.getElementById('transEmoji').textContent = correct?'\u{1F9EC}':'\u{1F4A1}';
+  document.getElementById('transTitle').textContent = correct?'Perfect mRNA strand!':'Check the highlighted bases.';
+  document.getElementById('transText').textContent = correct?
+    'You transcribed the DNA template to mRNA correctly. Note that RNA uses Uracil (U) instead of Thymine (T). This is because RNA is single-stranded and does not need the same stability as double-stranded DNA.' :
+    'RNA polymerase reads the template strand and builds the mRNA. Remember: T in the template becomes A in mRNA, A becomes U, G becomes C, C becomes G.';
+  if(correct) { document.getElementById('transNext').style.display='inline-block'; stepsCompleted=Math.max(stepsCompleted,2); updateProgress(); }
+}
+
+function checkTranslation() {
+  var correct = true;
+  for(var i=0;i<currentWord.length;i++) {
+    var inp = document.getElementById('ai'+i);
+    var codon = CODON_FOR_LETTER[currentWord[i]];
+    var el = document.getElementById('ct'+codon);
+    if(inp && inp.value.toUpperCase() === currentWord[i]) {
+      inp.style.borderColor='#4caf82'; inp.style.color='#4caf82';
+      if(el) el.classList.add('codon-highlight');
+    } else {
+      inp.style.borderColor='#D4537E'; inp.style.color='#D4537E';
+      correct = false;
+    }
+  }
+  var r = document.getElementById('translaResult');
+  r.className = 'result show '+(correct?'correct':'wrong');
+  document.getElementById('translaEmoji').textContent = correct?'\u{1F389}':'\u{1F4A1}';
+  document.getElementById('translaTitle').textContent = correct?'You decoded the hidden word: '+currentWord+'!':'Some letters are wrong \u2014 check the codon table.';
+  document.getElementById('translaText').textContent = correct?
+    'This is the Central Dogma of Molecular Biology: DNA \u2192 mRNA \u2192 Protein. Every protein in every living thing on Earth is made this way. You just followed the same path as a ribosome!' :
+    'Use the codon table to look up each 3-letter mRNA codon. Each codon maps to exactly one letter. The real genetic code uses codons to specify amino acids \u2014 same principle!';
+  if(correct) { document.getElementById('translaNext').style.display='inline-block'; stepsCompleted=Math.max(stepsCompleted,3); updateProgress(); }
+}
+
+function checkFrameshift() {
+  var frameWord = document.getElementById('sd4').getAttribute('data-frameword');
+  var correct = true;
+  for(var i=0;i<frameWord.length;i++) {
+    var inp = document.getElementById('fi'+i);
+    if(inp) {
+      if(inp.value.toUpperCase()===frameWord[i]) { inp.style.borderColor='#4caf82'; inp.style.color='#4caf82'; }
+      else { inp.style.borderColor='#D4537E'; inp.style.color='#D4537E'; correct=false; }
+    }
+  }
+  var r = document.getElementById('frameResult');
+  r.className = 'result show '+(correct?'correct':'wrong');
+  document.getElementById('frameEmoji').textContent = correct?'\u{1F92F}':'\u{1F4A1}';
+  document.getElementById('frameTitle').textContent = correct?'You decoded the mutated strand!':'Check your answers \u2014 use the codon table!';
+  document.getElementById('frameText').textContent = correct?
+    'The original word was "'+currentWord+'" but after deleting just ONE base, the entire message changed to "'+frameWord+'". This is a frameshift mutation. In real biology, a frameshift mutation changes EVERY codon after the deletion point, producing a completely different protein \u2014 or no protein at all. One base. Enormous consequences.' :
+    'Use the codon table to decode each new 3-letter codon. The frameshift changes every codon after the deletion point.';
+  if(correct) { stepsCompleted=4; updateProgress(); }
+}
+
+function updateProgress() {
+  var pct = (stepsCompleted/4)*100;
+  document.getElementById('progressFill').style.width = pct+'%';
+  if(stepsCompleted===4) document.getElementById('progressLabel').textContent = 'All 4 steps complete! Central Dogma mastered \u2014 '+currentWord+'!';
+  else if(stepsCompleted>0) document.getElementById('progressLabel').textContent = stepsCompleted+' of 4 steps complete';
+}
+</script>
+</body>
+</html>
