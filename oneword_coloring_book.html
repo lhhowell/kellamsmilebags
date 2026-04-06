@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OneWord Coloring Book · Word &amp; Wonder</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #fdf7ee;
+  --warm: #f0e0c0;
+  --paper: #faf4e8;
+  --brown: #7a4f2d;
+  --dark: #3b2510;
+  --accent: #e07a52;
+  --accent2: #6abbe8;
+  --green: #6ab87a;
+  --gold: #c8923a;
+  --shadow: rgba(59,37,16,0.22);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: #c9a87a;
+  background-image: repeating-linear-gradient(
+    45deg, transparent, transparent 40px,
+    rgba(255,255,255,0.04) 40px, rgba(255,255,255,0.04) 80px
+  );
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Nunito', sans-serif;
+  padding: 0 0 40px;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+header {
+  width: 100%;
+  background: var(--dark);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+header .logo {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.5rem;
+  color: #f5d090;
+  letter-spacing: 0.03em;
+}
+header .logo span { color: var(--accent); }
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.word-select, .set-select {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  background: rgba(255,255,255,0.12);
+  color: #f5d090;
+  border: 1.5px solid rgba(245,208,144,0.3);
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  outline: none;
+  transition: background 0.2s;
+}
+.word-select:hover, .set-select:hover { background: rgba(255,255,255,0.2); }
+.word-select option, .set-select option { background: var(--dark); color: #f5d090; }
+
+.btn-print {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.88rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-print:hover { background: #c8633b; transform: translateY(-1px); }
+.btn-print:active { transform: translateY(0); }
+
+/* ── BOOK STAGE ── */
+.stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+  padding: 36px 16px 20px;
+}
+
+.nav-btn {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--dark);
+  border: 3px solid var(--gold);
+  color: #f5d090;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.18s, transform 0.12s;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.28);
+  user-select: none;
+}
+.nav-btn:hover { background: #5a3218; transform: scale(1.07); }
+.nav-btn:active { transform: scale(0.95); }
+.nav-btn:disabled { opacity: 0.3; cursor: default; transform: none; }
+
+/* ── BOOK CONTAINER ── */
+.book-wrap {
+  perspective: 1400px;
+  position: relative;
+}
+
+.book {
+  width: 380px;
+  height: 520px;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.book::before {
+  content: '';
+  position: absolute;
+  left: -10px; top: 0;
+  width: 18px; height: 100%;
+  background: linear-gradient(to right, #5a3218, #8b6040, #5a3218);
+  border-radius: 4px 0 0 4px;
+  box-shadow: -3px 0 12px rgba(0,0,0,0.4);
+  z-index: 5;
+}
+
+.book::after {
+  content: '';
+  position: absolute;
+  right: -6px; top: 3px;
+  width: 6px; height: calc(100% - 6px);
+  background: repeating-linear-gradient(
+    to bottom, #e8dcc8 0px, #d4c8b0 2px, #e8dcc8 3px
+  );
+  border-radius: 0 2px 2px 0;
+}
+
+.page-slot {
+  position: absolute;
+  inset: 0;
+  border-radius: 0 8px 8px 0;
+  overflow: hidden;
+  box-shadow:
+    4px 4px 20px rgba(0,0,0,0.3),
+    8px 8px 40px rgba(0,0,0,0.15),
+    inset 0 0 0 1px rgba(0,0,0,0.06);
+  background: #fff;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.page-slot.flipping-out {
+  animation: flipOut 0.38s cubic-bezier(.4,0,.6,1) forwards;
+  transform-origin: left center;
+}
+.page-slot.flipping-in {
+  animation: flipIn 0.38s cubic-bezier(.4,0,.6,1) forwards;
+  transform-origin: left center;
+}
+.page-slot.flipping-out-back {
+  animation: flipOutBack 0.38s cubic-bezier(.4,0,.6,1) forwards;
+  transform-origin: left center;
+}
+.page-slot.flipping-in-back {
+  animation: flipInBack 0.38s cubic-bezier(.4,0,.6,1) forwards;
+  transform-origin: left center;
+}
+
+@keyframes flipOut {
+  0% { transform: perspective(1400px) rotateY(0deg); opacity:1; }
+  100% { transform: perspective(1400px) rotateY(-90deg); opacity:0; }
+}
+@keyframes flipIn {
+  0% { transform: perspective(1400px) rotateY(90deg); opacity:0; }
+  100% { transform: perspective(1400px) rotateY(0deg); opacity:1; }
+}
+@keyframes flipOutBack {
+  0% { transform: perspective(1400px) rotateY(0deg); opacity:1; }
+  100% { transform: perspective(1400px) rotateY(90deg); opacity:0; }
+}
+@keyframes flipInBack {
+  0% { transform: perspective(1400px) rotateY(-90deg); opacity:0; }
+  100% { transform: perspective(1400px) rotateY(0deg); opacity:1; }
+}
+
+/* ── COVER PAGE ── */
+.cover-content {
+  width: 100%; height: 100%;
+  background: linear-gradient(160deg, #3b2510 0%, #6b3f20 40%, #8b5a30 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.cover-content::before {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border: 2.5px solid rgba(245,208,144,0.35);
+  border-radius: 4px;
+  pointer-events: none;
+}
+.cover-content::after {
+  content: '';
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(245,208,144,0.18);
+  border-radius: 3px;
+  pointer-events: none;
+}
+.cover-star { font-size: 2rem; margin-bottom: 8px; }
+.cover-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 2.6rem;
+  color: #f5d090;
+  text-align: center;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+.cover-title span { color: var(--accent); }
+.cover-sub {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgba(245,208,144,0.7);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-top: 12px;
+  text-align: center;
+}
+.cover-divider {
+  width: 80px; height: 2px;
+  background: linear-gradient(to right, transparent, #f5d090, transparent);
+  margin: 16px auto;
+}
+.cover-sets {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0;
+  width: 100%;
+  padding: 0 20px;
+}
+.cover-set-item {
+  font-size: 0.72rem;
+  color: rgba(245,208,144,0.65);
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+.cover-count {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem;
+  color: var(--accent);
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+.cover-badge {
+  margin-top: 14px;
+  background: rgba(245,208,144,0.12);
+  border: 1.5px solid rgba(245,208,144,0.3);
+  border-radius: 20px;
+  padding: 5px 16px;
+  font-size: 0.78rem;
+  color: rgba(245,208,144,0.8);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+/* ── COLORING PAGE ── */
+.coloring-page {
+  width: 100%; height: 100%;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.coloring-page img {
+  width: 100%;
+  flex: 1;
+  object-fit: contain;
+  display: block;
+  padding: 6px 6px 0;
+  min-height: 0;
+}
+.page-label {
+  background: var(--dark);
+  color: #f5d090;
+  text-align: center;
+  padding: 4px 8px 2px;
+  flex-shrink: 0;
+}
+.page-label-word {
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+}
+.page-label-set {
+  font-size: 0.7rem;
+  color: rgba(245,208,144,0.8);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+.page-label-credit {
+  font-size: 0.6rem;
+  color: rgba(245,208,144,0.45);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  font-style: italic;
+}
+
+/* ── PAGE COUNTER ── */
+.page-counter {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--dark);
+  background: rgba(255,255,255,0.6);
+  padding: 4px 14px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+}
+
+/* ── THUMBNAIL STRIP ── */
+.thumb-section {
+  width: 100%;
+  max-width: 900px;
+  padding: 0 20px;
+}
+.thumb-label {
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.9rem;
+  color: var(--dark);
+  margin-bottom: 8px;
+  letter-spacing: 0.06em;
+  opacity: 0.75;
+}
+.thumb-scroll {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 8px 4px 12px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--brown) transparent;
+}
+.thumb-scroll::-webkit-scrollbar { height: 5px; }
+.thumb-scroll::-webkit-scrollbar-thumb { background: var(--brown); border-radius: 3px; }
+
+.thumb-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.thumb-word {
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.65rem;
+  color: var(--dark);
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+.thumb-pages { display: flex; gap: 3px; }
+
+.thumb {
+  width: 44px; height: 58px;
+  border-radius: 3px;
+  border: 2px solid rgba(59,37,16,0.18);
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  background: #fff;
+  transition: border-color 0.18s, transform 0.15s, box-shadow 0.15s;
+  flex-shrink: 0;
+}
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb:hover { transform: translateY(-3px); box-shadow: 0 6px 14px rgba(0,0,0,0.22); }
+.cover-thumb {
+  background: linear-gradient(160deg, #3b2510, #8b5a30);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.52rem;
+  color: #f5d090;
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+}
+.thumb.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 4px 12px rgba(224,122,82,0.35);
+}
+.thumb-num {
+  position: absolute;
+  bottom: 2px; right: 3px;
+  font-size: 0.48rem;
+  font-weight: 800;
+  color: rgba(0,0,0,0.3);
+}
+.thumb-set-dot {
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+}
+
+/* ── SEPARATOR ── */
+.word-sep {
+  width: 1px;
+  height: 70px;
+  background: rgba(59,37,16,0.2);
+  align-self: flex-end;
+  flex-shrink: 0;
+}
+
+/* ── SET COLOR DOTS ── */
+.dot-A    { background: #6abbe8; }
+.dot-B    { background: #6ab87a; }
+.dot-Card { background: #c8923a; }
+.dot-D    { background: #9b6abf; }
+.dot-F    { background: #e07a52; }
+
+/* ── PRINT STYLES ── */
+@media print {
+  body { background: white !important; padding: 0 !important; }
+  header, .stage .nav-btn, .thumb-section, .page-counter,
+  .book::before, .book::after { display: none !important; }
+  .stage { padding: 0 !important; }
+  .book-wrap, .book, .page-slot {
+    width: 100vw !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  .cover-content { display: none !important; }
+  .coloring-page { height: 100vh; }
+  .coloring-page img {
+    width: 100% !important;
+    height: calc(100vh - 48px) !important;
+    object-fit: contain !important;
+    padding: 12px 12px 0 !important;
+  }
+  .page-label { position: fixed; bottom: 0; left: 0; right: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">OneWord <span>Coloring Book</span></div>
+  <div class="header-controls">
+    <select class="set-select" id="setFilter" onchange="filterSet(this.value)">
+      <option value="">— All Sets —</option>
+      <option value="A">Set A · Scenic (ChatGPT)</option>
+      <option value="B">Set B · Cartoon (CoPilot)</option>
+      <option value="Card">Card Style · Woodcut (CoPilot)</option>
+      <option value="D">Set D · Artistic (CoPilot · Gemini)</option>
+      <option value="F">Set F · K-4 Icon (ChatGPT)</option>
+    </select>
+    <select class="word-select" id="wordJump" onchange="jumpToWord(this.value)">
+      <option value="">— Jump to Word —</option>
+    </select>
+    <button class="btn-print" onclick="printPage()">🖨️ Print This Page</button>
+  </div>
+</header>
+
+<!-- BOOK STAGE -->
+<div class="stage">
+  <button class="nav-btn" id="prevBtn" onclick="navigate(-1)" disabled>&#8592;</button>
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+    <div class="book-wrap">
+      <div class="book">
+        <div class="page-slot" id="pageSlot"></div>
+      </div>
+    </div>
+    <div class="page-counter" id="pageCounter">Cover &nbsp;·&nbsp; 1 of 121</div>
+  </div>
+
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">&#8594;</button>
+</div>
+
+<!-- THUMBNAILS -->
+<div class="thumb-section">
+  <div class="thumb-label">All Pages</div>
+  <div class="thumb-scroll" id="thumbStrip"></div>
+</div>
+
+<script>
+// ─────────────────────────────
+//  SET DEFINITIONS
+// ─────────────────────────────
+const SETS = [
+  { key: 'A',    label: 'Set A · Scenic',        credit: 'Generated with ChatGPT',          dotClass: 'dot-A',    src: w => `${w.toLowerCase()}.png` },
+  { key: 'B',    label: 'Set B · Cartoon',        credit: 'Generated with CoPilot',           dotClass: 'dot-B',    src: w => `SetB_${w}.png` },
+  { key: 'Card', label: 'Card Style · Woodcut',   credit: 'Generated with CoPilot',           dotClass: 'dot-Card', src: w => `Card_${w}.png` },
+  { key: 'D',    label: 'Set D · Artistic',       credit: 'Generated with CoPilot · Gemini',  dotClass: 'dot-D',    src: w => `SetD_${w}.png` },
+  { key: 'F',    label: 'Set F · K-4 Icon',       credit: 'Generated with ChatGPT',           dotClass: 'dot-F',    src: w => `SetF_${w}.png` }
+];
+
+// ─────────────────────────────
+//  WORD LIST
+// ─────────────────────────────
+const WORD_LIST = [
+  'Absorb','Adapt','Anchor','Balance','Bloom','Breathe',
+  'Clear','Connect','Cycle','Emerge','Filter','Flow',
+  'Grow','Heal','Migrate','Persist','Renew','Restore',
+  'Return','Rise','Root','Shine','Sustain','Thrive','Transform'
+];
+
+// ─────────────────────────────
+//  BUILD MASTER PAGES ARRAY
+// ─────────────────────────────
+// Each word gets one page per set (5 pages per word)
+// Total: 1 cover + 24 words × 5 sets = 121 pages
+let activeSetFilter = ''; // '' = all sets
+
+function buildWords(setFilter) {
+  return WORD_LIST.map(w => {
+    const sets = setFilter ? SETS.filter(s => s.key === setFilter) : SETS;
+    return {
+      word: w,
+      pages: sets.map(s => ({
+        src: s.src(w),
+        setKey: s.key,
+        setLabel: s.label,
+        credit: s.credit,
+        dotClass: s.dotClass
+      }))
+    };
+  });
+}
+
+let words = buildWords('');
+
+function buildAllPages() {
+  const pages = [{ type: 'cover' }];
+  words.forEach(w => {
+    w.pages.forEach((p, i) => {
+      pages.push({
+        type: 'coloring',
+        word: w.word,
+        src: p.src,
+        setKey: p.setKey,
+        setLabel: p.setLabel,
+        credit: p.credit,
+        dotClass: p.dotClass,
+        num: i + 1,
+        total: w.pages.length
+      });
+    });
+  });
+  return pages;
+}
+
+let allPages = buildAllPages();
+let currentIndex = 0;
+let animating = false;
+
+// ─────────────────────────────
+//  RENDER
+// ─────────────────────────────
+function renderPage(index) {
+  const page = allPages[index];
+  const slot = document.getElementById('pageSlot');
+
+  if (page.type === 'cover') {
+    const totalPages = allPages.length - 1;
+    slot.innerHTML = `
+      <div class="cover-content">
+        <div class="cover-star">✦</div>
+        <div class="cover-title">OneWord<br><span>Coloring</span><br>Book</div>
+        <div class="cover-divider"></div>
+        <div class="cover-sub">Word &amp; Wonder</div>
+        <div class="cover-sets">
+          <div class="cover-set-item">Set A · Scenic &nbsp;·&nbsp; ChatGPT</div>
+          <div class="cover-set-item">Set B · Cartoon &nbsp;·&nbsp; CoPilot</div>
+          <div class="cover-set-item">Card Style · Woodcut &nbsp;·&nbsp; CoPilot</div>
+          <div class="cover-set-item">Set D · Artistic &nbsp;·&nbsp; CoPilot · Gemini</div>
+          <div class="cover-set-item">Set F · K-4 Icon &nbsp;·&nbsp; ChatGPT</div>
+        </div>
+        <div class="cover-count">${totalPages} Coloring Pages · 24 OneWords</div>
+        <div class="cover-badge">Print · Color · Explore</div>
+      </div>`;
+  } else {
+    slot.innerHTML = `
+      <div class="coloring-page">
+        <img src="${page.src}" alt="${page.word} — ${page.setLabel}" />
+        <div class="page-label">
+          <div class="page-label-word">${page.word.toUpperCase()}</div>
+          <div class="page-label-set">${page.setLabel}</div>
+          <div class="page-label-credit">${page.credit} &nbsp;·&nbsp; Smile Bags · Word &amp; Wonder · Spring 2026</div>
+        </div>
+      </div>`;
+  }
+
+  // Counter
+  const label = page.type === 'cover'
+    ? `Cover &nbsp;·&nbsp; Page 1 of ${allPages.length}`
+    : `${page.word.toUpperCase()} — ${page.setLabel} &nbsp;·&nbsp; Page ${index + 1} of ${allPages.length}`;
+  document.getElementById('pageCounter').innerHTML = label;
+
+  // Buttons
+  document.getElementById('prevBtn').disabled = index === 0;
+  document.getElementById('nextBtn').disabled = index === allPages.length - 1;
+
+  // Thumbnails
+  document.querySelectorAll('.thumb').forEach((t, i) => {
+    t.classList.toggle('active', i === index);
+    if (i === index) t.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+  });
+}
+
+// ─────────────────────────────
+//  NAVIGATION
+// ─────────────────────────────
+function navigate(dir) {
+  if (animating) return;
+  const next = currentIndex + dir;
+  if (next < 0 || next >= allPages.length) return;
+
+  animating = true;
+  const slot = document.getElementById('pageSlot');
+  const outClass = dir > 0 ? 'flipping-out' : 'flipping-out-back';
+  const inClass  = dir > 0 ? 'flipping-in'  : 'flipping-in-back';
+
+  slot.classList.add(outClass);
+  setTimeout(() => {
+    slot.classList.remove(outClass);
+    currentIndex = next;
+    renderPage(currentIndex);
+    slot.classList.add(inClass);
+    setTimeout(() => { slot.classList.remove(inClass); animating = false; }, 380);
+  }, 380);
+}
+
+function goToPage(index) {
+  if (animating || index === currentIndex) return;
+  const dir = index > currentIndex ? 1 : -1;
+  animating = true;
+  const slot = document.getElementById('pageSlot');
+  const outClass = dir > 0 ? 'flipping-out' : 'flipping-out-back';
+  const inClass  = dir > 0 ? 'flipping-in'  : 'flipping-in-back';
+
+  slot.classList.add(outClass);
+  setTimeout(() => {
+    slot.classList.remove(outClass);
+    currentIndex = index;
+    renderPage(currentIndex);
+    slot.classList.add(inClass);
+    setTimeout(() => { slot.classList.remove(inClass); animating = false; }, 380);
+  }, 380);
+}
+
+function jumpToWord(word) {
+  if (!word) return;
+  const idx = allPages.findIndex(p => p.type === 'coloring' && p.word === word);
+  if (idx !== -1) goToPage(idx);
+  document.getElementById('wordJump').value = '';
+}
+
+function filterSet(setKey) {
+  activeSetFilter = setKey;
+  words = buildWords(setKey);
+  allPages = buildAllPages();
+  currentIndex = 0;
+  buildUI();
+  renderPage(0);
+}
+
+function printPage() {
+  window.print();
+}
+
+// ─────────────────────────────
+//  BUILD THUMBNAILS & JUMP MENU
+// ─────────────────────────────
+function buildUI() {
+  const strip = document.getElementById('thumbStrip');
+  const select = document.getElementById('wordJump');
+  strip.innerHTML = '';
+  select.innerHTML = '<option value="">— Jump to Word —</option>';
+
+  // Cover thumb
+  const coverGroup = document.createElement('div');
+  coverGroup.className = 'thumb-group';
+  const coverPages = document.createElement('div');
+  coverPages.className = 'thumb-pages';
+  const coverThumb = document.createElement('div');
+  coverThumb.className = 'thumb cover-thumb active';
+  coverThumb.innerHTML = '<span>ONE<br>WORD</span>';
+  coverThumb.onclick = () => goToPage(0);
+  coverPages.appendChild(coverThumb);
+  coverGroup.appendChild(coverPages);
+  strip.appendChild(coverGroup);
+
+  let pageIdx = 1;
+  words.forEach((w, wi) => {
+    if (wi > 0) {
+      const sep = document.createElement('div');
+      sep.className = 'word-sep';
+      strip.appendChild(sep);
+    }
+
+    const group = document.createElement('div');
+    group.className = 'thumb-group';
+
+    const wordLabel = document.createElement('div');
+    wordLabel.className = 'thumb-word';
+    wordLabel.textContent = w.word;
+    group.appendChild(wordLabel);
+
+    const pagesRow = document.createElement('div');
+    pagesRow.className = 'thumb-pages';
+
+    w.pages.forEach((p, pi) => {
+      const thumb = document.createElement('div');
+      thumb.className = 'thumb';
+      thumb.setAttribute('data-idx', pageIdx);
+      const dot = `<span class="thumb-set-dot ${p.dotClass}"></span>`;
+      thumb.innerHTML = `${dot}<img src="${p.src}" alt="${w.word} ${p.setKey}" loading="lazy"><span class="thumb-num">${p.setKey}</span>`;
+      const capturedIdx = pageIdx;
+      thumb.onclick = () => goToPage(capturedIdx);
+      pagesRow.appendChild(thumb);
+      pageIdx++;
+    });
+
+    group.appendChild(pagesRow);
+    strip.appendChild(group);
+
+    const opt = document.createElement('option');
+    opt.value = w.word;
+    opt.textContent = w.word;
+    select.appendChild(opt);
+  });
+}
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   navigate(-1);
+});
+
+// Init
+buildUI();
+renderPage(0);
+</script>
+</body>
+</html>
