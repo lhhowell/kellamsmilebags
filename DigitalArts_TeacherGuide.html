@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Arts · Teacher Guide · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1a2e;
+  --paper: #faf8f3;
+  --cream: #f0ead8;
+  --gold: #c8923a;
+  --gold-light: #f5d090;
+  --teal: #2a7c6f;
+  --teal-light: #d6eeea;
+  --navy: #1a237e;
+  --navy-light: #e8eaf6;
+  --shadow: rgba(26,26,46,0.12);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; }
+
+.site-header {
+  background: var(--navy);
+  padding: 18px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+}
+.header-logo { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: #e8eaf6; }
+.header-logo span { color: var(--gold-light); font-style: italic; }
+.header-badge {
+  background: var(--gold);
+  color: var(--ink);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+}
+
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, #2d3a8e 100%);
+  padding: 56px 32px 48px;
+  text-align: center;
+}
+.hero-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  opacity: 0.7;
+  margin-bottom: 12px;
+}
+.hero-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  color: #fff;
+  margin-bottom: 12px;
+  line-height: 1.15;
+}
+.hero-title em { color: var(--gold-light); font-style: italic; }
+.hero-sub {
+  font-size: 0.95rem;
+  color: rgba(232,234,246,0.7);
+  font-weight: 300;
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.main { max-width: 960px; margin: 0 auto; padding: 48px 32px 80px; }
+
+.section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.section-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.6rem;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+
+.at-a-glance {
+  background: var(--navy);
+  color: #e8eaf6;
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+}
+.glance-item { display: flex; flex-direction: column; gap: 4px; }
+.glance-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(232,234,246,0.5);
+}
+.glance-value { font-size: 0.95rem; color: var(--gold-light); font-weight: 500; }
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 12px var(--shadow);
+  border-left: 4px solid var(--gold);
+}
+.card-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem;
+  color: var(--ink);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.card-body { font-size: 0.9rem; color: #555; line-height: 1.7; }
+.card-body strong { color: var(--ink); }
+.card-body ul { padding-left: 20px; margin-top: 8px; }
+.card-body li { margin-bottom: 6px; }
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+.project-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 12px var(--shadow);
+  border-top: 4px solid var(--gold);
+}
+.project-card h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+.project-card p { font-size: 0.88rem; color: #555; line-height: 1.6; margin-bottom: 10px; }
+.spec-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.spec-tag {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.05em;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.sol-box {
+  background: var(--navy-light);
+  border-left: 4px solid var(--navy);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+.sol-box h4 {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+.sol-list { display: flex; flex-direction: column; gap: 6px; }
+.sol-item { font-size: 0.88rem; color: #444; line-height: 1.5; }
+.sol-code { font-family: 'Space Mono', monospace; font-size: 0.78rem; color: var(--navy); font-weight: 700; }
+
+hr.divider { border: none; border-top: 1px solid rgba(200,146,58,0.2); margin: 36px 0; }
+
+@media print {
+  .site-header { position: static; }
+  .card, .project-card { break-inside: avoid; }
+}
+@media (max-width: 600px) {
+  .main { padding: 32px 20px 60px; }
+  .hero { padding: 40px 20px 36px; }
+  .at-a-glance { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-logo">Digital Arts · <span>Teacher Guide</span></div>
+  <div class="header-badge">Teacher Reference · Spring 2026</div>
+</header>
+
+<div class="hero">
+  <div class="hero-eyebrow">Smile Bags · Word &amp; Wonder Experience</div>
+  <h1 class="hero-title">Digital Arts<br><em>Teacher Guide</em></h1>
+  <p class="hero-sub">Everything you need to implement the three Digital Arts Smile Bags projects with your students. The ITS has built all activity lessons — you implement.</p>
+</div>
+
+<main class="main">
+
+  <!-- AT A GLANCE -->
+  <div class="at-a-glance">
+    <div class="glance-item">
+      <span class="glance-label">Teacher</span>
+      <span class="glance-value">Kara Gau</span>
+    </div>
+    <div class="glance-item">
+      <span class="glance-label">Classes</span>
+      <span class="glance-value">Art I Foundations · Art I &amp; II Digital Media</span>
+    </div>
+    <div class="glance-item">
+      <span class="glance-label">Projects</span>
+      <span class="glance-value">Stencil Set · Jigsaw Puzzle · Mirror Design</span>
+    </div>
+    <div class="glance-item">
+      <span class="glance-label">Output</span>
+      <span class="glance-value">Printed cardstock · Cricut cut</span>
+    </div>
+    <div class="glance-item">
+      <span class="glance-label">Equipment</span>
+      <span class="glance-value">Computer · Cricut · Printer</span>
+    </div>
+    <div class="glance-item">
+      <span class="glance-label">Materials Cost</span>
+      <span class="glance-value">Cardstock only — near zero</span>
+    </div>
+  </div>
+
+  <!-- THREE PROJECTS -->
+  <div class="section-label">Three Projects</div>
+  <h2 class="section-title">What Students Create</h2>
+
+  <div class="project-grid">
+    <div class="project-card">
+      <h3>✂️ OneWord Stencil Set</h3>
+      <p>Students design their OneWord in bold letters + 2-3 matching icons. Cricut cuts the stencil set from cardstock. Goes in the bag with blank cardstock, crayons, and colored pencils.</p>
+      <div class="spec-row">
+        <span class="spec-tag">4×4 inch each stencil</span>
+        <span class="spec-tag">PDF or SVG export</span>
+        <span class="spec-tag">Cardstock weight: 65–80 lb</span>
+      </div>
+    </div>
+    <div class="project-card">
+      <h3>🧩 Jigsaw Puzzle</h3>
+      <p>Students create an original illustration inspired by their OneWord. Printed on cardstock and Cricut-cut into 9-12 puzzle pieces. Child assembles and colors it.</p>
+      <div class="spec-row">
+        <span class="spec-tag">5×7 inches</span>
+        <span class="spec-tag">300 DPI</span>
+        <span class="spec-tag">PDF or PNG export</span>
+        <span class="spec-tag">9–12 pieces</span>
+      </div>
+    </div>
+    <div class="project-card">
+      <h3>🪞 Mirror Design</h3>
+      <p>Students design a smile-themed circular illustration. Printed and adhered to the back of the 3D-printed acrylic mirror disc (from AP Environmental Science).</p>
+      <div class="spec-row">
+        <span class="spec-tag">3 inch diameter circle</span>
+        <span class="spec-tag">300 DPI</span>
+        <span class="spec-tag">PNG with transparent bg</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- WORKFLOW -->
+  <div class="section-label">Implementation</div>
+  <h2 class="section-title">Class Workflow</h2>
+
+  <div class="card">
+    <div class="card-title">📋 Before the Activity</div>
+    <div class="card-body">
+      <ul>
+        <li>Share the <strong>Student Guide link</strong> with students via Google Classroom or display on screen: <code>lhhowell.github.io/kellamsmilebags/DigitalArts_StudentGuide.html</code></li>
+        <li>Confirm <strong>Cricut is loaded</strong> with cardstock (65-80 lb weight recommended)</li>
+        <li>Ensure students have access to their preferred design tool — <strong>Canva, Adobe Express, or Illustrator</strong></li>
+        <li>Students choose their OneWord — no duplicates within a class if possible</li>
+        <li>Establish a <strong>shared Google Drive folder</strong> for file submissions, organized by project type</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🖥️ Student Design Phase (1–2 class periods)</div>
+    <div class="card-body">
+      <ul>
+        <li>Students follow the Student Guide step-by-step for their assigned project</li>
+        <li>Encourage <strong>sketchbook planning first</strong> before going digital — this aligns to AI.2 (creative process portfolio)</li>
+        <li>Circulate and check that designs have <strong>thick outlines and bold shapes</strong> — thin details won't cut cleanly on Cricut</li>
+        <li>For stencils: remind students to check that <strong>letter shapes are connected</strong> — open counters (the hole in O, A, B) need bridges or they fall out</li>
+        <li>For puzzle: check that designs are <strong>5×7 inches at 300 DPI</strong> before export</li>
+        <li>For mirror: check that designs are <strong>circular and 3 inches at 300 DPI</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📁 File Submission</div>
+    <div class="card-body">
+      <strong>Naming convention:</strong>
+      <ul>
+        <li>Stencil: <code>LastName_Word_Stencil.pdf</code></li>
+        <li>Puzzle: <code>LastName_Word_Puzzle.pdf</code> or <code>.png</code></li>
+        <li>Mirror: <code>LastName_Word_Mirror.png</code></li>
+      </ul>
+      <br>
+      Students submit to the shared Google Drive folder. You batch-send to Cricut for cutting.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">✂️ Cricut Cutting</div>
+    <div class="card-body">
+      <ul>
+        <li><strong>Stencils:</strong> Import SVG or PDF into Cricut Design Space. Use "Cut" setting. Cardstock 65-80 lb. Each student's set = word + 2-3 icons on one sheet</li>
+        <li><strong>Puzzle:</strong> Print first, then cut with Cricut using a jigsaw puzzle cut template in Design Space. Score lines before cutting</li>
+        <li><strong>Mirror:</strong> Print and trim with Cricut using circle cut — 3 inch diameter. Adhere to mirror back with double-sided tape</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- STANDARDS -->
+  <div class="section-label">Standards Alignment</div>
+  <h2 class="section-title">Virginia Visual Arts SOL · 2020</h2>
+
+  <div class="sol-box">
+    <h4>Art I Foundations &amp; Art I/II Digital Media and Design</h4>
+    <div class="sol-list">
+      <div class="sol-item"><span class="sol-code">AI.1</span> — Apply creative thinking to original artistic works; select media and incorporate elements of art and principles of design</div>
+      <div class="sol-item"><span class="sol-code">AI.2</span> — Creative process: brainstorm → sketch → plan → refine → reflect → portfolio</div>
+      <div class="sol-item"><span class="sol-code">AI.9</span> — Creative and design process relates to various careers and real-world problem solving</div>
+      <div class="sol-item"><span class="sol-code">AI.10</span> — Identify and explore technological developments and new media in the visual arts</div>
+      <div class="sol-item"><span class="sol-code">AI.15</span> — Exercise increasing skill and control in the use of media and techniques</div>
+      <div class="sol-item"><span class="sol-code">AI.16</span> — Use a variety of two-dimensional, three-dimensional, and contemporary media</div>
+      <div class="sol-item"><span class="sol-code">AII.1</span> — Select materials, media, and processes of personal interest to communicate ideas</div>
+      <div class="sol-item"><span class="sol-code">AII.7</span> — Identify ways that art can be used to address community needs ✅ <em>Core alignment</em></div>
+      <div class="sol-item"><span class="sol-code">AII.10</span> — Digital media and technology tools to create, edit, and present works of art ✅ <em>Core alignment</em></div>
+      <div class="sol-item"><span class="sol-code">AII.15</span> — Demonstrate proficiency, skill, and control in the use of media and techniques</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- FUTURE READY -->
+  <div class="card">
+    <div class="card-title">🎓 Future Ready Attributes</div>
+    <div class="card-body">
+      <strong>Problem Solvers &amp; Value Creators</strong> — Students design for a specific purpose, audience, and physical constraint<br><br>
+      <strong>Personally &amp; Socially Responsible</strong> — Every design is made in service of a child who needs encouragement<br><br>
+      <strong>Balanced Communicators &amp; Collaborators</strong> — Visual communication for a real audience with real impact
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📬 Questions?</div>
+    <div class="card-body">
+      Contact the ITS — Laura Howell — for student guide access, kiosk support, file submission questions, or Cricut coordination. All activity lessons are pre-built and ready to deploy.
+    </div>
+  </div>
+
+</main>
+</body>
+</html>

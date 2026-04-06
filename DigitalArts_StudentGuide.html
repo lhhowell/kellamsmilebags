@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Arts · OneWord Design Studio · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1a2e;
+  --paper: #faf8f3;
+  --cream: #f0ead8;
+  --gold: #c8923a;
+  --gold-light: #f5d090;
+  --teal: #2a7c6f;
+  --teal-light: #d6eeea;
+  --rose: #c25a5a;
+  --rose-light: #fde8e8;
+  --violet: #6b4f9e;
+  --violet-light: #ede4f7;
+  --shadow: rgba(26,26,46,0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* HEADER */
+.site-header {
+  background: var(--ink);
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+.header-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.header-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.4rem;
+  color: var(--gold-light);
+  letter-spacing: 0.01em;
+}
+.header-logo span { color: var(--gold); font-style: italic; }
+.header-meta {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: rgba(245,208,144,0.5);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, var(--ink) 0%, #2d1f0e 60%, #3d2a10 100%);
+  padding: 64px 32px 56px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(200,146,58,0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 30%, rgba(42,124,111,0.12) 0%, transparent 50%);
+}
+.hero-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+  position: relative;
+}
+.hero-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: var(--gold-light);
+  line-height: 1.1;
+  margin-bottom: 16px;
+  position: relative;
+}
+.hero-title em { color: var(--gold); font-style: italic; }
+.hero-sub {
+  font-size: 1rem;
+  color: rgba(245,208,144,0.65);
+  font-weight: 300;
+  max-width: 560px;
+  margin: 0 auto 36px;
+  line-height: 1.7;
+  position: relative;
+}
+
+/* PROJECT CARDS */
+.project-strip {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  position: relative;
+}
+.project-pill {
+  background: rgba(245,208,144,0.1);
+  border: 1.5px solid rgba(245,208,144,0.25);
+  color: var(--gold-light);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  padding: 8px 18px;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.project-pill:hover, .project-pill.active {
+  background: var(--gold);
+  color: var(--ink);
+  border-color: var(--gold);
+}
+
+/* MAIN */
+.main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 48px 32px 80px;
+}
+
+/* SECTION HEADING */
+.section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.section-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.section-sub {
+  font-size: 0.95rem;
+  color: #666;
+  font-weight: 300;
+  margin-bottom: 36px;
+  line-height: 1.6;
+}
+
+/* PROJECT PANEL */
+.project-panel { display: none; }
+.project-panel.active { display: block; animation: fadeUp 0.35s ease; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* STEPS */
+.steps { display: flex; flex-direction: column; gap: 20px; margin-bottom: 40px; }
+.step {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 20px;
+  align-items: start;
+  background: #fff;
+  border-radius: 12px;
+  padding: 22px 24px;
+  box-shadow: 0 2px 12px var(--shadow);
+  border-left: 4px solid var(--gold);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.step:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--shadow); }
+.step-num {
+  width: 48px; height: 48px;
+  background: var(--ink);
+  color: var(--gold-light);
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.4rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.step-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.step-body {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.65;
+}
+.step-body strong { color: var(--ink); font-weight: 600; }
+.step-tip {
+  margin-top: 10px;
+  background: var(--cream);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.82rem;
+  color: var(--gold);
+  font-family: 'Space Mono', monospace;
+  letter-spacing: 0.03em;
+}
+
+/* WORD PICKER */
+.word-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 8px;
+  margin: 16px 0 24px;
+}
+.word-btn {
+  background: var(--cream);
+  border: 1.5px solid rgba(200,146,58,0.2);
+  color: var(--ink);
+  font-family: 'DM Serif Display', serif;
+  font-size: 0.9rem;
+  padding: 10px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.18s;
+}
+.word-btn:hover, .word-btn.selected {
+  background: var(--gold);
+  color: #fff;
+  border-color: var(--gold);
+  transform: translateY(-1px);
+}
+
+/* ICON TABLE */
+.icon-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 24px;
+  font-size: 0.88rem;
+}
+.icon-table th {
+  background: var(--ink);
+  color: var(--gold-light);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  text-align: left;
+}
+.icon-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--cream);
+  color: #444;
+  vertical-align: middle;
+}
+.icon-table tr:hover td { background: var(--cream); }
+.icon-emoji { font-size: 1.3rem; }
+
+/* DELIVERABLE BOX */
+.deliverable {
+  background: var(--ink);
+  color: var(--gold-light);
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin: 32px 0;
+}
+.deliverable-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.2rem;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+.deliverable-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.deliverable-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: rgba(245,208,144,0.85);
+}
+.deliverable-icon { font-size: 1.2rem; flex-shrink: 0; }
+
+/* SOL TAGS */
+.sol-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+.sol-tag {
+  background: var(--teal-light);
+  color: var(--teal);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+/* DIVIDER */
+hr.gold { border: none; border-top: 1px solid rgba(200,146,58,0.2); margin: 40px 0; }
+
+@media (max-width: 600px) {
+  .main { padding: 32px 20px 60px; }
+  .hero { padding: 48px 20px 40px; }
+  .step { grid-template-columns: 1fr; }
+  .step-num { width: 36px; height: 36px; font-size: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-logo">Digital Arts · <span>OneWord Design Studio</span></div>
+    <div class="header-meta">Kara Gau · Art I Foundations · Art I & II Digital Media<br>Smile Bags · Word &amp; Wonder · Spring 2026</div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Smile Bags · Word &amp; Wonder Experience</div>
+  <h1 class="hero-title">Design <em>Something</em><br>That Matters</h1>
+  <p class="hero-sub">You'll choose one word, design a set of stencils and art pieces around it, and create a gift that a child you've never met will treasure.</p>
+  <div class="project-strip">
+    <div class="project-pill active" onclick="showProject('stencil')">✂️ Stencil Set</div>
+    <div class="project-pill" onclick="showProject('puzzle')">🧩 Jigsaw Puzzle</div>
+    <div class="project-pill" onclick="showProject('mirror')">🪞 Mirror Design</div>
+  </div>
+</div>
+
+<main class="main">
+
+  <!-- ── PROJECT 1: STENCIL SET ── -->
+  <div class="project-panel active" id="panel-stencil">
+    <div class="section-label">Project 1 of 3</div>
+    <h2 class="section-title">OneWord Stencil Set</h2>
+    <p class="section-sub">Design a set of cardstock stencils — your word + 2 or 3 matching icons. A child will use them with crayons and colored pencils to create their own artwork.</p>
+
+    <div class="sol-row">
+      <span class="sol-tag">AI.1 — Creative Thinking</span>
+      <span class="sol-tag">AI.2 — Creative Process</span>
+      <span class="sol-tag">AI.9 — Real-World Problem Solving</span>
+      <span class="sol-tag">AII.7 — Art for Community Needs</span>
+      <span class="sol-tag">AII.10 — Digital Tools</span>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">Choose Your OneWord</div>
+          <div class="step-body">Select one of the 24 shared OneWords. This word will be the theme of everything you design. Think about which word speaks to you — and which icons feel right for it.
+            <div class="step-tip">💡 Your word + icons need to feel connected. BLOOM → flower, butterfly, bee. ANCHOR → anchor, lighthouse, waves.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">Research Your Icons</div>
+          <div class="step-body">Look up the 2-3 icons assigned to your OneWord. Sketch simple, bold versions — stencils need <strong>thick outlines and no tiny details</strong> or they won't cut cleanly.
+            <div class="step-tip">💡 Think silhouette first. If you can recognize it as a shadow, it works as a stencil.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">Design Digitally</div>
+          <div class="step-body">Using <strong>Canva, Adobe Express, or Illustrator</strong>, create your stencil designs:
+            <br><br>• <strong>Word stencil</strong> — your OneWord in bold block letters, large enough to trace
+            <br>• <strong>2-3 icon stencils</strong> — simple, chunky shapes with thick outlines
+            <br><br>Each stencil should fit on a <strong>4×4 inch</strong> area of cardstock.
+            <div class="step-tip">💡 Use thick strokes — minimum 8pt outline weight. Thin lines won't cut cleanly.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">Submit Your File</div>
+          <div class="step-body">Export your design as a <strong>PDF or SVG file</strong> and submit to your teacher. Your teacher will send the file to the Cricut for cutting.
+            <div class="step-tip">💡 Name your file: YourLastName_OneWord_Stencil (e.g., Smith_Bloom_Stencil)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div>
+          <div class="step-title">Cricut Cuts — You're Done!</div>
+          <div class="step-body">The Cricut cuts your stencil set from cardstock. Your completed stencils go directly into a Smile Bag — along with a blank cardstock sheet, crayons, and colored pencils — for a child to use.
+            <div class="step-tip">🎉 A child will use YOUR design to make their own art. That's your gift.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="deliverable">
+      <div class="deliverable-title">✦ What Goes in the Smile Bag</div>
+      <div class="deliverable-items">
+        <div class="deliverable-item"><span class="deliverable-icon">✂️</span> Your word stencil — cut from cardstock</div>
+        <div class="deliverable-item"><span class="deliverable-icon">✂️</span> 2–3 icon stencils — cut from cardstock</div>
+        <div class="deliverable-item"><span class="deliverable-icon">📄</span> One blank cardstock sheet</div>
+        <div class="deliverable-item"><span class="deliverable-icon">🖍️</span> Crayons (provided by project)</div>
+        <div class="deliverable-item"><span class="deliverable-icon">✏️</span> Colored pencils (provided by project)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PROJECT 2: JIGSAW PUZZLE ── -->
+  <div class="project-panel" id="panel-puzzle">
+    <div class="section-label">Project 2 of 3</div>
+    <h2 class="section-title">OneWord Jigsaw Puzzle</h2>
+    <p class="section-sub">Design an original illustration inspired by your OneWord. It will be printed on cardstock and cut into puzzle pieces by the Cricut — a unique, handmade puzzle in every Smile Bag.</p>
+
+    <div class="sol-row">
+      <span class="sol-tag">AI.1 — Creative Thinking</span>
+      <span class="sol-tag">AI.2 — Creative Process</span>
+      <span class="sol-tag">AI.16 — Contemporary Media</span>
+      <span class="sol-tag">AII.7 — Art for Community Needs</span>
+      <span class="sol-tag">AII.10 — Digital Tools</span>
+      <span class="sol-tag">AII.15 — Proficiency in Media</span>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">Choose Your OneWord</div>
+          <div class="step-body">Select your OneWord. Your puzzle illustration should <strong>tell the story of that word</strong> — think about what scene, character, or idea represents it best for a child aged 5–12.
+            <div class="step-tip">💡 Simple and bold works better than complex. This will be cut into pieces — strong shapes read better than fine detail.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">Sketch Your Concept</div>
+          <div class="step-body">Before going digital, sketch 2-3 thumbnail ideas. Think about:
+            <br><br>• A central character or image (animal, plant, person, object)
+            <br>• A simple background
+            <br>• Your OneWord somewhere in the design
+            <div class="step-tip">💡 Record your sketches in your sketchbook/journal — this is part of your creative process portfolio (AI.2h).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">Create Your Digital Illustration</div>
+          <div class="step-body">Using <strong>Canva, Adobe Express, Procreate, or Illustrator</strong>, create your puzzle illustration at exactly <strong>5×7 inches, 300 DPI</strong>.
+            <br><br>• Use bold colors and strong contrast
+            <br>• Include your OneWord in the design
+            <br>• Keep details simple — this will be cut into 9–12 pieces
+            <div class="step-tip">💡 Imagine the puzzle assembled — does it look complete and beautiful? That's your goal.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">Submit Your File</div>
+          <div class="step-body">Export as <strong>PDF or high-resolution PNG</strong> and submit to your teacher.
+            <div class="step-tip">💡 Name your file: YourLastName_OneWord_Puzzle (e.g., Jones_Transform_Puzzle)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div>
+          <div class="step-title">Print · Cut · Into the Bag!</div>
+          <div class="step-body">Your design is printed on cardstock and the Cricut cuts it into puzzle pieces. A child will assemble YOUR illustration — then color it, display it, or keep it.
+            <div class="step-tip">🎉 Every piece of that puzzle was designed by you.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="deliverable">
+      <div class="deliverable-title">✦ What Goes in the Smile Bag</div>
+      <div class="deliverable-items">
+        <div class="deliverable-item"><span class="deliverable-icon">🧩</span> Your original illustration — printed on cardstock, cut into 9–12 puzzle pieces</div>
+        <div class="deliverable-item"><span class="deliverable-icon">📦</span> Pieces bundled together in a small envelope or bag</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PROJECT 3: MIRROR DESIGN ── -->
+  <div class="project-panel" id="panel-mirror">
+    <div class="section-label">Project 3 of 3</div>
+    <h2 class="section-title">Smile Mirror Design</h2>
+    <p class="section-sub">Design a smile-themed illustration that will be printed and adhered to the back of a 3D-printed acrylic mirror — the signature item in every Smile Bag.</p>
+
+    <div class="sol-row">
+      <span class="sol-tag">AI.1 — Creative Thinking</span>
+      <span class="sol-tag">AI.2 — Creative Process</span>
+      <span class="sol-tag">AII.1 — Personal Style</span>
+      <span class="sol-tag">AII.7 — Art for Community Needs</span>
+      <span class="sol-tag">AII.10 — Digital Tools</span>
+      <span class="sol-tag">AII.15 — Proficiency in Media</span>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">Understand the Canvas</div>
+          <div class="step-body">The mirror backing is a <strong>circle — 3 inches in diameter</strong>. Your design must work in a circular format. Think about how to compose an image that fills and completes a round shape.
+            <div class="step-tip">💡 Circular format is a real professional design constraint. Mandalas, medallions, badges, coins, seals — study how artists fill circles.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">Design Your Smile Image</div>
+          <div class="step-body">Your design should feature a <strong>smile — joyful, warm, and child-friendly</strong>. It can include:
+            <br><br>• A smiling face, sun, animal, or character
+            <br>• Your OneWord or a short message
+            <br>• Decorative elements around the circular border
+            <div class="step-tip">💡 Think about who will look at this. A child receiving a Smile Bag sees this mirror every time they look at their reflection. Make it feel like a hug.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">Create Your Digital Design</div>
+          <div class="step-body">Using <strong>Canva, Adobe Express, or Illustrator</strong>, create your design at exactly <strong>3×3 inches, 300 DPI, circular crop</strong>.
+            <br><br>• Bold colors that stand out
+            <br>• Clear central image
+            <br>• Text (if any) must be large enough to read at 3 inches
+            <div class="step-tip">💡 In Canva: use a circle template or create a 3×3 document and add a circle mask. Design inside the circle only.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">Submit Your File</div>
+          <div class="step-body">Export as <strong>PDF or PNG with transparent background</strong> and submit to your teacher.
+            <div class="step-tip">💡 Name your file: YourLastName_OneWord_Mirror (e.g., Davis_Shine_Mirror)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div>
+          <div class="step-title">Print · Trim · Adhere · Into the Bag!</div>
+          <div class="step-body">Your design is printed, trimmed to circle, and adhered to the back of the 3D-printed smile disc mirror. Every child who looks in that mirror sees your art first.
+            <div class="step-tip">🎉 Your design is on a mirror that a child will keep and use. That's a real art commission.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="deliverable">
+      <div class="deliverable-title">✦ What Goes in the Smile Bag</div>
+      <div class="deliverable-items">
+        <div class="deliverable-item"><span class="deliverable-icon">🪞</span> 3D-printed smile disc mirror (from AP Environmental Science)</div>
+        <div class="deliverable-item"><span class="deliverable-icon">🎨</span> Your circular design — printed and adhered to the mirror back</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="gold">
+
+  <!-- WORD + ICON REFERENCE -->
+  <div class="section-label">Quick Reference</div>
+  <h2 class="section-title">OneWord Icon Guide</h2>
+  <p class="section-sub">Each word has an assigned icon and shape. Use these as your starting point for stencil and puzzle design.</p>
+
+  <table class="icon-table">
+    <thead>
+      <tr><th>Word</th><th>Primary Icon</th><th>Shape</th><th>Additional Ideas</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Absorb</strong></td><td><span class="icon-emoji">☁️</span></td><td>Rain Cloud</td><td>Raindrops, sun, puddle</td></tr>
+      <tr><td><strong>Adapt</strong></td><td><span class="icon-emoji">🐸</span></td><td>Frog</td><td>Lily pad, dragonfly, pond</td></tr>
+      <tr><td><strong>Anchor</strong></td><td><span class="icon-emoji">⚓</span></td><td>Anchor</td><td>Waves, lighthouse, rope</td></tr>
+      <tr><td><strong>Balance</strong></td><td><span class="icon-emoji">⚖️</span></td><td>Balance Scale</td><td>Yin yang, stones, lotus</td></tr>
+      <tr><td><strong>Bloom</strong></td><td><span class="icon-emoji">🌸</span></td><td>Flower</td><td>Bees, leaves, sunshine</td></tr>
+      <tr><td><strong>Breathe</strong></td><td><span class="icon-emoji">🌀</span></td><td>Swirl</td><td>Wind, clouds, leaves</td></tr>
+      <tr><td><strong>Clear</strong></td><td><span class="icon-emoji">💧</span></td><td>Water Drop</td><td>Ripples, bubbles, sunshine</td></tr>
+      <tr><td><strong>Connect</strong></td><td><span class="icon-emoji">🔗</span></td><td>Linked Rings</td><td>Hands, hearts, web</td></tr>
+      <tr><td><strong>Cycle</strong></td><td><span class="icon-emoji">♻️</span></td><td>Cycle Arrow</td><td>Seasons, moon phases, wheel</td></tr>
+      <tr><td><strong>Emerge</strong></td><td><span class="icon-emoji">🦋</span></td><td>Butterfly</td><td>Chrysalis, seedling, sunrise</td></tr>
+      <tr><td><strong>Filter</strong></td><td><span class="icon-emoji">🌿</span></td><td>Leaf</td><td>Water pitcher, roots, soil</td></tr>
+      <tr><td><strong>Flow</strong></td><td><span class="icon-emoji">〰️</span></td><td>Wave</td><td>River, fish, current</td></tr>
+      <tr><td><strong>Grow</strong></td><td><span class="icon-emoji">🌱</span></td><td>Seedling</td><td>Sun, watering can, roots</td></tr>
+      <tr><td><strong>Heal</strong></td><td><span class="icon-emoji">❤️</span></td><td>Heart</td><td>Bandage, flowers, warmth</td></tr>
+      <tr><td><strong>Migrate</strong></td><td><span class="icon-emoji">🐦</span></td><td>Bird in Flight</td><td>Flock, map, path</td></tr>
+      <tr><td><strong>Persist</strong></td><td><span class="icon-emoji">🐢</span></td><td>Turtle</td><td>Rocky path, flag, sun</td></tr>
+      <tr><td><strong>Renew</strong></td><td><span class="icon-emoji">☀️</span></td><td>Sun</td><td>Sunrise, seedling, rainbow</td></tr>
+      <tr><td><strong>Restore</strong></td><td><span class="icon-emoji">🌳</span></td><td>Tree</td><td>Before/after, roots, birds</td></tr>
+      <tr><td><strong>Return</strong></td><td><span class="icon-emoji">🏠</span></td><td>House</td><td>Path home, open door, dog</td></tr>
+      <tr><td><strong>Rise</strong></td><td><span class="icon-emoji">🎈</span></td><td>Hot Air Balloon</td><td>Bird, sunrise, mountain</td></tr>
+      <tr><td><strong>Root</strong></td><td><span class="icon-emoji">🌰</span></td><td>Acorn</td><td>Underground roots, oak tree</td></tr>
+      <tr><td><strong>Shine</strong></td><td><span class="icon-emoji">✨</span></td><td>Starburst</td><td>Star, sun rays, sparkles</td></tr>
+      <tr><td><strong>Sustain</strong></td><td><span class="icon-emoji">🌍</span></td><td>Globe</td><td>Hands holding, wind turbine</td></tr>
+      <tr><td><strong>Thrive</strong></td><td><span class="icon-emoji">🏆</span></td><td>Trophy</td><td>Celebration, flowers, stars</td></tr>
+      <tr><td><strong>Transform</strong></td><td><span class="icon-emoji">🦋</span></td><td>Butterfly</td><td>Caterpillar, chrysalis, metamorphosis</td></tr>
+    </tbody>
+  </table>
+
+</main>
+
+<script>
+function showProject(key) {
+  document.querySelectorAll('.project-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.project-pill').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + key).classList.add('active');
+  event.target.classList.add('active');
+  document.querySelector('.main').scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
