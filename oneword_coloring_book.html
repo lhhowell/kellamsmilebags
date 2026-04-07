@@ -449,6 +449,7 @@ header .logo span { color: var(--accent); }
 .dot-D    { background: #9b6abf; }
 .dot-F    { background: #e07a52; }
 .dot-G    { background: #e07a9b; }
+.dot-H    { background: #4ab8b8; }
 
 /* ── PRINT STYLES ── */
 @media print {
@@ -488,6 +489,7 @@ header .logo span { color: var(--accent); }
       <option value="D">Set D · Artistic (CoPilot)</option>
       <option value="F">Set F · K-4 Icon (ChatGPT)</option>
       <option value="G">Set G · Nature Poster (CoPilot)</option>
+      <option value="H">Set H · Fine Line Botanical (Gemini/ChatGPT)</option>
     </select>
     <select class="word-select" id="wordJump" onchange="jumpToWord(this.value)">
       <option value="">— Jump to Word —</option>
@@ -506,7 +508,7 @@ header .logo span { color: var(--accent); }
         <div class="page-slot" id="pageSlot"></div>
       </div>
     </div>
-    <div class="page-counter" id="pageCounter">Cover &nbsp;·&nbsp; 1 of 151</div>
+    <div class="page-counter" id="pageCounter">Cover &nbsp;·&nbsp; 1 of 176</div>
   </div>
 
   <button class="nav-btn" id="nextBtn" onclick="navigate(1)">&#8594;</button>
@@ -523,12 +525,13 @@ header .logo span { color: var(--accent); }
 //  SET DEFINITIONS
 // ─────────────────────────────
 const SETS = [
-  { key: 'A',    label: 'Set A · Scenic',        credit: 'Generated with ChatGPT',  dotClass: 'dot-A',    src: w => `${w.toLowerCase()}.png` },
-  { key: 'B',    label: 'Set B · Cartoon',        credit: 'Generated with CoPilot',  dotClass: 'dot-B',    src: w => `SetB_${w}.png` },
-  { key: 'Card', label: 'Card Style · Woodcut',   credit: 'Generated with CoPilot',  dotClass: 'dot-Card', src: w => `Card_${w}.png` },
-  { key: 'D',    label: 'Set D · Artistic',       credit: 'Generated with CoPilot',  dotClass: 'dot-D',    src: w => `SetD_${w}.png` },
-  { key: 'F',    label: 'Set F · K-4 Icon',       credit: 'Generated with ChatGPT',  dotClass: 'dot-F',    src: w => `SetF_${w}.png` },
-  { key: 'G',    label: 'Set G · Nature Poster',  credit: 'Generated with CoPilot',  dotClass: 'dot-G',    src: w => `SetG_${w}.png` }
+  { key: 'A',    label: 'Set A · Scenic',              credit: 'Generated with ChatGPT',          dotClass: 'dot-A',    src: w => `${w.toLowerCase()}.png` },
+  { key: 'B',    label: 'Set B · Cartoon',              credit: 'Generated with CoPilot',          dotClass: 'dot-B',    src: w => `SetB_${w}.png` },
+  { key: 'Card', label: 'Card Style · Woodcut',         credit: 'Generated with CoPilot',          dotClass: 'dot-Card', src: w => `Card_${w}.png` },
+  { key: 'D',    label: 'Set D · Artistic',             credit: 'Generated with CoPilot',          dotClass: 'dot-D',    src: w => `SetD_${w}.png` },
+  { key: 'F',    label: 'Set F · K-4 Icon',             credit: 'Generated with ChatGPT',          dotClass: 'dot-F',    src: w => `SetF_${w}.png` },
+  { key: 'G',    label: 'Set G · Nature Poster',        credit: 'Generated with CoPilot',          dotClass: 'dot-G',    src: w => `SetG_${w}.png` },
+  { key: 'H',    label: 'Set H · Fine Line Botanical',  credit: 'Generated with Gemini / ChatGPT', dotClass: 'dot-H',    src: w => `seth_${w.toLowerCase()}.png` }
 ];
 
 // ─────────────────────────────
@@ -597,6 +600,7 @@ function renderPage(index) {
 
   if (page.type === 'cover') {
     const totalPages = allPages.length - 1;
+    const setCount = activeSetFilter ? 1 : SETS.length;
     slot.innerHTML = `
       <div class="cover-content">
         <div class="cover-star">✦</div>
@@ -610,8 +614,9 @@ function renderPage(index) {
           <div class="cover-set-item">Set D · Artistic &nbsp;·&nbsp; CoPilot</div>
           <div class="cover-set-item">Set F · K-4 Icon &nbsp;·&nbsp; ChatGPT</div>
           <div class="cover-set-item">Set G · Nature Poster &nbsp;·&nbsp; CoPilot</div>
+          <div class="cover-set-item">Set H · Fine Line Botanical &nbsp;·&nbsp; Gemini / ChatGPT</div>
         </div>
-        <div class="cover-count">${totalPages} Coloring Pages · 25 OneWords · 6 AI Art Styles</div>
+        <div class="cover-count">${totalPages} Coloring Pages · 25 OneWords · ${setCount} AI Art Style${setCount !== 1 ? 's' : ''}</div>
         <div class="cover-badge">Print · Color · Explore</div>
       </div>`;
   } else {
