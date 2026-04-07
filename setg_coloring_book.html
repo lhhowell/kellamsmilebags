@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Set G · Nature Poster Collection · Word &amp; Wonder</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --forest:   #1a3a2a;
+  --moss:     #2d5a3d;
+  --fern:     #3d7a52;
+  --sage:     #7aaa8a;
+  --cream:    #f5f0e8;
+  --parchment:#ede6d6;
+  --gold:     #c9a84c;
+  --gold-lt:  #e8c87a;
+  --ink:      #1a2a1a;
+  --shadow:   rgba(10,30,15,0.28);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--forest);
+  background-image:
+    radial-gradient(ellipse 70% 50% at 20% 80%, rgba(45,90,61,.4) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 20%, rgba(201,168,76,.15) 0%, transparent 60%),
+    repeating-linear-gradient(60deg, transparent, transparent 50px, rgba(255,255,255,.015) 50px, rgba(255,255,255,.015) 100px);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Nunito', sans-serif;
+  padding: 0 0 48px;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+header {
+  width: 100%;
+  background: var(--ink);
+  border-bottom: 3px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.45);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+.logo em { font-style: italic; color: var(--gold-lt); font-size: 0.9rem; display: block; letter-spacing: 0.12em; font-family: 'Nunito', sans-serif; font-weight: 600; text-transform: uppercase; }
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.word-select {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  background: rgba(201,168,76,.12);
+  color: var(--gold-lt);
+  border: 1.5px solid rgba(201,168,76,.35);
+  border-radius: 8px;
+  padding: 7px 14px;
+  cursor: pointer;
+  outline: none;
+  transition: background .2s;
+}
+.word-select:hover { background: rgba(201,168,76,.22); }
+.word-select option { background: var(--ink); color: var(--gold-lt); }
+
+.btn-print {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.85rem;
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  border-radius: 8px;
+  padding: 7px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background .2s, transform .1s;
+}
+.btn-print:hover { background: var(--gold-lt); transform: translateY(-1px); }
+
+/* ── BADGE ── */
+.class-badge {
+  background: rgba(201,168,76,.12);
+  border: 1px solid rgba(201,168,76,.25);
+  border-radius: 20px;
+  padding: 3px 14px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(201,168,76,.7);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-family: 'Nunito', sans-serif;
+}
+
+/* ── BOOK STAGE ── */
+.stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  width: 100%;
+  padding: 40px 16px 24px;
+}
+
+.nav-btn {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--moss);
+  border: 3px solid var(--gold);
+  color: var(--gold-lt);
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background .18s, transform .12s;
+  box-shadow: 0 4px 16px rgba(0,0,0,.35);
+  user-select: none;
+}
+.nav-btn:hover { background: var(--fern); transform: scale(1.08); }
+.nav-btn:active { transform: scale(0.95); }
+.nav-btn:disabled { opacity: 0.25; cursor: default; transform: none; }
+
+/* ── BOOK ── */
+.book-wrap { perspective: 1400px; position: relative; }
+
+.book {
+  width: 380px;
+  height: 520px;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.book::before {
+  content: '';
+  position: absolute;
+  left: -12px; top: 0;
+  width: 20px; height: 100%;
+  background: linear-gradient(to right, #0d2018, #1a3a2a, #0d2018);
+  border-radius: 4px 0 0 4px;
+  box-shadow: -4px 0 14px rgba(0,0,0,.5);
+  z-index: 5;
+}
+
+.book::after {
+  content: '';
+  position: absolute;
+  right: -6px; top: 3px;
+  width: 6px; height: calc(100% - 6px);
+  background: repeating-linear-gradient(
+    to bottom, var(--parchment) 0px, #d4c8a8 2px, var(--parchment) 3px
+  );
+  border-radius: 0 2px 2px 0;
+}
+
+.page-slot {
+  position: absolute;
+  inset: 0;
+  border-radius: 0 8px 8px 0;
+  overflow: hidden;
+  box-shadow:
+    4px 4px 20px rgba(0,0,0,.32),
+    8px 8px 40px rgba(0,0,0,.16),
+    inset 0 0 0 1px rgba(0,0,0,.06);
+  background: var(--cream);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.page-slot.flipping-out { animation: flipOut .38s cubic-bezier(.4,0,.6,1) forwards; transform-origin: left center; }
+.page-slot.flipping-in  { animation: flipIn  .38s cubic-bezier(.4,0,.6,1) forwards; transform-origin: left center; }
+.page-slot.flipping-out-back { animation: flipOutBack .38s cubic-bezier(.4,0,.6,1) forwards; transform-origin: left center; }
+.page-slot.flipping-in-back  { animation: flipInBack  .38s cubic-bezier(.4,0,.6,1) forwards; transform-origin: left center; }
+
+@keyframes flipOut     { 0%{transform:perspective(1400px) rotateY(0);opacity:1} 100%{transform:perspective(1400px) rotateY(-90deg);opacity:0} }
+@keyframes flipIn      { 0%{transform:perspective(1400px) rotateY(90deg);opacity:0} 100%{transform:perspective(1400px) rotateY(0);opacity:1} }
+@keyframes flipOutBack { 0%{transform:perspective(1400px) rotateY(0);opacity:1} 100%{transform:perspective(1400px) rotateY(90deg);opacity:0} }
+@keyframes flipInBack  { 0%{transform:perspective(1400px) rotateY(-90deg);opacity:0} 100%{transform:perspective(1400px) rotateY(0);opacity:1} }
+
+/* ── COVER ── */
+.cover-content {
+  width: 100%; height: 100%;
+  background: linear-gradient(160deg, #0d2018 0%, #1a3a2a 45%, #2d5a3d 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.cover-content::before {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border: 2px solid rgba(201,168,76,.4);
+  border-radius: 4px;
+  pointer-events: none;
+}
+.cover-content::after {
+  content: '';
+  position: absolute;
+  inset: 16px;
+  border: 1px solid rgba(201,168,76,.18);
+  border-radius: 3px;
+  pointer-events: none;
+}
+.cover-leaf { font-size: 2.2rem; margin-bottom: 6px; filter: hue-rotate(0deg); }
+.cover-eyebrow {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: rgba(201,168,76,.6);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.cover-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-align: center;
+  line-height: 1.15;
+  text-shadow: 0 2px 12px rgba(0,0,0,.5);
+  margin-bottom: 4px;
+}
+.cover-title em {
+  font-style: italic;
+  color: var(--gold-lt);
+  font-size: 1.3rem;
+  display: block;
+}
+.cover-divider {
+  width: 70px; height: 2px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  margin: 14px auto;
+}
+.cover-info {
+  text-align: center;
+  font-size: 0.7rem;
+  color: rgba(201,168,76,.55);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 1.8;
+  text-transform: uppercase;
+}
+.cover-count {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem;
+  color: var(--gold);
+  text-align: center;
+  margin-top: 10px;
+}
+.cover-badge {
+  margin-top: 16px;
+  background: rgba(201,168,76,.1);
+  border: 1.5px solid rgba(201,168,76,.3);
+  border-radius: 20px;
+  padding: 5px 18px;
+  font-size: 0.72rem;
+  color: rgba(201,168,76,.75);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── COLORING PAGE ── */
+.coloring-page {
+  width: 100%; height: 100%;
+  background: var(--cream);
+  display: flex;
+  flex-direction: column;
+}
+.coloring-page img {
+  width: 100%;
+  flex: 1;
+  object-fit: contain;
+  display: block;
+  padding: 8px 8px 0;
+  min-height: 0;
+}
+.page-label {
+  background: var(--ink);
+  border-top: 2px solid var(--gold);
+  color: var(--gold-lt);
+  text-align: center;
+  padding: 5px 8px 3px;
+  flex-shrink: 0;
+}
+.page-label-word {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+}
+.page-label-set {
+  font-size: 0.68rem;
+  color: rgba(232,200,122,.75);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.page-label-credit {
+  font-size: 0.58rem;
+  color: rgba(232,200,122,.4);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  font-style: italic;
+}
+
+/* ── COUNTER ── */
+.page-counter {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--cream);
+  background: rgba(26,58,42,.7);
+  border: 1px solid rgba(201,168,76,.25);
+  padding: 5px 16px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+}
+
+/* ── THUMBNAIL STRIP ── */
+.thumb-section {
+  width: 100%;
+  max-width: 900px;
+  padding: 0 20px;
+}
+.thumb-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+.thumb-scroll {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 8px 4px 12px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) transparent;
+}
+.thumb-scroll::-webkit-scrollbar { height: 4px; }
+.thumb-scroll::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+.thumb-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.thumb-word {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--gold-lt);
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.thumb {
+  width: 52px; height: 68px;
+  border-radius: 4px;
+  border: 2px solid rgba(201,168,76,.2);
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  background: var(--cream);
+  transition: border-color .18s, transform .15s, box-shadow .15s;
+  flex-shrink: 0;
+}
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,.4); border-color: var(--gold); }
+.cover-thumb {
+  background: linear-gradient(160deg, #0d2018, #2d5a3d);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.48rem;
+  color: var(--gold);
+  text-align: center;
+  line-height: 1.3;
+  letter-spacing: 0.05em;
+  font-style: italic;
+}
+.thumb.active {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold), 0 4px 14px rgba(201,168,76,.4);
+}
+
+/* ── PRINT ── */
+@media print {
+  body { background: white !important; padding: 0 !important; }
+  header, .stage .nav-btn, .thumb-section, .page-counter, .class-badge,
+  .book::before, .book::after { display: none !important; }
+  .stage { padding: 0 !important; }
+  .book-wrap, .book, .page-slot { width:100vw !important; height:100vh !important; border-radius:0 !important; box-shadow:none !important; }
+  .cover-content { display: none !important; }
+  .coloring-page { height: 100vh; }
+  .coloring-page img { width:100% !important; height:calc(100vh - 52px) !important; object-fit:contain !important; padding:12px 12px 0 !important; }
+  .page-label { position:fixed; bottom:0; left:0; right:0; }
+}
+
+@media(max-width:720px){
+  header { padding:12px 20px; }
+  .stage { gap:12px; padding:24px 8px 16px; }
+  .book { width:300px; height:410px; }
+  .thumb-section { padding:0 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div>
+    <div class="logo">Set G · <em>Nature Poster Collection</em></div>
+  </div>
+  <div class="header-controls">
+    <div class="class-badge">&#127912; Digital Arts · Kara Gau</div>
+    <select class="word-select" id="wordJump" onchange="jumpToWord(this.value)">
+      <option value="">— Jump to Word —</option>
+    </select>
+    <button class="btn-print" onclick="printPage()">🖨️ Print This Page</button>
+  </div>
+</header>
+
+<!-- BOOK STAGE -->
+<div class="stage">
+  <button class="nav-btn" id="prevBtn" onclick="navigate(-1)" disabled>&#8592;</button>
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+    <div class="book-wrap">
+      <div class="book">
+        <div class="page-slot" id="pageSlot"></div>
+      </div>
+    </div>
+    <div class="page-counter" id="pageCounter">Cover &nbsp;·&nbsp; 1 of 26</div>
+  </div>
+
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">&#8594;</button>
+</div>
+
+<!-- THUMBNAILS -->
+<div class="thumb-section">
+  <div class="thumb-label">&#127807; All 25 Nature Poster Pages</div>
+  <div class="thumb-scroll" id="thumbStrip"></div>
+</div>
+
+<script>
+const WORD_LIST = [
+  'Absorb','Adapt','Anchor','Balance','Bloom','Breathe',
+  'Clear','Connect','Cycle','Emerge','Filter','Flow',
+  'Grow','Heal','Migrate','Persist','Renew','Restore',
+  'Return','Rise','Root','Shine','Sustain','Thrive','Transform'
+];
+
+const PAGES = [{ type: 'cover' }];
+WORD_LIST.forEach(w => {
+  PAGES.push({
+    type: 'coloring',
+    word: w,
+    src: `SetG_${w}.png`
+  });
+});
+
+let currentIndex = 0;
+let animating = false;
+
+function renderPage(index) {
+  const page = PAGES[index];
+  const slot = document.getElementById('pageSlot');
+
+  if (page.type === 'cover') {
+    slot.innerHTML = `
+      <div class="cover-content">
+        <div class="cover-leaf">🌿</div>
+        <div class="cover-eyebrow">Word &amp; Wonder · Digital Arts</div>
+        <div class="cover-title">Set G<br><em>Nature Poster Collection</em></div>
+        <div class="cover-divider"></div>
+        <div class="cover-info">
+          25 OneWords · Vintage Flat Illustration<br>
+          Generated with CoPilot<br>
+          Kara Gau · Spring 2026
+        </div>
+        <div class="cover-count">25 Coloring Pages · Print &amp; Explore</div>
+        <div class="cover-badge">Jigsaw Puzzles · Stencil Art · Design Study</div>
+      </div>`;
+  } else {
+    slot.innerHTML = `
+      <div class="coloring-page">
+        <img src="${page.src}" alt="${page.word} — Set G Nature Poster" />
+        <div class="page-label">
+          <div class="page-label-word">${page.word.toUpperCase()}</div>
+          <div class="page-label-set">Set G · Nature Poster Collection</div>
+          <div class="page-label-credit">Generated with CoPilot &nbsp;·&nbsp; Digital Arts · Kara Gau · Smile Bags · Spring 2026</div>
+        </div>
+      </div>`;
+  }
+
+  const label = page.type === 'cover'
+    ? `Cover &nbsp;·&nbsp; Page 1 of ${PAGES.length}`
+    : `${page.word.toUpperCase()} &nbsp;·&nbsp; Page ${index + 1} of ${PAGES.length}`;
+  document.getElementById('pageCounter').innerHTML = label;
+
+  document.getElementById('prevBtn').disabled = index === 0;
+  document.getElementById('nextBtn').disabled = index === PAGES.length - 1;
+
+  document.querySelectorAll('.thumb').forEach((t, i) => {
+    t.classList.toggle('active', i === index);
+    if (i === index) t.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+  });
+}
+
+function navigate(dir) {
+  if (animating) return;
+  const next = currentIndex + dir;
+  if (next < 0 || next >= PAGES.length) return;
+  animating = true;
+  const slot = document.getElementById('pageSlot');
+  const outClass = dir > 0 ? 'flipping-out' : 'flipping-out-back';
+  const inClass  = dir > 0 ? 'flipping-in'  : 'flipping-in-back';
+  slot.classList.add(outClass);
+  setTimeout(() => {
+    slot.classList.remove(outClass);
+    currentIndex = next;
+    renderPage(currentIndex);
+    slot.classList.add(inClass);
+    setTimeout(() => { slot.classList.remove(inClass); animating = false; }, 380);
+  }, 380);
+}
+
+function goToPage(index) {
+  if (animating || index === currentIndex) return;
+  const dir = index > currentIndex ? 1 : -1;
+  animating = true;
+  const slot = document.getElementById('pageSlot');
+  const outClass = dir > 0 ? 'flipping-out' : 'flipping-out-back';
+  const inClass  = dir > 0 ? 'flipping-in'  : 'flipping-in-back';
+  slot.classList.add(outClass);
+  setTimeout(() => {
+    slot.classList.remove(outClass);
+    currentIndex = index;
+    renderPage(currentIndex);
+    slot.classList.add(inClass);
+    setTimeout(() => { slot.classList.remove(inClass); animating = false; }, 380);
+  }, 380);
+}
+
+function jumpToWord(word) {
+  if (!word) return;
+  const idx = PAGES.findIndex(p => p.type === 'coloring' && p.word === word);
+  if (idx !== -1) goToPage(idx);
+  document.getElementById('wordJump').value = '';
+}
+
+function printPage() { window.print(); }
+
+function buildUI() {
+  const strip = document.getElementById('thumbStrip');
+  const select = document.getElementById('wordJump');
+
+  // Cover thumb
+  const coverThumb = document.createElement('div');
+  coverThumb.className = 'thumb cover-thumb active';
+  coverThumb.innerHTML = '<span>Set G<br>Nature<br>Poster</span>';
+  coverThumb.onclick = () => goToPage(0);
+  strip.appendChild(coverThumb);
+
+  WORD_LIST.forEach((w, i) => {
+    const group = document.createElement('div');
+    group.className = 'thumb-group';
+
+    const wordLabel = document.createElement('div');
+    wordLabel.className = 'thumb-word';
+    wordLabel.textContent = w;
+    group.appendChild(wordLabel);
+
+    const thumb = document.createElement('div');
+    thumb.className = 'thumb';
+    thumb.innerHTML = `<img src="SetG_${w}.png" alt="${w}" loading="lazy">`;
+    const capturedIdx = i + 1;
+    thumb.onclick = () => goToPage(capturedIdx);
+    group.appendChild(thumb);
+    strip.appendChild(group);
+
+    const opt = document.createElement('option');
+    opt.value = w;
+    opt.textContent = w.toUpperCase();
+    select.appendChild(opt);
+  });
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   navigate(-1);
+});
+
+buildUI();
+renderPage(0);
+</script>
+</body>
+</html>
