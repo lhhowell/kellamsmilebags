@@ -130,10 +130,7 @@ header .logo span { color: var(--accent); }
 .nav-btn:disabled { opacity: 0.3; cursor: default; transform: none; }
 
 /* ── BOOK CONTAINER ── */
-.book-wrap {
-  perspective: 1400px;
-  position: relative;
-}
+.book-wrap { perspective: 1400px; position: relative; }
 
 .book {
   width: 380px;
@@ -275,7 +272,7 @@ header .logo span { color: var(--accent); }
   padding: 0 20px;
 }
 .cover-set-item {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   color: rgba(245,208,144,0.65);
   text-align: center;
   font-weight: 600;
@@ -451,6 +448,7 @@ header .logo span { color: var(--accent); }
 .dot-Card { background: #c8923a; }
 .dot-D    { background: #9b6abf; }
 .dot-F    { background: #e07a52; }
+.dot-G    { background: #e07a9b; }
 
 /* ── PRINT STYLES ── */
 @media print {
@@ -487,8 +485,9 @@ header .logo span { color: var(--accent); }
       <option value="A">Set A · Scenic (ChatGPT)</option>
       <option value="B">Set B · Cartoon (CoPilot)</option>
       <option value="Card">Card Style · Woodcut (CoPilot)</option>
-      <option value="D">Set D · Artistic (CoPilot · Gemini)</option>
+      <option value="D">Set D · Artistic (CoPilot)</option>
       <option value="F">Set F · K-4 Icon (ChatGPT)</option>
+      <option value="G">Set G · Nature Poster (CoPilot)</option>
     </select>
     <select class="word-select" id="wordJump" onchange="jumpToWord(this.value)">
       <option value="">— Jump to Word —</option>
@@ -507,7 +506,7 @@ header .logo span { color: var(--accent); }
         <div class="page-slot" id="pageSlot"></div>
       </div>
     </div>
-    <div class="page-counter" id="pageCounter">Cover &nbsp;·&nbsp; 1 of 121</div>
+    <div class="page-counter" id="pageCounter">Cover &nbsp;·&nbsp; 1 of 151</div>
   </div>
 
   <button class="nav-btn" id="nextBtn" onclick="navigate(1)">&#8594;</button>
@@ -524,11 +523,12 @@ header .logo span { color: var(--accent); }
 //  SET DEFINITIONS
 // ─────────────────────────────
 const SETS = [
-  { key: 'A',    label: 'Set A · Scenic',        credit: 'Generated with ChatGPT',          dotClass: 'dot-A',    src: w => `${w.toLowerCase()}.png` },
-  { key: 'B',    label: 'Set B · Cartoon',        credit: 'Generated with CoPilot',           dotClass: 'dot-B',    src: w => `SetB_${w}.png` },
-  { key: 'Card', label: 'Card Style · Woodcut',   credit: 'Generated with CoPilot',           dotClass: 'dot-Card', src: w => `Card_${w}.png` },
-  { key: 'D',    label: 'Set D · Artistic',       credit: 'Generated with CoPilot',           dotClass: 'dot-D',    src: w => `SetD_${w}.png` },
-  { key: 'F',    label: 'Set F · K-4 Icon',       credit: 'Generated with ChatGPT',           dotClass: 'dot-F',    src: w => `SetF_${w}.png` }
+  { key: 'A',    label: 'Set A · Scenic',        credit: 'Generated with ChatGPT',  dotClass: 'dot-A',    src: w => `${w.toLowerCase()}.png` },
+  { key: 'B',    label: 'Set B · Cartoon',        credit: 'Generated with CoPilot',  dotClass: 'dot-B',    src: w => `SetB_${w}.png` },
+  { key: 'Card', label: 'Card Style · Woodcut',   credit: 'Generated with CoPilot',  dotClass: 'dot-Card', src: w => `Card_${w}.png` },
+  { key: 'D',    label: 'Set D · Artistic',       credit: 'Generated with CoPilot',  dotClass: 'dot-D',    src: w => `SetD_${w}.png` },
+  { key: 'F',    label: 'Set F · K-4 Icon',       credit: 'Generated with ChatGPT',  dotClass: 'dot-F',    src: w => `SetF_${w}.png` },
+  { key: 'G',    label: 'Set G · Nature Poster',  credit: 'Generated with CoPilot',  dotClass: 'dot-G',    src: w => `SetG_${w}.png` }
 ];
 
 // ─────────────────────────────
@@ -544,9 +544,7 @@ const WORD_LIST = [
 // ─────────────────────────────
 //  BUILD MASTER PAGES ARRAY
 // ─────────────────────────────
-// Each word gets one page per set (5 pages per word)
-// Total: 1 cover + 24 words × 5 sets = 121 pages
-let activeSetFilter = ''; // '' = all sets
+let activeSetFilter = '';
 
 function buildWords(setFilter) {
   return WORD_LIST.map(w => {
@@ -611,8 +609,9 @@ function renderPage(index) {
           <div class="cover-set-item">Card Style · Woodcut &nbsp;·&nbsp; CoPilot</div>
           <div class="cover-set-item">Set D · Artistic &nbsp;·&nbsp; CoPilot</div>
           <div class="cover-set-item">Set F · K-4 Icon &nbsp;·&nbsp; ChatGPT</div>
+          <div class="cover-set-item">Set G · Nature Poster &nbsp;·&nbsp; CoPilot</div>
         </div>
-        <div class="cover-count">${totalPages} Coloring Pages · 24 OneWords</div>
+        <div class="cover-count">${totalPages} Coloring Pages · 25 OneWords · 6 AI Art Styles</div>
         <div class="cover-badge">Print · Color · Explore</div>
       </div>`;
   } else {
@@ -627,17 +626,14 @@ function renderPage(index) {
       </div>`;
   }
 
-  // Counter
   const label = page.type === 'cover'
     ? `Cover &nbsp;·&nbsp; Page 1 of ${allPages.length}`
     : `${page.word.toUpperCase()} — ${page.setLabel} &nbsp;·&nbsp; Page ${index + 1} of ${allPages.length}`;
   document.getElementById('pageCounter').innerHTML = label;
 
-  // Buttons
   document.getElementById('prevBtn').disabled = index === 0;
   document.getElementById('nextBtn').disabled = index === allPages.length - 1;
 
-  // Thumbnails
   document.querySelectorAll('.thumb').forEach((t, i) => {
     t.classList.toggle('active', i === index);
     if (i === index) t.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
@@ -714,7 +710,6 @@ function buildUI() {
   strip.innerHTML = '';
   select.innerHTML = '<option value="">— Jump to Word —</option>';
 
-  // Cover thumb
   const coverGroup = document.createElement('div');
   coverGroup.className = 'thumb-group';
   const coverPages = document.createElement('div');
