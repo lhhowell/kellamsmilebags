@@ -22,6 +22,30 @@
   .mission p{font-size:15px;color:rgba(255,255,255,.9);line-height:1.6;font-weight:300}
   .mission strong{font-weight:600;color:#fff}
 
+  /* ── Sticker Kiosk ── */
+  .sticker-kiosk{background:#0d0d1a;padding:56px 40px;text-align:center;border-top:3px solid #c9a84c;border-bottom:3px solid rgba(201,168,76,.2)}
+  .sticker-kiosk-inner{max-width:860px;margin:0 auto}
+  .sticker-label{font-family:'Courier New',monospace;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:#c9a84c;margin-bottom:10px}
+  .sticker-title{font-family:Georgia,serif;font-size:clamp(22px,3.5vw,32px);font-weight:700;color:#fff;margin-bottom:10px}
+  .sticker-sub{font-size:14px;color:rgba(255,255,255,.55);max-width:520px;margin:0 auto 32px;line-height:1.7}
+  .sticker-controls{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;align-items:center}
+  .sticker-select{font-family:'Courier New',monospace;font-weight:700;font-size:0.88rem;background:rgba(255,255,255,.08);color:#f5d090;border:1.5px solid rgba(245,208,144,.3);border-radius:8px;padding:9px 18px;cursor:pointer;outline:none;transition:background .2s}
+  .sticker-select:hover{background:rgba(255,255,255,.14)}
+  .sticker-select option{background:#1a1a2e;color:#f5d090}
+  .sticker-style-btns{display:flex;gap:8px}
+  .sticker-btn{font-family:'Courier New',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:9px 18px;border-radius:8px;border:1.5px solid rgba(245,208,144,.35);background:transparent;color:#f5d090;cursor:pointer;font-weight:700;transition:all .2s}
+  .sticker-btn.active{background:#c9a84c;color:#111;border-color:#c9a84c}
+  .sticker-preview-ring{margin:0 auto 28px;width:210px;height:210px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 4px rgba(201,168,76,.3),0 12px 48px rgba(0,0,0,.6);background:#111;display:flex;align-items:center;justify-content:center;transition:box-shadow .3s}
+  .sticker-preview-ring:hover{box-shadow:0 0 0 4px rgba(201,168,76,.7),0 16px 56px rgba(0,0,0,.7)}
+  .sticker-preview-ring img{width:100%;height:100%;object-fit:cover;display:block}
+  .sticker-dl-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#c9a84c,#e8c87a);color:#111;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;padding:13px 32px;border-radius:50px;text-decoration:none;box-shadow:0 4px 24px rgba(201,168,76,.35);transition:all .2s;margin-bottom:10px}
+  .sticker-dl-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(201,168,76,.5)}
+  .sticker-meta{font-size:10px;color:rgba(255,255,255,.3);font-family:'Courier New',monospace;letter-spacing:.1em;text-transform:uppercase}
+  .sticker-preview-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:28px;padding-top:24px;border-top:1px solid rgba(255,255,255,.07)}
+  .sticker-mini{width:48px;height:48px;border-radius:50%;overflow:hidden;border:2px solid transparent;cursor:pointer;transition:all .18s;opacity:.55;flex-shrink:0}
+  .sticker-mini:hover,.sticker-mini.active{border-color:#c9a84c;opacity:1;transform:scale(1.12)}
+  .sticker-mini img{width:100%;height:100%;object-fit:cover;display:block}
+
   /* ── OneWord Button Strip ── */
   .ow-strip{background:#1A1A2E;border-top:3px solid #4caf82;padding:22px 60px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
   .ow-strip-tagline{font-size:16px;color:rgba(255,255,255,.9);font-weight:400;line-height:1.5;max-width:640px}
@@ -30,8 +54,6 @@
   .ow-expand-btn:hover,.ow-expand-btn.open{background:#4caf82;color:#111}
   .ow-expand-arrow{font-size:.75rem;transition:transform .3s;display:inline-block}
   .ow-expand-btn.open .ow-expand-arrow{transform:rotate(180deg)}
-
-  /* ── Dark Collapsible Panel ── */
   .ow-panel{display:none;background:#1a1a1a;padding:48px 60px}
   .ow-panel.open{display:block}
   .ow-panel-inner{max-width:1100px;margin:0 auto}
@@ -97,6 +119,7 @@
   .theme-navy .card-accent{background:#1A237E} .theme-navy .card-class-tag{background:#E8EAF6;color:#1A237E} .theme-navy .card-contribution{background:#E8EAF6;color:#1A237E} .theme-navy .doc-link:hover{color:#1A237E;border-color:#1A237E}
   .theme-green .card-accent{background:#2D5016} .theme-green .card-class-tag{background:#F1F8E9;color:#2D5016} .theme-green .card-contribution{background:#F1F8E9;color:#2D5016} .theme-green .doc-link:hover{color:#2D5016;border-color:#2D5016}
   .theme-dark .card-accent{background:#1A1A1A} .theme-dark .card-class-tag{background:#FFF3D6;color:#C8860A} .theme-dark .card-contribution{background:#FFF3D6;color:#C8860A} .theme-dark .doc-link:hover{color:#C8860A;border-color:#C8860A}
+  .theme-art .card-accent{background:#7B2D8B} .theme-art .card-class-tag{background:#F3E5F5;color:#7B2D8B} .theme-art .card-contribution{background:#F3E5F5;color:#7B2D8B} .theme-art .doc-link:hover{color:#7B2D8B;border-color:#7B2D8B}
   .submit-section{background:#fff;padding:64px 24px;text-align:center;border-top:1px solid #f0ede8}
   .submit-inner{max-width:600px;margin:0 auto}
   .submit-icon{font-size:52px;margin-bottom:16px}
@@ -114,8 +137,8 @@
   .hero-mascot-left{position:absolute;left:-20px;bottom:0;width:280px;pointer-events:none;filter:drop-shadow(0 8px 32px rgba(0,0,0,.35));z-index:2}
   .hero-mascot-right{position:absolute;right:-20px;bottom:0;width:280px;pointer-events:none;filter:drop-shadow(0 8px 32px rgba(0,0,0,.35));z-index:2}
   @media(max-width:900px){.hero-mascot-left,.hero-mascot-right{width:160px}}
-  @media(max-width:720px){.hero{padding:52px 24px 48px}.hero-meta{flex-direction:column;gap:20px}.hero-meta-item{border-right:none;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:16px}.mission{padding:24px 28px}.ow-strip{padding:18px 24px;flex-direction:column;align-items:flex-start}.ow-panel{padding:32px 24px}.main{padding:48px 24px 80px}.card-body{grid-template-columns:1fr}.card-links{min-width:unset}.footer{padding:32px 28px}}
-  @media(max-width:600px){.hero-mascot-left{display:none}.hero-mascot-right{width:120px;right:0}.ow-card-preview{display:none}}
+  @media(max-width:720px){.hero{padding:52px 24px 48px}.hero-meta{flex-direction:column;gap:20px}.hero-meta-item{border-right:none;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:16px}.mission{padding:24px 28px}.ow-strip{padding:18px 24px;flex-direction:column;align-items:flex-start}.ow-panel{padding:32px 24px}.main{padding:48px 24px 80px}.card-body{grid-template-columns:1fr}.card-links{min-width:unset}.footer{padding:32px 28px}.sticker-kiosk{padding:36px 24px}}
+  @media(max-width:600px){.hero-mascot-left{display:none}.hero-mascot-right{width:120px;right:0}.ow-card-preview{display:none}.sticker-preview-row{display:none}}
 </style>
 </head>
 <body>
@@ -127,8 +150,36 @@
   <h1>Smile<br><em>Bags.</em></h1>
   <div style="display:inline-block;font-family:'Courier New',monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.55);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:5px 18px;margin-bottom:24px;">Launch: Spring 2026</div>
   <p class="hero-sub">A student-driven service initiative focused on spreading kindness and meeting community needs in meaningful ways. Through this work, technology becomes a pathway for empathy, connection, and positive social impact.</p>
-
 </header>
+
+<!-- ── SIGNATURE STICKER KIOSK ── -->
+<div class="sticker-kiosk">
+  <div class="sticker-kiosk-inner">
+    <div class="sticker-label">&#127991; Smile Bags Signature Collection</div>
+    <h2 class="sticker-title">25 OneWord Signature Stickers</h2>
+    <p class="sticker-sub">Every visitor &middot; every class &middot; every bag recipient. One word. One sticker. Yours to keep &mdash; place it anywhere.</p>
+
+    <div class="sticker-controls">
+      <select class="sticker-select" id="stickerWord" onchange="updateSticker()">
+      </select>
+      <div class="sticker-style-btns">
+        <button class="sticker-btn active" id="btnBright" onclick="setStickerStyle('chatgpt')">&#9728; Bright</button>
+        <button class="sticker-btn" id="btnVintage" onclick="setStickerStyle('copilot')">&#9790; Vintage</button>
+      </div>
+    </div>
+
+    <div class="sticker-preview-ring">
+      <img id="stickerPreview" src="" alt="Sticker preview" onerror="this.style.opacity='.3'"/>
+    </div>
+
+    <div>
+      <a id="stickerDownload" href="#" download class="sticker-dl-btn">&#8595; Download My Sticker</a>
+    </div>
+    <div class="sticker-meta">Free &middot; No login required &middot; Print &amp; stick anywhere</div>
+
+    <div class="sticker-preview-row" id="stickerMiniRow"></div>
+  </div>
+</div>
 
 <div class="mission">
   <span class="mission-icon">&#127757;</span>
@@ -175,29 +226,16 @@
     <p style="font-size:15px;color:rgba(255,255,255,.75);line-height:1.8;max-width:720px;margin-bottom:14px;">Smile Bags are distributed across <strong style="color:#4caf82;">Kellam's eight feeder schools and Kellam High School itself</strong> &mdash; ten bags per school, ninety students reached. Guidance counselors identify students who may need encouragement, motivation, or simply a reason to smile. A bag is chosen for them deliberately, not randomly &mdash; at exactly the right moment.</p>
     <p style="font-size:15px;color:rgba(255,255,255,.75);line-height:1.8;max-width:720px;margin-bottom:32px;">Every item inside was made by a Kellam student who didn't know your name &mdash; but made something <em style="color:#D6EEEE;">just for you.</em></p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:32px;">
-      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:16px;text-align:center;">
-        <div style="font-family:Georgia,serif;font-size:32px;font-weight:700;color:#4caf82;line-height:1;">9</div>
-        <div style="font-family:'Courier New',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:6px;">Schools</div>
-      </div>
-      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:16px;text-align:center;">
-        <div style="font-family:Georgia,serif;font-size:32px;font-weight:700;color:#4caf82;line-height:1;">10</div>
-        <div style="font-family:'Courier New',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:6px;">Bags Per School</div>
-      </div>
-      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:16px;text-align:center;">
-        <div style="font-family:Georgia,serif;font-size:32px;font-weight:700;color:#4caf82;line-height:1;">90</div>
-        <div style="font-family:'Courier New',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:6px;">Students Reached</div>
-      </div>
-      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:16px;text-align:center;">
-        <div style="font-size:28px;line-height:1;">&#128149;</div>
-        <div style="font-family:'Courier New',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:6px;">Chosen With Care</div>
-      </div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:16px;text-align:center;"><div style="font-family:Georgia,serif;font-size:32px;font-weight:700;color:#4caf82;line-height:1;">9</div><div style="font-family:'Courier New',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:6px;">Schools</div></div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:16px;text-align:center;"><div style="font-family:Georgia,serif;font-size:32px;font-weight:700;color:#4caf82;line-height:1;">10</div><div style="font-family:'Courier New',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:6px;">Bags Per School</div></div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:16px;text-align:center;"><div style="font-family:Georgia,serif;font-size:32px;font-weight:700;color:#4caf82;line-height:1;">90</div><div style="font-family:'Courier New',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:6px;">Students Reached</div></div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:16px;text-align:center;"><div style="font-size:28px;line-height:1;">&#128149;</div><div style="font-family:'Courier New',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:6px;">Chosen With Care</div></div>
     </div>
     <div style="background:#1B7A78;border-radius:12px;padding:18px 24px;">
       <p style="font-size:14px;color:rgba(255,255,255,.85);line-height:1.7;font-style:italic;">&ldquo;Guidance counselors identify students who may need encouragement, motivation, or simply a reason to smile. A bag is chosen for them &mdash; not randomly, but with intention.&rdquo;</p>
     </div>
   </div>
 </div>
-
 
 <main class="main">
   <div class="section-label">Participating Classes</div>
@@ -212,7 +250,11 @@
 
   <div class="cards">
 
-    <div class="card theme-dark"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Instructional Technology</div><h2>Smile Bags Mascot Sticker, Hidden Picture Activities &amp; OneWord DNA System</h2><div class="card-teacher">Instructional Technology Specialist &middot; Smile Bags Signature Design &middot; Word &amp; Wonder Founder</div><p class="card-desc">The Instructional Technology Specialist designed the official Smile Bags mascot sticker and 25 OneWord hidden picture activities &mdash; one for each of the project's 25 shared words. The mascot serves as the signature identity of the project, appearing on documents, the website, and as a sticker placed in every smile bag. The ITS also invented the <strong>OneWord DNA System</strong> &mdash; a one-of-a-kind music activity called <em>Compose It!</em> where each OneWord's letters become musical notes, giving every word its own unique Voice for students to hear and build upon. The <strong>OneWord Trading Card Kiosk</strong> lets any student select a word, choose their grade level, and print a stunning tarot-style collectible card paired with an inspirational quote &mdash; ready to keep, trade, or tuck into a Smile Bag.</p><div class="card-contribution"><span>&#127912;</span> Contribution: Mascot sticker &middot; 25 OneWord hidden picture activities &middot; &#127925; OneWord DNA System (Compose It!)</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="https://lhhowell.github.io/kellamsmilebags/KSB_Stories_Kiosk.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Word World: The OneWord Journey<span class="doc-link-type">Stories, Art &amp; Adventures &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/ComposeIt_Voice.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127925;</span><span class="doc-link-text">Compose It! &mdash; OneWord DNA System<span class="doc-link-type">Music Activity &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/AVID_TradingCard_Kiosk.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127183;</span><span class="doc-link-text">OneWord Trading Card Kiosk<span class="doc-link-type">Interactive Kiosk &middot; HTML</span></span></a></div></div></div>
+    <!-- ITS CARD -->
+    <div class="card theme-dark"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Instructional Technology</div><h2>Smile Bags Mascot Sticker, Hidden Picture Activities &amp; OneWord DNA System</h2><div class="card-teacher">Instructional Technology Specialist &middot; Smile Bags Signature Design &middot; Word &amp; Wonder Founder</div><p class="card-desc">The Instructional Technology Specialist designed the official Smile Bags mascot sticker and 25 OneWord hidden picture activities &mdash; one for each of the project's 25 shared words. The mascot serves as the signature identity of the project, appearing on documents, the website, and as a sticker placed in every smile bag. The ITS also invented the <strong>OneWord DNA System</strong> &mdash; a one-of-a-kind music activity called <em>Compose It!</em> where each OneWord's letters become musical notes, giving every word its own unique Voice for students to hear and build upon. The <strong>OneWord Trading Card Kiosk</strong> lets any student select a word, choose their grade level, and print a stunning tarot-style collectible card paired with an inspirational quote &mdash; ready to keep, trade, or tuck into a Smile Bag. The <strong>OneWord Coloring Book</strong> showcases 125 AI-generated coloring pages across 5 distinct art styles &mdash; scenic, cartoon, woodcut, artistic, and K&ndash;4 icon &mdash; created across ChatGPT and CoPilot.</p><div class="card-contribution"><span>&#127912;</span> Contribution: Mascot sticker &middot; 25 OneWord hidden picture activities &middot; &#127925; OneWord DNA System (Compose It!) &middot; &#127912; OneWord Coloring Book</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="https://lhhowell.github.io/kellamsmilebags/KSB_Stories_Kiosk.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Word World: The OneWord Journey<span class="doc-link-type">Stories, Art &amp; Adventures &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/ComposeIt_Voice.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127925;</span><span class="doc-link-text">Compose It! &mdash; OneWord DNA System<span class="doc-link-type">Music Activity &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/AVID_TradingCard_Kiosk.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127183;</span><span class="doc-link-text">OneWord Trading Card Kiosk<span class="doc-link-type">Interactive Kiosk &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/oneword_coloring_book.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127912;</span><span class="doc-link-text">OneWord Coloring Book<span class="doc-link-type">125 Pages &middot; 5 AI Art Styles &middot; HTML</span></span></a></div></div></div>
+
+    <!-- DIGITAL ARTS CARD — Kara Gau -->
+    <div class="card theme-art"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Digital Arts</div><h2>AI Art Styles &middot; Stencil Set &middot; Jigsaw Puzzle &middot; Signature Sticker Design</h2><div class="card-teacher">Kara Gau &middot; Virginia Visual Arts SOL AI.1 &middot; AI.2 &middot; AII.7 &middot; AII.10</div><p class="card-desc">Digital Arts students explore the intersection of artificial intelligence and visual design through three interconnected contributions. Students study AI-generated art styles across the <strong>OneWord Coloring Book</strong> &mdash; comparing ChatGPT and CoPilot outputs across scenic, artistic, woodcut, cartoon, and K&ndash;4 icon styles &mdash; then download and print pages for the bags. Students design <strong>stencil sets</strong> for each OneWord: the word itself plus 2&ndash;3 symbolic images for canvas painting. Students also create <strong>jigsaw puzzles</strong> using the Set G nature poster images &mdash; printed, laminated, and cut into 8&ndash;20 pieces. The project framework centers on empathy-driven design: every creative decision is made with a specific child recipient in mind. Future Ready: <strong>Problem Solvers &amp; Value Creators</strong>; <strong>Personally &amp; Socially Responsible</strong>.</p><div class="card-contribution"><span>&#127912;</span> Contribution: AI art coloring prints &middot; OneWord stencil set &middot; laminated jigsaw puzzle</div></div><div class="card-links"><div class="card-links-label">Digital Arts Resources</div><a href="https://lhhowell.github.io/kellamsmilebags/oneword_coloring_book.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127912;</span><span class="doc-link-text">OneWord Coloring Book<span class="doc-link-type">AI Art Styles Experience &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/setg_coloring_book.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#129513;</span><span class="doc-link-text">Set G &middot; Nature Poster Collection<span class="doc-link-type">Jigsaw Puzzle Source Art &middot; HTML</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Stencil Set Design Guidelines<span class="doc-link-type">Student Guide &middot; Coming Soon</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Empathy-Driven Design Framework<span class="doc-link-type">Teacher Guide &middot; Coming Soon</span></span></a></div></div></div>
 
     <div class="card theme-navy"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; AP Research</div><h2>"Did You Know?" Bookmark &mdash; Elementary Edition</h2><div class="card-teacher">Abbie McGee &middot; AP Research &middot; Science Supply Bar &middot; Bookmark Builder Kiosk</div><p class="card-desc">AP Research students translate a year of research thinking into a "Did You Know?" bookmark for an elementary student. Each student selects their OneWord, browses the Science Supply Bar &mdash; choosing 1&ndash;3 hands-on supplies &mdash; and builds their bookmark using the digital Bookmark Builder Kiosk. Future Ready: <strong>Thinkers &amp; Inquirers</strong>; <strong>Personally &amp; Socially Responsible</strong>.</p><div class="card-contribution"><span>&#128300;</span> Contribution: Research bookmark + science supplies &middot; printed on cardstock &middot; laminated</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">AP Research Bookmark Guidelines<span class="doc-link-type">Student Guide &middot; DOCX</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_APResearch_Bookmark_FLOW.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#128278;</span><span class="doc-link-text">Example Bookmark &mdash; FLOW<span class="doc-link-type">Elementary Example &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_APResearch_ScienceSupplyBar.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Science Supply Bar Sign<span class="doc-link-type">Printable Sign &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_APResearch_BookmarkBuilder_Kiosk.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Bookmark Builder Kiosk<span class="doc-link-type">Interactive Kiosk &middot; HTML</span></span></a></div></div></div>
 
@@ -221,6 +263,7 @@
     <div class="card theme-navy"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#11088; Advanced Classes &amp; Clubs &mdash; Middle School</div><h2>"Did You Know?" Bookmark &mdash; Middle School Edition</h2><div class="card-teacher">Open Enrollment &middot; Advanced Classes &amp; Clubs &middot; Grades 6&ndash;8 Recipient Group</div><p class="card-desc">This middle school edition of the "Did You Know?" bookmark is open to any advanced class or club whose students want to build bags for grades 6&ndash;8 recipients. The Middle School Science Supply Bar and Bookmark Builder Kiosk are already built and ready. Interested? Ask your teacher or club sponsor to reach out.</p><div class="card-contribution"><span>&#128300;</span> Contribution: Coming soon &middot; Middle School Edition</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_APResearch_Bookmark_FLOW.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#128278;</span><span class="doc-link-text">Example Bookmark &mdash; FLOW<span class="doc-link-type">Middle School Example &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/APResearch_ScienceSupplyBar_MiddleSchool.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Science Supply Bar Sign &mdash; Middle School<span class="doc-link-type">Printable Sign &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_APResearch_BookmarkBuilder_Kiosk.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Bookmark Builder Kiosk<span class="doc-link-type">Interactive Kiosk &middot; HTML</span></span></a></div></div></div>
 
     <div class="card theme-green"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#11088; Science National Honor Society &mdash; Middle School</div><h2>SNHS Smile Bag Builders</h2><div class="card-teacher">Chris Henry &amp; Kristan Honaker &middot; Science National Honor Society &middot; 15 Spots &middot; Middle School Recipients</div><p class="card-desc">SNHS members build complete Smile Bags for middle school students at Kellam&#39;s feeder schools. Each bag contains 10 original items spanning at least 3 categories from the SNHS Creation Kiosk Menu &mdash; Science &amp; Inquiry, Design &amp; Print, Construct &amp; Build, and Words &amp; Wellness. Every item is digitally designed and produced. The only handwritten item permitted is the inspirational letter.</p><div class="card-contribution"><span>&#128300;</span> Contribution: 10-item bag &middot; Middle School Recipients &middot; 5 Service Points</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="https://lhhowell.github.io/kellamsmilebags/NSHS_Preview.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">SNHS Overview &amp; Sign-Up<span class="doc-link-type">Mini Site &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/NSHS_Student_Guide.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">SNHS Student Guide<span class="doc-link-type">Interactive Guide &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/SNHS_Kiosk_Menu.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">SNHS Creation Kiosk Menu<span class="doc-link-type">Interactive Kiosk &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/SNHS_Supply_List.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Consolidated Supply List<span class="doc-link-type">Reference &middot; HTML</span></span></a></div></div></div>
+
     <div class="card theme-teal2"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; AP Environmental Science</div><h2>Smile Disc &amp; 3D Print Unit</h2><div class="card-teacher">Kristan Honaker &middot; VBCPS Env.1&ndash;Env.12 Standards</div><p class="card-desc">After AP Testing, students take on passion projects of their choosing. This group digs into the real-world environmental connections behind Operation Smiles &mdash; the causes of cleft conditions, 3D printing filament lifecycle, and acrylic mirror materials analysis &mdash; before contributing to the smile bag assembly. Future Ready: <strong>Thinkers &amp; Inquirers</strong>; <strong>Personally &amp; Socially Responsible</strong>.</p><div class="card-contribution"><span>&#128191;</span> Contribution: 3D printed smile disc with acrylic mirror</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">APES Unit Plan<span class="doc-link-type">Teacher Guide &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">3D Print Supplement<span class="doc-link-type">Student Guide &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Portfolio Reflection<span class="doc-link-type">Portrait of a Graduate &middot; DOCX</span></span></a></div></div></div>
 
     <div class="card theme-teal"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Environmental Science</div><h2>OneWord 3D Keychain</h2><div class="card-teacher">Carly Carmack &middot; VBCPS Env.1&ndash;Env.12 Standards</div><p class="card-desc">Students use the OneWord interactive kiosk to research one of 25 environmental science words, write an encouragement message for a child in recovery, and design a 3D printed keychain in Tinkercad. Printed on the Bambu Lab printer. Future Ready: <strong>Knowledgeable</strong>; <strong>Problem Solvers &amp; Value Creators</strong>.</p><div class="card-contribution"><span>&#128273;</span> Contribution: 3D printed OneWord keychain</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Lesson Plan<span class="doc-link-type">Teacher Guide &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">OneWord Bookmark Supplement<span class="doc-link-type">Student Worksheet &middot; DOCX</span></span></a></div></div></div>
@@ -243,13 +286,14 @@
 
     <div class="card theme-green"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Leadership Skills</div><h2>OneWord Activity Package + Handwritten Letter + Sticker</h2><div class="card-teacher">Katelyn Marquand &middot; Grades 9&ndash;12 &middot; Leadership Skills</div><p class="card-desc">Leadership students create a complete personalized package for a child receiving a Smile Bag &mdash; eight activities total. Six activities build leadership skills for the recipient. Tab 7 is a personal handwritten letter guided by a Gemini AI writing tutor and approved by the teacher. Tab 8 is a custom 2-inch OneWord sticker printed as a class set. Future Ready: <strong>Communicators &amp; Collaborators</strong>; <strong>Personally &amp; Socially Responsible</strong>.</p><div class="card-contribution"><span>&#9993;&#65039;</span> Contribution: 8-activity package &middot; handwritten letter on cardstock &middot; 2-inch OneWord sticker</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Teacher Guide<span class="doc-link-type">Teacher Guide &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Student Guide<span class="doc-link-type">Student Guide &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Activity Rubric<span class="doc-link-type">Rubric &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Gemini Gem Setup<span class="doc-link-type">AI Tutor Setup &middot; DOCX</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/LeadershipActivities_Kiosk_v2.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Leadership Activity Kiosk<span class="doc-link-type">Interactive Kiosk &middot; HTML</span></span></a></div></div></div>
 
-    <div class="card theme-purple"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; AVID</div><h2>OneWord Inspirational Quote Card</h2><div class="card-teacher">Deena Vinson &middot; AVID &middot; Grades 9&ndash;12 &middot; Costa's Levels of Thinking &middot; Quick Write &middot; Gemini Writing Tutor</div><p class="card-desc">AVID students apply Costa's Levels of Thinking and the Quick Write strategy to craft an original 120-character inspirational quote connected to one of the 25 shared OneWords. Students work with a Gemini AI writing tutor to deepen their thinking through Socratic questioning before designing a 4-inch square or circle quote card in their chosen Kellam color pair and font. The student's name, OneWord, and quote are printed on cardstock and placed in each Smile Bag. Future Ready: <strong>Balanced Communicators &amp; Collaborators</strong> &mdash; writing with purpose for a real audience; <strong>Personally &amp; Socially Responsible</strong> &mdash; applying AVID strategies in direct service of a child who needs encouragement.</p><div class="card-contribution"><span>&#128172;</span> Contribution: Original inspirational quote card &middot; 4&#8243; square or circle &middot; printed on cardstock</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Teacher Guide<span class="doc-link-type">Teacher Guide &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Student Guide<span class="doc-link-type">Student Guide &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Gemini Gem Setup<span class="doc-link-type">AI Tutor Setup &middot; DOCX</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/AVID_QuoteCard_Kiosk.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Quote Card Kiosk<span class="doc-link-type">Interactive Kiosk &middot; HTML</span></span></a></div></div></div>
+    <div class="card theme-purple"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; AVID</div><h2>OneWord Inspirational Quote Card</h2><div class="card-teacher">Deena Vinson &middot; AVID &middot; Grades 9&ndash;12 &middot; Costa's Levels of Thinking &middot; Quick Write &middot; Gemini Writing Tutor</div><p class="card-desc">AVID students apply Costa's Levels of Thinking and the Quick Write strategy to craft an original 120-character inspirational quote connected to one of the 25 shared OneWords. Students work with a Gemini AI writing tutor to deepen their thinking through Socratic questioning before designing a 4-inch square or circle quote card in their chosen Kellam color pair and font. The student's name, OneWord, and quote are printed on cardstock and placed in each Smile Bag. Future Ready: <strong>Balanced Communicators &amp; Collaborators</strong>; <strong>Personally &amp; Socially Responsible</strong>.</p><div class="card-contribution"><span>&#128172;</span> Contribution: Original inspirational quote card &middot; 4&#8243; square or circle &middot; printed on cardstock</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Teacher Guide<span class="doc-link-type">Teacher Guide &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Student Guide<span class="doc-link-type">Student Guide &middot; DOCX</span></span></a><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Gemini Gem Setup<span class="doc-link-type">AI Tutor Setup &middot; DOCX</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/AVID_QuoteCard_Kiosk.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Quote Card Kiosk<span class="doc-link-type">Interactive Kiosk &middot; HTML</span></span></a></div></div></div>
 
     <div class="card theme-teal"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Virginia Teachers for Tomorrow</div><h2>Student Contribution &mdash; Coming Soon</h2><div class="card-teacher">Robin Hoffman &middot; Details coming soon</div><p class="card-desc">Virginia Teachers for Tomorrow students will be contributing to Smile Bags. Details about their specific contribution and standards alignment are coming soon. Check back for updates!</p><div class="card-contribution"><span>&#127822;</span> Contribution: Coming soon</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Details Coming Soon<span class="doc-link-type">Guide &middot; Pending</span></span></a></div></div></div>
 
     <div class="card theme-pink"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; English 12</div><h2>Student Contribution &mdash; Coming Soon</h2><div class="card-teacher">Robin Hoffman &middot; Details coming soon</div><p class="card-desc">English 12 students will be contributing to Smile Bags. Details about their specific contribution and standards alignment are coming soon. Check back for updates!</p><div class="card-contribution"><span>&#128221;</span> Contribution: Coming soon</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#128196;</span><span class="doc-link-text">Details Coming Soon<span class="doc-link-type">Guide &middot; Pending</span></span></a></div></div></div>
 
     <div class="card theme-teal"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; AP Biology</div><h2>Zoo Project &mdash; Elementary Smile Bag</h2><div class="card-teacher">Elena O&#39;Brien &middot; AP Biology &middot; Norfolk Zoo Field Trip &middot; Elementary Recipients</div><p class="card-desc">AP Biology students connect their Norfolk Zoo capstone project to a complete Smile Bag for an elementary student at North Landing Elementary. Their field observations &mdash; behavioral journals, food webs, conservation campaigns, comparative anatomy &mdash; become hands-on activities, coding sheets, and interactive printables designed for a K&ndash;5 recipient. Every bag includes a binary coding activity, a science item rooted in zoo fieldwork, a wellness item, and a handwritten letter.</p><div class="card-contribution"><span>&#128300;</span> Contribution: 10-item bag &middot; Elementary Recipients &middot; North Landing Elementary</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="https://lhhowell.github.io/kellamsmilebags/APBio_TIDE_Preview.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">AP Bio &amp; T.I.D.E. Overview<span class="doc-link-type">Mini Site &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/APBio_TIDE_Student_Guide.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Student Guide<span class="doc-link-type">Interactive Guide &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/APBio_TIDE_Kiosk_Menu.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Creation Kiosk Menu<span class="doc-link-type">Interactive Kiosk &middot; HTML</span></span></a></div></div></div>
+
     <div class="card theme-purple"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; AP Psychology</div><h2>Psychology Behind Your Word &mdash; Activity Card</h2><div class="card-teacher">AP Psychology Teacher &middot; Details coming soon</div><p class="card-desc">AP Psychology students use their knowledge of psychological concepts to design an activity card for a child in our community. Students choose their OneWord, select a psychology concept, choose their recipient's age group, and select a format &mdash; double-sided card, coloring page, mini booklet, card + supply, card + puzzle, or card + pinwheel. Future Ready: <strong>Thinkers &amp; Inquirers</strong>; <strong>Personally &amp; Socially Responsible</strong>.</p><div class="card-contribution"><span>&#129504;</span> Contribution: Psychology activity card &middot; format chosen by student</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="#" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">AP Psychology Kiosk<span class="doc-link-type">Interactive Kiosk &middot; Coming Soon</span></span></a></div></div></div>
 
     <div class="card theme-teal"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Open to All Students</div><h2>Crafting Smiles</h2><div class="card-teacher">Any participating student &middot; No class assignment required</div><p class="card-desc">Any student can contribute to Smile Bags through the Crafting Smiles kiosk! Students choose to design a OneWord 3D printed bookmark or a Magic Illusion Spinner. Both connect to the 25 shared OneWords and the same color palette used across the project. Future Ready: <strong>Problem Solvers &amp; Value Creators</strong>; <strong>Personally &amp; Socially Responsible</strong>.</p><div class="card-contribution"><span>&#127912;</span> Contribution: 3D printed bookmark or Magic Illusion Spinner</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="https://lhhowell.github.io/kellamsmilebags/CraftingSmiles_Kiosk.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Crafting Smiles Kiosk<span class="doc-link-type">Interactive Kiosk &middot; HTML</span></span></a></div></div></div>
@@ -295,9 +339,69 @@
 </footer>
 
 <script>
-// ============================================================
-// SWAP WORDS HERE EACH YEAR — edit word, science, and sel only
-// ============================================================
+// ── STICKER KIOSK ──
+const STICKER_WORDS = ['Absorb','Adapt','Anchor','Balance','Bloom','Breathe','Clear','Connect','Cycle','Emerge','Filter','Flow','Grow','Heal','Migrate','Persist','Renew','Restore','Return','Rise','Root','Shine','Sustain','Thrive','Transform'];
+const BASE = 'https://lhhowell.github.io/kellamsmilebags/';
+let stickerStyle = 'chatgpt';
+
+function getStickerSrc(word, style) {
+  if (style === 'chatgpt') return BASE + 'sticker_' + word.toLowerCase() + '.png';
+  return BASE + 'Copilot_' + word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() + '.png';
+}
+
+function initSticker() {
+  const sel = document.getElementById('stickerWord');
+  STICKER_WORDS.forEach(w => {
+    const opt = document.createElement('option');
+    opt.value = w;
+    opt.textContent = w.toUpperCase();
+    sel.appendChild(opt);
+  });
+
+  // Mini preview row
+  const row = document.getElementById('stickerMiniRow');
+  STICKER_WORDS.forEach((w, i) => {
+    const div = document.createElement('div');
+    div.className = 'sticker-mini' + (i === 0 ? ' active' : '');
+    div.id = 'mini-' + w;
+    div.innerHTML = '<img src="' + getStickerSrc(w, 'chatgpt') + '" alt="' + w + '" loading="lazy"/>';
+    div.onclick = () => {
+      document.getElementById('stickerWord').value = w;
+      updateSticker();
+    };
+    row.appendChild(div);
+  });
+
+  updateSticker();
+}
+
+function setStickerStyle(style) {
+  stickerStyle = style;
+  document.getElementById('btnBright').className = 'sticker-btn' + (style === 'chatgpt' ? ' active' : '');
+  document.getElementById('btnVintage').className = 'sticker-btn' + (style === 'copilot' ? ' active' : '');
+  // Update all minis
+  STICKER_WORDS.forEach(w => {
+    const mini = document.getElementById('mini-' + w);
+    if (mini) mini.querySelector('img').src = getStickerSrc(w, style);
+  });
+  updateSticker();
+}
+
+function updateSticker() {
+  const word = document.getElementById('stickerWord').value;
+  const src = getStickerSrc(word, stickerStyle);
+  document.getElementById('stickerPreview').src = src;
+  document.getElementById('stickerPreview').style.opacity = '1';
+  const dl = document.getElementById('stickerDownload');
+  dl.href = src;
+  dl.download = (stickerStyle === 'chatgpt' ? 'sticker_' + word.toLowerCase() : 'Copilot_' + word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) + '.png';
+  // Update active mini
+  document.querySelectorAll('.sticker-mini').forEach(m => m.classList.remove('active'));
+  const activeMini = document.getElementById('mini-' + word);
+  if (activeMini) { activeMini.classList.add('active'); activeMini.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'}); }
+}
+
+// ── ONEWORD GRID ──
 const oneWords = [
   {word:"ABSORB",science:"Plants and soils absorb carbon, water, and nutrients to sustain ecosystems.",sel:"Taking in new information and experiences with an open, curious mind."},
   {word:"ADAPT",science:"Species adapt to changing environments through evolution and behavioral shifts.",sel:"Adjusting thoughts and responses when life feels uncertain or unfamiliar."},
@@ -325,9 +429,6 @@ const oneWords = [
   {word:"THRIVE",science:"Species thrive in ecosystems where their needs are consistently and reliably met.",sel:"You deserve environments — social and physical — where you can truly and fully thrive."},
   {word:"TRANSFORM",science:"Metamorphosis, decomposition, and erosion transform matter into something entirely new.",sel:"Every challenge you survive has the power to transform you into someone stronger."}
 ];
-// ============================================================
-// END OF EDITABLE SECTION — do not modify below
-// ============================================================
 
 function buildGrid() {
   document.getElementById('wordCount').textContent = oneWords.length;
@@ -361,7 +462,9 @@ function toggleSection() {
   btn.classList.toggle('open', isOpen);
   label.textContent = isOpen ? 'Collapse \u2014 The 25 OneWords' : 'Explore the 25 OneWords';
 }
+
 buildGrid();
+initSticker();
 </script>
 </body>
 </html>
