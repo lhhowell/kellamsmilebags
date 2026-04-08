@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Empathy-Driven Design Framework · Teacher Guide · Digital Arts</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --purple:    #7B2D8B;
+  --purple-lt: #9b4dab;
+  --purple-bg: #F3E5F5;
+  --forest:    #1a3a2a;
+  --moss:      #2d5a3d;
+  --fern:      #3d7a52;
+  --gold:      #c9a84c;
+  --gold-lt:   #e8c87a;
+  --ink:       #1a1a2e;
+  --cream:     #f9f6f2;
+  --parchment: #f0ebe0;
+  --warm-gray: #6a6a7a;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--cream);
+  font-family: 'Nunito', sans-serif;
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+header {
+  width: 100%;
+  background: var(--ink);
+  border-bottom: 3px solid var(--purple);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.35);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: #e8c8f8;
+  line-height: 1.2;
+}
+.logo em {
+  font-style: italic;
+  color: rgba(232,200,248,.65);
+  font-size: 0.82rem;
+  display: block;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.header-badge {
+  background: rgba(123,45,139,.3);
+  border: 1px solid rgba(155,77,171,.4);
+  border-radius: 20px;
+  padding: 4px 16px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #e0b8f0;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.btn-print {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.85rem;
+  background: var(--purple);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 16px;
+  cursor: pointer;
+  transition: background .2s, transform .1s;
+}
+.btn-print:hover { background: var(--purple-lt); transform: translateY(-1px); }
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, #1a1a2e 0%, #2d1a3e 50%, #3d2a52 100%);
+  padding: 52px 40px 44px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(155,77,171,.2);
+  border-radius: 8px;
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: rgba(155,77,171,.8);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700;
+  color: #e8c8f8;
+  line-height: 1.15;
+  margin-bottom: 6px;
+}
+.hero-title em {
+  font-style: italic;
+  color: rgba(232,200,248,.7);
+  font-size: 1.3rem;
+  display: block;
+  margin-top: 4px;
+}
+.hero-divider {
+  width: 80px; height: 2px;
+  background: linear-gradient(to right, transparent, var(--purple-lt), transparent);
+  margin: 18px auto;
+}
+.hero-sub {
+  font-size: 0.95rem;
+  color: rgba(232,200,248,.65);
+  max-width: 600px;
+  margin: 0 auto 20px;
+  line-height: 1.75;
+}
+.hero-tags {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.hero-tag {
+  background: rgba(123,45,139,.25);
+  border: 1px solid rgba(155,77,171,.3);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 0.7rem;
+  color: #d4a8e8;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── MAIN ── */
+main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 40px 24px 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── SECTION CARD ── */
+.section-card {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(26,26,46,.08);
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 24px;
+  border-bottom: 2px solid var(--purple-bg);
+  background: var(--purple-bg);
+}
+.section-number {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--purple);
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--purple);
+  line-height: 1.2;
+}
+.section-title em {
+  font-style: italic;
+  color: var(--purple-lt);
+  font-size: 0.82rem;
+  display: block;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 1px;
+}
+.section-body {
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── CALLOUT ── */
+.callout {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: var(--purple-bg);
+  border: 1.5px solid rgba(123,45,139,.2);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+.callout-icon { font-size: 1.4rem; flex-shrink: 0; }
+.callout-title { font-weight: 800; font-size: 0.92rem; color: var(--purple); margin-bottom: 3px; }
+.callout-desc { font-size: 0.87rem; color: #3a3a4a; line-height: 1.65; }
+.callout-desc strong { color: var(--purple); }
+
+.callout-green {
+  background: #f0f8f2;
+  border-color: rgba(45,90,61,.2);
+}
+.callout-green .callout-title { color: var(--forest); }
+.callout-green .callout-desc strong { color: var(--forest); }
+
+.callout-gold {
+  background: #fdf8ee;
+  border-color: rgba(201,168,76,.3);
+}
+.callout-gold .callout-title { color: #8a6a20; }
+.callout-gold .callout-desc strong { color: #8a6a20; }
+
+/* ── BODY TEXT ── */
+.body-text {
+  font-size: 0.92rem;
+  color: #3a3a4a;
+  line-height: 1.75;
+}
+.body-text strong { color: var(--ink); }
+.body-text + .body-text { margin-top: -4px; }
+
+/* ── CONTRIBUTION CARDS ── */
+.contrib-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+.contrib-card {
+  background: var(--cream);
+  border: 2px solid rgba(123,45,139,.12);
+  border-radius: 12px;
+  padding: 18px 16px;
+  transition: border-color .2s;
+}
+.contrib-card:hover { border-color: var(--purple-lt); }
+.contrib-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--purple-bg);
+  line-height: 1;
+  margin-bottom: 4px;
+  -webkit-text-stroke: 2px var(--purple-lt);
+}
+.contrib-title {
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--purple);
+  margin-bottom: 6px;
+}
+.contrib-desc {
+  font-size: 0.83rem;
+  color: #4a4a5a;
+  line-height: 1.6;
+}
+.contrib-tag {
+  display: inline-block;
+  margin-top: 10px;
+  background: var(--purple-bg);
+  color: var(--purple);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* ── SOL TABLE ── */
+.sol-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sol-row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: var(--cream);
+  border: 1.5px solid rgba(123,45,139,.1);
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+.sol-code {
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--purple);
+  min-width: 60px;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+.sol-text {
+  font-size: 0.87rem;
+  color: #3a3a4a;
+  line-height: 1.6;
+}
+.sol-text strong { color: var(--ink); }
+
+/* ── TIMELINE ── */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 18px;
+  top: 24px;
+  bottom: 24px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--purple-lt), rgba(123,45,139,.15));
+}
+.timeline-item {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 10px 0;
+  position: relative;
+}
+.timeline-dot {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--purple);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.8rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  z-index: 1;
+  box-shadow: 0 2px 8px rgba(123,45,139,.3);
+}
+.timeline-content {}
+.timeline-phase {
+  font-family: 'Courier New', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--purple-lt);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.timeline-title {
+  font-weight: 800;
+  font-size: 0.92rem;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+.timeline-desc {
+  font-size: 0.85rem;
+  color: #4a4a5a;
+  line-height: 1.6;
+}
+
+/* ── FUTURE READY ── */
+.fr-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.fr-card {
+  background: linear-gradient(135deg, var(--purple-bg), #fff);
+  border: 1.5px solid rgba(123,45,139,.15);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.fr-icon { font-size: 1.2rem; margin-bottom: 6px; }
+.fr-title { font-weight: 800; font-size: 0.88rem; color: var(--purple); margin-bottom: 4px; }
+.fr-desc { font-size: 0.8rem; color: #4a4a5a; line-height: 1.55; }
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 0 24px 48px;
+  font-size: 0.72rem;
+  color: var(--warm-gray);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── PRINT ── */
+@media print {
+  body { background: white; }
+  header { position: static; background: white !important; border-bottom: 2px solid var(--purple); box-shadow: none; }
+  .logo { color: var(--purple) !important; }
+  .logo em { color: var(--purple-lt) !important; }
+  .header-badge, .btn-print { display: none !important; }
+  .hero { background: var(--purple-bg) !important; }
+  .hero-title { color: var(--purple) !important; }
+  .hero-sub { color: var(--warm-gray) !important; }
+  main { padding: 16px; }
+  .section-card { box-shadow: none; border: 1px solid #ddd; }
+}
+
+@media(max-width: 640px) {
+  .hero { padding: 36px 20px 32px; }
+  main { padding: 24px 16px 48px; }
+  .contrib-grid { grid-template-columns: 1fr; }
+  .fr-grid { grid-template-columns: 1fr; }
+  header { padding: 12px 20px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">Empathy-Driven Design Framework<em>Teacher Guide · Digital Arts · Kara Gau</em></div>
+  </div>
+  <div class="header-right">
+    <div class="header-badge">🎨 Teacher Guide</div>
+    <button class="btn-print" onclick="window.print()">🖨️ Print This Guide</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Word &amp; Wonder · Digital Arts · Kellam Smile Bags · Spring 2026</div>
+  <div class="hero-title">Empathy-Driven Design Framework<em>Teacher Guide · Kara Gau</em></div>
+  <div class="hero-divider"></div>
+  <div class="hero-sub">A design framework that treats artistic decisions as acts of empathy — every choice students make is shaped by a specific child recipient. Three interconnected contributions. One shared purpose.</div>
+  <div class="hero-tags">
+    <span class="hero-tag">🎨 AI Art Styles</span>
+    <span class="hero-tag">✂️ Stencil Set</span>
+    <span class="hero-tag">🧩 Jigsaw Puzzle</span>
+    <span class="hero-tag">💜 Empathy-Driven</span>
+    <span class="hero-tag">SOL AI.1 · AI.2 · AII.7 · AII.10</span>
+  </div>
+</div>
+
+<main>
+
+  <!-- SECTION 1 — THE FRAMEWORK -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <div class="section-title">The Empathy-Driven Design Framework<em>The Philosophy Behind This Project</em></div>
+    </div>
+    <div class="section-body">
+      <div class="callout">
+        <div class="callout-icon">💜</div>
+        <div>
+          <div class="callout-title">The Core Principle</div>
+          <div class="callout-desc">Every creative decision a student makes in this project is shaped by a single question: <strong>"What does the child who will receive this need?"</strong> Not "What do I like?" — but "What serves them?" This reorientation is the engine of the framework. It transforms art class from self-expression into empathetic service design.</div>
+        </div>
+      </div>
+      <p class="body-text">In empathy-driven design, the designer's personal taste is secondary to the recipient's experience. Students are not designing for a grade — they are designing for a specific elementary-age child who will open a Smile Bag at a moment chosen by their guidance counselor. That child might be having the hardest week of their young life. The student's design is a small act of care delivered across schools, across ages, and across context.</p>
+      <p class="body-text">This framework asks students to hold three things in tension throughout the project: <strong>their own creative voice</strong>, <strong>the capabilities of their tools</strong>, and <strong>the needs of their recipient</strong>. The best designs honor all three. This is exactly the tension professional designers navigate — and it is what makes this project academically rigorous as well as deeply meaningful.</p>
+      <div class="callout callout-gold">
+        <div class="callout-icon">⭐</div>
+        <div>
+          <div class="callout-title">Museum Quality — What It Means Here</div>
+          <div class="callout-desc">The standard for this project is <strong>museum quality</strong> — not because the work will hang in a museum, but because the child receiving it deserves the student's genuine best. Museum quality means: intentional choices, clean execution, and work the student is proud to put their name on. It is the opposite of "good enough."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 — THE THREE CONTRIBUTIONS -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">2</div>
+      <div class="section-title">The Three Student Contributions<em>What Students Make &amp; Why</em></div>
+    </div>
+    <div class="section-body">
+      <div class="contrib-grid">
+        <div class="contrib-card">
+          <div class="contrib-num">01</div>
+          <div class="contrib-title">AI Art Styles — Coloring Pages</div>
+          <div class="contrib-desc">Students explore the OneWord Coloring Book — comparing outputs from ChatGPT, CoPilot, and Gemini across seven distinct art styles. They select pages that match their assigned word and print them for inclusion in the bags. This contribution builds AI literacy and critical visual analysis: students must evaluate which style serves the child recipient best, not just which one they personally prefer.</div>
+          <span class="contrib-tag">Prints for bags</span>
+        </div>
+        <div class="contrib-card">
+          <div class="contrib-num">02</div>
+          <div class="contrib-title">Stencil Set Design</div>
+          <div class="contrib-desc">Students design a complete stencil set for their assigned OneWord: the word itself plus 2–3 symbolic images the child can use to paint on canvas. Designs must be stencil-ready — bold, cuttable, with deliberate bridge placement for enclosed letters. The empathy challenge is real: if the design is too complex, the child cannot use it. Simplicity here is kindness.</div>
+          <span class="contrib-tag">Physical deliverable</span>
+        </div>
+        <div class="contrib-card">
+          <div class="contrib-num">03</div>
+          <div class="contrib-title">Jigsaw Puzzle</div>
+          <div class="contrib-desc">Students use their digital art creation tools to prepare Set G nature poster images as jigsaw puzzles — printed, laminated, and cut into 8–20 pieces. The number of pieces should match the recipient's age and ability. This contribution pairs technical production skills with recipient awareness: a 20-piece puzzle designed for a 6-year-old is a design failure regardless of how well it was cut.</div>
+          <span class="contrib-tag">Physical deliverable</span>
+        </div>
+      </div>
+      <div class="callout callout-green">
+        <div class="callout-icon">🔗</div>
+        <div>
+          <div class="callout-title">Why These Three Work Together</div>
+          <div class="callout-desc">Each contribution builds on a different design skill: AI literacy and critical evaluation (coloring pages), concept-to-physical translation and stencil engineering (stencil set), and production craft with recipient calibration (jigsaw puzzle). Together they cover <strong>digital, analog, and production</strong> design — a complete arc for the semester.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3 — STANDARDS -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">3</div>
+      <div class="section-title">Standards Alignment<em>Virginia Visual Arts SOL</em></div>
+    </div>
+    <div class="section-body">
+      <div class="sol-grid">
+        <div class="sol-row">
+          <div class="sol-code">AI.1</div>
+          <div class="sol-text"><strong>Observe and record visual information from the environment</strong> — Students study AI-generated imagery across seven art styles, analyzing how different tools interpret the same word visually. They evaluate outputs for artistic quality, stylistic consistency, and fitness for purpose.</div>
+        </div>
+        <div class="sol-row">
+          <div class="sol-code">AI.2</div>
+          <div class="sol-text"><strong>Create works of art using a variety of media and processes</strong> — Students produce work across digital design tools, stencil film, physical cutting, lamination, and print production. Each contribution requires a distinct medium and process.</div>
+        </div>
+        <div class="sol-row">
+          <div class="sol-code">AII.7</div>
+          <div class="sol-text"><strong>Integrate content from other subject areas into works of art</strong> — The project's 25 OneWords are drawn from environmental science and social emotional learning. Students integrate scientific meaning and empathy-centered purpose into every design decision.</div>
+        </div>
+        <div class="sol-row">
+          <div class="sol-code">AII.10</div>
+          <div class="sol-text"><strong>Apply knowledge of design principles to solve visual problems</strong> — The stencil set contribution is pure applied design: students must solve real physical constraints (bridges, minimum stroke width, negative space) to produce a functional, cuttable, usable artifact.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4 — PACING -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">4</div>
+      <div class="section-title">Suggested Pacing<em>A Flexible Timeline</em></div>
+    </div>
+    <div class="section-body">
+      <p class="body-text">This timeline is a guide, not a prescription. Adjust based on your class pace, block vs. period scheduling, and how deeply you want to explore the AI comparison component. The contributions can run sequentially or overlap.</p>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot">1</div>
+          <div class="timeline-content">
+            <div class="timeline-phase">Week 1</div>
+            <div class="timeline-title">Project Launch &amp; Empathy Framing</div>
+            <div class="timeline-desc">Introduce the Smile Bags project and the recipient context. Who receives a bag? Why? How does knowing your recipient change your design decisions? Introduce the 25 OneWords and assign words to students.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot">2</div>
+          <div class="timeline-content">
+            <div class="timeline-phase">Weeks 2–3</div>
+            <div class="timeline-title">AI Art Styles Exploration &amp; Coloring Page Selection</div>
+            <div class="timeline-desc">Students explore the OneWord Coloring Book across all seven AI art styles. Structured comparison: Which style serves a child best? Which reflects the word's meaning most powerfully? Students select and print their coloring pages for the bags.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot">3</div>
+          <div class="timeline-content">
+            <div class="timeline-phase">Weeks 3–5</div>
+            <div class="timeline-title">Stencil Set — Concept &amp; Design</div>
+            <div class="timeline-desc">Students sketch symbol concepts, get teacher approval, then move to digital design tools. Build word stencil + 2–3 symbol stencils. Review for stencil-readiness: bridges, minimum stroke width, cuttability. Print test before committing to stencil film.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot">4</div>
+          <div class="timeline-content">
+            <div class="timeline-phase">Week 5–6</div>
+            <div class="timeline-title">Stencil Set — Cut, Test, Refine</div>
+            <div class="timeline-desc">Students cut stencils and conduct paint tests on paper. Evaluate: Are edges clean? Do shapes hold together? Can a child use this? Refine before finalizing. Artist statement written alongside cutting.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot">5</div>
+          <div class="timeline-content">
+            <div class="timeline-phase">Weeks 6–7</div>
+            <div class="timeline-title">Jigsaw Puzzle — Prepare, Print, Laminate, Cut</div>
+            <div class="timeline-desc">Students select their Set G nature poster image, prepare it in their digital art tool, print, laminate, and cut into 8–20 pieces. Piece count decision requires recipient age awareness — this is an explicit empathy checkpoint.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot">6</div>
+          <div class="timeline-content">
+            <div class="timeline-phase">Week 7–8</div>
+            <div class="timeline-title">Final Review &amp; Bag Assembly</div>
+            <div class="timeline-desc">Quality review of all three contributions. Does each piece reflect museum-quality effort? Does it serve the recipient? Contributions submitted for bag assembly by Operation Smiles Club.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5 — ASSESSMENT -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">5</div>
+      <div class="section-title">Assessment Framework<em>Evaluating Empathy-Driven Work</em></div>
+    </div>
+    <div class="section-body">
+      <div class="callout">
+        <div class="callout-icon">📐</div>
+        <div>
+          <div class="callout-title">The Central Assessment Question</div>
+          <div class="callout-desc">For each contribution, the primary assessment question is: <strong>"Does this serve the recipient?"</strong> Technical quality matters, but technical quality in service of the wrong outcome is still a design failure. Evaluation should always layer recipient-awareness over craft.</div>
+        </div>
+      </div>
+      <div class="sol-grid">
+        <div class="sol-row">
+          <div class="sol-code" style="color:var(--purple);min-width:100px;">Coloring Pages</div>
+          <div class="sol-text">Did the student engage critically with the AI comparison? Was their selection intentional — can they articulate why this style serves the recipient? Is the print clean and bag-ready?</div>
+        </div>
+        <div class="sol-row">
+          <div class="sol-code" style="color:var(--purple);min-width:100px;">Stencil Set</div>
+          <div class="sol-text">Is the design stencil-ready (bridges in place, minimum stroke width, no floating islands)? Does the symbol connect meaningfully to the word? Could a child aged 6–10 successfully paint with this stencil? Is the artist statement genuine and specific?</div>
+        </div>
+        <div class="sol-row">
+          <div class="sol-code" style="color:var(--purple);min-width:100px;">Jigsaw Puzzle</div>
+          <div class="sol-text">Is the piece count appropriate for the recipient's age? Are cuts clean and pieces interlocking? Is the image printed at sufficient quality? Would this puzzle hold up to use by a child?</div>
+        </div>
+        <div class="sol-row">
+          <div class="sol-code" style="color:var(--purple);min-width:100px;">All Work</div>
+          <div class="sol-text">Does the body of work reflect museum-quality effort — not perfection, but genuine investment? Can the student articulate the empathy-driven decisions they made across all three contributions?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6 — FUTURE READY -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">6</div>
+      <div class="section-title">Future Ready Profile<em>Portrait of a Graduate</em></div>
+    </div>
+    <div class="section-body">
+      <p class="body-text">This project targets two Portrait of a Graduate domains. Use these as discussion anchors when students are reflecting on their work.</p>
+      <div class="fr-grid">
+        <div class="fr-card">
+          <div class="fr-icon">🔧</div>
+          <div class="fr-title">Problem Solvers &amp; Value Creators</div>
+          <div class="fr-desc">Students encounter genuine design constraints — stencils that won't cut, pieces that don't interlock, symbols that don't communicate. They must solve these problems with the tools and techniques available to them, producing work that has real-world utility.</div>
+        </div>
+        <div class="fr-card">
+          <div class="fr-icon">💜</div>
+          <div class="fr-title">Personally &amp; Socially Responsible</div>
+          <div class="fr-desc">Every decision is made in service of a child the student will never meet. This is responsible design in its purest form — using skill and creativity to contribute positively to the lives of others, without recognition or reward.</div>
+        </div>
+      </div>
+      <div class="callout callout-green" style="margin-top:4px;">
+        <div class="callout-icon">💬</div>
+        <div>
+          <div class="callout-title">Reflection Prompt for Students</div>
+          <div class="callout-desc">"Describe one moment in this project where you made a design decision based on what the child needed rather than what you personally preferred. What did you change, and why?" — This prompt surfaces the empathy-driven framework in student voice and makes an excellent portfolio artifact.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7 — RESOURCES -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">7</div>
+      <div class="section-title">Digital Arts Resources<em>All Links in One Place</em></div>
+    </div>
+    <div class="section-body">
+      <div class="sol-grid">
+        <div class="sol-row">
+          <div class="sol-code" style="color:var(--purple);min-width:80px;">🎨</div>
+          <div class="sol-text"><strong>OneWord Coloring Book</strong> — All 7 AI art styles, 175 pages, set filter + word jump. <a href="https://lhhowell.github.io/kellamsmilebags/oneword_coloring_book.html" target="_blank" style="color:var(--purple);font-weight:700;">Open →</a></div>
+        </div>
+        <div class="sol-row">
+          <div class="sol-code" style="color:var(--purple);min-width:80px;">🧩</div>
+          <div class="sol-text"><strong>Set G · Nature Poster Collection</strong> — Source art for jigsaw puzzles, 25 words, CoPilot. <a href="https://lhhowell.github.io/kellamsmilebags/setg_coloring_book.html" target="_blank" style="color:var(--purple);font-weight:700;">Open →</a></div>
+        </div>
+        <div class="sol-row">
+          <div class="sol-code" style="color:var(--purple);min-width:80px;">🌸</div>
+          <div class="sol-text"><strong>Set H · Fine Line Botanical</strong> — 25 words, Gemini/ChatGPT fine line style. <a href="https://lhhowell.github.io/kellamsmilebags/seth_coloring_book.html" target="_blank" style="color:var(--purple);font-weight:700;">Open →</a></div>
+        </div>
+        <div class="sol-row">
+          <div class="sol-code" style="color:var(--purple);min-width:80px;">✂️</div>
+          <div class="sol-text"><strong>Stencil Set Design Guidelines</strong> — Student-facing guide: process, rules, checklist, submission. <a href="https://lhhowell.github.io/kellamsmilebags/stencil_design_guidelines.html" target="_blank" style="color:var(--purple);font-weight:700;">Open →</a></div>
+        </div>
+        <div class="sol-row">
+          <div class="sol-code" style="color:var(--purple);min-width:80px;">🌿</div>
+          <div class="sol-text"><strong>Kellam Smile Bags — Main Site</strong> — Project overview, all participating classes, full resource index. <a href="https://lhhowell.github.io/kellamsmilebags/" target="_blank" style="color:var(--purple);font-weight:700;">Open →</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Kellam Smile Bags · Word &amp; Wonder · Digital Arts · Kara Gau · Spring 2026 &nbsp;·&nbsp; Virginia Visual Arts SOL AI.1 · AI.2 · AII.7 · AII.10
+</footer>
+
+</body>
+</html>
