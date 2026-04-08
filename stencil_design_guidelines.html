@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stencil Set Design Guidelines · Digital Arts · Word &amp; Wonder</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --forest:    #1a3a2a;
+  --moss:      #2d5a3d;
+  --fern:      #3d7a52;
+  --sage:      #7aaa8a;
+  --sage-lt:   #b0d4be;
+  --cream:     #f5f0e8;
+  --parchment: #ede6d6;
+  --gold:      #c9a84c;
+  --gold-lt:   #e8c87a;
+  --ink:       #1a2a1a;
+  --blush:     #e8d4e8;
+  --lavender:  #c4aed4;
+  --coral:     #e87a6a;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--forest);
+  background-image:
+    radial-gradient(ellipse 70% 50% at 20% 80%, rgba(45,90,61,.4) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 20%, rgba(201,168,76,.15) 0%, transparent 60%),
+    repeating-linear-gradient(60deg, transparent, transparent 50px, rgba(255,255,255,.015) 50px, rgba(255,255,255,.015) 100px);
+  min-height: 100vh;
+  font-family: 'Nunito', sans-serif;
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+header {
+  width: 100%;
+  background: var(--ink);
+  border-bottom: 3px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.45);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  color: var(--gold);
+  line-height: 1.2;
+}
+.logo em {
+  font-style: italic;
+  color: var(--gold-lt);
+  font-size: 0.85rem;
+  display: block;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.header-badge {
+  background: rgba(201,168,76,.12);
+  border: 1px solid rgba(201,168,76,.3);
+  border-radius: 20px;
+  padding: 4px 16px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(201,168,76,.8);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.btn-print {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.85rem;
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  border-radius: 8px;
+  padding: 7px 16px;
+  cursor: pointer;
+  transition: background .2s, transform .1s;
+}
+.btn-print:hover { background: var(--gold-lt); transform: translateY(-1px); }
+
+/* ── MAIN LAYOUT ── */
+main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 40px 24px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, #0d2018 0%, #1a3a2a 50%, #2d5a3d 100%);
+  border: 2px solid rgba(201,168,76,.35);
+  border-radius: 16px;
+  padding: 40px 36px 36px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(201,168,76,.15);
+  border-radius: 10px;
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: rgba(201,168,76,.6);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1.15;
+  text-shadow: 0 2px 12px rgba(0,0,0,.4);
+  margin-bottom: 6px;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--gold-lt);
+  font-size: 1.5rem;
+  display: block;
+}
+.hero-divider {
+  width: 80px; height: 2px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  margin: 16px auto;
+}
+.hero-sub {
+  font-size: 0.88rem;
+  color: rgba(232,200,122,.7);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.7;
+}
+.hero-tags {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+.hero-tag {
+  background: rgba(201,168,76,.12);
+  border: 1px solid rgba(201,168,76,.25);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 0.7rem;
+  color: var(--gold-lt);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── CARD SECTION ── */
+.section-card {
+  background: var(--cream);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,.25);
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+  border-bottom: 2px solid rgba(26,42,26,.1);
+}
+.section-number {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--forest);
+  color: var(--gold);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--forest);
+  line-height: 1.2;
+}
+.section-title em {
+  font-style: italic;
+  color: var(--fern);
+  font-size: 0.85rem;
+  display: block;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.section-body {
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── RULE ITEMS ── */
+.rule {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.rule-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+  width: 28px;
+  text-align: center;
+}
+.rule-content {}
+.rule-title {
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--forest);
+  margin-bottom: 2px;
+}
+.rule-desc {
+  font-size: 0.88rem;
+  color: #3a4a3a;
+  line-height: 1.6;
+}
+.rule-desc strong { color: var(--forest); }
+
+/* ── EXAMPLE GRID ── */
+.example-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 4px;
+}
+.example-card {
+  background: white;
+  border: 2px solid rgba(61,122,82,.18);
+  border-radius: 10px;
+  padding: 14px 16px;
+  transition: border-color .2s, box-shadow .2s;
+}
+.example-card:hover { border-color: var(--fern); box-shadow: 0 4px 14px rgba(0,0,0,.1); }
+.example-word {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--forest);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.example-word .ex-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+.example-items {
+  font-size: 0.8rem;
+  color: #4a5a4a;
+  line-height: 1.7;
+}
+.example-items span {
+  display: block;
+  padding-left: 4px;
+  border-left: 2px solid rgba(61,122,82,.25);
+  margin-bottom: 2px;
+}
+
+/* ── CHECKLIST ── */
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: white;
+  border: 1.5px solid rgba(61,122,82,.15);
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+.check-box {
+  width: 20px; height: 20px;
+  border: 2px solid var(--fern);
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  background: white;
+}
+.check-text {
+  font-size: 0.9rem;
+  color: #2a3a2a;
+  line-height: 1.5;
+}
+.check-text strong { color: var(--forest); }
+
+/* ── DO / DON'T ── */
+.do-dont {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.do-col, .dont-col {
+  border-radius: 10px;
+  overflow: hidden;
+}
+.do-col .col-header { background: var(--fern); color: white; }
+.dont-col .col-header { background: var(--coral); color: white; }
+.col-header {
+  padding: 8px 14px;
+  font-weight: 800;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.col-items {
+  background: white;
+  border: 2px solid rgba(0,0,0,.08);
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.col-item {
+  font-size: 0.83rem;
+  color: #2a3a2a;
+  line-height: 1.5;
+  display: flex;
+  gap: 7px;
+  align-items: flex-start;
+}
+.col-item::before {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  margin-top: 2px;
+}
+.do-col .col-item::before { content: '✓'; color: var(--fern); font-weight: 800; }
+.dont-col .col-item::before { content: '✗'; color: var(--coral); font-weight: 800; }
+
+/* ── HIGHLIGHT BOX ── */
+.highlight-box {
+  background: linear-gradient(135deg, rgba(26,58,42,.06) 0%, rgba(201,168,76,.08) 100%);
+  border: 2px solid rgba(201,168,76,.3);
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.highlight-icon { font-size: 1.6rem; flex-shrink: 0; }
+.highlight-text {}
+.highlight-title {
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--forest);
+  margin-bottom: 4px;
+}
+.highlight-desc {
+  font-size: 0.87rem;
+  color: #3a4a3a;
+  line-height: 1.65;
+}
+
+/* ── WORD LIST QUICK REF ── */
+.word-pill-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.word-pill {
+  background: var(--forest);
+  color: var(--gold-lt);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-family: 'Playfair Display', serif;
+}
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 0 24px 48px;
+  font-size: 0.72rem;
+  color: rgba(232,200,122,.4);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── PRINT ── */
+@media print {
+  body { background: white !important; color: black; }
+  header { position: static; background: white !important; border-bottom: 2px solid #1a3a2a; box-shadow: none; }
+  .logo { color: #1a3a2a !important; }
+  .logo em, .header-badge, .btn-print { display: none !important; }
+  .hero { background: #f5f0e8 !important; border-color: #1a3a2a; }
+  .hero-title { color: #1a3a2a !important; }
+  .hero-sub { color: #3a4a3a !important; }
+  .section-number { background: #1a3a2a !important; }
+  main { padding: 20px 16px; }
+}
+
+@media(max-width: 640px) {
+  .hero-title { font-size: 1.7rem; }
+  .do-dont { grid-template-columns: 1fr; }
+  header { padding: 12px 20px; }
+  main { padding: 24px 16px 48px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">Stencil Set Design Guidelines<em>Digital Arts · Kara Gau · Spring 2026</em></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+    <div class="header-badge">🎨 Student Guide</div>
+    <button class="btn-print" onclick="window.print()">🖨️ Print This Guide</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Word &amp; Wonder · Digital Arts · Kellam Smile Bags</div>
+    <div class="hero-title">OneWord Stencil Set<em>Design Guidelines</em></div>
+    <div class="hero-divider"></div>
+    <div class="hero-sub">
+      You are designing a stencil set for a child who will use it to paint on canvas.<br>
+      Every decision you make is an act of empathy — design with <em>your recipient in mind</em>.
+    </div>
+    <div class="hero-tags">
+      <span class="hero-tag">🌿 1 Word Stencil</span>
+      <span class="hero-tag">🖼️ 2–3 Symbol Stencils</span>
+      <span class="hero-tag">✂️ Clean Cuts Required</span>
+      <span class="hero-tag">💜 Empathy-Driven Design</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1 — WHAT IS A STENCIL SET -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <div class="section-title">What Is a Stencil Set?<em>The Big Picture</em></div>
+    </div>
+    <div class="section-body">
+      <div class="highlight-box">
+        <div class="highlight-icon">🎯</div>
+        <div class="highlight-text">
+          <div class="highlight-title">Your Goal</div>
+          <div class="highlight-desc">Create a set of stencils for <strong>one OneWord</strong> that a child can use to paint a personal canvas bag. Your set includes <strong>the word itself</strong> as a stencil, plus <strong>2–3 symbolic images</strong> that connect to that word's meaning. Together, the word and symbols tell a visual story on the bag.</div>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">📦</div>
+        <div class="rule-content">
+          <div class="rule-title">What goes in a complete stencil set?</div>
+          <div class="rule-desc">
+            <strong>1 Word Stencil</strong> — the OneWord itself, lettered clearly and large enough to read at a distance.<br>
+            <strong>2–3 Symbol Stencils</strong> — simple images that represent the word's meaning. These are cut shapes, not detailed drawings.
+          </div>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">🧒</div>
+        <div class="rule-content">
+          <div class="rule-title">Who is this for?</div>
+          <div class="rule-desc">An elementary-age child receiving a Smile Bag. They will hold a brush, load it with paint, and trace inside your stencil openings. <strong>If your design is too complex, the child cannot use it.</strong> Simplicity is kindness.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 — YOUR WORD -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">2</div>
+      <div class="section-title">Your Assigned OneWord<em>All 25 Words</em></div>
+    </div>
+    <div class="section-body">
+      <div class="word-pill-wrap">
+        <span class="word-pill">Absorb</span><span class="word-pill">Adapt</span><span class="word-pill">Anchor</span>
+        <span class="word-pill">Balance</span><span class="word-pill">Bloom</span><span class="word-pill">Breathe</span>
+        <span class="word-pill">Clear</span><span class="word-pill">Connect</span><span class="word-pill">Cycle</span>
+        <span class="word-pill">Emerge</span><span class="word-pill">Filter</span><span class="word-pill">Flow</span>
+        <span class="word-pill">Grow</span><span class="word-pill">Heal</span><span class="word-pill">Migrate</span>
+        <span class="word-pill">Persist</span><span class="word-pill">Renew</span><span class="word-pill">Restore</span>
+        <span class="word-pill">Return</span><span class="word-pill">Rise</span><span class="word-pill">Root</span>
+        <span class="word-pill">Shine</span><span class="word-pill">Sustain</span><span class="word-pill">Thrive</span>
+        <span class="word-pill">Transform</span>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">💡</div>
+        <div class="rule-content">
+          <div class="rule-title">Before you start drawing, ask yourself:</div>
+          <div class="rule-desc">What does this word mean to me? What would it mean to a child? What single image — a leaf, a wave, a seed, a sun — could represent this word without any text at all?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3 — SYMBOL EXAMPLES -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">3</div>
+      <div class="section-title">Symbol Ideas by Word<em>Inspiration — not requirements</em></div>
+    </div>
+    <div class="section-body">
+      <p style="font-size:0.85rem;color:#3a4a3a;line-height:1.6;">These are starting points only. Your symbol choices should reflect <strong>your interpretation</strong> of the word and be appropriate for your recipient.</p>
+      <div class="example-grid">
+        <div class="example-card">
+          <div class="example-word"><span class="ex-dot"></span>Bloom</div>
+          <div class="example-items">
+            <span>Open flower head</span>
+            <span>Petal shape</span>
+            <span>Stem with bud</span>
+          </div>
+        </div>
+        <div class="example-card">
+          <div class="example-word"><span class="ex-dot"></span>Anchor</div>
+          <div class="example-items">
+            <span>Anchor silhouette</span>
+            <span>Wave shape</span>
+            <span>Rope loop</span>
+          </div>
+        </div>
+        <div class="example-card">
+          <div class="example-word"><span class="ex-dot"></span>Grow</div>
+          <div class="example-items">
+            <span>Seedling sprouting</span>
+            <span>Leaf shape</span>
+            <span>Sun rays</span>
+          </div>
+        </div>
+        <div class="example-card">
+          <div class="example-word"><span class="ex-dot"></span>Rise</div>
+          <div class="example-items">
+            <span>Arrow pointing up</span>
+            <span>Sun on horizon</span>
+            <span>Mountain peak</span>
+          </div>
+        </div>
+        <div class="example-card">
+          <div class="example-word"><span class="ex-dot"></span>Breathe</div>
+          <div class="example-items">
+            <span>Lungs outline</span>
+            <span>Feather</span>
+            <span>Cloud puff</span>
+          </div>
+        </div>
+        <div class="example-card">
+          <div class="example-word"><span class="ex-dot"></span>Transform</div>
+          <div class="example-items">
+            <span>Butterfly</span>
+            <span>Cocoon shape</span>
+            <span>Spiral</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4 — DESIGN RULES -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">4</div>
+      <div class="section-title">Design Rules for Stencil-Ready Art<em>These rules make your design work</em></div>
+    </div>
+    <div class="section-body">
+      <div class="do-dont">
+        <div class="do-col">
+          <div class="col-header">✓ Design DO</div>
+          <div class="col-items">
+            <div class="col-item">Keep shapes <strong>bold and simple</strong> — thick outlines, large open areas</div>
+            <div class="col-item">Use <strong>solid silhouettes</strong> the child can fill with one brush stroke</div>
+            <div class="col-item">Leave <strong>bridges</strong> (connecting strips) between cut areas so the stencil holds together</div>
+            <div class="col-item">Make letters <strong>thick and clear</strong> — at least ½ inch stroke width when cut</div>
+            <div class="col-item">Test your design: <strong>trace it on paper</strong> and check that all pieces stay connected</div>
+            <div class="col-item">Think about <strong>negative space</strong> — the cut-out area is what gets painted</div>
+          </div>
+        </div>
+        <div class="dont-col">
+          <div class="col-header">✗ Design DON'T</div>
+          <div class="col-items">
+            <div class="col-item">No <strong>tiny details</strong> — thin lines, fine textures, or small dots cannot be cut cleanly</div>
+            <div class="col-item">No <strong>floating islands</strong> — if a piece of the stencil isn't connected, it will fall out</div>
+            <div class="col-item">No <strong>enclosed letters</strong> without bridges — letters like O, B, D need inner bridges</div>
+            <div class="col-item">No <strong>realistic illustrations</strong> — stencils are graphic, not detailed drawings</div>
+            <div class="col-item">Don't make shapes <strong>too small</strong> — each symbol should be at least 2 inches across</div>
+          </div>
+        </div>
+      </div>
+      <div class="highlight-box">
+        <div class="highlight-icon">🔤</div>
+        <div class="highlight-text">
+          <div class="highlight-title">The Letter Bridge Rule</div>
+          <div class="highlight-desc">Letters with enclosed spaces (A, B, D, O, P, Q, R) need <strong>thin bridges</strong> — small strips of uncut material connecting the inner island to the outer frame. Without bridges, the center of the letter falls out when you cut. Plan these into your design before cutting.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5 — THE PROCESS -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">5</div>
+      <div class="section-title">Your Design Process<em>Step by step</em></div>
+    </div>
+    <div class="section-body">
+      <div class="checklist">
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-text"><strong>Step 1 — Research your word.</strong> Look at the AI-generated images in the OneWord Coloring Book. What symbols did the AI choose? Do you agree? What would you do differently?</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-text"><strong>Step 2 — Sketch 3 symbol ideas.</strong> On paper, sketch at least 3 possible symbols for your word. Bold, simple, stencil-ready. No detail — just shape.</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-text"><strong>Step 3 — Choose your 2–3 best symbols.</strong> Pick the ones that are most meaningful AND most cuttable. Get teacher approval before moving to digital.</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-text"><strong>Step 4 — Create digital versions.</strong> Use your design software to build clean, high-contrast vector shapes. Black fill on white background. Each stencil on its own layer/artboard.</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-text"><strong>Step 5 — Design the word stencil.</strong> Choose a bold, readable font or hand-letter your OneWord. Check all enclosed letters for bridges. Size: large enough to read clearly on the bag.</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-text"><strong>Step 6 — Print test &amp; check.</strong> Print at full size on regular paper. Trace the cut lines. Do all shapes hold together? Are any pieces floating? Fix before cutting the final stencil.</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-text"><strong>Step 7 — Cut your stencil.</strong> Use an X-Acto knife or Cricut on stencil film. Cut on a self-healing mat. Slow, steady strokes — accuracy matters.</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-text"><strong>Step 8 — Test paint your stencil.</strong> Place on paper and paint through it. Are the edges clean? Does the stencil hold flat? Make any final adjustments before it goes in the Smile Bag.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6 — EMPATHY REMINDER -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">6</div>
+      <div class="section-title">Design with Empathy<em>The most important rule</em></div>
+    </div>
+    <div class="section-body">
+      <div class="highlight-box" style="border-color:rgba(176,212,190,.5);background:linear-gradient(135deg,rgba(61,122,82,.06),rgba(176,212,190,.1));">
+        <div class="highlight-icon">💜</div>
+        <div class="highlight-text">
+          <div class="highlight-title">Who will receive your stencil set?</div>
+          <div class="highlight-desc">A child at an elementary school — someone younger than you, using a paintbrush for the first time, excited to make something beautiful. Your stencil is their tool. If it's too complicated to cut, it can't be made. If the shapes are too small, little hands can't fill them with paint. <strong>Design for them, not for yourself.</strong></div>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">🤔</div>
+        <div class="rule-content">
+          <div class="rule-title">Ask yourself before you finalize:</div>
+          <div class="rule-desc">
+            Could a child aged 6–10 successfully paint using this stencil?<br>
+            Does this symbol actually connect to the word's meaning?<br>
+            Would I be proud to put this in a bag for someone who needs encouragement?
+          </div>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">⭐</div>
+        <div class="rule-content">
+          <div class="rule-title">The standard for this project:</div>
+          <div class="rule-desc"><strong>Museum quality</strong> — not because it needs to look like a museum exhibit, but because the child receiving it deserves your very best work. Every cut, every choice, every symbol: your best.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7 — SUBMISSION -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-number">7</div>
+      <div class="section-title">Submission Checklist<em>What to turn in</em></div>
+    </div>
+    <div class="section-body">
+      <div class="checklist">
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-text"><strong>Digital file</strong> — final stencil designs (PDF or SVG), all pieces labeled with your OneWord and name</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-text"><strong>Word stencil</strong> — physical cut stencil of your OneWord, clean edges, no fraying</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-text"><strong>2–3 symbol stencils</strong> — physical cut stencils, each labeled on the back with your name and word</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-text"><strong>Test paint</strong> — one paper test showing each stencil used with paint, clean and legible</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-text"><strong>Artist statement</strong> — 2–3 sentences: Why these symbols? What does this word mean to the child who will receive it?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Kellam Smile Bags · Word &amp; Wonder · Digital Arts · Kara Gau · Spring 2026 &nbsp;·&nbsp; Virginia Visual Arts SOL AI.1 · AI.2 · AII.7 · AII.10
+</footer>
+
+</body>
+</html>
