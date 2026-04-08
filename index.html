@@ -142,6 +142,93 @@
 </style>
 </head>
 <body>
+<!-- ══ SMILE BAGS ACCESS GATE ══════════════════════════════════ -->
+<!-- Set GATE_ENABLED = true when you want to require a code     -->
+<!-- Leave false until after May 30/31                           -->
+<style>
+#smbGateOverlay{position:fixed;inset:0;z-index:99999;background:#0f0f1a;background-image:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(27,122,120,.3) 0%,transparent 70%),radial-gradient(ellipse 40% 60% at 10% 80%,rgba(181,68,110,.2) 0%,transparent 60%);display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif}
+#smbGateOverlay.hidden{display:none}
+.smb-gate-box{background:rgba(255,255,255,.04);border:1.5px solid rgba(201,168,76,.25);border-radius:20px;padding:40px 36px;max-width:420px;width:100%;text-align:center;backdrop-filter:blur(12px)}
+.smb-gate-logo{font-family:Georgia,serif;font-size:2.2rem;font-weight:900;color:#fff;line-height:1;margin-bottom:4px}
+.smb-gate-logo em{font-style:italic;color:#d6eeee}
+.smb-gate-sub{font-size:.82rem;color:rgba(255,255,255,.45);letter-spacing:.08em;text-transform:uppercase;margin-bottom:28px;font-family:'Courier New',monospace}
+.smb-gate-label{font-family:'Courier New',monospace;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(201,168,76,.7);margin-bottom:8px}
+.smb-gate-input{width:100%;font-family:'Courier New',monospace;font-size:1.6rem;font-weight:700;letter-spacing:.3em;text-align:center;text-transform:uppercase;background:rgba(255,255,255,.06);border:2px solid rgba(201,168,76,.3);border-radius:10px;padding:14px 16px;color:#f5d090;outline:none;transition:border-color .2s;margin-bottom:14px}
+.smb-gate-input:focus{border-color:rgba(201,168,76,.7)}
+.smb-gate-input::placeholder{color:rgba(201,168,76,.2);letter-spacing:.15em}
+.smb-gate-btn{width:100%;background:linear-gradient(135deg,#c9a84c,#e8c87a);color:#0f0f1a;font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;border:none;border-radius:10px;padding:13px;cursor:pointer;transition:opacity .2s,transform .1s;margin-bottom:10px}
+.smb-gate-btn:hover{opacity:.9;transform:translateY(-1px)}
+.smb-gate-btn:active{transform:translateY(0)}
+.smb-gate-error{font-size:.8rem;color:#e74c3c;min-height:20px;margin-bottom:6px;font-weight:700}
+.smb-gate-hint{font-size:.72rem;color:rgba(255,255,255,.25);font-family:'Courier New',monospace;letter-spacing:.05em}
+.smb-gate-checking{font-size:.75rem;color:rgba(201,168,76,.6);font-family:'Courier New',monospace;letter-spacing:.08em;min-height:18px}
+</style>
+<div id="smbGateOverlay">
+  <div class="smb-gate-box">
+    <div class="smb-gate-logo">Smile<br><em>Bags.</em></div>
+    <div class="smb-gate-sub">A Word &amp; Wonder Experience</div>
+    <div class="smb-gate-label">Enter your guest access code</div>
+    <input class="smb-gate-input" id="smbCodeInput" type="text" maxlength="6" placeholder="XXXXXX" autocomplete="off" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter')smbCheckCode()"/>
+    <div class="smb-gate-error" id="smbGateError"></div>
+    <button class="smb-gate-btn" onclick="smbCheckCode()">Enter Site →</button>
+    <div class="smb-gate-checking" id="smbChecking"></div>
+    <div class="smb-gate-hint">Contact Laura Howell to request access</div>
+  </div>
+</div>
+<script>
+(function(){
+  var GATE_ENABLED = false; // ← flip to true after May 30/31
+  var SCRIPT_URL   = ''; // ← paste your Apps Script URL here
+
+  var SESSION_KEY  = 'smb_gate_pass';
+  var overlay      = document.getElementById('smbGateOverlay');
+
+  // If gate is off, hide immediately
+  if(!GATE_ENABLED){ overlay.classList.add('hidden'); return; }
+
+  // Check session storage — already validated this session?
+  var cached = sessionStorage.getItem(SESSION_KEY);
+  if(cached){ overlay.classList.add('hidden'); return; }
+
+  // Show the gate
+  setTimeout(function(){ document.getElementById('smbCodeInput').focus(); }, 200);
+
+  window.smbCheckCode = function(){
+    var code = document.getElementById('smbCodeInput').value.trim().toUpperCase();
+    if(code.length < 4){ showError('Please enter your access code'); return; }
+    if(!SCRIPT_URL){ showError('Site configuration error — contact administrator'); return; }
+    document.getElementById('smbChecking').textContent = 'Checking code...';
+    document.getElementById('smbGateError').textContent = '';
+    fetch(SCRIPT_URL + '?action=validateCode&code=' + encodeURIComponent(code))
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        document.getElementById('smbChecking').textContent = '';
+        if(data.ok){
+          sessionStorage.setItem(SESSION_KEY, code);
+          overlay.classList.add('hidden');
+        } else {
+          var msgs = {
+            invalid:       'Code not recognized. Please check and try again.',
+            expired:       'This pass has expired. Request a new one.',
+            revoked:       'This pass has been deactivated.',
+            limit_reached: 'This pass has reached its visit limit.',
+            no_code:       'Please enter your access code.'
+          };
+          showError(msgs[data.reason] || 'Access denied.');
+        }
+      })
+      .catch(function(){ document.getElementById('smbChecking').textContent=''; showError('Connection error. Please try again.'); });
+  };
+
+  function showError(msg){
+    document.getElementById('smbGateError').textContent = msg;
+    document.getElementById('smbCodeInput').style.borderColor = 'rgba(231,76,60,.6)';
+    setTimeout(function(){ document.getElementById('smbCodeInput').style.borderColor = ''; }, 1500);
+  }
+})();
+</script>
+<!-- ══ END ACCESS GATE ═══════════════════════════════════════ -->
+
 
 <header class="hero">
   <img class="hero-mascot-left" src="https://lhhowell.github.io/kellamsmilebags/kellam_mascot_left.png" alt="Kellam mascot"/>
