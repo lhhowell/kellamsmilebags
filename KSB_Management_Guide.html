@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KSB Management Suite · Setup & Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,300;0,700;1,300;1,700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0f0f1a;--ink2:#1e1e30;--surface:#f5f3ef;--card:#fff;--gold:#c9a84c;--gold-lt:#e8c87a;--teal:#1b7a78;--teal-lt:#d6eeee;--red:#c0392b;--red-lt:#fdecea;--green:#2d7a52;--green-lt:#e8f5ee;--amber:#c8860a;--amber-lt:#fff3d6;--purple:#6b3f9e;--purple-lt:#ede4f7;--rule:rgba(15,15,26,.08)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--surface);font-family:'Nunito',sans-serif;color:var(--ink);min-height:100vh}
+header{background:var(--ink);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:3px solid var(--gold)}
+.logo{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:700;color:var(--gold)}
+.logo span{font-style:italic;font-weight:300;color:var(--gold-lt);font-size:.88rem;margin-left:6px}
+.btn-print{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;padding:7px 16px;border-radius:6px;border:1.5px solid var(--gold);background:var(--gold);color:var(--ink);cursor:pointer}
+main{max-width:860px;margin:0 auto;padding:36px 24px 80px;display:flex;flex-direction:column;gap:24px}
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,var(--ink) 0%,var(--ink2) 100%);border-radius:14px;padding:32px 36px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:10px;border:1px solid rgba(201,168,76,.2);border-radius:8px;pointer-events:none}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:8px}
+.hero-title{font-family:'Fraunces',serif;font-size:1.8rem;font-weight:700;color:var(--gold);line-height:1.15;margin-bottom:6px}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.55);line-height:1.7;max-width:560px}
+.hero-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.hero-tag{background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.25);border-radius:20px;padding:4px 12px;font-size:.7rem;color:var(--gold-lt);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-family:'DM Mono',monospace}
+/* ── SECTION CARD ── */
+.card{background:var(--card);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(15,15,26,.07);border:1.5px solid var(--rule)}
+.card-header{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:2px solid var(--rule)}
+.card-icon{font-size:1.3rem;flex-shrink:0;width:36px;text-align:center}
+.card-title{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:700;color:var(--ink)}
+.card-title em{font-style:italic;color:#888;font-size:.8rem;display:block;font-family:'Nunito',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-top:1px}
+.card-body{padding:20px 24px;display:flex;flex-direction:column;gap:14px}
+/* ── STEPS ── */
+.step{display:flex;gap:14px;align-items:flex-start}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--gold);font-family:'Fraunces',serif;font-size:.95rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-content{}
+.step-title{font-weight:800;font-size:.92rem;color:var(--ink);margin-bottom:3px}
+.step-desc{font-size:.85rem;color:#4a4a5a;line-height:1.65}
+.step-desc strong{color:var(--ink)}
+.code-block{background:var(--ink);color:var(--gold-lt);font-family:'DM Mono',monospace;font-size:.78rem;padding:8px 12px;border-radius:6px;margin-top:6px;letter-spacing:.04em;word-break:break-all;line-height:1.6}
+/* ── URL TABLE ── */
+.url-table{width:100%;border-collapse:collapse;font-size:.83rem}
+.url-table th{background:var(--ink);color:var(--gold);font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:8px 12px;text-align:left;font-weight:500}
+.url-table td{padding:9px 12px;border-bottom:1px solid var(--rule);color:#3a3a4a;vertical-align:top}
+.url-table tr:last-child td{border-bottom:none}
+.url-table tr:hover td{background:#faf9f7}
+.url-table td:first-child{font-weight:700;color:var(--ink);white-space:nowrap}
+.url-table td code{font-family:'DM Mono',monospace;font-size:.75rem;background:#f0ede8;padding:2px 6px;border-radius:4px;color:var(--teal)}
+/* ── CALLOUT ── */
+.callout{display:flex;gap:12px;align-items:flex-start;border-radius:10px;padding:14px 16px;border:1.5px solid}
+.callout-gold{background:var(--amber-lt);border-color:rgba(200,134,10,.25)}
+.callout-gold .callout-title{color:var(--amber)}
+.callout-green{background:var(--green-lt);border-color:rgba(45,122,82,.2)}
+.callout-green .callout-title{color:var(--green)}
+.callout-teal{background:var(--teal-lt);border-color:rgba(27,122,120,.2)}
+.callout-teal .callout-title{color:var(--teal)}
+.callout-purple{background:var(--purple-lt);border-color:rgba(107,63,158,.2)}
+.callout-purple .callout-title{color:var(--purple)}
+.callout-icon{font-size:1.3rem;flex-shrink:0}
+.callout-title{font-weight:800;font-size:.88rem;margin-bottom:3px}
+.callout-desc{font-size:.83rem;color:#3a3a4a;line-height:1.65}
+.callout-desc strong{color:var(--ink)}
+/* ── TOOL GRID ── */
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tool-card{background:var(--surface);border:1.5px solid var(--rule);border-radius:10px;padding:14px 16px}
+.tool-icon{font-size:1.2rem;margin-bottom:5px}
+.tool-name{font-weight:800;font-size:.9rem;color:var(--ink);margin-bottom:3px}
+.tool-url{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--teal);margin-bottom:5px;word-break:break-all}
+.tool-desc{font-size:.78rem;color:#666;line-height:1.5}
+/* ── GATE SECTION ── */
+.gate-toggle-example{background:var(--ink);border-radius:8px;padding:12px 16px;font-family:'DM Mono',monospace;font-size:.78rem;line-height:1.8;color:#aaa}
+.gate-toggle-example .comment{color:#555}
+.gate-toggle-example .key{color:#e8c87a}
+.gate-toggle-example .val-false{color:#e74c3c}
+.gate-toggle-example .val-true{color:#2ecc71}
+.gate-toggle-example .val-str{color:#74b9ff}
+/* ── FOOTER ── */
+footer{text-align:center;padding:0 24px 48px;font-size:.72rem;color:#aaa;font-family:'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase}
+/* ── PRINT ── */
+@media print{
+  body{background:white}
+  header{background:white!important;border-bottom:2px solid var(--ink)}
+  .logo{color:var(--ink)!important}.logo span{color:#666!important}
+  .btn-print{display:none!important}
+  main{padding:12px}
+  .card{box-shadow:none;border:1px solid #ddd;page-break-inside:avoid}
+  .hero{background:#f0ede8!important}.hero-title{color:var(--ink)!important}.hero-sub{color:#666!important}
+  .code-block{background:#f0ede8;color:var(--ink);border:1px solid #ddd}
+  .gate-toggle-example{background:#f0ede8;color:var(--ink)}
+  .tool-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  header{padding:12px 20px}
+  main{padding:20px 14px 48px}
+  .tool-grid{grid-template-columns:1fr}
+  .hero{padding:24px 20px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">KSB Management Suite<span>· Setup & Reference Guide</span></div>
+  <button class="btn-print" onclick="window.print()">🖨️ Print</button>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Smile Bags · Word & Wonder · Spring 2026</div>
+    <div class="hero-title">Management Suite<br>Setup & Reference</div>
+    <div class="hero-sub">Your complete guide to the KSB audit tools, guest pass system, and access gate. Keep this page bookmarked — everything you need in one place.</div>
+    <div class="hero-tags">
+      <span class="hero-tag">🗂️ QC Dashboard</span>
+      <span class="hero-tag">🔗 Link Tracker</span>
+      <span class="hero-tag">🎟️ Pass Manager</span>
+      <span class="hero-tag">🔐 Access Gate</span>
+      <span class="hero-tag">📊 Spreadsheet</span>
+    </div>
+  </div>
+
+  <!-- YOUR TOOLS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🛠️</div>
+      <div class="card-title">Your Management Tools<em>Bookmarks for every device</em></div>
+    </div>
+    <div class="card-body">
+      <div class="tool-grid">
+        <div class="tool-card">
+          <div class="tool-icon">🗂️</div>
+          <div class="tool-name">QC Dashboard</div>
+          <div class="tool-url">lhhowell.github.io/kellamsmilebags/<br>KSB_QC_Dashboard.html</div>
+          <div class="tool-desc">78-item checklist across 7 audit sections. Click to pass, flag to mark issues. Syncs across all devices.</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-icon">🔗</div>
+          <div class="tool-name">Link Tracker</div>
+          <div class="tool-url">lhhowell.github.io/kellamsmilebags/<br>KSB_Link_Tracker.html</div>
+          <div class="tool-desc">All 26 links from index.html pre-loaded. Mark Live / Broken / Placeholder. Open & test each link directly.</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-icon">🎟️</div>
+          <div class="tool-name">Pass Manager</div>
+          <div class="tool-url">lhhowell.github.io/kellamsmilebags/<br>KSB_Pass_Manager.html</div>
+          <div class="tool-desc">Generate guest codes with visit limits & expiry. Revoke any pass. View all access activity.</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-icon">📊</div>
+          <div class="tool-name">Management Spreadsheet</div>
+          <div class="tool-url">docs.google.com/spreadsheets/d/<br>1LiaLW0g62z9_-1tTizxJ7cpzlf_djl71RvpqpNRgYXs</div>
+          <div class="tool-desc">KSB Management & Audit · Spring 2026. All 7 tabs receive data automatically from the three tools above.</div>
+        </div>
+      </div>
+      <div class="callout callout-gold">
+        <div class="callout-icon">🔑</div>
+        <div>
+          <div class="callout-title">Your Apps Script URL — save this somewhere safe!</div>
+          <div class="callout-desc">
+            <code style="font-family:'DM Mono',monospace;font-size:.75rem;background:rgba(200,134,10,.1);padding:2px 6px;border-radius:4px;word-break:break-all;">https://script.google.com/macros/s/AKfycbyqGV5wtA-466ZNzLYxHoio4KunKUG9xRd5Oxsa3VaBs50gcHx3FkquV8eIEK0aS6iJ/exec</code>
+            <br>This is pasted once into each tool's yellow setup banner. It connects all three dashboards to your spreadsheet.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPREADSHEET TABS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">📊</div>
+      <div class="card-title">Spreadsheet Tabs<em>KSB Management & Audit · Spring 2026</em></div>
+    </div>
+    <div class="card-body">
+      <table class="url-table">
+        <tr><th>Tab</th><th>Fed By</th><th>What It Contains</th></tr>
+        <tr><td>QC_Checklist</td><td>QC Dashboard</td><td>Every checkbox state — pass, flag, or pending — with timestamps</td></tr>
+        <tr><td>Link_Tracker</td><td>Link Tracker</td><td>Status of all 26 index.html links — live, broken, or placeholder</td></tr>
+        <tr><td>Items_Master</td><td>Coming soon</td><td>Smile Bag confirmed + potential items inventory</td></tr>
+        <tr><td>Placeholders</td><td>Coming soon</td><td>Every Coming Soon item tracked with priority and plan</td></tr>
+        <tr><td>Activity_Log</td><td>All tools</td><td>Every save action logged with timestamp</td></tr>
+        <tr><td>Guest_Passes</td><td>Pass Manager</td><td>All generated codes — label, visits, expiry, status</td></tr>
+        <tr><td>Access_Log</td><td>Access Gate</td><td>Every code entry attempt — granted or denied — with timestamp</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- FIRST TIME SETUP -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">⚙️</div>
+      <div class="card-title">First-Time Setup on a New Device<em>Do this once per device/browser</em></div>
+    </div>
+    <div class="card-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Open the QC Dashboard</div>
+          <div class="step-desc">Go to <strong>lhhowell.github.io/kellamsmilebags/KSB_QC_Dashboard.html</strong><br>You'll see a yellow setup banner at the top.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Paste your Apps Script URL → Save & Connect</div>
+          <div class="step-desc">Paste the URL from the gold box above into the yellow banner field → click <strong>Save & Connect</strong>. The banner disappears and the dot turns 🟢 green.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Repeat for Link Tracker and Pass Manager</div>
+          <div class="step-desc">Open each page — same yellow banner — same URL — same Save & Connect. All three should show 🟢 green.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Done — that browser is connected forever</div>
+          <div class="step-desc">The URL is saved to that browser's local storage. You never need to paste it again on that device unless you clear your browser data.</div>
+        </div>
+      </div>
+      <div class="callout callout-teal">
+        <div class="callout-icon">💡</div>
+        <div>
+          <div class="callout-title">Working across 3-4 devices?</div>
+          <div class="callout-desc">Do steps 1-3 once on each device. After that, all devices sync automatically through the spreadsheet — check a box on your school laptop, it's checked on your home computer too.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GENERATING GUEST PASSES -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🎟️</div>
+      <div class="card-title">Generating Guest Passes<em>Pass Manager · for your eyes only</em></div>
+    </div>
+    <div class="card-body">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Open Pass Manager → scroll to Generate a Guest Pass</div>
+          <div class="step-desc">Fill in: <strong>Label</strong> (who is this for), <strong>Max Visits</strong> (0 = unlimited), <strong>Expires After</strong> in days (0 = never).</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Click Generate Pass</div>
+          <div class="step-desc">A 6-character gold code appears (e.g. <strong>D8C7FQ</strong>). Use <strong>Copy Code</strong> or <strong>Share</strong> to send it to your visitor.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Code is logged instantly</div>
+          <div class="step-desc">Check the <strong>Guest_Passes</strong> tab in your spreadsheet — the code appears immediately with all details.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">You get an email when the code is used</div>
+          <div class="step-desc">Every time a visitor enters their code, you receive a notification email — code used, visits remaining, expiry date.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-title">Revoke any time</div>
+          <div class="step-desc">In the passes table at the bottom, click <strong>Revoke</strong> next to any active pass. It deactivates instantly — the visitor sees "pass deactivated" on their next attempt.</div>
+        </div>
+      </div>
+      <div class="callout callout-gold">
+        <div class="callout-icon">🎓</div>
+        <div>
+          <div class="callout-title">Suggested pass settings by use case</div>
+          <div class="callout-desc">
+            <strong>Conference demo (DTAL etc.):</strong> Visits: 10 · Days: 3<br>
+            <strong>Administrator review:</strong> Visits: 0 (unlimited) · Days: 14<br>
+            <strong>Teacher sharing:</strong> Visits: 5 · Days: 30<br>
+            <strong>Test pass:</strong> Visits: 3 · Days: 1
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TURNING ON THE GATE -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🔐</div>
+      <div class="card-title">Turning On the Access Gate<em>After May 30/31 — when you're ready</em></div>
+    </div>
+    <div class="card-body">
+      <div class="callout callout-green">
+        <div class="callout-icon">✅</div>
+        <div>
+          <div class="callout-title">Right now the gate is OFF — site is fully public</div>
+          <div class="callout-desc">The gate code is baked into index.html but dormant. The site works exactly as before. Nothing to do until after May 30/31.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Open index.html in GitHub's editor</div>
+          <div class="step-desc">Go to your kellamsmilebags repo → click index.html → pencil icon to edit.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Find these two lines near the top and update them</div>
+          <div class="gate-toggle-example">
+            <span class="comment">// BEFORE (gate off):</span><br>
+            <span class="key">var GATE_ENABLED</span> = <span class="val-false">false</span>;<br>
+            <span class="key">var SCRIPT_URL</span>   = <span class="val-str">''</span>;<br><br>
+            <span class="comment">// AFTER (gate on):</span><br>
+            <span class="key">var GATE_ENABLED</span> = <span class="val-true">true</span>;<br>
+            <span class="key">var SCRIPT_URL</span>   = <span class="val-str">'https://script.google.com/macros/s/AKfycbyq...exec'</span>;
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Commit → hard refresh</div>
+          <div class="step-desc">Commit the change → Ctrl+Shift+R to hard refresh. Visitors now see the code entry screen instead of the site.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Generate passes for anyone who needs access</div>
+          <div class="step-desc">Go to Pass Manager → generate a code → share it with your visitor. They enter it at the gate. You get an email. It's tracked in the spreadsheet.</div>
+        </div>
+      </div>
+      <div class="callout callout-purple">
+        <div class="callout-icon">🔒</div>
+        <div>
+          <div class="callout-title">What visitors see when the gate is ON</div>
+          <div class="callout-desc">A dark screen matching the site aesthetic — "Smile Bags." logo, a 6-character code input field, and "Contact Laura Howell to request access" at the bottom. Enter a valid code → site unlocks for that browser session.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK REFERENCE -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">Quick Reference<em>Common tasks at a glance</em></div>
+    </div>
+    <div class="card-body">
+      <table class="url-table">
+        <tr><th>Task</th><th>Where</th><th>How</th></tr>
+        <tr><td>Check off an audit item</td><td>QC Dashboard</td><td>Click the item row → turns green</td></tr>
+        <tr><td>Flag an issue</td><td>QC Dashboard</td><td>Click 🚩 Flag button → turns red</td></tr>
+        <tr><td>Add a note to a section</td><td>QC Dashboard</td><td>Type in the Notes field at bottom of each section</td></tr>
+        <tr><td>Test a link</td><td>Link Tracker</td><td>Click Open ↗ → test it → set status in dropdown</td></tr>
+        <tr><td>Generate a guest pass</td><td>Pass Manager</td><td>Fill form → Generate Pass → copy 6-character code</td></tr>
+        <tr><td>Revoke a pass</td><td>Pass Manager</td><td>Find code in table → click Revoke</td></tr>
+        <tr><td>See who used a code</td><td>Spreadsheet</td><td>Access_Log tab — every entry attempt logged</td></tr>
+        <tr><td>Sync from a new device</td><td>Any tool</td><td>Open page → paste Apps Script URL → Save & Connect</td></tr>
+        <tr><td>Turn gate ON</td><td>index.html</td><td>Set GATE_ENABLED=true + paste SCRIPT_URL → commit</td></tr>
+        <tr><td>Turn gate OFF</td><td>index.html</td><td>Set GATE_ENABLED=false → commit</td></tr>
+        <tr><td>Print this guide</td><td>This page</td><td>Click Print button in header</td></tr>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Smile Bags · Word & Wonder · Management Suite · L. Howell · Spring 2026
+</footer>
+
+</body>
+</html>
