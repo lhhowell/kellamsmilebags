@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smile Bags · Website QC Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,300;0,700;1,300;1,700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:      #0f0f1a;
+  --ink2:     #1e1e30;
+  --ink3:     #2a2a3e;
+  --surface:  #f5f3ef;
+  --card:     #ffffff;
+  --gold:     #c9a84c;
+  --gold-lt:  #e8c87a;
+  --teal:     #1b7a78;
+  --teal-lt:  #d6eeee;
+  --red:      #c0392b;
+  --red-lt:   #fdecea;
+  --green:    #2d7a52;
+  --green-lt: #e8f5ee;
+  --amber:    #c8860a;
+  --amber-lt: #fff3d6;
+  --purple:   #6b3f9e;
+  --purple-lt:#ede4f7;
+  --rule:     rgba(15,15,26,.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--surface);
+  font-family: 'Nunito', sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--ink);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 3px solid var(--gold);
+  min-height: 60px;
+}
+.logo {
+  font-family: 'Fraunces', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.01em;
+  padding: 14px 0;
+}
+.logo span {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--gold-lt);
+  font-size: 0.88rem;
+  margin-left: 6px;
+}
+.header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.hbtn {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  border-radius: 6px;
+  border: 1.5px solid rgba(201,168,76,.35);
+  background: transparent;
+  color: var(--gold-lt);
+  cursor: pointer;
+  transition: all .2s;
+}
+.hbtn:hover { background: rgba(201,168,76,.15); }
+.hbtn.primary { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+.hbtn.primary:hover { background: var(--gold-lt); }
+
+/* ── PROGRESS BAR ── */
+.progress-bar-wrap {
+  background: var(--ink2);
+  padding: 10px 40px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.progress-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,.1);
+  border-radius: 3px;
+  overflow: hidden;
+  min-width: 120px;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--teal), var(--gold));
+  border-radius: 3px;
+  transition: width .4s ease;
+}
+.progress-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,.5);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+.progress-score {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+/* ── MAIN LAYOUT ── */
+main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 36px 24px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── SECTION CARD ── */
+.qc-section {
+  background: var(--card);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(15,15,26,.07);
+  border: 1.5px solid var(--rule);
+}
+.qc-section-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  border-bottom: 1.5px solid var(--rule);
+  cursor: pointer;
+  user-select: none;
+  transition: background .18s;
+}
+.qc-section-header:hover { background: #faf9f7; }
+.section-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  width: 36px;
+  text-align: center;
+}
+.section-meta { flex: 1; }
+.section-name {
+  font-family: 'Fraunces', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.section-desc {
+  font-size: 0.78rem;
+  color: #888;
+  margin-top: 2px;
+  font-weight: 600;
+}
+.section-tally {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  color: #aaa;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+.section-tally.all-done { color: var(--green); }
+.section-chevron {
+  font-size: 0.7rem;
+  color: #bbb;
+  transition: transform .25s;
+  flex-shrink: 0;
+}
+.qc-section.collapsed .section-chevron { transform: rotate(-90deg); }
+.qc-section.collapsed .qc-items { display: none; }
+
+/* ── CHECKLIST ITEMS ── */
+.qc-items { padding: 8px 0 12px; }
+
+.qc-item {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  align-items: center;
+  gap: 0;
+  padding: 9px 20px 9px 10px;
+  border-bottom: 1px solid var(--rule);
+  transition: background .15s;
+  cursor: pointer;
+}
+.qc-item:last-child { border-bottom: none; }
+.qc-item:hover { background: #faf9f7; }
+.qc-item.checked { background: var(--green-lt); }
+.qc-item.checked:hover { background: #daf0e4; }
+.qc-item.flagged { background: var(--red-lt); }
+.qc-item.flagged:hover { background: #fad8d5; }
+
+.qc-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.qc-checkbox {
+  width: 20px; height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .18s;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.qc-item.checked .qc-checkbox {
+  background: var(--green);
+  border-color: var(--green);
+  color: white;
+  font-size: 0.75rem;
+}
+.qc-item.flagged .qc-checkbox {
+  background: var(--red);
+  border-color: var(--red);
+  color: white;
+  font-size: 0.75rem;
+}
+
+.qc-text { padding: 0 8px; }
+.qc-label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+}
+.qc-item.checked .qc-label { color: var(--green); text-decoration: line-through; }
+.qc-item.flagged .qc-label { color: var(--red); }
+.qc-sublabel {
+  font-size: 0.75rem;
+  color: #999;
+  margin-top: 1px;
+  line-height: 1.4;
+}
+
+.qc-flag-btn {
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background: white;
+  color: #aaa;
+  cursor: pointer;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.04em;
+  transition: all .18s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.qc-flag-btn:hover { border-color: var(--red); color: var(--red); }
+.qc-item.flagged .qc-flag-btn { border-color: var(--red); color: var(--red); background: #fff0ef; }
+
+/* ── NOTES AREA ── */
+.notes-wrap {
+  padding: 12px 20px 4px;
+  border-top: 1px solid var(--rule);
+}
+.notes-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #bbb;
+  margin-bottom: 6px;
+}
+.notes-field {
+  width: 100%;
+  border: 1.5px solid #e8e6e0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.83rem;
+  color: var(--ink);
+  resize: vertical;
+  min-height: 60px;
+  outline: none;
+  background: #faf9f7;
+  transition: border-color .2s;
+}
+.notes-field:focus { border-color: var(--gold); }
+
+/* ── LEGEND ── */
+.legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #888;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.06em;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+/* ── SUMMARY STRIP ── */
+.summary-strip {
+  background: var(--ink);
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+}
+.summary-stat { text-align: center; }
+.summary-num {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.summary-lbl {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.4);
+}
+.num-green  { color: var(--teal); }
+.num-red    { color: #e74c3c; }
+.num-amber  { color: var(--gold); }
+.num-purple { color: #a67fd4; }
+
+/* ── PRINT ── */
+@media print {
+  body { background: white; font-size: 11px; }
+  header, .progress-bar-wrap, .hbtn, .qc-flag-btn, .notes-wrap { display: none !important; }
+  main { padding: 12px; }
+  .qc-section { box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; }
+  .qc-section.collapsed .qc-items { display: block !important; }
+  .summary-strip { background: #f0f0f0; }
+  .summary-num { font-size: 1.4rem; }
+}
+
+@media(max-width: 640px) {
+  header { padding: 0 20px; }
+  main { padding: 20px 14px 60px; }
+  .progress-bar-wrap { padding: 10px 20px; }
+  .qc-item { grid-template-columns: 42px 1fr; }
+  .qc-flag-btn { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Smile Bags QC<span>· Website Audit Dashboard</span></div>
+  <div class="header-actions">
+    <button class="hbtn" onclick="expandAll()">Expand All</button>
+    <button class="hbtn" onclick="collapseAll()">Collapse All</button>
+    <button class="hbtn" onclick="resetAll()">Reset</button>
+    <button class="hbtn primary" onclick="window.print()">🖨️ Print Report</button>
+  </div>
+</header>
+
+<div class="progress-bar-wrap">
+  <span class="progress-label">Overall Progress</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <span class="progress-score" id="progressScore">0 / 0</span>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>PASS</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>FLAG</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e8e6e0"></div>PENDING</div>
+  </div>
+</div>
+
+<main>
+
+  <!-- SUMMARY -->
+  <div class="summary-strip" id="summaryStrip">
+    <div class="summary-stat"><div class="summary-num num-green" id="statPass">0</div><div class="summary-lbl">Passed</div></div>
+    <div class="summary-stat"><div class="summary-num num-red"   id="statFlag">0</div><div class="summary-lbl">Flagged</div></div>
+    <div class="summary-stat"><div class="summary-num num-amber" id="statPend">0</div><div class="summary-lbl">Pending</div></div>
+    <div class="summary-stat"><div class="summary-num num-purple" id="statTotal">0</div><div class="summary-lbl">Total Items</div></div>
+  </div>
+
+  <!-- SECTIONS will be injected here -->
+  <div id="sectionsContainer"></div>
+
+</main>
+
+<script>
+// ─────────────────────────────────────────────
+//  QC CHECKLIST DATA
+// ─────────────────────────────────────────────
+const SECTIONS = [
+  {
+    id: 'branding',
+    icon: '🏷️',
+    name: 'Branding & Labels',
+    desc: 'Fixed UI locations: headers, footers, hero eyebrows, badges, card labels',
+    items: [
+      { id: 'b1', label: 'Active project brand is correct',          sub: '"Smile Bags · A Word & Wonder Experience" — no Kellam in fixed labels' },
+      { id: 'b2', label: 'No "Kellam Smile Bags" in headers/footers', sub: 'Body text referring to school by name is acceptable' },
+      { id: 'b3', label: 'Word & Wonder attribution present',         sub: 'Appears in appropriate locations' },
+      { id: 'b4', label: 'Spring 2026 date consistent across pages',  sub: 'Check footers, hero eyebrows, credit lines' },
+      { id: 'b5', label: 'AI credit lines correct per set',           sub: 'Set H: Gemini/ChatGPT · Set G: CoPilot · Set A: ChatGPT' },
+    ]
+  },
+  {
+    id: 'links',
+    icon: '🔗',
+    name: 'Links & Navigation',
+    desc: 'Every doc-link, nav button, and resource URL',
+    items: [
+      { id: 'l1', label: 'No href="#" without Coming Soon label',     sub: 'Dead links must be labeled or removed' },
+      { id: 'l2', label: 'All live HTML files open correctly',         sub: 'Test each link — 404s must be fixed' },
+      { id: 'l3', label: 'GitHub Pages URLs are consistent',           sub: 'All links use lhhowell.github.io/kellamsmilebags/ base' },
+      { id: 'l4', label: 'target="_blank" on all external links',      sub: 'External and GitHub Pages links open in new tab' },
+      { id: 'l5', label: 'Coloring book set filter works correctly',   sub: 'All 7 sets filter without errors' },
+      { id: 'l6', label: 'Jump-to-word dropdown works on all pages',   sub: 'Test seth, setg, and master coloring book' },
+      { id: 'l7', label: 'Print button functional on all kiosks',      sub: 'Verify print styles hide nav/controls correctly' },
+    ]
+  },
+  {
+    id: 'cards',
+    icon: '🃏',
+    name: 'Card Completeness',
+    desc: 'Every participating class card on index.html',
+    items: [
+      { id: 'c1',  label: 'Instructional Technology card',   sub: 'Links: Stories Kiosk, Compose It!, Trading Card, Coloring Book' },
+      { id: 'c2',  label: 'Digital Arts — Kara Gau',         sub: 'Links: OneWord CB, Set G, Set H, Stencil Guide, Empathy Framework' },
+      { id: 'c3',  label: 'AP Research — Abbie McGee',       sub: 'Links: Guidelines, Example Bookmark, Supply Bar, Builder Kiosk' },
+      { id: 'c4',  label: 'AP Research — Amy Stone',         sub: 'Same links as McGee — verify both cards' },
+      { id: 'c5',  label: 'Middle School Bookmark card',     sub: 'Links: Example, Supply Bar MS, Kiosk' },
+      { id: 'c6',  label: 'SNHS — Henry & Honaker',         sub: 'Links: Overview, Student Guide, Kiosk Menu, Supply List' },
+      { id: 'c7',  label: 'AP Environmental Science',        sub: 'Links: APES Unit Plan, 3D Print Supplement, Portfolio Reflection' },
+      { id: 'c8',  label: 'Environmental Science — Carmack', sub: 'Links: Lesson Plan, Bookmark Supplement' },
+      { id: 'c9',  label: 'English 9 — Evans',               sub: 'Links: Lesson Plan, Literary Analysis Teacher + Student, Gemini Gem' },
+      { id: 'c10', label: 'Physics — Acikgoz',               sub: 'Links: Spinning Top Design Guidelines' },
+      { id: 'c11', label: 'SPED STEP — Glover',              sub: 'Links: Lesson Plan, Choice Board, Emoji Sheet, Color Card' },
+      { id: 'c12', label: 'SPED Inclusion — Glover',         sub: 'Links: Teacher Guide, Student Guide, Inclusion Kiosk' },
+      { id: 'c13', label: 'Culinary Arts — Sayers',          sub: 'Links: Cookie Cutter Guidelines' },
+      { id: 'c14', label: 'Intro to Engineering — Beamer',   sub: 'Links: Assembly Kit Guidelines' },
+      { id: 'c15', label: 'Fashion Marketing — Miller',      sub: 'Links: Fashion Marketing Guidelines' },
+      { id: 'c16', label: 'Advanced Entrepreneurship',       sub: 'Links: OneWord Sticker Design Guidelines' },
+      { id: 'c17', label: 'Leadership — Marquand',           sub: 'Links: Teacher Guide, Student Guide, Rubric, Gemini Gem, Kiosk' },
+      { id: 'c18', label: 'AVID — Vinson',                   sub: 'Links: Teacher Guide, Student Guide, Gemini Gem, Quote Card Kiosk' },
+      { id: 'c19', label: 'Virginia Teachers for Tomorrow',  sub: 'Coming Soon — is placeholder acceptable for now?' },
+      { id: 'c20', label: 'English 12 — Hoffman',            sub: 'Coming Soon — is placeholder acceptable for now?' },
+      { id: 'c21', label: 'AP Biology — O\'Brien',           sub: 'Links: Overview, Student Guide, Creation Kiosk' },
+      { id: 'c22', label: 'AP Psychology',                   sub: 'Kiosk Coming Soon — verify status' },
+      { id: 'c23', label: 'Crafting Smiles (open)',          sub: 'Links: Crafting Smiles Kiosk' },
+      { id: 'c24', label: 'T.I.D.E. Coalition',              sub: 'Links: Overview, Student Guide, Kiosk, Belonging Builder' },
+      { id: 'c25', label: 'Service Points — Clubs',          sub: 'Links: Service Points Guide & Submission' },
+      { id: 'c26', label: 'Operation Smiles Club',           sub: 'Links: External org link' },
+      { id: 'c27', label: 'Environmental Science Club',      sub: 'Links: Planning Guide' },
+    ]
+  },
+  {
+    id: 'content',
+    icon: '📝',
+    name: 'Content Accuracy',
+    desc: 'Text, teacher names, SOLs, contribution descriptions',
+    items: [
+      { id: 'ct1', label: 'All teacher names spelled correctly',      sub: 'O\'Brien, Acikgoz, Sayers, Carmack, Beamer, Marquand, Vinson, Honaker, Maloney' },
+      { id: 'ct2', label: 'Contribution descriptions are accurate',   sub: 'Each card reflects what students actually make' },
+      { id: 'ct3', label: 'SOL codes present and correct per card',   sub: 'Digital Arts, Physics, English, CTE classes' },
+      { id: 'ct4', label: 'Future Ready attributes listed',           sub: 'At least one per card' },
+      { id: 'ct5', label: 'OneWord count accurate in ITS card',       sub: 'Currently says 125 pages / 5 AI styles — needs update to 175 / 7 styles' },
+      { id: 'ct6', label: 'Hero stats accurate (9 schools, 10, 90)',  sub: 'Verify numbers still reflect current plan' },
+      { id: 'ct7', label: 'Sticker kiosk word list complete (25)',    sub: 'All 25 OneWords in dropdown and mini row' },
+    ]
+  },
+  {
+    id: 'coloring',
+    icon: '🎨',
+    name: 'Coloring Book Files',
+    desc: 'All set-specific and master coloring book files',
+    items: [
+      { id: 'cb1', label: 'seth_coloring_book.html loads correctly',  sub: 'All 25 seth_word.png files present on GitHub' },
+      { id: 'cb2', label: 'setg_coloring_book.html loads correctly',  sub: 'All 25 SetG_Word.png files present' },
+      { id: 'cb3', label: 'oneword_coloring_book.html — all 7 sets',  sub: 'Filter dropdown shows A, B, Card, D, F, G, H' },
+      { id: 'cb4', label: 'Interactive canvas opens on coloring pages', sub: '"Color This Page" button appears, overlay opens' },
+      { id: 'cb5', label: 'Print function works on coloring pages',    sub: 'Prints clean — no nav/controls visible' },
+      { id: 'cb6', label: 'Thumbnail strip loads all images',          sub: 'No broken thumbnails in strip' },
+      { id: 'cb7', label: 'Set H credit: Gemini / ChatGPT',           sub: 'Gemini listed first on all Set H pages' },
+      { id: 'cb8', label: 'Set G credit: CoPilot',                    sub: 'Verify on page label and cover' },
+    ]
+  },
+  {
+    id: 'mobile',
+    icon: '📱',
+    name: 'Responsive & Accessibility',
+    desc: 'Mobile view, keyboard nav, print styles',
+    items: [
+      { id: 'm1', label: 'index.html readable on mobile',             sub: 'Cards stack correctly below 720px' },
+      { id: 'm2', label: 'Coloring books work on tablet',             sub: 'Touch painting works in canvas overlay' },
+      { id: 'm3', label: 'Sticker kiosk usable on phone',             sub: 'Preview ring, dropdown, download button all accessible' },
+      { id: 'm4', label: 'Keyboard navigation works in flipbooks',    sub: 'Arrow keys flip pages in coloring books' },
+      { id: 'm5', label: 'Print styles verified on key pages',        sub: 'Stencil guide, empathy framework, coloring pages' },
+    ]
+  },
+  {
+    id: 'placeholder',
+    icon: '⏳',
+    name: 'Placeholder & Coming Soon Audit',
+    desc: 'Track every Coming Soon item — what has a plan vs. what is truly pending',
+    items: [
+      { id: 'p1',  label: 'AP Research Bookmark Guidelines (DOCX)',    sub: 'McGee + Stone — built or still pending?' },
+      { id: 'p2',  label: 'APES Unit Plan (DOCX)',                     sub: 'Honaker — built or pending?' },
+      { id: 'p3',  label: 'Env. Science Lesson Plan (DOCX)',           sub: 'Carmack — built or pending?' },
+      { id: 'p4',  label: 'English 9 lesson + literary analysis',      sub: 'Evans — built or pending?' },
+      { id: 'p5',  label: 'Physics Spinning Top Guidelines (DOCX)',    sub: 'Acikgoz — built or pending?' },
+      { id: 'p6',  label: 'SPED STEP guide package (4 DOCX)',          sub: 'Glover — all 4 built or pending?' },
+      { id: 'p7',  label: 'SPED Inclusion guides (2 DOCX)',            sub: 'Glover — Teacher + Student guides' },
+      { id: 'p8',  label: 'Cookie Cutter Guidelines (DOCX)',           sub: 'Sayers — built or pending?' },
+      { id: 'p9',  label: 'Assembly Kit Guidelines (DOCX)',            sub: 'Beamer — built or pending?' },
+      { id: 'p10', label: 'Fashion Marketing Guidelines (DOCX)',       sub: 'Miller — built or pending?' },
+      { id: 'p11', label: 'Entrepreneurship Sticker Guidelines (DOCX)',sub: 'Maloney — built or pending?' },
+      { id: 'p12', label: 'Leadership guides + rubric (4 DOCX)',       sub: 'Marquand — all 4 built or pending?' },
+      { id: 'p13', label: 'AVID guides + Gemini Gem (3 DOCX)',         sub: 'Vinson — all 3 built or pending?' },
+      { id: 'p14', label: 'VTfT contribution details',                 sub: 'Hoffman — Coming Soon — teacher assigned?' },
+      { id: 'p15', label: 'English 12 contribution details',           sub: 'Hoffman — Coming Soon — teacher assigned?' },
+      { id: 'p16', label: 'AP Psychology kiosk',                       sub: 'Coming Soon — teacher assigned?' },
+      { id: 'p17', label: 'Makerspace card',                          sub: 'Placeholder — teacher assigned?' },
+      { id: 'p18', label: 'Simulations card',                         sub: 'Placeholder — teacher assigned?' },
+      { id: 'p19', label: 'Game Room card',                           sub: 'Placeholder — teacher assigned?' },
+    ]
+  }
+];
+
+// ─────────────────────────────────────────────
+//  STATE
+// ─────────────────────────────────────────────
+let state = {};
+
+function loadState() {
+  try { state = JSON.parse(localStorage.getItem('ksb_qc_state') || '{}'); } catch(e) { state = {}; }
+}
+function saveState() {
+  try { localStorage.setItem('ksb_qc_state', JSON.stringify(state)); } catch(e) {}
+}
+
+// ─────────────────────────────────────────────
+//  RENDER
+// ─────────────────────────────────────────────
+function build() {
+  const container = document.getElementById('sectionsContainer');
+  container.innerHTML = '';
+
+  SECTIONS.forEach(sec => {
+    const div = document.createElement('div');
+    div.className = 'qc-section';
+    div.id = 'sec-' + sec.id;
+
+    const allPassed  = sec.items.every(it => state[it.id] === 'pass');
+    const tallyPass  = sec.items.filter(it => state[it.id] === 'pass').length;
+    const tallyFlag  = sec.items.filter(it => state[it.id] === 'flag').length;
+    const tallyClass = tallyPass === sec.items.length ? 'all-done' : '';
+
+    div.innerHTML = `
+      <div class="qc-section-header" onclick="toggleSection('${sec.id}')">
+        <span class="section-icon">${sec.icon}</span>
+        <div class="section-meta">
+          <div class="section-name">${sec.name}</div>
+          <div class="section-desc">${sec.desc}</div>
+        </div>
+        <span class="section-tally ${tallyClass}">${tallyPass}/${sec.items.length} passed${tallyFlag ? ' · ' + tallyFlag + ' flagged' : ''}</span>
+        <span class="section-chevron">▼</span>
+      </div>
+      <div class="qc-items" id="items-${sec.id}">
+        ${sec.items.map(it => renderItem(it)).join('')}
+        <div class="notes-wrap">
+          <div class="notes-label">Section Notes</div>
+          <textarea class="notes-field" id="notes-${sec.id}" placeholder="Add notes for this section..." onchange="saveNote('${sec.id}', this.value)">${state['notes_' + sec.id] || ''}</textarea>
+        </div>
+      </div>`;
+    container.appendChild(div);
+  });
+
+  updateProgress();
+}
+
+function renderItem(it) {
+  const s = state[it.id] || 'pending';
+  const cls = s === 'pass' ? 'checked' : s === 'flag' ? 'flagged' : '';
+  const chk = s === 'pass' ? '✓' : s === 'flag' ? '✕' : '';
+  return `
+    <div class="qc-item ${cls}" id="item-${it.id}" onclick="toggleItem('${it.id}')">
+      <div class="qc-check"><div class="qc-checkbox">${chk}</div></div>
+      <div class="qc-text">
+        <div class="qc-label">${it.label}</div>
+        <div class="qc-sublabel">${it.sub}</div>
+      </div>
+      <button class="qc-flag-btn" onclick="flagItem(event,'${it.id}')">${s === 'flag' ? '🚩 Flagged' : '🚩 Flag'}</button>
+    </div>`;
+}
+
+function toggleItem(id) {
+  const cur = state[id] || 'pending';
+  state[id] = cur === 'pending' ? 'pass' : cur === 'pass' ? 'pending' : 'pending';
+  saveState();
+  refreshItem(id);
+  updateProgress();
+  updateSectionTally(getSectionForItem(id));
+}
+
+function flagItem(e, id) {
+  e.stopPropagation();
+  const cur = state[id] || 'pending';
+  state[id] = cur === 'flag' ? 'pending' : 'flag';
+  saveState();
+  refreshItem(id);
+  updateProgress();
+  updateSectionTally(getSectionForItem(id));
+}
+
+function refreshItem(id) {
+  const el = document.getElementById('item-' + id);
+  const it = SECTIONS.flatMap(s => s.items).find(i => i.id === id);
+  if (el && it) el.outerHTML = renderItem(it);
+  // Re-attach after DOM replace
+  const newEl = document.getElementById('item-' + id);
+  if (newEl) newEl.onclick = () => toggleItem(id);
+  const flagBtn = newEl ? newEl.querySelector('.qc-flag-btn') : null;
+  if (flagBtn) flagBtn.onclick = (e) => flagItem(e, id);
+}
+
+function getSectionForItem(id) {
+  return SECTIONS.find(s => s.items.some(i => i.id === id));
+}
+
+function updateSectionTally(sec) {
+  if (!sec) return;
+  const tallyEl = document.querySelector(`#sec-${sec.id} .section-tally`);
+  if (!tallyEl) return;
+  const tallyPass = sec.items.filter(it => state[it.id] === 'pass').length;
+  const tallyFlag = sec.items.filter(it => state[it.id] === 'flag').length;
+  const done = tallyPass === sec.items.length;
+  tallyEl.textContent = `${tallyPass}/${sec.items.length} passed${tallyFlag ? ' · ' + tallyFlag + ' flagged' : ''}`;
+  tallyEl.className = 'section-tally' + (done ? ' all-done' : '');
+}
+
+function updateProgress() {
+  const all   = SECTIONS.flatMap(s => s.items);
+  const total = all.length;
+  const pass  = all.filter(it => state[it.id] === 'pass').length;
+  const flag  = all.filter(it => state[it.id] === 'flag').length;
+  const pend  = total - pass - flag;
+  const pct   = total ? Math.round(pass / total * 100) : 0;
+
+  document.getElementById('progressFill').style.width  = pct + '%';
+  document.getElementById('progressScore').textContent = `${pass} / ${total} · ${pct}%`;
+  document.getElementById('statPass').textContent  = pass;
+  document.getElementById('statFlag').textContent  = flag;
+  document.getElementById('statPend').textContent  = pend;
+  document.getElementById('statTotal').textContent = total;
+}
+
+function saveNote(secId, val) {
+  state['notes_' + secId] = val;
+  saveState();
+}
+
+function toggleSection(id) {
+  const sec = document.getElementById('sec-' + id);
+  if (sec) sec.classList.toggle('collapsed');
+}
+
+function expandAll()   { document.querySelectorAll('.qc-section').forEach(s => s.classList.remove('collapsed')); }
+function collapseAll() { document.querySelectorAll('.qc-section').forEach(s => s.classList.add('collapsed')); }
+
+function resetAll() {
+  if (!confirm('Reset all checkboxes and flags? This cannot be undone.')) return;
+  state = {};
+  saveState();
+  build();
+}
+
+// ─────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────
+loadState();
+build();
+</script>
+</body>
+</html>
