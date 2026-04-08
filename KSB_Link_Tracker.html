@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smile Bags · Link Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,300;0,700;1,300;1,700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0f0f1a;--ink2:#1e1e30;--ink3:#2a2a3e;--surface:#f5f3ef;--card:#fff;--gold:#c9a84c;--gold-lt:#e8c87a;--teal:#1b7a78;--red:#c0392b;--red-lt:#fdecea;--green:#2d7a52;--green-lt:#e8f5ee;--amber:#c8860a;--amber-lt:#fff3d6;--rule:rgba(15,15,26,.08)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--surface);font-family:'Nunito',sans-serif;color:var(--ink);min-height:100vh}
+header{background:var(--ink);padding:0 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--gold);min-height:60px}
+.logo{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:700;color:var(--gold);padding:14px 0}
+.logo span{font-style:italic;font-weight:300;color:var(--gold-lt);font-size:.88rem;margin-left:6px}
+.header-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.hbtn{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;padding:7px 16px;border-radius:6px;border:1.5px solid rgba(201,168,76,.35);background:transparent;color:var(--gold-lt);cursor:pointer;transition:all .2s}
+.hbtn:hover{background:rgba(201,168,76,.15)}
+.hbtn.primary{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.hbtn.primary:hover{background:var(--gold-lt)}
+.hbtn.green{background:var(--teal);color:#fff;border-color:var(--teal)}
+.hbtn.green:hover{background:#156260}
+.sync-bar{background:var(--ink2);padding:7px 40px;display:flex;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.08em;color:rgba(255,255,255,.4);flex-wrap:wrap}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:#666;flex-shrink:0;transition:background .3s}
+.sync-dot.live{background:#2ecc71;box-shadow:0 0 6px #2ecc71}
+.sync-dot.saving{background:var(--gold);animation:pulse .6s infinite}
+.sync-dot.error{background:var(--red)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.sync-msg{color:rgba(255,255,255,.55)}
+.progress-bar-wrap{background:var(--ink3);padding:10px 40px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.progress-track{flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;min-width:100px}
+.progress-fill{height:100%;background:linear-gradient(to right,var(--teal),var(--gold));border-radius:3px;transition:width .4s ease}
+.progress-label{font-family:'DM Mono',monospace;font-size:.72rem;color:rgba(255,255,255,.5);letter-spacing:.08em;white-space:nowrap}
+.progress-score{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--gold);white-space:nowrap}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.68rem;font-weight:700;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;letter-spacing:.06em}
+.legend-item{display:flex;align-items:center;gap:5px}
+.legend-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.setup-banner{background:var(--amber-lt);border:2px solid var(--amber);border-radius:12px;padding:16px 20px;display:flex;gap:14px;align-items:flex-start}
+.setup-banner.hidden{display:none}
+.setup-icon{font-size:1.4rem;flex-shrink:0}
+.setup-title{font-weight:800;font-size:.92rem;color:var(--amber);margin-bottom:4px}
+.setup-desc{font-size:.83rem;color:#3a3a2a;line-height:1.6}
+.setup-input{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
+.setup-field{flex:1;min-width:280px;font-family:'DM Mono',monospace;font-size:.8rem;border:1.5px solid var(--amber);border-radius:6px;padding:7px 12px;outline:none;background:white;color:var(--ink)}
+.setup-save-btn{font-family:'DM Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--amber);color:white;border:none;border-radius:6px;padding:7px 18px;cursor:pointer;white-space:nowrap}
+main{max-width:1100px;margin:0 auto;padding:28px 24px 80px;display:flex;flex-direction:column;gap:20px}
+.summary-strip{background:var(--ink);border-radius:12px;padding:20px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:16px}
+.summary-stat{text-align:center}
+.summary-num{font-family:'Fraunces',serif;font-size:2rem;font-weight:700;line-height:1;margin-bottom:4px}
+.summary-lbl{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35)}
+.num-green{color:#2ecc71}.num-red{color:#e74c3c}.num-amber{color:var(--gold)}.num-purple{color:#a67fd4}.num-blue{color:#74b9ff}
+.filter-bar{background:var(--card);border-radius:10px;padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;border:1.5px solid var(--rule);box-shadow:0 2px 8px rgba(15,15,26,.05)}
+.filter-label{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#aaa;flex-shrink:0}
+.filter-btn{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.06em;padding:5px 12px;border-radius:20px;border:1.5px solid #e0ddd8;background:white;color:#888;cursor:pointer;transition:all .18s;white-space:nowrap}
+.filter-btn:hover{border-color:var(--gold);color:var(--gold)}
+.filter-btn.active{background:var(--ink);color:var(--gold-lt);border-color:var(--ink)}
+.search-field{flex:1;min-width:160px;font-family:'Nunito',sans-serif;font-size:.85rem;border:1.5px solid #e0ddd8;border-radius:8px;padding:6px 12px;outline:none;color:var(--ink);background:white;transition:border-color .2s}
+.search-field:focus{border-color:var(--gold)}
+.table-wrap{background:var(--card);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(15,15,26,.07);border:1.5px solid var(--rule)}
+.table-header{display:grid;grid-template-columns:180px 1fr 140px 110px 100px;gap:0;padding:10px 16px;background:var(--ink);font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);border-bottom:2px solid var(--gold)}
+.link-row{display:grid;grid-template-columns:180px 1fr 140px 110px 100px;gap:0;padding:10px 16px;border-bottom:1px solid var(--rule);transition:background .15s;align-items:center}
+.link-row:last-child{border-bottom:none}
+.link-row:hover{background:#faf9f7}
+.link-row.status-live{background:var(--green-lt)}
+.link-row.status-live:hover{background:#d5eae0}
+.link-row.status-broken{background:var(--red-lt)}
+.link-row.status-broken:hover{background:#fadbd8}
+.link-row.status-placeholder{background:var(--amber-lt)}
+.link-row.status-placeholder:hover{background:#fdeec5}
+.link-row.status-untested{}
+.link-row.hidden{display:none}
+.cell-card{font-family:'DM Mono',monospace;font-size:.7rem;color:#888;letter-spacing:.04em;padding-right:12px;line-height:1.4}
+.cell-link{padding-right:12px;min-width:0}
+.cell-label{font-size:.88rem;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:2px}
+.link-row.status-live .cell-label{color:var(--green)}
+.link-row.status-broken .cell-label{color:var(--red)}
+.cell-url{font-family:'DM Mono',monospace;font-size:.65rem;color:#bbb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.cell-url a{color:inherit;text-decoration:none}
+.cell-url a:hover{color:var(--teal);text-decoration:underline}
+.cell-type{font-family:'DM Mono',monospace;font-size:.68rem;color:#aaa;padding-right:12px;line-height:1.4}
+.cell-status{padding-right:8px}
+.status-select{font-family:'DM Mono',monospace;font-size:.7rem;border:1.5px solid #e0ddd8;border-radius:6px;padding:4px 8px;background:white;color:var(--ink);cursor:pointer;outline:none;width:100%;transition:border-color .2s}
+.status-select:focus{border-color:var(--gold)}
+.cell-actions{display:flex;gap:6px;align-items:center}
+.open-btn{font-family:'DM Mono',monospace;font-size:.65rem;padding:4px 10px;border-radius:5px;border:1.5px solid rgba(27,122,120,.3);background:white;color:var(--teal);cursor:pointer;transition:all .18s;white-space:nowrap;text-decoration:none;display:inline-block}
+.open-btn:hover{background:var(--teal);color:white;border-color:var(--teal)}
+.notes-toggle{font-family:'DM Mono',monospace;font-size:.65rem;padding:4px 8px;border-radius:5px;border:1.5px solid #e0ddd8;background:white;color:#aaa;cursor:pointer;transition:all .18s;white-space:nowrap}
+.notes-toggle:hover{border-color:var(--gold);color:var(--gold)}
+.link-notes-row{display:none;padding:6px 16px 10px 196px;border-bottom:1px solid var(--rule);background:#faf9f7}
+.link-notes-row.open{display:block}
+.notes-field{width:100%;border:1.5px solid #e0ddd8;border-radius:6px;padding:6px 10px;font-family:'Nunito',sans-serif;font-size:.82rem;color:var(--ink);resize:none;min-height:44px;outline:none;background:white;transition:border-color .2s}
+.notes-field:focus{border-color:var(--gold)}
+.empty-state{text-align:center;padding:48px 24px;color:#bbb;font-family:'Fraunces',serif;font-size:1.1rem;font-style:italic}
+@media print{body{background:white}header,.sync-bar,.progress-bar-wrap,.filter-bar,.cell-actions,.setup-banner{display:none!important}main{padding:8px}.table-wrap{box-shadow:none;border:1px solid #ddd}.link-row.hidden{display:none!important}}
+@media(max-width:768px){.table-header,.link-row{grid-template-columns:1fr auto}.cell-card,.cell-type,.cell-status{display:none}.link-notes-row{padding-left:16px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Smile Bags · Link Tracker<span>· 25 Links · index.html</span></div>
+  <div class="header-actions">
+    <button class="hbtn green" onclick="markAllTested()">✓ Mark All Tested</button>
+    <button class="hbtn" onclick="forcSync()">↺ Sync</button>
+    <button class="hbtn primary" onclick="window.print()">🖨️ Print</button>
+  </div>
+</header>
+<div class="sync-bar">
+  <div class="sync-dot" id="syncDot"></div>
+  <span class="sync-msg" id="syncMsg">Connecting...</span>
+  <span style="margin-left:auto;opacity:.5" id="syncTime"></span>
+</div>
+<div class="progress-bar-wrap">
+  <span class="progress-label">Links Verified</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <span class="progress-score" id="progressScore">— / —</span>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div>LIVE</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div>BROKEN</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>PLACEHOLDER</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#d0cec8"></div>UNTESTED</div>
+  </div>
+</div>
+<main>
+  <div class="setup-banner" id="setupBanner">
+    <div class="setup-icon">⚙️</div>
+    <div>
+      <div class="setup-title">Connect to KSB Management & Audit Spreadsheet</div>
+      <div class="setup-desc">Paste your Apps Script URL (same one used in the QC Dashboard) to sync link status across all devices.</div>
+      <div class="setup-input">
+        <input class="setup-field" id="scriptUrlInput" type="text" placeholder="https://script.google.com/macros/s/YOUR_ID/exec"/>
+        <button class="setup-save-btn" onclick="saveScriptUrl()">Save & Connect</button>
+      </div>
+    </div>
+  </div>
+  <div class="summary-strip">
+    <div class="summary-stat"><div class="summary-num num-green"  id="statLive">—</div><div class="summary-lbl">Live</div></div>
+    <div class="summary-stat"><div class="summary-num num-red"    id="statBroken">—</div><div class="summary-lbl">Broken</div></div>
+    <div class="summary-stat"><div class="summary-num num-amber"  id="statPlaceholder">—</div><div class="summary-lbl">Placeholder</div></div>
+    <div class="summary-stat"><div class="summary-num num-purple" id="statUntested">—</div><div class="summary-lbl">Untested</div></div>
+    <div class="summary-stat"><div class="summary-num num-blue"   id="statTotal">25</div><div class="summary-lbl">Total Links</div></div>
+  </div>
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" onclick="setFilter('all',this)">All (25)</button>
+    <button class="filter-btn" onclick="setFilter('live',this)">✅ Live</button>
+    <button class="filter-btn" onclick="setFilter('broken',this)">❌ Broken</button>
+    <button class="filter-btn" onclick="setFilter('placeholder',this)">⏳ Placeholder</button>
+    <button class="filter-btn" onclick="setFilter('untested',this)">◯ Untested</button>
+    <input class="search-field" type="text" placeholder="Search links, labels, cards..." oninput="applySearch(this.value)" id="searchField"/>
+  </div>
+  <div class="table-wrap">
+    <div class="table-header">
+      <div>Card / Class</div>
+      <div>Link Label & URL</div>
+      <div>Type</div>
+      <div>Status</div>
+      <div>Actions</div>
+    </div>
+    <div id="linkTable"></div>
+  </div>
+</main>
+<script>
+let SCRIPT_URL = localStorage.getItem('ksb_script_url') || '';
+let state = {}, saveTimer = null, activeFilter = 'all', activeSearch = '';
+
+const LINKS = [
+  {id:'lk01',card:'Instructional Technology',label:'Word World: The OneWord Journey',type:'HTML · Kiosk',url:'https://lhhowell.github.io/kellamsmilebags/KSB_Stories_Kiosk.html'},
+  {id:'lk02',card:'Instructional Technology',label:'Compose It! — OneWord DNA System',type:'HTML · Music Activity',url:'https://lhhowell.github.io/kellamsmilebags/ComposeIt_Voice.html'},
+  {id:'lk03',card:'Instructional Technology',label:'OneWord Trading Card Kiosk',type:'HTML · Kiosk',url:'https://lhhowell.github.io/kellamsmilebags/AVID_TradingCard_Kiosk.html'},
+  {id:'lk04',card:'Instructional Technology',label:'OneWord Coloring Book',type:'HTML · Flipbook',url:'https://lhhowell.github.io/kellamsmilebags/oneword_coloring_book.html'},
+  {id:'lk05',card:'Digital Arts — Kara Gau',label:'OneWord Coloring Book',type:'HTML · Flipbook',url:'https://lhhowell.github.io/kellamsmilebags/oneword_coloring_book.html'},
+  {id:'lk06',card:'Digital Arts — Kara Gau',label:'Set G · Nature Poster Collection',type:'HTML · Flipbook',url:'https://lhhowell.github.io/kellamsmilebags/setg_coloring_book.html'},
+  {id:'lk07',card:'Digital Arts — Kara Gau',label:'Set H · Fine Line Botanical',type:'HTML · Flipbook',url:'https://lhhowell.github.io/kellamsmilebags/seth_coloring_book.html'},
+  {id:'lk08',card:'Digital Arts — Kara Gau',label:'Stencil Set Design Guidelines',type:'HTML · Student Guide',url:'https://lhhowell.github.io/kellamsmilebags/stencil_design_guidelines.html'},
+  {id:'lk09',card:'Digital Arts — Kara Gau',label:'Empathy-Driven Design Framework',type:'HTML · Teacher Guide',url:'https://lhhowell.github.io/kellamsmilebags/empathy_design_framework.html'},
+  {id:'lk10',card:'AP Research — McGee / Stone',label:'Example Bookmark — FLOW',type:'HTML · Example',url:'https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_APResearch_Bookmark_FLOW.html'},
+  {id:'lk11',card:'AP Research — McGee / Stone',label:'Science Supply Bar Sign',type:'HTML · Printable',url:'https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_APResearch_ScienceSupplyBar.html'},
+  {id:'lk12',card:'AP Research — McGee / Stone',label:'Bookmark Builder Kiosk',type:'HTML · Kiosk',url:'https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_APResearch_BookmarkBuilder_Kiosk.html'},
+  {id:'lk13',card:'Middle School Bookmark',label:'Science Supply Bar — Middle School',type:'HTML · Printable',url:'https://lhhowell.github.io/kellamsmilebags/APResearch_ScienceSupplyBar_MiddleSchool.html'},
+  {id:'lk14',card:'SNHS — Henry & Honaker',label:'SNHS Overview & Sign-Up',type:'HTML · Mini Site',url:'https://lhhowell.github.io/kellamsmilebags/NSHS_Preview.html'},
+  {id:'lk15',card:'SNHS — Henry & Honaker',label:'SNHS Student Guide',type:'HTML · Guide',url:'https://lhhowell.github.io/kellamsmilebags/NSHS_Student_Guide.html'},
+  {id:'lk16',card:'SNHS — Henry & Honaker',label:'SNHS Creation Kiosk Menu',type:'HTML · Kiosk',url:'https://lhhowell.github.io/kellamsmilebags/SNHS_Kiosk_Menu.html'},
+  {id:'lk17',card:'SNHS — Henry & Honaker',label:'Consolidated Supply List',type:'HTML · Reference',url:'https://lhhowell.github.io/kellamsmilebags/SNHS_Supply_List.html'},
+  {id:'lk18',card:'SPED Inclusion — Glover',label:'Inclusion Bookmark Kiosk',type:'HTML · Kiosk',url:'https://lhhowell.github.io/kellamsmilebags/inclusion-bookmark-kiosk.html'},
+  {id:'lk19',card:'Leadership — Marquand',label:'Leadership Activity Kiosk',type:'HTML · Kiosk',url:'https://lhhowell.github.io/kellamsmilebags/LeadershipActivities_Kiosk_v2.html'},
+  {id:'lk20',card:'AVID — Vinson',label:'Quote Card Kiosk',type:'HTML · Kiosk',url:'https://lhhowell.github.io/kellamsmilebags/AVID_QuoteCard_Kiosk.html'},
+  {id:'lk21',card:'AP Biology — O\'Brien',label:'AP Bio & T.I.D.E. Overview',type:'HTML · Mini Site',url:'https://lhhowell.github.io/kellamsmilebags/APBio_TIDE_Preview.html'},
+  {id:'lk22',card:'AP Biology — O\'Brien',label:'Student Guide',type:'HTML · Guide',url:'https://lhhowell.github.io/kellamsmilebags/APBio_TIDE_Student_Guide.html'},
+  {id:'lk23',card:'AP Biology — O\'Brien',label:'Creation Kiosk Menu',type:'HTML · Kiosk',url:'https://lhhowell.github.io/kellamsmilebags/APBio_TIDE_Kiosk_Menu.html'},
+  {id:'lk24',card:'Crafting Smiles (Open)',label:'Crafting Smiles Kiosk',type:'HTML · Kiosk',url:'https://lhhowell.github.io/kellamsmilebags/CraftingSmiles_Kiosk.html'},
+  {id:'lk25',card:'T.I.D.E. Coalition',label:'Belonging Activity Builder',type:'HTML · Kiosk',url:'https://lhhowell.github.io/kellamsmilebags/APBio_TIDE_Belonging_Kiosk.html'},
+  {id:'lk26',card:'Service Points — Clubs',label:'Service Points Guide & Submission',type:'HTML · Guide',url:'https://lhhowell.github.io/kellamsmilebags/KSB_ServicePoints_Guide.html'},
+];
+
+function setSyncStatus(s,msg){
+  document.getElementById('syncDot').className='sync-dot '+s;
+  document.getElementById('syncMsg').textContent=msg;
+  if(s==='live') document.getElementById('syncTime').textContent='Last sync: '+new Date().toLocaleTimeString();
+}
+
+async function callScript(params){
+  if(!SCRIPT_URL) return null;
+  try{const r=await fetch(SCRIPT_URL+'?'+new URLSearchParams(params).toString());return await r.json();}
+  catch(e){return{ok:false,msg:e.toString()}}
+}
+
+async function loadFromSheet(){
+  if(!SCRIPT_URL){setSyncStatus('error','No Apps Script URL — enter above');return}
+  setSyncStatus('saving','Loading...');
+  const r=await callScript({action:'load'});
+  if(r&&r.ok){state=r.state||{};setSyncStatus('live','Connected · KSB Management & Audit · Spring 2026');render();}
+  else{setSyncStatus('error','Could not load: '+(r?r.msg:'Network error'));render();}
+}
+
+async function saveToSheet(){
+  if(!SCRIPT_URL) return;
+  setSyncStatus('saving','Saving...');
+  const r=await callScript({action:'save',data:JSON.stringify(state)});
+  if(r&&r.ok) setSyncStatus('live','Saved · '+r.msg);
+  else setSyncStatus('error','Save failed');
+}
+
+function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(()=>saveToSheet(),1200)}
+async function forcSync(){await loadFromSheet()}
+
+function saveScriptUrl(){
+  const v=document.getElementById('scriptUrlInput').value.trim();
+  if(!v.startsWith('https://script.google.com')){alert('Please paste a valid Apps Script URL');return}
+  SCRIPT_URL=v;localStorage.setItem('ksb_script_url',v);
+  document.getElementById('setupBanner').classList.add('hidden');
+  callScript({action:'init'}).then(()=>loadFromSheet());
+}
+
+function setStatus(id,val){
+  state['link_'+id]=val;
+  const row=document.getElementById('row-'+id);
+  if(row) row.className='link-row status-'+val+(shouldHide(val)?'':'')+' '+getHiddenClass(val);
+  updateProgress();scheduleSave();
+  // re-render just this row's class
+  renderRow(LINKS.find(l=>l.id===id));
+}
+
+function saveNote(id,val){state['linknote_'+id]=val;scheduleSave()}
+
+function setFilter(f,btn){
+  activeFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function applySearch(val){activeSearch=val.toLowerCase();applyFilters()}
+
+function applyFilters(){
+  LINKS.forEach(lk=>{
+    const row=document.getElementById('row-'+lk.id);
+    const noteRow=document.getElementById('noterow-'+lk.id);
+    if(!row) return;
+    const status=state['link_'+lk.id]||'untested';
+    const matchFilter=activeFilter==='all'||status===activeFilter;
+    const matchSearch=!activeSearch||lk.label.toLowerCase().includes(activeSearch)||lk.card.toLowerCase().includes(activeSearch)||lk.url.toLowerCase().includes(activeSearch);
+    const hide=!matchFilter||!matchSearch;
+    row.classList.toggle('hidden',hide);
+    if(noteRow) noteRow.classList.toggle('hidden',hide);
+  });
+  updateEmptyState();
+}
+
+function updateEmptyState(){
+  const vis=LINKS.filter(lk=>{
+    const row=document.getElementById('row-'+lk.id);
+    return row&&!row.classList.contains('hidden');
+  }).length;
+  let empty=document.getElementById('emptyState');
+  if(vis===0){
+    if(!empty){empty=document.createElement('div');empty.id='emptyState';empty.className='empty-state';empty.textContent='No links match this filter.';document.getElementById('linkTable').appendChild(empty);}
+  } else {if(empty) empty.remove();}
+}
+
+function updateProgress(){
+  const live=LINKS.filter(l=>state['link_'+l.id]==='live').length;
+  const broken=LINKS.filter(l=>state['link_'+l.id]==='broken').length;
+  const ph=LINKS.filter(l=>state['link_'+l.id]==='placeholder').length;
+  const unt=LINKS.length-live-broken-ph;
+  const pct=Math.round(live/LINKS.length*100);
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressScore').textContent=live+' / '+LINKS.length+' live · '+pct+'%';
+  document.getElementById('statLive').textContent=live;
+  document.getElementById('statBroken').textContent=broken;
+  document.getElementById('statPlaceholder').textContent=ph;
+  document.getElementById('statUntested').textContent=unt;
+}
+
+function renderRow(lk){
+  const old=document.getElementById('row-'+lk.id);
+  const oldNote=document.getElementById('noterow-'+lk.id);
+  const status=state['link_'+lk.id]||'untested';
+  const note=state['linknote_'+lk.id]||'';
+  const rowHtml=`<div class="link-row status-${status}" id="row-${lk.id}">
+    <div class="cell-card">${lk.card}</div>
+    <div class="cell-link">
+      <div class="cell-label">${lk.label}</div>
+      <span class="cell-url"><a href="${lk.url}" target="_blank">${lk.url.replace('https://lhhowell.github.io/kellamsmilebags/','')}</a></span>
+    </div>
+    <div class="cell-type">${lk.type}</div>
+    <div class="cell-status">
+      <select class="status-select" onchange="setStatus('${lk.id}',this.value)">
+        <option value="untested"${status==='untested'?' selected':''}>◯ Untested</option>
+        <option value="live"${status==='live'?' selected':''}>✅ Live</option>
+        <option value="broken"${status==='broken'?' selected':''}>❌ Broken</option>
+        <option value="placeholder"${status==='placeholder'?' selected':''}>⏳ Placeholder</option>
+      </select>
+    </div>
+    <div class="cell-actions">
+      <a class="open-btn" href="${lk.url}" target="_blank">Open ↗</a>
+      <button class="notes-toggle" onclick="toggleNote('${lk.id}')">📝</button>
+    </div>
+  </div>
+  <div class="link-notes-row${note?' open':''}" id="noterow-${lk.id}">
+    <textarea class="notes-field" placeholder="Notes about this link..." rows="2" onchange="saveNote('${lk.id}',this.value)">${note}</textarea>
+  </div>`;
+  if(old){
+    old.outerHTML=rowHtml;
+  } else {
+    document.getElementById('linkTable').insertAdjacentHTML('beforeend',rowHtml);
+  }
+}
+
+function toggleNote(id){
+  const nr=document.getElementById('noterow-'+id);
+  if(nr) nr.classList.toggle('open');
+}
+
+function render(){
+  const table=document.getElementById('linkTable');
+  table.innerHTML='';
+  LINKS.forEach(lk=>renderRow(lk));
+  updateProgress();
+  applyFilters();
+}
+
+function markAllTested(){
+  if(!confirm('Mark all untested links as Live? Only do this after manually checking each one.')) return;
+  LINKS.forEach(lk=>{if((state['link_'+lk.id]||'untested')==='untested') state['link_'+lk.id]='live';});
+  render();scheduleSave();
+}
+
+// Init
+if(SCRIPT_URL) document.getElementById('setupBanner').classList.add('hidden');
+else setSyncStatus('error','Setup required — paste your Apps Script URL above');
+render();
+if(SCRIPT_URL) loadFromSheet();
+</script>
+</body>
+</html>
