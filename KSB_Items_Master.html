@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smile Bags · Items Master List</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,300;0,700;1,300;1,700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0f0f1a;--ink2:#1e1e30;--ink3:#2a2a3e;--surface:#f5f3ef;--card:#fff;--gold:#c9a84c;--gold-lt:#e8c87a;--teal:#1b7a78;--teal-lt:#d6eeee;--red:#c0392b;--red-lt:#fdecea;--green:#2d7a52;--green-lt:#e8f5ee;--amber:#c8860a;--amber-lt:#fff3d6;--purple:#6b3f9e;--purple-lt:#ede4f7;--rule:rgba(15,15,26,.08)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--surface);font-family:'Nunito',sans-serif;color:var(--ink);min-height:100vh}
+header{background:var(--ink);padding:0 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--gold);min-height:60px}
+.logo{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:700;color:var(--gold);padding:14px 0}
+.logo span{font-style:italic;font-weight:300;color:var(--gold-lt);font-size:.88rem;margin-left:6px}
+.header-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.hbtn{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;padding:7px 16px;border-radius:6px;border:1.5px solid rgba(201,168,76,.35);background:transparent;color:var(--gold-lt);cursor:pointer;transition:all .2s}
+.hbtn:hover{background:rgba(201,168,76,.15)}
+.hbtn.primary{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.hbtn.primary:hover{background:var(--gold-lt)}
+.sync-bar{background:var(--ink2);padding:7px 40px;display:flex;align-items:center;gap:12px;font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.08em;color:rgba(255,255,255,.4);flex-wrap:wrap}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:#666;flex-shrink:0;transition:background .3s}
+.sync-dot.live{background:#2ecc71;box-shadow:0 0 6px #2ecc71}
+.sync-dot.saving{background:var(--gold);animation:pulse .6s infinite}
+.sync-dot.error{background:var(--red)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.sync-msg{color:rgba(255,255,255,.55)}
+.setup-banner{background:var(--amber-lt);border:2px solid var(--amber);border-radius:12px;padding:16px 20px;display:flex;gap:14px;align-items:flex-start}
+.setup-banner.hidden{display:none}
+.setup-icon{font-size:1.4rem;flex-shrink:0}
+.setup-title{font-weight:800;font-size:.92rem;color:var(--amber);margin-bottom:4px}
+.setup-desc{font-size:.83rem;color:#3a3a2a;line-height:1.6}
+.setup-input{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
+.setup-field{flex:1;min-width:280px;font-family:'DM Mono',monospace;font-size:.8rem;border:1.5px solid var(--amber);border-radius:6px;padding:7px 12px;outline:none;background:white;color:var(--ink)}
+.setup-save-btn{font-family:'DM Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--amber);color:white;border:none;border-radius:6px;padding:7px 18px;cursor:pointer;white-space:nowrap}
+main{max-width:1100px;margin:0 auto;padding:28px 24px 80px;display:flex;flex-direction:column;gap:20px}
+
+/* ── COST SUMMARY ── */
+.cost-strip{background:var(--ink);border-radius:14px;padding:24px 28px;display:flex;flex-direction:column;gap:16px}
+.cost-title{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:4px}
+.cost-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.cost-stat{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px 16px;text-align:center}
+.cost-num{font-family:'Fraunces',serif;font-size:1.8rem;font-weight:700;line-height:1;margin-bottom:4px}
+.cost-lbl{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35)}
+.cost-num.gold{color:var(--gold)}
+.cost-num.green{color:#2ecc71}
+.cost-num.teal{color:#55efc4}
+.cost-num.purple{color:#a67fd4}
+.cost-divider{height:1px;background:rgba(255,255,255,.08)}
+.cost-breakdown{display:flex;gap:16px;flex-wrap:wrap;font-size:.8rem}
+.cost-line{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.5)}
+.cost-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* ── SECTION CARDS ── */
+.section-card{background:var(--card);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(15,15,26,.07);border:1.5px solid var(--rule)}
+.section-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:2px solid var(--rule);flex-wrap:wrap;gap:10px}
+.section-header-left{display:flex;align-items:center;gap:12px}
+.section-icon{font-size:1.3rem}
+.section-title{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:700;color:var(--ink)}
+.section-title em{font-style:italic;color:#888;font-size:.78rem;display:block;font-family:'Nunito',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+.section-tally{font-family:'DM Mono',monospace;font-size:.72rem;color:#bbb;letter-spacing:.04em}
+.section-tally.gold{color:var(--amber)}
+.section-tally.green{color:var(--green)}
+
+/* ── TABLE HEADERS ── */
+.tbl-head{display:grid;gap:0;padding:8px 14px;background:#f8f6f2;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#aaa;border-bottom:1px solid var(--rule)}
+.tbl-head.defaults-head{grid-template-columns:180px 60px 80px 80px 1fr 90px}
+.tbl-head.items-head{grid-template-columns:32px 180px 130px 110px 80px 60px 80px 80px 1fr}
+
+/* ── DEFAULT ITEMS ── */
+.default-row{display:grid;grid-template-columns:180px 60px 80px 80px 1fr 90px;gap:0;padding:9px 14px;border-bottom:1px solid var(--rule);align-items:center;transition:background .15s}
+.default-row:last-child{border-bottom:none}
+.default-row:hover{background:#faf9f7}
+.default-row.placeholder-row{background:#fdfcf9;border-style:dashed}
+
+/* ── ITEM ROWS ── */
+.item-row{display:grid;grid-template-columns:32px 180px 130px 110px 80px 60px 80px 80px 1fr;gap:0;padding:8px 14px;border-bottom:1px solid var(--rule);align-items:center;transition:background .15s}
+.item-row:last-child{border-bottom:none}
+.item-row:hover{background:#faf9f7}
+.item-row.confirmed{border-left:3px solid var(--green)}
+.item-row.potential{border-left:3px solid var(--amber)}
+.item-row.hidden{display:none}
+
+/* ── SHARED CELLS ── */
+.cell-name{font-size:.87rem;font-weight:700;color:var(--ink);padding-right:10px;line-height:1.3}
+.cell-sm{font-size:.78rem;color:#777;padding-right:8px;line-height:1.4}
+.cell-mono{font-family:'DM Mono',monospace;font-size:.72rem;color:#aaa;padding-right:8px}
+.recipient-badge{font-family:'DM Mono',monospace;font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:10px;white-space:nowrap;display:inline-block}
+.rb-all{background:#e8f5ee;color:var(--green)}
+.rb-elem{background:#dff2ff;color:#0066aa}
+.rb-mid{background:#fff0d6;color:#aa6600}
+.rb-high{background:#f0e8ff;color:#6600aa}
+.mini-input{width:52px;font-family:'DM Mono',monospace;font-size:.8rem;border:1.5px solid #e0ddd8;border-radius:6px;padding:4px 6px;text-align:center;outline:none;color:var(--ink);background:white;transition:border-color .2s}
+.mini-input:focus{border-color:var(--gold)}
+.cost-input{width:70px;font-family:'DM Mono',monospace;font-size:.8rem;border:1.5px solid #e0ddd8;border-radius:6px;padding:4px 6px;outline:none;color:var(--ink);background:white;transition:border-color .2s}
+.cost-input:focus{border-color:var(--gold)}
+.mini-select{font-family:'DM Mono',monospace;font-size:.68rem;border:1.5px solid #e0ddd8;border-radius:6px;padding:4px 5px;background:white;color:var(--ink);cursor:pointer;outline:none;width:100%;transition:border-color .2s}
+.mini-select:focus{border-color:var(--gold)}
+.mini-notes{width:100%;font-family:'Nunito',sans-serif;font-size:.78rem;border:1.5px solid #e0ddd8;border-radius:6px;padding:4px 8px;outline:none;color:var(--ink);background:white;resize:none;min-height:30px;transition:border-color .2s}
+.mini-notes:focus{border-color:var(--gold)}
+.del-btn{font-family:'DM Mono',monospace;font-size:.62rem;padding:3px 7px;border-radius:4px;border:1px solid #e0ddd8;background:white;color:#ccc;cursor:pointer;transition:all .18s;white-space:nowrap}
+.del-btn:hover{border-color:var(--red);color:var(--red)}
+.status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.dot-confirmed{background:var(--green)}
+.dot-potential{background:var(--amber)}
+
+/* ── ADD FORMS ── */
+.add-form{padding:14px 20px;background:#faf9f7;border-top:1.5px solid var(--rule);display:flex;flex-direction:column;gap:10px}
+.add-form-grid{display:grid;gap:10px}
+.add-form-grid.defaults-grid{grid-template-columns:1fr 60px 70px 1fr auto}
+.add-form-grid.items-grid{grid-template-columns:1fr 120px 110px 80px 60px 70px 80px 80px auto}
+.form-grp{display:flex;flex-direction:column;gap:3px}
+.form-lbl{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:#bbb}
+.form-inp,.form-sel{font-family:'Nunito',sans-serif;font-size:.85rem;border:1.5px solid #e0ddd8;border-radius:7px;padding:6px 10px;outline:none;color:var(--ink);background:white;transition:border-color .2s;width:100%}
+.form-inp:focus,.form-sel:focus{border-color:var(--gold)}
+.add-row-btn{font-family:'Nunito',sans-serif;font-weight:800;font-size:.82rem;padding:8px 18px;border-radius:7px;border:none;cursor:pointer;white-space:nowrap;align-self:flex-end;transition:all .2s}
+.add-row-btn.teal{background:var(--teal);color:white}
+.add-row-btn.teal:hover{background:#156260}
+.add-row-btn.amber{background:var(--amber);color:white}
+.add-row-btn.amber:hover{background:#a86d08}
+
+/* ── FILTER BAR ── */
+.filter-bar{background:var(--card);border-radius:10px;padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;border:1.5px solid var(--rule);box-shadow:0 2px 8px rgba(15,15,26,.05)}
+.filter-label{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#aaa;flex-shrink:0}
+.filter-btn{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.06em;padding:5px 12px;border-radius:20px;border:1.5px solid #e0ddd8;background:white;color:#888;cursor:pointer;transition:all .18s;white-space:nowrap}
+.filter-btn:hover{border-color:var(--gold);color:var(--gold)}
+.filter-btn.active{background:var(--ink);color:var(--gold-lt);border-color:var(--ink)}
+.search-field{flex:1;min-width:160px;font-family:'Nunito',sans-serif;font-size:.85rem;border:1.5px solid #e0ddd8;border-radius:8px;padding:6px 12px;outline:none;color:var(--ink);background:white;transition:border-color .2s}
+.search-field:focus{border-color:var(--gold)}
+.empty-row{text-align:center;padding:28px;color:#bbb;font-family:'Fraunces',serif;font-style:italic;font-size:.95rem}
+
+/* ── SUGGESTIONS ── */
+.suggest-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 20px}
+.suggest-item{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1.5px solid var(--rule);border-radius:10px;padding:12px 14px}
+.suggest-icon{font-size:1.1rem;flex-shrink:0}
+.suggest-name{font-weight:800;font-size:.87rem;color:var(--ink);margin-bottom:2px}
+.suggest-desc{font-size:.77rem;color:#777;line-height:1.5}
+.suggest-add{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:5px;border:1.5px solid rgba(107,63,158,.3);background:white;color:var(--purple);cursor:pointer;transition:all .18s;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.suggest-add:hover{background:var(--purple);color:white}
+
+@media print{
+  body{background:white}header,.sync-bar,.hbtn,.add-form,.filter-bar,.suggest-grid,.setup-banner{display:none!important}
+  main{padding:8px}.section-card{box-shadow:none;border:1px solid #ddd;page-break-inside:avoid}
+  .cost-strip{background:#f0ede8;border:1px solid #ddd}.cost-num{color:var(--ink)!important}.cost-lbl{color:#666}
+  .item-row.hidden,.default-row.hidden{display:none!important}
+}
+@media(max-width:900px){
+  .tbl-head.items-head,.item-row{grid-template-columns:24px 1fr 100px 70px 60px}
+  .tbl-head.defaults-head,.default-row{grid-template-columns:1fr 60px 70px 1fr}
+  .add-form-grid.items-grid{grid-template-columns:1fr 1fr 1fr}
+  .add-form-grid.defaults-grid{grid-template-columns:1fr 60px 70px 1fr}
+  .suggest-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){header{padding:0 16px}main{padding:16px 12px 60px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Smile Bags · Items Master List<span>· Defaults + Class Contributions</span></div>
+  <div class="header-actions">
+    <button class="hbtn" onclick="forcSync()">↺ Sync</button>
+    <button class="hbtn primary" onclick="window.print()">🖨️ Print</button>
+  </div>
+</header>
+<div class="sync-bar">
+  <div class="sync-dot" id="syncDot"></div>
+  <span class="sync-msg" id="syncMsg">Connecting...</span>
+  <span style="margin-left:auto;opacity:.5" id="syncTime"></span>
+</div>
+
+<main>
+  <!-- SETUP -->
+  <div class="setup-banner" id="setupBanner">
+    <div class="setup-icon">⚙️</div>
+    <div>
+      <div class="setup-title">Connect to KSB Management & Audit Spreadsheet</div>
+      <div class="setup-desc">Same Apps Script URL used in QC Dashboard, Link Tracker, and Pass Manager.</div>
+      <div class="setup-input">
+        <input class="setup-field" id="scriptUrlInput" type="text" placeholder="https://script.google.com/macros/s/YOUR_ID/exec"/>
+        <button class="setup-save-btn" onclick="saveScriptUrl()">Save &amp; Connect</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COST SUMMARY -->
+  <div class="cost-strip">
+    <div>
+      <div class="cost-title">💰 Per Bag Cost Summary</div>
+    </div>
+    <div class="cost-grid">
+      <div class="cost-stat"><div class="cost-num gold" id="costTotal">$0.00</div><div class="cost-lbl">Total Per Bag</div></div>
+      <div class="cost-stat"><div class="cost-num teal" id="costDefaults">$0.00</div><div class="cost-lbl">Bag Defaults</div></div>
+      <div class="cost-stat"><div class="cost-num purple" id="costPurchased">$0.00</div><div class="cost-lbl">Purchased Items</div></div>
+      <div class="cost-stat"><div class="cost-num green" id="costBags">$0.00</div><div class="cost-lbl">Est. 90 Bags Total</div></div>
+    </div>
+    <div class="cost-divider"></div>
+    <div class="cost-breakdown" id="costBreakdown"></div>
+  </div>
+
+  <!-- BAG DEFAULTS SECTION -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-header-left">
+        <div class="section-icon">🛍️</div>
+        <div class="section-title">Bag Defaults<em>Goes in every bag · Not tied to any class</em></div>
+      </div>
+      <div class="section-tally gold" id="defaultsTally">0 items · $0.00</div>
+    </div>
+    <div class="tbl-head defaults-head">
+      <div>Item</div><div>Qty</div><div>Cost/Unit</div><div>Recipient</div><div>Notes</div><div>Actions</div>
+    </div>
+    <div id="defaultsTable">
+      <div class="empty-row">No default items yet — add them below as you finalize the list.</div>
+    </div>
+    <div class="add-form">
+      <div class="add-form-grid defaults-grid">
+        <div class="form-grp">
+          <label class="form-lbl">Item Name</label>
+          <input class="form-inp" id="d_item" type="text" placeholder="e.g. Canvas tote bag"/>
+        </div>
+        <div class="form-grp">
+          <label class="form-lbl">Qty</label>
+          <input class="form-inp" id="d_qty" type="number" value="1" min="1"/>
+        </div>
+        <div class="form-grp">
+          <label class="form-lbl">Cost/Unit</label>
+          <input class="form-inp" id="d_cost" type="number" value="0" min="0" step="0.01" placeholder="0.00"/>
+        </div>
+        <div class="form-grp">
+          <label class="form-lbl">Notes</label>
+          <input class="form-inp" id="d_notes" type="text" placeholder="Source, color, size..."/>
+        </div>
+        <button class="add-row-btn teal" onclick="addDefault()">+ Add Default</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLASS CONTRIBUTIONS FILTER -->
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+    <button class="filter-btn" onclick="setFilter('confirmed',this)">✅ Confirmed</button>
+    <button class="filter-btn" onclick="setFilter('potential',this)">⏳ Potential</button>
+    <button class="filter-btn" onclick="setFilter('elem',this)">🟦 Elementary</button>
+    <button class="filter-btn" onclick="setFilter('mid',this)">🟧 Middle</button>
+    <button class="filter-btn" onclick="setFilter('high',this)">🟪 High School</button>
+    <input class="search-field" type="text" placeholder="Search items, class, teacher..." oninput="applySearch(this.value)"/>
+  </div>
+
+  <!-- CLASS CONTRIBUTIONS SECTION -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-header-left">
+        <div class="section-icon">🎓</div>
+        <div class="section-title">Class Contributions<em>Student-made &amp; class-assigned purchased items</em></div>
+      </div>
+      <div class="section-tally" id="itemsTally">— items</div>
+    </div>
+    <div class="tbl-head items-head">
+      <div></div><div>Item</div><div>Class</div><div>Teacher</div><div>Recipient</div><div>Qty</div><div>Cost/Unit</div><div>Status</div><div>Notes</div>
+    </div>
+    <div id="itemsTable"></div>
+    <!-- ADD CLASS ITEM -->
+    <div class="add-form">
+      <div class="add-form-grid items-grid">
+        <div class="form-grp">
+          <label class="form-lbl">Item Name</label>
+          <input class="form-inp" id="i_item" type="text" placeholder="e.g. Origami kit"/>
+        </div>
+        <div class="form-grp">
+          <label class="form-lbl">Class</label>
+          <input class="form-inp" id="i_cls" type="text" placeholder="Class name"/>
+        </div>
+        <div class="form-grp">
+          <label class="form-lbl">Teacher</label>
+          <input class="form-inp" id="i_teacher" type="text" placeholder="Last name"/>
+        </div>
+        <div class="form-grp">
+          <label class="form-lbl">Recipient</label>
+          <select class="form-sel" id="i_recipient">
+            <option value="all">All Levels</option>
+            <option value="elem">Elementary</option>
+            <option value="mid">Middle</option>
+            <option value="high">High School</option>
+          </select>
+        </div>
+        <div class="form-grp">
+          <label class="form-lbl">Qty</label>
+          <input class="form-inp" id="i_qty" type="number" value="1" min="1"/>
+        </div>
+        <div class="form-grp">
+          <label class="form-lbl">Cost/Unit</label>
+          <input class="form-inp" id="i_cost" type="number" value="0" min="0" step="0.01"/>
+        </div>
+        <div class="form-grp">
+          <label class="form-lbl">Status</label>
+          <select class="form-sel" id="i_status">
+            <option value="confirmed">✅ Confirmed</option>
+            <option value="potential">⏳ Potential</option>
+          </select>
+        </div>
+        <div class="form-grp">
+          <label class="form-lbl">Type</label>
+          <select class="form-sel" id="i_type">
+            <option value="student-made">Student-Made</option>
+            <option value="purchased">Purchased</option>
+          </select>
+        </div>
+        <button class="add-row-btn amber" onclick="addItem()">+ Add Item</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUGGESTIONS -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-header-left">
+        <div class="section-icon">💡</div>
+        <div class="section-title">Potential Item Suggestions<em>One-click to add</em></div>
+      </div>
+    </div>
+    <div class="suggest-grid">
+      <div class="suggest-item"><div class="suggest-icon">🎨</div><div style="flex:1"><div class="suggest-name">Mini watercolor paint set</div><div class="suggest-desc">Pairs with stencil set — child paints through stencil. Inexpensive in bulk.</div></div><button class="suggest-add" onclick="quickAdd('Mini watercolor paint set','','all','potential','purchased',2.50)">+ Add</button></div>
+      <div class="suggest-item"><div class="suggest-icon">🖍️</div><div style="flex:1"><div class="suggest-name">Crayons or colored pencils</div><div class="suggest-desc">Approved purchased item per guidelines. Pairs with coloring pages.</div></div><button class="suggest-add" onclick="quickAdd('Crayons or colored pencils','Approved purchased item','elem','potential','purchased',1.50)">+ Add</button></div>
+      <div class="suggest-item"><div class="suggest-icon">🌱</div><div style="flex:1"><div class="suggest-name">Seed packet — native Virginia plant</div><div class="suggest-desc">Connects to GROW, BLOOM, SUSTAIN, ROOT. Simple and meaningful.</div></div><button class="suggest-add" onclick="quickAdd('Seed packet — native Virginia plant','Connects to env. science OneWords','elem','potential','purchased',0.75)">+ Add</button></div>
+      <div class="suggest-item"><div class="suggest-icon">📖</div><div style="flex:1"><div class="suggest-name">OneWord mini journal / sketchbook</div><div class="suggest-desc">Student-designed cover — reflection companion to the OneWord.</div></div><button class="suggest-add" onclick="quickAdd('OneWord mini journal / sketchbook','Student-designed cover · blank pages','all','potential','student-made',0)">+ Add</button></div>
+      <div class="suggest-item"><div class="suggest-icon">🧵</div><div style="flex:1"><div class="suggest-name">Friendship bracelet kit</div><div class="suggest-desc">Makerspace potential — simple craft, high engagement for elementary/middle.</div></div><button class="suggest-add" onclick="quickAdd('Friendship bracelet kit','Makerspace concept','elem','potential','student-made',0)">+ Add</button></div>
+      <div class="suggest-item"><div class="suggest-icon">🎲</div><div style="flex:1"><div class="suggest-name">OneWord activity card game</div><div class="suggest-desc">Game Room concept — 5–10 prompt cards built around the OneWord.</div></div><button class="suggest-add" onclick="quickAdd('OneWord activity card game','Game Room concept · 5-10 prompt cards','all','potential','student-made',0)">+ Add</button></div>
+      <div class="suggest-item"><div class="suggest-icon">🔖</div><div style="flex:1"><div class="suggest-name">Laminated OneWord art print</div><div class="suggest-desc">Keepsake wall poster from Set G or H — Makerspace laminator.</div></div><button class="suggest-add" onclick="quickAdd('Laminated OneWord art print','Keepsake from Set G or Set H','all','potential','student-made',0.50)">+ Add</button></div>
+      <div class="suggest-item"><div class="suggest-icon">🫧</div><div style="flex:1"><div class="suggest-name">Mini bubble wand / sensory toy</div><div class="suggest-desc">Wellness item — BREATHE, FLOW, CLEAR. Inexpensive, universally loved by kids.</div></div><button class="suggest-add" onclick="quickAdd('Mini bubble wand / sensory toy','Wellness item · BREATHE, FLOW, CLEAR','elem','potential','purchased',1.00)">+ Add</button></div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+let SCRIPT_URL = localStorage.getItem('ksb_script_url') || '';
+let defaults = [], items = [], saveTimer = null;
+let activeFilter = 'all', activeSearch = '';
+
+const DEFAULT_ITEMS = [
+  {id:'i01',item:'Mascot Sticker',cls:'Instructional Technology',teacher:'L. Howell',recipient:'all',qty:1,cost:0,status:'confirmed',type:'student-made',notes:'Official Smile Bags mascot — every bag'},
+  {id:'i02',item:'Hidden Picture Activity',cls:'Instructional Technology',teacher:'L. Howell',recipient:'all',qty:1,cost:0,status:'confirmed',type:'student-made',notes:'25 unique — one per OneWord'},
+  {id:'i03',item:'AI Coloring Prints',cls:'Digital Arts',teacher:'Gau',recipient:'all',qty:2,cost:0,status:'confirmed',type:'student-made',notes:'Printed from OneWord Coloring Book'},
+  {id:'i04',item:'OneWord Stencil Set',cls:'Digital Arts',teacher:'Gau',recipient:'all',qty:1,cost:0,status:'confirmed',type:'student-made',notes:'Word + 2–3 symbol stencils'},
+  {id:'i05',item:'Laminated Jigsaw Puzzle',cls:'Digital Arts',teacher:'Gau',recipient:'all',qty:1,cost:0,status:'confirmed',type:'student-made',notes:'Set G — 8–20 pieces by recipient age'},
+  {id:'i06',item:'"Did You Know?" Bookmark + Science Supplies',cls:'AP Research',teacher:'McGee / Stone',recipient:'elem',qty:1,cost:0,status:'confirmed',type:'student-made',notes:'1–3 science supplies + laminated bookmark'},
+  {id:'i07',item:'3D Printed Smile Disc + Mirror',cls:'AP Environmental Science',teacher:'Honaker',recipient:'all',qty:1,cost:0.50,status:'confirmed',type:'student-made',notes:'Acrylic mirror included'},
+  {id:'i08',item:'3D Printed OneWord Keychain',cls:'Environmental Science',teacher:'Carmack',recipient:'all',qty:1,cost:0,status:'confirmed',type:'student-made',notes:'Tinkercad → Bambu Lab'},
+  {id:'i09',item:'Illustrated Coloring Book Page',cls:'English 9',teacher:'Evans',recipient:'elem',qty:1,cost:0,status:'confirmed',type:'student-made',notes:'Original story/poem as coloring page'},
+  {id:'i10',item:'3D Printed Spinning Top',cls:'Physics',teacher:'Acikgoz',recipient:'all',qty:1,cost:0,status:'confirmed',type:'student-made',notes:'Tinkercad → Bambu Lab'},
+  {id:'i11',item:'3D Printed Bookmark (STEP)',cls:'SPED — STEP',teacher:'Glover',recipient:'all',qty:1,cost:0,status:'confirmed',type:'student-made',notes:'Two-color — student chooses word/emoji/colors'},
+  {id:'i12',item:'3D Printed Bookmark (Inclusion)',cls:'SPED — Inclusion',teacher:'Glover',recipient:'all',qty:1,cost:0,status:'confirmed',type:'student-made',notes:'Accessible kiosk — two-color AMS print'},
+  {id:'i13',item:'Cookie Cutter + Play-Doh',cls:'Culinary Arts',teacher:'Sayers',recipient:'elem',qty:1,cost:1.00,status:'confirmed',type:'student-made',notes:'OneWord shape — red PLA + Play-Doh'},
+  {id:'i14',item:'3D Printed Snap-Fit Assembly Kit',cls:'Intro to Engineering',teacher:'Beamer',recipient:'all',qty:1,cost:0,status:'confirmed',type:'student-made',notes:'5–8 pieces — OnShape CAD — orange PLA'},
+  {id:'i15',item:'Paper Doll Fashion Design',cls:'Fashion Marketing',teacher:'Miller',recipient:'elem',qty:1,cost:0,status:'confirmed',type:'student-made',notes:'B&W cardstock — child colors & cuts out'},
+  {id:'i16',item:'OneWord Sticker',cls:'Advanced Entrepreneurship',teacher:'Maloney',recipient:'all',qty:1,cost:0,status:'confirmed',type:'student-made',notes:'2.0" round or 2.5" square'},
+  {id:'i17',item:'8-Activity Package + Letter + Sticker',cls:'Leadership',teacher:'Marquand',recipient:'all',qty:1,cost:0,status:'confirmed',type:'student-made',notes:'8 tabs — 6 activities + letter + sticker'},
+  {id:'i18',item:'Inspirational Quote Card',cls:'AVID',teacher:'Vinson',recipient:'all',qty:1,cost:0,status:'confirmed',type:'student-made',notes:'4" square/circle — 120-char original quote'},
+  {id:'i19',item:'3D Bookmark or Magic Illusion Spinner',cls:'Crafting Smiles (Open)',teacher:'Any Student',recipient:'all',qty:1,cost:0,status:'confirmed',type:'student-made',notes:'Open to any student'},
+];
+
+const RL = {all:{cls:'rb-all',txt:'All'},elem:{cls:'rb-elem',txt:'Elementary'},mid:{cls:'rb-mid',txt:'Middle'},high:{cls:'rb-high',txt:'High School'}};
+
+function setSyncStatus(s,msg){
+  document.getElementById('syncDot').className='sync-dot '+s;
+  document.getElementById('syncMsg').textContent=msg;
+  if(s==='live') document.getElementById('syncTime').textContent='Last sync: '+new Date().toLocaleTimeString();
+}
+
+async function callScript(params){
+  if(!SCRIPT_URL) return null;
+  try{const r=await fetch(SCRIPT_URL+'?'+new URLSearchParams(params).toString());return await r.json();}
+  catch(e){return{ok:false,msg:e.toString()}}
+}
+
+async function loadFromSheet(){
+  if(!SCRIPT_URL){setSyncStatus('error','No Apps Script URL');return}
+  setSyncStatus('saving','Loading...');
+  const r=await callScript({action:'loadItems'});
+  if(r&&r.ok){
+    defaults=r.defaults||[];
+    items=r.items&&r.items.length?r.items:DEFAULT_ITEMS.map(i=>({...i}));
+    setSyncStatus('live','Connected · KSB Management & Audit · Spring 2026');
+    if(!r.items||!r.items.length) saveToSheet();
+  } else {
+    items=DEFAULT_ITEMS.map(i=>({...i}));
+    setSyncStatus('error','Could not load — showing defaults');
+  }
+  renderAll();
+}
+
+async function saveToSheet(){
+  if(!SCRIPT_URL) return;
+  setSyncStatus('saving','Saving...');
+  const r=await callScript({action:'saveItems',data:JSON.stringify({defaults,items})});
+  if(r&&r.ok) setSyncStatus('live','Saved · '+new Date().toLocaleTimeString());
+  else setSyncStatus('error','Save failed');
+}
+
+function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(()=>saveToSheet(),1500)}
+async function forcSync(){await loadFromSheet()}
+
+function saveScriptUrl(){
+  const v=document.getElementById('scriptUrlInput').value.trim();
+  if(!v.startsWith('https://script.google.com')){alert('Please paste a valid Apps Script URL');return}
+  SCRIPT_URL=v;localStorage.setItem('ksb_script_url',v);
+  document.getElementById('setupBanner').classList.add('hidden');
+  loadFromSheet();
+}
+
+// ── RENDER DEFAULTS ───────────────────────────────────────────
+function renderDefaults(){
+  const tbl=document.getElementById('defaultsTable');
+  tbl.innerHTML='';
+  if(!defaults.length){
+    tbl.innerHTML='<div class="empty-row">No default items yet — add them below as you finalize the list.</div>';
+    document.getElementById('defaultsTally').textContent='0 items · $0.00';
+    updateCosts();return;
+  }
+  defaults.forEach(d=>{
+    const row=document.createElement('div');
+    row.className='default-row';row.id='drow-'+d.id;
+    row.innerHTML=`
+      <div class="cell-name">${d.item}</div>
+      <div><input class="mini-input" type="number" value="${d.qty}" min="1" onchange="updateDefault('${d.id}','qty',this.value)"/></div>
+      <div><input class="cost-input" type="number" value="${parseFloat(d.cost||0).toFixed(2)}" min="0" step="0.01" onchange="updateDefault('${d.id}','cost',this.value)"/></div>
+      <div class="cell-sm">${d.notes||'—'}</div>
+      <div class="cell-sm">${d.notes2||''}</div>
+      <div><button class="del-btn" onclick="deleteDefault('${d.id}')">✕ Remove</button></div>`;
+    tbl.appendChild(row);
+  });
+  const total=defaults.reduce((a,d)=>a+(parseFloat(d.cost||0)*parseInt(d.qty||1)),0);
+  document.getElementById('defaultsTally').textContent=defaults.length+' items · $'+total.toFixed(2);
+  updateCosts();
+}
+
+function updateDefault(id,field,val){
+  const d=defaults.find(x=>x.id===id);if(!d)return;
+  d[field]=field==='qty'?parseInt(val)||1:field==='cost'?parseFloat(val)||0:val;
+  renderDefaults();scheduleSave();
+}
+
+function deleteDefault(id){
+  if(!confirm('Remove this default item?'))return;
+  defaults=defaults.filter(d=>d.id!==id);
+  renderDefaults();scheduleSave();
+}
+
+function addDefault(){
+  const item=document.getElementById('d_item').value.trim();
+  if(!item){alert('Please enter an item name');return}
+  defaults.push({id:'d'+Date.now(),item,qty:parseInt(document.getElementById('d_qty').value)||1,cost:parseFloat(document.getElementById('d_cost').value)||0,notes:document.getElementById('d_notes').value.trim()});
+  renderDefaults();scheduleSave();
+  ['d_item','d_notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('d_qty').value='1';document.getElementById('d_cost').value='0';
+}
+
+// ── RENDER ITEMS ─────────────────────────────────────────────
+function renderItems(){
+  const tbl=document.getElementById('itemsTable');
+  tbl.innerHTML='';
+  const filtered=items.filter(it=>matchFilter(it)&&matchSearch(it));
+  if(!filtered.length){tbl.innerHTML='<div class="empty-row">No items match this filter.</div>';updateTally();return;}
+  items.forEach(it=>{
+    const rl=RL[it.recipient]||RL.all;
+    const row=document.createElement('div');
+    row.className=`item-row ${it.status}`;row.id='irow-'+it.id;
+    if(!matchFilter(it)||!matchSearch(it)) row.classList.add('hidden');
+    row.innerHTML=`
+      <div style="display:flex;align-items:center;justify-content:center"><span class="status-dot dot-${it.status}"></span></div>
+      <div class="cell-name">${it.item}</div>
+      <div class="cell-sm">${it.cls}</div>
+      <div class="cell-mono">${it.teacher}</div>
+      <div><span class="recipient-badge ${rl.cls}">${rl.txt}</span></div>
+      <div><input class="mini-input" type="number" value="${it.qty}" min="1" onchange="updateItem('${it.id}','qty',this.value)"/></div>
+      <div><input class="cost-input" type="number" value="${parseFloat(it.cost||0).toFixed(2)}" min="0" step="0.01" onchange="updateItem('${it.id}','cost',this.value)"/></div>
+      <div><select class="mini-select" onchange="updateItem('${it.id}','status',this.value)">
+        <option value="confirmed"${it.status==='confirmed'?' selected':''}>✅ Confirmed</option>
+        <option value="potential"${it.status==='potential'?' selected':''}>⏳ Potential</option>
+      </select></div>
+      <div><textarea class="mini-notes" rows="1" onchange="updateItem('${it.id}','notes',this.value)">${it.notes||''}</textarea></div>`;
+    tbl.appendChild(row);
+  });
+  updateTally();updateCosts();
+}
+
+function updateItem(id,field,val){
+  const it=items.find(i=>i.id===id);if(!it)return;
+  it[field]=field==='qty'?parseInt(val)||1:field==='cost'?parseFloat(val)||0:val;
+  if(field==='status'){const row=document.getElementById('irow-'+id);if(row)row.className=`item-row ${it.status}`;}
+  updateTally();updateCosts();scheduleSave();
+}
+
+function addItem(){
+  const item=document.getElementById('i_item').value.trim();
+  if(!item){alert('Please enter an item name');return}
+  items.push({id:'i'+Date.now(),item,cls:document.getElementById('i_cls').value.trim()||'TBD',teacher:document.getElementById('i_teacher').value.trim()||'TBD',recipient:document.getElementById('i_recipient').value,qty:parseInt(document.getElementById('i_qty').value)||1,cost:parseFloat(document.getElementById('i_cost').value)||0,status:document.getElementById('i_status').value,type:document.getElementById('i_type').value,notes:''});
+  renderItems();scheduleSave();
+  ['i_item','i_cls','i_teacher'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('i_qty').value='1';document.getElementById('i_cost').value='0';
+}
+
+function quickAdd(item,notes,recipient,status,type,cost){
+  items.push({id:'i'+Date.now(),item,cls:'TBD',teacher:'TBD',recipient,qty:1,cost,status,type,notes});
+  renderItems();scheduleSave();
+}
+
+// ── COSTS ────────────────────────────────────────────────────
+function updateCosts(){
+  const defTotal=defaults.reduce((a,d)=>a+(parseFloat(d.cost||0)*parseInt(d.qty||1)),0);
+  const purchTotal=items.filter(i=>i.type==='purchased').reduce((a,i)=>a+(parseFloat(i.cost||0)*parseInt(i.qty||1)),0);
+  const grandTotal=defTotal+purchTotal;
+  document.getElementById('costTotal').textContent='$'+grandTotal.toFixed(2);
+  document.getElementById('costDefaults').textContent='$'+defTotal.toFixed(2);
+  document.getElementById('costPurchased').textContent='$'+purchTotal.toFixed(2);
+  document.getElementById('costBags').textContent='$'+(grandTotal*90).toFixed(2);
+  const breakdown=document.getElementById('costBreakdown');
+  const lines=[...defaults.filter(d=>d.cost>0).map(d=>`<div class="cost-line"><div class="cost-dot" style="background:var(--teal)"></div><span>${d.item}: $${(parseFloat(d.cost)*parseInt(d.qty)).toFixed(2)}</span></div>`),
+    ...items.filter(i=>i.type==='purchased'&&i.cost>0).map(i=>`<div class="cost-line"><div class="cost-dot" style="background:var(--purple-lt)"></div><span>${i.item}: $${(parseFloat(i.cost)*parseInt(i.qty)).toFixed(2)}</span></div>`)];
+  breakdown.innerHTML=lines.length?lines.join(''):'<span style="color:rgba(255,255,255,.3)">Add cost estimates to purchased items to see a breakdown</span>';
+}
+
+function updateTally(){
+  const conf=items.filter(i=>i.status==='confirmed').length;
+  const pot=items.filter(i=>i.status==='potential').length;
+  document.getElementById('itemsTally').textContent=conf+' confirmed · '+pot+' potential';
+}
+
+// ── FILTERS ──────────────────────────────────────────────────
+function matchFilter(it){
+  if(activeFilter==='all') return true;
+  if(activeFilter==='confirmed') return it.status==='confirmed';
+  if(activeFilter==='potential') return it.status==='potential';
+  if(activeFilter==='elem') return it.recipient==='elem'||it.recipient==='all';
+  if(activeFilter==='mid')  return it.recipient==='mid'||it.recipient==='all';
+  if(activeFilter==='high') return it.recipient==='high'||it.recipient==='all';
+  return true;
+}
+function matchSearch(it){
+  if(!activeSearch) return true;
+  return it.item.toLowerCase().includes(activeSearch)||it.cls.toLowerCase().includes(activeSearch)||it.teacher.toLowerCase().includes(activeSearch)||(it.notes||'').toLowerCase().includes(activeSearch);
+}
+function setFilter(f,btn){activeFilter=f;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderItems();}
+function applySearch(val){activeSearch=val.toLowerCase();renderItems();}
+function renderAll(){renderDefaults();renderItems();}
+
+// Init
+if(SCRIPT_URL){document.getElementById('setupBanner').classList.add('hidden');loadFromSheet();}
+else{setSyncStatus('error','Setup required — paste your Apps Script URL above');items=DEFAULT_ITEMS.map(i=>({...i}));renderAll();}
+</script>
+</body>
+</html>
