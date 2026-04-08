@@ -451,6 +451,144 @@ header .logo span { color: var(--accent); }
 .dot-G    { background: #e07a9b; }
 .dot-H    { background: #4ab8b8; }
 
+/* ── COLORING CANVAS OVERLAY ── */
+.canvas-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.82);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 16px;
+}
+.canvas-overlay.open { display: flex; }
+.canvas-panel {
+  background: #1a1a2e;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 48px rgba(0,0,0,.6);
+  display: flex;
+  flex-direction: column;
+  max-width: 520px;
+  width: 100%;
+  max-height: 92vh;
+}
+.canvas-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #111;
+  border-bottom: 2px solid var(--gold);
+  flex-shrink: 0;
+}
+.canvas-header-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem;
+  color: #f5d090;
+  letter-spacing: 0.04em;
+}
+.canvas-close {
+  background: none;
+  border: 1.5px solid rgba(245,208,144,.35);
+  color: #f5d090;
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background .2s;
+}
+.canvas-close:hover { background: rgba(245,208,144,.15); }
+.canvas-tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #0d0d1a;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+.brush-btn {
+  border-radius: 50%;
+  background: #888;
+  border: 2px solid rgba(245,208,144,.3);
+  cursor: pointer;
+  transition: border-color .2s, transform .1s;
+  flex-shrink: 0;
+  display: inline-block;
+}
+.brush-btn:hover, .brush-btn.active { border-color: #f5d090; transform: scale(1.1); }
+.canvas-swatch-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  flex: 1;
+}
+.canvas-swatch {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform .15s, border-color .15s;
+  flex-shrink: 0;
+}
+.canvas-swatch:hover { transform: scale(1.15); }
+.canvas-swatch.active { border-color: #fff; transform: scale(1.18); }
+.canvas-action-btns {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+.canvas-act-btn {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.72rem;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1.5px solid rgba(245,208,144,.3);
+  background: transparent;
+  color: #f5d090;
+  cursor: pointer;
+  transition: background .2s;
+  white-space: nowrap;
+}
+.canvas-act-btn:hover { background: rgba(245,208,144,.15); }
+.canvas-act-btn.primary { background: var(--gold); color: #111; border-color: var(--gold); }
+.canvas-act-btn.primary:hover { background: #e8c87a; }
+.canvas-stage {
+  position: relative;
+  overflow: hidden;
+  min-height: 340px;
+  background: #fff;
+  cursor: crosshair;
+  flex: 1;
+}
+#coloringCanvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; }
+#coloringBase   { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; object-fit: contain; }
+.btn-color-this {
+  position: absolute;
+  bottom: 52px;
+  right: 8px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 5px 13px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.72rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  transition: background .2s, transform .1s;
+  z-index: 10;
+}
+.btn-color-this:hover { background: #c8633b; transform: translateY(-1px); }
+
 /* ── PRINT STYLES ── */
 @media print {
   body { background: white !important; padding: 0 !important; }
@@ -772,11 +910,216 @@ function buildUI() {
 document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
   if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   navigate(-1);
+  if (e.key === 'Escape') closeColorCanvas();
 });
 
 // Init
 buildUI();
 renderPage(0);
+
+// ─────────────────────────────
+//  INTERACTIVE COLORING CANVAS
+// ─────────────────────────────
+const PAINT_COLORS = [
+  '#FFFFFF','#000000','#FF0000','#FF6600','#FFAA00',
+  '#FFD700','#FFFF00','#00CC44','#006600','#00CCCC',
+  '#0066FF','#6600CC','#CC00CC','#FF66AA','#FF99CC',
+  '#8B4513','#A0522D','#D2691E','#F4A460','#DCDCDC',
+];
+
+let paintColor   = '#FF0000';
+let paintBrush   = 14;
+let isPainting   = false;
+let paintHistory = [];
+let paintCtx     = null;
+let paintCanvas  = null;
+let currentImgSrc = '';
+
+function openColorCanvas(src, word) {
+  currentImgSrc = src;
+  document.getElementById('canvasWordTitle').textContent = '🎨 Color · ' + word;
+  const overlay = document.getElementById('coloringOverlay');
+  overlay.classList.add('open');
+
+  paintCanvas = document.getElementById('coloringCanvas');
+  paintCtx    = paintCanvas.getContext('2d');
+
+  const stage = document.querySelector('.canvas-stage');
+  const img   = document.getElementById('coloringBase');
+  img.onload  = () => {
+    const ratio = img.naturalWidth / img.naturalHeight;
+    const stageW = stage.clientWidth || 480;
+    const stageH = Math.round(stageW / ratio);
+    stage.style.height = Math.min(stageH, window.innerHeight * 0.55) + 'px';
+    paintCanvas.width  = stageW;
+    paintCanvas.height = parseInt(stage.style.height);
+    paintHistory = [];
+    saveHistory();
+  };
+  img.src = src;
+
+  buildPaintPalette();
+  buildBrushBtns();
+}
+
+function closeColorCanvas() {
+  document.getElementById('coloringOverlay').classList.remove('open');
+  isPainting = false;
+}
+
+function buildPaintPalette() {
+  const row = document.getElementById('paintSwatches');
+  row.innerHTML = '';
+  PAINT_COLORS.forEach(c => {
+    const sw = document.createElement('button');
+    sw.className = 'canvas-swatch' + (c === paintColor ? ' active' : '');
+    sw.style.background = c;
+    sw.style.outline = c === '#FFFFFF' ? '1px solid #888' : 'none';
+    sw.onclick = () => {
+      paintColor = c;
+      document.querySelectorAll('.canvas-swatch').forEach(s => s.classList.remove('active'));
+      sw.classList.add('active');
+    };
+    row.appendChild(sw);
+  });
+}
+
+function buildBrushBtns() {
+  const sizes = [6, 14, 22, 34];
+  const labels = ['S','M','L','XL'];
+  const cont = document.getElementById('brushBtns');
+  cont.innerHTML = '<span class="canvas-color-label">Brush</span>';
+  sizes.forEach((sz, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'brush-btn' + (sz === paintBrush ? ' active' : '');
+    btn.title = labels[i];
+    btn.style.width  = (sz + 6) + 'px';
+    btn.style.height = (sz + 6) + 'px';
+    btn.onclick = () => {
+      paintBrush = sz;
+      document.querySelectorAll('.brush-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    };
+    cont.appendChild(btn);
+  });
+}
+
+function saveHistory() {
+  if (!paintCtx) return;
+  paintHistory.push(paintCtx.getImageData(0, 0, paintCanvas.width, paintCanvas.height));
+  if (paintHistory.length > 20) paintHistory.shift();
+}
+
+function undoPaint() {
+  if (paintHistory.length < 2) return;
+  paintHistory.pop();
+  paintCtx.putImageData(paintHistory[paintHistory.length - 1], 0, 0);
+}
+
+function resetPaint() {
+  if (!paintCtx) return;
+  paintCtx.clearRect(0, 0, paintCanvas.width, paintCanvas.height);
+  paintHistory = [];
+  saveHistory();
+}
+
+function paintDot(x, y) {
+  if (!paintCtx) return;
+  paintCtx.beginPath();
+  paintCtx.arc(x, y, paintBrush / 2, 0, Math.PI * 2);
+  paintCtx.fillStyle = paintColor;
+  paintCtx.fill();
+}
+
+function getPos(e, canvas) {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width  / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const src    = e.touches ? e.touches[0] : e;
+  return {
+    x: (src.clientX - rect.left) * scaleX,
+    y: (src.clientY - rect.top)  * scaleY
+  };
+}
+
+function initPaintEvents() {
+  const c = document.getElementById('coloringCanvas');
+
+  c.addEventListener('mousedown',  e => { isPainting = true; saveHistory(); const p = getPos(e, c); paintDot(p.x, p.y); });
+  c.addEventListener('mousemove',  e => { if (!isPainting) return; const p = getPos(e, c); paintDot(p.x, p.y); });
+  c.addEventListener('mouseup',    () => { isPainting = false; });
+  c.addEventListener('mouseleave', () => { isPainting = false; });
+
+  c.addEventListener('touchstart', e => { e.preventDefault(); isPainting = true; saveHistory(); const p = getPos(e, c); paintDot(p.x, p.y); }, { passive: false });
+  c.addEventListener('touchmove',  e => { e.preventDefault(); if (!isPainting) return; const p = getPos(e, c); paintDot(p.x, p.y); }, { passive: false });
+  c.addEventListener('touchend',   () => { isPainting = false; });
+}
+
+function printColoredPage() {
+  const base  = document.getElementById('coloringBase');
+  const paint = document.getElementById('coloringCanvas');
+  const merge = document.createElement('canvas');
+  merge.width  = paint.width;
+  merge.height = paint.height;
+  const ctx = merge.getContext('2d');
+  ctx.drawImage(base,  0, 0, merge.width, merge.height);
+  ctx.drawImage(paint, 0, 0);
+  const dataUrl = merge.toDataURL('image/png');
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>Coloring Page</title>
+    <style>body{margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#fff;}
+    img{max-width:100%;max-height:100vh;object-fit:contain;}
+    @media print{img{width:100vw;height:100vh;object-fit:contain;}}</style></head>
+    <body><img src="${dataUrl}" onload="window.print()"/></body></html>`);
+  win.document.close();
+}
+
+// Patch renderPage to inject "Color This Page" button
+const _origRender = renderPage;
+renderPage = function(index) {
+  _origRender(index);
+  const page = allPages[index];
+  if (page && page.type === 'coloring') {
+    const slot = document.getElementById('pageSlot');
+    const btn  = document.createElement('button');
+    btn.className   = 'btn-color-this';
+    btn.textContent = '🎨 Color This Page';
+    btn.onclick     = () => openColorCanvas(page.src, page.word);
+    slot.style.position = 'relative';
+    slot.appendChild(btn);
+  }
+};
+
+// Re-render current page so button appears immediately
+setTimeout(() => { renderPage(currentIndex); }, 50);
+
+initPaintEvents();
 </script>
+
+<!-- ── COLORING CANVAS OVERLAY ── -->
+<div class="canvas-overlay" id="coloringOverlay">
+  <div class="canvas-panel">
+    <div class="canvas-header">
+      <span class="canvas-header-title" id="canvasWordTitle">🎨 Color This Page</span>
+      <button class="canvas-close" onclick="closeColorCanvas()">✕ Close</button>
+    </div>
+    <div class="canvas-tools">
+      <div id="brushBtns" style="display:flex;align-items:center;gap:6px;"></div>
+      <div class="canvas-swatch-row" id="paintSwatches"></div>
+    </div>
+    <div class="canvas-tools" style="justify-content:flex-end;padding-top:4px;">
+      <div class="canvas-action-btns">
+        <button class="canvas-act-btn" onclick="undoPaint()">↩ Undo</button>
+        <button class="canvas-act-btn" onclick="resetPaint()">🗑 Reset</button>
+        <button class="canvas-act-btn primary" onclick="printColoredPage()">🖨️ Print</button>
+      </div>
+    </div>
+    <div class="canvas-stage">
+      <img id="coloringBase" src="" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;"/>
+      <canvas id="coloringCanvas"></canvas>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
