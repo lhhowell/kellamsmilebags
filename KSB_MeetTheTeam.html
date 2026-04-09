@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Meet the Team — Word World · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--gold:#F0C040;--gold-dark:#C8860A;--black:#111;--dark:#1A1A1A;--teal:#1B7A78;--white:#fff;}
+body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;overflow-x:hidden;}
+
+/* ── HEADER ── */
+.hdr{background:linear-gradient(135deg,var(--dark) 0%,#0A0A0A 100%);border-bottom:3px solid var(--gold-dark);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px;position:relative;overflow:hidden;}
+.hdr::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(200,134,10,.15) 0%,transparent 70%);}
+.hdr-left h1{font-family:'Fredoka One',cursive;font-size:22px;color:var(--gold);line-height:1.1;}
+.hdr-left p{font-size:12px;color:rgba(255,255,255,.4);margin-top:3px;}
+.back-btn{padding:9px 20px;border:2px solid #333;border-radius:50px;background:transparent;font-family:'Fredoka One',cursive;font-size:13px;color:#888;cursor:pointer;text-decoration:none;transition:all .2s;white-space:nowrap;}
+.back-btn:hover{border-color:var(--gold-dark);color:var(--gold);}
+
+/* ── MAIN ── */
+main{max-width:1000px;margin:0 auto;padding:32px 24px 80px;display:flex;flex-direction:column;gap:32px;}
+
+/* ── HERO GROUP PHOTO ── */
+.hero-section{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.photo-card{background:#1A1A1A;border:2px solid #2A2A2A;border-radius:20px;overflow:hidden;transition:all .3s;}
+.photo-card:hover{border-color:var(--gold-dark);box-shadow:0 8px 32px rgba(200,134,10,.2);}
+.photo-card-hdr{padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #2A2A2A;}
+.photo-card-hdr span{font-family:'Fredoka One',cursive;font-size:14px;color:var(--gold-dark);letter-spacing:.5px;}
+.photo-card img{width:100%;display:block;cursor:zoom-in;transition:opacity .2s;}
+.photo-card img:hover{opacity:.9;}
+.photo-card-footer{padding:10px 18px;display:flex;gap:8px;border-top:1px solid #2A2A2A;flex-wrap:wrap;}
+.action-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:50px;border:none;font-family:'Fredoka One',cursive;font-size:12px;cursor:pointer;transition:all .2s;text-decoration:none;}
+.action-btn.gold{background:var(--gold-dark);color:#fff;}
+.action-btn.gold:hover{background:var(--gold);color:var(--black);}
+.action-btn.teal{background:var(--teal);color:#fff;}
+.action-btn.teal:hover{background:#14605E;}
+.action-btn.outline{background:transparent;border:1.5px solid #333;color:#888;}
+.action-btn.outline:hover{border-color:var(--gold-dark);color:var(--gold);}
+
+/* ── SECTION TITLE ── */
+.section-title{font-family:'Fredoka One',cursive;font-size:24px;color:var(--gold);display:flex;align-items:center;gap:12px;}
+.section-title::after{content:'';flex:1;height:2px;background:linear-gradient(to right,var(--gold-dark),transparent);}
+
+/* ── CHARACTER GRID ── */
+.character-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.char-card{background:#1A1A1A;border:2px solid #2A2A2A;border-radius:16px;padding:20px 16px;text-align:center;transition:all .25s;cursor:default;position:relative;overflow:hidden;}
+.char-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,134,10,.06),transparent);opacity:0;transition:opacity .2s;}
+.char-card:hover{border-color:var(--gold-dark);transform:translateY(-4px);box-shadow:0 8px 24px rgba(200,134,10,.15);}
+.char-card:hover::before{opacity:1;}
+.char-emoji{font-size:40px;margin-bottom:10px;display:block;}
+.char-name{font-family:'Fredoka One',cursive;font-size:18px;color:var(--gold);margin-bottom:4px;letter-spacing:.5px;}
+.char-role{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:10px;}
+.char-desc{font-size:12px;color:#888;line-height:1.6;}
+.char-trait{display:inline-block;background:#111;border:1px solid #2A2A2A;border-radius:50px;padding:3px 10px;font-size:10px;color:#666;margin-top:8px;}
+
+/* ── MASCOT CARDS ── */
+.mascot-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.mascot-card{background:linear-gradient(135deg,#1F1700,#2A1A00);border:2px solid var(--gold-dark);border-radius:16px;padding:24px 20px;text-align:center;transition:all .25s;}
+.mascot-card:hover{transform:translateY(-4px);box-shadow:0 8px 32px rgba(200,134,10,.25);}
+.mascot-emoji{font-size:52px;margin-bottom:12px;display:block;}
+.mascot-name{font-family:'Fredoka One',cursive;font-size:24px;color:var(--gold);margin-bottom:4px;}
+.mascot-sign{font-size:28px;margin-bottom:10px;}
+.mascot-desc{font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;}
+.mascot-motto{font-style:italic;color:var(--gold-dark);margin-top:10px;font-size:13px;font-weight:700;}
+
+/* ── PUZZLE SECTION ── */
+.puzzle-wrap{background:#1A1A1A;border:2px solid #2A2A2A;border-radius:20px;overflow:hidden;}
+.puzzle-hdr{padding:16px 24px;border-bottom:2px solid #2A2A2A;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.puzzle-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);display:flex;align-items:center;gap:10px;}
+.puzzle-controls{display:flex;gap:8px;flex-wrap:wrap;}
+.puzzle-btn{padding:7px 16px;border-radius:50px;border:1.5px solid #333;background:transparent;font-family:'Fredoka One',cursive;font-size:12px;color:#888;cursor:pointer;transition:all .2s;}
+.puzzle-btn:hover{border-color:var(--gold-dark);color:var(--gold);}
+.puzzle-btn.active{background:var(--gold-dark);border-color:var(--gold-dark);color:#fff;}
+.puzzle-area{padding:20px;display:flex;flex-direction:column;align-items:center;gap:16px;}
+.puzzle-board{display:grid;gap:3px;background:#0A0A0A;border:2px solid #2A2A2A;border-radius:12px;padding:8px;cursor:pointer;}
+.puzzle-piece{border-radius:6px;overflow:hidden;transition:all .2s;position:relative;background:#111;}
+.puzzle-piece.correct{box-shadow:0 0 0 2px var(--teal);}
+.puzzle-piece.empty{background:#0A0A0A;}
+.puzzle-piece canvas{display:block;}
+.puzzle-stats{display:flex;gap:20px;font-family:'Fredoka One',cursive;font-size:14px;color:#555;}
+.puzzle-stats span{color:var(--gold);}
+.win-msg{display:none;background:linear-gradient(135deg,#1F1700,#2A1A00);border:2px solid var(--gold);border-radius:14px;padding:20px 28px;text-align:center;}
+.win-msg.show{display:block;}
+.win-msg h3{font-family:'Fredoka One',cursive;font-size:24px;color:var(--gold);margin-bottom:8px;}
+.win-msg p{font-size:14px;color:rgba(255,255,255,.6);line-height:1.7;}
+
+/* ── FUN FACTS ── */
+.facts-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.fact-card{background:#1A1A1A;border:2px solid #2A2A2A;border-radius:14px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;}
+.fact-icon{font-size:24px;flex-shrink:0;}
+.fact-text{font-size:13px;color:#aaa;line-height:1.6;}
+.fact-text strong{color:var(--gold);display:block;font-family:'Fredoka One',cursive;font-size:14px;margin-bottom:3px;}
+
+/* ── LIGHTBOX ── */
+#lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:9999;align-items:center;justify-content:center;padding:20px;cursor:zoom-out;flex-direction:column;}
+#lightbox.open{display:flex;}
+#lightboxImg{max-width:95vw;max-height:92vh;border-radius:12px;box-shadow:0 0 60px rgba(200,134,10,.4);object-fit:contain;}
+.lb-close{position:absolute;top:16px;right:20px;font-family:'Fredoka One',cursive;font-size:28px;color:#F0C040;cursor:pointer;background:rgba(0,0,0,.5);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;}
+
+@media(max-width:700px){
+  .hero-section{grid-template-columns:1fr;}
+  .character-grid{grid-template-columns:repeat(2,1fr);}
+  .mascot-grid{grid-template-columns:1fr;}
+  .facts-grid{grid-template-columns:1fr;}
+  main{padding:20px 14px 60px;}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-left">
+    <h1>&#128155; Meet the Team</h1>
+    <p>Word World: The OneWord Journey &middot; Smile Bags &middot; Spring 2026</p>
+  </div>
+  <a href="KSB_Stories_Kiosk.html" class="back-btn">&#8592; Word World</a>
+</div>
+
+<main>
+
+  <!-- GROUP PHOTOS -->
+  <div class="section-title">&#127912; The Full Crew</div>
+  <div class="hero-section">
+    <div class="photo-card">
+      <div class="photo-card-hdr"><span>&#127912; COLOR ILLUSTRATION</span></div>
+      <img src="https://lhhowell.github.io/kellamsmilebags/group_photo_Color.png" alt="The Smile Bags Team — Color" onclick="openLightbox(this.src)"/>
+      <div class="photo-card-footer">
+        <button class="action-btn gold" onclick="downloadImg('https://lhhowell.github.io/kellamsmilebags/group_photo_Color.png','SmileBags_Team_Color.png')">&#11015;&#65039; Download</button>
+        <button class="action-btn outline" onclick="openLightbox('https://lhhowell.github.io/kellamsmilebags/group_photo_Color.png')">&#128269; Full Size</button>
+      </div>
+    </div>
+    <div class="photo-card">
+      <div class="photo-card-hdr"><span>&#9999;&#65039; COLORING PAGE</span></div>
+      <img src="https://lhhowell.github.io/kellamsmilebags/group_photo_ColoringPage.png" alt="The Smile Bags Team — Coloring Page" onclick="openLightbox(this.src)"/>
+      <div class="photo-card-footer">
+        <button class="action-btn teal" onclick="downloadImg('https://lhhowell.github.io/kellamsmilebags/group_photo_ColoringPage.png','SmileBags_Team_ColoringPage.png')">&#11015;&#65039; Download</button>
+        <button class="action-btn outline" onclick="openLightbox('https://lhhowell.github.io/kellamsmilebags/group_photo_ColoringPage.png')">&#128269; Full Size</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MASCOTS -->
+  <div class="section-title">&#11088; The Mascots</div>
+  <div class="mascot-grid">
+    <div class="mascot-card">
+      <span class="mascot-emoji">&#128080;</span>
+      <div class="mascot-name">Sunny</div>
+      <div class="mascot-sign">&#128077;</div>
+      <div class="mascot-desc">Sunny is the golden bag of pure energy — always smiling, always enthusiastic, always ready to cheer you on. Sunny's thumbs up means one thing:</div>
+      <div class="mascot-motto">"You've got this."</div>
+    </div>
+    <div class="mascot-card">
+      <span class="mascot-emoji">&#128081;</span>
+      <div class="mascot-name">Ray</div>
+      <div class="mascot-sign">&#9996;&#65039;</div>
+      <div class="mascot-desc">Ray is the golden bag of calm and steadiness — steady, peaceful, the quiet kind of strength that holds everything together. Ray's peace sign means one thing:</div>
+      <div class="mascot-motto">"You are not alone."</div>
+    </div>
+  </div>
+
+  <!-- THE KNIGHTS -->
+  <div class="section-title">&#9876;&#65039; The Six Knights</div>
+  <div class="character-grid">
+    <div class="char-card">
+      <span class="char-emoji">&#129504;</span>
+      <div class="char-name">Marcos</div>
+      <div class="char-role">The Thinker</div>
+      <div class="char-desc">Marcos notices everything others walk past — spider webs in morning light, the smell of rain on hot pavement. He absorbs the world deeply and thinks before he speaks.</div>
+      <span class="char-trait">&#127807; Curious · Scientific · Observant</span>
+    </div>
+    <div class="char-card">
+      <span class="char-emoji">&#127912;</span>
+      <div class="char-name">Sofia</div>
+      <div class="char-role">The Creator</div>
+      <div class="char-desc">Sofia always has her sketchbook. She sees beauty in everything and turns it into art. Her gift is meant to be shared — and she's learning to let her light reach others.</div>
+      <span class="char-trait">&#127912; Artistic · Observant · Generous</span>
+    </div>
+    <div class="char-card">
+      <span class="char-emoji">&#127774;</span>
+      <div class="char-name">Lily</div>
+      <div class="char-role">The Light</div>
+      <div class="char-desc">Lily is sunshine in human form — warm, enthusiastic, full of wonder. She feels things deeply and is learning that pausing to breathe is its own kind of strength.</div>
+      <span class="char-trait">&#127774; Joyful · Sensitive · Hopeful</span>
+    </div>
+    <div class="char-card">
+      <span class="char-emoji">&#129354;</span>
+      <div class="char-name">Owen</div>
+      <div class="char-role">The Brave One</div>
+      <div class="char-desc">Owen is bold, determined, and the first to try something new — even if it means falling off his bike a few times first. He's learning that PERSIST is his superpower.</div>
+      <span class="char-trait">&#129354; Brave · Determined · Loyal</span>
+    </div>
+    <div class="char-card">
+      <span class="char-emoji">&#127775;</span>
+      <div class="char-name">Zara</div>
+      <div class="char-role">The Wise One</div>
+      <div class="char-desc">Zara is the calm voice in every storm. She thinks before she speaks, sees patterns others miss, and knows that balance isn't about being perfect — it's about adjusting.</div>
+      <span class="char-trait">&#127775; Wise · Calm · Perceptive</span>
+    </div>
+    <div class="char-card">
+      <span class="char-emoji">&#128149;</span>
+      <div class="char-name">Maya</div>
+      <div class="char-role">The Heart</div>
+      <div class="char-desc">Maya makes sure no one is left out, left behind, or left feeling invisible. She's the one who shows up, remembers birthdays, and connects people who need each other.</div>
+      <span class="char-trait">&#128149; Empathetic · Connector · Steadfast</span>
+    </div>
+  </div>
+
+  <!-- JIGSAW PUZZLE -->
+  <div class="section-title">&#129513; Jigsaw Puzzle</div>
+  <div class="puzzle-wrap">
+    <div class="puzzle-hdr">
+      <div class="puzzle-title">&#129513; Puzzle the Team Back Together!</div>
+      <div class="puzzle-controls">
+        <button class="puzzle-btn active" id="btn3x3" onclick="initPuzzle(3)">&#129300; Easy (3×3)</button>
+        <button class="puzzle-btn" id="btn4x4" onclick="initPuzzle(4)">&#129504; Medium (4×4)</button>
+        <button class="puzzle-btn" id="btn5x5" onclick="initPuzzle(5)">&#11088; Hard (5×5)</button>
+        <button class="puzzle-btn" onclick="shufflePuzzle()">&#128260; Shuffle</button>
+      </div>
+    </div>
+    <div class="puzzle-area">
+      <div class="puzzle-stats">Moves: <span id="moveCount">0</span> &nbsp;·&nbsp; Best: <span id="bestCount">—</span></div>
+      <div class="puzzle-board" id="puzzleBoard"></div>
+      <div class="win-msg" id="puzzleWin">
+        <h3>&#127881; Puzzle Complete!</h3>
+        <p>You puzzled the whole Smile Bags team back together!<br/>The knights and their golden companions are reunited — just like the connections inside every Smile Bag.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUN FACTS -->
+  <div class="section-title">&#127775; Did You Know?</div>
+  <div class="facts-grid">
+    <div class="fact-card">
+      <div class="fact-icon">&#9876;&#65039;</div>
+      <div class="fact-text"><strong>Their armor is black and gold</strong>Those are the colors of Kellam High School — the students who made everything in your Smile Bag wear these colors every day.</div>
+    </div>
+    <div class="fact-card">
+      <div class="fact-icon">&#128155;</div>
+      <div class="fact-text"><strong>Every item was made by hand</strong>Real Kellam students — in real classrooms — designed, printed, assembled, and packed every single thing in your bag, thinking about you the whole time.</div>
+    </div>
+    <div class="fact-card">
+      <div class="fact-icon">&#127775;</div>
+      <div class="fact-text"><strong>Sunny and Ray are twins</strong>Two golden bags, two personalities, one mission — to make sure every child who receives a Smile Bag knows they are seen, valued, and not alone.</div>
+    </div>
+    <div class="fact-card">
+      <div class="fact-icon">&#128218;</div>
+      <div class="fact-text"><strong>25 words. 25 worlds.</strong>Each OneWord in Word World has its own story, hidden pictures, coloring pages, and adventures — all made just for you by students who wanted you to smile.</div>
+    </div>
+    <div class="fact-card">
+      <div class="fact-icon">&#127919;</div>
+      <div class="fact-text"><strong>Maya's secret superpower</strong>Maya never forgets a birthday, never lets a friend feel invisible, and always shows up. In real life, that kind of person is rare and precious — be a Maya.</div>
+    </div>
+    <div class="fact-card">
+      <div class="fact-icon">&#129354;</div>
+      <div class="fact-text"><strong>Owen fell off his bike 7 times</strong>Before he finally rode without falling. That's PERSIST in action — and it's the same energy every Kellam student brought to making your Smile Bag.</div>
+    </div>
+  </div>
+
+</main>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="closeLightbox()">
+  <div class="lb-close" onclick="closeLightbox()">&#x2715;</div>
+  <img id="lightboxImg" src="" alt="Full size"/>
+</div>
+
+<script>
+// ── LIGHTBOX ─────────────────────────────────────────────────
+function openLightbox(src){
+  document.getElementById('lightboxImg').src=src;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLightbox();});
+
+function downloadImg(src,filename){
+  var a=document.createElement('a');a.href=src;a.download=filename;a.target='_blank';a.click();
+}
+
+// ── JIGSAW PUZZLE ────────────────────────────────────────────
+var GRID=3,pieces=[],selected=null,moves=0,best={},imgLoaded=false;
+var IMG_SRC='https://lhhowell.github.io/kellamsmilebags/group_photo_Color.png';
+var img=new Image();img.crossOrigin='anonymous';
+img.onload=function(){imgLoaded=true;initPuzzle(3);};
+img.src=IMG_SRC;
+
+function initPuzzle(g){
+  GRID=g;pieces=[];selected=null;moves=0;
+  document.getElementById('moveCount').textContent=0;
+  document.getElementById('puzzleWin').classList.remove('show');
+  document.querySelectorAll('.puzzle-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('btn'+g+'x'+g).classList.add('active');
+
+  for(var i=0;i<GRID*GRID;i++) pieces.push(i);
+  shufflePuzzle();
+}
+
+function shufflePuzzle(){
+  // Fisher-Yates shuffle — ensure solvable by doing even number of swaps
+  for(var i=pieces.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var t=pieces[i];pieces[i]=pieces[j];pieces[j]=t;
+  }
+  moves=0;document.getElementById('moveCount').textContent=0;
+  document.getElementById('puzzleWin').classList.remove('show');
+  renderPuzzle();
+}
+
+function renderPuzzle(){
+  var board=document.getElementById('puzzleBoard');
+  var maxW=Math.min(window.innerWidth-80,520);
+  var sz=Math.floor(maxW/GRID);
+  board.style.gridTemplateColumns='repeat('+GRID+','+sz+'px)';
+  board.innerHTML='';
+
+  pieces.forEach(function(correctIdx,pos){
+    var piece=document.createElement('div');
+    piece.className='puzzle-piece'+(selected===pos?' selected':'');
+    piece.style.width=sz+'px';piece.style.height=sz+'px';
+
+    if(correctIdx===null){
+      piece.classList.add('empty');
+    } else {
+      var c=document.createElement('canvas');
+      c.width=sz;c.height=sz;
+      var ctx=c.getContext('2d');
+
+      if(imgLoaded){
+        var srcX=(correctIdx%GRID)/GRID*img.naturalWidth;
+        var srcY=Math.floor(correctIdx/GRID)/GRID*img.naturalHeight;
+        var srcW=img.naturalWidth/GRID;
+        var srcH=img.naturalHeight/GRID;
+        ctx.drawImage(img,srcX,srcY,srcW,srcH,0,0,sz,sz);
+      } else {
+        ctx.fillStyle='#2A2A2A';ctx.fillRect(0,0,sz,sz);
+        ctx.fillStyle='#444';ctx.font='bold 14px sans-serif';
+        ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillText(correctIdx+1,sz/2,sz/2);
+      }
+      piece.appendChild(c);
+      if(correctIdx===pos) piece.classList.add('correct');
+    }
+
+    piece.onclick=(function(p){return function(){clickPiece(p);};})(pos);
+    piece.style.cursor='pointer';
+    if(selected===pos){piece.style.outline='3px solid #F0C040';piece.style.outlineOffset='-3px';}
+    board.appendChild(piece);
+  });
+}
+
+function clickPiece(pos){
+  if(selected===null){
+    selected=pos;
+  } else {
+    if(selected!==pos){
+      var t=pieces[selected];pieces[selected]=pieces[pos];pieces[pos]=t;
+      moves++;document.getElementById('moveCount').textContent=moves;
+    }
+    selected=null;
+    renderPuzzle();
+    checkWin();
+    return;
+  }
+  renderPuzzle();
+}
+
+function checkWin(){
+  var won=pieces.every(function(p,i){return p===i;});
+  if(won){
+    var k=GRID+'x'+GRID;
+    if(!best[k]||moves<best[k]){
+      best[k]=moves;
+      document.getElementById('bestCount').textContent=moves+' ('+k+')';
+    }
+    document.getElementById('puzzleWin').classList.add('show');
+  }
+}
+
+window.addEventListener('resize',function(){if(imgLoaded)renderPuzzle();});
+</script>
+</body>
+</html>
