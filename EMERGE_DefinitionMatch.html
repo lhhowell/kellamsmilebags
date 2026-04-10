@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>EMERGE Definition Match — Word World</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--gold:#F0C040;--gold-dark:#C8860A;--black:#111;--dark:#1A1A1A;--accent:#6b3f9e;}
+body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+.hdr{width:100%;background:var(--dark);border-bottom:3px solid var(--accent);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);}
+.hdr-sub{font-size:12px;color:rgba(255,255,255,.4);margin-top:2px;}
+.back-btn{padding:8px 18px;border:2px solid #333;border-radius:50px;background:transparent;font-family:'Fredoka One',cursive;font-size:13px;color:#888;cursor:pointer;text-decoration:none;transition:all .2s;}
+.back-btn:hover{border-color:var(--accent);color:var(--gold);}
+.main{display:flex;flex-direction:column;align-items:center;padding:24px 20px;gap:16px;width:100%;max-width:540px;}
+.word-banner{background:linear-gradient(135deg,#1F1700,#2A1A00);border:2px solid var(--accent);border-radius:14px;padding:12px 24px;text-align:center;width:100%;}
+.word-banner h2{font-family:'Fredoka One',cursive;font-size:22px;color:var(--gold);letter-spacing:2px;}
+.word-banner p{font-size:12px;color:rgba(255,255,255,.4);margin-top:2px;}
+.progress-row{width:100%;display:flex;flex-direction:column;gap:6px;}
+.prog-label{font-family:'Fredoka One',cursive;font-size:13px;color:#555;text-align:center;}
+.prog-bar{width:100%;height:8px;background:#1A1A1A;border-radius:50px;overflow:hidden;border:1px solid #2A2A2A;}
+.prog-fill{height:100%;background:linear-gradient(to right,var(--accent),var(--gold));border-radius:50px;transition:width .4s;}
+.timer-strip{display:flex;align-items:center;gap:10px;justify-content:center;}
+.timer-bar{flex:1;height:8px;background:#1A1A1A;border-radius:50px;overflow:hidden;border:1px solid #2A2A2A;max-width:200px;}
+.timer-fill{height:100%;background:var(--accent);border-radius:50px;transition:width .2s linear;}
+.timer-num{font-family:'Fredoka One',cursive;font-size:16px;color:var(--gold);min-width:32px;text-align:center;}
+.def-card{background:#1A1A1A;border:2px solid #2A2A2A;border-radius:16px;padding:22px 20px;text-align:center;width:100%;}
+.def-label{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:10px;}
+.def-text{font-size:18px;color:#fff;line-height:1.6;font-weight:700;}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;}
+.choice-btn{background:#1A1A1A;border:2px solid #2A2A2A;border-radius:12px;padding:14px 10px;font-family:'Fredoka One',cursive;font-size:16px;color:var(--gold);cursor:pointer;transition:all .2s;letter-spacing:.1em;}
+.choice-btn:hover:not(:disabled){border-color:var(--accent);background:#1F1700;transform:translateY(-2px);}
+.choice-btn.correct{border-color:#2d7a52;background:rgba(45,122,82,.2);color:#5dba8a;}
+.choice-btn.wrong{border-color:#c0392b;background:rgba(192,57,43,.15);color:#e8756a;}
+.score-row{font-family:'Fredoka One',cursive;font-size:14px;color:#555;}
+.score-row span{color:var(--gold);}
+.result-banner{display:none;background:linear-gradient(135deg,#1F1700,#2A1A00);border:2px solid var(--gold);border-radius:14px;padding:20px 24px;text-align:center;width:100%;}
+.result-banner.show{display:block;}
+.result-icon{font-size:52px;margin-bottom:8px;}
+.result-title{font-family:'Fredoka One',cursive;font-size:22px;color:var(--gold);margin-bottom:8px;}
+.result-score{font-family:'Fredoka One',cursive;font-size:48px;color:var(--gold);line-height:1;}
+.result-sub{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:10px;}
+.result-msg{font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:14px;}
+.result-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.play-again{padding:10px 24px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#111;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:14px;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div>
+    <div class="hdr-title">📝 EMERGE Definition Match</div>
+    <div class="hdr-sub">Pick the right word &middot; Word World</div>
+  </div>
+  <a href="KSB_Stories_Kiosk.html" class="back-btn">← Word World</a>
+</div>
+<div class="main">
+  <div class="word-banner">
+    <h2>EMERGE</h2>
+    <p>10 rounds &middot; 8 seconds each</p>
+  </div>
+  <div class="progress-row">
+    <div class="prog-label" id="progLabel">Round 1 of 10</div>
+    <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+  </div>
+  <div class="timer-strip">
+    <div class="timer-bar"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
+    <div class="timer-num" id="timerNum">8</div>
+  </div>
+  <div class="def-card">
+    <div class="def-label">📖 Which OneWord matches this definition?</div>
+    <div class="def-text" id="defText"></div>
+  </div>
+  <div class="choices" id="choices"></div>
+  <div class="score-row">Score: <span id="scoreDisplay">0</span> / 10</div>
+  <div class="result-banner" id="resultBanner">
+    <div class="result-icon" id="rIcon"></div>
+    <div class="result-title">Round Complete!</div>
+    <div class="result-score" id="rScore"></div>
+    <div class="result-sub">out of 10</div>
+    <div class="result-msg" id="rMsg"></div>
+    <div class="result-btns">
+      <button class="play-again" onclick="resetGame()">📝 Play Again</button>
+      <a href="KSB_Stories_Kiosk.html" class="back-btn">← Word World</a>
+    </div>
+  </div>
+</div>
+<script>
+var ROUNDS=[{"definition": "Living at your fullest", "choices": ["FLOW", "THRIVE", "BALANCE", "EMERGE"], "correct": 1}, {"definition": "Rising into who you are becoming", "choices": ["EMERGE", "RENEW", "BREATHE", "SUSTAIN"], "correct": 0}, {"definition": "Finding your steady place", "choices": ["CLEAR", "GROW", "TRANSFORM", "BALANCE"], "correct": 3}, {"definition": "Choosing what deserves your energy", "choices": ["FILTER", "EMERGE", "RENEW", "CLEAR"], "correct": 0}, {"definition": "Rising into who you are becoming", "choices": ["ANCHOR", "SUSTAIN", "EMERGE", "ABSORB"], "correct": 2}, {"definition": "Restoring what was broken", "choices": ["ROOT", "HEAL", "RESTORE", "THRIVE"], "correct": 1}, {"definition": "Rising into who you are becoming", "choices": ["EMERGE", "FILTER", "THRIVE", "ABSORB"], "correct": 0}, {"definition": "Building bridges between hearts", "choices": ["RESTORE", "THRIVE", "CONNECT", "ANCHOR"], "correct": 2}, {"definition": "Rising into who you are becoming", "choices": ["RETURN", "SHINE", "GROW", "EMERGE"], "correct": 3}, {"definition": "Rising into who you are becoming", "choices": ["FLOW", "EMERGE", "PERSIST", "BALANCE"], "correct": 1}];
+var cur=0,score=0,timer=null,timeLeft=8,answered=false;
+
+function loadRound(){
+  var r=ROUNDS[cur];
+  document.getElementById('progLabel').textContent='Round '+(cur+1)+' of '+ROUNDS.length;
+  document.getElementById('progFill').style.width=((cur/ROUNDS.length)*100)+'%';
+  document.getElementById('defText').textContent=r.definition;
+  var ch=document.getElementById('choices');ch.innerHTML='';
+  r.choices.forEach(function(word,i){
+    var b=document.createElement('button');b.className='choice-btn';b.textContent=word;
+    b.onclick=(function(idx){return function(){pick(idx);};})(i);
+    ch.appendChild(b);
+  });
+  answered=false;startTimer();
+}
+
+function startTimer(){
+  timeLeft=8;
+  document.getElementById('timerFill').style.width='100%';
+  document.getElementById('timerFill').style.background='var(--accent)';
+  document.getElementById('timerNum').textContent=8;
+  timer=setInterval(function(){
+    timeLeft-=0.1;
+    var pct=Math.max(0,(timeLeft/8)*100);
+    document.getElementById('timerFill').style.width=pct+'%';
+    document.getElementById('timerNum').textContent=Math.ceil(timeLeft);
+    document.getElementById('timerFill').style.background=timeLeft>3?'var(--accent)':'#c0392b';
+    if(timeLeft<=0){clearInterval(timer);if(!answered)pick(-1);};
+  },100);
+}
+
+function pick(idx){
+  if(answered)return;answered=true;clearInterval(timer);
+  var r=ROUNDS[cur];
+  var btns=document.querySelectorAll('.choice-btn');
+  btns.forEach(function(b,i){
+    b.disabled=true;
+    if(i===r.correct)b.classList.add('correct');
+    else if(i===idx)b.classList.add('wrong');
+  });
+  if(idx===r.correct)score++;
+  document.getElementById('scoreDisplay').textContent=score;
+  setTimeout(function(){
+    cur++;
+    if(cur>=ROUNDS.length)showResult();
+    else loadRound();
+  },1200);
+}
+
+function showResult(){
+  document.getElementById('resultBanner').classList.add('show');
+  document.getElementById('rScore').textContent=score;
+  var icon,msg;
+  if(score>=9){icon='⚡';msg='Perfect or near-perfect! You know your OneWords inside and out. That kind of knowledge is its own superpower.';}
+  else if(score>=7){icon='🌟';msg='Great score! A few slipped by — go back and review the tricky ones. You are almost there!';}
+  else if(score>=5){icon='🌿';msg='Good effort! Half the words clicked right away. Keep playing and the others will too.';}
+  else{icon='☀️';msg='Every round teaches you something! Read the Word World stories and come back — your score will climb.';}
+  document.getElementById('rIcon').textContent=icon;
+  document.getElementById('rMsg').textContent=msg;
+}
+
+function resetGame(){
+  cur=0;score=0;answered=false;clearInterval(timer);
+  document.getElementById('scoreDisplay').textContent=0;
+  document.getElementById('resultBanner').classList.remove('show');
+  loadRound();
+}
+
+loadRound();
+</script>
+</body>
+</html>
