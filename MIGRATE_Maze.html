@@ -51,7 +51,7 @@ canvas{display:block;}
     <div class="hdr-title">🎯 MIGRATE Maze</div>
     <div class="hdr-sub">Find your way through &middot; Word World</div>
   </div>
-  <a href="KSB_Stories_Kiosk.html" class="back-btn">&#8592; Word World</a>
+  <a href="https://lhhowell.github.io/kellamsmilebags/KSB_Stories_Kiosk.html" class="back-btn">&#8592; Word World</a>
 </div>
 <div class="main">
   <div class="word-banner">
@@ -86,7 +86,7 @@ canvas{display:block;}
   <div class="win-msg">No matter how far the path, you found your way. That is MIGRATE — carrying yourself all the way through.</div>
   <div class="win-btns">
     <button class="win-btn" onclick="resetMaze()">🎉 Play Again</button>
-    <a href="KSB_Stories_Kiosk.html" class="win-back">&#8592; Word World</a>
+    <a href="https://lhhowell.github.io/kellamsmilebags/KSB_Stories_Kiosk.html" class="win-back">&#8592; Word World</a>
   </div>
 </div>
 <script>
@@ -113,7 +113,11 @@ function initPuzzle(lvl,btn){
 
 function setupCanvas(){
   var maxW=Math.min(window.innerWidth-40,540);
-  CELL=Math.floor(maxW/COLS);
+  var maxH=Math.min(window.innerHeight-320,540);
+  var cellW=Math.floor(maxW/COLS);
+  var cellH=Math.floor(maxH/ROWS);
+  CELL=Math.min(cellW,cellH);
+  if(CELL<12)CELL=12;
   canvas.width=CELL*COLS;canvas.height=CELL*ROWS;
   draw();
 }
