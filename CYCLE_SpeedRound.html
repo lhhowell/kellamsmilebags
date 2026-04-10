@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CYCLE Speed Round — Word World</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--gold:#F0C040;--gold-dark:#C8860A;--black:#0A0A0A;--dark:#111;--accent:#c8860a;}
+body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;}
+.hdr{width:100%;background:var(--dark);border-bottom:3px solid var(--accent);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:18px;color:var(--gold);}
+.hdr-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px;}
+.back-btn{padding:7px 16px;border:2px solid #333;border-radius:50px;background:transparent;font-family:'Fredoka One',cursive;font-size:12px;color:#888;cursor:pointer;text-decoration:none;transition:all .2s;}
+.back-btn:hover{border-color:var(--accent);color:var(--gold);}
+
+/* COUNTDOWN SCREEN */
+.countdown-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:20px;padding:24px;text-align:center;}
+.cd-title{font-family:'Fredoka One',cursive;font-size:clamp(24px,5vw,40px);color:var(--gold);}
+.cd-word{font-family:'Fredoka One',cursive;font-size:clamp(36px,8vw,72px);color:#fff;letter-spacing:4px;}
+.cd-meaning{font-size:15px;color:rgba(255,255,255,.5);max-width:400px;line-height:1.6;}
+.cd-rules{background:#1A1A1A;border:2px solid #2A2A2A;border-radius:14px;padding:16px 20px;max-width:440px;width:100%;}
+.cd-rule{display:flex;align-items:center;gap:12px;font-size:14px;color:#aaa;margin-bottom:10px;line-height:1.4;}
+.cd-rule:last-child{margin-bottom:0;}
+.cd-rule-icon{font-size:20px;flex-shrink:0;}
+.cd-rule strong{color:var(--gold);}
+.cd-num{font-family:'Fredoka One',cursive;font-size:120px;color:var(--gold);line-height:1;text-shadow:0 0 40px rgba(240,192,64,.4);}
+.start-btn{padding:16px 48px;background:linear-gradient(135deg,var(--accent),var(--gold));color:#111;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:20px;cursor:pointer;box-shadow:0 6px 24px rgba(240,192,64,.3);transition:all .2s;}
+.start-btn:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(240,192,64,.4);}
+
+/* GAME SCREEN */
+.game-screen{display:none;flex-direction:column;align-items:center;width:100%;max-width:560px;padding:16px 20px;gap:12px;}
+.game-screen.active{display:flex;}
+
+/* Top bar */
+.top-bar{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.big-timer{font-family:'Fredoka One',cursive;font-size:36px;color:var(--gold);line-height:1;min-width:60px;}
+.big-timer.urgent{color:#e74c3c;animation:pulse .5s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.round-badges{display:flex;gap:6px;}
+.round-badge{width:36px;height:36px;border-radius:50%;border:2px solid #2A2A2A;background:#1A1A1A;display:flex;align-items:center;justify-content:center;font-size:14px;font-family:'Fredoka One',cursive;color:#444;transition:all .3s;}
+.round-badge.done-win{border-color:#2d7a52;background:rgba(45,122,82,.2);color:#5dba8a;}
+.round-badge.done-lose{border-color:#c0392b;background:rgba(192,57,43,.1);color:#e8756a;}
+.round-badge.active{border-color:var(--gold);background:#1F1700;color:var(--gold);transform:scale(1.15);}
+.score-badge{font-family:'Fredoka One',cursive;font-size:16px;color:var(--gold);background:#1F1700;border:2px solid var(--gold-dark);border-radius:50px;padding:6px 16px;}
+
+/* Round header */
+.round-header{width:100%;background:#1A1A1A;border:2px solid #2A2A2A;border-radius:12px;padding:10px 16px;display:flex;align-items:center;gap:12px;}
+.round-num{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);}
+.round-name{font-family:'Fredoka One',cursive;font-size:18px;color:var(--gold);}
+.round-time-left{margin-left:auto;font-family:'Fredoka One',cursive;font-size:13px;color:#555;}
+.round-time-left span{color:var(--gold);}
+
+/* Shared */
+.round-content{width:100%;}
+.feedback-flash{text-align:center;font-family:'Fredoka One',cursive;font-size:16px;min-height:24px;transition:all .2s;}
+.feedback-flash.correct{color:#2d7a52;}
+.feedback-flash.wrong{color:#c0392b;}
+
+/* R1 Scramble */
+.scr-letters{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;}
+.scr-l{width:40px;height:48px;background:#1A1A1A;border:2px solid #2A2A2A;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:22px;color:var(--gold);cursor:pointer;transition:all .15s;user-select:none;}
+.scr-l:hover{border-color:var(--accent);transform:translateY(-2px);background:#1F1700;}
+.scr-l.used{opacity:.25;cursor:not-allowed;transform:none;}
+.ans-slots{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;}
+.ans-s{width:40px;height:48px;border-bottom:3px solid var(--accent);display:flex;align-items:flex-end;justify-content:center;padding-bottom:3px;font-family:'Fredoka One',cursive;font-size:22px;color:#fff;cursor:pointer;}
+.scr-btns{display:flex;gap:8px;justify-content:center;}
+.scr-btn{padding:8px 20px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:13px;cursor:pointer;}
+.scr-check{background:linear-gradient(135deg,var(--accent),var(--gold));color:#111;border:none;}
+.scr-clear{background:transparent;border:2px solid #333;color:#888;}
+
+/* R2 Definition Match */
+.def-box{background:#1A1A1A;border:2px solid #2A2A2A;border-radius:12px;padding:16px;text-align:center;margin-bottom:12px;}
+.def-q{font-size:16px;color:#fff;font-weight:700;line-height:1.6;}
+.def-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.def-choice{background:#1A1A1A;border:2px solid #2A2A2A;border-radius:10px;padding:12px 8px;font-family:'Fredoka One',cursive;font-size:14px;color:var(--gold);cursor:pointer;transition:all .15s;letter-spacing:.1em;}
+.def-choice:hover:not(:disabled){border-color:var(--accent);background:#1F1700;}
+.def-choice.correct{border-color:#2d7a52;background:rgba(45,122,82,.2);color:#5dba8a;}
+.def-choice.wrong{border-color:#c0392b;background:rgba(192,57,43,.1);color:#e8756a;}
+
+/* R3 Word Reveal */
+.reveal-img-wrap{position:relative;width:100%;max-width:360px;margin:0 auto 10px;border-radius:12px;overflow:hidden;border:2px solid var(--accent);}
+.reveal-img-wrap img{width:100%;display:block;transition:filter .5s;}
+.reveal-hint{font-size:12px;color:rgba(255,255,255,.4);text-align:center;margin-bottom:8px;}
+.reveal-input{width:100%;font-family:'Fredoka One',cursive;font-size:18px;letter-spacing:.2em;text-align:center;text-transform:uppercase;background:#1A1A1A;border:2px solid #2A2A2A;border-radius:10px;padding:10px;color:#fff;outline:none;transition:border-color .2s;margin-bottom:8px;}
+.reveal-input:focus{border-color:var(--accent);}
+.reveal-btn{width:100%;padding:10px;background:linear-gradient(135deg,var(--accent),var(--gold));color:#111;border:none;border-radius:10px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;}
+
+/* R4 Hangman */
+.flower-big{font-size:56px;text-align:center;margin-bottom:6px;}
+.hangman-def{background:#1A1A1A;border:2px solid #2A2A2A;border-radius:10px;padding:10px 14px;text-align:center;font-size:14px;color:#fff;font-weight:700;margin-bottom:10px;}
+.hm-word{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;}
+.hm-slot{width:32px;height:40px;border-bottom:3px solid var(--accent);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2px;font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);}
+.hm-keyboard{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;}
+.hm-key{width:36px;height:36px;border-radius:8px;border:2px solid #2A2A2A;background:#1A1A1A;font-family:'Fredoka One',cursive;font-size:14px;color:#ccc;cursor:pointer;transition:all .12s;}
+.hm-key:hover:not(:disabled){border-color:var(--accent);color:var(--gold);}
+.hm-key:disabled{opacity:.3;cursor:not-allowed;}
+.hm-key.hm-correct{border-color:#2d7a52;color:#2d7a52;background:rgba(45,122,82,.15);}
+.hm-key.hm-wrong{border-color:#c0392b;color:#c0392b;}
+
+/* WIN SCREEN */
+.win-screen{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:16px;padding:24px;text-align:center;}
+.win-screen.active{display:flex;}
+.win-icon{font-size:80px;}
+.win-title{font-family:'Fredoka One',cursive;font-size:36px;color:var(--gold);}
+.win-score-wrap{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.win-score-card{background:#1A1A1A;border:2px solid #2A2A2A;border-radius:12px;padding:14px 20px;text-align:center;}
+.win-score-num{font-family:'Fredoka One',cursive;font-size:32px;color:var(--gold);}
+.win-score-lbl{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#555;}
+.win-msg{font-size:14px;color:rgba(255,255,255,.6);max-width:420px;line-height:1.75;background:#1A1A1A;border:2px solid #2A2A2A;border-radius:14px;padding:16px 20px;}
+.win-msg em{color:var(--gold);font-style:italic;}
+.win-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+.win-btn{padding:13px 30px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#111;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:16px;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div>
+    <div class="hdr-title">⚡ CYCLE Speed Round</div>
+    <div class="hdr-sub">Game show &middot; 4 challenges &middot; 3 minutes &middot; Word World</div>
+  </div>
+  <a href="KSB_Stories_Kiosk.html" class="back-btn">← Word World</a>
+</div>
+
+<!-- COUNTDOWN SCREEN -->
+<div class="countdown-screen" id="countdownScreen">
+  <div class="cd-title">⚡ Speed Round</div>
+  <div class="cd-word">CYCLE</div>
+  <div class="cd-meaning">Moving through seasons of change</div>
+  <div class="cd-rules">
+    <div class="cd-rule"><span class="cd-rule-icon">🔤</span><div>Round 1: <strong>Scramble</strong> — unscramble the letters <strong>(30s)</strong></div></div>
+    <div class="cd-rule"><span class="cd-rule-icon">📝</span><div>Round 2: <strong>Definition Match</strong> — pick the right word <strong>(20s)</strong></div></div>
+    <div class="cd-rule"><span class="cd-rule-icon">🖼️</span><div>Round 3: <strong>Word Reveal</strong> — name the blurry image <strong>(40s)</strong></div></div>
+    <div class="cd-rule"><span class="cd-rule-icon">🌸</span><div>Round 4: <strong>Hangman Lightning</strong> — guess the word <strong>(60s)</strong></div></div>
+  </div>
+  <button class="start-btn" onclick="startGame()">⚡ Start Speed Round!</button>
+</div>
+
+<!-- GAME SCREEN -->
+<div class="game-screen" id="gameScreen">
+  <div class="top-bar">
+    <div class="big-timer" id="bigTimer">3:00</div>
+    <div class="round-badges">
+      <div class="round-badge active" id="badge0">🔤</div>
+      <div class="round-badge" id="badge1">📝</div>
+      <div class="round-badge" id="badge2">🖼️</div>
+      <div class="round-badge" id="badge3">🌸</div>
+    </div>
+    <div class="score-badge">Score: <span id="scoreNum">0</span></div>
+  </div>
+  <div class="round-header">
+    <div>
+      <div class="round-num" id="roundNum">Round 1 of 4</div>
+      <div class="round-name" id="roundName">🔤 Scramble</div>
+    </div>
+    <div class="round-time-left">Round time: <span id="roundTimer">30s</span></div>
+  </div>
+  <div class="round-content" id="roundContent"></div>
+  <div class="feedback-flash" id="feedbackFlash"></div>
+</div>
+
+<!-- WIN SCREEN -->
+<div class="win-screen" id="winScreen">
+  <div class="win-icon" id="winIcon"></div>
+  <div class="win-title" id="winTitle"></div>
+  <div class="win-score-wrap">
+    <div class="win-score-card"><div class="win-score-num" id="winScore"></div><div class="win-score-lbl">Rounds Won</div></div>
+    <div class="win-score-card"><div class="win-score-num" id="winTime"></div><div class="win-score-lbl">Time Left</div></div>
+    <div class="win-score-card"><div class="win-score-num" id="winPts"></div><div class="win-score-lbl">Points</div></div>
+  </div>
+  <div class="win-msg" id="winMsg"></div>
+  <div class="win-btns">
+    <button class="win-btn" onclick="resetAll()">⚡ Play Again</button>
+    <a href="KSB_Stories_Kiosk.html" class="back-btn">← Word World</a>
+  </div>
+</div>
+
+<script>
+var WORD='CYCLE';
+var MEANING='Moving through seasons of change';
+var SCRAMBLED='CYLCE';
+var IMG_URL='https://lhhowell.github.io/kellamsmilebags/Cycle_Color2.png';
+var DEF_CHOICES=["BREATHE", "GROW", "RETURN", "CYCLE"];
+var DEF_CORRECT=3;
+var FLOWERS=['🌸','🌷','🌺','🌻','🌼','🥀','💀'];
+
+var totalTime=180,timeLeft=180,globalTimer=null;
+var roundTime=0,roundTimer=null,curRound=0;
+var score=0,roundResults=[false,false,false,false];
+var roundDurations=[30,20,40,60];
+
+// ── SCRAMBLE STATE ──
+var scrAnswer=[],scrGameOver=false;
+// ── DEFINITION MATCH STATE ──
+var defAnswered=false;
+// ── WORD REVEAL STATE ──
+var revWrong=0,revGameOver=false;
+var revBlurLevels=[40,28,16,6,0];
+// ── HANGMAN STATE ──
+var hmGuessed=[],hmLives=6,hmGameOver=false;
+
+function startGame(){
+  document.getElementById('countdownScreen').style.display='none';
+  document.getElementById('gameScreen').classList.add('active');
+  startGlobalTimer();
+  loadRound(0);
+}
+
+function startGlobalTimer(){
+  globalTimer=setInterval(function(){
+    timeLeft--;
+    var m=Math.floor(timeLeft/60),s=timeLeft%60;
+    var disp=m+':'+(s<10?'0':'')+s;
+    var el=document.getElementById('bigTimer');
+    el.textContent=disp;
+    el.className='big-timer'+(timeLeft<=30?' urgent':'');
+    if(timeLeft<=0){clearInterval(globalTimer);endGame();}
+  },1000);
+}
+
+function loadRound(r){
+  curRound=r;
+  document.querySelectorAll('.round-badge').forEach(function(b,i){
+    b.className='round-badge'+(i<r?(roundResults[i]?' done-win':' done-lose'):i===r?' active':'');
+  });
+  var names=['🔤 Scramble','📝 Definition Match','🖼️ Word Reveal','🌸 Hangman Lightning'];
+  document.getElementById('roundNum').textContent='Round '+(r+1)+' of 4';
+  document.getElementById('roundName').textContent=names[r];
+  roundTime=roundDurations[r];
+  document.getElementById('roundTimer').textContent=roundTime+'s';
+  clearInterval(roundTimer);
+  roundTimer=setInterval(function(){
+    roundTime--;
+    document.getElementById('roundTimer').textContent=roundTime+'s';
+    if(roundTime<=0){clearInterval(roundTimer);roundFail();}
+  },1000);
+  if(r===0)buildScramble();
+  else if(r===1)buildDefMatch();
+  else if(r===2)buildWordReveal();
+  else if(r===3)buildHangman();
+}
+
+function flash(msg,type){
+  var el=document.getElementById('feedbackFlash');
+  el.textContent=msg;el.className='feedback-flash '+type;
+  setTimeout(function(){el.textContent='';el.className='feedback-flash';},1200);
+}
+
+function roundWin(){
+  clearInterval(roundTimer);
+  roundResults[curRound]=true;score++;
+  document.getElementById('scoreNum').textContent=score;
+  flash('✓ Nice!','correct');
+  document.getElementById('badge'+curRound).className='round-badge done-win';
+  setTimeout(function(){nextRound();},900);
+}
+
+function roundFail(){
+  roundResults[curRound]=false;
+  flash('✗ Time!','wrong');
+  document.getElementById('badge'+curRound).className='round-badge done-lose';
+  setTimeout(function(){nextRound();},900);
+}
+
+function nextRound(){
+  if(curRound>=3){endGame();return;}
+  loadRound(curRound+1);
+}
+
+function endGame(){
+  clearInterval(globalTimer);clearInterval(roundTimer);
+  document.getElementById('gameScreen').classList.remove('active');
+  var ws=document.getElementById('winScreen');ws.classList.add('active');
+  var won=roundResults.filter(Boolean).length;
+  var pts=won*25+(score===4?50:0)+Math.floor(timeLeft/5);
+  document.getElementById('winScore').textContent=won+'/4';
+  document.getElementById('winTime').textContent=timeLeft+'s';
+  document.getElementById('winPts').textContent=pts;
+  var icon,title,msg;
+  if(won===4){icon='🏆';title='CHAMPION!';msg='Perfect speed round! All 4 challenges beaten with time to spare. <em>'+WORD+' — '+MEANING+'</em> — you know this word inside and out!';}
+  else if(won>=3){icon='⚡';title='Speed Star!';msg='3 out of 4 — incredible! One slipped away but your speed was remarkable. <em>Try again and go for the perfect score!</em>';}
+  else if(won>=2){icon='🌟';title='Solid Run!';msg='2 rounds conquered! The speed gets easier every time you play. <em>'+WORD+'</em> is becoming part of you.';}
+  else if(won>=1){icon='🌿';title='Keep Going!';msg='You got one! Every attempt teaches you something. Come back, play again, and watch your score climb. <em>You can do this.</em>';}
+  else{icon='☀️';title='First Attempt!';msg='Speed rounds are hard the first time! Now you know the format — go again and surprise yourself. <em>'+WORD+' — '+MEANING+'</em>';}
+  document.getElementById('winIcon').textContent=icon;
+  document.getElementById('winTitle').textContent=title;
+  document.getElementById('winMsg').innerHTML=msg;
+}
+
+function resetAll(){
+  timeLeft=180;score=0;curRound=0;
+  roundResults=[false,false,false,false];
+  scrAnswer=[];scrGameOver=false;
+  defAnswered=false;
+  revWrong=0;revGameOver=false;
+  hmGuessed=[];hmLives=6;hmGameOver=false;
+  document.getElementById('winScreen').classList.remove('active');
+  document.getElementById('bigTimer').textContent='3:00';
+  document.getElementById('bigTimer').className='big-timer';
+  document.getElementById('scoreNum').textContent=0;
+  document.getElementById('countdownScreen').style.display='flex';
+}
+
+// ── ROUND 1: SCRAMBLE ──
+function buildScramble(){
+  scrAnswer=[];scrGameOver=false;
+  var html='<div class="scr-letters" id="scrLetters"></div><div class="ans-slots" id="ansSlots"></div><div class="scr-btns"><button class="scr-btn scr-check" onclick="checkScramble()">✓ Check</button><button class="scr-btn scr-clear" onclick="clearScramble()">✕ Clear</button></div>';
+  document.getElementById('roundContent').innerHTML=html;
+  var row=document.getElementById('scrLetters');
+  SCRAMBLED.split('').forEach(function(l,i){
+    var d=document.createElement('div');d.className='scr-l';d.textContent=l;d.id='sl-'+i;
+    d.onclick=(function(idx,letter){return function(){pickScrLetter(idx,letter);};})(i,l);
+    row.appendChild(d);
+  });
+  buildScrSlots();
+}
+function buildScrSlots(){
+  var row=document.getElementById('ansSlots');if(!row)return;row.innerHTML='';
+  for(var i=0;i<WORD.length;i++){
+    var d=document.createElement('div');d.className='ans-s';d.id='as-'+i;
+    d.onclick=(function(idx){return function(){removeScrLetter(idx);};})(i);
+    row.appendChild(d);
+  }
+}
+function pickScrLetter(idx,letter){
+  if(scrGameOver)return;
+  var el=document.getElementById('sl-'+idx);
+  if(!el||el.classList.contains('used'))return;
+  if(scrAnswer.length>=WORD.length)return;
+  scrAnswer.push({idx:idx,letter:letter});el.classList.add('used');updateScrSlots();
+}
+function removeScrLetter(slotIdx){
+  if(scrGameOver||slotIdx>=scrAnswer.length)return;
+  var removed=scrAnswer.splice(slotIdx,1)[0];
+  var el=document.getElementById('sl-'+removed.idx);if(el)el.classList.remove('used');
+  updateScrSlots();
+}
+function updateScrSlots(){
+  for(var i=0;i<WORD.length;i++){
+    var s=document.getElementById('as-'+i);if(!s)return;
+    if(i<scrAnswer.length){s.textContent=scrAnswer[i].letter;}else{s.textContent='';}
+  }
+}
+function clearScramble(){
+  scrAnswer=[];
+  document.querySelectorAll('.scr-l').forEach(function(el){el.classList.remove('used');});
+  updateScrSlots();
+}
+function checkScramble(){
+  if(scrGameOver)return;
+  var guess=scrAnswer.map(function(a){return a.letter;}).join('');
+  if(guess===WORD){scrGameOver=true;roundWin();}
+  else{flash('Not quite — try again!','wrong');}
+}
+
+// ── ROUND 2: DEFINITION MATCH ──
+function buildDefMatch(){
+  defAnswered=false;
+  var html='<div class="def-box"><div class="def-q">'+MEANING+'</div></div><div class="def-choices" id="defChoices"></div>';
+  document.getElementById('roundContent').innerHTML=html;
+  var ch=document.getElementById('defChoices');
+  DEF_CHOICES.forEach(function(word,i){
+    var b=document.createElement('button');b.className='def-choice';b.textContent=word;
+    b.onclick=(function(idx){return function(){pickDef(idx);};})(i);
+    ch.appendChild(b);
+  });
+}
+function pickDef(idx){
+  if(defAnswered)return;defAnswered=true;
+  var btns=document.querySelectorAll('.def-choice');
+  btns.forEach(function(b,i){
+    b.disabled=true;
+    if(i===DEF_CORRECT)b.classList.add('correct');
+    else if(i===idx)b.classList.add('wrong');
+  });
+  if(idx===DEF_CORRECT){setTimeout(function(){roundWin();},600);}
+  else{setTimeout(function(){roundFail();},600);}
+}
+
+// ── ROUND 3: WORD REVEAL ──
+function buildWordReveal(){
+  revWrong=0;revGameOver=false;
+  var html='<div class="reveal-img-wrap"><img id="revImg" src="'+IMG_URL+'" crossorigin="anonymous" style="filter:blur(40px) brightness(0.7);" alt="Mystery"/></div><div class="reveal-hint">Wrong guesses clear the blur · '+MEANING+'</div><input class="reveal-input" id="revInput" type="text" maxlength="12" placeholder="Type the OneWord..." autocomplete="off" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter')checkReveal()"/><button class="reveal-btn" onclick="checkReveal()">Submit →</button>';
+  document.getElementById('roundContent').innerHTML=html;
+}
+function checkReveal(){
+  if(revGameOver)return;
+  var val=document.getElementById('revInput').value.trim().toUpperCase();
+  if(!val)return;
+  if(val===WORD){
+    revGameOver=true;
+    var img=document.getElementById('revImg');if(img)img.style.filter='blur(0) brightness(1)';
+    roundWin();
+  }else{
+    revWrong++;
+    var blurs=[40,28,16,6,0];
+    var img=document.getElementById('revImg');
+    if(img)img.style.filter='blur('+blurs[Math.min(revWrong,4)]+'px) brightness('+(0.7+revWrong*0.08)+')';
+    flash('Not quite!','wrong');
+    if(revWrong>=5){revGameOver=true;roundFail();}
+  }
+  var inp=document.getElementById('revInput');if(inp)inp.value='';
+}
+
+// ── ROUND 4: HANGMAN LIGHTNING ──
+function buildHangman(){
+  hmGuessed=[];hmLives=6;hmGameOver=false;
+  renderHangman();
+}
+function renderHangman(){
+  var html='<div class="flower-big" id="hmFlower">'+FLOWERS[0]+'</div><div class="hangman-def">'+MEANING+'</div><div class="hm-word" id="hmWord"></div><div class="hm-keyboard" id="hmKb"></div>';
+  document.getElementById('roundContent').innerHTML=html;
+  var wrow=document.getElementById('hmWord');
+  WORD.split('').forEach(function(l){
+    var s=document.createElement('div');s.className='hm-slot';
+    s.textContent=hmGuessed.includes(l)?l:'';
+    wrow.appendChild(s);
+  });
+  var kb=document.getElementById('hmKb');
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(function(l){
+    var b=document.createElement('button');
+    b.className='hm-key'+(hmGuessed.includes(l)?(WORD.includes(l)?' hm-correct':' hm-wrong'):'');
+    b.textContent=l;b.disabled=hmGuessed.includes(l);b.id='hmk-'+l;
+    b.onclick=function(){hmGuess(l);};
+    kb.appendChild(b);
+  });
+}
+function hmGuess(l){
+  if(hmGameOver||hmGuessed.includes(l))return;
+  hmGuessed.push(l);
+  var btn=document.getElementById('hmk-'+l);
+  if(WORD.includes(l)){
+    if(btn)btn.classList.add('hm-correct');btn.disabled=true;
+    var slots=document.querySelectorAll('.hm-slot');
+    WORD.split('').forEach(function(c,i){if(slots[i])slots[i].textContent=hmGuessed.includes(c)?c:'';  });
+    if(WORD.split('').every(function(c){return hmGuessed.includes(c);})){
+      hmGameOver=true;roundWin();
+    }
+  }else{
+    if(btn){btn.classList.add('hm-wrong');btn.disabled=true;}
+    hmLives--;
+    var fl=document.getElementById('hmFlower');
+    if(fl)fl.textContent=FLOWERS[6-hmLives];
+    if(hmLives<=0){hmGameOver=true;roundFail();}
+  }
+}
+</script>
+</body>
+</html>
