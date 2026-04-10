@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Return – Hidden Picture | Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root { --gold:#C8860A; --gold-light:#F5C842; --navy:#1B3A6B; --accent:#283593; --accent-light:#C5CAE9; --bg:#F0F2FF; --found:#28A745; --radius:14px; }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; padding:0 0 48px; }
+.banner { display:flex; align-items:stretch; width:100%; height:64px; font-family:'Fredoka One',cursive; font-size:28px; letter-spacing:1px; box-shadow:0 3px 12px rgba(0,0,0,0.18); }
+.banner-left  { background:linear-gradient(135deg,#E8820A,#FFB300); color:#fff; flex:1; display:flex; align-items:center; padding:0 24px; text-shadow:1px 1px 3px rgba(0,0,0,0.25); }
+.banner-right { background:#C8200A; color:#fff; padding:0 28px; display:flex; align-items:center; text-shadow:1px 1px 3px rgba(0,0,0,0.25); min-width:200px; justify-content:center; }
+.tagline { text-align:center; font-size:18px; font-weight:700; color:#444; padding:14px 20px 10px; }
+.layout { display:flex; gap:20px; max-width:1100px; margin:0 auto; padding:16px 20px 0; align-items:flex-start; flex-wrap:wrap; }
+.img-wrap { position:relative; flex:1 1 520px; max-width:620px; border-radius:var(--radius); overflow:hidden; box-shadow:0 8px 32px rgba(40,53,147,0.18); background:#fff; user-select:none; cursor:crosshair; }
+.img-wrap img { width:100%; height:auto; display:block; pointer-events:none; -webkit-user-drag:none; }
+.hotspot { position:absolute; width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.15); border:3px solid rgba(255,255,255,0.7); cursor:pointer; transform:translate(-50%,-50%); transition:all 0.25s; display:flex; align-items:center; justify-content:center; font-size:20px; backdrop-filter:blur(2px); }
+.hotspot::after { content:''; position:absolute; width:100%; height:100%; border-radius:50%; border:3px solid rgba(255,255,255,0.5); animation:ripple 2s infinite; }
+.hotspot.found::after { display:none; }
+.hotspot:hover { background:rgba(255,255,255,0.4); border-color:var(--gold-light); transform:translate(-50%,-50%) scale(1.15); }
+.hotspot.found { background:rgba(40,167,69,0.85); border-color:#5EFF8A; animation:foundPop 0.4s ease; cursor:default; }
+.hotspot.found:hover { transform:translate(-50%,-50%) scale(1); }
+.hotspot.hint-pulse { background:rgba(248,200,20,0.6)!important; border-color:var(--gold-light)!important; animation:hintBounce 0.6s ease infinite alternate!important; }
+@keyframes ripple     { 0%{transform:scale(1);opacity:.8} 100%{transform:scale(1.9);opacity:0} }
+@keyframes foundPop   { 0%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.35)} 100%{transform:translate(-50%,-50%) scale(1)} }
+@keyframes hintBounce { from{transform:translate(-50%,-50%) scale(1)} to{transform:translate(-50%,-50%) scale(1.2)} }
+.sidebar { flex:1 1 280px; max-width:340px; display:flex; flex-direction:column; gap:14px; }
+.score-card { background:var(--accent); color:#fff; border-radius:var(--radius); padding:16px 20px; text-align:center; box-shadow:0 4px 16px rgba(0,0,0,0.2); }
+.score-label { font-size:13px; text-transform:uppercase; letter-spacing:1.5px; opacity:.75; margin-bottom:4px; }
+.score-num   { font-family:'Fredoka One',cursive; font-size:52px; color:var(--accent-light); line-height:1; }
+.score-denom { font-size:18px; opacity:.8; margin-top:2px; }
+.progress-bar  { height:10px; background:rgba(255,255,255,0.2); border-radius:10px; margin-top:12px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg,var(--gold),var(--gold-light)); border-radius:10px; transition:width 0.5s ease; width:0%; }
+.checklist-card  { background:#fff; border-radius:var(--radius); padding:16px 18px; box-shadow:0 4px 16px rgba(40,53,147,0.08); }
+.checklist-title { font-family:'Fredoka One',cursive; font-size:17px; color:var(--accent); margin-bottom:12px; border-bottom:2px solid var(--bg); padding-bottom:8px; }
+.check-item      { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid #F0F4F8; font-size:14px; color:#444; transition:all 0.3s; }
+.check-item:last-child { border-bottom:none; }
+.check-icon  { font-size:18px; width:26px; text-align:center; flex-shrink:0; }
+.check-box   { width:20px; height:20px; border-radius:5px; border:2.5px solid #CBD5E0; flex-shrink:0; display:flex; align-items:center; justify-content:center; margin-left:auto; transition:all 0.3s; }
+.check-box.checked { background:var(--found); border-color:var(--found); }
+.check-box.checked::after { content:'&#x2713;'; color:#fff; font-weight:800; font-size:13px; }
+.check-item.found-item { text-decoration:line-through; color:#A0AEC0; }
+.check-item.found-item .check-icon { opacity:.5; }
+.btn { display:block; width:100%; padding:12px; border-radius:10px; font-family:'Fredoka One',cursive; font-size:17px; border:none; cursor:pointer; transition:all 0.2s; text-align:center; }
+.btn:hover { transform:translateY(-2px); }
+.btn-gold   { background:linear-gradient(135deg,var(--gold),var(--gold-light)); color:var(--navy); box-shadow:0 3px 10px rgba(200,134,10,0.35); }
+.btn-accent { background:var(--accent); color:#fff; box-shadow:0 3px 10px rgba(0,0,0,0.2); }
+.toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--accent); color:#fff; padding:12px 26px; border-radius:50px; font-size:15px; font-weight:700; box-shadow:0 8px 24px rgba(0,0,0,0.25); z-index:100; transition:transform 0.35s cubic-bezier(.34,1.56,.64,1); pointer-events:none; white-space:nowrap; max-width:90vw; text-align:center; }
+.toast.show { transform:translateX(-50%) translateY(0); }
+.win-overlay { display:none; position:fixed; inset:0; background:rgba(40,53,147,0.9); z-index:200; align-items:center; justify-content:center; }
+.win-overlay.show { display:flex; }
+.win-box { background:#fff; border-radius:24px; padding:40px 50px; text-align:center; max-width:440px; animation:winPop 0.5s cubic-bezier(.34,1.56,.64,1); }
+@keyframes winPop { from{transform:scale(0.5);opacity:0} to{transform:scale(1);opacity:1} }
+.win-emoji { font-size:64px; margin-bottom:10px; }
+.win-title { font-family:'Fredoka One',cursive; font-size:34px; color:var(--navy); margin-bottom:8px; }
+.win-sub   { color:#666; font-size:15px; margin-bottom:24px; line-height:1.5; }
+.win-actions { display:flex; flex-direction:column; gap:10px; }
+.credit { text-align:center; font-size:12px; color:#999; padding:24px 20px 0; max-width:1100px; margin:0 auto; }
+@media(max-width:700px) { .layout{flex-direction:column} .sidebar,.img-wrap{max-width:100%;flex-basis:100%} .banner{font-size:22px;height:54px} .banner-right{min-width:140px} }
+</style>
+</head>
+<body>
+<div class="banner">
+  <div class="banner-left">Hidden Picture</div>
+  <div class="banner-right">RETURN</div>
+</div>
+<div class="tagline">&mdash; Coming back to where you belong.</div>
+<div class="layout">
+  <div class="img-wrap" id="imgWrap">
+    <img src="https://lhhowell.github.io/kellamsmilebags/Return_HiddenPicture.png" alt="Smile Bag – Return hidden picture scene" id="mainImg">
+
+    <div class="hotspot" id="hs-0"  style="left:80%;top:18%" data-id="0"  data-label="&#x1F3E0; House / Home"              data-hint="A cozy house or home in the top right — always a place to return to">&#x1F3E0;</div>
+    <div class="hotspot" id="hs-1"  style="left:74%;top:24%" data-id="1"  data-label="&#x1F6B6; Person Walking Home"       data-hint="A small figure walking back toward the house on the top right path">&#x1F6B6;</div>
+    <div class="hotspot" id="hs-2"  style="left:76%;top:38%" data-id="2"  data-label="&#x1FA83; Boomerang"                 data-hint="A boomerang on the upper right of the bag — always comes back!">&#x1FA83;</div>
+    <div class="hotspot" id="hs-3"  style="left:68%;top:45%" data-id="3"  data-label="&#x2709;&#xFE0F; Envelope / Letter"        data-hint="An envelope or letter on the right side — a message of return">&#x2709;&#xFE0F;</div>
+    <div class="hotspot" id="hs-4"  style="left:32%;top:52%" data-id="4"  data-label="&#x1F9F3; Suitcase / Luggage"        data-hint="A packed suitcase on the left-center — someone's coming home">&#x1F9F3;</div>
+    <div class="hotspot" id="hs-5"  style="left:30%;top:40%" data-id="5"  data-label="&#x1F551; Clock / Watch"             data-hint="A clock or watch on the left side of the bag — time to return">&#x1F551;</div>
+    <div class="hotspot" id="hs-6"  style="left:50%;top:72%" data-id="6"  data-label="&#x1F9ED; Second Clock / Compass"    data-hint="A compass or second clock in the lower center of the bag">&#x1F9ED;</div>
+    <div class="hotspot" id="hs-7"  style="left:36%;top:62%" data-id="7"  data-label="&#x1F4D3; Passport / Travel Booklet" data-hint="A passport or travel booklet in the lower left-center of the bag">&#x1F4D3;</div>
+    <div class="hotspot" id="hs-8"  style="left:30%;top:58%" data-id="8"  data-label="&#x1F511; Keys / Keyring"            data-hint="A set of keys or keyring in the left lower-center — the key to coming home">&#x1F511;</div>
+    <div class="hotspot" id="hs-9"  style="left:12%;top:52%" data-id="9"  data-label="&#x1F697; Van / Car"                 data-hint="A yellow van or car on the left side — someone's driving home">&#x1F697;</div>
+    <div class="hotspot" id="hs-10" style="left:16%;top:72%" data-id="10" data-label="&#x1F422; Turtle"                    data-hint="A sea turtle returning through the water at the lower left">&#x1F422;</div>
+    <div class="hotspot" id="hs-11" style="left:22%;top:82%" data-id="11" data-label="&#x1F42C; Dolphin / Whale"           data-hint="A dolphin or whale returning through the bottom left water">&#x1F42C;</div>
+    <div class="hotspot" id="hs-12" style="left:78%;top:80%" data-id="12" data-label="&#x1F98B; Butterfly"                 data-hint="A butterfly in the bottom right — returning with the season">&#x1F98B;</div>
+    <div class="hotspot" id="hs-13" style="left:80%;top:90%" data-id="13" data-label="&#x1F415; Dog Waiting"               data-hint="A loyal dog waiting with papers or mail at the bottom right — faithful return">&#x1F415;</div>
+    <div class="hotspot" id="hs-14" style="left:70%;top:60%" data-id="14" data-label="&#x1F4DC; Mail / Documents"          data-hint="Mail, documents, or postcards scattered center-right and bottom right">&#x1F4DC;</div>
+    <div class="hotspot" id="hs-15" style="left:12%;top:15%" data-id="15" data-label="&#x1F300; Galaxy / Spiral"           data-hint="A swirling galaxy or spiral in the top left sky — even light returns">&#x1F300;</div>
+    <div class="hotspot" id="hs-16" style="left:22%;top:22%" data-id="16" data-label="&#x1F54A;&#xFE0F; Bird with Letter"        data-hint="A white bird carrying a letter in the upper left — a returning messenger">&#x1F54A;&#xFE0F;</div>
+    <div class="hotspot" id="hs-17" style="left:75%;top:52%" data-id="17" data-label="&#x1FAA8; Rock Stack"                data-hint="A carefully balanced rock stack on the right — a landmark to return to">&#x1FAA8;</div>
+    <div class="hotspot" id="hs-18" style="left:14%;top:82%" data-id="18" data-label="&#x267B;&#xFE0F; Recycle Bin"               data-hint="A green recycle bin at the bottom left — return what you've used">&#x267B;&#xFE0F;</div>
+
+  </div>
+  <div class="sidebar">
+    <div class="score-card">
+      <div class="score-label">Objects Found</div>
+      <div class="score-num" id="scoreNum">0</div>
+      <div class="score-denom">out of 19</div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+    <div class="checklist-card">
+      <div class="checklist-title">&#x1F50D; Find These Objects</div>
+      <div id="checklist"></div>
+    </div>
+    <button class="btn btn-gold"   onclick="giveHint()">&#x1F4A1; Hint &mdash; Reveal One</button>
+    <button class="btn btn-accent" onclick="resetGame()">&#x1F504; Start Over</button>
+    <button class="btn btn-gold"   onclick="downloadActivity()" style="margin-top:4px;">&#x2B07;&#xFE0F; Download Activity</button>
+  </div>
+</div>
+<div class="win-overlay" id="winOverlay">
+  <div class="win-box">
+    <div class="win-emoji">&#x1F389;&#x1F3E0;&#x1F389;</div>
+    <div class="win-title">Welcome Back!</div>
+    <div class="win-sub">You found all 19 hidden objects in the Return scene!<br><br>
+      <em style="color:var(--gold);font-weight:800;">"Coming back to where you belong."</em>
+    </div>
+    <div class="win-actions">
+      <button class="btn btn-gold"   onclick="resetGame();document.getElementById('winOverlay').classList.remove('show')">&#x1F504; Play Again</button>
+      <button class="btn btn-accent" onclick="downloadActivity()">&#x2B07;&#xFE0F; Download Activity</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<p class="credit">Kellam Smile Bags: A Word &amp; Wonder Experience &nbsp;&middot;&nbsp; Illustrated by Gemini / ChatGPT &nbsp;&middot;&nbsp; Activity by Claude</p>
+<script>
+const OBJECTS = [
+  {id:0,  emoji:"&#x1F3E0;",         label:"House / Home"},
+  {id:1,  emoji:"&#x1F6B6;",         label:"Person Walking Home"},
+  {id:2,  emoji:"&#x1FA83;",         label:"Boomerang"},
+  {id:3,  emoji:"&#x2709;&#xFE0F;",  label:"Envelope / Letter"},
+  {id:4,  emoji:"&#x1F9F3;",         label:"Suitcase / Luggage"},
+  {id:5,  emoji:"&#x1F551;",         label:"Clock / Watch"},
+  {id:6,  emoji:"&#x1F9ED;",         label:"Second Clock / Compass"},
+  {id:7,  emoji:"&#x1F4D3;",         label:"Passport / Travel Booklet"},
+  {id:8,  emoji:"&#x1F511;",         label:"Keys / Keyring"},
+  {id:9,  emoji:"&#x1F697;",         label:"Van / Car"},
+  {id:10, emoji:"&#x1F422;",         label:"Turtle"},
+  {id:11, emoji:"&#x1F42C;",         label:"Dolphin / Whale"},
+  {id:12, emoji:"&#x1F98B;",         label:"Butterfly"},
+  {id:13, emoji:"&#x1F415;",         label:"Dog Waiting"},
+  {id:14, emoji:"&#x1F4DC;",         label:"Mail / Documents"},
+  {id:15, emoji:"&#x1F300;",         label:"Galaxy / Spiral"},
+  {id:16, emoji:"&#x1F54A;&#xFE0F;", label:"Bird with Letter"},
+  {id:17, emoji:"&#x1FAA8;",         label:"Rock Stack"},
+  {id:18, emoji:"&#x267B;&#xFE0F;",  label:"Recycle Bin"}
+];
+const TOTAL=OBJECTS.length; let found=new Set(),hintUsed=[];
+const cl=document.getElementById('checklist');
+OBJECTS.forEach(obj=>{const div=document.createElement('div');div.className='check-item';div.id='ci-'+obj.id;div.innerHTML='<span class="check-icon">'+obj.emoji+'</span><span>'+obj.label+'</span><span class="check-box" id="cb-'+obj.id+'"></span>';cl.appendChild(div);});
+document.querySelectorAll('.hotspot').forEach(hs=>{hs.addEventListener('click',function(){const id=parseInt(this.dataset.id);if(found.has(id))return;found.add(id);this.classList.add('found');this.classList.remove('hint-pulse');document.getElementById('ci-'+id).classList.add('found-item');document.getElementById('cb-'+id).classList.add('checked');showToast('&#x2705; Found: '+this.dataset.label);updateScore();if(found.size===TOTAL)setTimeout(()=>document.getElementById('winOverlay').classList.add('show'),700);});});
+function updateScore(){const n=found.size;document.getElementById('scoreNum').textContent=n;document.getElementById('progressFill').style.width=(n/TOTAL*100)+'%';}
+function showToast(msg){const t=document.getElementById('toast');t.innerHTML=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
+function giveHint(){const unfound=OBJECTS.filter(o=>!found.has(o.id));if(!unfound.length){showToast('&#x1F389; You already found everything!');return;}const candidates=unfound.filter(o=>!hintUsed.includes(o.id));const pick=candidates.length?candidates[Math.floor(Math.random()*candidates.length)]:unfound[Math.floor(Math.random()*unfound.length)];hintUsed.push(pick.id);const hs=document.getElementById('hs-'+pick.id);document.querySelectorAll('.hotspot.hint-pulse').forEach(h=>h.classList.remove('hint-pulse'));hs.classList.add('hint-pulse');showToast('&#x1F4A1; Hint: '+hs.dataset.hint);setTimeout(()=>hs.classList.remove('hint-pulse'),3500);}
+function resetGame(){found.clear();hintUsed=[];document.querySelectorAll('.hotspot').forEach(h=>h.classList.remove('found','hint-pulse'));document.querySelectorAll('.check-item').forEach(c=>c.classList.remove('found-item'));document.querySelectorAll('.check-box').forEach(c=>c.classList.remove('checked'));updateScore();}
+function downloadActivity(){const blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Return_HiddenPicture_Activity.html';a.click();}
+</script>
+</body>
+</html>

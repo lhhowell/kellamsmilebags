@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rise – Hidden Picture | Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root { --gold:#C8860A; --gold-light:#F5C842; --navy:#1B3A6B; --accent:#E65100; --accent-light:#FFD180; --bg:#FFFBF0; --found:#28A745; --radius:14px; }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; padding:0 0 48px; }
+.banner { display:flex; align-items:stretch; width:100%; height:64px; font-family:'Fredoka One',cursive; font-size:28px; letter-spacing:1px; box-shadow:0 3px 12px rgba(0,0,0,0.18); }
+.banner-left  { background:linear-gradient(135deg,#E8820A,#FFB300); color:#fff; flex:1; display:flex; align-items:center; padding:0 24px; text-shadow:1px 1px 3px rgba(0,0,0,0.25); }
+.banner-right { background:#C8200A; color:#fff; padding:0 28px; display:flex; align-items:center; text-shadow:1px 1px 3px rgba(0,0,0,0.25); min-width:200px; justify-content:center; }
+.tagline { text-align:center; font-size:18px; font-weight:700; color:#444; padding:14px 20px 10px; }
+.layout { display:flex; gap:20px; max-width:1100px; margin:0 auto; padding:16px 20px 0; align-items:flex-start; flex-wrap:wrap; }
+.img-wrap { position:relative; flex:1 1 520px; max-width:620px; border-radius:var(--radius); overflow:hidden; box-shadow:0 8px 32px rgba(230,81,0,0.2); background:#fff; user-select:none; cursor:crosshair; }
+.img-wrap img { width:100%; height:auto; display:block; pointer-events:none; -webkit-user-drag:none; }
+.hotspot { position:absolute; width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.15); border:3px solid rgba(255,255,255,0.7); cursor:pointer; transform:translate(-50%,-50%); transition:all 0.25s; display:flex; align-items:center; justify-content:center; font-size:20px; backdrop-filter:blur(2px); }
+.hotspot::after { content:''; position:absolute; width:100%; height:100%; border-radius:50%; border:3px solid rgba(255,255,255,0.5); animation:ripple 2s infinite; }
+.hotspot.found::after { display:none; }
+.hotspot:hover { background:rgba(255,255,255,0.4); border-color:var(--gold-light); transform:translate(-50%,-50%) scale(1.15); }
+.hotspot.found { background:rgba(40,167,69,0.85); border-color:#5EFF8A; animation:foundPop 0.4s ease; cursor:default; }
+.hotspot.found:hover { transform:translate(-50%,-50%) scale(1); }
+.hotspot.hint-pulse { background:rgba(248,200,20,0.6)!important; border-color:var(--gold-light)!important; animation:hintBounce 0.6s ease infinite alternate!important; }
+@keyframes ripple     { 0%{transform:scale(1);opacity:.8} 100%{transform:scale(1.9);opacity:0} }
+@keyframes foundPop   { 0%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.35)} 100%{transform:translate(-50%,-50%) scale(1)} }
+@keyframes hintBounce { from{transform:translate(-50%,-50%) scale(1)} to{transform:translate(-50%,-50%) scale(1.2)} }
+.sidebar { flex:1 1 280px; max-width:340px; display:flex; flex-direction:column; gap:14px; }
+.score-card { background:var(--accent); color:#fff; border-radius:var(--radius); padding:16px 20px; text-align:center; box-shadow:0 4px 16px rgba(0,0,0,0.2); }
+.score-label { font-size:13px; text-transform:uppercase; letter-spacing:1.5px; opacity:.75; margin-bottom:4px; }
+.score-num   { font-family:'Fredoka One',cursive; font-size:52px; color:var(--accent-light); line-height:1; }
+.score-denom { font-size:18px; opacity:.8; margin-top:2px; }
+.progress-bar  { height:10px; background:rgba(255,255,255,0.2); border-radius:10px; margin-top:12px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg,var(--gold),var(--gold-light)); border-radius:10px; transition:width 0.5s ease; width:0%; }
+.checklist-card  { background:#fff; border-radius:var(--radius); padding:16px 18px; box-shadow:0 4px 16px rgba(230,81,0,0.08); }
+.checklist-title { font-family:'Fredoka One',cursive; font-size:17px; color:var(--accent); margin-bottom:12px; border-bottom:2px solid var(--bg); padding-bottom:8px; }
+.check-item      { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid #F0F4F8; font-size:14px; color:#444; transition:all 0.3s; }
+.check-item:last-child { border-bottom:none; }
+.check-icon  { font-size:18px; width:26px; text-align:center; flex-shrink:0; }
+.check-box   { width:20px; height:20px; border-radius:5px; border:2.5px solid #CBD5E0; flex-shrink:0; display:flex; align-items:center; justify-content:center; margin-left:auto; transition:all 0.3s; }
+.check-box.checked { background:var(--found); border-color:var(--found); }
+.check-box.checked::after { content:'&#x2713;'; color:#fff; font-weight:800; font-size:13px; }
+.check-item.found-item { text-decoration:line-through; color:#A0AEC0; }
+.check-item.found-item .check-icon { opacity:.5; }
+.btn { display:block; width:100%; padding:12px; border-radius:10px; font-family:'Fredoka One',cursive; font-size:17px; border:none; cursor:pointer; transition:all 0.2s; text-align:center; }
+.btn:hover { transform:translateY(-2px); }
+.btn-gold   { background:linear-gradient(135deg,var(--gold),var(--gold-light)); color:var(--navy); box-shadow:0 3px 10px rgba(200,134,10,0.35); }
+.btn-accent { background:var(--accent); color:#fff; box-shadow:0 3px 10px rgba(0,0,0,0.2); }
+.toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--accent); color:#fff; padding:12px 26px; border-radius:50px; font-size:15px; font-weight:700; box-shadow:0 8px 24px rgba(0,0,0,0.25); z-index:100; transition:transform 0.35s cubic-bezier(.34,1.56,.64,1); pointer-events:none; white-space:nowrap; max-width:90vw; text-align:center; }
+.toast.show { transform:translateX(-50%) translateY(0); }
+.win-overlay { display:none; position:fixed; inset:0; background:rgba(230,81,0,0.9); z-index:200; align-items:center; justify-content:center; }
+.win-overlay.show { display:flex; }
+.win-box { background:#fff; border-radius:24px; padding:40px 50px; text-align:center; max-width:440px; animation:winPop 0.5s cubic-bezier(.34,1.56,.64,1); }
+@keyframes winPop { from{transform:scale(0.5);opacity:0} to{transform:scale(1);opacity:1} }
+.win-emoji { font-size:64px; margin-bottom:10px; }
+.win-title { font-family:'Fredoka One',cursive; font-size:34px; color:var(--navy); margin-bottom:8px; }
+.win-sub   { color:#666; font-size:15px; margin-bottom:24px; line-height:1.5; }
+.win-actions { display:flex; flex-direction:column; gap:10px; }
+.credit { text-align:center; font-size:12px; color:#999; padding:24px 20px 0; max-width:1100px; margin:0 auto; }
+@media(max-width:700px) { .layout{flex-direction:column} .sidebar,.img-wrap{max-width:100%;flex-basis:100%} .banner{font-size:22px;height:54px} .banner-right{min-width:140px} }
+</style>
+</head>
+<body>
+<div class="banner">
+  <div class="banner-left">Hidden Picture</div>
+  <div class="banner-right">RISE</div>
+</div>
+<div class="tagline">&mdash; Lifting yourself to meet the moment.</div>
+<div class="layout">
+  <div class="img-wrap" id="imgWrap">
+    <img src="https://lhhowell.github.io/kellamsmilebags/Rise_HiddenPicture.png" alt="Smile Bag – Rise hidden picture scene" id="mainImg">
+
+    <div class="hotspot" id="hs-0"  style="left:14%;top:12%" data-id="0"  data-label="&#x2600;&#xFE0F; Rising Sun"               data-hint="A bright sun rising with golden rays in the top left sky">&#x2600;&#xFE0F;</div>
+    <div class="hotspot" id="hs-1"  style="left:50%;top:52%" data-id="1"  data-label="&#x1F31E; Sunburst on Horizon"         data-hint="A second glowing sunburst right in the center of the scene on the horizon">&#x1F31E;</div>
+    <div class="hotspot" id="hs-2"  style="left:80%;top:12%" data-id="2"  data-label="&#x1F680; Rocket (top right)"          data-hint="A rocket launching into the sky in the top right background">&#x1F680;</div>
+    <div class="hotspot" id="hs-3"  style="left:78%;top:48%" data-id="3"  data-label="&#x1F680; Rocket (right-center)"       data-hint="A second rocket rising on the right-center side of the bag">&#x1F680;</div>
+    <div class="hotspot" id="hs-4"  style="left:28%;top:52%" data-id="4"  data-label="&#x1F388; Hot Air Balloon"             data-hint="A colorful striped hot air balloon rising on the left-center of the bag">&#x1F388;</div>
+    <div class="hotspot" id="hs-5"  style="left:62%;top:62%" data-id="5"  data-label="&#x1F985; Phoenix"                    data-hint="A golden phoenix rising from the lower right-center of the bag — the ultimate RISE!">&#x1F985;</div>
+    <div class="hotspot" id="hs-6"  style="left:36%;top:60%" data-id="6"  data-label="&#x1F985; Eagle in Flight"            data-hint="A bald eagle soaring through the center-left of the scene">&#x1F985;</div>
+    <div class="hotspot" id="hs-7"  style="left:20%;top:18%" data-id="7"  data-label="&#x1F426; Bird Lifting Off"           data-hint="A bird spreading its wings and lifting off in the upper left area">&#x1F426;</div>
+    <div class="hotspot" id="hs-8"  style="left:14%;top:22%" data-id="8"  data-label="&#x1FAB9; Nest with Baby Birds"        data-hint="A nest full of baby birds ready to rise and fly — upper left corner">&#x1FAB9;</div>
+    <div class="hotspot" id="hs-9"  style="left:76%;top:38%" data-id="9"  data-label="&#x1F98B; Butterfly"                  data-hint="A monarch butterfly rising on the right-center of the bag">&#x1F98B;</div>
+    <div class="hotspot" id="hs-10" style="left:10%;top:50%" data-id="10" data-label="&#x1F4A7; Waterfall"                  data-hint="A waterfall rising and flowing on the left side of the scene">&#x1F4A7;</div>
+    <div class="hotspot" id="hs-11" style="left:12%;top:72%" data-id="11" data-label="&#x1F697; Van / Car"                  data-hint="A yellow van or bus on the path at the lower left — rising to go places!">&#x1F697;</div>
+    <div class="hotspot" id="hs-12" style="left:24%;top:88%" data-id="12" data-label="&#x1F42C; Dolphin / Whale Rising"     data-hint="A dolphin or whale leaping up from the water at the bottom left">&#x1F42C;</div>
+    <div class="hotspot" id="hs-13" style="left:48%;top:88%" data-id="13" data-label="&#x1F422; Turtle Climbing"            data-hint="A turtle climbing and rising forward at the bottom center">&#x1F422;</div>
+    <div class="hotspot" id="hs-14" style="left:82%;top:88%" data-id="14" data-label="&#x1F415; Puppy with Papers"          data-hint="A golden puppy sitting with papers or mail at the bottom right">&#x1F415;</div>
+    <div class="hotspot" id="hs-15" style="left:14%;top:82%" data-id="15" data-label="&#x1F50B; Solar Panel"                data-hint="A solar panel rising to capture energy at the bottom left near the van">&#x1F50B;</div>
+    <div class="hotspot" id="hs-16" style="left:82%;top:72%" data-id="16" data-label="&#x1F33C; Yellow Flowers"             data-hint="Bright yellow flowers blooming and rising at the bottom right">&#x1F33C;</div>
+
+  </div>
+  <div class="sidebar">
+    <div class="score-card">
+      <div class="score-label">Objects Found</div>
+      <div class="score-num" id="scoreNum">0</div>
+      <div class="score-denom">out of 17</div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+    <div class="checklist-card">
+      <div class="checklist-title">&#x1F50D; Find These Objects</div>
+      <div id="checklist"></div>
+    </div>
+    <button class="btn btn-gold"   onclick="giveHint()">&#x1F4A1; Hint &mdash; Reveal One</button>
+    <button class="btn btn-accent" onclick="resetGame()">&#x1F504; Start Over</button>
+    <button class="btn btn-gold"   onclick="downloadActivity()" style="margin-top:4px;">&#x2B07;&#xFE0F; Download Activity</button>
+  </div>
+</div>
+<div class="win-overlay" id="winOverlay">
+  <div class="win-box">
+    <div class="win-emoji">&#x1F389;&#x1F680;&#x1F389;</div>
+    <div class="win-title">You Rose to It!</div>
+    <div class="win-sub">You found all 17 hidden objects in the Rise scene!<br><br>
+      <em style="color:var(--gold);font-weight:800;">"Lifting yourself to meet the moment."</em>
+    </div>
+    <div class="win-actions">
+      <button class="btn btn-gold"   onclick="resetGame();document.getElementById('winOverlay').classList.remove('show')">&#x1F504; Play Again</button>
+      <button class="btn btn-accent" onclick="downloadActivity()">&#x2B07;&#xFE0F; Download Activity</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<p class="credit">Kellam Smile Bags: A Word &amp; Wonder Experience &nbsp;&middot;&nbsp; Illustrated by Gemini / ChatGPT &nbsp;&middot;&nbsp; Activity by Claude</p>
+<script>
+const OBJECTS = [
+  {id:0,  emoji:"&#x2600;&#xFE0F;",  label:"Rising Sun"},
+  {id:1,  emoji:"&#x1F31E;",         label:"Sunburst on Horizon"},
+  {id:2,  emoji:"&#x1F680;",         label:"Rocket (top right)"},
+  {id:3,  emoji:"&#x1F680;",         label:"Rocket (right-center)"},
+  {id:4,  emoji:"&#x1F388;",         label:"Hot Air Balloon"},
+  {id:5,  emoji:"&#x1F985;",         label:"Phoenix"},
+  {id:6,  emoji:"&#x1F985;",         label:"Eagle in Flight"},
+  {id:7,  emoji:"&#x1F426;",         label:"Bird Lifting Off"},
+  {id:8,  emoji:"&#x1FAB9;",         label:"Nest with Baby Birds"},
+  {id:9,  emoji:"&#x1F98B;",         label:"Butterfly"},
+  {id:10, emoji:"&#x1F4A7;",         label:"Waterfall"},
+  {id:11, emoji:"&#x1F697;",         label:"Van / Car"},
+  {id:12, emoji:"&#x1F42C;",         label:"Dolphin / Whale Rising"},
+  {id:13, emoji:"&#x1F422;",         label:"Turtle Climbing"},
+  {id:14, emoji:"&#x1F415;",         label:"Puppy with Papers"},
+  {id:15, emoji:"&#x1F50B;",         label:"Solar Panel"},
+  {id:16, emoji:"&#x1F33C;",         label:"Yellow Flowers"}
+];
+const TOTAL=OBJECTS.length; let found=new Set(),hintUsed=[];
+const cl=document.getElementById('checklist');
+OBJECTS.forEach(obj=>{const div=document.createElement('div');div.className='check-item';div.id='ci-'+obj.id;div.innerHTML='<span class="check-icon">'+obj.emoji+'</span><span>'+obj.label+'</span><span class="check-box" id="cb-'+obj.id+'"></span>';cl.appendChild(div);});
+document.querySelectorAll('.hotspot').forEach(hs=>{hs.addEventListener('click',function(){const id=parseInt(this.dataset.id);if(found.has(id))return;found.add(id);this.classList.add('found');this.classList.remove('hint-pulse');document.getElementById('ci-'+id).classList.add('found-item');document.getElementById('cb-'+id).classList.add('checked');showToast('&#x2705; Found: '+this.dataset.label);updateScore();if(found.size===TOTAL)setTimeout(()=>document.getElementById('winOverlay').classList.add('show'),700);});});
+function updateScore(){const n=found.size;document.getElementById('scoreNum').textContent=n;document.getElementById('progressFill').style.width=(n/TOTAL*100)+'%';}
+function showToast(msg){const t=document.getElementById('toast');t.innerHTML=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
+function giveHint(){const unfound=OBJECTS.filter(o=>!found.has(o.id));if(!unfound.length){showToast('&#x1F389; You already found everything!');return;}const candidates=unfound.filter(o=>!hintUsed.includes(o.id));const pick=candidates.length?candidates[Math.floor(Math.random()*candidates.length)]:unfound[Math.floor(Math.random()*unfound.length)];hintUsed.push(pick.id);const hs=document.getElementById('hs-'+pick.id);document.querySelectorAll('.hotspot.hint-pulse').forEach(h=>h.classList.remove('hint-pulse'));hs.classList.add('hint-pulse');showToast('&#x1F4A1; Hint: '+hs.dataset.hint);setTimeout(()=>hs.classList.remove('hint-pulse'),3500);}
+function resetGame(){found.clear();hintUsed=[];document.querySelectorAll('.hotspot').forEach(h=>h.classList.remove('found','hint-pulse'));document.querySelectorAll('.check-item').forEach(c=>c.classList.remove('found-item'));document.querySelectorAll('.check-box').forEach(c=>c.classList.remove('checked'));updateScore();}
+function downloadActivity(){const blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Rise_HiddenPicture_Activity.html';a.click();}
+</script>
+</body>
+</html>
