@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>HEAL Digital Paint — Word World</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--gold:#F0C040;--gold-dark:#C8860A;--black:#111;--dark:#1A1A1A;--accent:#b5446e;}
+body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+.hdr{width:100%;background:var(--dark);border-bottom:3px solid var(--accent);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:18px;color:var(--gold);}
+.hdr-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px;}
+.back-btn{padding:7px 16px;border:2px solid #333;border-radius:50px;background:transparent;font-family:'Fredoka One',cursive;font-size:12px;color:#888;cursor:pointer;text-decoration:none;transition:all .2s;white-space:nowrap;}
+.back-btn:hover{border-color:var(--accent);color:var(--gold);}
+.word-strip{background:linear-gradient(135deg,#1F1700,#2A1A00);border-bottom:2px solid var(--accent);padding:10px 20px;text-align:center;width:100%;}
+.word-strip h2{font-family:'Fredoka One',cursive;font-size:22px;color:var(--gold);letter-spacing:2px;display:inline;}
+.word-strip p{display:inline;font-size:12px;color:rgba(255,255,255,.4);margin-left:10px;}
+.toolbar{background:#1A1A1A;border-bottom:2px solid #2A2A2A;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;width:100%;}
+.tool-group{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+.tool-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#555;white-space:nowrap;}
+.color-swatch{width:28px;height:28px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all .15s;flex-shrink:0;}
+.color-swatch.active{border-color:#fff;transform:scale(1.2);}
+.brush-btn{width:36px;height:36px;border-radius:8px;border:2px solid #333;background:#111;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#888;font-family:'Fredoka One',cursive;font-size:11px;transition:all .15s;}
+.brush-btn.active{border-color:var(--gold);color:var(--gold);background:#1F1700;}
+.tool-btn{padding:6px 14px;border-radius:8px;border:2px solid #333;background:#111;cursor:pointer;font-family:'Fredoka One',cursive;font-size:11px;color:#888;transition:all .15s;white-space:nowrap;}
+.tool-btn:hover{border-color:var(--accent);color:var(--gold);}
+.tool-btn.active{border-color:var(--gold);color:var(--gold);background:#1F1700;}
+.canvas-wrap{position:relative;width:100%;flex:1;display:flex;align-items:center;justify-content:center;padding:12px;background:#0A0A0A;}
+#coloringImg{position:absolute;top:12px;left:12px;right:12px;bottom:12px;width:calc(100% - 24px);height:calc(100% - 24px);object-fit:contain;pointer-events:none;z-index:2;}
+#paintCanvas{position:absolute;top:12px;left:12px;right:12px;bottom:12px;width:calc(100% - 24px);height:calc(100% - 24px);touch-action:none;z-index:1;cursor:crosshair;}
+.bottom-bar{background:#1A1A1A;border-top:2px solid #2A2A2A;padding:10px 16px;display:flex;gap:10px;align-items:center;justify-content:space-between;width:100%;flex-wrap:wrap;}
+.save-btn{padding:8px 22px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#111;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:13px;cursor:pointer;}
+.opacity-wrap{display:flex;align-items:center;gap:8px;}
+.opacity-wrap label{font-family:'Fredoka One',cursive;font-size:10px;color:#555;letter-spacing:.1em;text-transform:uppercase;}
+input[type=range]{width:80px;accent-color:var(--gold);}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div>
+    <div class="hdr-title">&#127912; HEAL Digital Paint</div>
+    <div class="hdr-sub">Color the scene &middot; Word World</div>
+  </div>
+  <a href="KSB_Stories_Kiosk.html" class="back-btn">&#8592; Word World</a>
+</div>
+<div class="word-strip">
+  <h2>HEAL</h2>
+  <p>Restoring what was broken</p>
+</div>
+<div class="toolbar">
+  <div class="tool-group">
+    <span class="tool-label">Colors:</span>
+    <div class="color-swatch active" style="background:#e74c3c;" onclick="setColor('#e74c3c',this)" title="Red"></div>
+    <div class="color-swatch" style="background:#e67e22;" onclick="setColor('#e67e22',this)" title="Orange"></div>
+    <div class="color-swatch" style="background:#f1c40f;" onclick="setColor('#f1c40f',this)" title="Yellow"></div>
+    <div class="color-swatch" style="background:#2ecc71;" onclick="setColor('#2ecc71',this)" title="Green"></div>
+    <div class="color-swatch" style="background:#1b7a78;" onclick="setColor('#1b7a78',this)" title="Teal"></div>
+    <div class="color-swatch" style="background:#3498db;" onclick="setColor('#3498db',this)" title="Blue"></div>
+    <div class="color-swatch" style="background:#9b59b6;" onclick="setColor('#9b59b6',this)" title="Purple"></div>
+    <div class="color-swatch" style="background:#e91e8c;" onclick="setColor('#e91e8c',this)" title="Pink"></div>
+    <div class="color-swatch" style="background:#795548;" onclick="setColor('#795548',this)" title="Brown"></div>
+    <div class="color-swatch" style="background:#fff;" style="border:2px solid #333;" onclick="setColor('#ffffff',this)" title="White"></div>
+    <div class="color-swatch" style="background:#222;" onclick="setColor('#222222',this)" title="Black"></div>
+    <input type="color" id="customColor" value="#e74c3c" onchange="setColor(this.value,null)" style="width:28px;height:28px;border-radius:50%;border:none;cursor:pointer;padding:0;background:transparent;" title="Custom color"/>
+  </div>
+  <div class="tool-group">
+    <span class="tool-label">Size:</span>
+    <button class="brush-btn active" id="bsm" onclick="setBrush(4,this)" title="Small">S</button>
+    <button class="brush-btn" id="bmd" onclick="setBrush(10,this)" title="Medium">M</button>
+    <button class="brush-btn" id="blg" onclick="setBrush(20,this)" title="Large">L</button>
+    <button class="brush-btn" id="bxl" onclick="setBrush(36,this)" title="XL">XL</button>
+  </div>
+  <div class="tool-group">
+    <button class="tool-btn active" id="tPaint" onclick="setTool('paint',this)">&#9998; Paint</button>
+    <button class="tool-btn" id="tErase" onclick="setTool('erase',this)">&#9676; Erase</button>
+    <button class="tool-btn" onclick="undoLast()">&#8630; Undo</button>
+    <button class="tool-btn" onclick="clearCanvas()">&#128465; Clear</button>
+  </div>
+</div>
+<div class="canvas-wrap" id="canvasWrap">
+  <img id="coloringImg" src="https://lhhowell.github.io/kellamsmilebags/Heal_ColoringPage2.png" alt="HEAL coloring page" crossorigin="anonymous"/>
+  <canvas id="paintCanvas"></canvas>
+</div>
+<div class="bottom-bar">
+  <div class="opacity-wrap">
+    <label>Opacity:</label>
+    <input type="range" id="opacitySlider" min="10" max="100" value="80" oninput="setOpacity(this.value)"/>
+    <span id="opacityVal" style="font-family:Fredoka One,cursive;font-size:12px;color:#888;">80%</span>
+  </div>
+  <button class="save-btn" onclick="saveArt()">&#11015;&#65039; Save My Artwork</button>
+</div>
+<script>
+var color='#e74c3c',brushSize=4,tool='paint',opacity=0.8;
+var history=[],maxHistory=20;
+var canvas=document.getElementById('paintCanvas');
+var ctx=canvas.getContext('2d');
+var wrap=document.getElementById('canvasWrap');
+var img=document.getElementById('coloringImg');
+var painting=false,lastX=0,lastY=0;
+
+function resize(){
+  var rect=wrap.getBoundingClientRect();
+  canvas.width=rect.width-24;canvas.height=rect.height-24;
+  redrawHistory();
+}
+
+function redrawHistory(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  history.forEach(function(snap){
+    var i=new Image();i.src=snap;
+    ctx.drawImage(i,0,0);
+  });
+}
+
+function saveSnapshot(){
+  if(history.length>=maxHistory)history.shift();
+  history.push(canvas.toDataURL());
+}
+
+function undoLast(){
+  if(!history.length)return;
+  history.pop();
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  if(history.length){var i=new Image();i.src=history[history.length-1];i.onload=function(){ctx.drawImage(i,0,0);};}
+}
+
+function clearCanvas(){if(confirm('Clear your artwork?')){history=[];ctx.clearRect(0,0,canvas.width,canvas.height);}}
+
+function getPos(e){
+  var rect=canvas.getBoundingClientRect();
+  var src=e.touches?e.touches[0]:e;
+  return{x:(src.clientX-rect.left)*(canvas.width/rect.width),y:(src.clientY-rect.top)*(canvas.height/rect.height)};
+}
+
+function startPaint(e){e.preventDefault();painting=true;saveSnapshot();var p=getPos(e);lastX=p.x;lastY=p.y;draw(p.x,p.y,p.x,p.y);}
+function doPaint(e){e.preventDefault();if(!painting)return;var p=getPos(e);draw(lastX,lastY,p.x,p.y);lastX=p.x;lastY=p.y;}
+function stopPaint(){painting=false;}
+
+function draw(x1,y1,x2,y2){
+  ctx.beginPath();
+  ctx.globalCompositeOperation=tool==='erase'?'destination-out':'source-over';
+  ctx.globalAlpha=tool==='erase'?1:opacity;
+  ctx.strokeStyle=color;
+  ctx.lineWidth=brushSize;
+  ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);
+  ctx.stroke();
+  ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';
+}
+
+canvas.addEventListener('mousedown',startPaint);
+canvas.addEventListener('mousemove',doPaint);
+canvas.addEventListener('mouseup',stopPaint);
+canvas.addEventListener('mouseleave',stopPaint);
+canvas.addEventListener('touchstart',startPaint,{passive:false});
+canvas.addEventListener('touchmove',doPaint,{passive:false});
+canvas.addEventListener('touchend',stopPaint);
+
+function setColor(c,el){
+  color=c;tool='paint';
+  document.querySelectorAll('.color-swatch').forEach(function(s){s.classList.remove('active');});
+  if(el)el.classList.add('active');
+  document.getElementById('tPaint').classList.add('active');
+  document.getElementById('tErase').classList.remove('active');
+}
+
+function setBrush(size,el){
+  brushSize=size;
+  document.querySelectorAll('.brush-btn').forEach(function(b){b.classList.remove('active');});
+  if(el)el.classList.add('active');
+}
+
+function setTool(t,el){
+  tool=t;
+  document.querySelectorAll('.tool-btn').forEach(function(b){b.classList.remove('active');});
+  if(el)el.classList.add('active');
+}
+
+function setOpacity(v){
+  opacity=v/100;
+  document.getElementById('opacityVal').textContent=v+'%';
+}
+
+function saveArt(){
+  var merged=document.createElement('canvas');
+  merged.width=canvas.width;merged.height=canvas.height;
+  var mctx=merged.getContext('2d');
+  mctx.fillStyle='#fff';mctx.fillRect(0,0,merged.width,merged.height);
+  var imgEl=document.getElementById('coloringImg');
+  try{mctx.drawImage(imgEl,0,0,merged.width,merged.height);}catch(e){}
+  mctx.drawImage(canvas,0,0);
+  var a=document.createElement('a');
+  a.href=merged.toDataURL('image/png');
+  a.download='HEAL_MyArtwork.png';
+  a.click();
+}
+
+window.addEventListener('resize',resize);
+img.onload=function(){resize();};
+if(img.complete)resize();else setTimeout(resize,500);
+</script>
+</body>
+</html>
