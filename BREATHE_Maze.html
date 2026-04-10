@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>BREATHE Maze — Word World</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--gold:#F0C040;--gold-dark:#C8860A;--black:#111;--dark:#1A1A1A;--accent:#1b7a78;--accent-lt:#d6eeee;}
+body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+.hdr{width:100%;background:var(--dark);border-bottom:3px solid var(--accent);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);}
+.hdr-sub{font-size:12px;color:rgba(255,255,255,.4);margin-top:2px;}
+.back-btn{padding:8px 18px;border:2px solid #333;border-radius:50px;background:transparent;font-family:'Fredoka One',cursive;font-size:13px;color:#888;cursor:pointer;text-decoration:none;transition:all .2s;}
+.back-btn:hover{border-color:var(--accent);color:var(--gold);}
+.main{display:flex;flex-direction:column;align-items:center;padding:24px 20px;gap:16px;width:100%;max-width:600px;}
+.word-banner{background:linear-gradient(135deg,#1F1700,#2A1A00);border:2px solid var(--accent);border-radius:14px;padding:14px 28px;text-align:center;width:100%;}
+.word-banner h2{font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);letter-spacing:2px;}
+.word-banner p{font-size:13px;color:rgba(255,255,255,.5);margin-top:3px;}
+.level-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.lvl-btn{font-family:'Fredoka One',cursive;font-size:13px;padding:8px 20px;border-radius:50px;border:2px solid #333;background:transparent;color:#888;cursor:pointer;transition:all .2s;}
+.lvl-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+.instructions{background:#1A1A1A;border:2px solid #2A2A2A;border-radius:12px;padding:12px 20px;font-size:13px;color:#aaa;text-align:center;width:100%;line-height:1.7;}
+.instructions strong{color:var(--gold);}
+.maze-wrap{position:relative;border:3px solid var(--accent);border-radius:16px;overflow:hidden;background:#0A0A0A;box-shadow:0 8px 32px rgba(0,0,0,.4);}
+canvas{display:block;}
+.stats-row{display:flex;gap:24px;font-family:'Fredoka One',cursive;font-size:14px;color:#555;}
+.stats-row span{color:var(--gold);}
+.controls{display:grid;grid-template-columns:repeat(3,52px);grid-template-rows:repeat(2,52px);gap:8px;}
+.ctrl-btn{background:#1A1A1A;border:2px solid #333;border-radius:10px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;color:#888;user-select:none;}
+.ctrl-btn:active{background:var(--accent);border-color:var(--gold);color:#111;transform:scale(.95);}
+.ctrl-blank{background:transparent;border:none;}
+.win-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:999;align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;padding:24px;}
+.win-overlay.show{display:flex;}
+.win-icon{font-size:64px;}
+.win-title{font-family:'Fredoka One',cursive;font-size:30px;color:var(--gold);}
+.win-msg{font-size:14px;color:rgba(255,255,255,.7);max-width:400px;line-height:1.75;background:#1A1A1A;border:2px solid #2A2A2A;border-radius:14px;padding:18px 22px;}
+.win-msg em{color:var(--gold);font-style:italic;}
+.win-steps{font-family:'Fredoka One',cursive;font-size:14px;color:#555;}
+.win-steps span{color:var(--gold);}
+.win-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:4px;}
+.win-btn{padding:12px 28px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#111;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:16px;cursor:pointer;}
+.win-back{padding:12px 28px;border:2px solid #333;background:transparent;color:#888;border-radius:50px;font-family:'Fredoka One',cursive;font-size:16px;cursor:pointer;text-decoration:none;}
+.win-back:hover{border-color:var(--gold);color:var(--gold);}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div>
+    <div class="hdr-title">&#127919; BREATHE Maze</div>
+    <div class="hdr-sub">Find your way through &middot; Word World</div>
+  </div>
+  <a href="KSB_Stories_Kiosk.html" class="back-btn">&#8592; Word World</a>
+</div>
+<div class="main">
+  <div class="word-banner">
+    <h2>BREATHE</h2>
+    <p>Pausing to find your calm</p>
+  </div>
+  <div class="level-btns">
+    <button class="lvl-btn active" id="btnE" onclick="initPuzzle(0,this)">&#129300; Easy</button>
+    <button class="lvl-btn" id="btnM" onclick="initPuzzle(1,this)">&#129504; Medium</button>
+    <button class="lvl-btn" id="btnH" onclick="initPuzzle(2,this)">&#11088; Hard</button>
+    <button class="lvl-btn" onclick="shuffle()">&#128260; Shuffle</button>
+  </div>
+  <div class="instructions">
+    Help <strong>Lily</strong> find their way through the meadow!<br/>
+    <strong>Arrow keys</strong> or the <strong>buttons below</strong> to move. &#127807;
+  </div>
+  <div class="maze-wrap"><canvas id="mazeCanvas"></canvas></div>
+  <div class="stats-row">Steps: <span id="stepCount">0</span> &nbsp;&middot;&nbsp; Best: <span id="bestCount">&#8212;</span></div>
+  <div class="controls">
+    <div class="ctrl-blank"></div>
+    <button class="ctrl-btn" onclick="move(0,-1)">&#9650;</button>
+    <div class="ctrl-blank"></div>
+    <button class="ctrl-btn" onclick="move(-1,0)">&#9664;</button>
+    <button class="ctrl-btn" onclick="move(0,1)">&#9660;</button>
+    <button class="ctrl-btn" onclick="move(1,0)">&#9654;</button>
+  </div>
+</div>
+<div class="win-overlay" id="winOverlay">
+  <div class="win-icon">&#127775;</div>
+  <div class="win-title">You breathed through it!</div>
+  <div class="win-steps">Completed in <span id="winSteps"></span> steps!</div>
+  <div class="win-msg">Slow and steady, one step at a time. That patient pace is exactly what BREATHE is all about.</div>
+  <div class="win-btns">
+    <button class="win-btn" onclick="resetMaze()">&#127881; Play Again</button>
+    <a href="KSB_Stories_Kiosk.html" class="win-back">&#8592; Word World</a>
+  </div>
+</div>
+<script>
+var MAZES=[[[1,1,1,1,1,1,1,1,1,1,1],[1,0,0,0,0,0,1,0,0,0,1],[1,0,1,1,1,0,1,0,1,0,1],[1,0,1,0,0,0,0,0,1,0,1],[1,0,1,0,1,1,1,1,1,0,1],[1,0,0,0,0,0,0,0,0,0,1],[1,1,1,0,1,0,1,0,1,1,1],[1,0,0,0,1,0,1,0,0,0,1],[1,0,1,0,0,0,1,1,1,0,1],[1,0,0,0,0,0,0,0,0,0,1],[1,1,1,1,1,1,1,1,1,1,1]],[[1,1,1,1,1,1,1,1,1,1,1,1,1],[1,0,0,0,0,0,1,0,0,0,0,0,1],[1,0,1,1,1,0,1,0,1,1,1,0,1],[1,0,0,0,1,0,0,0,1,0,0,0,1],[1,1,1,0,1,1,1,0,1,0,1,0,1],[1,0,0,0,0,0,0,0,0,0,1,0,1],[1,0,1,1,1,0,1,1,1,0,1,0,1],[1,0,0,0,1,0,0,0,1,0,0,0,1],[1,1,1,0,1,0,1,0,1,1,1,0,1],[1,0,0,0,0,0,1,0,0,0,0,0,1],[1,0,1,1,1,1,1,0,1,1,1,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,1],[1,1,1,1,1,1,1,1,1,1,1,1,1]],[[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,0,0,0,0,0,1,0,0,0,0,0,0,0,1],[1,0,1,1,1,0,1,0,1,1,1,1,1,0,1],[1,0,1,0,0,0,1,0,0,0,0,0,1,0,1],[1,0,1,0,1,1,1,1,1,0,1,0,1,0,1],[1,0,0,0,0,0,0,0,1,0,1,0,0,0,1],[1,1,1,0,1,1,1,0,1,0,1,1,1,0,1],[1,0,0,0,1,0,0,0,0,0,0,0,1,0,1],[1,0,1,1,1,0,1,1,1,1,1,0,1,0,1],[1,0,0,0,0,0,1,0,0,0,1,0,0,0,1],[1,1,1,1,1,0,1,0,1,0,1,1,1,0,1],[1,0,0,0,1,0,0,0,1,0,0,0,0,0,1],[1,0,1,0,1,1,1,0,1,1,1,1,1,0,1],[1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]]];
+var SIZES=[{cols:11,rows:11},{cols:13,rows:13},{cols:15,rows:15}];
+var STARTS=[{x:1,y:1},{x:1,y:1},{x:1,y:1}];
+var ENDS=[{x:9,y:9},{x:11,y:11},{x:13,y:13}];
+var cur=0,player={x:1,y:1},steps=0,best={};
+var canvas=document.getElementById('mazeCanvas');
+var ctx=canvas.getContext('2d');
+var CELL,MAZE,COLS,ROWS,START,END;
+
+function initPuzzle(lvl,btn){
+  cur=lvl;
+  document.querySelectorAll('.lvl-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  MAZE=MAZES[lvl];COLS=SIZES[lvl].cols;ROWS=SIZES[lvl].rows;
+  START=STARTS[lvl];END=ENDS[lvl];
+  player={x:START.x,y:START.y};steps=0;
+  document.getElementById('stepCount').textContent=0;
+  document.getElementById('winOverlay').classList.remove('show');
+  setupCanvas();
+}
+
+function setupCanvas(){
+  var maxW=Math.min(window.innerWidth-40,540);
+  CELL=Math.floor(maxW/COLS);
+  canvas.width=CELL*COLS;canvas.height=CELL*ROWS;
+  draw();
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(var r=0;r<ROWS;r++){for(var c=0;c<COLS;c++){
+    if(MAZE[r][c]===1){ctx.fillStyle='#0D1A0D';ctx.fillRect(c*CELL,r*CELL,CELL,CELL);}
+    else{ctx.fillStyle='#F5F0E0';ctx.fillRect(c*CELL,r*CELL,CELL,CELL);}
+  }}
+  ctx.fillStyle='rgba(200,134,10,.1)';
+  for(var r=0;r<ROWS;r++){for(var c=0;c<COLS;c++){
+    if(MAZE[r][c]===0){ctx.beginPath();ctx.arc(c*CELL+CELL/2,r*CELL+CELL/2,2,0,Math.PI*2);ctx.fill();}
+  }}
+  ctx.fillStyle='#C8860A';ctx.fillRect(END.x*CELL+3,END.y*CELL+3,CELL-6,CELL-6);
+  ctx.font=(CELL-8)+'px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('&#127807;',END.x*CELL+CELL/2,END.y*CELL+CELL/2+1);
+  var px=player.x*CELL+CELL/2,py=player.y*CELL+CELL/2,r2=CELL/2-3;
+  ctx.beginPath();ctx.arc(px,py,r2,0,Math.PI*2);
+  ctx.fillStyle='#1B7A78';ctx.fill();
+  ctx.strokeStyle='#4EC9C7';ctx.lineWidth=2;ctx.stroke();
+  ctx.font=(CELL-10)+'px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('&#128522;',px,py+1);
+}
+
+function move(dx,dy){
+  var nx=player.x+dx,ny=player.y+dy;
+  if(nx<0||nx>=COLS||ny<0||ny>=ROWS)return;
+  if(MAZE[ny][nx]===1)return;
+  player.x=nx;player.y=ny;steps++;
+  document.getElementById('stepCount').textContent=steps;
+  draw();
+  if(player.x===END.x&&player.y===END.y){
+    setTimeout(function(){
+      document.getElementById('winSteps').textContent=steps;
+      var k='lvl'+cur;
+      if(!best[k]||steps<best[k]){best[k]=steps;document.getElementById('bestCount').textContent=steps+' ('+['Easy','Med','Hard'][cur]+')';}
+      document.getElementById('winOverlay').classList.add('show');
+    },200);
+  }
+}
+
+function resetMaze(){
+  player={x:START.x,y:START.y};steps=0;
+  document.getElementById('stepCount').textContent=0;
+  document.getElementById('winOverlay').classList.remove('show');
+  draw();
+}
+
+function shuffle(){initPuzzle(cur,null);}
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowUp'){e.preventDefault();move(0,-1);}
+  if(e.key==='ArrowDown'){e.preventDefault();move(0,1);}
+  if(e.key==='ArrowLeft'){e.preventDefault();move(-1,0);}
+  if(e.key==='ArrowRight'){e.preventDefault();move(1,0);}
+});
+
+window.addEventListener('resize',setupCanvas);
+initPuzzle(0,document.getElementById('btnE'));
+</script>
+</body>
+</html>
