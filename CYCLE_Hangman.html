@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CYCLE Hangman — Word World</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--gold:#F0C040;--gold-dark:#C8860A;--black:#111;--dark:#1A1A1A;--accent:#c8860a;}
+body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+.hdr{width:100%;background:var(--dark);border-bottom:3px solid var(--accent);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);}
+.hdr-sub{font-size:12px;color:rgba(255,255,255,.4);margin-top:2px;}
+.back-btn{padding:8px 18px;border:2px solid #333;border-radius:50px;background:transparent;font-family:'Fredoka One',cursive;font-size:13px;color:#888;cursor:pointer;text-decoration:none;transition:all .2s;}
+.back-btn:hover{border-color:var(--accent);color:var(--gold);}
+.main{display:flex;flex-direction:column;align-items:center;padding:24px 20px;gap:16px;width:100%;max-width:560px;}
+.clue-box{background:#1A1A1A;border:2px solid var(--accent);border-radius:14px;padding:14px 20px;text-align:center;width:100%;}
+.clue-label{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:6px;}
+.clue-text{font-size:15px;color:#fff;line-height:1.6;font-weight:700;}
+.flower-wrap{text-align:center;}
+.flower-display{font-size:72px;line-height:1;transition:all .3s;}
+.flower-lives{font-family:'Fredoka One',cursive;font-size:13px;color:#555;margin-top:6px;}
+.flower-lives span{color:var(--gold);}
+.word-display{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.letter-slot{width:36px;height:44px;border-bottom:3px solid var(--accent);display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px;font-family:'Fredoka One',cursive;font-size:24px;color:var(--gold);letter-spacing:1px;}
+.letter-slot.space{border-bottom:none;width:16px;}
+.keyboard{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:400px;}
+.key-btn{width:44px;height:44px;border-radius:10px;border:2px solid #2A2A2A;background:#1A1A1A;font-family:'Fredoka One',cursive;font-size:16px;color:#ccc;cursor:pointer;transition:all .15s;}
+.key-btn:hover:not(:disabled){border-color:var(--accent);color:var(--gold);background:#1F1700;}
+.key-btn:disabled{opacity:.3;cursor:not-allowed;}
+.key-btn.correct{border-color:#2d7a52;color:#2d7a52;background:rgba(45,122,82,.15);}
+.key-btn.wrong{border-color:#c0392b;color:#c0392b;background:rgba(192,57,43,.1);}
+.result-banner{display:none;background:linear-gradient(135deg,#1F1700,#2A1A00);border:2px solid var(--gold);border-radius:14px;padding:20px 24px;text-align:center;width:100%;}
+.result-banner.show{display:block;}
+.result-icon{font-size:52px;margin-bottom:8px;}
+.result-title{font-family:'Fredoka One',cursive;font-size:24px;color:var(--gold);margin-bottom:8px;}
+.result-msg{font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:14px;}
+.result-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.play-again{padding:10px 24px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#111;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:14px;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div>
+    <div class="hdr-title">🌸 CYCLE Hangman</div>
+    <div class="hdr-sub">Guess the word &middot; Word World</div>
+  </div>
+  <a href="KSB_Stories_Kiosk.html" class="back-btn">← Word World</a>
+</div>
+<div class="main">
+  <div class="clue-box">
+    <div class="clue-label">💡 Your Clue</div>
+    <div class="clue-text">Moving through seasons of change</div>
+  </div>
+  <div class="flower-wrap">
+    <div class="flower-display" id="flowerDisplay">🌸</div>
+    <div class="flower-lives">Petals remaining: <span id="livesCount">6</span></div>
+  </div>
+  <div class="word-display" id="wordDisplay"></div>
+  <div class="keyboard" id="keyboard"></div>
+  <div class="result-banner" id="resultBanner">
+    <div class="result-icon" id="resultIcon"></div>
+    <div class="result-title" id="resultTitle"></div>
+    <div class="result-msg" id="resultMsg"></div>
+    <div class="result-btns">
+      <button class="play-again" onclick="resetGame()">🌸 Play Again</button>
+      <a href="KSB_Stories_Kiosk.html" class="back-btn">← Word World</a>
+    </div>
+  </div>
+</div>
+<script>
+var WORD='CYCLE';
+var FLOWERS=['🌸','🌷','🌺','🌻','🌼','🥀','💀'];
+var guessed=[],lives=6,gameOver=false;
+
+function buildDisplay(){
+  var d=document.getElementById('wordDisplay');
+  d.innerHTML='';
+  WORD.split('').forEach(function(l){
+    var s=document.createElement('div');
+    s.className='letter-slot';
+    s.id='slot-'+l+Math.random().toString(36).substr(2,4);
+    s.textContent=guessed.includes(l)||l==='-'?l:'';
+    d.appendChild(s);
+  });
+}
+
+function buildKeyboard(){
+  var k=document.getElementById('keyboard');
+  k.innerHTML='';
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(function(l){
+    var b=document.createElement('button');
+    b.className='key-btn';b.textContent=l;b.id='key-'+l;
+    b.onclick=function(){guess(l);};
+    k.appendChild(b);
+  });
+}
+
+function guess(l){
+  if(gameOver||guessed.includes(l))return;
+  guessed.push(l);
+  var btn=document.getElementById('key-'+l);
+  if(WORD.includes(l)){
+    btn.classList.add('correct');btn.disabled=true;
+    updateDisplay();
+    if(WORD.split('').every(function(c){return guessed.includes(c)||c==='-';})){
+      showResult(true);
+    }
+  }else{
+    btn.classList.add('wrong');btn.disabled=true;
+    lives--;
+    document.getElementById('livesCount').textContent=lives;
+    document.getElementById('flowerDisplay').textContent=FLOWERS[6-lives];
+    if(lives<=0)showResult(false);
+  }
+}
+
+function updateDisplay(){
+  var slots=document.querySelectorAll('.letter-slot');
+  var idx=0;
+  WORD.split('').forEach(function(l,i){
+    if(slots[i])slots[i].textContent=guessed.includes(l)||l==='-'?l:'';
+  });
+}
+
+function showResult(won){
+  gameOver=true;
+  document.getElementById('keyboard').style.opacity='0.3';
+  var banner=document.getElementById('resultBanner');
+  banner.classList.add('show');
+  if(won){
+    document.getElementById('resultIcon').textContent='🌟';
+    document.getElementById('resultTitle').textContent='You got it!';
+    document.getElementById('resultMsg').textContent='The word is '+WORD+'! '+'Moving through seasons of change'+' — you understood it perfectly!';
+  }else{
+    document.getElementById('flowerDisplay').textContent='💀';
+    document.getElementById('resultIcon').textContent='🥀';
+    document.getElementById('resultTitle').textContent='The word was '+WORD;
+    document.getElementById('resultMsg').textContent='Moving through seasons of change' + ' — try again and this time it will stick!';
+  }
+}
+
+function resetGame(){
+  guessed=[];lives=6;gameOver=false;
+  document.getElementById('flowerDisplay').textContent='🌸';
+  document.getElementById('livesCount').textContent=6;
+  document.getElementById('resultBanner').classList.remove('show');
+  document.getElementById('keyboard').style.opacity='1';
+  buildDisplay();buildKeyboard();
+}
+
+buildDisplay();buildKeyboard();
+</script>
+</body>
+</html>
