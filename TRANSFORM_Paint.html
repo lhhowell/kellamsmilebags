@@ -27,7 +27,7 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;di
 .tool-btn{padding:6px 14px;border-radius:8px;border:2px solid #333;background:#111;cursor:pointer;font-family:'Fredoka One',cursive;font-size:11px;color:#888;transition:all .15s;white-space:nowrap;}
 .tool-btn:hover{border-color:var(--accent);color:var(--gold);}
 .tool-btn.active{border-color:var(--gold);color:var(--gold);background:#1F1700;}
-.canvas-wrap{position:relative;width:100%;flex:1;display:flex;align-items:center;justify-content:center;padding:12px;background:#0A0A0A;}
+.canvas-wrap{position:relative;width:100%;height:calc(100vh - 280px);min-height:400px;display:flex;align-items:center;justify-content:center;padding:12px;background:#0A0A0A;}
 #coloringImg{position:absolute;top:12px;left:12px;right:12px;bottom:12px;width:calc(100% - 24px);height:calc(100% - 24px);object-fit:contain;pointer-events:none;z-index:2;}
 #paintCanvas{position:absolute;top:12px;left:12px;right:12px;bottom:12px;width:calc(100% - 24px);height:calc(100% - 24px);touch-action:none;z-index:1;cursor:crosshair;}
 .bottom-bar{background:#1A1A1A;border-top:2px solid #2A2A2A;padding:10px 16px;display:flex;gap:10px;align-items:center;justify-content:space-between;width:100%;flex-wrap:wrap;}
@@ -93,7 +93,7 @@ input[type=range]{width:80px;accent-color:var(--gold);}
 </div>
 <script>
 var color='#e74c3c',brushSize=4,tool='paint',opacity=0.8;
-var history=[],maxHistory=20;
+var paintHistory=[],maxHistory=20;
 var canvas=document.getElementById('paintCanvas');
 var ctx=canvas.getContext('2d');
 var wrap=document.getElementById('canvasWrap');
@@ -108,25 +108,25 @@ function resize(){
 
 function redrawHistory(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  history.forEach(function(snap){
+  paintHistory.forEach(function(snap){
     var i=new Image();i.src=snap;
     ctx.drawImage(i,0,0);
   });
 }
 
 function saveSnapshot(){
-  if(history.length>=maxHistory)history.shift();
-  history.push(canvas.toDataURL());
+  if(paintHistory.length>=maxHistory)paintHistory.shift();
+  paintHistory.push(canvas.toDataURL());
 }
 
 function undoLast(){
-  if(!history.length)return;
-  history.pop();
+  if(!paintHistory.length)return;
+  paintHistory.pop();
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  if(history.length){var i=new Image();i.src=history[history.length-1];i.onload=function(){ctx.drawImage(i,0,0);};}
+  if(paintHistory.length){var i=new Image();i.src=paintHistory[paintHistory.length-1];i.onload=function(){ctx.drawImage(i,0,0);};}
 }
 
-function clearCanvas(){if(confirm('Clear your artwork?')){history=[];ctx.clearRect(0,0,canvas.width,canvas.height);}}
+function clearCanvas(){if(confirm('Clear your artwork?')){paintHistory=[];ctx.clearRect(0,0,canvas.width,canvas.height);}}
 
 function getPos(e){
   var rect=canvas.getBoundingClientRect();
