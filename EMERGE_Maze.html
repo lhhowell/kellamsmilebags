@@ -48,7 +48,7 @@ canvas{display:block;}
 <body>
 <div class="hdr">
   <div>
-    <div class="hdr-title">&#127919; EMERGE Maze</div>
+    <div class="hdr-title">🎯 EMERGE Maze</div>
     <div class="hdr-sub">Find your way through &middot; Word World</div>
   </div>
   <a href="KSB_Stories_Kiosk.html" class="back-btn">&#8592; Word World</a>
@@ -66,7 +66,7 @@ canvas{display:block;}
   </div>
   <div class="instructions">
     Help <strong>Lily</strong> find their way through the woodland!<br/>
-    <strong>Arrow keys</strong> or the <strong>buttons below</strong> to move. &#127807;
+    <strong>Arrow keys</strong> or the <strong>buttons below</strong> to move. 🌿
   </div>
   <div class="maze-wrap"><canvas id="mazeCanvas"></canvas></div>
   <div class="stats-row">Steps: <span id="stepCount">0</span> &nbsp;&middot;&nbsp; Best: <span id="bestCount">&#8212;</span></div>
@@ -80,12 +80,12 @@ canvas{display:block;}
   </div>
 </div>
 <div class="win-overlay" id="winOverlay">
-  <div class="win-icon">&#127775;</div>
+  <div class="win-icon">🌟</div>
   <div class="win-title">You emerged!</div>
   <div class="win-steps">Completed in <span id="winSteps"></span> steps!</div>
   <div class="win-msg">Through the twists, the dead ends, the moments of uncertainty — you kept going. And here you are, emerged and stronger.</div>
   <div class="win-btns">
-    <button class="win-btn" onclick="resetMaze()">&#127881; Play Again</button>
+    <button class="win-btn" onclick="resetMaze()">🎉 Play Again</button>
     <a href="KSB_Stories_Kiosk.html" class="win-back">&#8592; Word World</a>
   </div>
 </div>
@@ -130,13 +130,13 @@ function draw(){
   }}
   ctx.fillStyle='#C8860A';ctx.fillRect(END.x*CELL+3,END.y*CELL+3,CELL-6,CELL-6);
   ctx.font=(CELL-8)+'px serif';ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillText('&#127807;',END.x*CELL+CELL/2,END.y*CELL+CELL/2+1);
+  ctx.fillText('🌿',END.x*CELL+CELL/2,END.y*CELL+CELL/2+1);
   var px=player.x*CELL+CELL/2,py=player.y*CELL+CELL/2,r2=CELL/2-3;
   ctx.beginPath();ctx.arc(px,py,r2,0,Math.PI*2);
   ctx.fillStyle='#1B7A78';ctx.fill();
   ctx.strokeStyle='#4EC9C7';ctx.lineWidth=2;ctx.stroke();
   ctx.font=(CELL-10)+'px serif';ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillText('&#128522;',px,py+1);
+  ctx.fillText('😊',px,py+1);
 }
 
 function move(dx,dy){
