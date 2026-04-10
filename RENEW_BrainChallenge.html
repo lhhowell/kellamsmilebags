@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>RENEW Brain Challenge — Word World</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--gold:#F0C040;--gold-dark:#C8860A;--black:#111;--dark:#1A1A1A;--accent:#2d7a52;}
+body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+.hdr{width:100%;background:var(--dark);border-bottom:3px solid var(--accent);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);}
+.hdr-sub{font-size:12px;color:rgba(255,255,255,.4);margin-top:2px;}
+.back-btn{padding:8px 18px;border:2px solid #333;border-radius:50px;background:transparent;font-family:'Fredoka One',cursive;font-size:13px;color:#888;cursor:pointer;text-decoration:none;transition:all .2s;}
+.back-btn:hover{border-color:var(--accent);color:var(--gold);}
+.main{display:flex;flex-direction:column;align-items:center;padding:24px 20px;gap:16px;width:100%;max-width:580px;}
+.word-banner{background:linear-gradient(135deg,#1F1700,#2A1A00);border:2px solid var(--accent);border-radius:14px;padding:14px 28px;text-align:center;width:100%;}
+.word-banner h2{font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);letter-spacing:2px;}
+.word-banner p{font-size:13px;color:rgba(255,255,255,.5);margin-top:3px;}
+.progress-wrap{width:100%;background:#1A1A1A;border-radius:50px;height:8px;overflow:hidden;border:1px solid #2A2A2A;}
+.progress-fill{height:100%;background:linear-gradient(to right,var(--accent),var(--gold));border-radius:50px;transition:width .4s ease;}
+.progress-label{font-family:'Fredoka One',cursive;font-size:13px;color:#555;text-align:center;}
+.question-card{background:#1A1A1A;border:2px solid #2A2A2A;border-radius:18px;padding:24px 20px;width:100%;display:flex;flex-direction:column;gap:16px;}
+.q-number{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);}
+.q-emoji{font-size:32px;text-align:center;}
+.q-text{font-size:16px;color:#fff;line-height:1.65;font-weight:700;}
+.options{display:flex;flex-direction:column;gap:9px;}
+.opt-btn{background:#111;border:2px solid #2A2A2A;border-radius:11px;padding:12px 16px;font-family:'Nunito',sans-serif;font-size:14px;color:#ccc;cursor:pointer;text-align:left;transition:all .2s;line-height:1.4;}
+.opt-btn:hover:not(:disabled){border-color:var(--accent);color:var(--gold);background:#1F1700;}
+.opt-btn.correct{background:rgba(45,122,82,.2);border-color:#2d7a52;color:#5dba8a;}
+.opt-btn.wrong{background:rgba(192,57,43,.15);border-color:#c0392b;color:#e8756a;}
+.opt-btn.reveal{background:rgba(45,122,82,.1);border-color:#2A5A3A;color:#5dba8a;}
+.feedback{display:none;border-radius:11px;padding:13px 16px;font-size:13px;line-height:1.7;}
+.feedback.show{display:block;}
+.feedback.correct{background:rgba(45,122,82,.15);border:1.5px solid #2d7a52;color:#5dba8a;}
+.feedback.wrong{background:rgba(200,134,10,.1);border:1.5px solid #3A2A00;color:rgba(255,255,255,.7);}
+.next-btn{padding:11px 28px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#111;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;display:none;align-self:flex-end;transition:all .2s;}
+.next-btn.show{display:block;}
+.results{display:none;flex-direction:column;align-items:center;gap:16px;text-align:center;width:100%;}
+.results.show{display:flex;}
+.results-icon{font-size:64px;}
+.results-title{font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);}
+.results-score{font-family:'Fredoka One',cursive;font-size:52px;color:var(--gold);line-height:1;}
+.results-sub{font-size:13px;color:rgba(255,255,255,.5);}
+.results-msg{font-size:14px;color:#ccc;line-height:1.8;max-width:400px;background:#1A1A1A;border:2px solid #2A2A2A;border-radius:14px;padding:18px 22px;}
+.results-msg em{color:var(--gold);font-style:italic;}
+.play-again{padding:13px 32px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#111;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div>
+    <div class="hdr-title">&#129504; RENEW Brain Challenge</div>
+    <div class="hdr-sub">8 questions &middot; Word World</div>
+  </div>
+  <a href="KSB_Stories_Kiosk.html" class="back-btn">&#8592; Word World</a>
+</div>
+<div class="main">
+  <div class="word-banner">
+    <h2>RENEW</h2>
+    <p>Starting fresh with new strength</p>
+  </div>
+  <div style="width:100%;display:flex;flex-direction:column;gap:6px;">
+    <div class="progress-label" id="progressLabel">Question 1 of 8</div>
+    <div class="progress-wrap"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+  <div id="questionArea" style="width:100%;">
+    <div class="question-card">
+      <div class="q-number" id="qNum">Question 1</div>
+      <div class="q-emoji" id="qEmoji"></div>
+      <div class="q-text" id="qText"></div>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()">Next &#8594;</button>
+    </div>
+  </div>
+  <div class="results" id="results">
+    <div class="results-icon" id="rIcon"></div>
+    <div class="results-title">Challenge Complete!</div>
+    <div class="results-score" id="rScore"></div>
+    <div class="results-sub">out of 8 correct</div>
+    <div class="results-msg" id="rMsg"></div>
+    <button class="play-again" onclick="restart()">&#127881; Try Again</button>
+    <a href="KSB_Stories_Kiosk.html" class="back-btn" style="margin-top:4px;">&#8592; Word World</a>
+  </div>
+</div>
+<script>
+var QS=[{"emoji": "\ud83c\udf3f", "text": "What does RENEW mean?", "options": ["The opposite of starting fresh with new strength", "Starting fresh with new strength", "Running away from everything", "Being loud and fast"], "correct": 1, "feedback": "RENEW means starting fresh with new strength \u2014 a powerful idea that shows up in both nature and in our lives."}, {"emoji": "\ud83d\udca1", "text": "In the story of RENEW, what do the characters learn?", "options": ["That hard things should be avoided", "That starting fresh with new strength is something they can practice every day", "That problems solve themselves", "That other people should handle everything"], "correct": 1, "feedback": "The story shows that starting fresh with new strength is something anyone can do \u2014 it just takes intention and practice."}, {"emoji": "\ud83c\udf31", "text": "Which of these best shows RENEW in action?", "options": ["Waiting for someone else to act", "Ignoring what is happening around you", "Actively practicing starting fresh with new strength in your daily life", "Pretending nothing needs to change"], "correct": 2, "feedback": "Living RENEW means making it active \u2014 choosing every day to practice starting fresh with new strength."}, {"emoji": "\ud83c\udf1f", "text": "How does RENEW connect to nature?", "options": ["It doesn't \u2014 nature and people are completely different", "The same forces that create RENEW in ecosystems are the ones that help people thrive", "Nature is just about animals, not people", "Only scientists need to understand this"], "correct": 1, "feedback": "Nature and people share the same patterns \u2014 RENEW shows up in rivers, forests, and in our own hearts."}, {"emoji": "\ud83d\udcad", "text": "What would change in your life if you practiced RENEW more?", "options": ["Nothing would change", "Things would get harder", "You would grow stronger and more connected to what matters", "You would have to give something up"], "correct": 2, "feedback": "Practicing RENEW \u2014 starting fresh with new strength \u2014 builds the kind of strength that lasts."}, {"emoji": "\ud83c\udf92", "text": "The Smile Bag you received was made with RENEW in mind. What does that mean for you?", "options": ["It means nothing special", "It means someone thought carefully about what you needed and made something with care", "It means the bag is only about science", "It means you need to give something back"], "correct": 1, "feedback": "Every item in your Smile Bag was made with intention \u2014 and RENEW was part of the thinking behind it."}, {"emoji": "\u2b50", "text": "Which person best demonstrates RENEW?", "options": ["Someone who gives up at the first sign of difficulty", "Someone who ignores what is happening around them", "Someone who consistently practices starting fresh with new strength even when it's hard", "Someone who waits for perfect conditions"], "correct": 2, "feedback": "The best demonstration of RENEW is consistent practice \u2014 even when it feels difficult or uncertain."}, {"emoji": "\ud83c\udf08", "text": "What is one way YOU could practice RENEW this week?", "options": ["Wait until it feels easy before trying", "Do nothing and see what happens", "Choose one small moment to practice starting fresh with new strength", "Only practice it when someone is watching"], "correct": 2, "feedback": "Start small! One moment of practicing RENEW \u2014 starting fresh with new strength \u2014 is enough to begin building the habit."}];
+var cur=0,score=0,answered=false;
+function loadQ(){
+  var q=QS[cur];
+  document.getElementById('qNum').textContent='Question '+(cur+1);
+  document.getElementById('qEmoji').textContent=q.emoji;
+  document.getElementById('qText').textContent=q.text;
+  document.getElementById('progressLabel').textContent='Question '+(cur+1)+' of '+QS.length;
+  document.getElementById('progressFill').style.width=((cur/QS.length)*100)+'%';
+  var opts=document.getElementById('options');opts.innerHTML='';
+  q.options.forEach(function(o,i){
+    var b=document.createElement('button');b.className='opt-btn';b.textContent=o;
+    b.onclick=(function(idx){return function(){selectA(idx);}})(i);
+    opts.appendChild(b);
+  });
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('nextBtn').className='next-btn';
+  answered=false;
+}
+function selectA(idx){
+  if(answered)return;answered=true;
+  var q=QS[cur];
+  var btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(function(b,i){
+    b.disabled=true;
+    if(i===q.correct){b.classList.add(idx===q.correct?'correct':'reveal');}
+    else if(i===idx&&idx!==q.correct){b.classList.add('wrong');}
+  });
+  var fb=document.getElementById('feedback');
+  if(idx===q.correct){score++;fb.className='feedback correct show';fb.innerHTML='&#10003; '+q.feedback;}
+  else{fb.className='feedback wrong show';fb.innerHTML='&#128218; '+q.feedback;}
+  document.getElementById('nextBtn').className='next-btn show';
+}
+function nextQ(){cur++;if(cur>=QS.length){showResults();return;}loadQ();}
+function showResults(){
+  document.getElementById('questionArea').style.display='none';
+  document.getElementById('progressLabel').style.display='none';
+  document.querySelector('.progress-wrap').style.display='none';
+  document.getElementById('results').classList.add('show');
+  document.getElementById('rScore').textContent=score;
+  var icon,msg;
+  if(score>=7){icon='&#127775;';msg='You are a true <em>RENEW</em> expert! You absorbed every question, thought deeply, and showed real understanding. <em>That is exactly what this word is all about.</em>';}
+  else if(score>=5){icon='&#127807;';msg='Great effort! You understood most of it — go back to the Word World story and let the ideas settle a little deeper. <em>Every question is a chance to grow.</em>';}
+  else{icon='&#9728;&#65039;';msg='Every brain challenge is a chance to learn something new! Read the story of <em>RENEW</em> again and come back — you will surprise yourself.';}
+  document.getElementById('rIcon').innerHTML=icon;
+  document.getElementById('rMsg').innerHTML=msg;
+}
+function restart(){
+  cur=0;score=0;answered=false;
+  document.getElementById('questionArea').style.display='block';
+  document.getElementById('progressLabel').style.display='block';
+  document.querySelector('.progress-wrap').style.display='block';
+  document.getElementById('results').classList.remove('show');
+  loadQ();
+}
+loadQ();
+</script>
+</body>
+</html>

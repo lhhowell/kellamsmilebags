@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ANCHOR Brain Challenge — Word World</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--gold:#F0C040;--gold-dark:#C8860A;--black:#111;--dark:#1A1A1A;--accent:#1b7a78;}
+body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+.hdr{width:100%;background:var(--dark);border-bottom:3px solid var(--accent);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);}
+.hdr-sub{font-size:12px;color:rgba(255,255,255,.4);margin-top:2px;}
+.back-btn{padding:8px 18px;border:2px solid #333;border-radius:50px;background:transparent;font-family:'Fredoka One',cursive;font-size:13px;color:#888;cursor:pointer;text-decoration:none;transition:all .2s;}
+.back-btn:hover{border-color:var(--accent);color:var(--gold);}
+.main{display:flex;flex-direction:column;align-items:center;padding:24px 20px;gap:16px;width:100%;max-width:580px;}
+.word-banner{background:linear-gradient(135deg,#1F1700,#2A1A00);border:2px solid var(--accent);border-radius:14px;padding:14px 28px;text-align:center;width:100%;}
+.word-banner h2{font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);letter-spacing:2px;}
+.word-banner p{font-size:13px;color:rgba(255,255,255,.5);margin-top:3px;}
+.progress-wrap{width:100%;background:#1A1A1A;border-radius:50px;height:8px;overflow:hidden;border:1px solid #2A2A2A;}
+.progress-fill{height:100%;background:linear-gradient(to right,var(--accent),var(--gold));border-radius:50px;transition:width .4s ease;}
+.progress-label{font-family:'Fredoka One',cursive;font-size:13px;color:#555;text-align:center;}
+.question-card{background:#1A1A1A;border:2px solid #2A2A2A;border-radius:18px;padding:24px 20px;width:100%;display:flex;flex-direction:column;gap:16px;}
+.q-number{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);}
+.q-emoji{font-size:32px;text-align:center;}
+.q-text{font-size:16px;color:#fff;line-height:1.65;font-weight:700;}
+.options{display:flex;flex-direction:column;gap:9px;}
+.opt-btn{background:#111;border:2px solid #2A2A2A;border-radius:11px;padding:12px 16px;font-family:'Nunito',sans-serif;font-size:14px;color:#ccc;cursor:pointer;text-align:left;transition:all .2s;line-height:1.4;}
+.opt-btn:hover:not(:disabled){border-color:var(--accent);color:var(--gold);background:#1F1700;}
+.opt-btn.correct{background:rgba(45,122,82,.2);border-color:#2d7a52;color:#5dba8a;}
+.opt-btn.wrong{background:rgba(192,57,43,.15);border-color:#c0392b;color:#e8756a;}
+.opt-btn.reveal{background:rgba(45,122,82,.1);border-color:#2A5A3A;color:#5dba8a;}
+.feedback{display:none;border-radius:11px;padding:13px 16px;font-size:13px;line-height:1.7;}
+.feedback.show{display:block;}
+.feedback.correct{background:rgba(45,122,82,.15);border:1.5px solid #2d7a52;color:#5dba8a;}
+.feedback.wrong{background:rgba(200,134,10,.1);border:1.5px solid #3A2A00;color:rgba(255,255,255,.7);}
+.next-btn{padding:11px 28px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#111;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;display:none;align-self:flex-end;transition:all .2s;}
+.next-btn.show{display:block;}
+.results{display:none;flex-direction:column;align-items:center;gap:16px;text-align:center;width:100%;}
+.results.show{display:flex;}
+.results-icon{font-size:64px;}
+.results-title{font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);}
+.results-score{font-family:'Fredoka One',cursive;font-size:52px;color:var(--gold);line-height:1;}
+.results-sub{font-size:13px;color:rgba(255,255,255,.5);}
+.results-msg{font-size:14px;color:#ccc;line-height:1.8;max-width:400px;background:#1A1A1A;border:2px solid #2A2A2A;border-radius:14px;padding:18px 22px;}
+.results-msg em{color:var(--gold);font-style:italic;}
+.play-again{padding:13px 32px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#111;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div>
+    <div class="hdr-title">&#129504; ANCHOR Brain Challenge</div>
+    <div class="hdr-sub">8 questions &middot; Word World</div>
+  </div>
+  <a href="KSB_Stories_Kiosk.html" class="back-btn">&#8592; Word World</a>
+</div>
+<div class="main">
+  <div class="word-banner">
+    <h2>ANCHOR</h2>
+    <p>Holding steady through the storm</p>
+  </div>
+  <div style="width:100%;display:flex;flex-direction:column;gap:6px;">
+    <div class="progress-label" id="progressLabel">Question 1 of 8</div>
+    <div class="progress-wrap"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+  <div id="questionArea" style="width:100%;">
+    <div class="question-card">
+      <div class="q-number" id="qNum">Question 1</div>
+      <div class="q-emoji" id="qEmoji"></div>
+      <div class="q-text" id="qText"></div>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()">Next &#8594;</button>
+    </div>
+  </div>
+  <div class="results" id="results">
+    <div class="results-icon" id="rIcon"></div>
+    <div class="results-title">Challenge Complete!</div>
+    <div class="results-score" id="rScore"></div>
+    <div class="results-sub">out of 8 correct</div>
+    <div class="results-msg" id="rMsg"></div>
+    <button class="play-again" onclick="restart()">&#127881; Try Again</button>
+    <a href="KSB_Stories_Kiosk.html" class="back-btn" style="margin-top:4px;">&#8592; Word World</a>
+  </div>
+</div>
+<script>
+var QS=[{"emoji": "\u2693", "text": "What does ANCHOR mean in the story?", "options": ["Running away from problems", "Holding steady and not drifting away during hard times", "Pretending everything is fine", "Being the loudest person in the room"], "correct": 1, "feedback": "An ANCHOR holds steady \u2014 it keeps a ship from drifting away during a storm, just like people can anchor each other."}, {"emoji": "\ud83c\udfe0", "text": "What are some examples of anchors in a person's life?", "options": ["Things that make you drift away from who you are", "Family, friends, values, and routines that keep you grounded", "Problems and worries", "Random strangers"], "correct": 1, "feedback": "Your anchors are the people and things that keep you grounded \u2014 family, friends, values, and routines you trust."}, {"emoji": "\ud83c\udf29\ufe0f", "text": "The story says an anchor 'doesn't stop the storm.' What does it do instead?", "options": ["It makes the storm go away", "It stops you from worrying", "It keeps you from drifting away while the storm happens", "It makes the ship move faster"], "correct": 2, "feedback": "An anchor doesn't control the weather \u2014 it just makes sure you don't drift while the storm passes."}, {"emoji": "\ud83d\udc22", "text": "In the illustration, a turtle is tucked into its shell during the storm. What is the turtle doing?", "options": ["Sleeping", "Running away", "Using its shell as an anchor \u2014 staying protected and grounded", "Giving up"], "correct": 2, "feedback": "The turtle's shell is its anchor! It stays protected inside until the storm passes."}, {"emoji": "\ud83d\udca1", "text": "Maya holds Lily's hand during the storm. What is Maya being for Lily?", "options": ["A distraction", "An anchor \u2014 someone who holds Lily steady", "A problem", "A storm"], "correct": 1, "feedback": "Maya is Lily's anchor \u2014 holding her steady so she doesn't drift in the hard moment."}, {"emoji": "\ud83c\udf1f", "text": "Which of these is NOT an anchor?", "options": ["A strong friendship", "A daily routine that makes you feel stable", "Random social media comments", "Your personal values and beliefs"], "correct": 2, "feedback": "Random social media comments can actually make you drift! Real anchors are things that ground and stabilize you."}, {"emoji": "\u26a1", "text": "When does having an anchor matter most?", "options": ["Only on sunny, easy days", "Only during perfect situations", "During hard times, uncertainty, and storms", "When everything is already going well"], "correct": 2, "feedback": "Anchors matter most when the storm comes \u2014 that's exactly when you need something to hold you steady."}, {"emoji": "\ud83c\udf0a", "text": "What makes a good anchor in YOUR life?", "options": ["Something that changes constantly and is unpredictable", "Something reliable, consistent, and connected to who you really are", "Something loud and exciting", "Something only available on good days"], "correct": 1, "feedback": "Good anchors are reliable and consistent \u2014 people and values you can count on no matter what the weather."}];
+var cur=0,score=0,answered=false;
+function loadQ(){
+  var q=QS[cur];
+  document.getElementById('qNum').textContent='Question '+(cur+1);
+  document.getElementById('qEmoji').textContent=q.emoji;
+  document.getElementById('qText').textContent=q.text;
+  document.getElementById('progressLabel').textContent='Question '+(cur+1)+' of '+QS.length;
+  document.getElementById('progressFill').style.width=((cur/QS.length)*100)+'%';
+  var opts=document.getElementById('options');opts.innerHTML='';
+  q.options.forEach(function(o,i){
+    var b=document.createElement('button');b.className='opt-btn';b.textContent=o;
+    b.onclick=(function(idx){return function(){selectA(idx);}})(i);
+    opts.appendChild(b);
+  });
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('nextBtn').className='next-btn';
+  answered=false;
+}
+function selectA(idx){
+  if(answered)return;answered=true;
+  var q=QS[cur];
+  var btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(function(b,i){
+    b.disabled=true;
+    if(i===q.correct){b.classList.add(idx===q.correct?'correct':'reveal');}
+    else if(i===idx&&idx!==q.correct){b.classList.add('wrong');}
+  });
+  var fb=document.getElementById('feedback');
+  if(idx===q.correct){score++;fb.className='feedback correct show';fb.innerHTML='&#10003; '+q.feedback;}
+  else{fb.className='feedback wrong show';fb.innerHTML='&#128218; '+q.feedback;}
+  document.getElementById('nextBtn').className='next-btn show';
+}
+function nextQ(){cur++;if(cur>=QS.length){showResults();return;}loadQ();}
+function showResults(){
+  document.getElementById('questionArea').style.display='none';
+  document.getElementById('progressLabel').style.display='none';
+  document.querySelector('.progress-wrap').style.display='none';
+  document.getElementById('results').classList.add('show');
+  document.getElementById('rScore').textContent=score;
+  var icon,msg;
+  if(score>=7){icon='&#127775;';msg='You are a true <em>ANCHOR</em> expert! You absorbed every question, thought deeply, and showed real understanding. <em>That is exactly what this word is all about.</em>';}
+  else if(score>=5){icon='&#127807;';msg='Great effort! You understood most of it — go back to the Word World story and let the ideas settle a little deeper. <em>Every question is a chance to grow.</em>';}
+  else{icon='&#9728;&#65039;';msg='Every brain challenge is a chance to learn something new! Read the story of <em>ANCHOR</em> again and come back — you will surprise yourself.';}
+  document.getElementById('rIcon').innerHTML=icon;
+  document.getElementById('rMsg').innerHTML=msg;
+}
+function restart(){
+  cur=0;score=0;answered=false;
+  document.getElementById('questionArea').style.display='block';
+  document.getElementById('progressLabel').style.display='block';
+  document.querySelector('.progress-wrap').style.display='block';
+  document.getElementById('results').classList.remove('show');
+  loadQ();
+}
+loadQ();
+</script>
+</body>
+</html>

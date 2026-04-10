@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ABSORB Brain Challenge — Word World</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--gold:#F0C040;--gold-dark:#C8860A;--black:#111;--dark:#1A1A1A;--accent:#2d7a52;}
+body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+.hdr{width:100%;background:var(--dark);border-bottom:3px solid var(--accent);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);}
+.hdr-sub{font-size:12px;color:rgba(255,255,255,.4);margin-top:2px;}
+.back-btn{padding:8px 18px;border:2px solid #333;border-radius:50px;background:transparent;font-family:'Fredoka One',cursive;font-size:13px;color:#888;cursor:pointer;text-decoration:none;transition:all .2s;}
+.back-btn:hover{border-color:var(--accent);color:var(--gold);}
+.main{display:flex;flex-direction:column;align-items:center;padding:24px 20px;gap:16px;width:100%;max-width:580px;}
+.word-banner{background:linear-gradient(135deg,#1F1700,#2A1A00);border:2px solid var(--accent);border-radius:14px;padding:14px 28px;text-align:center;width:100%;}
+.word-banner h2{font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);letter-spacing:2px;}
+.word-banner p{font-size:13px;color:rgba(255,255,255,.5);margin-top:3px;}
+.progress-wrap{width:100%;background:#1A1A1A;border-radius:50px;height:8px;overflow:hidden;border:1px solid #2A2A2A;}
+.progress-fill{height:100%;background:linear-gradient(to right,var(--accent),var(--gold));border-radius:50px;transition:width .4s ease;}
+.progress-label{font-family:'Fredoka One',cursive;font-size:13px;color:#555;text-align:center;}
+.question-card{background:#1A1A1A;border:2px solid #2A2A2A;border-radius:18px;padding:24px 20px;width:100%;display:flex;flex-direction:column;gap:16px;}
+.q-number{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);}
+.q-emoji{font-size:32px;text-align:center;}
+.q-text{font-size:16px;color:#fff;line-height:1.65;font-weight:700;}
+.options{display:flex;flex-direction:column;gap:9px;}
+.opt-btn{background:#111;border:2px solid #2A2A2A;border-radius:11px;padding:12px 16px;font-family:'Nunito',sans-serif;font-size:14px;color:#ccc;cursor:pointer;text-align:left;transition:all .2s;line-height:1.4;}
+.opt-btn:hover:not(:disabled){border-color:var(--accent);color:var(--gold);background:#1F1700;}
+.opt-btn.correct{background:rgba(45,122,82,.2);border-color:#2d7a52;color:#5dba8a;}
+.opt-btn.wrong{background:rgba(192,57,43,.15);border-color:#c0392b;color:#e8756a;}
+.opt-btn.reveal{background:rgba(45,122,82,.1);border-color:#2A5A3A;color:#5dba8a;}
+.feedback{display:none;border-radius:11px;padding:13px 16px;font-size:13px;line-height:1.7;}
+.feedback.show{display:block;}
+.feedback.correct{background:rgba(45,122,82,.15);border:1.5px solid #2d7a52;color:#5dba8a;}
+.feedback.wrong{background:rgba(200,134,10,.1);border:1.5px solid #3A2A00;color:rgba(255,255,255,.7);}
+.next-btn{padding:11px 28px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#111;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;display:none;align-self:flex-end;transition:all .2s;}
+.next-btn.show{display:block;}
+.results{display:none;flex-direction:column;align-items:center;gap:16px;text-align:center;width:100%;}
+.results.show{display:flex;}
+.results-icon{font-size:64px;}
+.results-title{font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);}
+.results-score{font-family:'Fredoka One',cursive;font-size:52px;color:var(--gold);line-height:1;}
+.results-sub{font-size:13px;color:rgba(255,255,255,.5);}
+.results-msg{font-size:14px;color:#ccc;line-height:1.8;max-width:400px;background:#1A1A1A;border:2px solid #2A2A2A;border-radius:14px;padding:18px 22px;}
+.results-msg em{color:var(--gold);font-style:italic;}
+.play-again{padding:13px 32px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#111;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div>
+    <div class="hdr-title">&#129504; ABSORB Brain Challenge</div>
+    <div class="hdr-sub">8 questions &middot; Word World</div>
+  </div>
+  <a href="KSB_Stories_Kiosk.html" class="back-btn">&#8592; Word World</a>
+</div>
+<div class="main">
+  <div class="word-banner">
+    <h2>ABSORB</h2>
+    <p>Taking in everything around you</p>
+  </div>
+  <div style="width:100%;display:flex;flex-direction:column;gap:6px;">
+    <div class="progress-label" id="progressLabel">Question 1 of 8</div>
+    <div class="progress-wrap"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+  <div id="questionArea" style="width:100%;">
+    <div class="question-card">
+      <div class="q-number" id="qNum">Question 1</div>
+      <div class="q-emoji" id="qEmoji"></div>
+      <div class="q-text" id="qText"></div>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQ()">Next &#8594;</button>
+    </div>
+  </div>
+  <div class="results" id="results">
+    <div class="results-icon" id="rIcon"></div>
+    <div class="results-title">Challenge Complete!</div>
+    <div class="results-score" id="rScore"></div>
+    <div class="results-sub">out of 8 correct</div>
+    <div class="results-msg" id="rMsg"></div>
+    <button class="play-again" onclick="restart()">&#127881; Try Again</button>
+    <a href="KSB_Stories_Kiosk.html" class="back-btn" style="margin-top:4px;">&#8592; Word World</a>
+  </div>
+</div>
+<script>
+var QS=[{"emoji": "\ud83c\udf3f", "text": "What does ABSORB mean?", "options": ["To run away quickly", "To take in and soak up what is around you", "To make loud noise", "To hide from everything"], "correct": 1, "feedback": "ABSORB means taking in everything around you \u2014 like a sponge soaks up water, you can soak up sounds, feelings, and beauty."}, {"emoji": "\ud83d\udd77\ufe0f", "text": "In the story, Marcos notices spider webs in the morning light. What is he doing?", "options": ["Being distracted", "Absorbing \u2014 taking in the beauty around him", "Looking for bugs", "Daydreaming"], "correct": 1, "feedback": "Marcos is a natural absorber! He slows down and notices things others walk past."}, {"emoji": "\ud83c\udf27\ufe0f", "text": "What is the BEST example of absorbing something?", "options": ["Running inside when it rains", "Closing your eyes and ignoring everything", "Sitting quietly and noticing the sounds, smells, and feel of the air", "Checking your phone while outside"], "correct": 2, "feedback": "Absorbing means using all your senses to really take in what's happening around you."}, {"emoji": "\ud83e\uddfd", "text": "Which is most like how a person ABSORBS the world?", "options": ["A rock that nothing sticks to", "A sponge that soaks everything up", "A mirror that reflects things back", "A wall that blocks everything out"], "correct": 1, "feedback": "A sponge is a great symbol \u2014 it takes in what's around it without forcing anything."}, {"emoji": "\ud83d\udcad", "text": "Marcos says 'Absorbing means everything is happening \u2014 I'm just taking it all in.' What does he mean?", "options": ["Being quiet and absorbing are the same thing", "Absorbing is just sleeping", "Your mind is actively taking things in even if you look still", "Absorbing means talking a lot"], "correct": 2, "feedback": "You can look still on the outside while your mind is busy taking in everything \u2014 sounds, feelings, ideas."}, {"emoji": "\ud83c\udf1f", "text": "The story says 'The world is always teaching \u2014 you just have to be _____ enough to listen.'", "options": ["Loud", "Still", "Fast", "Busy"], "correct": 1, "feedback": "Still! When you slow down, you become open to absorbing everything the world has to offer."}, {"emoji": "\ud83c\udf92", "text": "Someone made your Smile Bag while thinking about you. If you truly ABSORB that \u2014 what would you feel?", "options": ["Nothing \u2014 it's just stuff", "Grateful and connected \u2014 knowing someone cared", "Confused about why", "Happy only about the items"], "correct": 1, "feedback": "When you ABSORB the meaning behind your Smile Bag, it becomes so much more than just things."}, {"emoji": "\ud83c\udf31", "text": "Which of these would help you ABSORB nature better?", "options": ["Wearing headphones and looking at your phone", "Walking quickly to get it over with", "Sitting quietly and noticing every sound, color, and smell", "Thinking about your homework while you walk"], "correct": 2, "feedback": "Absorbing nature means slowing down and opening all your senses to what's around you."}];
+var cur=0,score=0,answered=false;
+function loadQ(){
+  var q=QS[cur];
+  document.getElementById('qNum').textContent='Question '+(cur+1);
+  document.getElementById('qEmoji').textContent=q.emoji;
+  document.getElementById('qText').textContent=q.text;
+  document.getElementById('progressLabel').textContent='Question '+(cur+1)+' of '+QS.length;
+  document.getElementById('progressFill').style.width=((cur/QS.length)*100)+'%';
+  var opts=document.getElementById('options');opts.innerHTML='';
+  q.options.forEach(function(o,i){
+    var b=document.createElement('button');b.className='opt-btn';b.textContent=o;
+    b.onclick=(function(idx){return function(){selectA(idx);}})(i);
+    opts.appendChild(b);
+  });
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('nextBtn').className='next-btn';
+  answered=false;
+}
+function selectA(idx){
+  if(answered)return;answered=true;
+  var q=QS[cur];
+  var btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(function(b,i){
+    b.disabled=true;
+    if(i===q.correct){b.classList.add(idx===q.correct?'correct':'reveal');}
+    else if(i===idx&&idx!==q.correct){b.classList.add('wrong');}
+  });
+  var fb=document.getElementById('feedback');
+  if(idx===q.correct){score++;fb.className='feedback correct show';fb.innerHTML='&#10003; '+q.feedback;}
+  else{fb.className='feedback wrong show';fb.innerHTML='&#128218; '+q.feedback;}
+  document.getElementById('nextBtn').className='next-btn show';
+}
+function nextQ(){cur++;if(cur>=QS.length){showResults();return;}loadQ();}
+function showResults(){
+  document.getElementById('questionArea').style.display='none';
+  document.getElementById('progressLabel').style.display='none';
+  document.querySelector('.progress-wrap').style.display='none';
+  document.getElementById('results').classList.add('show');
+  document.getElementById('rScore').textContent=score;
+  var icon,msg;
+  if(score>=7){icon='&#127775;';msg='You are a true <em>ABSORB</em> expert! You absorbed every question, thought deeply, and showed real understanding. <em>That is exactly what this word is all about.</em>';}
+  else if(score>=5){icon='&#127807;';msg='Great effort! You understood most of it — go back to the Word World story and let the ideas settle a little deeper. <em>Every question is a chance to grow.</em>';}
+  else{icon='&#9728;&#65039;';msg='Every brain challenge is a chance to learn something new! Read the story of <em>ABSORB</em> again and come back — you will surprise yourself.';}
+  document.getElementById('rIcon').innerHTML=icon;
+  document.getElementById('rMsg').innerHTML=msg;
+}
+function restart(){
+  cur=0;score=0;answered=false;
+  document.getElementById('questionArea').style.display='block';
+  document.getElementById('progressLabel').style.display='block';
+  document.querySelector('.progress-wrap').style.display='block';
+  document.getElementById('results').classList.remove('show');
+  loadQ();
+}
+loadQ();
+</script>
+</body>
+</html>
