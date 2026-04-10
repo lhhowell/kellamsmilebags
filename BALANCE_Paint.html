@@ -28,8 +28,9 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;di
 .tool-btn:hover{border-color:var(--accent);color:var(--gold);}
 .tool-btn.active{border-color:var(--gold);color:var(--gold);background:#1F1700;}
 .canvas-wrap{position:relative;width:100%;height:calc(100vh - 280px);min-height:400px;display:flex;align-items:center;justify-content:center;padding:12px;background:#0A0A0A;}
-#coloringImg{position:absolute;top:12px;left:12px;right:12px;bottom:12px;width:calc(100% - 24px);height:calc(100% - 24px);object-fit:contain;pointer-events:none;z-index:1;}
-#paintCanvas{position:absolute;top:12px;left:12px;right:12px;bottom:12px;touch-action:none;z-index:3;cursor:crosshair;}
+.img-canvas-stack{position:relative;display:inline-block;}
+#coloringImg{display:block;max-width:100%;max-height:calc(100vh - 310px);object-fit:contain;pointer-events:none;z-index:1;position:relative;}
+#paintCanvas{position:absolute;top:0;left:0;touch-action:none;z-index:3;cursor:crosshair;}
 .bottom-bar{background:#1A1A1A;border-top:2px solid #2A2A2A;padding:10px 16px;display:flex;gap:10px;align-items:center;justify-content:space-between;width:100%;flex-wrap:wrap;}
 .save-btn{padding:8px 22px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#111;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:13px;cursor:pointer;}
 .opacity-wrap{display:flex;align-items:center;gap:8px;}
