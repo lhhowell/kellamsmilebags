@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>GROW Puzzle — Word World</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--gold:#F0C040;--gold-dark:#C8860A;--black:#111;--dark:#1A1A1A;--accent:#2d5016;}
+body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+.hdr{width:100%;background:var(--dark);border-bottom:3px solid var(--accent);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);}
+.hdr-sub{font-size:12px;color:rgba(255,255,255,.4);margin-top:2px;}
+.back-btn{padding:8px 18px;border:2px solid #333;border-radius:50px;background:transparent;font-family:'Fredoka One',cursive;font-size:13px;color:#888;cursor:pointer;text-decoration:none;transition:all .2s;}
+.back-btn:hover{border-color:var(--accent);color:var(--gold);}
+.main{display:flex;flex-direction:column;align-items:center;padding:24px 20px;gap:16px;width:100%;max-width:600px;}
+.word-banner{background:linear-gradient(135deg,#1F1700,#2A1A00);border:2px solid var(--accent);border-radius:14px;padding:14px 28px;text-align:center;width:100%;}
+.word-banner h2{font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);letter-spacing:2px;}
+.word-banner p{font-size:13px;color:rgba(255,255,255,.5);margin-top:3px;}
+.level-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.lvl-btn{font-family:'Fredoka One',cursive;font-size:13px;padding:8px 20px;border-radius:50px;border:2px solid #333;background:transparent;color:#888;cursor:pointer;transition:all .2s;}
+.lvl-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+.puzzle-wrap{background:#1A1A1A;border:2px solid #2A2A2A;border-radius:16px;overflow:hidden;width:100%;}
+.puzzle-hdr{padding:12px 16px;border-bottom:1px solid #2A2A2A;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.puzzle-hdr-title{font-family:'Fredoka One',cursive;font-size:15px;color:var(--gold);}
+.stats-row{font-family:'Fredoka One',cursive;font-size:13px;color:#555;}
+.stats-row span{color:var(--gold);}
+.board{display:grid;gap:3px;padding:12px;background:#0A0A0A;justify-content:center;}
+.piece{border-radius:6px;overflow:hidden;cursor:pointer;transition:all .18s;position:relative;border:2px solid transparent;}
+.piece:hover{border-color:var(--gold-dark);transform:scale(1.03);}
+.piece.selected{border-color:var(--gold);box-shadow:0 0 12px rgba(240,192,64,.4);}
+.piece.correct{border-color:var(--accent);}
+.piece canvas{display:block;}
+.win-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:999;align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;padding:24px;}
+.win-overlay.show{display:flex;}
+.win-icon{font-size:64px;}
+.win-title{font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);}
+.win-msg{font-size:14px;color:rgba(255,255,255,.7);max-width:380px;line-height:1.75;background:#1A1A1A;border:2px solid #2A2A2A;border-radius:14px;padding:16px 20px;}
+.win-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+.win-btn{padding:12px 26px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#111;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;}
+.win-back{padding:12px 26px;border:2px solid #333;background:transparent;color:#888;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;text-decoration:none;}
+.preview-wrap{text-align:center;}
+.preview-label{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#555;margin-bottom:6px;}
+.preview-img{width:80px;height:60px;object-fit:cover;border-radius:8px;border:2px solid #2A2A2A;opacity:.6;transition:opacity .2s;cursor:pointer;}
+.preview-img:hover{opacity:1;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div>
+    <div class="hdr-title">&#129513; GROW Puzzle</div>
+    <div class="hdr-sub">Put the team back together &middot; Word World</div>
+  </div>
+  <a href="KSB_Stories_Kiosk.html" class="back-btn">&#8592; Word World</a>
+</div>
+<div class="main">
+  <div class="word-banner">
+    <h2>GROW</h2>
+    <p>Becoming more than you were</p>
+  </div>
+  <div class="level-btns">
+    <button class="lvl-btn active" onclick="initPuzzle(3,this)">&#129300; Easy (3&#215;3)</button>
+    <button class="lvl-btn" onclick="initPuzzle(4,this)">&#129504; Medium (4&#215;4)</button>
+    <button class="lvl-btn" onclick="initPuzzle(5,this)">&#11088; Hard (5&#215;5)</button>
+  </div>
+  <div class="preview-wrap">
+    <div class="preview-label">Reference image</div>
+    <img class="preview-img" src="https://lhhowell.github.io/kellamsmilebags/Grow_Color2.png" alt="Reference" id="previewImg" onclick="togglePreview()"/>
+  </div>
+  <div class="puzzle-wrap">
+    <div class="puzzle-hdr">
+      <div class="puzzle-hdr-title">&#129513; Puzzle the scene!</div>
+      <div class="stats-row">Moves: <span id="moveCount">0</span> &nbsp;&middot;&nbsp; Best: <span id="bestCount">&#8212;</span></div>
+    </div>
+    <div class="board" id="board"></div>
+  </div>
+  <div class="win-overlay" id="winOverlay">
+    <div class="win-icon">&#127775;</div>
+    <div class="win-title">Puzzle Complete!</div>
+    <div class="win-msg">You puzzled the whole GROW scene back together! The knights and their golden companions are reunited — just like the connections inside every Smile Bag. &#127807;</div>
+    <div class="stats-row" style="color:rgba(255,255,255,.5);">Completed in <span id="winMoves" style="color:var(--gold);font-family:Fredoka One,cursive;"></span> moves!</div>
+    <div class="win-btns">
+      <button class="win-btn" onclick="resetPuzzle()">&#127881; Play Again</button>
+      <a href="KSB_Stories_Kiosk.html" class="win-back">&#8592; Word World</a>
+    </div>
+  </div>
+</div>
+<script>
+var IMG_SRC='https://lhhowell.github.io/kellamsmilebags/Grow_Color2.png';
+var img=new Image();img.crossOrigin='anonymous';
+var imgLoaded=false;
+var GRID=3,pieces=[],selected=null,moves=0,best={};
+
+img.onload=function(){imgLoaded=true;initPuzzle(3,document.querySelector('.lvl-btn'));}
+img.src=IMG_SRC;
+
+function initPuzzle(g,btn){
+  GRID=g;pieces=[];selected=null;moves=0;
+  document.getElementById('moveCount').textContent=0;
+  document.getElementById('winOverlay').classList.remove('show');
+  document.querySelectorAll('.lvl-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn)btn.classList.add('active');
+  for(var i=0;i<GRID*GRID;i++)pieces.push(i);
+  for(var i=pieces.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var t=pieces[i];pieces[i]=pieces[j];pieces[j]=t;
+  }
+  render();
+}
+
+function render(){
+  var board=document.getElementById('board');
+  var maxW=Math.min(window.innerWidth-80,500);
+  var sz=Math.floor(maxW/GRID);
+  board.style.gridTemplateColumns='repeat('+GRID+','+sz+'px)';
+  board.innerHTML='';
+  pieces.forEach(function(correctIdx,pos){
+    var piece=document.createElement('div');
+    piece.className='piece'+(selected===pos?' selected':'')+(correctIdx===pos?' correct':'');
+    piece.style.width=sz+'px';piece.style.height=sz+'px';
+    var c=document.createElement('canvas');c.width=sz;c.height=sz;
+    var ctx=c.getContext('2d');
+    if(imgLoaded){
+      var srcX=(correctIdx%GRID)/GRID*img.naturalWidth;
+      var srcY=Math.floor(correctIdx/GRID)/GRID*img.naturalHeight;
+      ctx.drawImage(img,srcX,srcY,img.naturalWidth/GRID,img.naturalHeight/GRID,0,0,sz,sz);
+    }else{
+      ctx.fillStyle='#2A2A2A';ctx.fillRect(0,0,sz,sz);
+      ctx.fillStyle='#555';ctx.font='bold 16px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(correctIdx+1,sz/2,sz/2);
+    }
+    piece.appendChild(c);
+    piece.onclick=(function(p){return function(){clickPiece(p);};})(pos);
+    board.appendChild(piece);
+  });
+}
+
+function clickPiece(pos){
+  if(selected===null){selected=pos;}
+  else{
+    if(selected!==pos){
+      var t=pieces[selected];pieces[selected]=pieces[pos];pieces[pos]=t;
+      moves++;document.getElementById('moveCount').textContent=moves;
+    }
+    selected=null;render();checkWin();return;
+  }
+  render();
+}
+
+function checkWin(){
+  if(pieces.every(function(p,i){return p===i;})){
+    var k='g'+GRID;
+    if(!best[k]||moves<best[k]){best[k]=moves;document.getElementById('bestCount').textContent=moves+' ('+GRID+'&#215;'+GRID+')';}
+    document.getElementById('winMoves').textContent=moves;
+    document.getElementById('winOverlay').classList.add('show');
+  }
+}
+
+function resetPuzzle(){initPuzzle(GRID,null);}
+
+function togglePreview(){
+  var p=document.getElementById('previewImg');
+  p.style.opacity=p.style.opacity==='1'?'0.6':'1';
+  p.style.width=p.style.width==='200px'?'80px':'200px';
+  p.style.height=p.style.height==='150px'?'60px':'150px';
+}
+
+window.addEventListener('resize',function(){if(imgLoaded)render();});
+</script>
+</body>
+</html>
