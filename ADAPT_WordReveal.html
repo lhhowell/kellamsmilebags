@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ADAPT Word Reveal — Word World</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--gold:#F0C040;--gold-dark:#C8860A;--black:#111;--dark:#1A1A1A;--accent:#c8860a;}
+body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+.hdr{width:100%;background:var(--dark);border-bottom:3px solid var(--accent);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);}
+.hdr-sub{font-size:12px;color:rgba(255,255,255,.4);margin-top:2px;}
+.back-btn{padding:8px 18px;border:2px solid #333;border-radius:50px;background:transparent;font-family:'Fredoka One',cursive;font-size:13px;color:#888;cursor:pointer;text-decoration:none;transition:all .2s;}
+.back-btn:hover{border-color:var(--accent);color:var(--gold);}
+.main{display:flex;flex-direction:column;align-items:center;padding:20px;gap:14px;width:100%;max-width:560px;}
+.img-wrap{position:relative;width:100%;max-width:400px;border-radius:16px;overflow:hidden;border:3px solid var(--accent);box-shadow:0 8px 32px rgba(0,0,0,.5);}
+.img-wrap img{width:100%;display:block;transition:filter 1s ease;}
+.reveal-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.reveal-label{font-family:'Fredoka One',cursive;font-size:14px;color:rgba(255,255,255,.7);background:rgba(0,0,0,.5);padding:6px 16px;border-radius:50px;}
+.blur-bar{width:100%;background:#1A1A1A;border-radius:50px;height:8px;overflow:hidden;border:1px solid #2A2A2A;}
+.blur-fill{height:100%;background:linear-gradient(to right,var(--accent),var(--gold));border-radius:50px;transition:width .5s;}
+.blur-label{font-family:'Fredoka One',cursive;font-size:12px;color:#555;text-align:center;}
+.guess-wrap{width:100%;display:flex;flex-direction:column;gap:10px;}
+.guess-label{font-family:'Fredoka One',cursive;font-size:13px;color:var(--gold-dark);text-align:center;letter-spacing:.1em;text-transform:uppercase;}
+.guess-input{width:100%;font-family:'Fredoka One',cursive;font-size:20px;letter-spacing:.2em;text-align:center;text-transform:uppercase;background:#1A1A1A;border:2px solid #2A2A2A;border-radius:12px;padding:12px;color:#fff;outline:none;transition:border-color .2s;}
+.guess-input:focus{border-color:var(--accent);}
+.guess-btn{padding:12px;background:linear-gradient(135deg,var(--accent),var(--gold));color:#111;border:none;border-radius:12px;font-family:'Fredoka One',cursive;font-size:16px;cursor:pointer;width:100%;transition:all .2s;}
+.guess-btn:hover{opacity:.9;transform:translateY(-1px);}
+.wrong-msg{text-align:center;font-family:'Fredoka One',cursive;font-size:14px;color:#c0392b;min-height:20px;}
+.attempts-row{font-family:'Fredoka One',cursive;font-size:13px;color:#555;text-align:center;}
+.attempts-row span{color:var(--gold);}
+.result-banner{display:none;background:linear-gradient(135deg,#1F1700,#2A1A00);border:2px solid var(--gold);border-radius:14px;padding:20px 24px;text-align:center;width:100%;}
+.result-banner.show{display:block;}
+.result-icon{font-size:52px;margin-bottom:8px;}
+.result-title{font-family:'Fredoka One',cursive;font-size:24px;color:var(--gold);margin-bottom:8px;}
+.result-msg{font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:14px;}
+.result-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.play-again{padding:10px 24px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#111;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:14px;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div>
+    <div class="hdr-title">🖼️ ADAPT Word Reveal</div>
+    <div class="hdr-sub">What word does this image show? &middot; Word World</div>
+  </div>
+  <a href="KSB_Stories_Kiosk.html" class="back-btn">← Word World</a>
+</div>
+<div class="main">
+  <div class="img-wrap">
+    <img id="revealImg" src="https://lhhowell.github.io/kellamsmilebags/Adapt_Color2.png" alt="Mystery image" style="filter:blur(40px) brightness(0.7);"/>
+    <div class="reveal-overlay"><div class="reveal-label" id="revealLabel">🔍 What OneWord does this show?</div></div>
+  </div>
+  <div class="blur-label">Image clarity: <span id="clarityPct">0%</span></div>
+  <div class="blur-bar"><div class="blur-fill" id="blurFill" style="width:0%"></div></div>
+  <div class="attempts-row">Wrong guesses: <span id="wrongCount">0</span> / 5</div>
+  <div class="guess-wrap">
+    <div class="guess-label">💡 Clue: Adjusting to what comes your way</div>
+    <input class="guess-input" id="guessInput" type="text" maxlength="12" placeholder="Type the OneWord..." autocomplete="off" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter')checkGuess()"/>
+    <button class="guess-btn" onclick="checkGuess()">Submit Guess →</button>
+    <div class="wrong-msg" id="wrongMsg"></div>
+  </div>
+  <div class="result-banner" id="resultBanner">
+    <div class="result-icon" id="resultIcon"></div>
+    <div class="result-title" id="resultTitle"></div>
+    <div class="result-msg" id="resultMsg"></div>
+    <div class="result-btns">
+      <button class="play-again" onclick="resetGame()">🖼️ Play Again</button>
+      <a href="KSB_Stories_Kiosk.html" class="back-btn">← Word World</a>
+    </div>
+  </div>
+</div>
+<script>
+var WORD='ADAPT';
+var wrong=0,maxWrong=5,gameOver=false;
+var blurLevels=[40,28,18,10,4,0];
+var clarityLevels=[0,20,40,60,80,100];
+
+function checkGuess(){
+  if(gameOver)return;
+  var val=document.getElementById('guessInput').value.trim().toUpperCase();
+  if(!val)return;
+  if(val===WORD){
+    revealImage();showResult(true);
+  }else{
+    wrong++;
+    document.getElementById('wrongCount').textContent=wrong;
+    document.getElementById('wrongMsg').textContent='Not quite! Try again 🌿';
+    setTimeout(function(){document.getElementById('wrongMsg').textContent='';},1500);
+    updateBlur();
+    if(wrong>=maxWrong){revealImage();showResult(false);}
+  }
+  document.getElementById('guessInput').value='';
+}
+
+function updateBlur(){
+  var blur=blurLevels[Math.min(wrong,5)];
+  var clarity=clarityLevels[Math.min(wrong,5)];
+  document.getElementById('revealImg').style.filter='blur('+blur+'px) brightness('+(0.7+wrong*0.06)+')';
+  document.getElementById('blurFill').style.width=clarity+'%';
+  document.getElementById('clarityPct').textContent=clarity+'%';
+}
+
+function revealImage(){
+  document.getElementById('revealImg').style.filter='blur(0px) brightness(1)';
+  document.getElementById('blurFill').style.width='100%';
+  document.getElementById('clarityPct').textContent='100%';
+  document.getElementById('revealLabel').textContent='✨ '+WORD+'!';
+}
+
+function showResult(won){
+  gameOver=true;
+  document.getElementById('guess-wrap');
+  document.querySelector('.guess-wrap').style.opacity='0.3';
+  var banner=document.getElementById('resultBanner');
+  banner.classList.add('show');
+  if(won){
+    var msgs=['First try — brilliant!','Amazing — you got it fast!','Well done!','You figured it out!','So close — you got it!'];
+    document.getElementById('resultIcon').textContent='🌟';
+    document.getElementById('resultTitle').textContent=msgs[Math.min(wrong,4)];
+    document.getElementById('resultMsg').textContent='The word is '+WORD+' — '+'Adjusting to what comes your way'+'. You saw it in the image!';
+  }else{
+    document.getElementById('resultIcon').textContent='🖼️';
+    document.getElementById('resultTitle').textContent='The word was '+WORD+'!';
+    document.getElementById('resultMsg').textContent='Adjusting to what comes your way'+' — now that you know, look at the image again. You can see it everywhere!';
+  }
+}
+
+function resetGame(){
+  wrong=0;gameOver=false;
+  document.getElementById('wrongCount').textContent=0;
+  document.getElementById('wrongMsg').textContent='';
+  document.getElementById('revealImg').style.filter='blur(40px) brightness(0.7)';
+  document.getElementById('blurFill').style.width='0%';
+  document.getElementById('clarityPct').textContent='0%';
+  document.getElementById('revealLabel').textContent='🔍 What OneWord does this show?';
+  document.getElementById('resultBanner').classList.remove('show');
+  document.querySelector('.guess-wrap').style.opacity='1';
+  document.getElementById('guessInput').value='';
+}
+</script>
+</body>
+</html>
