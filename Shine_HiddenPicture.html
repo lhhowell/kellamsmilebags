@@ -59,6 +59,10 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
 .win-actions { display:flex; flex-direction:column; gap:10px; }
 .credit { text-align:center; font-size:12px; color:#999; padding:24px 20px 0; max-width:1100px; margin:0 auto; }
 @media(max-width:700px) { .layout{flex-direction:column} .sidebar,.img-wrap{max-width:100%;flex-basis:100%} .banner{font-size:22px;height:54px} .banner-right{min-width:140px} }
+.calibrate-mode .hotspot { background:rgba(255,0,0,0.5)!important; border:3px solid red!important; opacity:1!important; }
+.calibrate-mode .hotspot::after { display:none; }
+.cal-btn { position:fixed; bottom:28px; right:20px; background:#333; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-size:13px; cursor:pointer; z-index:300; opacity:0.4; }
+.cal-btn:hover { opacity:1; }
 </style>
 </head>
 <body>
@@ -72,20 +76,20 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
     <img src="https://lhhowell.github.io/kellamsmilebags/Shine_HiddenPicture.png" alt="Smile Bag – Shine hidden picture scene" id="mainImg">
 
     <div class="hotspot" id="hs-0"  style="left:16%;top:12%" data-id="0"  data-label="&#x2600;&#xFE0F; Bright Sun"                data-hint="A dazzling sun with long bright rays in the top left sky">&#x2600;&#xFE0F;</div>
-    <div class="hotspot" id="hs-1"  style="left:62%;top:58%" data-id="1"  data-label="&#x1F31F; Glowing Sunburst"            data-hint="A second glowing sunburst on the center horizon, radiating light outward">&#x1F31F;</div>
-    <div class="hotspot" id="hs-2"  style="left:50%;top:42%" data-id="2"  data-label="&#x2728; Sparkling Stars"              data-hint="Sparkling stars scattered throughout the scene — look for the sparkle effects!">&#x2728;</div>
+    <div class="hotspot" id="hs-1"  style="left:44%;top:58%" data-id="1"  data-label="&#x1F31F; Glowing Sunburst"            data-hint="A second glowing sunburst on the center horizon, radiating light outward">&#x1F31F;</div>
+    <div class="hotspot" id="hs-2"  style="left:68%;top:54%" data-id="2"  data-label="&#x2728; Sparkling Stars"              data-hint="Sparkling stars scattered throughout the scene — look for the sparkle effects!">&#x2728;</div>
     <div class="hotspot" id="hs-3"  style="left:42%;top:48%" data-id="3"  data-label="&#x1F308; Rainbow"                    data-hint="A full rainbow arching through the center of the bag scene">&#x1F308;</div>
-    <div class="hotspot" id="hs-4"  style="left:84%;top:15%" data-id="4"  data-label="&#x1FA77; Disco Ball"                 data-hint="A glittering disco ball hanging in the top right — shine on!">&#x1FA77;</div>
+    <div class="hotspot" id="hs-4"  style="left:93%;top:9%" data-id="4"  data-label="&#x1FA77; Disco Ball"                 data-hint="A glittering disco ball hanging in the top right — shine on!">&#x1FA77;</div>
     <div class="hotspot" id="hs-5"  style="left:72%;top:18%" data-id="5"  data-label="&#x1F3F0; Castle with Shining Star"   data-hint="A magical glowing castle with a star on top in the top right background">&#x1F3F0;</div>
     <div class="hotspot" id="hs-6"  style="left:88%;top:42%" data-id="6"  data-label="&#x1F3E6; Lighthouse"                 data-hint="A lighthouse beaming its light in the right background">&#x1F3E6;</div>
     <div class="hotspot" id="hs-7"  style="left:80%;top:52%" data-id="7"  data-label="&#x1F333; Glowing Tree"               data-hint="A luminous tree radiating warm light on the right side of the scene">&#x1F333;</div>
-    <div class="hotspot" id="hs-8"  style="left:70%;top:65%" data-id="8"  data-label="&#x1F525; Torch / Flame"              data-hint="A lit torch or flame glowing in the lower right area of the bag">&#x1F525;</div>
-    <div class="hotspot" id="hs-9"  style="left:60%;top:62%" data-id="9"  data-label="&#x1F48E; Diamond / Gem"              data-hint="A sparkling diamond or gem catching the light in the right-center">&#x1F48E;</div>
-    <div class="hotspot" id="hs-10" style="left:16%;top:68%" data-id="10" data-label="&#x1F50D; Magnifying Glass"           data-hint="A magnifying glass focusing light at the bottom left of the scene">&#x1F50D;</div>
-    <div class="hotspot" id="hs-11" style="left:14%;top:78%" data-id="11" data-label="&#x1F576;&#xFE0F; Sunglasses"               data-hint="A pair of sunglasses at the bottom left — for all that shine!">&#x1F576;&#xFE0F;</div>
-    <div class="hotspot" id="hs-12" style="left:16%;top:88%" data-id="12" data-label="&#x1FA9A; Shovel"                    data-hint="A shovel at the bottom left — digging for gold and hidden gems">&#x1FA9A;</div>
-    <div class="hotspot" id="hs-13" style="left:50%;top:90%" data-id="13" data-label="&#x2B50; Gold Star"                  data-hint="A gold star gleaming at the bottom center foreground">&#x2B50;</div>
-    <div class="hotspot" id="hs-14" style="left:84%;top:82%" data-id="14" data-label="&#x1F4A1; Lantern / Light"           data-hint="A glowing lantern or light source at the bottom right">&#x1F4A1;</div>
+    <div class="hotspot" id="hs-8"  style="left:79%;top:57%" data-id="8"  data-label="&#x1F525; Torch / Flame"              data-hint="A lit torch or flame glowing in the lower right area of the bag">&#x1F525;</div>
+    <div class="hotspot" id="hs-9"  style="left:69%;top:62%" data-id="9"  data-label="&#x1F48E; Diamond / Gem"              data-hint="A sparkling diamond or gem catching the light in the right-center">&#x1F48E;</div>
+    <div class="hotspot" id="hs-10" style="left:16%;top:62%" data-id="10" data-label="&#x1F50D; Magnifying Glass"           data-hint="A magnifying glass focusing light at the bottom left of the scene">&#x1F50D;</div>
+    <div class="hotspot" id="hs-11" style="left:14%;top:74%" data-id="11" data-label="&#x1F576;&#xFE0F; Sunglasses"               data-hint="A pair of sunglasses at the bottom left — for all that shine!">&#x1F576;&#xFE0F;</div>
+    <div class="hotspot" id="hs-12" style="left:16%;top:92%" data-id="12" data-label="&#x1FA9A; Shovel"                    data-hint="A shovel at the bottom left — digging for gold and hidden gems">&#x1FA9A;</div>
+    <div class="hotspot" id="hs-13" style="left:50%;top:94%" data-id="13" data-label="&#x2B50; Gold Star"                  data-hint="A gold star gleaming at the bottom center foreground">&#x2B50;</div>
+    <div class="hotspot" id="hs-14" style="left:84%;top:94%" data-id="14" data-label="&#x1F4A1; Lantern / Light"           data-hint="A glowing lantern or light source at the bottom right">&#x1F4A1;</div>
 
   </div>
   <div class="sidebar">
@@ -146,6 +150,8 @@ function showToast(msg){const t=document.getElementById('toast');t.innerHTML=msg
 function giveHint(){const unfound=OBJECTS.filter(o=>!found.has(o.id));if(!unfound.length){showToast('&#x1F389; You already found everything!');return;}const candidates=unfound.filter(o=>!hintUsed.includes(o.id));const pick=candidates.length?candidates[Math.floor(Math.random()*candidates.length)]:unfound[Math.floor(Math.random()*unfound.length)];hintUsed.push(pick.id);const hs=document.getElementById('hs-'+pick.id);document.querySelectorAll('.hotspot.hint-pulse').forEach(h=>h.classList.remove('hint-pulse'));hs.classList.add('hint-pulse');showToast('&#x1F4A1; Hint: '+hs.dataset.hint);setTimeout(()=>hs.classList.remove('hint-pulse'),3500);}
 function resetGame(){found.clear();hintUsed=[];document.querySelectorAll('.hotspot').forEach(h=>h.classList.remove('found','hint-pulse'));document.querySelectorAll('.check-item').forEach(c=>c.classList.remove('found-item'));document.querySelectorAll('.check-box').forEach(c=>c.classList.remove('checked'));updateScore();}
 function downloadActivity(){const blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Shine_HiddenPicture_Activity.html';a.click();}
+function toggleCal(){document.body.classList.toggle('calibrate-mode');}
 </script>
+<button class="cal-btn" onclick="toggleCal()">&#x1F527; Cal</button>
 </body>
 </html>
