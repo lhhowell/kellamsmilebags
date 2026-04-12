@@ -59,6 +59,10 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
 .win-actions { display:flex; flex-direction:column; gap:10px; }
 .credit { text-align:center; font-size:12px; color:#999; padding:24px 20px 0; max-width:1100px; margin:0 auto; }
 @media(max-width:700px) { .layout{flex-direction:column} .sidebar,.img-wrap{max-width:100%;flex-basis:100%} .banner{font-size:22px;height:54px} .banner-right{min-width:140px} }
+.calibrate-mode .hotspot { background:rgba(255,0,0,0.5)!important; border:3px solid red!important; opacity:1!important; }
+.calibrate-mode .hotspot::after { display:none; }
+.cal-btn { position:fixed; bottom:28px; right:20px; background:#333; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-size:13px; cursor:pointer; z-index:300; opacity:0.4; }
+.cal-btn:hover { opacity:1; }
 </style>
 </head>
 <body>
@@ -72,20 +76,20 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
     <img src="https://lhhowell.github.io/kellamsmilebags/Grow_HiddenPicture.png" alt="Smile Bag – Grow hidden picture scene" id="mainImg">
 
     <div class="hotspot" id="hs-0"  style="left:50%;top:55%" data-id="0"  data-label="&#x1F331; Sprouting Plant"         data-hint="A small plant sprouting right in the center of the garden scene">&#x1F331;</div>
-    <div class="hotspot" id="hs-1"  style="left:12%;top:58%" data-id="1"  data-label="&#x1FAD7; Watering Can"            data-hint="A watering can on the left side outside the bag">&#x1FAD7;</div>
-    <div class="hotspot" id="hs-2"  style="left:38%;top:42%" data-id="2"  data-label="&#x1FA9A; Garden Trowel (left)"    data-hint="A garden trowel in the left-center of the bag">&#x1FA9A;</div>
-    <div class="hotspot" id="hs-3"  style="left:60%;top:45%" data-id="3"  data-label="&#x1FA9A; Garden Trowel (right)"   data-hint="A second trowel in the right-center of the bag">&#x1FA9A;</div>
-    <div class="hotspot" id="hs-4"  style="left:72%;top:40%" data-id="4"  data-label="&#x1F4D6; GROW Seed Book/Packet"   data-hint="A green book or seed packet labeled GROW on the right side">&#x1F4D6;</div>
-    <div class="hotspot" id="hs-5"  style="left:38%;top:65%" data-id="5"  data-label="&#x1F9FA; Basket of Seeds"         data-hint="A small basket filled with seeds in the lower center-left">&#x1F9FA;</div>
-    <div class="hotspot" id="hs-6"  style="left:48%;top:70%" data-id="6"  data-label="&#x1FAB4; Plant Pot"               data-hint="A plant pot in the lower center of the scene">&#x1FAB4;</div>
-    <div class="hotspot" id="hs-7"  style="left:65%;top:62%" data-id="7"  data-label="&#x1F33F; Tray of Seedlings"       data-hint="A tray of seedlings in the lower right-center area">&#x1F33F;</div>
-    <div class="hotspot" id="hs-8"  style="left:58%;top:55%" data-id="8"  data-label="&#x1FA9A; Hand Rake"               data-hint="A hand rake garden tool right of center in the bag">&#x1FA9A;</div>
-    <div class="hotspot" id="hs-9"  style="left:15%;top:48%" data-id="9"  data-label="&#x1FAD7; Water Jug/Container"     data-hint="A clear water jug or container on the left side">&#x1FAD7;</div>
-    <div class="hotspot" id="hs-10" style="left:85%;top:22%" data-id="10" data-label="&#x1FAB9; Bird's Nest with Eggs"   data-hint="A bird's nest with eggs tucked in the top right background">&#x1FAB9;</div>
-    <div class="hotspot" id="hs-11" style="left:80%;top:18%" data-id="11" data-label="&#x1F426; Bird"                    data-hint="A blue bird perched on the nest in the top right">&#x1F426;</div>
-    <div class="hotspot" id="hs-12" style="left:10%;top:28%" data-id="12" data-label="&#x1F430; Rabbit"                  data-hint="A fluffy rabbit in the top left background">&#x1F430;</div>
-    <div class="hotspot" id="hs-13" style="left:78%;top:72%" data-id="13" data-label="&#x1F383; Pumpkins"                data-hint="A cluster of pumpkins growing in the bottom right">&#x1F383;</div>
-    <div class="hotspot" id="hs-14" style="left:72%;top:88%" data-id="14" data-label="&#x1F50D; Magnifying Glass"        data-hint="A magnifying glass on the ground at the bottom right near the water">&#x1F50D;</div>
+    <div class="hotspot" id="hs-1"  style="left:33%;top:45%" data-id="1"  data-label="&#x1FAD7; Watering Can"            data-hint="A watering can on the left side outside the bag">&#x1FAD7;</div>
+    <div class="hotspot" id="hs-2"  style="left:34%;top:36%" data-id="2"  data-label="&#x1FA9A; Garden Trowel (left)"    data-hint="A garden trowel in the left-center of the bag">&#x1FA9A;</div>
+    <div class="hotspot" id="hs-3"  style="left:69%;top:48%" data-id="3"  data-label="&#x1FA9A; Garden Trowel (right)"   data-hint="A second trowel in the right-center of the bag">&#x1FA9A;</div>
+    <div class="hotspot" id="hs-4"  style="left:85%;top:35%" data-id="4"  data-label="&#x1F4D6; GROW Seed Book/Packet"   data-hint="A green book or seed packet labeled GROW on the right side">&#x1F4D6;</div>
+    <div class="hotspot" id="hs-5"  style="left:38%;top:63%" data-id="5"  data-label="&#x1F9FA; Basket of Seeds"         data-hint="A small basket filled with seeds in the lower center-left">&#x1F9FA;</div>
+    <div class="hotspot" id="hs-6"  style="left:32%;top:55%" data-id="6"  data-label="&#x1FAB4; Plant Pot"               data-hint="A plant pot in the lower center of the scene">&#x1FAB4;</div>
+    <div class="hotspot" id="hs-7"  style="left:70%;top:62%" data-id="7"  data-label="&#x1F33F; Tray of Seedlings"       data-hint="A tray of seedlings in the lower right-center area">&#x1F33F;</div>
+    <div class="hotspot" id="hs-8"  style="left:69%;top:45%" data-id="8"  data-label="&#x1FA9A; Hand Rake"               data-hint="A hand rake garden tool right of center in the bag">&#x1FA9A;</div>
+    <div class="hotspot" id="hs-9"  style="left:15%;top:53%" data-id="9"  data-label="&#x1FAD7; Water Jug/Container"     data-hint="A clear water jug or container on the left side">&#x1FAD7;</div>
+    <div class="hotspot" id="hs-10" style="left:85%;top:18%" data-id="10" data-label="&#x1FAB9; Bird's Nest with Eggs"   data-hint="A bird's nest with eggs tucked in the top right background">&#x1FAB9;</div>
+    <div class="hotspot" id="hs-11" style="left:83%;top:11%" data-id="11" data-label="&#x1F426; Bird"                    data-hint="A blue bird perched on the nest in the top right">&#x1F426;</div>
+    <div class="hotspot" id="hs-12" style="left:10%;top:18%" data-id="12" data-label="&#x1F430; Rabbit"                  data-hint="A fluffy rabbit in the top left background">&#x1F430;</div>
+    <div class="hotspot" id="hs-13" style="left:88%;top:92%" data-id="13" data-label="&#x1F383; Pumpkins"                data-hint="A cluster of pumpkins growing in the bottom right">&#x1F383;</div>
+    <div class="hotspot" id="hs-14" style="left:78%;top:88%" data-id="14" data-label="&#x1F50D; Magnifying Glass"        data-hint="A magnifying glass on the ground at the bottom right near the water">&#x1F50D;</div>
   </div>
   <div class="sidebar">
     <div class="score-card">
@@ -145,6 +149,8 @@ function showToast(msg){const t=document.getElementById('toast');t.innerHTML=msg
 function giveHint(){const unfound=OBJECTS.filter(o=>!found.has(o.id));if(!unfound.length){showToast('&#x1F389; You already found everything!');return;}const candidates=unfound.filter(o=>!hintUsed.includes(o.id));const pick=candidates.length?candidates[Math.floor(Math.random()*candidates.length)]:unfound[Math.floor(Math.random()*unfound.length)];hintUsed.push(pick.id);const hs=document.getElementById('hs-'+pick.id);document.querySelectorAll('.hotspot.hint-pulse').forEach(h=>h.classList.remove('hint-pulse'));hs.classList.add('hint-pulse');showToast('&#x1F4A1; Hint: '+hs.dataset.hint);setTimeout(()=>hs.classList.remove('hint-pulse'),3500);}
 function resetGame(){found.clear();hintUsed=[];document.querySelectorAll('.hotspot').forEach(h=>h.classList.remove('found','hint-pulse'));document.querySelectorAll('.check-item').forEach(c=>c.classList.remove('found-item'));document.querySelectorAll('.check-box').forEach(c=>c.classList.remove('checked'));updateScore();}
 function downloadActivity(){const blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Grow_HiddenPicture_Activity.html';a.click();}
+function toggleCal(){document.body.classList.toggle('calibrate-mode');}
 </script>
+<button class="cal-btn" onclick="toggleCal()">&#x1F527; Cal</button>
 </body>
 </html>
