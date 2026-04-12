@@ -81,22 +81,24 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
     <div class="hotspot" id="hs-3"  style="left:88%;top:10%" data-id="3"  data-label="&#x1F4A7; Water Droplet (left)"       data-hint="A large water droplet in the top right — every drop counts!">&#x1F4A7;</div>
     <div class="hotspot" id="hs-4"  style="left:56%;top:60%" data-id="4"  data-label="&#x1F331; Seedling Plant"             data-hint="A seedling pushing up from the soil in the center of the scene">&#x1F331;</div>
     <div class="hotspot" id="hs-5"  style="left:52%;top:80%" data-id="5"  data-label="&#x1FAB5; Root System"                data-hint="An underground root system spreading through the bottom center">&#x1FAB5;</div>
-    <div class="hotspot" id="hs-6"  style="left:50%;top:49%" data-id="6"  data-label="&#x267B;&#xFE0F; Recycle Bin"               data-hint="A recycle bin in the right-center of the bag — sustain through recycling">&#x267B;&#xFE0F;</div>
-    <div class="hotspot" id="hs-7"  style="left:78%;top:52%" data-id="7"  data-label="&#x1F6AB; Compost Barrel"             data-hint="A compost bin or barrel on the right side — turning waste into nourishment">&#x1F6AB;</div>
-    <div class="hotspot" id="hs-8"  style="left:86%;top:64%" data-id="8"  data-label="&#x1F6CD;&#xFE0F; Reusable Shopping Bag"   data-hint="A reusable tote bag at the bottom right — sustain by reducing waste">&#x1F6CD;&#xFE0F;</div>
+    <div class="hotspot" id="hs-6"  style="left:70%;top:49%" data-id="6"  data-label="&#x267B;&#xFE0F; Recycle Bin"               data-hint="A recycle bin in the right-center of the bag — sustain through recycling">&#x267B;&#xFE0F;</div>
+    <div class="hotspot" id="hs-7"  style="left:82%;top:48%" data-id="7"  data-label="&#x1F6AB; Compost Barrel"             data-hint="A compost bin or barrel on the right side — turning waste into nourishment">&#x1F6AB;</div>
+    <div class="hotspot" id="hs-8"  style="left:90%;top:67%" data-id="8"  data-label="&#x1F6CD;&#xFE0F; Reusable Shopping Bag"   data-hint="A reusable tote bag at the bottom right — sustain by reducing waste">&#x1F6CD;&#xFE0F;</div>
     <div class="hotspot" id="hs-9"  style="left:12%;top:78%" data-id="9"  data-label="&#x1F4A1; LED Light Bulb"             data-hint="An energy-efficient LED bulb at the bottom left — sustainable lighting">&#x1F4A1;</div>
     <div class="hotspot" id="hs-10" style="left:8%;top:90%"  data-id="10" data-label="&#x1F527; Wrench / Tool"              data-hint="A wrench or tool at the bottom left — maintaining what we have">&#x1F527;</div>
     <div class="hotspot" id="hs-11" style="left:78%;top:38%" data-id="11" data-label="&#x1F41D; Bee"                        data-hint="A bee near the leaves on the right side — pollinators sustain our food!">&#x1F41D;</div>
     <div class="hotspot" id="hs-12" style="left:28%;top:58%" data-id="12" data-label="&#x1F36F; Beehive"                   data-hint="A golden beehive on the left-center of the bag — home of the sustainers">&#x1F36F;</div>
     <div class="hotspot" id="hs-13" style="left:38%;top:60%" data-id="13" data-label="&#x1FAA3; Watering Bucket"            data-hint="A watering bucket in the left-center — sustaining growth one bucket at a time">&#x1FAA3;</div>
     <div class="hotspot" id="hs-14" style="left:74%;top:64%" data-id="14" data-label="&#x1F48E; Diamond / Gem"             data-hint="A sparkling gem in the right-center — precious like our planet">&#x1F48E;</div>
+    <div class="hotspot" id="hs-15" style="left:60%;top:88%" data-id="15" data-label="&#x2B50; Fallen Star"               data-hint="A fallen star resting on the ground — even stars sustain the earth">&#x2B50;</div>
+    <div class="hotspot" id="hs-16" style="left:82%;top:90%" data-id="16" data-label="&#x1F9A1; Mole"                    data-hint="A mole burrowing through the soil — sustaining the underground ecosystem">&#x1F9A1;</div>
 
   </div>
   <div class="sidebar">
     <div class="score-card">
       <div class="score-label">Objects Found</div>
       <div class="score-num" id="scoreNum">0</div>
-      <div class="score-denom">out of 15</div>
+      <div class="score-denom">out of 17</div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     </div>
     <div class="checklist-card">
@@ -112,7 +114,7 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
   <div class="win-box">
     <div class="win-emoji">&#x1F389;&#x1F30D;&#x1F389;</div>
     <div class="win-title">Fully Sustained!</div>
-    <div class="win-sub">You found all 15 hidden objects in the Sustain scene!<br><br>
+    <div class="win-sub">You found all 17 hidden objects in the Sustain scene!<br><br>
       <em style="color:var(--gold);font-weight:800;">"Taking care of what takes care of us."</em>
     </div>
     <div class="win-actions">
@@ -139,7 +141,9 @@ const OBJECTS = [
   {id:11, emoji:"&#x1F41D;",         label:"Bee"},
   {id:12, emoji:"&#x1F36F;",         label:"Beehive"},
   {id:13, emoji:"&#x1FAA3;",         label:"Watering Bucket"},
-  {id:14, emoji:"&#x1F48E;",         label:"Diamond / Gem"}
+  {id:14, emoji:"&#x1F48E;",         label:"Diamond / Gem"},
+  {id:15, emoji:"&#x2B50;",          label:"Fallen Star"},
+  {id:16, emoji:"&#x1F9A1;",         label:"Mole"}
 ];
 const TOTAL=OBJECTS.length; let found=new Set(),hintUsed=[];
 const cl=document.getElementById('checklist');
