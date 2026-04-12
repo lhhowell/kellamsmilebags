@@ -89,7 +89,6 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
     <div class="hotspot" id="hs-11" style="left:28%;top:50%" data-id="11" data-label="&#x1FAB5; Tree Stump with Roots"       data-hint="A tree stump with its roots still gripping the earth on the left side">&#x1FAB5;</div>
     <div class="hotspot" id="hs-12" style="left:80%;top:12%" data-id="12" data-label="&#x1F5BC;&#xFE0F; Family Photo Frames"      data-hint="A family tree! Photo frames hanging from the branch in the top right — your roots!">&#x1F5BC;&#xFE0F;</div>
     <div class="hotspot" id="hs-13" style="left:69%;top:18%" data-id="13" data-label="&#x2764;&#xFE0F; Heart Carving on Tree"      data-hint="A heart-shaped carving or fruit on the right tree — love carved into your roots">&#x2764;&#xFE0F;</div>
-    <div class="hotspot" id="hs-14" style="left:40%;top:20%" data-id="14" data-label="&#x1F33B; Seed Pod / Plant Cluster"    data-hint="A small plant cluster or seed pod at the bottom center foreground">&#x1F33B;</div>
     <div class="hotspot" id="hs-15" style="left:55%;top:82%" data-id="15" data-label="&#x1F40C; Snail"                       data-hint="A snail making its way through the root network at the bottom center">&#x1F40C;</div>
 
   </div>
@@ -97,7 +96,7 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
     <div class="score-card">
       <div class="score-label">Objects Found</div>
       <div class="score-num" id="scoreNum">0</div>
-      <div class="score-denom">out of 16</div>
+      <div class="score-denom">out of 15</div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     </div>
     <div class="checklist-card">
@@ -113,7 +112,7 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
   <div class="win-box">
     <div class="win-emoji">&#x1F389;&#x1F333;&#x1F389;</div>
     <div class="win-title">Deep Roots!</div>
-    <div class="win-sub">You found all 16 hidden objects in the Root scene!<br><br>
+    <div class="win-sub">You found all 15 hidden objects in the Root scene!<br><br>
       <em style="color:var(--gold);font-weight:800;">"Knowing where you come from."</em>
     </div>
     <div class="win-actions">
@@ -140,7 +139,6 @@ const OBJECTS = [
   {id:11, emoji:"&#x1FAB5;",         label:"Tree Stump with Roots"},
   {id:12, emoji:"&#x1F5BC;&#xFE0F;", label:"Family Photo Frames"},
   {id:13, emoji:"&#x2764;&#xFE0F;",  label:"Heart Carving on Tree"},
-  {id:14, emoji:"&#x1F33B;",         label:"Seed Pod / Plant Cluster"},
   {id:15, emoji:"&#x1F40C;",         label:"Snail"}
 ];
 const TOTAL=OBJECTS.length; let found=new Set(),hintUsed=[];
