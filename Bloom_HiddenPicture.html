@@ -63,6 +63,22 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
 .calibrate-mode .hotspot::after { display:none; }
 .cal-btn { position:fixed; bottom:28px; right:20px; background:#333; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-size:13px; cursor:pointer; z-index:300; opacity:0.4; }
 .cal-btn:hover { opacity:1; }
+
+.report-btn { position:fixed; bottom:28px; right:100px; background:#8B0000; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-size:13px; cursor:pointer; z-index:300; opacity:0.4; }
+.report-btn:hover { opacity:1; }
+.report-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:400; align-items:center; justify-content:center; }
+.report-overlay.show { display:flex; }
+.report-box { background:#fff; border-radius:16px; padding:28px 32px; max-width:380px; width:90%; box-shadow:0 8px 32px rgba(0,0,0,0.3); font-family:'Nunito',sans-serif; }
+.report-title { font-family:'Fredoka One',cursive; font-size:22px; color:#8B0000; margin-bottom:6px; }
+.report-sub { font-size:13px; color:#666; margin-bottom:18px; }
+.report-box label { font-size:14px; font-weight:700; color:#333; display:block; margin-bottom:6px; }
+.report-box select, .report-box textarea { width:100%; border:2px solid #CBD5E0; border-radius:8px; padding:9px 12px; font-family:'Nunito',sans-serif; font-size:14px; margin-bottom:16px; }
+.report-box select:focus, .report-box textarea:focus { outline:none; border-color:#8B0000; }
+.report-box textarea { resize:vertical; min-height:70px; }
+.report-actions { display:flex; gap:10px; }
+.report-actions button { flex:1; padding:10px; border-radius:8px; font-family:'Fredoka One',cursive; font-size:15px; border:none; cursor:pointer; }
+.btn-report-submit { background:#8B0000; color:#fff; }
+.btn-report-cancel { background:#EDF2F7; color:#333; }
 </style>
 </head>
 <body>
@@ -159,6 +175,31 @@ function giveHint(){const unfound=OBJECTS.filter(o=>!found.has(o.id));if(!unfoun
 function resetGame(){found.clear();hintUsed=[];document.querySelectorAll('.hotspot').forEach(h=>h.classList.remove('found','hint-pulse'));document.querySelectorAll('.check-item').forEach(c=>c.classList.remove('found-item'));document.querySelectorAll('.check-box').forEach(c=>c.classList.remove('checked'));updateScore();}
 function downloadActivity(){const blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Bloom_HiddenPicture_Activity.html';a.click();}
 function toggleCal(){document.body.classList.toggle('calibrate-mode');}
+
+const SCENE_NAME = 'Bloom';
+const REPORT_URL = 'https://script.google.com/macros/s/AKfycbxDAWtlhdpkVwdCXwByz5BeHIiOx3QWU88PNwUq2exT7rfL1wqLJe8u7MC5VMu4w2m8/exec';
+function openReport() {
+  document.getElementById('reportIssue').value = '';
+  document.getElementById('reportNotes').value = '';
+  document.getElementById('reportOverlay').classList.add('show');
+}
+function closeReport() {
+  document.getElementById('reportOverlay').classList.remove('show');
+}
+async function submitReport() {
+  const issue = document.getElementById('reportIssue').value;
+  if (!issue) { alert('Please select an issue type.'); return; }
+  const notes = document.getElementById('reportNotes').value;
+  document.getElementById('reportBox').innerHTML = '<div style="text-align:center;padding:20px"><div style="font-size:40px">&#x2705;</div><p style="color:#28A745;font-weight:700;font-size:15px;margin-top:8px;">Thank you! Your report has been submitted.</p></div>';
+  setTimeout(closeReport, 2000);
+  try {
+    await fetch(REPORT_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ scene: SCENE_NAME, issue, notes })
+    });
+  } catch(e) { console.log('Report error:', e); }
+}
 </script>
 <button class="cal-btn" onclick="toggleCal()">&#x1F527; Cal</button>
 </body>
