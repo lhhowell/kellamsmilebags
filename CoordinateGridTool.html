@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hidden Picture Coordinate Tool | Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root { --gold:#C8860A; --navy:#1B3A6B; --accent:#E65100; --bg:#FFFBF0; }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; padding:0 0 48px; }
+.banner { display:flex; align-items:center; width:100%; height:64px; font-family:'Fredoka One',cursive; font-size:24px; letter-spacing:1px; box-shadow:0 3px 12px rgba(0,0,0,0.18); background:linear-gradient(135deg,#E8820A,#FFB300); color:#fff; padding:0 24px; gap:16px; }
+.banner span { font-size:14px; font-weight:400; opacity:.85; font-family:'Nunito',sans-serif; }
+.main { max-width:1100px; margin:0 auto; padding:20px; }
+.controls { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:16px; background:#fff; border-radius:12px; padding:16px; box-shadow:0 2px 12px rgba(0,0,0,0.08); }
+.controls label { font-weight:700; color:#333; font-size:14px; }
+.file-btn { background:var(--navy); color:#fff; border:none; border-radius:8px; padding:9px 18px; font-family:'Fredoka One',cursive; font-size:15px; cursor:pointer; }
+.file-btn:hover { background:#2a5298; }
+.url-input { flex:1; min-width:200px; border:2px solid #CBD5E0; border-radius:8px; padding:8px 12px; font-family:'Nunito',sans-serif; font-size:14px; }
+.url-input:focus { outline:none; border-color:var(--gold); }
+.load-btn { background:var(--accent); color:#fff; border:none; border-radius:8px; padding:9px 18px; font-family:'Fredoka One',cursive; font-size:15px; cursor:pointer; }
+.toggle-grid { background:#2E7D32; color:#fff; border:none; border-radius:8px; padding:9px 18px; font-family:'Fredoka One',cursive; font-size:15px; cursor:pointer; }
+.toggle-grid.off { background:#999; }
+.clear-btn { background:#8B0000; color:#fff; border:none; border-radius:8px; padding:9px 18px; font-family:'Fredoka One',cursive; font-size:15px; cursor:pointer; }
+.layout { display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap; }
+.img-container { position:relative; flex:1 1 520px; max-width:680px; border-radius:12px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.15); background:#ddd; cursor:crosshair; user-select:none; }
+.img-container img { width:100%; height:auto; display:block; pointer-events:none; -webkit-user-drag:none; }
+.placeholder { width:100%; aspect-ratio:1; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:12px; color:#999; font-size:16px; font-weight:700; background:#f0f0f0; min-height:400px; }
+.placeholder .icon { font-size:48px; }
+/* Grid overlay */
+.grid-overlay { position:absolute; inset:0; pointer-events:none; }
+.grid-line-h { position:absolute; left:0; right:0; height:1px; background:rgba(255,255,255,0.4); }
+.grid-line-v { position:absolute; top:0; bottom:0; width:1px; background:rgba(255,255,255,0.4); }
+.grid-label { position:absolute; font-size:9px; color:rgba(255,255,255,0.8); font-weight:700; background:rgba(0,0,0,0.3); padding:1px 3px; border-radius:2px; pointer-events:none; font-family:'Nunito',sans-serif; }
+/* Crosshair */
+.crosshair { position:absolute; pointer-events:none; display:none; }
+.crosshair-h { position:absolute; left:0; right:0; height:1px; background:rgba(255,220,0,0.9); top:50%; transform:translateY(-50%); }
+.crosshair-v { position:absolute; top:0; bottom:0; width:1px; background:rgba(255,220,0,0.9); left:50%; transform:translateX(-50%); }
+.crosshair-dot { position:absolute; width:10px; height:10px; background:#FFD700; border-radius:50%; top:50%; left:50%; transform:translate(-50%,-50%); border:2px solid #fff; }
+/* Pins */
+.pin { position:absolute; transform:translate(-50%,-100%); pointer-events:none; font-size:20px; filter:drop-shadow(0 2px 3px rgba(0,0,0,0.4)); }
+.pin-label { position:absolute; transform:translate(-50%, 4px); background:rgba(0,0,0,0.75); color:#fff; font-size:10px; font-family:'Nunito',sans-serif; font-weight:700; padding:2px 5px; border-radius:4px; white-space:nowrap; pointer-events:none; }
+/* Coord display */
+.coord-display { position:absolute; top:10px; left:10px; background:rgba(0,0,0,0.75); color:#FFD700; font-family:'Fredoka One',cursive; font-size:16px; padding:8px 14px; border-radius:8px; pointer-events:none; display:none; z-index:10; }
+/* Sidebar */
+.sidebar { flex:1 1 280px; max-width:340px; display:flex; flex-direction:column; gap:14px; }
+.coord-card { background:#fff; border-radius:12px; padding:16px; box-shadow:0 2px 12px rgba(0,0,0,0.08); }
+.coord-card h3 { font-family:'Fredoka One',cursive; color:var(--accent); font-size:18px; margin-bottom:12px; }
+.last-coord { background:#FFF8E1; border:2px solid var(--gold); border-radius:8px; padding:12px; margin-bottom:12px; text-align:center; }
+.last-coord .big { font-family:'Fredoka One',cursive; font-size:22px; color:var(--navy); }
+.last-coord .sub { font-size:12px; color:#888; margin-top:2px; }
+.copy-btn { width:100%; background:var(--gold); color:var(--navy); border:none; border-radius:8px; padding:10px; font-family:'Fredoka One',cursive; font-size:16px; cursor:pointer; margin-bottom:8px; }
+.copy-btn:hover { background:#e6a800; }
+.log-card { background:#fff; border-radius:12px; padding:16px; box-shadow:0 2px 12px rgba(0,0,0,0.08); flex:1; }
+.log-card h3 { font-family:'Fredoka One',cursive; color:var(--navy); font-size:18px; margin-bottom:12px; }
+.log-list { max-height:380px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; }
+.log-item { display:flex; align-items:center; justify-content:space-between; background:#F7FAFC; border-radius:6px; padding:8px 10px; font-size:13px; gap:8px; }
+.log-item .num { font-weight:800; color:var(--accent); width:24px; flex-shrink:0; }
+.log-item .coords { font-family:'Fredoka One',cursive; color:var(--navy); flex:1; }
+.log-item .copy-small { background:var(--navy); color:#fff; border:none; border-radius:4px; padding:3px 8px; font-size:11px; cursor:pointer; flex-shrink:0; }
+.copy-all-btn { width:100%; background:var(--navy); color:#fff; border:none; border-radius:8px; padding:10px; font-family:'Fredoka One',cursive; font-size:15px; cursor:pointer; margin-top:10px; }
+.copy-all-btn:hover { background:#2a5298; }
+.empty-log { color:#aaa; font-size:13px; text-align:center; padding:20px 0; }
+.tip { background:#E8F5E9; border-left:4px solid #2E7D32; border-radius:8px; padding:12px; font-size:13px; color:#2E7D32; font-weight:600; }
+</style>
+</head>
+<body>
+<div class="banner">
+  🎯 Hidden Picture Coordinate Tool
+  <span>Click anywhere on the image to get left% / top% coordinates</span>
+</div>
+
+<div class="main">
+  <div class="controls">
+    <label>Load Image:</label>
+    <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="loadFile(event)">
+    <button class="file-btn" onclick="document.getElementById('fileInput').click()">📁 Upload PNG</button>
+    <span style="color:#999;font-size:13px;">or</span>
+    <input class="url-input" type="text" id="urlInput" placeholder="Paste GitHub image URL (e.g. lhhowell.github.io/kellamsmilebags/Rise_HiddenPicture.png)">
+    <button class="load-btn" onclick="loadURL()">🌐 Load URL</button>
+    <button class="toggle-grid" id="gridBtn" onclick="toggleGrid()">📐 Grid ON</button>
+    <button class="clear-btn" onclick="clearLog()">🗑️ Clear Log</button>
+  </div>
+
+  <div class="layout">
+    <div class="img-container" id="imgContainer" onclick="handleClick(event)" onmousemove="handleMove(event)" onmouseleave="handleLeave()">
+      <div class="placeholder" id="placeholder">
+        <div class="icon">🖼️</div>
+        <div>Upload a PNG or load from GitHub URL</div>
+        <div style="font-size:13px;color:#bbb;font-weight:400;">Then click anywhere to get coordinates</div>
+      </div>
+      <div class="grid-overlay" id="gridOverlay"></div>
+      <div class="crosshair" id="crosshair">
+        <div class="crosshair-h"></div>
+        <div class="crosshair-v"></div>
+        <div class="crosshair-dot"></div>
+      </div>
+      <div class="coord-display" id="coordDisplay"></div>
+      <div id="pinsLayer"></div>
+    </div>
+
+    <div class="sidebar">
+      <div class="coord-card">
+        <h3>📍 Last Click</h3>
+        <div class="last-coord">
+          <div class="big" id="lastCoord">—</div>
+          <div class="sub">left% / top%</div>
+        </div>
+        <button class="copy-btn" onclick="copyLast()">📋 Copy Coordinates</button>
+        <div class="tip">💡 Click on any object in the image to get its exact coordinates!</div>
+      </div>
+
+      <div class="log-card">
+        <h3>📋 Coordinate Log</h3>
+        <div class="log-list" id="logList">
+          <div class="empty-log">No clicks yet — load an image and start clicking!</div>
+        </div>
+        <button class="copy-all-btn" onclick="copyAll()">📋 Copy All Coordinates</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let gridVisible = true;
+let clickLog = [];
+let lastCoord = null;
+let imgLoaded = false;
+
+function loadFile(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => setImage(ev.target.result);
+  reader.readAsDataURL(file);
+}
+
+function loadURL() {
+  let url = document.getElementById('urlInput').value.trim();
+  if (!url) return;
+  if (!url.startsWith('http')) url = 'https://' + url;
+  setImage(url);
+}
+
+function setImage(src) {
+  const container = document.getElementById('imgContainer');
+  document.getElementById('placeholder').style.display = 'none';
+  // Remove existing img
+  const old = container.querySelector('img');
+  if (old) old.remove();
+  const img = document.createElement('img');
+  img.src = src;
+  img.id = 'mainImg';
+  img.onload = () => { imgLoaded = true; buildGrid(); };
+  img.onerror = () => alert('Could not load image. Try uploading directly.');
+  container.insertBefore(img, container.querySelector('.grid-overlay'));
+}
+
+function buildGrid() {
+  const overlay = document.getElementById('gridOverlay');
+  overlay.innerHTML = '';
+  if (!gridVisible) return;
+  for (let i = 10; i < 100; i += 10) {
+    const h = document.createElement('div');
+    h.className = 'grid-line-h';
+    h.style.top = i + '%';
+    overlay.appendChild(h);
+    const lbl = document.createElement('div');
+    lbl.className = 'grid-label';
+    lbl.style.top = i + '%';
+    lbl.style.left = '1px';
+    lbl.textContent = i + '%';
+    overlay.appendChild(lbl);
+
+    const v = document.createElement('div');
+    v.className = 'grid-line-v';
+    v.style.left = i + '%';
+    overlay.appendChild(v);
+    const lbl2 = document.createElement('div');
+    lbl2.className = 'grid-label';
+    lbl2.style.left = i + '%';
+    lbl2.style.top = '1px';
+    lbl2.textContent = i + '%';
+    overlay.appendChild(lbl2);
+  }
+}
+
+function toggleGrid() {
+  gridVisible = !gridVisible;
+  const btn = document.getElementById('gridBtn');
+  btn.textContent = gridVisible ? '📐 Grid ON' : '📐 Grid OFF';
+  btn.classList.toggle('off', !gridVisible);
+  buildGrid();
+}
+
+function getCoords(e) {
+  const container = document.getElementById('imgContainer');
+  const img = container.querySelector('img');
+  if (!img) return null;
+  const rect = img.getBoundingClientRect();
+  const x = ((e.clientX - rect.left) / rect.width * 100).toFixed(0);
+  const y = ((e.clientY - rect.top) / rect.height * 100).toFixed(0);
+  return { x: Math.max(0, Math.min(100, parseInt(x))), y: Math.max(0, Math.min(100, parseInt(y))) };
+}
+
+function handleMove(e) {
+  const container = document.getElementById('imgContainer');
+  const img = container.querySelector('img');
+  if (!img) return;
+  const coords = getCoords(e);
+  if (!coords) return;
+
+  // Move crosshair
+  const ch = document.getElementById('crosshair');
+  const rect = img.getBoundingClientRect();
+  const containerRect = container.getBoundingClientRect();
+  ch.style.display = 'block';
+  ch.style.position = 'absolute';
+  ch.style.left = (e.clientX - containerRect.left) + 'px';
+  ch.style.top = (e.clientY - containerRect.top) + 'px';
+  ch.style.width = '0';
+  ch.style.height = '0';
+
+  // Show coord display
+  const cd = document.getElementById('coordDisplay');
+  cd.style.display = 'block';
+  cd.textContent = `left:${coords.x}%  top:${coords.y}%`;
+}
+
+function handleLeave() {
+  document.getElementById('crosshair').style.display = 'none';
+  document.getElementById('coordDisplay').style.display = 'none';
+}
+
+function handleClick(e) {
+  const container = document.getElementById('imgContainer');
+  const img = container.querySelector('img');
+  if (!img) return;
+  const coords = getCoords(e);
+  if (!coords) return;
+
+  const coordStr = `left:${coords.x}%;top:${coords.y}%`;
+  lastCoord = coordStr;
+  document.getElementById('lastCoord').textContent = coordStr;
+
+  // Add to log
+  clickLog.push({ n: clickLog.length + 1, coord: coordStr, left: coords.x, top: coords.y });
+  renderLog();
+
+  // Add pin
+  addPin(coords.x, coords.y, clickLog.length);
+
+  // Flash feedback
+  const cd = document.getElementById('coordDisplay');
+  cd.style.background = 'rgba(40,167,69,0.9)';
+  setTimeout(() => { cd.style.background = 'rgba(0,0,0,0.75)'; }, 400);
+}
+
+function addPin(left, top, num) {
+  const layer = document.getElementById('pinsLayer');
+  const pin = document.createElement('div');
+  pin.className = 'pin';
+  pin.style.left = left + '%';
+  pin.style.top = top + '%';
+  pin.innerHTML = '📍';
+  layer.appendChild(pin);
+
+  const lbl = document.createElement('div');
+  lbl.className = 'pin-label';
+  lbl.style.left = left + '%';
+  lbl.style.top = top + '%';
+  lbl.textContent = '#' + num;
+  layer.appendChild(lbl);
+}
+
+function renderLog() {
+  const list = document.getElementById('logList');
+  if (clickLog.length === 0) {
+    list.innerHTML = '<div class="empty-log">No clicks yet — load an image and start clicking!</div>';
+    return;
+  }
+  list.innerHTML = clickLog.map(item => `
+    <div class="log-item">
+      <span class="num">#${item.n}</span>
+      <span class="coords">${item.coord}</span>
+      <button class="copy-small" onclick="copyCoord('${item.coord}')">Copy</button>
+    </div>
+  `).join('');
+  list.scrollTop = list.scrollHeight;
+}
+
+function copyCoord(coord) {
+  navigator.clipboard.writeText(coord).then(() => showToast('Copied!'));
+}
+
+function copyLast() {
+  if (!lastCoord) return;
+  navigator.clipboard.writeText(lastCoord).then(() => showToast('Copied!'));
+}
+
+function copyAll() {
+  if (clickLog.length === 0) return;
+  const text = clickLog.map(item => `#${item.n}: ${item.coord}`).join('\n');
+  navigator.clipboard.writeText(text).then(() => showToast('All coordinates copied!'));
+}
+
+function clearLog() {
+  clickLog = [];
+  lastCoord = null;
+  document.getElementById('lastCoord').textContent = '—';
+  document.getElementById('pinsLayer').innerHTML = '';
+  renderLog();
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#28A745;color:#fff;padding:10px 24px;border-radius:50px;font-family:Fredoka One,cursive;font-size:16px;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,0.2)';
+  t.textContent = '✅ ' + msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 1800);
+}
+
+// Initialize grid (empty)
+buildGrid();
+</script>
+</body>
+</html>
