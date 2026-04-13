@@ -59,6 +59,10 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
 .win-actions { display:flex; flex-direction:column; gap:10px; }
 .credit { text-align:center; font-size:12px; color:#999; padding:24px 20px 0; max-width:1100px; margin:0 auto; }
 @media(max-width:700px) { .layout{flex-direction:column} .sidebar,.img-wrap{max-width:100%;flex-basis:100%} .banner{font-size:22px;height:54px} .banner-right{min-width:140px} }
+.calibrate-mode .hotspot { background:rgba(255,0,0,0.5)!important; border:3px solid red!important; opacity:1!important; }
+.calibrate-mode .hotspot::after { display:none; }
+.cal-btn { position:fixed; bottom:28px; right:20px; background:#333; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-size:13px; cursor:pointer; z-index:300; opacity:0.4; }
+.cal-btn:hover { opacity:1; }
 </style>
 </head>
 <body>
@@ -70,27 +74,32 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
 <div class="layout">
   <div class="img-wrap" id="imgWrap">
     <img src="https://lhhowell.github.io/kellamsmilebags/Bloom_HiddenPicture.png" alt="Smile Bag – Bloom hidden picture scene" id="mainImg">
-    <div class="hotspot" id="hs-0"  style="left:28%;top:52%" data-id="0"  data-label="&#x1FA9A; Shovel (tall)"         data-hint="A tall garden shovel standing upright on the left side">&#x1FA9A;</div>
-    <div class="hotspot" id="hs-1"  style="left:22%;top:78%" data-id="1"  data-label="&#x1FA9A; Shovel (bottom)"       data-hint="A second shovel at the bottom left near the shoe">&#x1FA9A;</div>
-    <div class="hotspot" id="hs-2"  style="left:38%;top:65%" data-id="2"  data-label="&#x1FAD7; Watering Can"          data-hint="A small watering can in the lower center-left of the bag">&#x1FAD7;</div>
-    <div class="hotspot" id="hs-3"  style="left:62%;top:55%" data-id="3"  data-label="&#x1F331; Seed Packet"           data-hint="A packet labeled SEEDS tucked in the center-right">&#x1F331;</div>
-    <div class="hotspot" id="hs-4"  style="left:70%;top:43%" data-id="4"  data-label="&#x1F41D; Bee"                   data-hint="A buzzing bee near the flowers on the right side">&#x1F41D;</div>
-    <div class="hotspot" id="hs-5"  style="left:76%;top:33%" data-id="5"  data-label="&#x1FAB9; Bird's Nest with Eggs" data-hint="A cozy nest with eggs tucked in the upper right">&#x1FAB9;</div>
-    <div class="hotspot" id="hs-6"  style="left:82%;top:65%" data-id="6"  data-label="&#x1F430; Bunny/Rabbit"          data-hint="A little rabbit peeking out at the bottom right">&#x1F430;</div>
+    <div class="hotspot" id="hs-0"  style="left:37%;top:52%" data-id="0"  data-label="&#x1FA9A; Shovel (tall)"         data-hint="A tall garden shovel standing upright on the left side">&#x1FA9A;</div>
+    <div class="hotspot" id="hs-1"  style="left:27%;top:89%" data-id="1"  data-label="&#x1FA9A; Shovel (bottom)"       data-hint="A second shovel at the bottom left near the shoe">&#x1FA9A;</div>
+    <div class="hotspot" id="hs-2"  style="left:41%;top:77%" data-id="2"  data-label="&#x1FAD7; Watering Can"          data-hint="A small watering can in the lower center-left of the bag">&#x1FAD7;</div>
+    <div class="hotspot" id="hs-3"  style="left:65%;top:56%" data-id="3"  data-label="&#x1F331; Seed Packet"           data-hint="A packet labeled SEEDS tucked in the center-right">&#x1F331;</div>
+    <div class="hotspot" id="hs-4"  style="left:76%;top:40%" data-id="4"  data-label="&#x1F41D; Bee"                   data-hint="A buzzing bee near the flowers on the right side">&#x1F41D;</div>
+    <div class="hotspot" id="hs-5"  style="left:81%;top:32%" data-id="5"  data-label="&#x1FAB9; Bird's Nest with Eggs" data-hint="A cozy nest with eggs tucked in the upper right">&#x1FAB9;</div>
+    <div class="hotspot" id="hs-6"  style="left:87%;top:68%" data-id="6"  data-label="&#x1F430; Bunny/Rabbit"          data-hint="A little rabbit peeking out at the bottom right">&#x1F430;</div>
     <div class="hotspot" id="hs-7"  style="left:45%;top:75%" data-id="7"  data-label="&#x1F41E; Ladybug"               data-hint="A tiny red ladybug among the leaves at the lower center">&#x1F41E;</div>
-    <div class="hotspot" id="hs-8"  style="left:18%;top:55%" data-id="8"  data-label="&#x1F98B; Butterfly Net"         data-hint="A butterfly net partially hidden on the left side">&#x1F98B;</div>
-    <div class="hotspot" id="hs-9"  style="left:35%;top:58%" data-id="9"  data-label="&#x1F344; Garden Mushroom"       data-hint="A mushroom growing in the center-left among the garden plants">&#x1F344;</div>
+    <div class="hotspot" id="hs-8"  style="left:16%;top:52%" data-id="8"  data-label="&#x1F98B; Butterfly Net"         data-hint="A butterfly net partially hidden on the left side">&#x1F98B;</div>
+    <div class="hotspot" id="hs-9"  style="left:41%;top:61%" data-id="9"  data-label="&#x1F344; Garden Mushroom"       data-hint="A mushroom growing in the center-left among the garden plants">&#x1F344;</div>
     <div class="hotspot" id="hs-10" style="left:50%;top:60%" data-id="10" data-label="&#x1F33F; Tiny Seedling"         data-hint="A tiny sprouting plant in the center of the scene">&#x1F33F;</div>
     <div class="hotspot" id="hs-11" style="left:72%;top:68%" data-id="11" data-label="&#x1FAB7; Flower Bulb"           data-hint="A flower bulb or root cluster near the bottom right plants">&#x1FAB7;</div>
-    <div class="hotspot" id="hs-12" style="left:53%;top:82%" data-id="12" data-label="&#x1F41B; Hidden Bug"            data-hint="A tan-faced bug with antennae hiding near the bottom center">&#x1F41B;</div>
-    <div class="hotspot" id="hs-13" style="left:14%;top:42%" data-id="13" data-label="&#x1FA94; Hanging Lantern"       data-hint="A decorative lantern hanging among the flowers on the left">&#x1FA94;</div>
-    <div class="hotspot" id="hs-14" style="left:42%;top:45%" data-id="14" data-label="&#x1F41B; Caterpillar"           data-hint="A small caterpillar-like shape blended into the foliage in the center">&#x1F41B;</div>
+    <div class="hotspot" id="hs-12" style="left:57%;top:92%" data-id="12" data-label="&#x1F41B; Hidden Bug"            data-hint="A tan-faced bug with antennae hiding near the bottom center">&#x1F41B;</div>
+    <div class="hotspot" id="hs-13" style="left:27%;top:43%" data-id="13" data-label="&#x1FA94; Hanging Lantern"       data-hint="A decorative lantern hanging among the flowers on the left">&#x1FA94;</div>
+    <div class="hotspot" id="hs-14" style="left:42%;top:45%" data-id="14" data-label="&#x1F41B; Caterpillar"           data-hint="A small caterpillar blended into the foliage in the center">&#x1F41B;</div>
+    <div class="hotspot" id="hs-15" style="left:23%;top:12%" data-id="15" data-label="&#x1F33B; Sunflower"              data-hint="A bright sunflower blooming in the top left of the scene">&#x1F33B;</div>
+    <div class="hotspot" id="hs-16" style="left:86%;top:20%" data-id="16" data-label="&#x1F33A; Tulips"                data-hint="Colorful tulips blooming in the top right area">&#x1F33A;</div>
+    <div class="hotspot" id="hs-17" style="left:33%;top:30%" data-id="17" data-label="&#x1F337; Pink Tulip"            data-hint="A pink tulip on the left side of the bag">&#x1F337;</div>
+    <div class="hotspot" id="hs-18" style="left:86%;top:40%" data-id="18" data-label="&#x1F33B; Sunflower (right)"     data-hint="A sunflower on the right side of the bag">&#x1F33B;</div>
+    <div class="hotspot" id="hs-19" style="left:19%;top:72%" data-id="19" data-label="&#x1F339; Red Rose"              data-hint="A red rose blooming at the lower left">&#x1F339;</div>
   </div>
   <div class="sidebar">
     <div class="score-card">
       <div class="score-label">Objects Found</div>
       <div class="score-num" id="scoreNum">0</div>
-      <div class="score-denom">out of 15</div>
+      <div class="score-denom">out of 20</div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     </div>
     <div class="checklist-card">
@@ -106,7 +115,7 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
   <div class="win-box">
     <div class="win-emoji">&#x1F389;&#x1F338;&#x1F389;</div>
     <div class="win-title">You're in Full Bloom!</div>
-    <div class="win-sub">You found all 15 hidden objects in the Bloom scene!<br><br>
+    <div class="win-sub">You found all 20 hidden objects in the Bloom scene!<br><br>
       <em style="color:var(--gold);font-weight:800;">"Growing into your best self."</em>
     </div>
     <div class="win-actions">
@@ -133,7 +142,12 @@ const OBJECTS = [
   {id:11, emoji:"&#x1FAB7;", label:"Flower Bulb"},
   {id:12, emoji:"&#x1F41B;", label:"Hidden Bug"},
   {id:13, emoji:"&#x1FA94;", label:"Hanging Lantern"},
-  {id:14, emoji:"&#x1F41B;", label:"Caterpillar"}
+  {id:14, emoji:"&#x1F41B;", label:"Caterpillar"},
+  {id:15, emoji:"&#x1F33B;", label:"Sunflower"},
+  {id:16, emoji:"&#x1F33A;", label:"Tulips"},
+  {id:17, emoji:"&#x1F337;", label:"Pink Tulip"},
+  {id:18, emoji:"&#x1F33B;", label:"Sunflower (right)"},
+  {id:19, emoji:"&#x1F339;", label:"Red Rose"}
 ];
 const TOTAL=OBJECTS.length; let found=new Set(),hintUsed=[];
 const cl=document.getElementById('checklist');
@@ -144,6 +158,8 @@ function showToast(msg){const t=document.getElementById('toast');t.innerHTML=msg
 function giveHint(){const unfound=OBJECTS.filter(o=>!found.has(o.id));if(!unfound.length){showToast('&#x1F389; You already found everything!');return;}const candidates=unfound.filter(o=>!hintUsed.includes(o.id));const pick=candidates.length?candidates[Math.floor(Math.random()*candidates.length)]:unfound[Math.floor(Math.random()*unfound.length)];hintUsed.push(pick.id);const hs=document.getElementById('hs-'+pick.id);document.querySelectorAll('.hotspot.hint-pulse').forEach(h=>h.classList.remove('hint-pulse'));hs.classList.add('hint-pulse');showToast('&#x1F4A1; Hint: '+hs.dataset.hint);setTimeout(()=>hs.classList.remove('hint-pulse'),3500);}
 function resetGame(){found.clear();hintUsed=[];document.querySelectorAll('.hotspot').forEach(h=>h.classList.remove('found','hint-pulse'));document.querySelectorAll('.check-item').forEach(c=>c.classList.remove('found-item'));document.querySelectorAll('.check-box').forEach(c=>c.classList.remove('checked'));updateScore();}
 function downloadActivity(){const blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Bloom_HiddenPicture_Activity.html';a.click();}
+function toggleCal(){document.body.classList.toggle('calibrate-mode');}
 </script>
+<button class="cal-btn" onclick="toggleCal()">&#x1F527; Cal</button>
 </body>
 </html>
