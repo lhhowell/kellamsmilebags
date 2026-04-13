@@ -59,6 +59,10 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
 .win-actions { display:flex; flex-direction:column; gap:10px; }
 .credit { text-align:center; font-size:12px; color:#999; padding:24px 20px 0; max-width:1100px; margin:0 auto; }
 @media(max-width:700px) { .layout{flex-direction:column} .sidebar,.img-wrap{max-width:100%;flex-basis:100%} .banner{font-size:22px;height:54px} .banner-right{min-width:140px} }
+.calibrate-mode .hotspot { background:rgba(255,0,0,0.5)!important; border:3px solid red!important; opacity:1!important; }
+.calibrate-mode .hotspot::after { display:none; }
+.cal-btn { position:fixed; bottom:28px; right:20px; background:#333; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-size:13px; cursor:pointer; z-index:300; opacity:0.4; }
+.cal-btn:hover { opacity:1; }
 </style>
 </head>
 <body>
@@ -70,27 +74,28 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
 <div class="layout">
   <div class="img-wrap" id="imgWrap">
     <img src="https://lhhowell.github.io/kellamsmilebags/Clear_HiddenPicture.png" alt="Smile Bag – Clear hidden picture scene" id="mainImg">
-    <div class="hotspot" id="hs-0"  style="left:14%;top:52%" data-id="0"  data-label="&#x1F9ED; Binoculars"            data-hint="A pair of binoculars on the left side near the water">&#x1F9ED;</div>
-    <div class="hotspot" id="hs-1"  style="left:22%;top:48%" data-id="1"  data-label="&#x1F52D; Telescope on Tripod"   data-hint="A telescope mounted on a tripod standing on the left">&#x1F52D;</div>
-    <div class="hotspot" id="hs-2"  style="left:76%;top:55%" data-id="2"  data-label="&#x1F4F7; Camera"               data-hint="A camera sitting on the right side near the water">&#x1F4F7;</div>
-    <div class="hotspot" id="hs-3"  style="left:80%;top:38%" data-id="3"  data-label="&#x1F964; Drinking Glass"        data-hint="The mascot is holding a glass of clear water in the right hand">&#x1F964;</div>
-    <div class="hotspot" id="hs-4"  style="left:88%;top:68%" data-id="4"  data-label="&#x1F9F4; Mason Jar"            data-hint="A mason jar with water and bubbles at the bottom right">&#x1F9F4;</div>
-    <div class="hotspot" id="hs-5"  style="left:48%;top:68%" data-id="5"  data-label="&#x1F453; Eyeglasses"           data-hint="A pair of glasses lying in the center bottom area">&#x1F453;</div>
+    <div class="hotspot" id="hs-0"  style="left:14%;top:54%" data-id="0"  data-label="&#x1F9ED; Binoculars"            data-hint="A pair of binoculars on the left side near the water">&#x1F9ED;</div>
+    <div class="hotspot" id="hs-1"  style="left:5%;top:36%" data-id="1"  data-label="&#x1F52D; Telescope on Tripod"   data-hint="A telescope mounted on a tripod standing on the left">&#x1F52D;</div>
+    <div class="hotspot" id="hs-2"  style="left:83%;top:49%" data-id="2"  data-label="&#x1F4F7; Camera"               data-hint="A camera sitting on the right side near the water">&#x1F4F7;</div>
+    <div class="hotspot" id="hs-3"  style="left:81%;top:32%" data-id="3"  data-label="&#x1F964; Drinking Glass"        data-hint="The mascot is holding a glass of clear water in the right hand">&#x1F964;</div>
+    <div class="hotspot" id="hs-4"  style="left:89%;top:69%" data-id="4"  data-label="&#x1F9F4; Mason Jar"            data-hint="A mason jar with water and bubbles at the bottom right">&#x1F9F4;</div>
+    <div class="hotspot" id="hs-5"  style="left:47%;top:64%" data-id="5"  data-label="&#x1F453; Eyeglasses"           data-hint="A pair of glasses lying in the center bottom area">&#x1F453;</div>
     <div class="hotspot" id="hs-6"  style="left:48%;top:74%" data-id="6"  data-label="&#x1F50D; Magnifying Glass"     data-hint="A magnifying glass just below the eyeglasses">&#x1F50D;</div>
-    <div class="hotspot" id="hs-7"  style="left:12%;top:62%" data-id="7"  data-label="&#x1F48E; Diamond/Gem"          data-hint="A sparkling diamond or gem on the left side of the scene">&#x1F48E;</div>
+    <div class="hotspot" id="hs-7"  style="left:19%;top:68%" data-id="7"  data-label="&#x1F48E; Diamond/Gem"          data-hint="A sparkling diamond or gem on the left side of the scene">&#x1F48E;</div>
     <div class="hotspot" id="hs-8"  style="left:18%;top:72%" data-id="8"  data-label="&#x1F48E; Second Diamond"       data-hint="A second gem in the lower left near the water">&#x1F48E;</div>
-    <div class="hotspot" id="hs-9"  style="left:50%;top:58%" data-id="9"  data-label="&#x1F30A; Clear Water Stream"   data-hint="A perfectly clear reflecting stream running through the center">&#x1F30A;</div>
+    <div class="hotspot" id="hs-9"  style="left:43%;top:59%" data-id="9"  data-label="&#x1F30A; Clear Water Stream"   data-hint="A perfectly clear reflecting stream running through the center">&#x1F30A;</div>
     <div class="hotspot" id="hs-10" style="left:55%;top:73%" data-id="10" data-label="&#x1FAA8; Smooth Stones"        data-hint="Smooth reflective pebbles and stones in the stream">&#x1FAA8;</div>
-    <div class="hotspot" id="hs-11" style="left:35%;top:70%" data-id="11" data-label="&#x1F4CE; Paper Boat"           data-hint="A tiny paper boat floating in the stream center">&#x1F4CE;</div>
+    <div class="hotspot" id="hs-11" style="left:40%;top:77%" data-id="11" data-label="&#x1F4CE; Paper Boat"           data-hint="A tiny paper boat floating in the stream center">&#x1F4CE;</div>
     <div class="hotspot" id="hs-12" style="left:50%;top:22%" data-id="12" data-label="&#x2601;&#xFE0F; Cloud Shapes"       data-hint="Fluffy clouds in the sky above the scene">&#x2601;&#xFE0F;</div>
-    <div class="hotspot" id="hs-13" style="left:84%;top:12%" data-id="13" data-label="&#x1F985; Eagle in the Sky"     data-hint="A bald eagle soaring in the top right of the sky">&#x1F985;</div>
+    <div class="hotspot" id="hs-13" style="left:84%;top:11%" data-id="13" data-label="&#x1F985; Eagle in the Sky"     data-hint="A bald eagle soaring in the top right of the sky">&#x1F985;</div>
     <div class="hotspot" id="hs-14" style="left:62%;top:78%" data-id="14" data-label="&#x1F4A7; Water Droplets"       data-hint="Tiny clear droplets and bubbles in the water and on the glass">&#x1F4A7;</div>
+    <div class="hotspot" id="hs-15" style="left:30%;top:37%" data-id="15" data-label="&#x1F52D; Second Telescope"      data-hint="A second telescope on the left side of the scene">&#x1F52D;</div>
   </div>
   <div class="sidebar">
     <div class="score-card">
       <div class="score-label">Objects Found</div>
       <div class="score-num" id="scoreNum">0</div>
-      <div class="score-denom">out of 15</div>
+      <div class="score-denom">out of 16</div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     </div>
     <div class="checklist-card">
@@ -106,7 +111,7 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
   <div class="win-box">
     <div class="win-emoji">&#x1F389;&#x1F48E;&#x1F389;</div>
     <div class="win-title">Crystal Clear!</div>
-    <div class="win-sub">You found all 15 hidden objects in the Clear scene!<br><br>
+    <div class="win-sub">You found all 16 hidden objects in the Clear scene!<br><br>
       <em style="color:var(--gold);font-weight:800;">"Seeing things as they truly are."</em>
     </div>
     <div class="win-actions">
@@ -133,7 +138,8 @@ const OBJECTS = [
   {id:11, emoji:"&#x1F4CE;",         label:"Paper Boat"},
   {id:12, emoji:"&#x2601;&#xFE0F;",  label:"Cloud Shapes"},
   {id:13, emoji:"&#x1F985;",         label:"Eagle in the Sky"},
-  {id:14, emoji:"&#x1F4A7;",         label:"Water Droplets"}
+  {id:14, emoji:"&#x1F4A7;",         label:"Water Droplets"},
+  {id:15, emoji:"&#x1F52D;",         label:"Second Telescope"}
 ];
 const TOTAL=OBJECTS.length; let found=new Set(),hintUsed=[];
 const cl=document.getElementById('checklist');
@@ -144,6 +150,8 @@ function showToast(msg){const t=document.getElementById('toast');t.innerHTML=msg
 function giveHint(){const unfound=OBJECTS.filter(o=>!found.has(o.id));if(!unfound.length){showToast('&#x1F389; You already found everything!');return;}const candidates=unfound.filter(o=>!hintUsed.includes(o.id));const pick=candidates.length?candidates[Math.floor(Math.random()*candidates.length)]:unfound[Math.floor(Math.random()*unfound.length)];hintUsed.push(pick.id);const hs=document.getElementById('hs-'+pick.id);document.querySelectorAll('.hotspot.hint-pulse').forEach(h=>h.classList.remove('hint-pulse'));hs.classList.add('hint-pulse');showToast('&#x1F4A1; Hint: '+hs.dataset.hint);setTimeout(()=>hs.classList.remove('hint-pulse'),3500);}
 function resetGame(){found.clear();hintUsed=[];document.querySelectorAll('.hotspot').forEach(h=>h.classList.remove('found','hint-pulse'));document.querySelectorAll('.check-item').forEach(c=>c.classList.remove('found-item'));document.querySelectorAll('.check-box').forEach(c=>c.classList.remove('checked'));updateScore();}
 function downloadActivity(){const blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Clear_HiddenPicture_Activity.html';a.click();}
+function toggleCal(){document.body.classList.toggle('calibrate-mode');}
 </script>
+<button class="cal-btn" onclick="toggleCal()">&#x1F527; Cal</button>
 </body>
 </html>
