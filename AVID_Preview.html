@@ -132,6 +132,37 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   </div>
 </div>
 
+<!-- ── MISSION STRIP ── -->
+<div style="background:#6b4fa0;padding:24px 60px;display:flex;align-items:center;gap:20px;">
+  <span style="font-size:26px;flex-shrink:0;">💬</span>
+  <p style="font-size:15px;color:rgba(255,255,255,.92);line-height:1.65;font-weight:300;">At Kellam High School in Virginia Beach, <strong style="color:#fff;font-weight:700;">AVID students are crafting original inspirational quotes</strong> for children who need encouragement. Every quote is built around <strong style="color:#fff;font-weight:700;">one shared word</strong> — chosen with intention, written with purpose, and printed on cardstock for a real child's Smile Bag.</p>
+</div>
+
+<!-- ── ONEWORD STRIP ── -->
+<div style="background:#1a1230;border-top:3px solid var(--purple2, #9b72cf);padding:22px 60px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+  <p style="font-size:16px;color:rgba(255,255,255,.9);font-weight:400;line-height:1.5;max-width:640px;"><strong style="color:#9b72cf;font-weight:700;">At the heart of Smile Bags are 25 OneWords</strong> &mdash; connecting environmental science to social emotional well-being.</p>
+  <button onclick="toggleOW()" id="owBtn" style="display:inline-flex;align-items:center;gap:10px;background:#1a1230;border:1.5px solid #9b72cf;color:#9b72cf;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:11px 22px;border-radius:8px;cursor:pointer;font-weight:700;white-space:nowrap;flex-shrink:0;transition:all .2s;">
+    🌿 <span id="owBtnLabel">Explore the 25 OneWords</span> <span id="owArrow" style="transition:transform .3s;display:inline-block;">▼</span>
+  </button>
+</div>
+
+<div id="owPanel" style="display:none;background:#120f1e;padding:36px 60px;">
+  <div style="max-width:960px;margin:0 auto;">
+    <div style="background:#1a1230;border:1px solid #2a283a;border-left:4px solid #9b72cf;border-radius:12px;padding:20px 24px;margin-bottom:28px;line-height:1.75;">
+      <p style="color:#e8e4f0;font-size:14px;">Each of the 25 OneWords lives in two worlds at once &mdash; in the natural systems students study, and in the inner lives students navigate every day. From <strong style="color:#9b72cf;">Absorb</strong> to <strong style="color:#9b72cf;">Transform</strong>, these words remind us that the same forces that sustain ecosystems &mdash; balance, flow, renewal, resilience &mdash; are the forces that sustain people too.</p>
+    </div>
+    <div style="display:flex;gap:16px;margin-bottom:14px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#aaa;"><div style="width:9px;height:9px;border-radius:50%;background:#4caf82;"></div>Environmental Science</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#aaa;"><div style="width:9px;height:9px;border-radius:50%;background:#9b72cf;"></div>Social Emotional Well-Being</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:14px;">
+      <button onclick="owAll(true)" style="font-family:'Courier New',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#888;background:none;border:1px solid #2a283a;border-radius:6px;padding:5px 12px;cursor:pointer;">Expand All</button>
+      <button onclick="owAll(false)" style="font-family:'Courier New',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#888;background:none;border:1px solid #2a283a;border-radius:6px;padding:5px 12px;cursor:pointer;">Collapse All</button>
+    </div>
+    <div id="owGrid" style="display:grid;gap:8px;"></div>
+  </div>
+</div>
+
 <div class="content">
 
   <!-- MISSION -->
@@ -224,5 +255,80 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   <div class="footer-sig">Smile Bags · A Word &amp; Wonder Experience · Laura Howell, ITS · Spring 2026</div>
 </div>
 
+<script>
+var OW=[
+  {w:"ABSORB",sci:"Plants and soils absorb carbon, water, and nutrients to sustain ecosystems.",sel:"Taking in new information and experiences with an open, curious mind."},
+  {w:"ADAPT",sci:"Species adapt to changing environments through evolution and behavioral shifts.",sel:"Adjusting thoughts and responses when life feels uncertain or unfamiliar."},
+  {w:"ANCHOR",sci:"Root systems anchor soil, preventing erosion and stabilizing ecosystems.",sel:"Finding people, places, and practices that keep you grounded and steady."},
+  {w:"BALANCE",sci:"Ecosystems depend on balance between predators, prey, and available resources.",sel:"Maintaining equilibrium between work, rest, relationships, and personal needs."},
+  {w:"BLOOM",sci:"Flowering plants bloom in response to light, temperature, and seasonal cues.",sel:"Thriving naturally when your environment and essential needs are consistently met."},
+  {w:"BREATHE",sci:"Photosynthesis and respiration are Earth's breath — oxygen and carbon in continuous exchange.",sel:"Breath is the body's fastest tool for calming the nervous system and resetting."},
+  {w:"CLEAR",sci:"Clear water, clear skies, and clear-cut forests all signal environmental health or harm.",sel:"Clarity of mind comes when we slow down, process emotions, and release what isn't ours."},
+  {w:"CONNECT",sci:"Food webs connect every organism in an ecosystem — nothing exists in true isolation.",sel:"Healthy relationships and a sense of belonging are essential to human well-being."},
+  {w:"CYCLE",sci:"Water, carbon, and nitrogen move through Earth in continuous, life-sustaining cycles.",sel:"Life moves in cycles — rest, effort, grief, and renewal are all natural and necessary."},
+  {w:"EMERGE",sci:"Species emerge from dormancy, cocoons, and seeds when conditions are right.",sel:"Growth happens gradually — and then suddenly, you emerge stronger than before."},
+  {w:"FILTER",sci:"Wetlands and organisms filter toxins and pollutants from water and air.",sel:"Learning to filter out negativity and noise so you can focus on what truly matters."},
+  {w:"FLOW",sci:"Rivers flow through watersheds, carrying energy and life across vast landscapes.",sel:"Finding your flow state — where effort feels effortless and purpose feels clear."},
+  {w:"GROW",sci:"Growth requires sunlight, nutrients, water, and time — it cannot be forced or rushed.",sel:"Personal growth requires the same patience and conditions that ecosystems demand."},
+  {w:"HEAL",sci:"Ecosystems heal after disturbance through succession, regeneration, and time.",sel:"Healing is not linear — for people or for nature — and both deserve patience."},
+  {w:"MIGRATE",sci:"Animals migrate seasonally in response to temperature, food availability, and light.",sel:"Transitions and change are a natural part of every life journey — not something to fear."},
+  {w:"PERSIST",sci:"Resilient species persist through drought, wildfire, and long-term climate shifts.",sel:"Persistence through difficulty builds strength, character, and a deeper sense of identity."},
+  {w:"RENEW",sci:"Forests renew after fire; soils renew through decomposition and the return of nutrients.",sel:"Rest and recovery are how we renew our energy, creativity, and sense of purpose."},
+  {w:"RESTORE",sci:"Habitat restoration rebuilds what was lost or degraded through human impact.",sel:"Restoring relationships and self-trust after hard seasons is an act of quiet courage."},
+  {w:"RETURN",sci:"Salmon return to their birth streams — nature is always drawn back toward its origin.",sel:"Returning to your values and sense of self after feeling lost is always possible."},
+  {w:"RISE",sci:"Sea levels rise, but so do tides, seeds breaking soil, and birds at first light.",sel:"Rising above challenges without denying they existed — that is resilience in action."},
+  {w:"ROOT",sci:"Deep root systems stabilize plants and reach water sources during periods of drought.",sel:"Your roots — family, culture, values, and history — keep you stable when life shifts."},
+  {w:"SHINE",sci:"The sun powers all life on Earth through light energy and the process of photosynthesis.",sel:"Letting your authentic self shine is both a gift to others and an act of personal courage."},
+  {w:"SUSTAIN",sci:"Sustainability keeps ecosystems and communities viable and thriving for future generations.",sel:"Building habits that sustain your mental and physical health is an investment in your future."},
+  {w:"THRIVE",sci:"Species thrive in ecosystems where their needs are consistently and reliably met.",sel:"You deserve environments — social and physical — where you can truly and fully thrive."},
+  {w:"TRANSFORM",sci:"Metamorphosis, decomposition, and erosion transform matter into something entirely new.",sel:"Every challenge you survive has the power to transform you into someone stronger."}
+];
+function buildOW(){
+  var h='';
+  OW.forEach(function(o,i){
+    h+='<div style="background:#1a1230;border:1px solid #2a283a;border-radius:10px;overflow:hidden;" id="owc'+i+'">' +
+      '<div style="display:flex;align-items:center;gap:14px;padding:12px 16px;cursor:pointer;user-select:none;" onclick="toggleOWC('+i+')">' +
+        '<span style="font-family:\'Courier New\',monospace;font-size:12px;font-weight:700;letter-spacing:.14em;color:#c9a84c;min-width:110px;text-transform:uppercase;">'+o.w+'</span>' +
+        '<span style="font-size:12px;color:#555;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+o.sci+'</span>' +
+        '<span style="font-size:10px;color:#444;" id="owarr'+i+'">▼</span>' +
+      '</div>' +
+      '<div style="display:none;padding:0 16px 14px;border-top:1px solid #2a283a;" id="owb'+i+'">' +
+        '<div style="display:flex;gap:10px;margin-top:10px;align-items:flex-start;">' +
+          '<div style="width:8px;height:8px;border-radius:50%;background:#4caf82;flex-shrink:0;margin-top:4px;"></div>' +
+          '<div><span style="font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#888;display:block;margin-bottom:2px;font-family:\'Courier New\',monospace;">Environmental Science</span>' +
+          '<span style="font-size:13px;color:#e8e4f0;line-height:1.6;font-weight:300;">'+o.sci+'</span></div>' +
+        '</div>' +
+        '<div style="display:flex;gap:10px;margin-top:10px;align-items:flex-start;">' +
+          '<div style="width:8px;height:8px;border-radius:50%;background:#9b72cf;flex-shrink:0;margin-top:4px;"></div>' +
+          '<div><span style="font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#888;display:block;margin-bottom:2px;font-family:\'Courier New\',monospace;">Social Emotional Well-Being</span>' +
+          '<span style="font-size:13px;color:#e8e4f0;line-height:1.6;font-weight:300;">'+o.sel+'</span></div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  });
+  document.getElementById('owGrid').innerHTML=h;
+}
+function toggleOWC(i){
+  var b=document.getElementById('owb'+i);
+  var a=document.getElementById('owarr'+i);
+  var open=b.style.display==='none';
+  b.style.display=open?'block':'none';
+  a.style.transform=open?'rotate(180deg)':'';
+}
+function owAll(open){
+  OW.forEach(function(_,i){
+    document.getElementById('owb'+i).style.display=open?'block':'none';
+    document.getElementById('owarr'+i).style.transform=open?'rotate(180deg)':'';
+  });
+}
+function toggleOW(){
+  var p=document.getElementById('owPanel');
+  var open=p.style.display==='none';
+  p.style.display=open?'block':'none';
+  document.getElementById('owArrow').style.transform=open?'rotate(180deg)':'';
+  document.getElementById('owBtnLabel').textContent=open?'Collapse — The 25 OneWords':'Explore the 25 OneWords';
+}
+buildOW();
+</script>
 </body>
 </html>
