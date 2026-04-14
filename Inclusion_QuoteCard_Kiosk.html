@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Inclusion · Inspirational Quote Card · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&family=Satisfy&family=Oswald:wght@600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#F0F4FF;min-height:100vh;padding-bottom:60px;}
+.hdr{background:linear-gradient(135deg,#1A2744,#0F1B35);padding:20px 28px;text-align:center;}
+.hdr h1{font-family:'Fredoka One',cursive;font-size:24px;color:#fff;line-height:1.3;}
+.hdr p{font-size:13px;color:rgba(255,255,255,.75);margin-top:5px;}
+.prog{display:flex;align-items:flex-start;justify-content:center;padding:14px 16px;background:#fff;border-bottom:2px solid #BBDEFB;gap:4px;flex-wrap:wrap;}
+.prog-item{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.prog-dot{width:32px;height:32px;border-radius:50%;background:#BBDEFB;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:13px;color:#fff;transition:all .3s;}
+.prog-dot.active{background:#1565C0;transform:scale(1.2);box-shadow:0 4px 12px rgba(21,101,192,.35);}
+.prog-dot.done{background:#1976D2;}
+.prog-lbl{font-size:9px;color:#aaa;font-family:'Fredoka One',cursive;text-align:center;max-width:52px;line-height:1.2;}
+.prog-lbl.active{color:#1565C0;}
+.prog-arr{color:#BBDEFB;font-size:14px;margin-top:8px;}
+.screen{display:none;max-width:880px;margin:0 auto;padding:24px 16px;}
+.screen.active{display:block;}
+.scr-hd{text-align:center;margin-bottom:22px;}
+.scr-hd h2{font-family:'Fredoka One',cursive;font-size:26px;color:#1565C0;line-height:1.3;}
+.scr-hd p{font-size:14px;color:#666;margin-top:7px;line-height:1.6;}
+.path-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px;}
+.path-card{background:#fff;border:4px solid #BBDEFB;border-radius:20px;padding:28px 20px;cursor:pointer;text-align:center;transition:all .25s;display:flex;flex-direction:column;align-items:center;gap:12px;}
+.path-card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,0,0,.12);}
+.path-card.sel{border-color:#1565C0;box-shadow:0 6px 24px rgba(21,101,192,.2);}
+.path-icon{font-size:52px;}
+.path-name{font-family:'Fredoka One',cursive;font-size:22px;color:#1565C0;}
+.path-desc{font-size:13px;color:#666;line-height:1.6;}
+.path-check{font-size:20px;display:none;}
+.path-card.sel .path-check{display:block;}
+.white-card{background:#fff;border-radius:18px;padding:24px;box-shadow:0 4px 18px rgba(0,0,0,.07);margin-bottom:16px;}
+.field-label{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#1565C0;display:block;margin-bottom:8px;}
+.field-inp{width:100%;padding:13px 16px;border:3px solid #BBDEFB;border-radius:12px;font-family:'Nunito',sans-serif;font-size:18px;outline:none;transition:border-color .2s;margin-bottom:14px;}
+.field-inp:focus{border-color:#1565C0;}
+.word-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.word-card{background:#fff;border:3px solid #BBDEFB;border-radius:12px;padding:10px 6px;cursor:pointer;text-align:center;transition:all .2s;}
+.word-card:hover{border-color:#1565C0;transform:translateY(-1px);}
+.word-card.sel{border-color:#1565C0;background:#E3F2FD;}
+.word-card-word{font-family:'Fredoka One',cursive;font-size:14px;color:#1565C0;}
+.word-card-meaning{font-size:10px;color:#888;margin-top:3px;line-height:1.3;}
+.section-lbl{font-family:'Fredoka One',cursive;font-size:17px;color:#1565C0;margin-bottom:12px;}
+.hint{background:#E3F2FD;border-left:4px solid #1565C0;border-radius:0 10px 10px 0;padding:10px 14px;font-size:13px;color:#0D47A1;line-height:1.6;margin-bottom:14px;}
+
+/* ── QUOTE SELECTION ── */
+.q-grid{display:flex;flex-direction:column;gap:14px;}
+.q-card{background:#fff;border:4px solid #BBDEFB;border-radius:16px;padding:20px 22px;cursor:pointer;transition:all .22s;position:relative;}
+.q-card:hover{border-color:#1565C0;transform:translateY(-2px);box-shadow:0 8px 24px rgba(21,101,192,.12);}
+.q-card.sel{border-color:#1565C0;background:#E3F2FD;box-shadow:0 4px 18px rgba(21,101,192,.18);}
+.q-num{position:absolute;top:14px;right:16px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#aaa;}
+.q-card.sel .q-num{color:#1565C0;}
+.q-quote{font-family:'Playfair Display',serif;font-size:17px;font-style:italic;color:#1a1a2e;line-height:1.65;margin-bottom:6px;}
+.q-check{font-size:18px;display:none;margin-top:6px;color:#1565C0;}
+.q-card.sel .q-check{display:block;}
+
+/* ── COLOR PICKER ── */
+.color-grid{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;padding:8px 0;}
+.color-btn{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 18px;border-radius:14px;border:3px solid #BBDEFB;background:#fdfbff;cursor:pointer;transition:all .18s;min-width:120px;}
+.color-btn:hover{border-color:#1565C0;transform:translateY(-2px);}
+.color-btn.sel{border-color:#1565C0;background:#E3F2FD;}
+.pair-swatches{display:flex;gap:6px;justify-content:center;}
+.pair-swatch{width:40px;height:40px;border-radius:50%;border:2px solid rgba(0,0,0,.1);}
+.color-name{font-family:'Fredoka One',cursive;font-size:13px;color:#1565C0;text-align:center;}
+.color-check{font-size:14px;display:none;}
+.color-btn.sel .color-check{display:block;}
+
+/* ── FONTS ── */
+.font-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+.font-card{background:#fff;border:4px solid #E0E0E0;border-radius:16px;padding:18px;cursor:pointer;text-align:center;transition:all .2s;}
+.font-card:hover{transform:translateY(-2px);}
+.font-card.sel{border-color:#1565C0;background:#E3F2FD;}
+.font-preview{font-size:22px;color:#1565C0;margin-bottom:6px;}
+.font-name{font-size:12px;color:#888;}
+
+/* ── PREVIEW ── */
+.preview-wrap{display:flex;justify-content:center;padding:16px 0;}
+.det-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.det-cell{background:#F5F5F5;border-radius:10px;padding:10px 12px;}
+.det-lbl{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#666;margin-bottom:3px;}
+.det-val{font-family:'Fredoka One',cursive;font-size:14px;color:#1565C0;}
+
+/* ── NAV ── */
+.nav-row{display:flex;gap:12px;justify-content:flex-end;margin-top:10px;}
+.btn-next{padding:14px 28px;background:linear-gradient(135deg,#1565C0,#0D47A1);color:#fff;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;box-shadow:0 5px 16px rgba(21,101,192,.3);}
+.btn-back{padding:14px 20px;border:3px solid #BBDEFB;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;color:#888;background:#fff;}
+.submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,#1565C0,#0D47A1);color:#fff;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:18px;cursor:pointer;margin-bottom:8px;}
+.submitted-box{background:#E3F2FD;border-radius:16px;padding:28px;text-align:center;display:none;}
+.token-box{background:#FFF3D6;border:2px solid #C8860A;border-radius:12px;padding:14px;display:inline-block;margin-top:14px;}
+.token-code{font-family:'Fredoka One',cursive;font-size:28px;letter-spacing:4px;color:#7A4F00;}
+
+@media(max-width:600px){
+  .path-grid{grid-template-columns:1fr;}
+  .word-grid{grid-template-columns:repeat(2,1fr);}
+  .font-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>🔖 Inclusion · Inspirational Quote Card</h1>
+  <p>Smile Bags · A Word &amp; Wonder Experience · Sharon Glover · Inclusion · Spring 2026</p>
+</div>
+
+<div class="prog">
+  <div class="prog-item"><div class="prog-dot active" id="pd0">1</div><div class="prog-lbl active" id="pl0">Shape</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd1">2</div><div class="prog-lbl" id="pl1">My Name</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd2">3</div><div class="prog-lbl" id="pl2">My Word</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd3">4</div><div class="prog-lbl" id="pl3">My Quote</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd4">5</div><div class="prog-lbl" id="pl4">Colors</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd5">6</div><div class="prog-lbl" id="pl5">Font</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd6">7</div><div class="prog-lbl" id="pl6">Preview!</div></div>
+</div>
+
+<!-- S0: SHAPE -->
+<div class="screen active" id="scr0">
+  <div class="scr-hd"><h2>Choose Your Card Shape 🎨</h2><p>Your inspirational quote card will be printed and cut to this shape for a student at Princess Anne Middle School.</p></div>
+  <div class="path-grid">
+    <div class="path-card" onclick="pickShape('square',this)">
+      <div class="path-icon">&#9632;</div>
+      <div class="path-name">Square</div>
+      <div class="path-desc">4&Prime; &times; 4&Prime; square card printed on cardstock.</div>
+      <div class="path-check">&#10003; Selected!</div>
+    </div>
+    <div class="path-card" onclick="pickShape('circle',this)">
+      <div class="path-icon">&#9679;</div>
+      <div class="path-name">Circle</div>
+      <div class="path-desc">4&Prime; round card cut with the Cricut.</div>
+      <div class="path-check">&#10003; Selected!</div>
+    </div>
+  </div>
+  <div class="nav-row"><button class="btn-next" onclick="toName()">Next &rarr;</button></div>
+</div>
+
+<!-- S1: NAME -->
+<div class="screen" id="scr1">
+  <div class="scr-hd"><h2>What is your name? 👋</h2><p>Your name will appear on your card!</p></div>
+  <div class="white-card">
+    <label class="field-label">Your first name</label>
+    <input class="field-inp" id="iName" type="text" placeholder="Type your name here..."/>
+    <label class="field-label">Your grade</label>
+    <select class="field-inp" id="iGrade" style="cursor:pointer;">
+      <option value="">-- Select your grade --</option>
+      <option>9th grade</option>
+      <option>10th grade</option>
+      <option>11th grade</option>
+      <option>12th grade</option>
+    </select>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="nav(0)">&#8592; Back</button>
+    <button class="btn-next" onclick="toWord()">Next &rarr;</button>
+  </div>
+</div>
+
+<!-- S2: WORD -->
+<div class="screen" id="scr2">
+  <div class="scr-hd"><h2>Choose Your OneWord 🌟</h2><p>This word will be the heart of your inspirational quote card. Choose the one that speaks to you!</p></div>
+  <div class="white-card">
+    <div class="section-lbl">Your OneWord</div>
+    <div class="word-grid" id="wordGrid"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="nav(1)">&#8592; Back</button>
+    <button class="btn-next" onclick="toQuote()">Next &mdash; Choose a Quote &rarr;</button>
+  </div>
+</div>
+
+<!-- S3: QUOTE SELECTION -->
+<div class="screen" id="scr3">
+  <div class="scr-hd">
+    <h2 id="s3h">Choose Your Quote 💬</h2>
+    <p>Read all three quotes for your OneWord and choose the one that feels right to you.</p>
+  </div>
+  <div class="white-card">
+    <div class="hint">&#128140; These quotes were written to encourage a student who needs to hear something true. Choose the one that speaks to you most.</div>
+    <div class="section-lbl" id="q-word-label">Quotes for your word</div>
+    <div class="q-grid" id="qGrid"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="nav(2)">&#8592; Back</button>
+    <button class="btn-next" onclick="toColors()">Next &mdash; Choose Colors &rarr;</button>
+  </div>
+</div>
+
+<!-- S4: COLORS -->
+<div class="screen" id="scr4">
+  <div class="scr-hd"><h2>Choose Your Colors 🎨</h2><p>Pick the color combination for your card.</p></div>
+  <div class="white-card">
+    <div class="color-grid" id="colorGrid"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="nav(3)">&#8592; Back</button>
+    <button class="btn-next" onclick="toFont()">Next &mdash; Choose Font &rarr;</button>
+  </div>
+</div>
+
+<!-- S5: FONT -->
+<div class="screen" id="scr5">
+  <div class="scr-hd"><h2>Choose Your Font Style ✏️</h2><p>Pick the style that fits your quote's personality.</p></div>
+  <div class="white-card">
+    <div class="font-grid" id="fontGrid"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="nav(4)">&#8592; Back</button>
+    <button class="btn-next" onclick="toPreview()">See My Card! &rarr;</button>
+  </div>
+</div>
+
+<!-- S6: PREVIEW & SUBMIT -->
+<div class="screen" id="scr6">
+  <div class="scr-hd"><h2 id="s6h">Your Quote Card! 🎉</h2><p>Submit it and Ms. Glover will print and cut it for a student at Princess Anne Middle School.</p></div>
+  <div class="white-card">
+    <div class="section-lbl">Preview</div>
+    <div class="preview-wrap"><svg id="cardSVG" width="300" height="300" viewBox="0 0 300 300"></svg></div>
+    <div style="background:#E3F2FD;border-radius:10px;padding:12px 16px;margin-top:10px;font-family:'Playfair Display',serif;font-size:14px;font-style:italic;color:#0D47A1;line-height:1.6;text-align:center;" id="quotePreviewText"></div>
+    <div class="det-grid">
+      <div class="det-cell"><div class="det-lbl">Word</div><div class="det-val" id="dWord"></div></div>
+      <div class="det-cell"><div class="det-lbl">Shape</div><div class="det-val" id="dShape"></div></div>
+      <div class="det-cell"><div class="det-lbl">Colors</div><div class="det-val" id="dColors"></div></div>
+      <div class="det-cell"><div class="det-lbl">Font</div><div class="det-val" id="dFont"></div></div>
+    </div>
+  </div>
+  <div id="notSub">
+    <button class="submit-btn" onclick="doSubmit()">Submit My Quote Card!</button>
+    <p style="font-size:12px;color:#888;font-style:italic;text-align:center;">Ms. Glover will print and cut your card for Princess Anne Middle School!</p>
+  </div>
+  <div class="submitted-box" id="subBox">
+    <div style="font-size:52px;margin-bottom:12px;">&#127881;</div>
+    <div style="font-family:'Fredoka One',cursive;font-size:24px;color:#1565C0;margin-bottom:6px;">Card Submitted!</div>
+    <p style="font-size:14px;color:#555;line-height:1.7;">Your inspirational quote card will be placed in a Smile Bag for a student at Princess Anne Middle School!</p>
+    <div class="token-box">
+      <div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#C8860A;margin-bottom:4px;">Your submission code</div>
+      <div class="token-code" id="tokCode">KSB-0000</div>
+      <div style="font-size:11px;color:#888;margin-top:4px;">Write this down just in case!</div>
+    </div>
+  </div>
+  <div class="nav-row" style="justify-content:flex-start;margin-top:12px;">
+    <button class="btn-back" onclick="nav(5)">&#8592; Change Something</button>
+  </div>
+</div>
+
+<script>
+var SCRIPT_URL = "YOUR_APPS_SCRIPT_URL_HERE";
+
+var WORDS = [
+  {word:"ABSORB",  meaning:"Taking in everything around you"},
+  {word:"ADAPT",   meaning:"Adjusting to what comes your way"},
+  {word:"ANCHOR",  meaning:"Holding steady through the storm"},
+  {word:"BALANCE", meaning:"Finding your steady place"},
+  {word:"BLOOM",   meaning:"Growing into your best self"},
+  {word:"BREATHE", meaning:"Pausing to find your calm"},
+  {word:"CLEAR",   meaning:"Seeing things as they really are"},
+  {word:"CONNECT", meaning:"Building bridges between hearts"},
+  {word:"CYCLE",   meaning:"Moving through seasons of change"},
+  {word:"EMERGE",  meaning:"Rising into who you are becoming"},
+  {word:"FILTER",  meaning:"Choosing what deserves your energy"},
+  {word:"FLOW",    meaning:"Moving forward even slowly"},
+  {word:"GROW",    meaning:"Becoming more than you were"},
+  {word:"HEAL",    meaning:"Restoring what was broken"},
+  {word:"MIGRATE", meaning:"Carrying home within yourself"},
+  {word:"PERSIST", meaning:"Keeping going when it gets hard"},
+  {word:"RENEW",   meaning:"Starting fresh with new strength"},
+  {word:"RESTORE", meaning:"Bringing back what matters most"},
+  {word:"RETURN",  meaning:"Coming back to what is true"},
+  {word:"RISE",    meaning:"Standing tall after falling down"},
+  {word:"ROOT",    meaning:"Staying grounded in who you are"},
+  {word:"SHINE",   meaning:"Letting your light reach others"},
+  {word:"SUSTAIN", meaning:"Keeping what is good alive"},
+  {word:"THRIVE",  meaning:"Living at your fullest"},
+  {word:"TRANSFORM",meaning:"Becoming something beautifully new"},
+];
+
+/* ══ CURATED QUOTES ══ */
+var QUOTES_CURATED = {
+  Absorb:["Like roots drinking rain, you take in everything you need to grow.","You don't have to rush. The best growth comes from slowly taking it all in.","Every experience you absorb — even the hard ones — becomes part of what makes you whole."],
+  Adapt:["Like a tree that bends in the wind, you know how to find your way.","Change is how nature survives. Your ability to adapt is your greatest strength.","You don't have to stay the same to stay yourself. Adapting is how you keep growing."],
+  Anchor:["You have people and places that keep you steady — hold onto them.","Even in a storm, roots hold. You have more holding you than you know.","The things that ground you aren't holding you back. They're keeping you whole."],
+  Balance:["Rest is just as important as trying. You are allowed to do both.","Nature never rushes and never stops. You can find that rhythm too.","Balance isn't standing still. It's knowing when to move and when to rest."],
+  Bloom:["Even on cloudy days, you are already growing toward the light.","Like a seed that waits through winter, your time to bloom always comes.","Blooming isn't loud. It's quiet persistence — until one day, you open."],
+  Breathe:["When everything feels like too much, your breath is always there for you.","Trees breathe life into the air around them. You do the same for others.","One breath changes everything. You always have somewhere to start."],
+  Clear:["Clear skies come after every storm. Your clear days are coming too.","Still water shows everything clearly. When you slow down, you see yourself better.","You don't have to figure everything out at once. Clarity comes when you make space for it."],
+  Connect:["Every living thing needs others to survive. So do you — and that's beautiful.","In a forest, every tree is connected underground. You are never as alone as you feel.","Connection is not a weakness. It is the reason anything grows at all."],
+  Cycle:["After every hard season, a new one begins. Yours is coming.","Nothing in nature stays the same forever — not storms, not winters, not struggles.","You are not stuck. You are between seasons, and the next one is already on its way."],
+  Emerge:["Something incredible is growing inside you, waiting for the right moment to come out.","A butterfly doesn't force its wings. It emerges when the time is right — and so will you.","Emerging takes time. What's coming out of you is worth every moment of waiting."],
+  Filter:["Not everything that comes your way belongs with you. You get to let some things go.","Wetlands clean the water slowly, carefully. You can do the same with what enters your mind.","Learning to filter out what doesn't serve you is one of the most powerful things you can do."],
+  Flow:["You don't have to force it. When you're ready, everything will start to flow.","Rivers don't fight the landscape — they find a way through it. So can you.","Flow isn't about speed. It's about moving in the direction that feels true."],
+  Grow:["You are growing every single day — even when you can't feel it happening.","Growth needs time, water, and light. Give yourself all three.","Growing doesn't mean leaving who you were behind. It means becoming more of who you are."],
+  Heal:["You are allowed to take your time. Healing doesn't have to be fast.","Even forests grow back after fire. You have that same strength inside you.","Healing isn't forgetting. It's learning to carry what happened without being crushed by it."],
+  Migrate:["Change can feel scary, but it can also lead you somewhere better.","Every bird that migrates finds its way. Your path will find you too.","Moving forward doesn't mean what came before didn't matter. It means you trusted what was next."],
+  Persist:["Keep going. Even slow steps are still steps forward.","The oldest trees in the world survived things they never expected. So will you.","Persistence isn't about being fearless. It's about moving forward even when you're afraid."],
+  Renew:["Every morning is a fresh start. You get to begin again today.","Nature renews itself after every season. You carry that same power.","Renewal doesn't mean erasing what was. It means letting what was rest, so something new can rise."],
+  Restore:["You can come back from hard things. You are stronger than you know.","Restored land doesn't look like it never burned — it looks like something that survived and grew.","Restoration takes courage. Coming back to yourself after loss is one of the bravest things there is."],
+  Return:["No matter where life takes you, you can always find your way back to yourself.","Salmon return through rough waters to where they began. You always know the way back.","Returning to who you are — after doubt, after distance — is not weakness. It is wisdom."],
+  Rise:["You have risen before. You will rise again.","The sun rises every day without being asked. So does something in you.","Rising doesn't mean nothing knocked you down. It means you refused to stay there."],
+  Root:["Your roots — the people who love you — keep you standing when things get hard.","Deep roots don't show, but they're the reason the tree is still standing.","You come from something. That something is still holding you, even now."],
+  Shine:["The world is brighter because you are in it. Don't forget that.","The sun doesn't apologize for its light. Neither should you.","Shining isn't about being perfect. It's about being present — fully, honestly, yourself."],
+  Sustain:["The small things you do every day to take care of yourself really matter.","What sustains a forest is not one big thing — it's a thousand small ones. So it is with you.","You are worth sustaining. The habits you build now will carry you further than you know."],
+  Thrive:["You deserve a life that feels good — not just okay, but truly good.","Thriving doesn't mean everything is easy. It means you've found what makes you feel alive.","You were not made to simply survive. You were made to thrive — and you will."],
+  Transform:["You are not the same as you were. And that is something to be proud of.","A caterpillar doesn't fight becoming a butterfly. It trusts the process. So can you.","Transformation doesn't happen to you — it happens through you, one quiet change at a time."]
+};
+
+/* ══ COLORS — Blue, Gold, White only ══ */
+var PAIRS = [
+  {name:"Blue & Gold",  c1:{n:"Blue",  h:"#1565C0"}, c2:{n:"Gold",  h:"#C8860A"}},
+  {name:"Blue & White", c1:{n:"Blue",  h:"#1565C0"}, c2:{n:"White", h:"#F5F5F5"}},
+  {name:"Gold & White", c1:{n:"Gold",  h:"#C8860A"}, c2:{n:"White", h:"#F5F5F5"}},
+];
+
+var FONTS = [
+  {name:"Elegant",  label:"Playfair Display", css:"'Playfair Display', serif",  sample:"Words that inspire"},
+  {name:"Friendly", label:"Fredoka One",       css:"'Fredoka One', cursive",     sample:"Words that inspire"},
+  {name:"Script",   label:"Satisfy",           css:"'Satisfy', cursive",         sample:"Words that inspire"},
+  {name:"Bold",     label:"Oswald",            css:"'Oswald', sans-serif",       sample:"Words that inspire"},
+];
+
+var selShape=null, selWord=null, selPair=null, selFont=FONTS[0], selQuote=null;
+var sName="", sGrade="";
+
+document.addEventListener("DOMContentLoaded",function(){
+  buildWordGrid(); buildColorGrid(); buildFontGrid();
+});
+
+function pickShape(s,el){
+  document.querySelectorAll(".path-card").forEach(function(c){c.classList.remove("sel");});
+  el.classList.add("sel"); selShape=s;
+}
+
+function buildWordGrid(){
+  var g=document.getElementById("wordGrid");
+  WORDS.forEach(function(w){
+    var c=document.createElement("div"); c.className="word-card";
+    c.innerHTML='<div class="word-card-word">'+w.word+'</div><div class="word-card-meaning">'+w.meaning+'</div>';
+    c.onclick=(function(wd,el){return function(){
+      document.querySelectorAll(".word-card").forEach(function(x){x.classList.remove("sel");});
+      el.classList.add("sel"); selWord=wd;
+    };})(w,c);
+    g.appendChild(c);
+  });
+}
+
+function buildQuoteGrid(){
+  if(!selWord) return;
+  var key=selWord.word.charAt(0)+selWord.word.slice(1).toLowerCase();
+  var quotes=QUOTES_CURATED[key]||[];
+  document.getElementById("q-word-label").textContent="Choose a quote for "+selWord.word;
+  var g=document.getElementById("qGrid"); g.innerHTML=''; selQuote=null;
+  quotes.forEach(function(q,i){
+    var c=document.createElement("div"); c.className="q-card";
+    c.innerHTML='<div class="q-num">Option '+(i+1)+'</div>'+
+      '<div class="q-quote">&#8220;'+q+'&#8221;</div>'+
+      '<div class="q-check">&#10003; Selected</div>';
+    c.onclick=(function(qt,el){return function(){
+      document.querySelectorAll(".q-card").forEach(function(x){x.classList.remove("sel");});
+      el.classList.add("sel"); selQuote=qt;
+    };})(q,c);
+    g.appendChild(c);
+  });
+}
+
+function buildColorGrid(){
+  var g=document.getElementById("colorGrid");
+  PAIRS.forEach(function(p){
+    var c=document.createElement("div"); c.className="color-btn";
+    c.innerHTML='<div class="pair-swatches">'+
+      '<div class="pair-swatch" style="background:'+p.c1.h+(p.c1.h==='#F5F5F5'?';border:2px solid #ccc':'')+'"></div>'+
+      '<div class="pair-swatch" style="background:'+p.c2.h+(p.c2.h==='#F5F5F5'?';border:2px solid #ccc':'')+'"></div>'+
+      '</div><div class="color-name">'+p.name+'</div><div class="color-check">&#10003;</div>';
+    c.onclick=(function(pr,el){return function(){
+      document.querySelectorAll(".color-btn").forEach(function(x){x.classList.remove("sel");});
+      el.classList.add("sel"); selPair=pr;
+    };})(p,c);
+    g.appendChild(c);
+  });
+}
+
+function buildFontGrid(){
+  var g=document.getElementById("fontGrid");
+  FONTS.forEach(function(f,i){
+    var c=document.createElement("div"); c.className="font-card"+(i===0?" sel":"");
+    c.innerHTML='<div class="font-preview" style="font-family:'+f.css+'">'+f.sample+'</div><div class="font-name">'+f.name+' — '+f.label+'</div>';
+    c.onclick=(function(fn,el){return function(){
+      document.querySelectorAll(".font-card").forEach(function(x){x.classList.remove("sel");});
+      el.classList.add("sel"); selFont=fn;
+    };})(f,c);
+    g.appendChild(c);
+  });
+}
+
+function toName(){if(!selShape){alert("Please choose a card shape!");return;} nav(1);}
+function toWord(){
+  sName=document.getElementById("iName").value.trim();
+  sGrade=document.getElementById("iGrade").value||"";
+  if(!sName){alert("Please enter your name!");return;}
+  nav(2);
+}
+function toQuote(){
+  if(!selWord){alert("Please choose your OneWord!");return;}
+  buildQuoteGrid();
+  document.getElementById("s3h").textContent="Choose a Quote for "+selWord.word+", "+sName+"!";
+  nav(3);
+}
+function toColors(){if(!selQuote){alert("Please choose a quote!");return;} nav(4);}
+function toFont(){if(!selPair){alert("Please choose a color pair!");return;} nav(5);}
+function toPreview(){buildFinalPreview(); nav(6);}
+
+function nav(n){
+  document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});
+  document.getElementById("scr"+n).classList.add("active");
+  for(var i=0;i<=6;i++){
+    var pd=document.getElementById("pd"+i),pl=document.getElementById("pl"+i);
+    if(!pd)continue;
+    pd.classList.remove("active","done"); pl.classList.remove("active");
+    if(i<n) pd.classList.add("done");
+    else if(i===n){pd.classList.add("active"); pl.classList.add("active");}
+  }
+  window.scrollTo(0,0);
+}
+
+function drawCard(svgId, quoteText){
+  var svg=document.getElementById(svgId);
+  if(!svg||!selPair) return;
+  var c1=selPair.c1.h, c2=selPair.c2.h;
+  var word=selWord?selWord.word:"WORD";
+  var quote=quoteText||"Your quote will appear here.";
+  var font=selFont?selFont.css:"'Playfair Display', serif";
+  var name=sName||"Student";
+  var isCircle=selShape==="circle";
+
+  function wrapText(text,max){
+    var words=text.split(" "),lines=[],line="";
+    words.forEach(function(w){
+      if((line+" "+w).trim().length>max){lines.push(line.trim());line=w;}
+      else{line=(line+" "+w).trim();}
+    });
+    if(line)lines.push(line.trim());
+    return lines;
+  }
+
+  var qLines=wrapText(quote,22);
+  var qFS=qLines.length>5?15:qLines.length>4?17:qLines.length>3?19:22;
+  var qLH=qFS+6;
+  var totalH=qLines.length*qLH;
+  var qStartY=106+(216-106-totalH)/2+qFS/2;
+  var qEls=qLines.map(function(l,i){
+    return '<text x="150" y="'+(qStartY+i*qLH)+'" text-anchor="middle" dominant-baseline="middle" font-family="'+escXml(font)+'" font-size="'+qFS+'" fill="'+c2+'" font-style="italic">'+escXml(l)+'</text>';
+  }).join('');
+
+  var clipId="cc"+svgId;
+  var clip=isCircle?
+    '<defs><clipPath id="'+clipId+'"><circle cx="150" cy="150" r="148"/></clipPath></defs>':
+    '<defs><clipPath id="'+clipId+'"><rect x="2" y="2" width="296" height="296" rx="12"/></clipPath></defs>';
+  var bg=isCircle?
+    '<circle cx="150" cy="150" r="148" fill="'+c1+'"/><circle cx="150" cy="150" r="148" fill="none" stroke="'+c2+'" stroke-width="8"/><circle cx="150" cy="150" r="134" fill="none" stroke="'+c2+'" stroke-width="2" stroke-dasharray="6 4" opacity="0.4"/>':
+    '<rect x="2" y="2" width="296" height="296" rx="12" fill="'+c1+'"/><rect x="2" y="2" width="296" height="296" rx="12" fill="none" stroke="'+c2+'" stroke-width="8"/><rect x="14" y="14" width="272" height="272" rx="8" fill="none" stroke="'+c2+'" stroke-width="2" stroke-dasharray="6 4" opacity="0.4"/>';
+
+  svg.setAttribute("viewBox","0 0 300 300");
+  svg.setAttribute("width","300");
+  svg.setAttribute("height","300");
+  svg.innerHTML=clip+'<g clip-path="url(#'+clipId+')">'+bg+
+    '<text x="150" y="42" text-anchor="middle" font-size="16" fill="'+c2+'" opacity="0.6">&#10022; &#10022; &#10022;</text>'+
+    '<text x="150" y="78" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="34" fill="'+c2+'" letter-spacing="4">'+escXml(word)+'</text>'+
+    '<line x1="70" y1="98" x2="230" y2="98" stroke="'+c2+'" stroke-width="1.5" opacity="0.5"/>'+
+    qEls+
+    '<line x1="80" y1="218" x2="220" y2="218" stroke="'+c2+'" stroke-width="1" opacity="0.3"/>'+
+    '<text x="150" y="228" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="12" fill="'+c2+'" opacity="0.9">'+escXml(name)+'</text>'+
+    '<text x="150" y="244" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="11" fill="'+c2+'" opacity="0.7" letter-spacing="1">INCLUSION · 2026</text>'+
+    '</g>';
+}
+
+function escXml(str){return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+
+function buildFinalPreview(){
+  drawCard("cardSVG", selQuote||"");
+  document.getElementById("quotePreviewText").textContent='"'+(selQuote||"")+'"';
+  document.getElementById("s6h").textContent="Your Quote Card, "+sName+"!";
+  document.getElementById("dWord").textContent=selWord?selWord.word:"";
+  document.getElementById("dShape").textContent=selShape==="circle"?"4\" Circle":"4\" Square";
+  document.getElementById("dColors").textContent=selPair?selPair.name:"";
+  document.getElementById("dFont").textContent=selFont?selFont.name:"";
+}
+
+function doSubmit(){
+  var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
+  document.getElementById("tokCode").textContent=tok;
+  var payload={
+    studentName:sName, studentGrade:sGrade, teacher:"Sharon Glover",
+    class:"Inclusion", school:"Princess Anne Middle",
+    word:selWord?selWord.word:"", wordMeaning:selWord?selWord.meaning:"",
+    quote:selQuote||"", shape:selShape,
+    colorPair:selPair?selPair.name:"",
+    color1Name:selPair?selPair.c1.n:"", color1Hex:selPair?selPair.c1.h:"",
+    color2Name:selPair?selPair.c2.n:"", color2Hex:selPair?selPair.c2.h:"",
+    font:selFont?selFont.name:"", token:tok
+  };
+  var btn=document.querySelector(".submit-btn");
+  btn.textContent="Submitting..."; btn.disabled=true;
+  if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){showDone();return;}
+  fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)})
+    .then(function(r){return r.json();})
+    .then(function(){showDone();})
+    .catch(function(){showDone();});
+}
+function showDone(){
+  document.getElementById("notSub").style.display="none";
+  document.getElementById("subBox").style.display="block";
+}
+</script>
+</body>
+</html>
