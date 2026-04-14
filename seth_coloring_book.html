@@ -36,7 +36,6 @@ body {
   overflow-x: hidden;
 }
 
-/* ── HEADER ── */
 header {
   width: 100%;
   background: var(--ink);
@@ -102,7 +101,6 @@ header {
 }
 .btn-print:hover { background: var(--gold-lt); transform: translateY(-1px); }
 
-/* ── BADGE ── */
 .class-badge {
   background: rgba(201,168,76,.12);
   border: 1px solid rgba(201,168,76,.25);
@@ -116,7 +114,6 @@ header {
   font-family: 'Nunito', sans-serif;
 }
 
-/* ── BOOK STAGE ── */
 .stage {
   display: flex;
   align-items: center;
@@ -144,7 +141,6 @@ header {
 .nav-btn:active { transform: scale(0.95); }
 .nav-btn:disabled { opacity: 0.25; cursor: default; transform: none; }
 
-/* ── BOOK ── */
 .book-wrap { perspective: 1400px; position: relative; }
 
 .book {
@@ -200,7 +196,6 @@ header {
 @keyframes flipOutBack { 0%{transform:perspective(1400px) rotateY(0);opacity:1} 100%{transform:perspective(1400px) rotateY(90deg);opacity:0} }
 @keyframes flipInBack  { 0%{transform:perspective(1400px) rotateY(-90deg);opacity:0} 100%{transform:perspective(1400px) rotateY(0);opacity:1} }
 
-/* ── COVER ── */
 .cover-content {
   width: 100%; height: 100%;
   background: linear-gradient(160deg, #0d2018 0%, #1a3a2a 45%, #2d5a3d 100%);
@@ -288,7 +283,6 @@ header {
   text-transform: uppercase;
 }
 
-/* ── COLORING PAGE ── */
 .coloring-page {
   width: 100%; height: 100%;
   background: var(--cream);
@@ -332,7 +326,6 @@ header {
   font-style: italic;
 }
 
-/* ── COUNTER ── */
 .page-counter {
   font-size: 0.82rem;
   font-weight: 700;
@@ -344,7 +337,6 @@ header {
   letter-spacing: 0.04em;
 }
 
-/* ── THUMBNAIL STRIP ── */
 .thumb-section {
   width: 100%;
   max-width: 900px;
@@ -417,7 +409,6 @@ header {
   box-shadow: 0 0 0 1px var(--gold), 0 4px 14px rgba(201,168,76,.4);
 }
 
-/* ── PRINT ── */
 @media print {
   body { background: white !important; padding: 0 !important; }
   header, .stage .nav-btn, .thumb-section, .page-counter, .class-badge,
@@ -428,6 +419,7 @@ header {
   .coloring-page { height: 100vh; }
   .coloring-page img { width:100% !important; height:calc(100vh - 52px) !important; object-fit:contain !important; padding:12px 12px 0 !important; }
   .page-label { position:fixed; bottom:0; left:0; right:0; }
+  #digitalArtsHub { display: none !important; }
 }
 
 @media(max-width:720px){
@@ -440,7 +432,6 @@ header {
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
   <div>
     <div class="logo">Set H · <em>Fine Line Botanical</em></div>
@@ -454,10 +445,8 @@ header {
   </div>
 </header>
 
-<!-- BOOK STAGE -->
 <div class="stage">
   <button class="nav-btn" id="prevBtn" onclick="navigate(-1)" disabled>&#8592;</button>
-
   <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
     <div class="book-wrap">
       <div class="book">
@@ -466,14 +455,19 @@ header {
     </div>
     <div class="page-counter" id="pageCounter">Cover &nbsp;·&nbsp; 1 of 26</div>
   </div>
-
   <button class="nav-btn" id="nextBtn" onclick="navigate(1)">&#8594;</button>
 </div>
 
-<!-- THUMBNAILS -->
 <div class="thumb-section">
   <div class="thumb-label">&#127807; All 25 Fine Line Botanical Pages</div>
   <div class="thumb-scroll" id="thumbStrip"></div>
+</div>
+
+<!-- Digital Arts Hub Button -->
+<div id="digitalArtsHub" style="position:fixed;bottom:20px;right:20px;z-index:999;">
+  <a href="https://lhhowell.github.io/kellamsmilebags/DigitalArts_Menu.html" style="display:inline-flex;align-items:center;gap:8px;background:#1B4332;color:#E8C97A;border:none;border-radius:50px;padding:11px 20px;font-family:'Fredoka One',cursive;font-size:14px;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.25);">
+    🎨 Digital Arts Hub
+  </a>
 </div>
 
 <script>
@@ -486,11 +480,7 @@ const WORD_LIST = [
 
 const PAGES = [{ type: 'cover' }];
 WORD_LIST.forEach(w => {
-  PAGES.push({
-    type: 'coloring',
-    word: w,
-    src: `seth_${w.toLowerCase()}.png`
-  });
+  PAGES.push({ type: 'coloring', word: w, src: `seth_${w.toLowerCase()}.png` });
 });
 
 let currentIndex = 0;
@@ -499,7 +489,6 @@ let animating = false;
 function renderPage(index) {
   const page = PAGES[index];
   const slot = document.getElementById('pageSlot');
-
   if (page.type === 'cover') {
     slot.innerHTML = `
       <div class="cover-content">
@@ -507,11 +496,7 @@ function renderPage(index) {
         <div class="cover-eyebrow">Word &amp; Wonder · Digital Arts</div>
         <div class="cover-title">Set H<br><em>Fine Line Botanical</em></div>
         <div class="cover-divider"></div>
-        <div class="cover-info">
-          25 OneWords · Fine Line Illustration<br>
-          Generated with Gemini / ChatGPT<br>
-          Kara Gau · Spring 2026
-        </div>
+        <div class="cover-info">25 OneWords · Fine Line Illustration<br>Generated with Gemini / ChatGPT<br>Kara Gau · Spring 2026</div>
         <div class="cover-count">25 Coloring Pages · Print &amp; Explore</div>
         <div class="cover-badge">Fine Line · Botanical Art · Stencil Set</div>
       </div>`;
@@ -526,15 +511,12 @@ function renderPage(index) {
         </div>
       </div>`;
   }
-
   const label = page.type === 'cover'
     ? `Cover &nbsp;·&nbsp; Page 1 of ${PAGES.length}`
     : `${page.word.toUpperCase()} &nbsp;·&nbsp; Page ${index + 1} of ${PAGES.length}`;
   document.getElementById('pageCounter').innerHTML = label;
-
   document.getElementById('prevBtn').disabled = index === 0;
   document.getElementById('nextBtn').disabled = index === PAGES.length - 1;
-
   document.querySelectorAll('.thumb').forEach((t, i) => {
     t.classList.toggle('active', i === index);
     if (i === index) t.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
@@ -588,22 +570,18 @@ function printPage() { window.print(); }
 function buildUI() {
   const strip = document.getElementById('thumbStrip');
   const select = document.getElementById('wordJump');
-
   const coverThumb = document.createElement('div');
   coverThumb.className = 'thumb cover-thumb active';
   coverThumb.innerHTML = '<span>Set H<br>Fine Line<br>Botanical</span>';
   coverThumb.onclick = () => goToPage(0);
   strip.appendChild(coverThumb);
-
   WORD_LIST.forEach((w, i) => {
     const group = document.createElement('div');
     group.className = 'thumb-group';
-
     const wordLabel = document.createElement('div');
     wordLabel.className = 'thumb-word';
     wordLabel.textContent = w;
     group.appendChild(wordLabel);
-
     const thumb = document.createElement('div');
     thumb.className = 'thumb';
     thumb.innerHTML = `<img src="seth_${w.toLowerCase()}.png" alt="${w}" loading="lazy">`;
@@ -611,7 +589,6 @@ function buildUI() {
     thumb.onclick = () => goToPage(capturedIdx);
     group.appendChild(thumb);
     strip.appendChild(group);
-
     const opt = document.createElement('option');
     opt.value = w;
     opt.textContent = w.toUpperCase();
