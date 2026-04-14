@@ -116,7 +116,8 @@ body{font-family:'Nunito',sans-serif;background:#f8f7f4;color:#1a1a2e;min-height
 @media print{
   body{background:#fff;}
   .hero{background:#1a1a2e!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .back-btn{display:none;}
+  .back-btn, button{display:none!important;}
+  .print-url{display:block!important;}
   @page{size:letter;margin:.5in;}
 }
 </style>
@@ -134,41 +135,21 @@ body{font-family:'Nunito',sans-serif;background:#f8f7f4;color:#1a1a2e;min-height
   </div>
 </div>
 
-<a href="APBio_TIDE_Preview.html" class="back-btn">&#8592; Back to Overview</a>
+<div style="display:flex;align-items:center;gap:10px;padding:24px 32px 0;max-width:860px;margin:0 auto;">
+  <a href="APBio_TIDE_Preview.html" class="back-btn" style="margin:0;">&#8592; Back to Overview</a>
+  <button onclick="window.print()" style="display:inline-flex;align-items:center;gap:8px;background:#c9a84c;border:none;color:#1a1a2e;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:9px 16px;border-radius:6px;cursor:pointer;">&#128438; Print This Guide</button>
+</div>
 
-<!-- ══ MINI-HUB ══ -->
-<div style="max-width:860px;margin:20px auto 0;padding:0 32px;">
-  <div style="background:#fff;border:1px solid #e8e4dc;border-radius:14px;padding:20px 24px;box-shadow:0 2px 8px rgba(26,26,46,.04);">
-    <div style="font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#888;margin-bottom:14px;">Quick Access · All Pages</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;">
-      <a href="APBio_TIDE_Preview.html" target="_blank" style="display:flex;align-items:center;gap:10px;background:#f0f8f4;border:1px solid #b8ddc8;border-radius:10px;padding:12px 14px;text-decoration:none;transition:all .15s;">
-        <span style="font-size:1.3rem;">🌐</span>
-        <div>
-          <div style="font-family:'Fredoka One',cursive;font-size:12px;color:#1B7A78;letter-spacing:.5px;">Project Overview</div>
-          <div style="font-size:11px;color:#888;margin-top:1px;">APBio_TIDE_Preview</div>
-        </div>
-      </a>
-      <a href="APBio_TIDE_Student_Guide.html" target="_blank" style="display:flex;align-items:center;gap:10px;background:#f0f8f4;border:1px solid #b8ddc8;border-radius:10px;padding:12px 14px;text-decoration:none;transition:all .15s;">
-        <span style="font-size:1.3rem;">📄</span>
-        <div>
-          <div style="font-family:'Fredoka One',cursive;font-size:12px;color:#1B7A78;letter-spacing:.5px;">Student Guide</div>
-          <div style="font-size:11px;color:#888;margin-top:1px;">APBio_TIDE_Student_Guide</div>
-        </div>
-      </a>
-      <a href="APBio_TIDE_Kiosk_Menu.html" target="_blank" style="display:flex;align-items:center;gap:10px;background:#f0f8f4;border:1px solid #b8ddc8;border-radius:10px;padding:12px 14px;text-decoration:none;transition:all .15s;">
-        <span style="font-size:1.3rem;">🔬</span>
-        <div>
-          <div style="font-family:'Fredoka One',cursive;font-size:12px;color:#1B7A78;letter-spacing:.5px;">Kiosk Menu</div>
-          <div style="font-size:11px;color:#888;margin-top:1px;">APBio_TIDE_Kiosk_Menu</div>
-        </div>
-      </a>
-      <a href="Elementary_ScienceSupplyBar.html" target="_blank" style="display:flex;align-items:center;gap:10px;background:#f0f8f4;border:1px solid #b8ddc8;border-radius:10px;padding:12px 14px;text-decoration:none;transition:all .15s;">
-        <span style="font-size:1.3rem;">🧪</span>
-        <div>
-          <div style="font-family:'Fredoka One',cursive;font-size:12px;color:#1B7A78;letter-spacing:.5px;">Science Supply Bar</div>
-          <div style="font-size:11px;color:#888;margin-top:1px;">Elementary_ScienceSupplyBar</div>
-        </div>
-      </a>
+<!-- ══ MINI-HUB LINK ══ -->
+<div style="max-width:860px;margin:16px auto 0;padding:0 32px;">
+  <div style="background:#f0f8f4;border:1px solid #b8ddc8;border-radius:10px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+    <div>
+      <div style="font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#888;margin-bottom:3px;">Project Hub</div>
+      <div style="font-size:13px;color:#444;font-family:'Nunito',sans-serif;">All student pages, kiosks, and resources in one place.</div>
+    </div>
+    <div>
+      <a href="APBio_TIDE_Preview.html" target="_blank" class="link-btn" style="margin:0 0 6px;">&#127760; Open Project Mini-Hub</a>
+      <div style="font-family:'Nunito',sans-serif;font-size:11px;color:#4caf82;margin-top:6px;word-break:break-all;">lhhowell.github.io/kellamsmilebags/APBio_TIDE_Preview.html</div>
     </div>
   </div>
 </div>
@@ -428,18 +409,7 @@ body{font-family:'Nunito',sans-serif;background:#f8f7f4;color:#1a1a2e;min-height
     </div>
   </div>
 
-  <!-- CONTACTS -->
-  <div class="section">
-    <div class="section-tag">Contact</div>
-    <div class="section-title">Questions &amp; Support</div>
-    <div class="card">
-      <p>This project was designed and coordinated by the Kellam High School Instructional Technology Specialist. For questions about the website, kiosks, printing, or logistics, reach out directly.</p>
-      <div class="note" style="margin-top:14px;"><strong>Laura Howell</strong> &mdash; Instructional Technology Specialist &middot; Kellam High School &middot; Virginia Beach City Public Schools<br>Site: <a href="https://lhhowell.github.io/kellamsmilebags" target="_blank" style="color:#4caf82;">lhhowell.github.io/kellamsmilebags</a></div>
-      <a href="APBio_TIDE_Preview.html" target="_blank" class="link-btn">&#127760; Project Overview</a>
-      <a href="APBio_TIDE_Student_Guide.html" target="_blank" class="link-btn">&#128196; Student Guide</a>
-      <a href="APBio_TIDE_Kiosk_Menu.html" target="_blank" class="link-btn">&#128300; Kiosk Menu</a>
-    </div>
-  </div>
+
 
 </div>
 
