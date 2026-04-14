@@ -281,11 +281,23 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
     <h2 id="wordLabTitle">Flavor DNA Unlocked! 🧬</h2>
   </div>
   <div id="wordLabResult"></div>
+
+  <!-- Agree/Disagree Feedback -->
+  <div id="agreedWrap_wordlab" style="margin:14px 0;text-align:center;display:none;">
+    <div style="font-family:'Fredoka One',cursive;font-size:14px;color:var(--navy);margin-bottom:10px;">Do you agree with this result?</div>
+    <div style="display:flex;justify-content:center;gap:12px;">
+      <button onclick="sendFeedback('wordlab','agree')" id="agreeBtn_wordlab" style="padding:10px 24px;border-radius:10px;border:2px solid #2D7A4F;background:#E8F5E9;color:#2D7A4F;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;">👍 Agree</button>
+      <button onclick="sendFeedback('wordlab','disagree')" id="disagreeBtn_wordlab" style="padding:10px 24px;border-radius:10px;border:2px solid #B52020;background:#FFEBEE;color:#B52020;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;">👎 Disagree</button>
+    </div>
+    <div id="feedbackConfirm_wordlab" style="margin-top:8px;font-size:12px;font-weight:700;color:var(--mid);height:16px;"></div>
+  </div>
   <div class="nav-row">
     <button class="btn-back" onclick="goTo('2a')">← Try Another Word</button>
+    <button class="btn-back" onclick="goTo(1)" style="margin-left:8px;">🔬 Explore Another Lab</button>
     <button class="btn-print" onclick="window.print()">🖨️ Print</button>
     <button class="btn-submit" onclick="submitResult('wordlab')">✅ Submit!</button>
   </div>
+  <div style="text-align:center;margin-top:8px;"><button class="btn-restart" onclick="window.location.href='Culinary_Menu.html'" style="background:var(--navy);color:var(--gold);border:none;margin-top:10px;">🏠 Back to Main Menu</button></div>
 </div>
 
 <!-- S3A: PAIRING TEST — Pick Ingredient A -->
@@ -331,11 +343,23 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
     <h2>The Verdict is In! ⚗️</h2>
   </div>
   <div id="pairingResult"></div>
+
+  <!-- Agree/Disagree Feedback -->
+  <div id="agreedWrap_pairing" style="margin:14px 0;text-align:center;display:none;">
+    <div style="font-family:'Fredoka One',cursive;font-size:14px;color:var(--navy);margin-bottom:10px;">Do you agree with this result?</div>
+    <div style="display:flex;justify-content:center;gap:12px;">
+      <button onclick="sendFeedback('pairing','agree')" id="agreeBtn_pairing" style="padding:10px 24px;border-radius:10px;border:2px solid #2D7A4F;background:#E8F5E9;color:#2D7A4F;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;">👍 Agree</button>
+      <button onclick="sendFeedback('pairing','disagree')" id="disagreeBtn_pairing" style="padding:10px 24px;border-radius:10px;border:2px solid #B52020;background:#FFEBEE;color:#B52020;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;">👎 Disagree</button>
+    </div>
+    <div id="feedbackConfirm_pairing" style="margin-top:8px;font-size:12px;font-weight:700;color:var(--mid);height:16px;"></div>
+  </div>
   <div class="nav-row">
     <button class="btn-back" onclick="goTo('3a')">← Try Another Pair</button>
+    <button class="btn-back" onclick="goTo(1)" style="margin-left:8px;">🔬 Explore Another Lab</button>
     <button class="btn-print" onclick="window.print()">🖨️ Print</button>
     <button class="btn-submit" onclick="submitResult('pairingtest')">✅ Submit!</button>
   </div>
+  <div style="text-align:center;margin-top:8px;"><button class="btn-restart" onclick="window.location.href='Culinary_Menu.html'" style="background:var(--navy);color:var(--gold);border:none;margin-top:10px;">🏠 Back to Main Menu</button></div>
 </div>
 
 <!-- S4A: AI SCIENCE LAB — Pick Word -->
@@ -363,11 +387,23 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
     <h2 id="aiLabTitle">AI Science Report 🔬</h2>
   </div>
   <div id="aiLabResult"></div>
+
+  <!-- Agree/Disagree Feedback -->
+  <div id="agreedWrap_ailab" style="margin:14px 0;text-align:center;display:none;">
+    <div style="font-family:'Fredoka One',cursive;font-size:14px;color:var(--navy);margin-bottom:10px;">Do you agree with this result?</div>
+    <div style="display:flex;justify-content:center;gap:12px;">
+      <button onclick="sendFeedback('ailab','agree')" id="agreeBtn_ailab" style="padding:10px 24px;border-radius:10px;border:2px solid #2D7A4F;background:#E8F5E9;color:#2D7A4F;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;">👍 Agree</button>
+      <button onclick="sendFeedback('ailab','disagree')" id="disagreeBtn_ailab" style="padding:10px 24px;border-radius:10px;border:2px solid #B52020;background:#FFEBEE;color:#B52020;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;">👎 Disagree</button>
+    </div>
+    <div id="feedbackConfirm_ailab" style="margin-top:8px;font-size:12px;font-weight:700;color:var(--mid);height:16px;"></div>
+  </div>
   <div class="nav-row">
     <button class="btn-back" onclick="goTo('4a')">← Try Another Word</button>
+    <button class="btn-back" onclick="goTo(1)" style="margin-left:8px;">🔬 Explore Another Lab</button>
     <button class="btn-print" onclick="window.print()">🖨️ Print</button>
     <button class="btn-submit" onclick="submitResult('aisciencelab')">✅ Submit!</button>
   </div>
+  <div style="text-align:center;margin-top:8px;"><button class="btn-restart" onclick="window.location.href='Culinary_Menu.html'" style="background:var(--navy);color:var(--gold);border:none;margin-top:10px;">🏠 Back to Main Menu</button></div>
 </div>
 
 <!-- S5A: SURPRISE LAB — Pick Food -->
@@ -719,7 +755,7 @@ function v2a(){
 
   let dnaHtml=heroIng.compounds.map(c=>`<span class="dna-pill dna-shared">${c}</span>`).join('');
 
-  document.getElementById('wordLabResult').innerHTML=`
+  showAgreeWrap('wordlab'); document.getElementById('wordLabResult').innerHTML=`
     <div id="printCard">
     <div class="pairing-result">
       <div class="pr-header" style="background:var(--dna1);">
@@ -778,7 +814,7 @@ function v3b(){
     ?`Try: ${S.ingA} + ${S.ingB} — bring them together in a dish that lets both shine. The shared ${shared[0]} will bridge the gap beautifully.`
     :`Contrast dish: use ${S.ingA} and ${S.ingB} as opposites — one as the feature, one as the accent. Contrast can be as powerful as harmony.`;
 
-  document.getElementById('pairingResult').innerHTML=`
+  showAgreeWrap('pairing'); document.getElementById('pairingResult').innerHTML=`
     <div id="printCard">
     <div class="pairing-result">
       <div class="pr-header" style="background:${color};">
@@ -815,7 +851,7 @@ function v3b(){
 function v4a(){
   if(!S.word){show('wordErr4a');return;} hide('wordErr4a');
   document.getElementById('aiLabTitle').textContent='AI Science Report: '+S.word+' 🔬';
-  document.getElementById('aiLabResult').innerHTML=`
+  showAgreeWrap('ailab'); document.getElementById('aiLabResult').innerHTML=`
     <div class="ai-response-box">
       <div class="ai-label">🤖 AI is analyzing the molecular gastronomy of <strong>${S.word}</strong>...</div>
       <div class="ai-loading"><div class="ai-dots"><span></span><span></span><span></span></div></div>
@@ -862,7 +898,7 @@ function runAI(){
   const sciText=SCIENCE_REPORTS[S.word]||'The molecular gastronomy of '+S.word+' is rich with flavor science — every ingredient connected to this word shares surprising compounds with its partners.';
   let dnaHtml=heroIng.compounds.map(c=>`<span class="dna-pill dna-shared">${c}</span>`).join('');
 
-  document.getElementById('aiLabResult').innerHTML=`
+  showAgreeWrap('ailab'); document.getElementById('aiLabResult').innerHTML=`
     <div id="printCard">
     <div class="pairing-result">
       <div class="pr-header" style="background:var(--dna3);">
@@ -938,6 +974,27 @@ function v5a(){
 }
 
 /* ══ SUBMIT ═══════════════════════════════════════════════════ */
+
+async function sendFeedback(labId, vote){
+  var agreeBtn = document.getElementById('agreeBtn_'+labId);
+  var disagreeBtn = document.getElementById('disagreeBtn_'+labId);
+  var confirm = document.getElementById('feedbackConfirm_'+labId);
+  if(agreeBtn) agreeBtn.disabled = true;
+  if(disagreeBtn) disagreeBtn.disabled = true;
+  if(confirm) confirm.textContent = vote==='agree' ? '✅ Thanks! Agree logged.' : '✅ Thanks! Disagree logged.';
+  try {
+    await fetch(SUBMIT_URL,{method:'POST',mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({type:'feedback',lab:labId,vote:vote,
+        timestamp:new Date().toLocaleString('en-US',{timeZone:'America/New_York'})})
+    });
+  } catch(e){ console.warn(e); }
+}
+function showAgreeWrap(id){
+  var el = document.getElementById('agreedWrap_'+id);
+  if(el) el.style.display='block';
+}
+
 async function submitResult(mode){
   goTo(6);
   const payload={

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Recipe Card Print Sheet · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#1A2744;--gold:#E8A820;--gold2:#C8860A;
+  --cream:#FFFDF7;--mid:#7A4E2D;--radius:10px;
+  --simple:#E65100;--advanced:#1565C0;
+}
+body{font-family:'Nunito',sans-serif;background:#F0EBE3;color:#222;min-height:100vh;}
+
+/* ── SCREEN UI ── */
+.hdr{background:var(--navy);padding:12px 28px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-brand{font-family:'Fredoka One',cursive;color:var(--gold);font-size:1.1rem;}
+.hdr-sub{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px;}
+.hdr-badge{background:var(--gold);color:var(--navy);font-weight:900;font-size:.58rem;padding:3px 10px;border-radius:20px;letter-spacing:.07em;text-transform:uppercase;}
+.hdr-back{color:rgba(255,255,255,.6);font-size:13px;font-weight:700;text-decoration:none;cursor:pointer;}
+.hdr-back:hover{color:var(--gold);}
+
+.page-intro{text-align:center;padding:28px 20px 16px;}
+.page-intro h1{font-family:'Fredoka One',cursive;font-size:1.7rem;color:var(--navy);margin-bottom:6px;}
+.page-intro p{font-size:13px;color:#666;font-weight:600;}
+
+/* ── SLOT BUILDER ── */
+.slots-wrap{max-width:920px;margin:0 auto;padding:0 20px 20px;}
+.slots-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+
+.slot-builder{background:#fff;border-radius:14px;padding:18px;border:2px solid #E8E0D0;box-shadow:0 2px 10px rgba(0,0,0,.06);}
+.slot-label{font-family:'Fredoka One',cursive;font-size:14px;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.slot-num{width:26px;height:26px;border-radius:50%;background:var(--navy);color:var(--gold);font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.slot-empty{background:#F9F5EF;border:2px dashed #D5C9BB;border-radius:10px;padding:20px;text-align:center;color:#AAA;font-size:13px;font-weight:700;margin-bottom:10px;}
+
+select{width:100%;padding:9px 12px;border-radius:9px;border:2px solid #E0D5C8;font-family:'Nunito',sans-serif;font-weight:700;font-size:.88rem;color:var(--navy);background:#FDFAF6;margin-bottom:8px;outline:none;cursor:pointer;}
+select:focus{border-color:var(--gold);}
+
+.slot-preview-mini{border-radius:8px;overflow:hidden;font-size:11px;margin-top:6px;}
+.spm-header{padding:8px 10px;color:#fff;font-family:'Fredoka One',cursive;font-size:13px;display:flex;align-items:center;justify-content:space-between;}
+.spm-body{background:#fff;padding:8px 10px;border:1px solid #EEE;border-top:none;border-radius:0 0 8px 8px;}
+.spm-name{font-weight:800;color:var(--navy);font-size:12px;}
+.spm-tags{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;}
+.spm-tag{font-size:10px;background:#F5EFE5;color:var(--mid);padding:2px 7px;border-radius:10px;font-weight:700;}
+
+.clear-slot{font-size:11px;color:#AAA;background:none;border:none;cursor:pointer;font-weight:700;padding:0;margin-top:4px;}
+.clear-slot:hover{color:var(--navy);}
+
+/* ── ACTION BUTTONS ── */
+.actions{display:flex;gap:12px;justify-content:center;margin-bottom:32px;flex-wrap:wrap;}
+.btn-print{padding:14px 32px;border-radius:50px;border:none;background:var(--navy);color:var(--gold);font-family:'Fredoka One',cursive;font-size:16px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.2);}
+.btn-print:hover{background:var(--gold2);color:#fff;}
+.btn-clear-all{padding:14px 24px;border-radius:50px;border:2px solid var(--navy);background:#fff;color:var(--navy);font-family:'Fredoka One',cursive;font-size:14px;cursor:pointer;}
+.btn-clear-all:hover{background:var(--navy);color:var(--gold);}
+.btn-menu{padding:14px 24px;border-radius:50px;border:2px solid #CCC;background:#fff;color:#666;font-family:'Fredoka One',cursive;font-size:14px;cursor:pointer;}
+.btn-menu:hover{border-color:var(--navy);color:var(--navy);}
+
+/* ── PRINT PREVIEW LABEL ── */
+.preview-label{text-align:center;font-family:'Fredoka One',cursive;font-size:14px;color:var(--gold2);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
+
+/* ═══════════════════════════════════════════════
+   PRINT CARDS — these render on screen for preview
+   and print in 4-up layout
+═══════════════════════════════════════════════ */
+.print-grid{
+  max-width:920px;margin:0 auto 40px;
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;
+  padding:0 20px;
+}
+
+.recipe-card{
+  background:#fff;border-radius:12px;overflow:hidden;
+  border:1.5px solid #E8E0D0;
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+  min-height:320px;
+}
+.rc-empty{
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:8px;
+  color:#CCC;font-size:13px;font-weight:700;
+  min-height:320px;
+}
+.rc-header{padding:14px 16px 10px;color:#fff;position:relative;}
+.rc-word{font-family:'Fredoka One',cursive;font-size:1.4rem;letter-spacing:.05em;}
+.rc-icon{position:absolute;top:10px;right:14px;font-size:28px;opacity:.85;}
+.rc-recipe-name{font-family:'Playfair Display',serif;font-size:.9rem;font-style:italic;margin-top:2px;color:rgba(255,255,255,.9);}
+.rc-made{font-size:.68rem;color:rgba(255,255,255,.65);margin-top:3px;}
+.rc-why{font-size:.68rem;font-style:italic;margin-top:6px;line-height:1.5;opacity:.8;background:rgba(255,255,255,.12);padding:5px 9px;border-radius:6px;}
+
+.rc-body{padding:10px 14px 12px;}
+.rc-level-badge{display:inline-block;font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:2px 9px;border-radius:20px;margin-bottom:6px;}
+.rc-tags{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;}
+.rc-tag{font-size:.62rem;font-weight:700;background:#F5EFE5;color:var(--mid);padding:2px 7px;border-radius:10px;}
+.rc-section{font-family:'Fredoka One',cursive;font-size:.72rem;color:var(--navy);margin:7px 0 4px;text-transform:uppercase;letter-spacing:.05em;}
+.rc-ing-list{list-style:none;padding:0;}
+.rc-ing-list li{font-size:.68rem;font-weight:600;color:#444;padding:2px 0;border-bottom:1px solid #F5EFE5;display:flex;align-items:flex-start;gap:5px;}
+.rc-ing-list li::before{content:'•';color:var(--gold2);flex-shrink:0;}
+.rc-steps-list{list-style:none;padding:0;}
+.rc-steps-list li{font-size:.68rem;font-weight:600;color:#444;display:flex;gap:6px;align-items:flex-start;line-height:1.5;margin-bottom:3px;}
+.rc-step-num{background:var(--navy);color:var(--gold);font-family:'Fredoka One',cursive;font-size:.6rem;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.rc-footer{font-size:.6rem;color:#BBB;text-align:center;padding:8px 14px 10px;border-top:1px solid #F5EFE5;margin-top:6px;}
+
+/* ── NO-PRINT UI ── */
+@media print{
+  .no-print{display:none!important;}
+  body{background:#fff;}
+  .print-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    padding:0;
+    margin:0;
+    max-width:100%;
+    page-break-inside:avoid;
+  }
+  .recipe-card{
+    box-shadow:none;
+    border:1px solid #DDD;
+    break-inside:avoid;
+    min-height:0;
+  }
+  .rc-empty{display:none!important;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr no-print">
+  <div>
+    <div class="hdr-brand">🖨️ Recipe Card Print Sheet</div>
+    <div class="hdr-sub">4 cards per page · Culinary Arts · Smile Bags</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a class="hdr-back" onclick="window.location.href='Culinary_Menu.html'">🏠 Main Menu</a>
+    <div class="hdr-badge">Ms. Sayers</div>
+  </div>
+</header>
+
+<!-- INTRO -->
+<div class="page-intro no-print">
+  <h1>4-Up Recipe Card Print Sheet</h1>
+  <p>Choose up to 4 recipe cards below. Preview them, then print all 4 on one sheet — saving paper! 🌿</p>
+</div>
+
+<!-- SLOT BUILDERS -->
+<div class="slots-wrap no-print">
+  <div class="slots-grid" id="slotBuilders">
+    <!-- Slots injected by JS -->
+  </div>
+  <div class="actions">
+    <button class="btn-print" onclick="window.print()">🖨️ Print All 4 Cards</button>
+    <button class="btn-clear-all" onclick="clearAll()">✕ Clear All Slots</button>
+    <button class="btn-menu" onclick="window.location.href='Culinary_Menu.html'">🏠 Back to Menu</button>
+  </div>
+</div>
+
+<!-- PREVIEW LABEL -->
+<div class="preview-label no-print" id="previewLabel" style="display:none;">↓ Print Preview ↓</div>
+
+<!-- PRINT GRID (preview + actual print) -->
+<div class="print-grid" id="printGrid">
+  <div class="recipe-card rc-empty" id="card0"><span style="font-size:28px;">🃏</span>Slot 1 — empty</div>
+  <div class="recipe-card rc-empty" id="card1"><span style="font-size:28px;">🃏</span>Slot 2 — empty</div>
+  <div class="recipe-card rc-empty" id="card2"><span style="font-size:28px;">🃏</span>Slot 3 — empty</div>
+  <div class="recipe-card rc-empty" id="card3"><span style="font-size:28px;">🃏</span>Slot 4 — empty</div>
+</div>
+
+<script>
+/* ══ DATA ══════════════════════════════════════════════════════ */
+const RECIPES = {
+  Absorb:[
+    {level:'simple',icon:'🍰',name:'Sponge Syrup Bites',time:'20 min',serves:'12 bites',difficulty:'Easy',why:'Just like the word ABSORB means to soak something in, this sponge cake drinks up the syrup and becomes sweeter with every bite.',ingredients:['1 cup store-bought pound cake, cubed','½ cup strawberry jam','2 tbsp warm water','Whipped cream for topping','Fresh strawberries'],steps:['Mix the strawberry jam and warm water together in a small bowl to make a syrup.','Arrange the pound cake cubes in a dish or on a tray.','Spoon the warm syrup slowly over the cake cubes — watch them absorb it!','Top each bite with a small swirl of whipped cream and a strawberry. Serve!']},
+    {level:'advanced',icon:'🎂',name:'Victoria Sponge with Macerated Berries',time:'55 min',serves:'8 slices',difficulty:'Intermediate',why:'ABSORB is at work twice here — the sponge layers drink up berry juices, and the cream absorbs the floral aroma of vanilla.',ingredients:['1 cup butter, softened','1 cup sugar','4 eggs','1½ cups self-rising flour','1 tsp vanilla','1½ cups mixed berries','2 tbsp sugar (for macerating)','1 cup heavy cream, whipped'],steps:['Preheat oven to 350°F. Cream butter and sugar until pale and fluffy, about 5 minutes.','Beat in eggs one at a time. Fold in flour gently. Pour into two greased 8" pans.','Bake 25 minutes until golden and springy. Cool completely on a wire rack.','Meanwhile, toss berries with 2 tbsp sugar. Let sit 30 minutes until juicy.','Spread whipped cream on one sponge layer. Spoon berries and their juices on top.','Place the second sponge on top. Dust with powdered sugar and serve.']}
+  ],
+  Adapt:[
+    {level:'simple',icon:'🥚',name:'Anything-Goes Scrambled Eggs',time:'10 min',serves:'2',difficulty:'Easy',why:'ADAPT means adjusting to what you have. These eggs are the ultimate adaptable recipe!',ingredients:['3 eggs','2 tbsp milk','Salt & pepper','Any fillings: cheese, veggies, herbs','1 tbsp butter'],steps:['Crack eggs into a bowl, add milk, salt, and pepper. Whisk well.','Melt butter in a pan over medium-low heat.','Pour in the egg mixture. Let it sit 30 seconds, then gently fold with a spatula.','Add any fillings you chose. Serve warm.']},
+    {level:'advanced',icon:'🌿',name:'Seasonal Vegetable Frittata',time:'40 min',serves:'6',difficulty:'Intermediate',why:'A frittata is the chef\'s ultimate ADAPT dish — you change the vegetables with the season.',ingredients:['8 eggs','¼ cup heavy cream','1 cup seasonal vegetables','½ cup shredded gruyère','2 tbsp olive oil','2 cloves garlic, minced','Fresh herbs','Salt & pepper'],steps:['Preheat oven to 375°F. Whisk eggs with cream, salt, and pepper until smooth.','Heat olive oil in an oven-safe skillet. Sauté garlic 1 minute.','Add vegetables, cook 4–5 minutes until tender. Season generously.','Pour egg mixture over vegetables. Sprinkle cheese on top.','Cook on stovetop 3 minutes until edges set, then transfer to oven.','Bake 12–15 minutes until center is just set. Serve in wedges.']}
+  ],
+  Anchor:[
+    {level:'simple',icon:'⚓',name:'Anchor Shortbread Cookies',time:'25 min',serves:'18 cookies',difficulty:'Easy',why:'An ANCHOR holds things steady. These shortbread cookies are grounded in a simple 3-ingredient recipe.',ingredients:['1 cup butter, softened','½ cup powdered sugar','2 cups all-purpose flour','Pinch of salt','Blue icing or sprinkles (optional)'],steps:['Mix butter and powdered sugar until creamy. Stir in flour and salt to form a dough.','Wrap dough and refrigerate 20 minutes.','Roll dough to ¼" thickness. Cut with anchor-shaped cutters.','Bake at 325°F for 12–14 minutes until edges are just golden.']},
+    {level:'advanced',icon:'🥧',name:'Sea Salt Caramel Tart',time:'75 min',serves:'8 slices',difficulty:'Advanced',why:'ANCHOR describes the tart shell — it holds everything together.',ingredients:['1¼ cups flour','½ cup cold butter, cubed','¼ cup powdered sugar','1 egg yolk','1 cup sugar','6 tbsp butter','½ cup heavy cream','1 tsp flaky sea salt','2 eggs'],steps:['Make the crust: pulse flour, cold butter, and sugar until crumbly. Add egg yolk, press into tart pan. Refrigerate 30 min.','Blind bake at 375°F for 15 minutes with pie weights. Cool.','Make caramel: heat sugar until amber. Whisk in butter and cream. Stir in salt.','Cool caramel. Whisk in 2 eggs.','Pour into tart shell. Bake at 325°F for 20 minutes until just set.']}
+  ],
+  Balance:[
+    {level:'simple',icon:'🍿',name:'Sweet & Salty Popcorn Mix',time:'10 min',serves:'4',difficulty:'Easy',why:'BALANCE is about having just the right amount of everything.',ingredients:['4 cups popped popcorn','2 tbsp melted butter','1 tbsp honey','½ tsp salt','Optional: chocolate chips or pretzels'],steps:['Pop the popcorn and spread it in a large bowl.','Mix melted butter, honey, and salt together.','Drizzle the mixture over the popcorn and toss well.','Add extras like chocolate chips. Taste and adjust sweet or salty!']},
+    {level:'advanced',icon:'🥗',name:'Rainbow Buddha Bowl with Tahini',time:'45 min',serves:'2',difficulty:'Intermediate',why:'A Buddha Bowl is architecture through BALANCE — equal parts grain, protein, fat, acid, and color.',ingredients:['1 cup cooked quinoa','1 cup roasted chickpeas','1 cup shredded purple cabbage','1 roasted sweet potato, cubed','1 avocado, sliced','¼ cup tahini','2 tbsp lemon juice','1 garlic clove, grated','3 tbsp warm water'],steps:['Roast chickpeas and sweet potato at 400°F for 25 minutes.','Whisk tahini, lemon juice, garlic, and warm water until smooth.','Build your bowl: start with quinoa as the base.','Arrange chickpeas, cabbage, sweet potato, and avocado in sections.','Drizzle generously with tahini dressing.']}
+  ],
+  Bloom:[
+    {level:'simple',icon:'🌸',name:'Flower Power Sugar Cookies',time:'30 min',serves:'16 cookies',difficulty:'Easy',why:'BLOOM is about becoming your most beautiful self. These cookies literally bloom into flowers!',ingredients:['1 roll store-bought sugar cookie dough','Colored frosting (pink, yellow, purple)','Candy or sprinkle flower centers','Powdered sugar for dusting'],steps:['Bake cookies according to package directions. Cool completely.','Divide frosting into colors. Frost each cookie with your base color.','Using a toothpick, draw petal shapes from center outward.','Add a candy center to each flower. Let set and serve!']},
+    {level:'advanced',icon:'🍑',name:'Blooming Honey Lavender Pound Cake',time:'70 min',serves:'10 slices',difficulty:'Intermediate',why:'Infusing lavender essence into this butter cake teaches extraction — pulling beauty from nature into food.',ingredients:['1½ cups flour','1 cup butter, softened','1 cup sugar','4 eggs','¼ cup honey','1 tbsp dried culinary lavender','½ tsp vanilla','Zest of 1 lemon'],steps:['Steep lavender in 2 tbsp warm honey for 15 minutes. Strain out flowers.','Preheat oven to 325°F. Grease a loaf pan.','Cream butter and sugar until very pale and fluffy, about 6 minutes.','Beat in eggs one at a time. Add lavender honey, vanilla, and lemon zest.','Fold in flour and salt gently.','Pour into pan. Bake 55–60 minutes. Dust with powdered sugar.']}
+  ],
+  Breathe:[
+    {level:'simple',icon:'🍋',name:'Fresh Mint Lemonade',time:'10 min',serves:'4',difficulty:'Easy',why:'BREATHE reminds us to pause and refresh. This lemonade creates that feeling of a deep, cleansing breath.',ingredients:['4 lemons, juiced','¼ cup honey or sugar','3 cups cold water','Large handful of fresh mint','Ice cubes'],steps:['Muddle mint leaves gently in the bottom of a pitcher.','Add lemon juice and honey, stir until dissolved.','Pour in cold water and stir well.','Fill glasses with ice, pour lemonade over, and garnish with mint.']},
+    {level:'advanced',icon:'🍪',name:'Lavender Honey Shortbread',time:'50 min',serves:'20 cookies',difficulty:'Intermediate',why:'Baking with lavender fills the whole kitchen with a peaceful scent — BREATHE is baked right in.',ingredients:['1 cup butter, softened','⅓ cup honey','1 tsp dried culinary lavender (finely ground)','2 cups flour','¼ tsp salt','1 tsp vanilla','Lavender sugar for topping'],steps:['Beat butter with honey until light and fluffy.','Add vanilla and ground lavender. Mix in flour and salt.','Shape dough into a log, wrap, and refrigerate 30 minutes.','Slice into ¼" rounds. Place on a parchment-lined baking sheet.','Sprinkle each cookie with lavender sugar.','Bake at 325°F for 14–16 minutes until edges are just golden.']}
+  ],
+  Clear:[
+    {level:'simple',icon:'💎',name:'Crystal Gelatin Fruit Cups',time:'15 min + chill',serves:'6',difficulty:'Easy',why:'CLEAR means being transparent — nothing hidden. You can see every piece of fruit through the crystal-clear jello!',ingredients:['1 box clear or lemon gelatin','2 cups boiling water','1 cup cold water','1 cup mixed fruit','Mint leaves for garnish'],steps:['Dissolve gelatin in boiling water. Stir 2 minutes until completely clear.','Add cold water and stir gently.','Arrange fruit pieces in the bottom of clear cups.','Pour gelatin over the fruit. Refrigerate at least 3 hours until set.']},
+    {level:'advanced',icon:'🍵',name:'Classic French Consommé',time:'90 min',serves:'4',difficulty:'Advanced',why:'A consommé is the culinary world\'s symbol of CLEAR mastery — a broth so clear you can read through it.',ingredients:['6 cups cold chicken stock','2 egg whites + shells','1 carrot, finely diced','1 celery stalk, diced','½ onion, diced','2 oz ground chicken','Fresh thyme and parsley'],steps:['Combine egg whites, shells, vegetables, and ground chicken in a cold pot.','Add cold stock. Stir to combine everything.','Bring to a gentle simmer, stirring constantly until a "raft" forms.','Reduce to lowest heat. Simmer undisturbed 45 minutes.','Ladle through cheesecloth-lined strainer. Season with salt.']}
+  ],
+  Connect:[
+    {level:'simple',icon:'🍫',name:"Classic S'mores",time:'10 min',serves:'4',difficulty:'Easy',why:"CONNECT is what s'mores are all about — three totally different ingredients that create something new together.",ingredients:['8 graham cracker squares','4 large marshmallows','2 chocolate bars','A campfire, grill, or kitchen torch'],steps:['Toast your marshmallow over heat until golden and gooey.','Place a piece of chocolate on one graham cracker square.','Slide the toasted marshmallow onto the chocolate.','Sandwich with the second cracker and feel the connection happen!']},
+    {level:'advanced',icon:'🧀',name:'Artisan Charcuterie Board',time:'30 min',serves:'8',difficulty:'Intermediate',why:'A charcuterie board is a study in CONNECTion — salty meats connect with sweet jams, creamy cheeses with crunchy crackers.',ingredients:['3–4 varieties of cheese','2–3 types of cured meats','Seasonal fruits','Assorted crackers','Nuts, honey, and jam','Fresh herbs','Olives and cornichons'],steps:['Start with your cheeses — place them at different corners.','Add meat in flowing ribbons between the cheeses.','Fill gaps with fruits, creating color bridges.','Add crackers in fans around the board edges.','Fill remaining spaces with nuts, olives, and small bowls of honey.']}
+  ],
+  Cycle:[
+    {level:'simple',icon:'🌀',name:'Pinwheel Sandwich Rolls',time:'15 min',serves:'12 pinwheels',difficulty:'Easy',why:'CYCLE means going around. When you slice these rolls, each piece reveals a perfect spiral!',ingredients:['2 large flour tortillas','4 oz cream cheese, softened','½ cup shredded cheddar','¼ cup spinach or lettuce','4 slices deli turkey or ham'],steps:['Spread cream cheese evenly all the way to the edges of each tortilla.','Layer turkey, spinach, and shredded cheese on top.','Roll each tortilla up tightly like a scroll.','Slice each roll into 6 even rounds — watch the spiral appear!']},
+    {level:'advanced',icon:'🍞',name:'Classic Sourdough (The Eternal Cycle)',time:'24 hrs',serves:'1 loaf',difficulty:'Advanced',why:'Sourdough is baking\'s ultimate CYCLE. The starter cycles on forever when you keep feeding it.',ingredients:['½ cup sourdough starter (active)','3 cups bread flour','1¼ cups warm water','1½ tsp salt'],steps:['Feed starter 6–8 hours before baking.','Mix flour, water, and starter. Rest 30 minutes.','Add salt. Stretch and fold every 30 minutes for 3 hours.','Shape, place in floured bowl, refrigerate overnight.','Preheat oven with Dutch oven inside at 500°F.','Score the dough, bake covered 20 min, uncovered 20 more.']}
+  ],
+  Emerge:[
+    {level:'simple',icon:'🦋',name:'Butterfly Cake Pops',time:'45 min',serves:'16 pops',difficulty:'Easy',why:'EMERGE means something new coming into the world. The beauty only emerges when you take a bite!',ingredients:['2 cups crumbled cake (any flavor)','3 tbsp frosting','12 oz white chocolate chips','Food coloring','Lollipop sticks','Butterfly sprinkles'],steps:['Mix crumbled cake with frosting until it holds together. Roll into balls. Freeze 20 minutes.','Melt white chocolate. Divide and tint with food coloring.','Dip sticks into chocolate, then push into cake balls. Dip each pop.','Add butterfly sprinkles before chocolate sets.']},
+    {level:'advanced',icon:'🍮',name:'Chocolate Lava Cake',time:'35 min',serves:'4',difficulty:'Intermediate',why:'The moment lava EMERGES from the center of this cake is one of baking\'s great reveals.',ingredients:['4 oz dark chocolate (70%), chopped','½ cup butter','1 cup powdered sugar','2 eggs + 2 egg yolks','¼ cup flour','Cocoa powder for dusting'],steps:['Preheat oven to 425°F. Butter and cocoa-dust 4 ramekins.','Melt chocolate and butter together. Stir in powdered sugar.','Whisk in eggs and yolks. Fold in flour.','Fill ramekins ¾ full. Refrigerate up to 24 hours if needed.','Bake exactly 12 minutes.','Invert onto a plate and let the lava emerge!']}
+  ],
+  Filter:[
+    {level:'simple',icon:'🍓',name:'Rainbow Fruit Parfait',time:'10 min',serves:'2',difficulty:'Easy',why:'FILTER means layers that process and refine — sweet, creamy, and crunchy in every bite.',ingredients:['1 cup Greek yogurt','1 cup mixed berries','½ cup granola','2 tbsp honey','Fresh mint leaves'],steps:['Spoon a layer of yogurt into the bottom of a clear glass.','Add a layer of mixed berries.','Add a layer of granola for crunch.','Repeat layers until the glass is full. Drizzle with honey and top with mint.']},
+    {level:'advanced',icon:'🧀',name:'Homemade Fresh Ricotta',time:'40 min',serves:'1½ cups',difficulty:'Intermediate',why:'Ricotta is pure FILTER science — you heat milk, then filter it through cheesecloth.',ingredients:['4 cups whole milk','1 cup heavy cream','3 tbsp fresh lemon juice','½ tsp salt','Cheesecloth and a fine-mesh strainer'],steps:['Heat milk, cream, and salt to 185°F.','Add lemon juice and stir once gently. Remove from heat. Wait 5 minutes.','Line strainer with cheesecloth. Ladle curds in — do not press.','Let filter naturally 15–25 minutes.','Transfer to a container. Drizzle with olive oil and fresh herbs.']}
+  ],
+  Flow:[
+    {level:'simple',icon:'🍫',name:'Flowing Hot Chocolate',time:'10 min',serves:'2',difficulty:'Easy',why:'FLOW is about smooth, continuous movement. This hot chocolate flows from the pot like a silky river.',ingredients:['2 cups whole milk','3 tbsp cocoa powder','2 tbsp sugar','Pinch of salt','¼ tsp cinnamon','Marshmallows or whipped cream'],steps:['Whisk cocoa powder, sugar, salt, and cinnamon in a small pot.','Add a splash of milk and whisk into a smooth paste.','Pour in remaining milk and heat, whisking constantly.','Pour into mugs in one steady flow. Top with marshmallows.']},
+    {level:'advanced',icon:'🫕',name:'Dark Chocolate Fondue',time:'20 min',serves:'6',difficulty:'Intermediate',why:'Fondue is the definition of FLOW — kept moving with heat, shared communally.',ingredients:['12 oz dark chocolate (60–70%), finely chopped','1 cup heavy cream','2 tbsp butter','1 tbsp vanilla extract','Dippers: strawberries, banana, pound cake, marshmallows'],steps:['Heat heavy cream until it just begins to simmer.','Remove from heat. Add chocolate all at once. Wait 2 minutes.','Stir from center outward until glossy and smooth.','Add butter and vanilla. Stir until incorporated.','Transfer to a fondue pot or slow cooker set to low.']}
+  ],
+  Grow:[
+    {level:'simple',icon:'🥕',name:'Carrot Patch Cupcakes',time:'35 min',serves:'12',difficulty:'Easy',why:'GROW is about becoming more than you were. Carrot cake transforms vegetables into something sweet!',ingredients:['1 box carrot cake mix + box ingredients','8 oz cream cheese frosting','Crushed Oreos (for "dirt")','Candy carrots or orange candy corn','Green sprinkles'],steps:['Bake carrot cupcakes according to box directions. Cool completely.','Frost each cupcake with cream cheese frosting.','Sprinkle a layer of crushed Oreo "dirt" over the frosting.','Push candy carrots into the dirt so tops peek out!']},
+    {level:'advanced',icon:'🌿',name:'Garden-Fresh Bruschetta with Herb Oil',time:'25 min',serves:'6',difficulty:'Easy-Intermediate',why:'GROW connects us to the source of our food — tomatoes grown in the sun, herbs plucked fresh.',ingredients:['1 rustic baguette, sliced','4 ripe tomatoes, diced','2 cloves garlic','Large handful fresh basil','½ cup olive oil','1 tbsp red wine vinegar'],steps:['Blend parsley and ¼ cup olive oil into a smooth herb oil.','Toss diced tomatoes with minced garlic, basil, vinegar, salt, and remaining oil. Rest 15 min.','Toast baguette slices until golden.','Rub each warm slice with raw garlic.','Top with tomato mixture. Drizzle with herb oil.']}
+  ],
+  Heal:[
+    {level:'simple',icon:'🍯',name:'Honey Lemon Tea Cookies',time:'25 min',serves:'18 cookies',difficulty:'Easy',why:'HEAL means restoring what was hurt. Honey has been used to heal for thousands of years.',ingredients:['½ cup butter, softened','⅓ cup honey','1 egg yolk','Zest and juice of 1 lemon','1½ cups flour','Pinch of salt','Powdered sugar for dusting'],steps:['Beat butter and honey together until fluffy. Add egg yolk, lemon zest, and juice.','Mix in flour and salt to form a dough. Refrigerate 15 minutes.','Roll into small balls, flatten gently, and place on a baking sheet.','Bake at 350°F for 10–12 minutes. Dust with powdered sugar while warm.']},
+    {level:'advanced',icon:'✨',name:'Golden Turmeric Honey Cake',time:'55 min',serves:'8 slices',difficulty:'Intermediate',why:'HEAL through food is the oldest medicine. Turmeric, ginger, and honey have been used by healers for thousands of years.',ingredients:['1½ cups flour','1 tsp turmeric','1 tsp ground ginger','½ tsp cinnamon','½ cup honey','½ cup coconut oil (melted)','2 eggs','¾ cup coconut milk'],steps:['Preheat oven to 350°F. Grease an 8" round pan.','Whisk all dry ingredients together.','Whisk honey, coconut oil, eggs, and coconut milk until smooth.','Fold wet into dry until just combined.','Pour into pan. Bake 35–40 minutes.','Brush with honey glaze while still warm.']}
+  ],
+  Migrate:[
+    {level:'simple',icon:'🗺️',name:'Journey Trail Mix',time:'5 min',serves:'6',difficulty:'Easy',why:'MIGRATE means traveling from one place to another. This trail mix is made from ingredients that migrated to us from around the globe!',ingredients:['1 cup mixed nuts (cashews, almonds, pecans)','½ cup dried cranberries','½ cup coconut flakes','½ cup dark chocolate chips','Pinch of sea salt'],steps:['Combine all ingredients in a large bowl.','Toss gently to mix everything evenly.','Season with a pinch of sea salt and mix once more.','Portion into small bags or cups.']},
+    {level:'advanced',icon:'🌮',name:'Fusion Migration Tacos',time:'50 min',serves:'4',difficulty:'Intermediate',why:'The Korean-Mexican fusion taco was literally born from migration — Korean immigrants in LA blended their food with Mexican traditions.',ingredients:['1 lb beef bulgogi or marinated chicken','Marinade: soy sauce, sesame oil, ginger, garlic, brown sugar','8 small corn tortillas','Kimchi slaw','Sriracha mayo','Fresh cilantro and lime'],steps:['Marinate beef in soy sauce, sesame oil, ginger, garlic, and brown sugar for 30 min.','Cook over high heat 2–3 minutes per side until caramelized.','Make kimchi slaw: toss chopped kimchi with shredded cabbage and rice vinegar.','Warm corn tortillas on a dry skillet.','Build tacos: beef + kimchi slaw + sriracha mayo + cilantro + lime.']}
+  ],
+  Persist:[
+    {level:'simple',icon:'⚡',name:'No-Bake Energy Balls',time:'15 min + chill',serves:'20 balls',difficulty:'Easy',why:'PERSIST means never giving up. These energy balls are literally designed to keep you going.',ingredients:['1 cup rolled oats','½ cup peanut butter','⅓ cup honey','½ cup mini chocolate chips','1 tsp vanilla'],steps:['Mix all ingredients together in a bowl until fully combined.','Refrigerate the mixture 30 minutes until firm enough to roll.','Scoop tablespoon-sized portions and roll into balls.','Store in the refrigerator.']},
+    {level:'advanced',icon:'🥐',name:'Homemade Croissants',time:'3 days',serves:'12 croissants',difficulty:'Advanced',why:'Croissants are baking\'s most famous lesson in PERSIST. The laminating process creates 729 layers.',ingredients:['3 cups bread flour','2¼ tsp instant yeast','1 cup cold milk','¼ cup sugar','2 sticks cold European butter','1 egg (for egg wash)'],steps:['DAY 1: Make dough. Mix flour, yeast, milk, sugar, and salt. Knead 5 min. Refrigerate overnight.','DAY 2: Pound cold butter into a 7" square. Place on dough, fold like an envelope.','Roll out, fold in thirds. Refrigerate 1 hour. Repeat 5 more times.','DAY 3: Roll chilled dough to ¼" thick. Cut triangles and roll from wide end to point.','Proof 2–3 hours until visibly puffed.','Brush with egg wash. Bake at 400°F for 18–20 minutes until deep golden.']}
+  ],
+  Renew:[
+    {level:'simple',icon:'🌅',name:'Fresh Start Sunrise Smoothie',time:'5 min',serves:'2',difficulty:'Easy',why:'RENEW means starting fresh. This smoothie uses citrus and mango — bright, energizing ingredients that signal a new beginning.',ingredients:['1 cup frozen mango','½ cup orange juice','½ banana','1 tsp fresh ginger (grated)','½ cup coconut water','Squeeze of lemon'],steps:['Add all ingredients to a blender.','Blend on high until completely smooth — about 60 seconds.','Taste and adjust: more citrus for brightness, more mango for sweetness.','Pour into a glass and enjoy!']},
+    {level:'advanced',icon:'🍋',name:'Spring Lemon Tart with Swiss Meringue',time:'90 min',serves:'8',difficulty:'Advanced',why:'RENEW is about beginning again, lighter and brighter. Lemon combined with airy meringue tastes like spring renewing.',ingredients:['Pastry: 1¼ cups flour, ½ cup cold butter, ¼ cup powdered sugar, 1 egg yolk','Curd: 4 eggs, 1 cup sugar, ¾ cup lemon juice, zest of 3 lemons, ½ cup butter','Meringue: 3 egg whites, ¾ cup sugar'],steps:['Make pastry: pulse flour, butter, sugar until sandy. Add egg yolk, press into tart pan. Blind bake 18 min.','Cook curd: whisk eggs, sugar, lemon juice, and zest over medium heat until thick. Whisk in butter.','Pour curd into shell. Refrigerate 2 hours.','Make Swiss meringue: combine egg whites and sugar over simmering water, whisk until 160°F. Beat to stiff peaks.','Pile meringue over tart. Toast with a kitchen torch.']}
+  ],
+  Restore:[
+    {level:'simple',icon:'🍲',name:'Classic Chicken Noodle Soup',time:'30 min',serves:'4',difficulty:'Easy',why:'RESTORE means bringing something back to its best state. Chicken noodle soup has restored people for centuries.',ingredients:['4 cups chicken broth','1 cup cooked rotisserie chicken, shredded','1 cup egg noodles','2 carrots, sliced','2 celery stalks, sliced','Salt, pepper, fresh parsley'],steps:['Bring broth to a simmer over medium heat.','Add carrots and celery. Cook 8 minutes until tender.','Add noodles and cook according to package directions.','Stir in chicken. Season with salt and pepper. Top with fresh parsley.']},
+    {level:'advanced',icon:'🫙',name:'Slow-Simmered Bone Broth Ramen',time:'4+ hours',serves:'4',difficulty:'Advanced',why:'RESTORE is what bone broth does on a cellular level — collagen and minerals slowly restore the body.',ingredients:['2 lbs chicken or pork bones','8 cups water','1 onion, halved and charred','4 cloves garlic','2" ginger, sliced','Soy sauce and mirin (for tare)','4 portions ramen noodles'],steps:['Blanch bones in boiling water 5 minutes. Discard water.','Add bones to a large pot with fresh water, charred onion, garlic, and ginger.','Simmer on lowest heat 3–4 hours.','Strain broth. It should be golden and slightly gelatinous.','Make tare: mix soy sauce and mirin 3:1. Add 2 tbsp per bowl.','Cook noodles separately. Build bowls: noodles, hot broth, toppings.']}
+  ],
+  Return:[
+    {level:'simple',icon:'🍪',name:'Classic Chocolate Chip Cookies',time:'25 min',serves:'24 cookies',difficulty:'Easy',why:'RETURN means coming back to where you belong. Chocolate chip cookies are the food we return to.',ingredients:['2¼ cups flour','1 tsp baking soda','1 tsp salt','1 cup butter, softened','¾ cup sugar','¾ cup brown sugar','2 eggs','2 tsp vanilla','2 cups chocolate chips'],steps:['Preheat oven to 375°F. Mix flour, baking soda, and salt.','Beat butter and both sugars until fluffy. Beat in eggs and vanilla.','Gradually stir flour mixture into butter mixture. Fold in chocolate chips.','Drop tablespoons of dough onto baking sheets. Bake 9–11 minutes until golden.']},
+    {level:'advanced',icon:'🥧',name:'Brown Butter Apple Tarte Tatin',time:'65 min',serves:'8',difficulty:'Intermediate-Advanced',why:'RETURN — a cook accidentally dropped her apple tart and returned to the kitchen to flip the mistake into something legendary.',ingredients:['6 medium apples, peeled and quartered','6 tbsp butter','¾ cup sugar','1 tsp vanilla','1 sheet puff pastry, thawed','Flaky sea salt'],steps:['Preheat oven to 375°F. Melt butter in a 10" oven-safe skillet until golden brown.','Add sugar and cook undisturbed until deep amber caramel.','Remove from heat. Add vanilla. Arrange apple quarters tightly in the pan.','Drape puff pastry over the apples, tucking edges inside.','Bake 30–35 minutes until pastry is deep golden.','Rest 5 minutes. Invert onto a plate.']}
+  ],
+  Rise:[
+    {level:'simple',icon:'☀️',name:'Sunshine Mug Cake',time:'5 min',serves:'1',difficulty:'Easy',why:'RISE is the miracle of baking — baking powder releases gas bubbles that push batter upward!',ingredients:['4 tbsp flour','3 tbsp sugar','2 tbsp cocoa powder','¼ tsp baking powder','3 tbsp milk','2 tbsp vegetable oil','1 tbsp chocolate chips'],steps:['Add flour, sugar, cocoa, and baking powder to a large mug. Mix.','Add milk and oil. Stir vigorously until no lumps remain.','Fold in chocolate chips.','Microwave on high for 60–90 seconds. Watch it RISE!']},
+    {level:'advanced',icon:'🌀',name:'Classic Cinnamon Rolls with Cream Cheese Frosting',time:'3 hours',serves:'12 rolls',difficulty:'Intermediate',why:'RISE in baking is proof of life — yeast is a living organism that breathes out carbon dioxide.',ingredients:['3 cups flour','2¼ tsp active dry yeast','¾ cup warm milk','¼ cup sugar','¼ cup butter (melted)','1 egg','Filling: ½ cup butter, 1 cup brown sugar, 2 tbsp cinnamon'],steps:['Dissolve yeast in warm milk. Wait 5 minutes until foamy.','Mix in butter, egg, sugar, and salt. Add flour and knead 8 minutes.','Cover and let rise until doubled — about 1 hour.','Roll into a 12×18" rectangle. Spread butter, brown sugar, and cinnamon.','Roll up tightly. Cut into 12 rolls. Rise again 30 minutes.','Bake at 375°F for 20–22 minutes. Frost while warm.']}
+  ],
+  Root:[
+    {level:'simple',icon:'🧡',name:'Ginger Carrot Muffins',time:'30 min',serves:'12 muffins',difficulty:'Easy',why:'ROOT vegetables grow underground — pulling nutrients deep from the earth. These muffins celebrate everything that grows from the roots up.',ingredients:['1½ cups flour','1 tsp baking soda','1 tsp cinnamon','½ tsp ginger','½ cup sugar','2 eggs','⅓ cup vegetable oil','1 cup grated carrots'],steps:['Preheat oven to 375°F. Whisk all dry ingredients in a large bowl.','In another bowl, whisk eggs, oil, and sugar together.','Stir wet into dry until just combined. Fold in carrots.','Fill lined muffin tins ¾ full. Bake 18–20 minutes.']},
+    {level:'advanced',icon:'🍠',name:'Root Vegetable Gratin',time:'75 min',serves:'6',difficulty:'Intermediate',why:'ROOT vegetables are overlooked. This gratin gives them their moment — showing their true depth.',ingredients:['2 parsnips, thinly sliced','1 large sweet potato, thinly sliced','2 medium beets, thinly sliced','2 cups heavy cream','3 cloves garlic, minced','Fresh thyme','1 cup gruyère, grated'],steps:['Preheat oven to 375°F. Butter a 9×13" baking dish.','Heat cream with garlic and thyme until warm. Season generously.','Layer root vegetable slices in the dish, alternating types for color.','Pour warm cream over the vegetables.','Sprinkle gruyère over the top. Cover with foil.','Bake 45 minutes covered, then 15 more uncovered until golden.']}
+  ],
+  Shine:[
+    {level:'simple',icon:'⭐',name:'Glazed Star Sugar Cookies',time:'30 min',serves:'16 cookies',difficulty:'Easy',why:'SHINE is about reflecting your best self. These cookies get a mirror-bright glaze that actually shines!',ingredients:['1 roll store-bought sugar cookie dough','1 cup powdered sugar','2 tbsp milk','1 tbsp corn syrup (creates the shine!)','Food coloring of your choice'],steps:['Bake star-shaped cookies according to package directions. Cool completely.','Mix powdered sugar, milk, and corn syrup until perfectly smooth.','Add food coloring. Mix until vivid.','Dip cookies face-down into glaze. Let excess drip off. Set 30 minutes.']},
+    {level:'advanced',icon:'🎂',name:'Mirror Glaze Chocolate Mousse Cake',time:'4 hours',serves:'8',difficulty:'Advanced',why:'Mirror glaze is SHINE achieved through culinary science — a glaze so reflective it acts like a mirror.',ingredients:['Mousse: 8 oz dark chocolate, 2 cups heavy cream (whipped), 3 egg yolks, ¼ cup sugar','Mirror glaze: ¾ cup sugar, ½ cup condensed milk, ¼ cup water, 2 tsp gelatin, 8 oz white chocolate'],steps:['Make mousse: melt chocolate, whisk in egg yolks. Fold in whipped cream. Pour into pan. Freeze 3 hours.','Make glaze: bloom gelatin. Heat sugar, condensed milk, and water to boiling.','Add bloomed gelatin and white chocolate. Stir until smooth. Add food coloring. Cool to 90°F.','Unmold frozen mousse onto a wire rack over a baking sheet.','Pour glaze over the cake in one steady stream.','Let set 10 minutes. Slide onto a plate and prepare for gasps.']}
+  ],
+  Sustain:[
+    {level:'simple',icon:'🏃',name:'Go-All-Day Energy Bites',time:'15 min + chill',serves:'18 bites',difficulty:'Easy',why:'SUSTAIN means lasting — keeping energy going without burning out.',ingredients:['1 cup rolled oats','½ cup almond butter','⅓ cup honey','¼ cup dark chocolate chips','2 tbsp chia seeds','1 tsp vanilla'],steps:['Mix all ingredients together in a large bowl until fully combined.','Refrigerate mixture 30 minutes until firm.','Roll into tablespoon-sized balls.','Store refrigerated for up to a week.']},
+    {level:'advanced',icon:'🌾',name:'Ancient Grain Power Bowl with Miso Dressing',time:'45 min',serves:'2',difficulty:'Intermediate',why:'SUSTAIN means feeding people reliably over time. Farro, lentils, and miso are ancient foods that sustained civilizations.',ingredients:['½ cup farro, cooked','½ cup black lentils, cooked','2 cups kale, massaged','1 roasted sweet potato','¼ cup pomegranate seeds','Miso dressing: 2 tbsp white miso, 1 tbsp tahini, 1 tbsp rice vinegar, 1 tsp sesame oil'],steps:['Cook farro and lentils. Season while warm.','Massage kale with olive oil and salt.','Roast sweet potato cubes at 400°F for 25 minutes.','Whisk miso dressing ingredients until smooth.','Build bowl: grains and lentils as base, kale and sweet potato on top.','Scatter pomegranate seeds. Drizzle with miso dressing.']}
+  ],
+  Thrive:[
+    {level:'simple',icon:'🌈',name:'Rainbow Fruit Skewers with Honey Yogurt Dip',time:'15 min',serves:'6 skewers',difficulty:'Easy',why:'THRIVE means flourishing at your most vibrant. This skewer uses the full rainbow of fruits!',ingredients:['Strawberries (red)','Mandarin orange segments','Pineapple chunks (yellow)','Kiwi slices (green)','Blueberries (blue)','Grapes (purple)','1 cup Greek yogurt, 2 tbsp honey'],steps:['Thread fruit onto skewers in rainbow order: red, orange, yellow, green, blue, purple.','Mix Greek yogurt with honey and vanilla for the dip.','Arrange skewers on a platter around the dip bowl.','Serve immediately — thrive in color!']},
+    {level:'advanced',icon:'🥬',name:'Thriving Green Goddess Bowl with Crispy Chickpeas',time:'50 min',serves:'2',difficulty:'Intermediate',why:'THRIVE is about being at your best. Every ingredient in this bowl was chosen to support peak performance.',ingredients:['1 can chickpeas (roasted with olive oil, cumin, paprika)','2 cups arugula and spinach mix','1 cup cooked farro','1 avocado, sliced','Green goddess dressing: ½ avocado, Greek yogurt, fresh herbs, lemon juice, garlic'],steps:['Roast chickpeas at 425°F for 30 minutes until very crispy.','Blend dressing until smooth and bright green.','Massage arugula with lemon and olive oil.','Build bowl: farro base, greens on top, avocado arranged.','Add crispy chickpeas for crunch.','Drizzle generously with green goddess dressing.']}
+  ],
+  Transform:[
+    {level:'simple',icon:'🦋',name:'Butterfly No-Bake Bark',time:'20 min + chill',serves:'12 pieces',difficulty:'Easy',why:'TRANSFORM means changing completely into something new. Watch plain chocolate transform into something beautiful!',ingredients:['12 oz white chocolate chips','12 oz dark chocolate chips','Food coloring (yellow, blue, purple)','Butterfly sprinkles','Edible glitter (optional)','Sea salt'],steps:['Melt white and dark chocolate separately.','Tint half the white chocolate yellow. Divide remaining into blue and purple.','Pour dark chocolate onto parchment and spread thin.','Spoon colored chocolates over the dark. Swirl with a toothpick.','Add butterfly sprinkles and sea salt. Refrigerate 20 minutes until firm. Break into pieces.']},
+    {level:'advanced',icon:'🍞',name:'Bread Pudding with Bourbon Caramel',time:'65 min',serves:'8',difficulty:'Intermediate',why:'TRANSFORM is bread pudding\'s entire reason for existing. Stale bread becomes something extraordinary.',ingredients:['6 cups stale brioche or challah, cubed','3 eggs','1½ cups heavy cream','1 cup milk','¾ cup sugar','2 tsp vanilla','Bourbon caramel: 1 cup sugar, 6 tbsp butter, ½ cup cream, 2 tbsp bourbon'],steps:['Preheat oven to 350°F. Spread bread cubes in a buttered 9×13" pan.','Whisk eggs, cream, milk, sugar, and vanilla into a smooth custard.','Pour custard over bread. Press down. Let soak 20 minutes.','Bake 40–45 minutes until golden on top.','Make caramel: melt sugar until amber. Whisk in butter, then cream. Add bourbon and salt.','Pour warm caramel over warm pudding.']}
+  ]
+};
+
+const WORDS = Object.keys(RECIPES);
+const SHAPE_ICONS = {
+  Absorb:'☁️',Adapt:'🐸',Anchor:'⚓',Balance:'⚖️',Bloom:'🌸',
+  Breathe:'🌀',Clear:'💧',Connect:'🔗',Cycle:'♻️',Emerge:'🦋',
+  Filter:'🌿',Flow:'〰️',Grow:'🌱',Heal:'❤️',Migrate:'🐦',
+  Persist:'🐢',Renew:'☀️',Restore:'🌳',Return:'🏠',Rise:'🎈',
+  Root:'🌰',Shine:'✨',Sustain:'🌍',Thrive:'🏆',Transform:'🦋'
+};
+const COLORS_WORD = {
+  Absorb:'#1565C0',Adapt:'#2D7A4F',Anchor:'#37474F',Balance:'#6A1B9A',Bloom:'#AD1457',
+  Breathe:'#00838F',Clear:'#0277BD',Connect:'#E65100',Cycle:'#2E7D32',Emerge:'#6A1B9A',
+  Filter:'#2D7A4F',Flow:'#0288D1',Grow:'#388E3C',Heal:'#C62828',Migrate:'#00695C',
+  Persist:'#4E342E',Renew:'#F57F17',Restore:'#33691E',Return:'#4527A0',Rise:'#E65100',
+  Root:'#4E342E',Shine:'#F57F17',Sustain:'#1B5E20',Thrive:'#1A237E',Transform:'#880E4F'
+};
+
+/* ══ SLOT STATE ════════════════════════════════════════════════ */
+const slots = [{word:null,level:null},{word:null,level:null},{word:null,level:null},{word:null,level:null}];
+
+/* ══ BUILD SLOT BUILDERS ═══════════════════════════════════════ */
+function buildSlotBuilders(){
+  const wrap = document.getElementById('slotBuilders');
+  wrap.innerHTML = '';
+  slots.forEach(function(slot,i){
+    const div = document.createElement('div');
+    div.className = 'slot-builder';
+    div.innerHTML = `
+      <div class="slot-label">
+        <div class="slot-num">${i+1}</div>
+        Card Slot ${i+1}
+      </div>
+      <div class="slot-empty" id="slotEmpty${i}" style="${slot.word?'display:none':''}">Choose a word below to fill this slot</div>
+      <select id="wordSel${i}" onchange="onWordChange(${i})">
+        <option value="">— Choose a OneWord —</option>
+        ${WORDS.map(w=>`<option value="${w}" ${slot.word===w?'selected':''}>${w}</option>`).join('')}
+      </select>
+      <select id="levelSel${i}" onchange="onLevelChange(${i})" style="${slot.word?'':'opacity:.4;pointer-events:none'}">
+        <option value="0" ${slot.level===0?'selected':''}>⭐ Simple Recipe</option>
+        <option value="1" ${slot.level===1?'selected':''}> 🔥 Advanced Recipe</option>
+      </select>
+      <div id="miniPreview${i}"></div>
+      ${slot.word?`<button class="clear-slot" onclick="clearSlot(${i})">✕ Clear this slot</button>`:''}
+    `;
+    wrap.appendChild(div);
+    if(slot.word) buildMiniPreview(i);
+  });
+}
+
+function onWordChange(i){
+  const w = document.getElementById(`wordSel${i}`).value;
+  slots[i].word = w||null;
+  if(!w){ slots[i].level=null; }
+  else if(slots[i].level===null){ slots[i].level=0; }
+  buildSlotBuilders();
+  renderCard(i);
+  updatePreviewLabel();
+}
+
+function onLevelChange(i){
+  slots[i].level = parseInt(document.getElementById(`levelSel${i}`).value);
+  buildMiniPreview(i);
+  renderCard(i);
+}
+
+function clearSlot(i){
+  slots[i].word=null; slots[i].level=null;
+  buildSlotBuilders();
+  renderCard(i);
+  updatePreviewLabel();
+}
+
+function clearAll(){
+  slots.forEach(function(s){ s.word=null; s.level=null; });
+  buildSlotBuilders();
+  [0,1,2,3].forEach(renderCard);
+  updatePreviewLabel();
+}
+
+function updatePreviewLabel(){
+  const hasAny = slots.some(function(s){ return s.word; });
+  document.getElementById('previewLabel').style.display = hasAny?'block':'none';
+}
+
+/* ══ MINI PREVIEW IN BUILDER ═══════════════════════════════════ */
+function buildMiniPreview(i){
+  const s = slots[i];
+  if(!s.word){ document.getElementById(`miniPreview${i}`).innerHTML=''; return; }
+  const r = RECIPES[s.word][s.level||0];
+  const color = COLORS_WORD[s.word]||'#1A2744';
+  const lvl = r.level==='simple'?'⭐ Simple':'🔥 Advanced';
+  document.getElementById(`miniPreview${i}`).innerHTML=`
+    <div class="slot-preview-mini">
+      <div class="spm-header" style="background:${color}">
+        ${SHAPE_ICONS[s.word]||'🍪'} ${s.word.toUpperCase()} — ${r.name}
+      </div>
+      <div class="spm-body">
+        <div class="spm-name">${r.name}</div>
+        <div class="spm-tags">
+          <span class="spm-tag">${lvl}</span>
+          <span class="spm-tag">⏱ ${r.time}</span>
+          <span class="spm-tag">👥 ${r.serves}</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ══ RENDER FULL CARD ══════════════════════════════════════════ */
+function renderCard(i){
+  const s = slots[i];
+  const el = document.getElementById(`card${i}`);
+  if(!s.word){
+    el.className='recipe-card rc-empty';
+    el.innerHTML=`<span style="font-size:28px;">🃏</span>Slot ${i+1} — empty`;
+    return;
+  }
+  const r = RECIPES[s.word][s.level||0];
+  const color = COLORS_WORD[s.word]||'#1A2744';
+  const icon = SHAPE_ICONS[s.word]||'🍪';
+  const lvlColor = r.level==='simple'?'#E65100':'#1565C0';
+  const lvlLabel = r.level==='simple'?'⭐ Simple Recipe — Great for Families!':'🔥 Advanced Recipe — Made by a Culinary Student';
+  const ings = r.ingredients.slice(0,6).map(function(x){ return `<li>${x}</li>`; }).join('');
+  const moreIngs = r.ingredients.length>6?`<li style="color:#AAA;font-style:italic;">+ ${r.ingredients.length-6} more...</li>`:'';
+  const stps = r.steps.slice(0,4).map(function(x,j){ return `<li><div class="rc-step-num">${j+1}</div><span>${x}</span></li>`; }).join('');
+  const moreStps = r.steps.length>4?`<li style="font-size:.65rem;color:#AAA;font-style:italic;padding-left:22px;">+ ${r.steps.length-4} more steps...</li>`:'';
+
+  el.className='recipe-card';
+  el.innerHTML=`
+    <div class="rc-header" style="background:${color}">
+      <div class="rc-word">${s.word.toUpperCase()}</div>
+      <span class="rc-icon">${icon}</span>
+      <div class="rc-recipe-name">${r.name}</div>
+      <div class="rc-why">${r.why}</div>
+    </div>
+    <div class="rc-body">
+      <span class="rc-level-badge" style="background:${lvlColor}22;color:${lvlColor};">${lvlLabel}</span>
+      <div class="rc-tags">
+        <span class="rc-tag">⏱ ${r.time}</span>
+        <span class="rc-tag">👥 ${r.serves}</span>
+        <span class="rc-tag">${r.difficulty}</span>
+      </div>
+      <div class="rc-section">Ingredients</div>
+      <ul class="rc-ing-list">${ings}${moreIngs}</ul>
+      <div class="rc-section">Instructions</div>
+      <ol class="rc-steps-list">${stps}${moreStps}</ol>
+    </div>
+    <div class="rc-footer">🍪 Smile Bags · Word &amp; Wonder · Culinary Arts with Ms. Sayers · Spring 2026</div>`;
+}
+
+/* ══ INIT ══════════════════════════════════════════════════════ */
+buildSlotBuilders();
+</script>
+</body>
+</html>
