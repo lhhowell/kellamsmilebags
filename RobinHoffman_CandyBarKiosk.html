@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Candy Bar Wrap Designer · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#FFF8EE;min-height:100vh;padding-bottom:60px;}
+
+.hdr{background:linear-gradient(135deg,#6B1E2E,#4A1020);padding:20px 28px;text-align:center;}
+.hdr h1{font-family:'Fredoka One',cursive;font-size:24px;color:#fff;}
+.hdr p{font-size:13px;color:rgba(255,255,255,.75);margin-top:5px;}
+
+.prog{display:flex;align-items:flex-start;justify-content:center;padding:14px 16px;background:#fff;border-bottom:2px solid #F5D5A0;gap:4px;flex-wrap:wrap;}
+.prog-item{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.prog-dot{width:32px;height:32px;border-radius:50%;background:#F5D5A0;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:13px;color:#fff;transition:all .3s;}
+.prog-dot.active{background:#6B1E2E;transform:scale(1.2);box-shadow:0 4px 12px rgba(107,30,46,.35);}
+.prog-dot.done{background:#8B2A3E;}
+.prog-lbl{font-size:9px;color:#aaa;font-family:'Fredoka One',cursive;text-align:center;max-width:52px;line-height:1.2;}
+.prog-lbl.active{color:#6B1E2E;}
+.prog-arr{color:#F5D5A0;font-size:14px;margin-top:8px;}
+
+.screen{display:none;max-width:780px;margin:0 auto;padding:24px 16px;}
+.screen.active{display:block;}
+.scr-hd{text-align:center;margin-bottom:22px;}
+.scr-hd h2{font-family:'Fredoka One',cursive;font-size:26px;color:#6B1E2E;}
+.scr-hd p{font-size:14px;color:#666;margin-top:7px;line-height:1.6;}
+
+.white-card{background:#fff;border-radius:18px;padding:24px;box-shadow:0 4px 18px rgba(0,0,0,.07);margin-bottom:16px;}
+.field-label{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#6B1E2E;display:block;margin-bottom:8px;}
+.field-inp{width:100%;padding:13px 16px;border:3px solid #F5D5A0;border-radius:12px;font-family:'Nunito',sans-serif;font-size:16px;outline:none;transition:border-color .2s;margin-bottom:14px;}
+.field-inp:focus{border-color:#6B1E2E;}
+.field-textarea{width:100%;padding:13px 16px;border:3px solid #F5D5A0;border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;outline:none;transition:border-color .2s;resize:vertical;min-height:90px;margin-bottom:6px;}
+.field-textarea:focus{border-color:#6B1E2E;}
+.char-count{font-size:12px;color:#aaa;text-align:right;margin-bottom:12px;}
+
+.word-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.word-btn{background:#fff;border:3px solid #F5D5A0;border-radius:12px;padding:10px 6px;cursor:pointer;text-align:center;transition:all .2s;font-family:'Fredoka One',cursive;font-size:13px;color:#6B1E2E;}
+.word-btn:hover{border-color:#6B1E2E;transform:translateY(-1px);}
+.word-btn.sel{border-color:#6B1E2E;background:#FFF0E0;}
+
+/* THEME PICKER */
+.theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.theme-btn{border-radius:14px;padding:16px 12px;cursor:pointer;text-align:center;border:3px solid transparent;transition:all .2s;}
+.theme-btn:hover{transform:translateY(-2px);}
+.theme-btn.sel{border-color:#6B1E2E;box-shadow:0 4px 16px rgba(107,30,46,.2);}
+.theme-icon{font-size:2rem;display:block;margin-bottom:6px;}
+.theme-name{font-family:'Fredoka One',cursive;font-size:13px;}
+
+/* WRAP PREVIEW */
+.wrap-preview-container{display:flex;justify-content:center;padding:16px 0;overflow-x:auto;}
+.wrap-svg-wrap{min-width:560px;}
+
+/* NAV */
+.nav-row{display:flex;gap:12px;justify-content:flex-end;margin-top:10px;}
+.btn-next{padding:14px 28px;background:linear-gradient(135deg,#6B1E2E,#4A1020);color:#fff;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;box-shadow:0 5px 16px rgba(107,30,46,.3);}
+.btn-back{padding:14px 20px;border:3px solid #F5D5A0;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;color:#888;background:#fff;}
+
+/* PRINT PREVIEW */
+.print-note{background:#FFF3D6;border:1.5px solid #C8860A;border-radius:10px;padding:14px 18px;font-size:13px;color:#7A4F00;line-height:1.65;margin-bottom:14px;}
+.print-note strong{color:#5A3000;}
+.print-btn-main{width:100%;padding:16px;background:linear-gradient(135deg,#6B1E2E,#4A1020);color:#fff;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:18px;cursor:pointer;margin-bottom:8px;}
+.hint{background:#FFF0E0;border-left:4px solid #C8860A;border-radius:0 10px 10px 0;padding:10px 14px;font-size:13px;color:#7A4F00;line-height:1.6;margin-bottom:14px;}
+
+/* SUBMITTED */
+.sub-box{background:#F0F8E8;border-radius:16px;padding:28px;text-align:center;display:none;}
+.token-box{background:#FFF3D6;border:2px solid #C8860A;border-radius:12px;padding:14px;display:inline-block;margin-top:14px;}
+.token-code{font-family:'Fredoka One',cursive;font-size:28px;letter-spacing:4px;color:#7A4F00;}
+
+@media(max-width:600px){.word-grid{grid-template-columns:repeat(2,1fr);} .theme-grid{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>🍫 Candy Bar Wrap Designer</h1>
+  <p>Smile Bags · A Word &amp; Wonder Experience · Robin Hoffman · Spring 2026</p>
+</div>
+
+<div class="prog">
+  <div class="prog-item"><div class="prog-dot active" id="pd0">1</div><div class="prog-lbl active" id="pl0">My Info</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd1">2</div><div class="prog-lbl" id="pl1">My Word</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd2">3</div><div class="prog-lbl" id="pl2">My Message</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd3">4</div><div class="prog-lbl" id="pl3">Theme</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="pd4">5</div><div class="prog-lbl" id="pl4">Print!</div></div>
+</div>
+
+<!-- S0: INFO -->
+<div class="screen active" id="scr0">
+  <div class="scr-hd"><h2>Let's get started! 🍫</h2><p>Your name will appear on the candy bar wrap so the recipient knows who made it for them.</p></div>
+  <div class="white-card">
+    <label class="field-label">Your first name</label>
+    <input class="field-inp" id="iName" type="text" placeholder="Type your name..."/>
+    <label class="field-label">Your class</label>
+    <select class="field-inp" id="iClass">
+      <option value="">-- Select your class --</option>
+      <option>Virginia Teachers for Tomorrow</option>
+      <option>English 12</option>
+    </select>
+  </div>
+  <div class="nav-row"><button class="btn-next" onclick="toWord()">Next &rarr;</button></div>
+</div>
+
+<!-- S1: WORD -->
+<div class="screen" id="scr1">
+  <div class="scr-hd"><h2>Choose Your OneWord 🌟</h2><p>Your OneWord will be featured on the front of the candy bar wrap.</p></div>
+  <div class="white-card">
+    <div class="word-grid" id="wordGrid"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="nav(0)">← Back</button>
+    <button class="btn-next" onclick="toMessage()">Next &rarr;</button>
+  </div>
+</div>
+
+<!-- S2: MESSAGE -->
+<div class="screen" id="scr2">
+  <div class="scr-hd"><h2 id="s2h">Write Your Message ✍️</h2><p>Write a short inspirational message for the person who receives this bar. What do you want them to know?</p></div>
+  <div class="white-card">
+    <div class="hint">💡 Keep it warm and personal — 1 or 2 sentences is perfect. Think about what your OneWord means and what you'd want someone to feel when they read it.</div>
+    <label class="field-label">Your Message <span style="color:#999;">(max 100 characters)</span></label>
+    <textarea class="field-textarea" id="iMsg" maxlength="100" oninput="document.getElementById('msgCount').textContent=this.value.length;" placeholder='e.g. "You have everything you need to BLOOM — one day at a time."'></textarea>
+    <div class="char-count"><span id="msgCount">0</span>/100 characters</div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="nav(1)">← Back</button>
+    <button class="btn-next" onclick="toTheme()">Next — Choose a Theme &rarr;</button>
+  </div>
+</div>
+
+<!-- S3: THEME -->
+<div class="screen" id="scr3">
+  <div class="scr-hd"><h2>Choose a Theme 🎨</h2><p>Pick the style for your candy bar wrap.</p></div>
+  <div class="white-card">
+    <div class="theme-grid" id="themeGrid"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="nav(2)">← Back</button>
+    <button class="btn-next" onclick="toPreview()">Preview My Wrap &rarr;</button>
+  </div>
+</div>
+
+<!-- S4: PRINT PREVIEW -->
+<div class="screen" id="scr4">
+  <div class="scr-hd"><h2 id="s4h">Your Candy Bar Wrap! 🍫</h2><p>Print this page, cut out the wrap, and fold it around a standard chocolate bar.</p></div>
+  <div class="print-note">
+    <strong>📋 Printing Instructions:</strong> Click "Print My Wrap" below. When the print dialog opens, set margins to <strong>None</strong> and scale to <strong>100%</strong>. Cut along the outer edge. Wrap around a standard 1.55 oz Hershey bar and secure with a small piece of tape.
+  </div>
+  <div class="white-card">
+    <div class="wrap-preview-container">
+      <div class="wrap-svg-wrap"><svg id="wrapSVG" viewBox="0 0 560 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;"></svg></div>
+    </div>
+  </div>
+  <div id="notSub">
+    <button class="print-btn-main" onclick="printWrap()">🖨️ Print My Wrap</button>
+    <button class="print-btn-main" style="background:linear-gradient(135deg,#2D7A4F,#1B5E20);margin-top:8px;" onclick="doSubmit()">✅ Submit &amp; Print</button>
+    <p style="font-size:12px;color:#888;font-style:italic;text-align:center;margin-top:8px;">Submit logs your design. Print opens the print dialog.</p>
+  </div>
+  <div class="sub-box" id="subBox">
+    <div style="font-size:52px;margin-bottom:12px;">🎉</div>
+    <div style="font-family:'Fredoka One',cursive;font-size:22px;color:#2D7A4F;margin-bottom:6px;">Wrap Submitted!</div>
+    <p style="font-size:14px;color:#555;line-height:1.7;">Your candy bar wrap design is saved! Don't forget to print it.</p>
+    <div class="token-box"><div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#C8860A;margin-bottom:4px;">Your code</div><div class="token-code" id="tokCode">KSB-0000</div></div>
+    <button class="print-btn-main" style="margin-top:16px;width:auto;padding:12px 28px;" onclick="printWrap()">🖨️ Print My Wrap</button>
+  </div>
+  <div class="nav-row" style="justify-content:flex-start;margin-top:12px;">
+    <button class="btn-back" onclick="nav(3)">← Change Something</button>
+  </div>
+</div>
+
+<script>
+var SCRIPT_URL="YOUR_APPS_SCRIPT_URL_HERE";
+var WORDS=["ABSORB","ADAPT","ANCHOR","BALANCE","BLOOM","BREATHE","CLEAR","CONNECT","CYCLE","EMERGE","FILTER","FLOW","GROW","HEAL","MIGRATE","PERSIST","RENEW","RESTORE","RETURN","RISE","ROOT","SHINE","SUSTAIN","THRIVE","TRANSFORM"];
+var THEMES=[
+  {name:"Burgundy & Gold",bg:"#6B1E2E",accent:"#C9A84C",text:"#FFF8EE",dark:false},
+  {name:"Navy & Gold",    bg:"#1A2744",accent:"#C9A84C",text:"#FFF8EE",dark:false},
+  {name:"Forest & Cream", bg:"#1B4332",accent:"#E8C97A",text:"#FDFAF3",dark:false},
+  {name:"Gold & White",   bg:"#C8860A",accent:"#fff",   text:"#fff",   dark:false},
+  {name:"Blue & White",   bg:"#1565C0",accent:"#fff",   text:"#fff",   dark:false},
+  {name:"Black & Gold",   bg:"#1A1A1A",accent:"#C9A84C",text:"#FFF8EE",dark:false},
+];
+var sName="",sClass="",selWord=null,sMsg="",selTheme=THEMES[0];
+
+document.addEventListener("DOMContentLoaded",function(){buildWordGrid();buildThemeGrid();});
+
+function buildWordGrid(){
+  var g=document.getElementById("wordGrid");
+  WORDS.forEach(function(w){
+    var b=document.createElement("button");b.className="word-btn";b.textContent=w;
+    b.onclick=function(){document.querySelectorAll(".word-btn").forEach(function(x){x.classList.remove("sel");});b.classList.add("sel");selWord=w;};
+    g.appendChild(b);
+  });
+}
+
+function buildThemeGrid(){
+  var g=document.getElementById("themeGrid");
+  var icons=["🍷","🌊","🌿","☀️","💙","🖤"];
+  THEMES.forEach(function(t,i){
+    var c=document.createElement("div");c.className="theme-btn"+(i===0?" sel":"");
+    c.style.background=t.bg;
+    c.innerHTML='<span class="theme-icon">'+icons[i]+'</span><span class="theme-name" style="color:'+t.accent+'">'+t.name+'</span>';
+    c.onclick=(function(th,el){return function(){document.querySelectorAll(".theme-btn").forEach(function(x){x.classList.remove("sel");});el.classList.add("sel");selTheme=th;drawWrap();};})(t,c);
+    g.appendChild(c);
+  });
+}
+
+function toWord(){sName=document.getElementById("iName").value.trim();sClass=document.getElementById("iClass").value;if(!sName){alert("Please enter your name!");return;}nav(1);}
+function toMessage(){if(!selWord){alert("Please choose your OneWord!");return;}document.getElementById("s2h").textContent="Write Your Message for "+selWord+", "+sName+"!";nav(2);}
+function toTheme(){sMsg=document.getElementById("iMsg").value.trim();if(!sMsg){alert("Please write a message!");return;}nav(3);}
+function toPreview(){
+  sMsg=document.getElementById("iMsg").value.trim();
+  document.getElementById("s4h").textContent="Your Candy Bar Wrap, "+sName+"!";
+  drawWrap();nav(4);
+}
+
+function drawWrap(){
+  var svg=document.getElementById("wrapSVG");
+  if(!svg||!selTheme) return;
+  var bg=selTheme.bg, ac=selTheme.accent, tx=selTheme.text;
+  var w=560, h=170;
+  var word=selWord||"SHINE", msg=sMsg||"You have everything you need.", name=sName||"Student";
+
+  function wrapTxt(text,maxC){
+    var ws=text.split(" "),ls=[],l="";
+    ws.forEach(function(wd){if((l+" "+wd).trim().length>maxC){ls.push(l.trim());l=wd;}else{l=(l+" "+wd).trim();}});
+    if(l)ls.push(l.trim());return ls;
+  }
+  var msgLines=wrapTxt(msg,38);
+
+  svg.innerHTML=
+    // Background
+    '<rect x="0" y="0" width="'+w+'" height="'+h+'" fill="'+bg+'"/>'+
+    // Border
+    '<rect x="3" y="3" width="'+(w-6)+'" height="'+(h-6)+'" rx="4" fill="none" stroke="'+ac+'" stroke-width="2.5"/>'+
+    '<rect x="8" y="8" width="'+(w-16)+'" height="'+(h-16)+'" rx="3" fill="none" stroke="'+ac+'" stroke-width="1" opacity="0.4"/>'+
+    // Left panel — decorative
+    '<rect x="0" y="0" width="110" height="'+h+'" fill="rgba(0,0,0,.18)"/>'+
+    '<line x1="110" y1="10" x2="110" y2="'+(h-10)+'" stroke="'+ac+'" stroke-width="1.5" opacity="0.6"/>'+
+    // OneWord - left panel
+    '<text x="55" y="72" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="22" fill="'+ac+'" letter-spacing="2">'+escXml(word)+'</text>'+
+    '<text x="55" y="96" text-anchor="middle" dominant-baseline="middle" font-family="Nunito, sans-serif" font-size="9" fill="'+ac+'" opacity="0.7" letter-spacing="1">ONE WORD</text>'+
+    // Decorative dots left
+    '<circle cx="55" cy="30" r="3" fill="'+ac+'" opacity="0.5"/>'+
+    '<circle cx="55" cy="140" r="3" fill="'+ac+'" opacity="0.5"/>'+
+    // Right panel — decorative
+    '<rect x="450" y="0" width="110" height="'+h+'" fill="rgba(0,0,0,.18)"/>'+
+    '<line x1="450" y1="10" x2="450" y2="'+(h-10)+'" stroke="'+ac+'" stroke-width="1.5" opacity="0.6"/>'+
+    // Name/class right panel
+    '<text x="505" y="65" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="12" fill="'+ac+'" letter-spacing="1">'+escXml(name)+'</text>'+
+    '<text x="505" y="85" text-anchor="middle" dominant-baseline="middle" font-family="Nunito, sans-serif" font-size="8" fill="'+ac+'" opacity="0.6">CLASS OF 2026</text>'+
+    '<text x="505" y="105" text-anchor="middle" dominant-baseline="middle" font-family="Nunito, sans-serif" font-size="7" fill="'+ac+'" opacity="0.5">KELLAM</text>'+
+    // Center message area
+    '<text x="280" y="34" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="11" fill="'+ac+'" opacity="0.55" letter-spacing="3">SMILE BAGS · WORD &amp; WONDER</text>'+
+    // Message lines
+    msgLines.map(function(l,i){
+      var yBase=75-(msgLines.length-1)*11;
+      return '<text x="280" y="'+(yBase+i*22)+'" text-anchor="middle" dominant-baseline="middle" font-family="Playfair Display, serif" font-size="15" fill="'+tx+'" font-style="italic">'+escXml(l)+'</text>';
+    }).join('')+
+    // Bottom
+    '<text x="280" y="148" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="9" fill="'+ac+'" opacity="0.5" letter-spacing="2">MADE WITH CARE · SPRING 2026</text>';
+}
+
+function escXml(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+
+function printWrap(){
+  var svg=document.getElementById("wrapSVG");
+  var w=window.open('','_blank');
+  w.document.write('<!DOCTYPE html><html><head><title>Candy Bar Wrap · '+selWord+'</title><style>*{margin:0;padding:0;box-sizing:border-box;}body{background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:20px;}svg{width:7in;max-width:7in;}.instructions{font-family:Arial,sans-serif;font-size:11px;color:#666;margin-top:20px;text-align:center;max-width:7in;line-height:1.6;}@media print{body{min-height:unset;}.instructions{display:none;}}</style></head><body>'+svg.outerHTML+'<div class="instructions">Cut along the outer edge. Wrap around a standard 1.55oz Hershey bar. Secure with tape.<br>Print at 100% scale, no margins.</div><script>window.onload=function(){window.print();window.onafterprint=function(){window.close();};};<\/script></body></html>');
+  w.document.close();
+}
+
+function doSubmit(){
+  var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
+  document.getElementById("tokCode").textContent=tok;
+  var payload={studentName:sName,class:sClass,teacher:"Robin Hoffman",word:selWord,message:sMsg,theme:selTheme?selTheme.name:"",token:tok};
+  document.querySelector(".print-btn-main").textContent="Submitting...";
+  document.querySelector(".print-btn-main").disabled=true;
+  if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){showDone();return;}
+  fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)}).then(function(){showDone();}).catch(function(){showDone();});
+}
+function showDone(){document.getElementById("notSub").style.display="none";document.getElementById("subBox").style.display="block";}
+
+function nav(n){
+  document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});
+  document.getElementById("scr"+n).classList.add("active");
+  for(var i=0;i<=4;i++){
+    var pd=document.getElementById("pd"+i),pl=document.getElementById("pl"+i);
+    if(!pd)continue;
+    pd.classList.remove("active","done");pl.classList.remove("active");
+    if(i<n)pd.classList.add("done");
+    else if(i===n){pd.classList.add("active");pl.classList.add("active");}
+  }
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

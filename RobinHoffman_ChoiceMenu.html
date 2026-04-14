@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Teacher Choice Menu · Robin Hoffman · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--burgundy:#6B1E2E;--burgundy2:#8B2A3E;--gold:#C9A84C;--gold2:#C8860A;--cream:#FDFAF5;--border:#E8D4C0;}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:#1a1a2e;padding-bottom:60px;}
+
+@media print{
+  body{background:#fff;}
+  .hero{background:var(--burgundy)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .no-print{display:none!important;}
+  .cat-header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  @page{size:letter;margin:.5in;}
+  .item-card{break-inside:avoid;}
+}
+
+.hero{background:linear-gradient(135deg,var(--burgundy),#4A1020);padding:36px 48px;position:relative;overflow:hidden;}
+.hero::after{content:'✍️';position:absolute;right:48px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.1;}
+.hero-tag{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:#fff;margin-bottom:8px;}
+.hero h1 span{color:var(--gold);}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.65);line-height:1.7;max-width:600px;margin-bottom:18px;}
+.hero-note{font-size:13px;color:rgba(255,255,255,.5);font-style:italic;}
+
+.print-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);border:none;color:var(--burgundy);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;border-radius:6px;cursor:pointer;margin:20px 48px 0;}
+
+.content{max-width:860px;margin:0 auto;padding:0 48px;}
+
+/* SUMMARY STRIP */
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:28px 0;}
+.sum-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;}
+.sum-num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--burgundy);}
+.sum-lbl{font-size:11px;color:#888;font-family:'Fredoka One',cursive;letter-spacing:1px;text-transform:uppercase;margin-top:3px;}
+
+/* INSTRUCTIONS */
+.instructions{background:#FDF5E8;border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:28px;}
+.instructions p{font-size:13px;color:#555;line-height:1.7;}
+.instructions strong{color:var(--burgundy);}
+
+/* CATEGORY */
+.category{margin-bottom:32px;}
+.cat-header{display:flex;align-items:center;gap:12px;padding:12px 18px;border-radius:10px;margin-bottom:14px;}
+.cat-icon{font-size:1.3rem;}
+.cat-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff;}
+.cat-sub{font-size:11px;color:rgba(255,255,255,.7);margin-top:1px;font-family:'Fredoka One',cursive;letter-spacing:.5px;}
+
+.items-grid{display:grid;gap:10px;}
+.item-card{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:14px 18px;display:flex;align-items:flex-start;gap:14px;transition:border-color .2s;}
+.item-card:hover{border-color:var(--burgundy2);}
+.item-check{width:22px;height:22px;border:2px solid var(--border);border-radius:5px;flex-shrink:0;margin-top:2px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;font-size:13px;background:#fdfaf5;}
+.item-check.checked{background:var(--burgundy);border-color:var(--burgundy);color:#fff;}
+.item-body{flex:1;}
+.item-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;color:#bbb;text-transform:uppercase;margin-bottom:2px;}
+.item-name{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:3px;}
+.item-desc{font-size:12px;color:#666;line-height:1.55;}
+.item-tags{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;}
+.tag{font-size:10px;font-family:'Fredoka One',cursive;letter-spacing:.5px;padding:2px 8px;border-radius:10px;}
+.tag-e12{background:#FDE8EE;color:var(--burgundy);}
+.tag-tft{background:#FFF3D6;color:var(--gold2);}
+.tag-both{background:#E8F5E9;color:#2D7A4F;}
+.tag-kiosk{background:#E3F2FD;color:#1565C0;}
+.tag-print{background:#F3E5F5;color:#6A1B9A;}
+
+/* NOTES SECTION */
+.notes-section{background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px;margin-top:32px;}
+.notes-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#999;margin-bottom:10px;}
+.notes-lines{display:flex;flex-direction:column;gap:10px;}
+.notes-line{height:1px;background:#e8e4dc;}
+
+.footer{text-align:center;padding:28px;margin-top:36px;border-top:1px solid var(--border);}
+.footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spacing:1px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">Smile Bags · A Word &amp; Wonder Experience · Spring 2026</div>
+  <h1>Teacher <span>Choice Menu</span></h1>
+  <p class="hero-sub">19 student contribution options for Virginia Teachers for Tomorrow and English 12. Check the items you'd like each class to complete — then share your selections with Ms. Howell.</p>
+  <p class="hero-note">Items marked 🍫 and 🏷️ have live student kiosks ready. All others can be completed on paper or digitally.</p>
+</div>
+
+<button class="print-btn no-print" onclick="window.print()">🖨️ Print This Menu</button>
+
+<div class="content">
+
+  <div class="summary">
+    <div class="sum-card"><div class="sum-num">19</div><div class="sum-lbl">Total Options</div></div>
+    <div class="sum-card"><div class="sum-num">2</div><div class="sum-lbl">Kiosks Ready</div></div>
+    <div class="sum-card"><div class="sum-num">10</div><div class="sum-lbl">Bags to Fill</div></div>
+    <div class="sum-card"><div class="sum-num">🎓</div><div class="sum-lbl">Kellam HS</div></div>
+  </div>
+
+  <div class="instructions">
+    <p><strong>How to use this menu:</strong> Check the items you want each class to complete. You can assign the same items to both classes, or different items to each. Once you've made your selections, share with Ms. Howell so the kiosks and print templates can be activated. Items marked <strong>🍫 Kiosk Ready</strong> are already built and live. Items marked <strong>🖨️ Printable</strong> will be formatted as print-ready templates.</p>
+  </div>
+
+  <!-- WRITING-BASED -->
+  <div class="category">
+    <div class="cat-header" style="background:linear-gradient(135deg,var(--burgundy),var(--burgundy2));">
+      <span class="cat-icon">✍️</span>
+      <div><div class="cat-title">Writing-Based Items</div><div class="cat-sub">English 12 strength · Authentic writing for a real audience</div></div>
+    </div>
+    <div class="items-grid">
+      <div class="item-card" onclick="toggleCheck(this)">
+        <div class="item-check">✓</div>
+        <div class="item-body">
+          <div class="item-num">Item 1</div>
+          <div class="item-name">💌 Graduating Senior Letter</div>
+          <div class="item-desc">A personal handwritten or typed letter from a graduating senior: "I was where you are. I made it through. Here's what I want you to know." Warm, honest, and deeply personal.</div>
+          <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-print">🖨️ Printable</span></div>
+        </div>
+      </div>
+      <div class="item-card" onclick="toggleCheck(this)">
+        <div class="item-check">✓</div>
+        <div class="item-body">
+          <div class="item-num">Item 2</div>
+          <div class="item-name">📜 Original Poem</div>
+          <div class="item-desc">A 4–8 line original poem tied to the student's OneWord. Printed on cardstock. Can be free verse, structured, or haiku-style.</div>
+          <div class="item-tags"><span class="tag tag-e12">English 12</span><span class="tag tag-print">🖨️ Printable</span></div>
+        </div>
+      </div>
+      <div class="item-card" onclick="toggleCheck(this)">
+        <div class="item-check">✓</div>
+        <div class="item-body">
+          <div class="item-num">Item 3</div>
+          <div class="item-name">📚 Book Recommendation Card</div>
+          <div class="item-desc">One book that helped the student + a 2–3 sentence personal note explaining why. A senior's reading list, passed forward.</div>
+          <div class="item-tags"><span class="tag tag-e12">English 12</span><span class="tag tag-print">🖨️ Printable</span></div>
+        </div>
+      </div>
+      <div class="item-card" onclick="toggleCheck(this)">
+        <div class="item-check">✓</div>
+        <div class="item-body">
+          <div class="item-num">Item 4</div>
+          <div class="item-name">🖊️ Words of Wisdom Card</div>
+          <div class="item-desc">3–5 lines of honest advice from a graduating senior. What do you wish someone had told you? Printed on a 4×6 card.</div>
+          <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-print">🖨️ Printable</span></div>
+        </div>
+      </div>
+      <div class="item-card" onclick="toggleCheck(this)">
+        <div class="item-check">✓</div>
+        <div class="item-body">
+          <div class="item-num">Item 5</div>
+          <div class="item-name">✉️ Letter to a Younger Self</div>
+          <div class="item-desc">Reflective writing prompt: write to yourself at a younger age. What do you wish you'd known? Personal, powerful, and uniquely senior-appropriate.</div>
+          <div class="item-tags"><span class="tag tag-e12">English 12</span><span class="tag tag-print">🖨️ Printable</span></div>
+        </div>
+      </div>
+      <div class="item-card" onclick="toggleCheck(this)">
+        <div class="item-check">✓</div>
+        <div class="item-body">
+          <div class="item-num">Item 6</div>
+          <div class="item-name">🔤 Advice Acrostic</div>
+          <div class="item-desc">Each letter of the student's OneWord begins a line of advice or encouragement. Creative, structured, and visually striking on a card.</div>
+          <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-print">🖨️ Printable</span></div>
+        </div>
+      </div>
+      <div class="item-card" onclick="toggleCheck(this)">
+        <div class="item-check">✓</div>
+        <div class="item-body">
+          <div class="item-num">Item 7</div>
+          <div class="item-name">📝 Journaling Prompt Card</div>
+          <div class="item-desc">A thoughtful writing prompt connected to the OneWord — designed to help the recipient reflect, process, and express themselves.</div>
+          <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-print">🖨️ Printable</span></div>
+        </div>
+      </div>
+      <div class="item-card" onclick="toggleCheck(this)">
+        <div class="item-check">✓</div>
+        <div class="item-body">
+          <div class="item-num">Item 8</div>
+          <div class="item-name">🌿 Vocabulary Story Card</div>
+          <div class="item-desc">A 50-word micro-story built entirely around the OneWord. Tiny but complete — every word chosen carefully.</div>
+          <div class="item-tags"><span class="tag tag-e12">English 12</span><span class="tag tag-print">🖨️ Printable</span></div>
+        </div>
+      </div>
+      <div class="item-card" onclick="toggleCheck(this)">
+        <div class="item-check">✓</div>
+        <div class="item-body">
+          <div class="item-num">Item 9</div>
+          <div class="item-name">📖 Word Origin Card</div>
+          <div class="item-desc">Etymology, definition, and the student's personal connection to their OneWord. A literary deep-dive printed on a card.</div>
+          <div class="item-tags"><span class="tag tag-e12">English 12</span><span class="tag tag-print">🖨️ Printable</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEACHING-BASED -->
+  <div class="category">
+    <div class="cat-header" style="background:linear-gradient(135deg,#7A4F00,var(--gold2));">
+      <span class="cat-icon">🍎</span>
+      <div><div class="cat-title">Teaching-Based Items</div><div class="cat-sub">Teachers for Tomorrow strength · Future educators designing for students</div></div>
+    </div>
+    <div class="items-grid">
+      <div class="item-card" onclick="toggleCheck(this)">
+        <div class="item-check">✓</div>
+        <div class="item-body">
+          <div class="item-num">Item 10</div>
+          <div class="item-name">📖 Mini Read-Aloud Card</div>
+          <div class="item-desc">A short passage (3–5 sentences) + one guided discussion question. Designed for a teacher or parent to read aloud with a younger student.</div>
+          <div class="item-tags"><span class="tag tag-tft">Teachers for Tomorrow</span><span class="tag tag-print">🖨️ Printable</span></div>
+        </div>
+      </div>
+      <div class="item-card" onclick="toggleCheck(this)">
+        <div class="item-check">✓</div>
+        <div class="item-body">
+          <div class="item-num">Item 11</div>
+          <div class="item-name">🎯 Vocabulary Game Card</div>
+          <div class="item-desc">A simple word game using the OneWord — matching, fill-in-the-blank, or definition challenge. Designed by a future teacher for a younger student.</div>
+          <div class="item-tags"><span class="tag tag-tft">Teachers for Tomorrow</span><span class="tag tag-print">🖨️ Printable</span></div>
+        </div>
+      </div>
+      <div class="item-card" onclick="toggleCheck(this)">
+        <div class="item-check">✓</div>
+        <div class="item-body">
+          <div class="item-num">Item 12</div>
+          <div class="item-name">✏️ Story Starter Card</div>
+          <div class="item-desc">An illustrated writing prompt for a younger student — an opening sentence connected to the OneWord that sparks imagination.</div>
+          <div class="item-tags"><span class="tag tag-tft">Teachers for Tomorrow</span><span class="tag tag-print">🖨️ Printable</span></div>
+        </div>
+      </div>
+      <div class="item-card" onclick="toggleCheck(this)">
+        <div class="item-check">✓</div>
+        <div class="item-body">
+          <div class="item-num">Item 13</div>
+          <div class="item-name">🍎 "My Favorite Teacher Taught Me..." Card</div>
+          <div class="item-desc">A reflection card where the student writes what a favorite teacher taught them — connected to their OneWord. A future teacher passing forward a lesson.</div>
+          <div class="item-tags"><span class="tag tag-tft">Teachers for Tomorrow</span><span class="tag tag-print">🖨️ Printable</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CREATIVE/MIXED -->
+  <div class="category">
+    <div class="cat-header" style="background:linear-gradient(135deg,#1B4332,#2D6A4F);">
+      <span class="cat-icon">🎨</span>
+      <div><div class="cat-title">Creative &amp; Mixed Items</div><div class="cat-sub">Both classes · Visual, tactile, and expressive contributions</div></div>
+    </div>
+    <div class="items-grid">
+      <div class="item-card" onclick="toggleCheck(this)">
+        <div class="item-check" style="background:#fff8ee;border-color:#C8860A;">✓</div>
+        <div class="item-body">
+          <div class="item-num">Item 14 · Kiosk Ready</div>
+          <div class="item-name">🍫 Candy Bar Wrap</div>
+          <div class="item-desc">Student designs a custom candy bar wrapper with their OneWord and an original inspirational message. Printed and wrapped around a standard chocolate bar.</div>
+          <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-kiosk">🍫 Kiosk Ready</span><span class="tag tag-print">🖨️ Printable</span></div>
+        </div>
+      </div>
+      <div class="item-card" onclick="toggleCheck(this)">
+        <div class="item-check" style="background:#fff8ee;border-color:#C8860A;">✓</div>
+        <div class="item-body">
+          <div class="item-num">Item 15 · Kiosk Ready</div>
+          <div class="item-name">🏷️ Custom Sticker Sheet</div>
+          <div class="item-desc">Student generates a personalized sticker sheet featuring their OneWord, name, and class. Printed on sticker paper — a take-home collectible.</div>
+          <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-kiosk">🏷️ Kiosk Ready</span><span class="tag tag-print">🖨️ Printable</span></div>
+        </div>
+      </div>
+      <div class="item-card" onclick="toggleCheck(this)">
+        <div class="item-check">✓</div>
+        <div class="item-body">
+          <div class="item-num">Item 16</div>
+          <div class="item-name">🖼️ Vision Board Mini Card</div>
+          <div class="item-desc">A collage-style printable where students arrange images, words, and symbols connected to their OneWord. A visual representation of what the word means to them.</div>
+          <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-print">🖨️ Printable</span></div>
+        </div>
+      </div>
+      <div class="item-card" onclick="toggleCheck(this)">
+        <div class="item-check">✓</div>
+        <div class="item-body">
+          <div class="item-num">Item 17</div>
+          <div class="item-name">🔖 Paper Bookmark</div>
+          <div class="item-desc">Hand-illustrated or digitally designed bookmark featuring the OneWord. Laminated for durability. A simple, beautiful item that gets used every day.</div>
+          <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-print">🖨️ Printable</span></div>
+        </div>
+      </div>
+      <div class="item-card" onclick="toggleCheck(this)">
+        <div class="item-check">✓</div>
+        <div class="item-body">
+          <div class="item-num">Item 18</div>
+          <div class="item-name">📰 Mini Zine</div>
+          <div class="item-desc">A 4-panel fold-and-cut booklet. Students fill each panel with writing, art, or a mix — all connected to their OneWord. One sheet of paper, folded into a tiny magazine.</div>
+          <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-print">🖨️ Printable</span></div>
+        </div>
+      </div>
+      <div class="item-card" onclick="toggleCheck(this)">
+        <div class="item-check">✓</div>
+        <div class="item-body">
+          <div class="item-num">Item 19</div>
+          <div class="item-name">🪞 Affirmation Mirror Card</div>
+          <div class="item-desc">A card designed to be taped to a mirror or locker. "Every time you see this, remember: [OneWord]." Simple, daily, and lasting.</div>
+          <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-print">🖨️ Printable</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTES -->
+  <div class="notes-section">
+    <div class="notes-label">Ms. Hoffman's Notes</div>
+    <div class="notes-lines">
+      <div class="notes-line"></div>
+      <div style="height:28px;"></div>
+      <div class="notes-line"></div>
+      <div style="height:28px;"></div>
+      <div class="notes-line"></div>
+      <div style="height:28px;"></div>
+      <div class="notes-line"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer"><p>Smile Bags · A Word &amp; Wonder Experience · Robin Hoffman · Choice Menu · Spring 2026</p></div>
+
+<script>
+function toggleCheck(card){
+  var cb=card.querySelector('.item-check');
+  cb.classList.toggle('checked');
+}
+</script>
+</body>
+</html>
