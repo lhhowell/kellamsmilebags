@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Leadership Skills · Smile Bags · Katelyn Marquand</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --green:#1A6B3A;--green2:#2D8A52;--green3:#40A865;
+  --gold:#C9A84C;--gold2:#E8C97A;
+  --cream:#F5FBF7;--dark:#0D2E1A;--mid:#2A5438;
+  --border:#C8E6D0;--radius:14px;
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;overflow-x:hidden;}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(160deg,var(--dark) 0%,var(--green) 55%,#164F2C 100%);
+  padding:56px 48px 48px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 80% 20%,rgba(201,168,76,.1) 0%,transparent 50%),
+             radial-gradient(ellipse at 10% 70%,rgba(64,168,101,.12) 0%,transparent 45%);
+  pointer-events:none;
+}
+.hero-deco{position:absolute;right:48px;top:50%;transform:translateY(-50%);font-size:7rem;opacity:.08;pointer-events:none;}
+.hero-tag{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;position:relative;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:10px;position:relative;}
+.hero h1 em{color:var(--gold2);font-style:italic;}
+.hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:580px;line-height:1.7;margin-bottom:22px;position:relative;}
+.hero-pills{display:flex;flex-wrap:wrap;gap:8px;position:relative;}
+.pill{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;padding:5px 14px;border-radius:20px;}
+.pill-gold{background:rgba(201,168,76,.18);color:var(--gold2);border:1px solid rgba(201,168,76,.3);}
+.pill-green{background:rgba(64,168,101,.2);color:#95D5B2;border:1px solid rgba(64,168,101,.3);}
+.pill-cream{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);}
+
+/* ── MISSION STRIP ── */
+.mission{background:var(--green2);padding:22px 48px;display:flex;align-items:center;gap:20px;border-top:3px solid var(--gold);}
+.mission p{font-size:15px;color:rgba(255,255,255,.9);line-height:1.65;font-weight:300;}
+.mission strong{color:#fff;font-weight:700;}
+
+/* ── ONEWORD STRIP ── */
+.ow-strip{background:var(--dark);border-top:1px solid rgba(201,168,76,.2);padding:20px 48px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.ow-strip p{font-size:15px;color:rgba(255,255,255,.85);line-height:1.5;max-width:640px;}
+.ow-strip strong{color:var(--gold);font-weight:700;}
+.ow-btn{display:inline-flex;align-items:center;gap:10px;background:rgba(201,168,76,.1);border:1.5px solid rgba(201,168,76,.35);color:var(--gold);font-family:'Fredoka One',cursive;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;padding:11px 22px;border-radius:8px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .2s;}
+.ow-panel{display:none;background:#071510;padding:36px 48px;border-bottom:1px solid rgba(255,255,255,.05);}
+.ow-inner{max-width:960px;margin:0 auto;}
+.ow-desc-box{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);border-left:4px solid var(--gold);border-radius:12px;padding:20px 24px;margin-bottom:24px;}
+.ow-desc-box p{color:rgba(255,255,255,.85);font-size:14px;line-height:1.75;}
+.ow-legend{display:flex;gap:16px;margin-bottom:14px;flex-wrap:wrap;}
+.ow-legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:#aaa;}
+.ow-ctrl-row{display:flex;gap:8px;margin-bottom:14px;}
+.ow-ctrl{font-family:'Courier New',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#888;background:none;border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:5px 12px;cursor:pointer;}
+.ow-grid{display:grid;gap:8px;}
+.ow-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;}
+.ow-hd{display:flex;align-items:center;gap:14px;padding:12px 16px;cursor:pointer;user-select:none;}
+.ow-word{font-family:'Courier New',monospace;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--gold);min-width:110px;text-transform:uppercase;}
+.ow-prev{font-size:12px;color:rgba(255,255,255,.3);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ow-arr{font-size:10px;color:rgba(255,255,255,.2);transition:transform .2s;}
+.ow-body{display:none;padding:0 16px 14px;border-top:1px solid rgba(255,255,255,.06);}
+.ow-conn{display:flex;gap:10px;margin-top:10px;align-items:flex-start;}
+.ow-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.ow-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#888;display:block;margin-bottom:2px;font-family:'Courier New',monospace;}
+.ow-txt{font-size:13px;color:rgba(255,255,255,.8);line-height:1.6;font-weight:300;}
+
+/* ── WHO RECEIVES ── */
+.who-wrap{max-width:960px;margin:36px auto;padding:0 48px;}
+.who-block{background:var(--dark);border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;}
+.who-inner{background:linear-gradient(135deg,rgba(13,46,26,.95) 60%,rgba(201,168,76,.07));padding:32px 28px 24px;}
+.who-tag{font-family:'Fredoka One',cursive;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.who-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:#fff;margin-bottom:14px;line-height:1.2;}
+.who-text{font-size:14px;color:rgba(255,255,255,.7);line-height:1.8;max-width:680px;margin-bottom:14px;}
+.who-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;}
+.who-stat{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;text-align:center;}
+.who-stat-num{font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);}
+.who-stat-lbl{font-family:'Courier New',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:4px;}
+.who-footer-strip{background:rgba(201,168,76,.1);border-top:1px solid rgba(201,168,76,.2);padding:16px 28px;}
+.who-footer-strip p{font-size:13px;color:rgba(255,255,255,.75);line-height:1.7;font-style:italic;}
+
+/* ── MAIN ── */
+.main{max-width:960px;margin:0 auto;padding:40px 48px 80px;}
+.section-tag{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--green2);margin-bottom:6px;}
+.section-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--green);margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid var(--border);}
+
+/* ── 8 TABS GRID ── */
+.tabs-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:40px;}
+.tab-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:0 2px 8px rgba(26,107,58,.05);}
+.tab-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--green2);margin-bottom:4px;}
+.tab-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--green);margin-bottom:6px;}
+.tab-desc{font-size:12px;color:#555;line-height:1.6;}
+.tab-special{background:#F0FBF4;border-color:var(--green2);}
+.tab-special .tab-num{color:var(--green);}
+
+/* ── RESOURCE GRID ── */
+.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:40px;}
+.res-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:18px;text-decoration:none;display:flex;align-items:center;gap:14px;transition:all .2s;box-shadow:0 2px 8px rgba(26,107,58,.04);}
+.res-card:hover{border-color:var(--green2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,107,58,.1);}
+.res-icon{font-size:1.6rem;flex-shrink:0;width:44px;height:44px;background:rgba(26,107,58,.06);border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.res-label{font-family:'Fredoka One',cursive;font-size:13px;color:var(--green);margin-bottom:3px;}
+.res-type{font-size:11px;color:#888;font-family:'Fredoka One',cursive;letter-spacing:1px;text-transform:uppercase;}
+.res-arrow{color:var(--green3);font-size:.9rem;flex-shrink:0;transition:transform .2s;margin-left:auto;}
+.res-card:hover .res-arrow{transform:translateX(3px);}
+.res-card.featured{border-color:rgba(26,107,58,.4);background:linear-gradient(135deg,#F0FBF4,#fff);}
+
+/* ── FR STANDARDS ── */
+.fr-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fr-item{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+.fr-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--green2);margin-bottom:5px;}
+.fr-value{font-size:13px;color:#555;line-height:1.5;}
+
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:var(--gold2);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:11px 20px;border-radius:8px;text-decoration:none;transition:all .2s;}
+.back-btn:hover{background:var(--green2);}
+
+footer{text-align:center;padding:28px;border-top:1px solid var(--border);margin-top:20px;}
+footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spacing:1px;}
+
+@media(max-width:640px){
+  .hero,.mission,.ow-strip,.ow-panel,.who-wrap,.main{padding-left:20px;padding-right:20px;}
+  .tabs-grid,.res-grid,.fr-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-deco">🌟</div>
+  <div class="hero-tag">Smile Bags · A Word &amp; Wonder Experience · Spring 2026</div>
+  <h1>Leadership Skills<br><em>Activity Package</em></h1>
+  <p class="hero-sub">Katelyn Marquand's Leadership students build a complete 8-part package for a child receiving a Smile Bag — six activities, a handwritten letter, and a custom sticker. All eight pieces, connected to one word.</p>
+  <div class="hero-pills">
+    <div class="pill pill-gold">🌟 Katelyn Marquand</div>
+    <div class="pill pill-green">8-Part Package Per Student</div>
+    <div class="pill pill-cream">Grades 9–12 · Leadership Skills</div>
+  </div>
+</div>
+
+<!-- MISSION -->
+<div class="mission">
+  <span style="font-size:24px;flex-shrink:0;">🌱</span>
+  <p>At Kellam High School, <strong>Leadership students are building complete, personalized activity packages</strong> for children receiving Smile Bags. Each package contains six leadership-building activities, a personal handwritten letter guided by a Gemini AI writing tutor, and a custom 2-inch OneWord sticker — all connected to <strong>one shared word chosen with intention.</strong></p>
+</div>
+
+<!-- ONEWORD STRIP -->
+<div class="ow-strip">
+  <p><strong>At the heart of Smile Bags are 25 OneWords</strong> &mdash; connecting environmental science to social emotional well-being.</p>
+  <button class="ow-btn" onclick="toggleOW()">🌿 <span id="owBtnLabel">Explore the 25 OneWords</span> <span id="owArrow" style="transition:transform .3s;display:inline-block;">▼</span></button>
+</div>
+<div class="ow-panel" id="owPanel">
+  <div class="ow-inner">
+    <div class="ow-desc-box"><p>Each of the 25 OneWords lives in two worlds at once — in the natural systems students study, and in the inner lives students navigate every day. From <strong style="color:var(--gold);">Absorb</strong> to <strong style="color:var(--gold);">Transform</strong>, these words remind us that the same forces that sustain ecosystems are the forces that sustain people too.</p></div>
+    <div class="ow-legend">
+      <div class="ow-legend-item"><div style="width:9px;height:9px;border-radius:50%;background:#4caf82;"></div>Environmental Science</div>
+      <div class="ow-legend-item"><div style="width:9px;height:9px;border-radius:50%;background:var(--gold);"></div>Social Emotional Well-Being</div>
+    </div>
+    <div class="ow-ctrl-row">
+      <button class="ow-ctrl" onclick="owAll(true)">Expand All</button>
+      <button class="ow-ctrl" onclick="owAll(false)">Collapse All</button>
+    </div>
+    <div class="ow-grid" id="owGrid"></div>
+  </div>
+</div>
+
+<!-- WHO RECEIVES -->
+<div class="who-wrap">
+  <div class="who-block">
+    <div class="who-inner">
+      <div class="who-tag">Who Receives a Smile Bag</div>
+      <h2 class="who-title">A bag finds its way to a student<br>who needs it most.</h2>
+      <p class="who-text">Smile Bags are distributed across <strong style="color:#fff;">Kellam's eight feeder schools and Kellam High School itself</strong> — ten bags per school, ninety students reached. Guidance counselors identify students who may need encouragement, motivation, or simply a reason to smile. A bag is chosen for them <em style="color:var(--gold2);">deliberately, not randomly</em> — at exactly the right moment.</p>
+      <p class="who-text" style="margin-bottom:24px;">Every item inside was made by a Kellam student who didn't know your name — but made something <em style="color:rgba(214,238,238,.9);">just for you.</em></p>
+      <div class="who-stats">
+        <div class="who-stat"><div class="who-stat-num">9</div><div class="who-stat-lbl">Schools</div></div>
+        <div class="who-stat"><div class="who-stat-num">10</div><div class="who-stat-lbl">Bags Per School</div></div>
+        <div class="who-stat"><div class="who-stat-num">90</div><div class="who-stat-lbl">Students Reached</div></div>
+        <div class="who-stat"><div class="who-stat-num">8</div><div class="who-stat-lbl">Items Per Bag</div></div>
+      </div>
+    </div>
+    <div class="who-footer-strip">
+      <p>&ldquo;Guidance counselors identify students who may need encouragement, motivation, or simply a reason to smile. A bag is chosen for them &mdash; not randomly, but with intention.&rdquo;</p>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- 8 TABS -->
+  <div class="section-tag">The Package</div>
+  <div class="section-title">8 Activities, 1 OneWord</div>
+
+  <div class="tabs-grid">
+    <div class="tab-card">
+      <div class="tab-num">Tab 01</div>
+      <div class="tab-name">🤝 Friendship Cards</div>
+      <div class="tab-desc">Four age-appropriate challenges a child can do with a friend. Student customizes activities for the recipient's grade level — Elementary, Middle, or High School.</div>
+    </div>
+    <div class="tab-card">
+      <div class="tab-num">Tab 02</div>
+      <div class="tab-name">🧩 Puzzle It Out</div>
+      <div class="tab-desc">A riddle connected to the student's OneWord, complete with an answer and a lesson. Students write their own original version tied to their word's meaning.</div>
+    </div>
+    <div class="tab-card">
+      <div class="tab-num">Tab 03</div>
+      <div class="tab-name">💛 Kindness Coupons</div>
+      <div class="tab-desc">Four coupons for genuine acts of service. Students write the specific acts — personalized, meaningful, and cut-ready for the recipient to redeem.</div>
+    </div>
+    <div class="tab-card">
+      <div class="tab-num">Tab 04</div>
+      <div class="tab-name">🌬️ Calm-Down Toolkit</div>
+      <div class="tab-desc">A breathing technique named after the student's OneWord. Includes an interactive breathing circle that demonstrates the technique in real time.</div>
+    </div>
+    <div class="tab-card">
+      <div class="tab-num">Tab 05</div>
+      <div class="tab-name">✨ Dream Jar</div>
+      <div class="tab-desc">A fill-in activity guiding a child through naming a dream, setting a goal, and writing a message to themselves. Age-calibrated prompts for each level.</div>
+    </div>
+    <div class="tab-card">
+      <div class="tab-num">Tab 06</div>
+      <div class="tab-name">💡 Big Idea Planner</div>
+      <div class="tab-desc">A structured planning sheet with steps, resources, and a purpose statement. 3–5 steps depending on age group. Leadership thinking for a child just starting out.</div>
+    </div>
+    <div class="tab-card tab-special">
+      <div class="tab-num">Tab 07 · Special</div>
+      <div class="tab-name">✉️ Handwritten Letter</div>
+      <div class="tab-desc">Student writes a personal letter guided by a Gemini AI writing tutor. Submitted for teacher approval before printing. Written by hand on cardstock and placed in the bag.</div>
+    </div>
+    <div class="tab-card tab-special">
+      <div class="tab-num">Tab 08 · Special</div>
+      <div class="tab-name">🏷️ Custom 2&Prime; Sticker</div>
+      <div class="tab-desc">Student designs a custom 2-inch round OneWord sticker using the <a href="Leadership_StickerKiosk.html" target="_blank" style="color:var(--green2);font-weight:700;">2″ Sticker Designer</a> — choose a font, background color, and image, then preview 12 stickers on a print sheet. Ms. Marquand prints the class set.</div>
+    </div>
+  </div>
+
+  <!-- RESOURCES -->
+  <div class="section-tag">Resources</div>
+  <div class="section-title">All Project Files</div>
+
+  <div class="res-grid">
+    <a href="LeadershipActivities_Kiosk_v2.html" target="_blank" class="res-card featured">
+      <div class="res-icon">🌟</div>
+      <div><div class="res-label">Leadership Activity Kiosk</div><div class="res-type">Student Kiosk · HTML</div></div>
+      <div class="res-arrow">→</div>
+    </a>
+    <a href="Leadership_StickerKiosk.html" target="_blank" class="res-card featured">
+      <div class="res-icon">🏷️</div>
+      <div><div class="res-label">2″ Sticker Designer</div><div class="res-type">Student Kiosk · HTML</div></div>
+      <div class="res-arrow">→</div>
+    </a>
+    <a href="Leadership_TeacherGuide.html" target="_blank" class="res-card">
+      <div class="res-icon">📋</div>
+      <div><div class="res-label">Teacher Guide</div><div class="res-type">Ms. Marquand · HTML</div></div>
+      <div class="res-arrow">→</div>
+    </a>
+    <a href="#" class="res-card">
+      <div class="res-icon">📄</div>
+      <div><div class="res-label">Student Guide</div><div class="res-type">Student Guide · DOCX</div></div>
+      <div class="res-arrow">→</div>
+    </a>
+    <a href="#" class="res-card">
+      <div class="res-icon">📊</div>
+      <div><div class="res-label">Activity Rubric</div><div class="res-type">Rubric · DOCX</div></div>
+      <div class="res-arrow">→</div>
+    </a>
+    <a href="#" class="res-card">
+      <div class="res-icon">✨</div>
+      <div><div class="res-label">Gemini Gem Setup</div><div class="res-type">AI Tutor Setup · DOCX</div></div>
+      <div class="res-arrow">→</div>
+    </a>
+  </div>
+
+  <!-- FUTURE READY -->
+  <div class="section-tag">Standards</div>
+  <div class="section-title">Future Ready Virginia Beach</div>
+  <div class="fr-grid">
+    <div class="fr-item"><div class="fr-label">💬 Communicators &amp; Collaborators</div><div class="fr-value">Writing a personal letter for a real audience — a child who will read and keep it.</div></div>
+    <div class="fr-item"><div class="fr-label">🌱 Personally &amp; Socially Responsible</div><div class="fr-value">Eight activities grounded in service, empathy, and intentional giving.</div></div>
+    <div class="fr-item"><div class="fr-label">🎯 Problem Solvers &amp; Value Creators</div><div class="fr-value">Designing age-appropriate leadership activities for a specific recipient.</div></div>
+    <div class="fr-item"><div class="fr-label">🤝 Empathetic &amp; Community-Minded</div><div class="fr-value">Every creative decision made with a specific child recipient in mind.</div></div>
+  </div>
+
+  <br/><br/>
+  <a class="back-btn" href="https://lhhowell.github.io/kellamsmilebags/">🌿 Back to Smile Bags Main Site</a>
+
+</div>
+
+<footer><p>Smile Bags · A Word &amp; Wonder Experience · Leadership Skills · Katelyn Marquand · Spring 2026</p></footer>
+
+<script>
+var OW=[
+  {w:"ABSORB",sci:"Plants and soils absorb carbon, water, and nutrients to sustain ecosystems.",sel:"Taking in new information and experiences with an open, curious mind."},
+  {w:"ADAPT",sci:"Species adapt to changing environments through evolution and behavioral shifts.",sel:"Adjusting thoughts and responses when life feels uncertain or unfamiliar."},
+  {w:"ANCHOR",sci:"Root systems anchor soil, preventing erosion and stabilizing ecosystems.",sel:"Finding people, places, and practices that keep you grounded and steady."},
+  {w:"BALANCE",sci:"Ecosystems depend on balance between predators, prey, and available resources.",sel:"Maintaining equilibrium between work, rest, relationships, and personal needs."},
+  {w:"BLOOM",sci:"Flowering plants bloom in response to light, temperature, and seasonal cues.",sel:"Thriving naturally when your environment and essential needs are consistently met."},
+  {w:"BREATHE",sci:"Photosynthesis and respiration are Earth's breath — oxygen and carbon in continuous exchange.",sel:"Breath is the body's fastest tool for calming the nervous system and resetting."},
+  {w:"CLEAR",sci:"Clear water, clear skies, and clear-cut forests all signal environmental health or harm.",sel:"Clarity of mind comes when we slow down, process emotions, and release what isn't ours."},
+  {w:"CONNECT",sci:"Food webs connect every organism in an ecosystem — nothing exists in true isolation.",sel:"Healthy relationships and a sense of belonging are essential to human well-being."},
+  {w:"CYCLE",sci:"Water, carbon, and nitrogen move through Earth in continuous, life-sustaining cycles.",sel:"Life moves in cycles — rest, effort, grief, and renewal are all natural and necessary."},
+  {w:"EMERGE",sci:"Species emerge from dormancy, cocoons, and seeds when conditions are right.",sel:"Growth happens gradually — and then suddenly, you emerge stronger than before."},
+  {w:"FILTER",sci:"Wetlands and organisms filter toxins and pollutants from water and air.",sel:"Learning to filter out negativity and noise so you can focus on what truly matters."},
+  {w:"FLOW",sci:"Rivers flow through watersheds, carrying energy and life across vast landscapes.",sel:"Finding your flow state — where effort feels effortless and purpose feels clear."},
+  {w:"GROW",sci:"Growth requires sunlight, nutrients, water, and time — it cannot be forced or rushed.",sel:"Personal growth requires the same patience and conditions that ecosystems demand."},
+  {w:"HEAL",sci:"Ecosystems heal after disturbance through succession, regeneration, and time.",sel:"Healing is not linear — for people or for nature — and both deserve patience."},
+  {w:"MIGRATE",sci:"Animals migrate seasonally in response to temperature, food availability, and light.",sel:"Transitions and change are a natural part of every life journey — not something to fear."},
+  {w:"PERSIST",sci:"Resilient species persist through drought, wildfire, and long-term climate shifts.",sel:"Persistence through difficulty builds strength, character, and a deeper sense of identity."},
+  {w:"RENEW",sci:"Forests renew after fire; soils renew through decomposition and the return of nutrients.",sel:"Rest and recovery are how we renew our energy, creativity, and sense of purpose."},
+  {w:"RESTORE",sci:"Habitat restoration rebuilds what was lost or degraded through human impact.",sel:"Restoring relationships and self-trust after hard seasons is an act of quiet courage."},
+  {w:"RETURN",sci:"Salmon return to their birth streams — nature is always drawn back toward its origin.",sel:"Returning to your values and sense of self after feeling lost is always possible."},
+  {w:"RISE",sci:"Sea levels rise, but so do tides, seeds breaking soil, and birds at first light.",sel:"Rising above challenges without denying they existed — that is resilience in action."},
+  {w:"ROOT",sci:"Deep root systems stabilize plants and reach water sources during periods of drought.",sel:"Your roots — family, culture, values, and history — keep you stable when life shifts."},
+  {w:"SHINE",sci:"The sun powers all life on Earth through light energy and the process of photosynthesis.",sel:"Letting your authentic self shine is both a gift to others and an act of personal courage."},
+  {w:"SUSTAIN",sci:"Sustainability keeps ecosystems and communities viable and thriving for future generations.",sel:"Building habits that sustain your mental and physical health is an investment in your future."},
+  {w:"THRIVE",sci:"Species thrive in ecosystems where their needs are consistently and reliably met.",sel:"You deserve environments — social and physical — where you can truly and fully thrive."},
+  {w:"TRANSFORM",sci:"Metamorphosis, decomposition, and erosion transform matter into something entirely new.",sel:"Every challenge you survive has the power to transform you into someone stronger."}
+];
+function buildOW(){
+  var h='';
+  OW.forEach(function(o,i){
+    h+='<div class="ow-card"><div class="ow-hd" onclick="toggleOWC('+i+')"><span class="ow-word">'+o.w+'</span><span class="ow-prev">'+o.sci+'</span><span class="ow-arr" id="owarr'+i+'">▼</span></div>'+
+      '<div class="ow-body" id="owb'+i+'"><div class="ow-conn"><div class="ow-dot" style="background:#4caf82;"></div><div><span class="ow-lbl">Environmental Science</span><span class="ow-txt">'+o.sci+'</span></div></div>'+
+      '<div class="ow-conn"><div class="ow-dot" style="background:var(--gold);"></div><div><span class="ow-lbl">Social Emotional Well-Being</span><span class="ow-txt">'+o.sel+'</span></div></div></div></div>';
+  });
+  document.getElementById('owGrid').innerHTML=h;
+}
+function toggleOWC(i){var b=document.getElementById('owb'+i),a=document.getElementById('owarr'+i),open=b.style.display==='none';b.style.display=open?'block':'none';a.style.transform=open?'rotate(180deg)':'';}
+function owAll(open){OW.forEach(function(_,i){document.getElementById('owb'+i).style.display=open?'block':'none';document.getElementById('owarr'+i).style.transform=open?'rotate(180deg)':'';})}
+function toggleOW(){var p=document.getElementById('owPanel'),open=p.style.display==='none';p.style.display=open?'block':'none';document.getElementById('owArrow').style.transform=open?'rotate(180deg)':'';document.getElementById('owBtnLabel').textContent=open?'Collapse — The 25 OneWords':'Explore the 25 OneWords';}
+buildOW();
+</script>
+</body>
+</html>
