@@ -183,6 +183,18 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
     <label class="field-lbl" for="iLast">Last Name Initial</label>
     <input class="field-inp" id="iLast" type="text" placeholder="e.g. T" maxlength="1" autocomplete="off"/>
     <div class="err-msg" id="lastErr">Please enter your last name initial!</div>
+    <label class="field-lbl">Your Class</label>
+    <div style="display:flex;gap:10px;margin-bottom:13px;" id="classToggle">
+      <button type="button" id="classBtnCulinary" onclick="setClass('Intro to Culinary')"
+        style="flex:1;padding:11px;border-radius:10px;border:2px solid #e8ddd0;background:#fdfaf6;font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;color:#1A2744;cursor:pointer;transition:all .15s;">
+        🍳 Intro to Culinary
+      </button>
+      <button type="button" id="classBtnCatering" onclick="setClass('Catering')"
+        style="flex:1;padding:11px;border-radius:10px;border:2px solid #e8ddd0;background:#fdfaf6;font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;color:#1A2744;cursor:pointer;transition:all .15s;">
+        👨‍🍳 Catering
+      </button>
+    </div>
+    <div class="err-msg" id="classErr">Please select your class!</div>
   </div>
   <div class="nav-row">
     <button class="btn-next" onclick="v0()">Enter the Lab →</button>
@@ -677,6 +689,7 @@ function v0() {
   let ok=true;
   if(!f){show('nameErr');ok=false;}else hide('nameErr');
   if(!l){show('lastErr');ok=false;}else hide('lastErr');
+  if(!classSelected){show('classErr');ok=false;}else hide('classErr');
   if(!ok)return;
   S.name=f+' '+l+'.';
   goTo(1);
@@ -975,6 +988,20 @@ function v5a(){
 
 /* ══ SUBMIT ═══════════════════════════════════════════════════ */
 
+
+var classSelected = '';
+function setClass(cls){
+  classSelected = cls;
+  document.getElementById('classBtnCulinary').style.background = cls==='Intro to Culinary' ? '#1A2744' : '#fdfaf6';
+  document.getElementById('classBtnCulinary').style.color = cls==='Intro to Culinary' ? '#E8A820' : '#1A2744';
+  document.getElementById('classBtnCulinary').style.borderColor = cls==='Intro to Culinary' ? '#1A2744' : '#e8ddd0';
+  document.getElementById('classBtnCatering').style.background = cls==='Catering' ? '#1A2744' : '#fdfaf6';
+  document.getElementById('classBtnCatering').style.color = cls==='Catering' ? '#E8A820' : '#1A2744';
+  document.getElementById('classBtnCatering').style.borderColor = cls==='Catering' ? '#1A2744' : '#e8ddd0';
+  var err = document.getElementById('classErr');
+  if(err) err.classList.remove('show');
+}
+
 async function sendFeedback(labId, vote){
   var agreeBtn = document.getElementById('agreeBtn_'+labId);
   var disagreeBtn = document.getElementById('disagreeBtn_'+labId);
@@ -985,7 +1012,7 @@ async function sendFeedback(labId, vote){
   try {
     await fetch(SUBMIT_URL,{method:'POST',mode:'no-cors',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({type:'feedback',lab:labId,vote:vote,
+      body:JSON.stringify({type:'feedback',lab:labId,vote:vote,classType:S.classType||'',
         timestamp:new Date().toLocaleString('en-US',{timeZone:'America/New_York'})})
     });
   } catch(e){ console.warn(e); }
@@ -998,7 +1025,7 @@ function showAgreeWrap(id){
 async function submitResult(mode){
   goTo(6);
   const payload={
-    studentName:S.name, mode:S.resultMode,
+    studentName:S.name, classType:S.classType||'', mode:S.resultMode,
     summary:S.resultSummary,
     timestamp:new Date().toLocaleString('en-US',{timeZone:'America/New_York'})
   };

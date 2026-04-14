@@ -212,6 +212,18 @@ body { font-family:'Nunito',sans-serif; background:var(--cream); min-height:100v
       <option value="Ms. Sayers" data-level="High School">Ms. Sayers</option>
     </select>
     <div class="err-msg" id="teacherErr">Please select your teacher!</div>
+    <label class="field-lbl">Your Class</label>
+    <div style="display:flex;gap:10px;margin-bottom:13px;" id="classToggle">
+      <button type="button" id="classBtnCulinary" onclick="setClass('Intro to Culinary')"
+        style="flex:1;padding:11px;border-radius:10px;border:2px solid #e8ddd0;background:#fdfaf6;font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;color:#1A2744;cursor:pointer;transition:all .15s;">
+        🍳 Intro to Culinary
+      </button>
+      <button type="button" id="classBtnCatering" onclick="setClass('Catering')"
+        style="flex:1;padding:11px;border-radius:10px;border:2px solid #e8ddd0;background:#fdfaf6;font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;color:#1A2744;cursor:pointer;transition:all .15s;">
+        👨‍🍳 Catering
+      </button>
+    </div>
+    <div class="err-msg" id="classErr">Please select your class!</div>
   </div>
   <div class="nav-row">
     <button class="btn-back" onclick="goTo(0)">← Back</button>
@@ -450,7 +462,7 @@ const SHAPE_LABELS = {
 };
 
 /* ══ STATE ════════════════════════════════════════════════════ */
-const S = { name:'', teacher:'', level:'', word:'', color:'', colorHex:'' };
+const S = { name:'', teacher:'', level:'', word:'', color:'', colorHex:'', classType:'' };
 
 /* ══ NAV ══════════════════════════════════════════════════════ */
 function goTo(n) {
@@ -626,8 +638,9 @@ function validateStep1() {
   let ok = true;
   if (!name)    { show('nameErr');    ok = false; } else hide('nameErr');
   if (!teacher) { show('teacherErr'); ok = false; } else hide('teacherErr');
+  if (!classSelected) { show('classErr'); ok = false; } else hide('classErr');
   if (!ok) return;
-  S.name = name; S.teacher = teacher;
+  S.name = name; S.teacher = teacher; S.classType = classSelected;
 
   // Auto-pre-select level from teacher's data-level attribute
   const sel = document.getElementById('iTeacher');
@@ -714,7 +727,7 @@ async function submitOrder() {
 function restart() {
   Object.keys(S).forEach(k => S[k]='');
   document.getElementById('iName').value = '';
-  document.getElementById('iTeacher').value = '';
+  document.getElementById('iTeacher').value = ''; classSelected=''; setClass('');
   document.getElementById('cutterReveal').classList.remove('visible');
   document.getElementById('btnWordNext').disabled = true;
   document.getElementById('btnLevelNext').disabled = true;

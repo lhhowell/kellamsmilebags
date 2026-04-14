@@ -165,6 +165,18 @@ textarea.field-inp { resize:vertical; min-height:70px; }
     <label class="field-lbl" for="iLast">Last Name Initial</label>
     <input class="field-inp" id="iLast" type="text" placeholder="e.g. T" maxlength="1" autocomplete="off"/>
     <div class="err-msg" id="lastErr">Please enter your last name initial!</div>
+    <label class="field-lbl">Your Class</label>
+    <div style="display:flex;gap:10px;margin-bottom:13px;" id="classToggle">
+      <button type="button" id="classBtnCulinary" onclick="setClass('Intro to Culinary')"
+        style="flex:1;padding:11px;border-radius:10px;border:2px solid #e8ddd0;background:#fdfaf6;font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;color:#1A2744;cursor:pointer;transition:all .15s;">
+        🍳 Intro to Culinary
+      </button>
+      <button type="button" id="classBtnCatering" onclick="setClass('Catering')"
+        style="flex:1;padding:11px;border-radius:10px;border:2px solid #e8ddd0;background:#fdfaf6;font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;color:#1A2744;cursor:pointer;transition:all .15s;">
+        👨‍🍳 Catering
+      </button>
+    </div>
+    <div class="err-msg" id="classErr">Please select your class!</div>
   </div>
   <div class="nav-row">
     <button class="btn-next" onclick="v1()">Next — Choose Your Word →</button>
@@ -221,6 +233,10 @@ textarea.field-inp { resize:vertical; min-height:70px; }
   </div>
   <div id="printCard">
     <div class="recipe-preview" id="recipePreview"></div>
+  </div>
+  <!-- Catering Note -->
+  <div id="cateringNote" style="display:none;background:#FFF8DC;border:2px solid #E8A820;border-radius:10px;padding:12px 16px;margin:10px 0;font-size:13px;font-weight:700;color:#1A2744;text-align:center;">
+    👨‍🍳 <strong>Catering Class:</strong> Your class will be cooking some of these recipes — evaluate carefully and rate honestly!
   </div>
   <!-- Star Rating -->
   <div id="starRatingWrap" style="text-align:center;margin:14px 0 6px;display:none;">
@@ -636,7 +652,7 @@ const COLORS_WORD = {
   Root:'#4E342E',Shine:'#F57F17',Sustain:'#1B5E20',Thrive:'#1A237E',Transform:'#880E4F'
 };
 
-const S = { name:'', word:'', recipeIdx:0, dedication:'' };
+const S = { name:'', word:'', recipeIdx:0, dedication:'', classType:'' };
 
 function goTo(n) {
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -650,6 +666,7 @@ function v1() {
   let ok=true;
   if(!first){show('nameErr');ok=false;}else hide('nameErr');
   if(!last){show('lastErr');ok=false;}else hide('lastErr');
+  if(!classSelected){show('classErr');ok=false;}else hide('classErr');
   if(!ok)return;
   S.name=first+' '+last+'.';
   buildWordGrid(); goTo(2);
@@ -715,6 +732,7 @@ function buildPreview(){
   const ded=S.dedication?`<div class="rp-dedication">💛 "${S.dedication}"</div>`:'';
 
   document.getElementById('starRatingWrap').style.display='block';
+  document.getElementById('cateringNote').style.display = S.classType==='Catering'?'block':'none';
   document.getElementById('recipePreview').innerHTML=`
     <div class="rp-header" style="background:${color};">
       <div class="rp-word" style="color:${r.level==='simple'?'#FFD54F':'#FFE082'}">${S.word.toUpperCase()}</div>
@@ -743,7 +761,7 @@ async function submitCard(){
   goTo(5);
   const r=RECIPES[S.word][S.recipeIdx];
   const payload={
-    studentName:S.name, teacher:S.teacher, word:S.word,
+    studentName:S.name, teacher:S.teacher, classType:S.classType||'', word:S.word,
     recipeLevel:r.level, recipeName:r.name,
     dedication:S.dedication,
     timestamp:new Date().toLocaleString('en-US',{timeZone:'America/New_York'})
@@ -756,10 +774,24 @@ function restart(){
   S.name=''; S.teacher=''; S.word=''; S.recipeIdx=0; S.dedication='';
   document.getElementById('iFirst').value='';
   document.getElementById('iLast').value='';
-  document.getElementById('iDedication').value='';
+  document.getElementById('iDedication').value=''; classSelected=''; setClass('');
   goTo(1);
 }
 
+
+
+var classSelected = '';
+function setClass(cls){
+  classSelected = cls;
+  document.getElementById('classBtnCulinary').style.background = cls==='Intro to Culinary' ? '#1A2744' : '#fdfaf6';
+  document.getElementById('classBtnCulinary').style.color = cls==='Intro to Culinary' ? '#E8A820' : '#1A2744';
+  document.getElementById('classBtnCulinary').style.borderColor = cls==='Intro to Culinary' ? '#1A2744' : '#e8ddd0';
+  document.getElementById('classBtnCatering').style.background = cls==='Catering' ? '#1A2744' : '#fdfaf6';
+  document.getElementById('classBtnCatering').style.color = cls==='Catering' ? '#E8A820' : '#1A2744';
+  document.getElementById('classBtnCatering').style.borderColor = cls==='Catering' ? '#1A2744' : '#e8ddd0';
+  var err = document.getElementById('classErr');
+  if(err) err.classList.remove('show');
+}
 
 var S_rating = 0;
 var S_ratingLabels = ['','😐 Not for me','🙂 It was okay','😊 Pretty good!','😍 Really good!','🤩 Absolutely delicious!'];
