@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AVID · OneWord Quote Card · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0f0e17;
+  --surface:#17162200;
+  --purple:#6b4fa0;
+  --purple2:#9b72cf;
+  --gold:#c9a84c;
+  --gold2:#e8c96a;
+  --teal:#3fa08a;
+  --cream:#f5f0e8;
+  --muted:#8a85a0;
+  --border:#2a283a;
+  --text:#e8e4f0;
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px;overflow-x:hidden;}
+
+/* ── HERO ── */
+.hero{
+  position:relative;padding:64px 40px 56px;text-align:center;
+  background:linear-gradient(160deg,#1a1230 0%,#0f0e17 55%,#12182a 100%);
+  overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);
+  width:700px;height:400px;
+  background:radial-gradient(ellipse,rgba(107,79,160,.22) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero::after{
+  content:'"';position:absolute;top:20px;right:60px;
+  font-family:'Playfair Display',serif;font-size:18rem;line-height:1;
+  color:rgba(107,79,160,.06);pointer-events:none;
+}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:4px;color:var(--purple2);text-transform:uppercase;margin-bottom:16px;animation:fadeUp .5s ease both;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.4rem);font-weight:900;line-height:1.05;margin-bottom:14px;animation:fadeUp .5s .1s ease both;}
+.hero-title em{color:var(--gold);font-style:italic;}
+.hero-sub{font-size:15px;color:var(--muted);max-width:580px;margin:0 auto 28px;line-height:1.75;animation:fadeUp .5s .2s ease both;}
+.pill-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;animation:fadeUp .5s .3s ease both;}
+.pill{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;padding:6px 15px;border-radius:20px;}
+.pill-purple{background:rgba(107,79,160,.18);color:var(--purple2);border:1px solid rgba(107,79,160,.3);}
+.pill-gold{background:rgba(201,168,76,.12);color:var(--gold);border:1px solid rgba(201,168,76,.25);}
+.pill-teal{background:rgba(63,160,138,.12);color:var(--teal);border:1px solid rgba(63,160,138,.25);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── LAYOUT ── */
+.content{max-width:860px;margin:0 auto;padding:0 32px;}
+.section{margin-top:52px;}
+.section-tag{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--purple2);margin-bottom:8px;}
+.section-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--text);margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+
+/* ── CARDS ── */
+.card{background:#1a1830;border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:14px;}
+.card p{font-size:14px;color:#b0a8c8;line-height:1.8;margin-bottom:10px;}
+.card p:last-child{margin-bottom:0;}
+
+/* ── MISSION STRIP ── */
+.mission{background:linear-gradient(135deg,#1e1535,#1a1830);border:1px solid rgba(107,79,160,.3);border-radius:14px;padding:28px 32px;text-align:center;margin-top:40px;}
+.mission-quote{font-family:'Playfair Display',serif;font-size:1.3rem;font-style:italic;color:var(--gold2);line-height:1.65;max-width:560px;margin:0 auto 14px;}
+.mission-attr{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+
+/* ── INFO GRID ── */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+.info-block{background:#1a1830;border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+.info-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.info-value{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--text);line-height:1.3;}
+.info-sub{font-size:12px;color:var(--muted);margin-top:3px;}
+
+/* ── WICOR ── */
+.wicor-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.wicor-card{background:#1a1830;border:1px solid var(--border);border-radius:10px;padding:14px 10px;text-align:center;}
+.wicor-letter{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--purple2);line-height:1;}
+.wicor-word{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:4px 0 6px;}
+.wicor-desc{font-size:11px;color:#8a85a0;line-height:1.5;}
+
+/* ── STEPS ── */
+.step-list{list-style:none;display:flex;flex-direction:column;gap:12px;}
+.step-item{display:flex;gap:14px;align-items:flex-start;}
+.step-num{background:var(--purple);color:#fff;font-family:'Fredoka One',cursive;font-size:13px;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.step-body{}
+.step-title{font-family:'Fredoka One',cursive;font-size:13px;color:var(--text);margin-bottom:3px;letter-spacing:.3px;}
+.step-desc{font-size:13px;color:#8a85a0;line-height:1.6;}
+
+/* ── RESOURCE LINKS ── */
+.resource-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.resource-card{background:#1a1830;border:1px solid var(--border);border-radius:12px;padding:16px 18px;text-decoration:none;display:flex;align-items:center;gap:14px;transition:all .2s;}
+.resource-card:hover{border-color:var(--purple);transform:translateY(-2px);}
+.resource-icon{font-size:1.6rem;flex-shrink:0;}
+.resource-label{font-family:'Fredoka One',cursive;font-size:13px;color:var(--text);letter-spacing:.3px;margin-bottom:3px;}
+.resource-type{font-size:11px;color:var(--muted);font-family:'Fredoka One',cursive;letter-spacing:1px;text-transform:uppercase;}
+.resource-card.featured{border-color:rgba(107,79,160,.4);background:linear-gradient(135deg,#1e1535,#1a1830);}
+.resource-card.featured .resource-label{color:var(--purple2);}
+
+/* ── FUTURE READY ── */
+.fr-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fr-item{background:#1a1830;border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+.fr-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--purple2);margin-bottom:5px;}
+.fr-value{font-size:13px;color:#b0a8c8;line-height:1.5;}
+
+/* ── FOOTER ── */
+.footer{text-align:center;padding:40px 32px 0;margin-top:60px;border-top:1px solid var(--border);}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:11px;color:var(--muted);letter-spacing:1px;}
+
+@media(max-width:600px){
+  .hero{padding:48px 20px 44px;}
+  .content{padding:0 18px;}
+  .info-grid,.fr-grid,.resource-grid{grid-template-columns:1fr;}
+  .wicor-grid{grid-template-columns:repeat(3,1fr);}
+  .hero::after{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-brand">Smile Bags · A Word &amp; Wonder Experience · Spring 2026</div>
+  <h1 class="hero-title">OneWord<br><em>Inspirational Quote Card</em></h1>
+  <p class="hero-sub">AVID students craft original 120-character quotes powered by Costa's Levels of Thinking, a Quick Write reflection, and a Gemini AI writing tutor — printed on cardstock for a child who needs to hear it.</p>
+  <div class="pill-row">
+    <div class="pill pill-purple">💬 AVID · Deena Vinson</div>
+    <div class="pill pill-gold">🎓 Grades 9–12</div>
+    <div class="pill pill-teal">🌱 Elementary School · K–5</div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- MISSION -->
+  <div class="mission">
+    <div class="mission-quote">"Every child deserves to receive a word that was chosen for them — written by someone who thought carefully about what they needed to hear."</div>
+    <div class="mission-attr">The heart of the OneWord Quote Card Project</div>
+  </div>
+
+  <!-- AT A GLANCE -->
+  <div class="section">
+    <div class="section-tag">Overview</div>
+    <div class="section-title">Project at a Glance</div>
+    <div class="info-grid">
+      <div class="info-block"><div class="info-label">Class</div><div class="info-value">AVID</div><div class="info-sub">Deena Vinson · Grades 9–12</div></div>
+      <div class="info-block"><div class="info-label">Output</div><div class="info-value">1 Quote Card per Student</div><div class="info-sub">4″ square or circle · printed on cardstock</div></div>
+      <div class="info-block"><div class="info-label">Recipients</div><div class="info-value">Elementary School</div><div class="info-sub">K–5 · Identified by school counselors</div></div>
+      <div class="info-block"><div class="info-label">Deadline</div><div class="info-value">May 30, 2026</div><div class="info-sub">Cards assembled &amp; delivered in Smile Bags</div></div>
+    </div>
+  </div>
+
+  <!-- WICOR -->
+  <div class="section">
+    <div class="section-tag">AVID Framework</div>
+    <div class="section-title">WICOR Alignment</div>
+    <div class="wicor-grid">
+      <div class="wicor-card"><div class="wicor-letter">W</div><div class="wicor-word">Writing</div><div class="wicor-desc">120-character original inspirational quote</div></div>
+      <div class="wicor-card"><div class="wicor-letter">I</div><div class="wicor-word">Inquiry</div><div class="wicor-desc">Socratic questioning through Gemini AI tutor</div></div>
+      <div class="wicor-card"><div class="wicor-letter">C</div><div class="wicor-word">Collaboration</div><div class="wicor-desc">Pair-share option before submitting</div></div>
+      <div class="wicor-card"><div class="wicor-letter">O</div><div class="wicor-word">Organization</div><div class="wicor-desc">Kiosk guides step by step through process</div></div>
+      <div class="wicor-card"><div class="wicor-letter">R</div><div class="wicor-word">Reading</div><div class="wicor-desc">Students interpret their OneWord meaning</div></div>
+    </div>
+  </div>
+
+  <!-- STUDENT WORKFLOW -->
+  <div class="section">
+    <div class="section-tag">How It Works</div>
+    <div class="section-title">Student Workflow</div>
+    <div class="card">
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">1</div><div class="step-body"><div class="step-title">Choose a Card Shape</div><div class="step-desc">Square (4″ × 4″) or Circle (4″ round, Cricut-cut). The shape sets the canvas for their card.</div></div></li>
+        <li class="step-item"><div class="step-num">2</div><div class="step-body"><div class="step-title">Select a OneWord</div><div class="step-desc">Choose one of the 25 shared OneWords. Each word displays its meaning to help students connect deeply.</div></div></li>
+        <li class="step-item"><div class="step-num">3</div><div class="step-body"><div class="step-title">Costa's Quick Write Reflection</div><div class="step-desc">Students respond to a Level 3 prompt — applying their word as wisdom for a child who needs it. This reflection fuels the quote.</div></div></li>
+        <li class="step-item"><div class="step-num">4</div><div class="step-body"><div class="step-title">Gemini AI Writing Tutor</div><div class="step-desc">Students open the Gemini Gem tutor, share their reflection, and receive Socratic questioning to deepen and distill their thinking.</div></div></li>
+        <li class="step-item"><div class="step-num">5</div><div class="step-body"><div class="step-title">Write the Quote (120 characters)</div><div class="step-desc">Final original inspirational quote — refined through the tutor conversation and entered into the kiosk.</div></div></li>
+        <li class="step-item"><div class="step-num">6</div><div class="step-body"><div class="step-title">Choose Color Pair &amp; Font</div><div class="step-desc">Select from 7 Kellam color pairs and 4 font styles. The kiosk shows a live preview of the finished card.</div></div></li>
+        <li class="step-item"><div class="step-num">7</div><div class="step-body"><div class="step-title">Preview, Submit &amp; Print</div><div class="step-desc">Students review their card design and submit. Ms. Vinson prints on cardstock and cuts to final size.</div></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- RESOURCES -->
+  <div class="section">
+    <div class="section-tag">Resources</div>
+    <div class="section-title">All Project Files</div>
+    <div class="resource-grid">
+      <a href="AVID_QuoteCard_Kiosk.html" target="_blank" class="resource-card featured">
+        <div class="resource-icon">💬</div>
+        <div><div class="resource-label">Quote Card Kiosk</div><div class="resource-type">Interactive Kiosk · HTML</div></div>
+      </a>
+      <a href="AVID_Teacher_Guide.docx" class="resource-card">
+        <div class="resource-icon">📋</div>
+        <div><div class="resource-label">Teacher Guide</div><div class="resource-type">Teacher Guide · DOCX</div></div>
+      </a>
+      <a href="AVID_Student_Guide.docx" class="resource-card">
+        <div class="resource-icon">📄</div>
+        <div><div class="resource-label">Student Guide</div><div class="resource-type">Student Guide · DOCX</div></div>
+      </a>
+      <a href="AVID_GeminiGem_Setup.docx" class="resource-card">
+        <div class="resource-icon">✨</div>
+        <div><div class="resource-label">Gemini Gem Setup</div><div class="resource-type">AI Tutor Setup · DOCX</div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- FUTURE READY -->
+  <div class="section">
+    <div class="section-tag">Standards</div>
+    <div class="section-title">Future Ready Virginia Beach</div>
+    <div class="fr-grid">
+      <div class="fr-item"><div class="fr-label">💬 Communicators &amp; Collaborators</div><div class="fr-value">Writing with purpose for a real audience — a child who needs encouragement.</div></div>
+      <div class="fr-item"><div class="fr-label">🌱 Personally &amp; Socially Responsible</div><div class="fr-value">Applying AVID strategies in direct service of a child who needs support.</div></div>
+      <div class="fr-item"><div class="fr-label">🔬 Thinkers &amp; Inquirers</div><div class="fr-value">Costa's Levels of Thinking pushes beyond recall into real-world application.</div></div>
+      <div class="fr-item"><div class="fr-label">🤝 Empathetic &amp; Community-Minded</div><div class="fr-value">Every card is a bridge between a Kellam student and a child who needs to feel seen.</div></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-sig">Smile Bags · A Word &amp; Wonder Experience · Laura Howell, ITS · Spring 2026</div>
+</div>
+
+</body>
+</html>
