@@ -238,7 +238,7 @@ body{font-family:'Nunito',sans-serif;background:var(--black);min-height:100vh;ov
   </div>
 
   <!-- Hidden Picture -->
-  <div class="hidden-strip">
+  <div class="hidden-strip" id="hiddenStrip" style="display:none;">
     <div class="hidden-strip-title">&#128269; Can You Find the Hidden Pictures?</div>
     <div class="hidden-objects" id="hiddenObjects"></div>
   </div>
@@ -280,7 +280,7 @@ const BASE = 'https://lhhowell.github.io/kellamsmilebags/';
 var WORDS = [
   {
     word:"ABSORB", meaning:"Taking in everything around you",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Absorb_Color.png", bwImg:BASE+"Absorb_ColoringPage.png",
     interactiveUrl:BASE+"Absorb_HiddenPicture.html",
    hidden:["butterfly","spider web","ladybug","rainbow in puddle","bird's nest","snail","dragonfly"],
     shortStory:"<p>Marcus sat very still in the middle of the garden, eyes closed and arms open wide.</p><p>\"What are you doing?\" asked Lily.</p><p>\"Absorbing,\" he whispered. \"The sun on my face, the wind in my ears, the smell of the flowers — I'm taking it all in.\"</p><p>Lily closed her eyes too. For a moment, everything felt full and warm and real.</p><p>Sunny held up a thumbs up. \"When you ABSORB the world around you, you collect it inside your heart forever.\"</p><p>Ray placed the Smile Bag gently nearby. \"Even on hard days — there is always something beautiful worth absorbing.\"</p>",
@@ -288,7 +288,7 @@ var WORDS = [
   },
   {
     word:"ADAPT", meaning:"Adjusting to what comes your way",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Adapt_Color.png", bwImg:BASE+"Adapt_ColoringPage.png",
     interactiveUrl:BASE+"Adapt_HiddenPicture.html",
    hidden:["frog","duck","rainbow","rain flower","snail","sheltering butterfly","worm"],
     shortStory:"<p>The rain came down hard and Owen had planned a whole outdoor adventure.</p><p>\"Now what?\" he groaned.</p><p>Zara grinned and grabbed an umbrella. \"We adapt!\"</p><p>They built a fort inside using couch cushions, told stories by flashlight, and made the best indoor adventure they had ever had.</p><p>Ray smiled softly. \"ADAPT means you don't give up — you just find a new way.\"</p><p>Sunny added, \"The best explorers always do.\"</p>",
@@ -296,7 +296,7 @@ var WORDS = [
   },
   {
     word:"ANCHOR", meaning:"Holding steady through the storm",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Anchor_Color.png", bwImg:BASE+"Anchor_ColoringPage.png",
     interactiveUrl:BASE+"Anchor_HiddenPicture.html",
    hidden:["ship anchor","lighthouse","starfish","turtle in shell","tied boat","compass rose","bird on branch"],
     shortStory:"<p>The wind was blowing so hard that Lily felt like she might blow away.</p><p>Maya reached out and took her hand. \"I've got you,\" she said.</p><p>\"How are you so steady?\" Lily asked.</p><p>Maya smiled. \"I think about the people I love. They're my anchor.\"</p><p>Ray nodded gently. \"An ANCHOR keeps a ship from drifting — and people can be anchors for each other too.\"</p><p>Sunny held up the Smile Bag. \"Someone made this for you — because they want to be your anchor today.\"</p>",
@@ -304,7 +304,7 @@ var WORDS = [
   },
   {
     word:"BALANCE", meaning:"Finding your steady place",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Balance_Color.png", bwImg:BASE+"Balance_ColoringPage.png",
     interactiveUrl:BASE+"Balance_HiddenPicture.html",
    hidden:["tightrope ant","rock stack","centered butterfly","cloud scale","balancing fish","spinning top","one-footed bird"],
     shortStory:"<p>Zara was trying to walk across a log bridge without falling off.</p><p>\"Arms out!\" called Owen. \"Find your balance!\"</p><p>She wobbled left, then right, then — steady.</p><p>\"I've got it!\" she laughed.</p><p>Sunny clapped. \"BALANCE isn't about being perfect — it's about making little adjustments until you find your steady place.\"</p><p>Ray smiled. \"And it's okay to wobble a little. That's how you learn.\"</p>",
@@ -312,7 +312,7 @@ var WORDS = [
   },
   {
     word:"BLOOM", meaning:"Growing into your best self",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Bloom_Color.png", bwImg:BASE+"Bloom_ColoringPage.png",
     interactiveUrl:BASE+"Bloom_HiddenPicture.html",
    hidden:["caterpillar and butterfly","underground sprout","unopened bud","bee","ladybug","bird in flower nest","rainbow"],
     shortStory:"<p>Sofia planted a seed in a tiny pot and waited. And waited. And waited.</p><p>\"Nothing's happening,\" she sighed.</p><p>\"Something IS happening,\" said Maya. \"You just can't see it yet.\"</p><p>Three weeks later, a tiny green shoot pushed up through the soil.</p><p>Ray smiled. \"That's what BLOOM means — growing into your best self, even when no one can see it happening yet.\"</p><p>Sunny added, \"Just like you!\"</p>",
@@ -320,7 +320,7 @@ var WORDS = [
   },
   {
     word:"BREATHE", meaning:"Pausing to find your calm",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Breathe_Color.png", bwImg:BASE+"Breathe_ColoringPage.png",
     interactiveUrl:BASE+"Breathe_HiddenPicture.html",
    hidden:["wind chime","dandelion seeds","calm pond","sleeping cat","heart cloud","candle flame","floating feather"],
     shortStory:"<p>Everything was happening too fast and Lily felt her heart beating too hard.</p><p>\"Breathe,\" said Ray softly. \"In through your nose — one, two, three. Out through your mouth — one, two, three.\"</p><p>Lily tried it. Once. Twice. Three times.</p><p>The world slowed down. Her heart slowed down.</p><p>\"BREATHE,\" she whispered to herself. \"I can always start there.\"</p><p>Sunny nodded. \"Always.\"</p>",
@@ -328,7 +328,7 @@ var WORDS = [
   },
   {
     word:"CLEAR", meaning:"Seeing things as they really are",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Clear_Color.png", bwImg:BASE+"Clear_ColoringPage.png",
     interactiveUrl:BASE+"Clear_HiddenPicture.html",
    hidden:["glasses","crystal ball","mirror","lighthouse beam","key","cleaning window","star through clouds"],
     shortStory:"<p>There was so much fog that morning that Owen couldn't see the path ahead.</p><p>\"How do we know where to go?\" he asked.</p><p>\"We wait,\" said Zara. \"And we look carefully at what we can see right now.\"</p><p>Slowly the fog lifted. The path had been there all along — beautiful and clear.</p><p>Ray smiled. \"Sometimes things just need time to become CLEAR.\"</p><p>Sunny added, \"And sometimes you just need to look more carefully.\"</p>",
@@ -336,7 +336,7 @@ var WORDS = [
   },
   {
     word:"CONNECT", meaning:"Building bridges between hearts",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Connect_Color.png", bwImg:BASE+"Connect_ColoringPage.png",
     interactiveUrl:BASE+"Connect_HiddenPicture.html",
    hidden:["puzzle pieces","bridge","birds touching beaks","handshake cloud","telephone cord","interlinked rings","hand heart"],
     shortStory:"<p>Maya didn't know anyone at the new lunch table. She stared at her food feeling invisible.</p><p>Then Sofia slid her sketchbook across. \"Want to draw something together?\"</p><p>One drawing became two. Two became a conversation. A conversation became a friendship.</p><p>Sunny beamed. \"That's CONNECT — building a bridge between two hearts with something small and brave.\"</p><p>Ray nodded. \"It only takes one person to start.\"</p>",
@@ -357,7 +357,7 @@ var WORDS = [
   },
   {
     word:"EMERGE", meaning:"Rising into who you are becoming",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Emerge_Color.png", bwImg:BASE+"Emerge_ColoringPage.png",
     interactiveUrl:BASE+"Emerge_HiddenPicture.html",
    hidden:["silk-spinning caterpillar","hatching egg","sunrise","sprout through concrete","star being born","opening door","reaching hand"],
     shortStory:"<p>For weeks the chrysalis hung quietly from the branch. Nothing seemed to be happening.</p><p>Then one morning — wings.</p><p>\"It's emerging!\" Lily gasped.</p><p>The butterfly pushed slowly, carefully out into the light — brand new and a little wobbly.</p><p>Ray whispered, \"EMERGE means becoming who you were always meant to be. It takes time. It takes effort. But look.\"</p><p>They all watched the wings unfold. Perfect. Strong. Ready.</p>",
@@ -365,7 +365,7 @@ var WORDS = [
   },
   {
     word:"FILTER", meaning:"Choosing what deserves your energy",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Filter_Color.png", bwImg:BASE+"Filter_ColoringPage.png",
     interactiveUrl:BASE+"Filter_HiddenPicture.html",
    hidden:["water drop filter","coffee filter","sunglasses","colander","window screen","honeycomb","prism"],
     shortStory:"<p>Everyone was talking at once and Zara felt overwhelmed by all the noise.</p><p>\"How do you decide what to listen to?\" she asked Marcus.</p><p>\"I filter,\" he said. \"Like a water filter — I let the good stuff through and leave the rest.\"</p><p>Zara tried it. She listened for kindness. For truth. For things that mattered.</p><p>The noise didn't disappear — but it got quieter.</p><p>Sunny smiled. \"FILTER your world. Not everything deserves your energy.\"</p>",
@@ -373,7 +373,7 @@ var WORDS = [
   },
   {
     word:"FLOW", meaning:"Moving forward even slowly",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Flow_Color.png", bwImg:BASE+"Flow_ColoringPage.png",
     interactiveUrl:BASE+"Flow_HiddenPicture.html",
    hidden:["swimming fish","floating leaf","waterfall","water wheel","duck family","tiny boat","bridge reflection"],
     shortStory:"<p>The river didn't rush. It didn't push. It just kept moving — around rocks, through narrow spots, over smooth stones.</p><p>Owen watched it for a long time.</p><p>\"It never stops,\" he said quietly.</p><p>\"Even when something's in the way,\" Lily agreed, \"it finds another path.\"</p><p>Ray knelt by the water. \"That's FLOW. You don't have to be fast. You just have to keep moving.\"</p><p>Sunny set the Smile Bag on a flat rock near the bank.</p>",
@@ -381,7 +381,7 @@ var WORDS = [
   },
   {
     word:"GROW", meaning:"Becoming more than you were",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Grow_Color.png", bwImg:BASE+"Grow_ColoringPage.png",
     interactiveUrl:BASE+"Grow_HiddenPicture.html",
    hidden:["height chart","acorn and oak","butterfly transformation","calendar","seedling in hand","tree rings","growing constellation"],
     shortStory:"<p>Maya measured herself against the doorframe where her height had been marked every year since she was small. She was taller. Again.</p><p>\"Growing is easy,\" she laughed.</p><p>\"Not always,\" said Zara gently. \"Sometimes growing means learning something hard, or saying sorry, or trying again after you fail.\"</p><p>Ray nodded. \"GROW means becoming more than you were — in every way, not just height.\"</p><p>Sunny grinned. \"And every single day, you're doing it.\"</p>",
@@ -389,7 +389,7 @@ var WORDS = [
   },
   {
     word:"HEAL", meaning:"Restoring what was broken",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Heal_Color.png", bwImg:BASE+"Heal_ColoringPage.png",
     interactiveUrl:BASE+"Heal_HiddenPicture.html",
    hidden:["kintsugi vase","healed bandage","gold-filled heart crack","crescent moon","candle","healing herb","tear-to-flower"],
     shortStory:"<p>Ray sat beside the child who was having a very hard day. He didn't say much. He just stayed.</p><p>After a while the child asked, \"Does it ever stop hurting?\"</p><p>\"Yes,\" Ray said softly. \"Not all at once. But little by little, it gets easier. That's what healing is.\"</p><p>Sunny placed the Smile Bag gently in the child's hands. \"And you don't have to heal alone.\"</p><p>\"Never alone,\" Ray agreed.</p>",
@@ -397,7 +397,7 @@ var WORDS = [
   },
   {
     word:"MIGRATE", meaning:"Carrying home within yourself",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Migrate_Color.png", bwImg:BASE+"Migrate_ColoringPage.png",
     interactiveUrl:BASE+"Migrate_HiddenPicture.html",
    hidden:["monarch butterfly","home compass","cloud world map","glowing heart house","southbound bird","stickered suitcase","home star"],
     shortStory:"<p>Marcus had moved three times. Three schools, three sets of friends, three different bedrooms.</p><p>\"Don't you miss home?\" Lily asked.</p><p>Marcus smiled. \"I carry it with me. The songs my mom sings. The way my dad makes breakfast. The smell of my grandmother's house. Those go everywhere I go.\"</p><p>Ray nodded. \"That's MIGRATE — carrying home within yourself, no matter where life takes you.\"</p><p>Sunny held up the Smile Bag. \"Home is not just a place. It's what you carry inside.\"</p>",
@@ -405,7 +405,7 @@ var WORDS = [
   },
   {
     word:"PERSIST", meaning:"Keeping going when it gets hard",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Persist_Color.png", bwImg:BASE+"Persist_ColoringPage.png",
     interactiveUrl:BASE+"Persist_HiddenPicture.html",
    hidden:["tortoise and hare","nearly-spent candle","broken-step staircase","mountain climber","bent tree","river through rock","cloud medal"],
     shortStory:"<p>Owen had fallen off his bike five times.</p><p>\"Maybe I'm just not a bike person,\" he said, sitting on the grass.</p><p>\"Maybe you just haven't learned yet,\" said Lily, helping him up.</p><p>He tried again. And again. And on the eighth try — he didn't fall.</p><p>Sunny cheered so loudly the whole neighborhood heard.</p><p>\"That's PERSIST,\" Ray said. \"Keeping going when it gets hard. That's how everything worth doing gets done.\"</p>",
@@ -413,7 +413,7 @@ var WORDS = [
   },
   {
     word:"RENEW", meaning:"Starting fresh with new strength",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Renew_Color.png", bwImg:BASE+"Renew_ColoringPage.png",
     interactiveUrl:BASE+"Renew_HiddenPicture.html",
    hidden:["charging battery","sunrise","seasonal tree pair","fresh notebook page","butterfly transformation","dew drop","resetting clock"],
     shortStory:"<p>It had been a very hard week. Lily felt worn out all the way to her bones.</p><p>\"I need to start over,\" she said.</p><p>\"You don't have to start over,\" said Maya gently. \"You just need to RENEW.\"</p><p>\"What's the difference?\"</p><p>\"Starting over means throwing away everything. Renewing means resting, refilling, and beginning again — stronger.\"</p><p>Ray handed her the Smile Bag. \"Sleep. Eat. Breathe. Then begin again.\"</p><p>\"Fresh,\" said Sunny. \"Like morning.\"</p>",
@@ -421,7 +421,7 @@ var WORDS = [
   },
   {
     word:"RESTORE", meaning:"Bringing back what matters most",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Restore_Color.png", bwImg:BASE+"Restore_ColoringPage.png",
     interactiveUrl:BASE+"Restore_HiddenPicture.html",
    hidden:["before/after split","butterfly","restored tool","cracked-pot plant","color-restoring paintbrush","heart flower patch","ladybug"],
     shortStory:"<p>The old bench in the park had been broken for a long time. Everyone walked past it. But Sofia stopped. She got some paint and a hammer and nails. She fixed it. Repainted it. Made it beautiful again.</p><p>The next day three people sat on it.</p><p>Ray watched them smile. \"That's RESTORE. Bringing back what matters most.\"</p><p>Sunny added, \"Sometimes all something needs is someone willing to care.\"</p>",
@@ -429,7 +429,7 @@ var WORDS = [
   },
   {
     word:"RETURN", meaning:"Coming back to what is true",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Return_Color.png", bwImg:BASE+"Return_ColoringPage.png",
     interactiveUrl:BASE+"Return_HiddenPicture.html",
    hidden:["true-north compass","honest mirror","returning path","bookmark in book","boomerang","star in constellation","key in lock"],
     shortStory:"<p>Marcus had been trying so hard to be cool that he'd forgotten to be himself. He stopped laughing at the things he loved. Stopped talking about science.</p><p>\"I miss you,\" said Zara one day.</p><p>He looked at her. \"I'm right here.\"</p><p>\"No,\" she said kindly. \"The real you.\"</p><p>The next day he told a science fact at lunch and laughed too loudly at his own joke.</p><p>Sunny and Ray grinned at each other. \"He returned,\" Ray said.</p>",
@@ -437,7 +437,7 @@ var WORDS = [
   },
   {
     word:"RISE", meaning:"Standing tall after falling down",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Rise_Color.png", bwImg:BASE+"Rise_ColoringPage.png",
     interactiveUrl:BASE+"Rise_HiddenPicture.html",
    hidden:["rising phoenix","sunrise","stump shoot","valley climber","hatching bird","ascending stairs","wave-lifted boat"],
     shortStory:"<p>Lily fell. Hard. She sat on the ground for a moment, checking her hands and knees. They stung.</p><p>Sunny crouched down beside her. \"Ready?\"</p><p>\"Not yet,\" she said.</p><p>\"Okay,\" said Sunny. And waited.</p><p>After a minute she looked up. \"Okay. Now.\"</p><p>Sunny and Ray each took a hand and helped her up.</p><p>Ray smiled. \"That's RISE. You get to take a moment. And then you get up.\"</p>",
@@ -445,7 +445,7 @@ var WORDS = [
   },
   {
     word:"SHINE", meaning:"Letting your light reach others",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Shine_Color.png", bwImg:BASE+"Shine_ColoringPage.png",
     interactiveUrl:BASE+"Shine_HiddenPicture.html",
    hidden:["lighthouse beam","candle-lighting-candles","sunflower","night star","lantern","light-reflecting mirror","prism rainbow"],
     shortStory:"<p>Sofia was nervous to share her drawing. What if no one liked it? But she held it up anyway — hands shaking just a little.</p><p>The room went quiet. Then everyone leaned in.</p><p>\"Sofia,\" said Lily. \"This is beautiful.\"</p><p>Sunny beamed. \"That's SHINE. When you share your gift — even when you're scared — your light reaches people who needed it.\"</p><p>Ray added softly, \"Someone in this room needed to see exactly what you made today.\"</p>",
@@ -453,7 +453,7 @@ var WORDS = [
   },
   {
     word:"SUSTAIN", meaning:"Keeping what is good alive",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Sustain_Color.png", bwImg:BASE+"Sustain_ColoringPage.png",
     interactiveUrl:BASE+"Sustain_HiddenPicture.html",
    hidden:["protected flame","water cycle","returning bee","interval clock","marked calendar","deep-rooted heart","river with streams"],
     shortStory:"<p>The friendship garden had been growing all year — watered and weeded and cared for every single week.</p><p>\"Why do you keep coming back?\" someone asked Maya.</p><p>\"Because good things need tending,\" she said. \"If you stop caring for something good, it fades. If you keep showing up — it grows.\"</p><p>Ray watered a small plant near the Smile Bag. \"SUSTAIN means keeping what is good alive. On purpose. Every day.\"</p><p>Sunny nodded. \"Love is a verb.\"</p>",
@@ -461,7 +461,7 @@ var WORDS = [
   },
   {
     word:"THRIVE", meaning:"Living at your fullest",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Thrive_Color.png", bwImg:BASE+"Thrive_ColoringPage.png",
     interactiveUrl:BASE+"Thrive_HiddenPicture.html",
    hidden:["full sun","full bloom plant","musical note","heart trophy","free-flowing river","bird in flight","tall bright candle"],
     shortStory:"<p>\"What does thriving feel like?\" Lily asked. Everyone thought about it.</p><p>\"Like when you're so into something that you forget to look at the clock,\" said Marcus.</p><p>\"Like when you laugh so hard your stomach hurts,\" said Owen.</p><p>\"Like when you did something hard and it worked,\" said Sofia.</p><p>\"Like being exactly where you're supposed to be,\" said Zara.</p><p>Ray smiled. \"THRIVE means living at your fullest. Not perfect — just fully, completely, joyfully you.\"</p><p>Sunny threw confetti from the Smile Bag. Just because.</p>",
@@ -469,7 +469,7 @@ var WORDS = [
   },
   {
     word:"TRANSFORM", meaning:"Becoming something beautifully new",
-    colorImg:"", bwImg:"",
+    colorImg:BASE+"Transform_Color.png", bwImg:BASE+"Transform_ColoringPage.png",
     interactiveUrl:BASE+"Transform_HiddenPicture.html",
    hidden:["butterfly sequence","coal-to-diamond","seed-to-tree","tadpole-to-frog","crystal rock","parting sky","transformation mirror"],
     shortStory:"<p>The caterpillar went into the chrysalis as one thing and came out as something completely different.</p><p>\"Is it still the same creature?\" Lily asked.</p><p>\"Yes,\" said Marcus. \"And no. It kept what it needed and became something new.\"</p><p>Ray held the butterfly gently on his finger. \"TRANSFORM means you don't have to stay the same. Hard things can change you into something more beautiful than you were.\"</p><p>Sunny watched it fly away. \"That's the whole point,\" he said softly.</p>",
@@ -616,11 +616,14 @@ function openWord(idx) {
   // Interactive link
   var strip = document.getElementById('interactiveStrip');
   var link  = document.getElementById('interactiveLink');
+  var hiddenStrip = document.getElementById('hiddenStrip');
   if(w.interactiveUrl){
     strip.style.display = 'block';
     link.href = w.interactiveUrl;
+    hiddenStrip.style.display = 'block';
   } else {
     strip.style.display = 'none';
+    hiddenStrip.style.display = 'none';
   }
 
   // Stories
