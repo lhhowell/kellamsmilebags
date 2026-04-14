@@ -3,16 +3,14 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Custom Sticker Sheet · Smile Bags · Robin Hoffman</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet"/>
+<title>Custom Sticker Designer · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&family=Satisfy&family=Oswald:wght@600&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Nunito',sans-serif;background:#FFF8EE;min-height:100vh;padding-bottom:60px;}
-
 .hdr{background:linear-gradient(135deg,#6B1E2E,#4A1020);padding:20px 28px;text-align:center;}
 .hdr h1{font-family:'Fredoka One',cursive;font-size:24px;color:#fff;}
 .hdr p{font-size:13px;color:rgba(255,255,255,.75);margin-top:5px;}
-
 .prog{display:flex;align-items:flex-start;justify-content:center;padding:14px 16px;background:#fff;border-bottom:2px solid #F5D5A0;gap:4px;flex-wrap:wrap;}
 .prog-item{display:flex;flex-direction:column;align-items:center;gap:3px;}
 .prog-dot{width:32px;height:32px;border-radius:50%;background:#F5D5A0;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:13px;color:#fff;transition:all .3s;}
@@ -21,66 +19,66 @@ body{font-family:'Nunito',sans-serif;background:#FFF8EE;min-height:100vh;padding
 .prog-lbl{font-size:9px;color:#aaa;font-family:'Fredoka One',cursive;text-align:center;max-width:52px;line-height:1.2;}
 .prog-lbl.active{color:#6B1E2E;}
 .prog-arr{color:#F5D5A0;font-size:14px;margin-top:8px;}
-
-.screen{display:none;max-width:780px;margin:0 auto;padding:24px 16px;}
+.screen{display:none;max-width:860px;margin:0 auto;padding:24px 16px;}
 .screen.active{display:block;}
 .scr-hd{text-align:center;margin-bottom:22px;}
 .scr-hd h2{font-family:'Fredoka One',cursive;font-size:26px;color:#6B1E2E;}
 .scr-hd p{font-size:14px;color:#666;margin-top:7px;line-height:1.6;}
-
 .white-card{background:#fff;border-radius:18px;padding:24px;box-shadow:0 4px 18px rgba(0,0,0,.07);margin-bottom:16px;}
 .field-label{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#6B1E2E;display:block;margin-bottom:8px;}
 .field-inp{width:100%;padding:13px 16px;border:3px solid #F5D5A0;border-radius:12px;font-family:'Nunito',sans-serif;font-size:16px;outline:none;transition:border-color .2s;margin-bottom:14px;}
 .field-inp:focus{border-color:#6B1E2E;}
-
-.word-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
-.word-btn{background:#fff;border:3px solid #F5D5A0;border-radius:12px;padding:10px 6px;cursor:pointer;text-align:center;transition:all .2s;font-family:'Fredoka One',cursive;font-size:13px;color:#6B1E2E;}
+.word-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.word-btn{background:#fff;border:2.5px solid #F5D5A0;border-radius:10px;padding:9px 4px;cursor:pointer;text-align:center;transition:all .2s;font-family:'Fredoka One',cursive;font-size:12px;color:#6B1E2E;}
 .word-btn:hover{border-color:#6B1E2E;transform:translateY(-1px);}
 .word-btn.sel{border-color:#6B1E2E;background:#FFF0E0;}
-
-.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.style-btn{background:#fff;border:3px solid #F5D5A0;border-radius:14px;padding:18px;cursor:pointer;text-align:center;transition:all .2s;}
-.style-btn:hover{border-color:#6B1E2E;transform:translateY(-2px);}
-.style-btn.sel{border-color:#6B1E2E;background:#FFF0E0;}
-.style-icon{font-size:2.2rem;display:block;margin-bottom:8px;}
-.style-name{font-family:'Fredoka One',cursive;font-size:14px;color:#6B1E2E;margin-bottom:4px;}
-.style-desc{font-size:11px;color:#888;line-height:1.4;}
-
-/* SHEET PREVIEW */
-.sheet-preview{display:flex;justify-content:center;padding:10px 0;overflow-x:auto;}
+.studio{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:start;}
+.preview-col{display:flex;flex-direction:column;align-items:center;gap:12px;position:sticky;top:20px;}
+.preview-label{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6B1E2E;}
+.section-lbl{font-family:'Fredoka One',cursive;font-size:14px;color:#6B1E2E;margin-bottom:10px;margin-top:18px;}
+.section-lbl:first-child{margin-top:0;}
+.font-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px;}
+.font-btn{background:#fff;border:3px solid #F5D5A0;border-radius:12px;padding:12px 10px;cursor:pointer;text-align:center;transition:all .2s;}
+.font-btn:hover,.font-btn.sel{border-color:#6B1E2E;}
+.font-btn.sel{background:#FFF0E0;}
+.font-sample{font-size:18px;color:#6B1E2E;margin-bottom:4px;line-height:1.2;}
+.font-name{font-size:10px;color:#888;font-family:'Nunito',sans-serif;}
+.color-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
+.color-swatch{width:36px;height:36px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all .2s;flex-shrink:0;}
+.color-swatch:hover{transform:scale(1.1);}
+.color-swatch.sel{border-color:#1A1A1A;box-shadow:0 0 0 2px #fff,0 0 0 4px #1A1A1A;}
+.img-cat-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#bbb;margin-bottom:6px;margin-top:14px;}
+.img-cat-label:first-child{margin-top:0;}
+.img-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;}
+.img-btn{background:#fff;border:2.5px solid #F5D5A0;border-radius:8px;padding:6px 4px;cursor:pointer;text-align:center;transition:all .2s;font-size:1.4rem;line-height:1;}
+.img-btn:hover{border-color:#6B1E2E;transform:scale(1.05);}
+.img-btn.sel{border-color:#6B1E2E;background:#FFF0E0;}
 .print-note{background:#FFF3D6;border:1.5px solid #C8860A;border-radius:10px;padding:14px 18px;font-size:13px;color:#7A4F00;line-height:1.65;margin-bottom:14px;}
+.print-note strong{color:#5A3000;}
+.sheet-preview{display:flex;justify-content:center;padding:10px 0;overflow-x:auto;}
 .print-btn-main{width:100%;padding:16px;background:linear-gradient(135deg,#6B1E2E,#4A1020);color:#fff;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:18px;cursor:pointer;margin-bottom:8px;}
 .sub-box{background:#F0F8E8;border-radius:16px;padding:28px;text-align:center;display:none;}
 .token-box{background:#FFF3D6;border:2px solid #C8860A;border-radius:12px;padding:14px;display:inline-block;margin-top:14px;}
 .token-code{font-family:'Fredoka One',cursive;font-size:28px;letter-spacing:4px;color:#7A4F00;}
-
-.nav-row{display:flex;gap:12px;justify-content:flex-end;margin-top:10px;}
+.nav-row{display:flex;gap:12px;justify-content:flex-end;margin-top:16px;}
 .btn-next{padding:14px 28px;background:linear-gradient(135deg,#6B1E2E,#4A1020);color:#fff;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;box-shadow:0 5px 16px rgba(107,30,46,.3);}
 .btn-back{padding:14px 20px;border:3px solid #F5D5A0;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;color:#888;background:#fff;}
-
-@media(max-width:600px){.word-grid{grid-template-columns:repeat(2,1fr);}.style-grid{grid-template-columns:1fr;}}
+@media(max-width:640px){.word-grid{grid-template-columns:repeat(3,1fr);}.studio{grid-template-columns:1fr;}.preview-col{position:static;}.img-grid{grid-template-columns:repeat(5,1fr);}}
 </style>
 </head>
 <body>
-
-<div class="hdr">
-  <h1>🏷️ Custom Sticker Sheet Designer</h1>
-  <p>Smile Bags · A Word &amp; Wonder Experience · Robin Hoffman · Spring 2026</p>
-</div>
-
+<div class="hdr"><h1>&#127991; Custom Sticker Designer</h1><p>Smile Bags &middot; A Word &amp; Wonder Experience &middot; Robin Hoffman &middot; Spring 2026</p></div>
 <div class="prog">
   <div class="prog-item"><div class="prog-dot active" id="pd0">1</div><div class="prog-lbl active" id="pl0">My Info</div></div>
   <div class="prog-arr">&rsaquo;</div>
   <div class="prog-item"><div class="prog-dot" id="pd1">2</div><div class="prog-lbl" id="pl1">My Word</div></div>
   <div class="prog-arr">&rsaquo;</div>
-  <div class="prog-item"><div class="prog-dot" id="pd2">3</div><div class="prog-lbl" id="pl2">Style</div></div>
+  <div class="prog-item"><div class="prog-dot" id="pd2">3</div><div class="prog-lbl" id="pl2">Design</div></div>
   <div class="prog-arr">&rsaquo;</div>
   <div class="prog-item"><div class="prog-dot" id="pd3">4</div><div class="prog-lbl" id="pl3">Print!</div></div>
 </div>
-
-<!-- S0: INFO -->
 <div class="screen active" id="scr0">
-  <div class="scr-hd"><h2>Let's design your stickers! 🏷️</h2><p>Your name and OneWord will appear on every sticker in your sheet.</p></div>
+  <div class="scr-hd"><h2>Let's design your stickers! &#127991;</h2><p>You'll choose your word, pick a font and color, select an image, and print 12 stickers on one sheet.</p></div>
   <div class="white-card">
     <label class="field-label">Your first name</label>
     <input class="field-inp" id="iName" type="text" placeholder="Type your name..."/>
@@ -93,180 +91,196 @@ body{font-family:'Nunito',sans-serif;background:#FFF8EE;min-height:100vh;padding
   </div>
   <div class="nav-row"><button class="btn-next" onclick="toWord()">Next &rarr;</button></div>
 </div>
-
-<!-- S1: WORD -->
 <div class="screen" id="scr1">
-  <div class="scr-hd"><h2>Choose Your OneWord 🌟</h2><p>Your OneWord will be the centerpiece of every sticker on your sheet.</p></div>
-  <div class="white-card">
-    <div class="word-grid" id="wordGrid"></div>
-  </div>
+  <div class="scr-hd"><h2>Choose Your OneWord &#127775;</h2><p>Your OneWord will be the centerpiece of every sticker.</p></div>
+  <div class="white-card"><div class="word-grid" id="wordGrid"></div></div>
   <div class="nav-row">
-    <button class="btn-back" onclick="nav(0)">← Back</button>
-    <button class="btn-next" onclick="toStyle()">Next — Choose a Style &rarr;</button>
+    <button class="btn-back" onclick="nav(0)">&#8592; Back</button>
+    <button class="btn-next" onclick="toDesign()">Next &mdash; Design My Sticker &rarr;</button>
   </div>
 </div>
-
-<!-- S2: STYLE -->
 <div class="screen" id="scr2">
-  <div class="scr-hd"><h2>Choose Your Sticker Style 🎨</h2><p>Pick the look that feels right for your OneWord.</p></div>
+  <div class="scr-hd"><h2 id="s2h">Design Your Sticker &#10024;</h2><p>Choose your font, background color, and image. Your sticker updates live!</p></div>
   <div class="white-card">
-    <div class="style-grid">
-      <div class="style-btn sel" onclick="pickStyle('classic',this)">
-        <span class="style-icon">⭐</span>
-        <div class="style-name">Classic</div>
-        <div class="style-desc">Bold word center, your name at the bottom. Clean and confident.</div>
+    <div class="studio">
+      <div class="preview-col">
+        <div class="preview-label">Live Preview</div>
+        <svg id="previewSVG" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="width:180px;height:180px;filter:drop-shadow(0 4px 16px rgba(107,30,46,.2));"></svg>
+        <div style="font-family:'Fredoka One',cursive;font-size:10px;color:#bbb;letter-spacing:1px;text-transform:uppercase;">Your sticker</div>
       </div>
-      <div class="style-btn" onclick="pickStyle('botanical',this)">
-        <span class="style-icon">🌿</span>
-        <div class="style-name">Botanical</div>
-        <div class="style-desc">Word with leaf accents and organic borders. Nature-inspired.</div>
-      </div>
-      <div class="style-btn" onclick="pickStyle('badge',this)">
-        <span class="style-icon">🏅</span>
-        <div class="style-name">Badge</div>
-        <div class="style-desc">Circular badge style with star accents. Bold and graphic.</div>
-      </div>
-      <div class="style-btn" onclick="pickStyle('minimal',this)">
-        <span class="style-icon">◯</span>
-        <div class="style-name">Minimal</div>
-        <div class="style-desc">Simple, elegant circle. Just the word — nothing extra.</div>
+      <div class="controls-col">
+        <div class="section-lbl">1. Choose a Font</div>
+        <div class="font-grid" id="fontGrid"></div>
+        <div class="section-lbl">2. Choose a Background Color</div>
+        <div class="color-row" id="colorRow"></div>
+        <div class="section-lbl">3. Choose an Image</div>
+        <div class="img-cat-label">&#127807; Nature</div>
+        <div class="img-grid" id="imgGridNature"></div>
+        <div class="img-cat-label">&#10024; Hope &amp; Light</div>
+        <div class="img-grid" id="imgGridHope"></div>
+        <div class="img-cat-label">&#128155; Hearts &amp; Connection</div>
+        <div class="img-grid" id="imgGridHearts"></div>
       </div>
     </div>
   </div>
   <div class="nav-row">
-    <button class="btn-back" onclick="nav(1)">← Back</button>
+    <button class="btn-back" onclick="nav(1)">&#8592; Back</button>
     <button class="btn-next" onclick="toPreview()">Preview My Sheet &rarr;</button>
   </div>
 </div>
-
-<!-- S3: PREVIEW & PRINT -->
 <div class="screen" id="scr3">
-  <div class="scr-hd"><h2 id="s3h">Your Sticker Sheet! 🏷️</h2><p>12 stickers per sheet. Print on sticker paper for best results.</p></div>
-  <div class="print-note">
-    <strong>📋 Printing Instructions:</strong> Click "Print My Stickers" below. For best results, use <strong>Avery 22807</strong> or similar round sticker paper (2" circles). Standard paper also works — cut them out with scissors. Set margins to <strong>None</strong>, scale <strong>100%</strong>.
-  </div>
+  <div class="scr-hd"><h2 id="s3h">Your Sticker Sheet! &#127991;</h2><p>12 stickers &middot; 2&Prime; circles &middot; Cricut-ready. Corner marks guide the cut.</p></div>
+  <div class="print-note"><strong>&#128203; For Cricut:</strong> Print first, then load into Cricut and select <strong>Print Then Cut</strong> mode. Corner registration marks guide the blade. For sticker paper: use <strong>Avery 22807</strong> (2&Prime; round labels). For regular paper: print and cut with scissors. Set margins to <strong>None</strong>, scale <strong>100%</strong>.</div>
   <div class="white-card">
-    <div class="sheet-preview"><svg id="sheetSVG" viewBox="0 0 612 792" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:400px;border:1px solid #e8e4dc;border-radius:8px;background:#fff;"></svg></div>
+    <div class="sheet-preview"><svg id="sheetSVG" viewBox="0 0 612 792" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:380px;border:1px solid #e8e4dc;border-radius:8px;background:#fff;"></svg></div>
   </div>
   <div id="notSub">
-    <button class="print-btn-main" onclick="printSheet()">🖨️ Print My Stickers</button>
-    <button class="print-btn-main" style="background:linear-gradient(135deg,#2D7A4F,#1B5E20);margin-top:8px;" onclick="doSubmit()">✅ Submit &amp; Print</button>
-    <p style="font-size:12px;color:#888;font-style:italic;text-align:center;margin-top:8px;">Submit logs your sheet design. Print opens the print dialog.</p>
+    <button class="print-btn-main" onclick="printSheet()">&#128438; Print My Sticker Sheet</button>
+    <button class="print-btn-main" style="background:linear-gradient(135deg,#2D7A4F,#1B5E20);margin-top:8px;" onclick="doSubmit()">&#10003; Submit &amp; Print</button>
+    <p style="font-size:12px;color:#888;font-style:italic;text-align:center;margin-top:8px;">Submit logs your design to Ms. Hoffman.</p>
   </div>
   <div class="sub-box" id="subBox">
-    <div style="font-size:52px;margin-bottom:12px;">🎉</div>
+    <div style="font-size:52px;margin-bottom:12px;">&#127881;</div>
     <div style="font-family:'Fredoka One',cursive;font-size:22px;color:#2D7A4F;margin-bottom:6px;">Sheet Submitted!</div>
-    <p style="font-size:14px;color:#555;line-height:1.7;">Your sticker sheet is saved. Don't forget to print it!</p>
+    <p style="font-size:14px;color:#555;line-height:1.7;">Your sticker design is saved. Don't forget to print!</p>
     <div class="token-box"><div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#C8860A;margin-bottom:4px;">Your code</div><div class="token-code" id="tokCode">KSB-0000</div></div>
-    <button class="print-btn-main" style="margin-top:16px;width:auto;padding:12px 28px;" onclick="printSheet()">🖨️ Print My Stickers</button>
+    <button class="print-btn-main" style="margin-top:16px;width:auto;padding:12px 28px;" onclick="printSheet()">&#128438; Print My Sheet</button>
   </div>
   <div class="nav-row" style="justify-content:flex-start;margin-top:12px;">
-    <button class="btn-back" onclick="nav(2)">← Change Something</button>
+    <button class="btn-back" onclick="nav(2)">&#8592; Change Design</button>
   </div>
 </div>
-
 <script>
 var SCRIPT_URL="YOUR_APPS_SCRIPT_URL_HERE";
 var WORDS=["ABSORB","ADAPT","ANCHOR","BALANCE","BLOOM","BREATHE","CLEAR","CONNECT","CYCLE","EMERGE","FILTER","FLOW","GROW","HEAL","MIGRATE","PERSIST","RENEW","RESTORE","RETURN","RISE","ROOT","SHINE","SUSTAIN","THRIVE","TRANSFORM"];
-var PALETTES={
-  classic:{bg:"#6B1E2E",accent:"#C9A84C",text:"#FFF8EE"},
-  botanical:{bg:"#1B4332",accent:"#E8C97A",text:"#FDFAF3"},
-  badge:{bg:"#1A2744",accent:"#C9A84C",text:"#FFF8EE"},
-  minimal:{bg:"#1A1A1A",accent:"#E8E4DC",text:"#FDFAF3"}
+var FONTS=[
+  {name:"Friendly",css:"Fredoka One, cursive",sample:"Bloom"},
+  {name:"Elegant",css:"Playfair Display, serif",sample:"Bloom"},
+  {name:"Script",css:"Satisfy, cursive",sample:"Bloom"},
+  {name:"Bold",css:"Oswald, sans-serif",sample:"Bloom"}
+];
+var COLORS=[
+  {name:"Burgundy",hex:"#6B1E2E"},{name:"Navy",hex:"#1A2744"},
+  {name:"Forest",hex:"#1B4332"},{name:"Teal",hex:"#1B7A78"},
+  {name:"Gold",hex:"#C8860A"},{name:"Purple",hex:"#5B2D9E"},
+  {name:"Black",hex:"#1A1A1A"},{name:"Slate",hex:"#3D4F6B"}
+];
+var IMAGES={
+  nature:["\uD83C\uDF31","\uD83C\uDF38","\uD83C\uDF3F","\uD83C\uDF43","\uD83C\uDF3A","\uD83C\uDF0A","\uD83C\uDF32","\uD83C\uDF42","\uD83E\uDD8B","\uD83C\uDF3B","\uD83C\uDF19","\u2600\uFE0F"],
+  hope:["\u2728","\u2B50","\uD83C\uDF08","\uD83D\uDD25","\uD83D\uDCAB","\uD83D\uDD4A\uFE0F","\uD83C\uDF05","\u26A1","\uD83C\uDFAF","\uD83C\uDF1F","\uD83C\uDFC6","\uD83C\uDF04"],
+  hearts:["\uD83D\uDCDB","\uD83D\uDCD9","\uD83D\uDCDA","\uD83D\uDC9C","\uD83E\uDD0D","\uD83D\uDC97","\uD83E\uFAF6","\uD83E\uDD1D","\uD83C\uDF0D","\uD83C\uDF81","\uD83E\uDEB4","\uD83E\uDEA7"]
 };
-var sName="",sClass="",selWord=null,selStyle="classic";
+var sName="",sClass="",selWord=null;
+var selFont=FONTS[0],selColor=COLORS[0],selImage="\uD83C\uDF31";
 
-document.addEventListener("DOMContentLoaded",function(){buildWordGrid();});
+document.addEventListener("DOMContentLoaded",function(){buildWordGrid();buildFontGrid();buildColorRow();buildImageGrids();drawPreview();});
 
 function buildWordGrid(){
   var g=document.getElementById("wordGrid");
   WORDS.forEach(function(w){
     var b=document.createElement("button");b.className="word-btn";b.textContent=w;
-    b.onclick=function(){document.querySelectorAll(".word-btn").forEach(function(x){x.classList.remove("sel");});b.classList.add("sel");selWord=w;};
+    b.onclick=function(){document.querySelectorAll(".word-btn").forEach(function(x){x.classList.remove("sel");});b.classList.add("sel");selWord=w;drawPreview();};
     g.appendChild(b);
   });
 }
-function pickStyle(s,el){document.querySelectorAll(".style-btn").forEach(function(x){x.classList.remove("sel");});el.classList.add("sel");selStyle=s;}
-function toWord(){sName=document.getElementById("iName").value.trim();sClass=document.getElementById("iClass").value;if(!sName){alert("Please enter your name!");return;}nav(1);}
-function toStyle(){if(!selWord){alert("Please choose your OneWord!");return;}nav(2);}
-function toPreview(){document.getElementById("s3h").textContent="Your Sticker Sheet, "+sName+"!";drawSheet();nav(3);}
-
-function drawSheet(){
-  var svg=document.getElementById("sheetSVG");
-  var p=PALETTES[selStyle]||PALETTES.classic;
-  var word=selWord||"SHINE",name=sName||"Student";
-  // 12 stickers: 3 cols × 4 rows, centered on 612×792 letter page
-  var cols=3,rows=4,r=66,spacX=204,spacY=198,startX=102,startY=99;
-  var stickers="";
-  for(var row=0;row<rows;row++){
-    for(var col=0;col<cols;col++){
-      var cx=startX+col*spacX, cy=startY+row*spacY;
-      stickers+=drawSticker(cx,cy,r,word,name,p,selStyle);
-    }
-  }
-  svg.innerHTML='<rect width="612" height="792" fill="#fff"/>'+
-    '<text x="306" y="25" text-anchor="middle" font-family="Fredoka One, cursive" font-size="11" fill="#ccc" letter-spacing="2">SMILE BAGS · A WORD &amp; WONDER EXPERIENCE · SPRING 2026</text>'+
-    '<text x="306" y="775" text-anchor="middle" font-family="Fredoka One, cursive" font-size="10" fill="#ccc" letter-spacing="1">Made with care by '+escXml(name)+' · Class of 2026 · Kellam High School</text>'+
-    stickers;
+function buildFontGrid(){
+  var g=document.getElementById("fontGrid");
+  FONTS.forEach(function(f,i){
+    var b=document.createElement("div");b.className="font-btn"+(i===0?" sel":"");
+    b.innerHTML='<div class="font-sample" style="font-family:'+f.css+'">'+f.sample+'</div><div class="font-name">'+f.name+'</div>';
+    b.onclick=(function(fn,el){return function(){document.querySelectorAll(".font-btn").forEach(function(x){x.classList.remove("sel");});el.classList.add("sel");selFont=fn;drawPreview();};})(f,b);
+    g.appendChild(b);
+  });
 }
-
-function drawSticker(cx,cy,r,word,name,p,style){
-  var bg=p.bg,ac=p.accent,tx=p.text;
-  var base='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+bg+'" stroke="#e8e4dc" stroke-width="1.5"/>';
-  if(style==="classic"){
-    return base+
-      '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r-6)+'" fill="none" stroke="'+ac+'" stroke-width="1.5" opacity="0.5"/>'+
-      '<text x="'+cx+'" y="'+(cy-8)+'" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="18" fill="'+ac+'" letter-spacing="1">'+escXml(word)+'</text>'+
-      '<line x1="'+(cx-28)+'" y1="'+(cy+8)+'" x2="'+(cx+28)+'" y2="'+(cy+8)+'" stroke="'+ac+'" stroke-width="1" opacity="0.5"/>'+
-      '<text x="'+cx+'" y="'+(cy+22)+'" text-anchor="middle" dominant-baseline="middle" font-family="Nunito, sans-serif" font-size="10" fill="'+tx+'" opacity="0.8">'+escXml(name)+'</text>';
-  } else if(style==="botanical"){
-    return base+
-      '<text x="'+cx+'" y="'+(cy-18)+'" text-anchor="middle" font-size="14" fill="'+ac+'" opacity="0.6">🌿</text>'+
-      '<text x="'+cx+'" y="'+(cy+5)+'" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="16" fill="'+ac+'" letter-spacing="1">'+escXml(word)+'</text>'+
-      '<text x="'+cx+'" y="'+(cy+20)+'" text-anchor="middle" font-size="12" fill="'+ac+'" opacity="0.6">🌿</text>'+
-      '<text x="'+cx+'" y="'+(cy+36)+'" text-anchor="middle" dominant-baseline="middle" font-family="Nunito, sans-serif" font-size="9" fill="'+tx+'" opacity="0.7">'+escXml(name)+'</text>';
-  } else if(style==="badge"){
-    return base+
-      '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r-5)+'" fill="none" stroke="'+ac+'" stroke-width="2"/>'+
-      '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r-12)+'" fill="none" stroke="'+ac+'" stroke-width="1" opacity="0.4"/>'+
-      '<text x="'+cx+'" y="'+(cy-12)+'" text-anchor="middle" font-size="12" fill="'+ac+'">⭐</text>'+
-      '<text x="'+cx+'" y="'+(cy+6)+'" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="17" fill="'+ac+'" letter-spacing="1">'+escXml(word)+'</text>'+
-      '<text x="'+cx+'" y="'+(cy+22)+'" text-anchor="middle" dominant-baseline="middle" font-family="Nunito, sans-serif" font-size="9" fill="'+tx+'" opacity="0.7" letter-spacing="1">'+escXml(name.toUpperCase())+'</text>';
-  } else {
-    // minimal
-    return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+bg+'" stroke="'+ac+'" stroke-width="2"/>'+
-      '<text x="'+cx+'" y="'+(cy+5)+'" text-anchor="middle" dominant-baseline="middle" font-family="Playfair Display, serif" font-size="18" fill="'+ac+'" font-style="italic">'+escXml(word)+'</text>';
-  }
+function buildColorRow(){
+  var g=document.getElementById("colorRow");
+  COLORS.forEach(function(c,i){
+    var b=document.createElement("div");b.className="color-swatch"+(i===0?" sel":"");b.style.background=c.hex;b.title=c.name;
+    b.onclick=(function(col,el){return function(){document.querySelectorAll(".color-swatch").forEach(function(x){x.classList.remove("sel");});el.classList.add("sel");selColor=col;drawPreview();};})(c,b);
+    g.appendChild(b);
+  });
 }
-
+function buildImageGrids(){
+  buildImgGrid("imgGridNature",IMAGES.nature);
+  buildImgGrid("imgGridHope",IMAGES.hope);
+  buildImgGrid("imgGridHearts",IMAGES.hearts);
+  document.querySelector(".img-btn").classList.add("sel");
+}
+function buildImgGrid(id,imgs){
+  var g=document.getElementById(id);
+  imgs.forEach(function(img){
+    var b=document.createElement("div");b.className="img-btn";b.textContent=img;
+    b.onclick=(function(im,el){return function(){document.querySelectorAll(".img-btn").forEach(function(x){x.classList.remove("sel");});el.classList.add("sel");selImage=im;drawPreview();};})(img,b);
+    g.appendChild(b);
+  });
+}
+function isLightColor(hex){var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return(r*.299+g*.587+b*.114)>155;}
 function escXml(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 
+function drawSticker(svgEl,cx,cy,r,word,name,font,color,image){
+  var bg=color.hex,isLight=isLightColor(bg);
+  var textCol=isLight?"#1A1A1A":"#FFFFFF";
+  var accentCol=isLight?"rgba(0,0,0,.15)":"rgba(255,255,255,.25)";
+  var wl=word.length,wfs=wl<=4?22:wl<=6?19:wl<=8?16:wl<=10?14:12;
+  svgEl.innerHTML=
+    '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+bg+'"/>'+
+    '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r-5)+'" fill="none" stroke="'+accentCol+'" stroke-width="1.5"/>'+
+    '<text x="'+cx+'" y="'+(cy-14)+'" text-anchor="middle" dominant-baseline="middle" font-size="'+(r*.48)+'">'+image+'</text>'+
+    '<line x1="'+(cx-r*.5)+'" y1="'+(cy+12)+'" x2="'+(cx+r*.5)+'" y2="'+(cy+12)+'" stroke="'+accentCol+'" stroke-width="1"/>'+
+    '<text x="'+cx+'" y="'+(cy+26)+'" text-anchor="middle" dominant-baseline="middle" font-family="'+escXml(font.css)+'" font-size="'+wfs+'" fill="'+textCol+'" letter-spacing="1">'+escXml(word)+'</text>'+
+    '<text x="'+cx+'" y="'+(cy+r-14)+'" text-anchor="middle" dominant-baseline="middle" font-family="Nunito,sans-serif" font-size="9" fill="'+textCol+'" opacity="0.7">'+escXml(name)+'</text>';
+}
+function drawPreview(){
+  var s=document.getElementById("previewSVG");if(!s)return;
+  drawSticker(s,100,100,90,selWord||"WORD",sName||"Student",selFont,selColor,selImage);
+}
+function drawSheet(){
+  var svg=document.getElementById("sheetSVG");
+  var r=68,cols=3,rows=4,colSp=204,rowSp=198,startX=102,startY=99;
+  var word=selWord||"WORD",name=sName||"Student";
+  var stickers="";
+  for(var row=0;row<rows;row++){for(var col=0;col<cols;col++){
+    var cx=startX+col*colSp,cy=startY+row*rowSp;
+    var bg=selColor.hex,isLight=isLightColor(bg);
+    var tc=isLight?"#1A1A1A":"#FFFFFF",ac=isLight?"rgba(0,0,0,.15)":"rgba(255,255,255,.25)";
+    var wl=word.length,wfs=wl<=4?20:wl<=6?17:wl<=8?14:wl<=10?12:10;
+    stickers+=
+      '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+bg+'"/>'+
+      '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r-4)+'" fill="none" stroke="'+ac+'" stroke-width="1.2"/>'+
+      '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r+1)+'" fill="none" stroke="#000" stroke-width="0.4" opacity="0.35"/>'+
+      '<text x="'+cx+'" y="'+(cy-12)+'" text-anchor="middle" dominant-baseline="middle" font-size="'+(r*.44)+'">'+selImage+'</text>'+
+      '<line x1="'+(cx-r*.48)+'" y1="'+(cy+10)+'" x2="'+(cx+r*.48)+'" y2="'+(cy+10)+'" stroke="'+ac+'" stroke-width="0.8"/>'+
+      '<text x="'+cx+'" y="'+(cy+24)+'" text-anchor="middle" dominant-baseline="middle" font-family="'+escXml(selFont.css)+'" font-size="'+wfs+'" fill="'+tc+'" letter-spacing="1">'+escXml(word)+'</text>'+
+      '<text x="'+cx+'" y="'+(cy+r-12)+'" text-anchor="middle" dominant-baseline="middle" font-family="Nunito,sans-serif" font-size="8" fill="'+tc+'" opacity="0.65">'+escXml(name)+'</text>';
+  }}
+  // Registration marks for Cricut Print Then Cut
+  var rm='<line x1="0" y1="0" x2="16" y2="0" stroke="#000" stroke-width="0.5"/><line x1="0" y1="0" x2="0" y2="16" stroke="#000" stroke-width="0.5"/><line x1="612" y1="0" x2="596" y2="0" stroke="#000" stroke-width="0.5"/><line x1="612" y1="0" x2="612" y2="16" stroke="#000" stroke-width="0.5"/><line x1="0" y1="792" x2="16" y2="792" stroke="#000" stroke-width="0.5"/><line x1="0" y1="792" x2="0" y2="776" stroke="#000" stroke-width="0.5"/><line x1="612" y1="792" x2="596" y2="792" stroke="#000" stroke-width="0.5"/><line x1="612" y1="792" x2="612" y2="776" stroke="#000" stroke-width="0.5"/>';
+  svg.innerHTML='<rect width="612" height="792" fill="#fff"/>'+rm+stickers+'<text x="306" y="782" text-anchor="middle" font-family="Fredoka One,cursive" font-size="9" fill="#ccc" letter-spacing="1">Smile Bags &middot; A Word &amp; Wonder Experience &middot; '+escXml(name)+' &middot; Class of 2026 &middot; Kellam</text>';
+}
+function toWord(){sName=document.getElementById("iName").value.trim();sClass=document.getElementById("iClass").value;if(!sName){alert("Please enter your name!");return;}nav(1);}
+function toDesign(){if(!selWord){alert("Please choose your OneWord!");return;}document.getElementById("s2h").textContent="Design Your Sticker \u2014 "+selWord;drawPreview();nav(2);}
+function toPreview(){document.getElementById("s3h").textContent="Your Sticker Sheet, "+sName+"!";drawSheet();nav(3);}
+function nav(n){
+  document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});
+  document.getElementById("scr"+n).classList.add("active");
+  for(var i=0;i<=3;i++){var pd=document.getElementById("pd"+i),pl=document.getElementById("pl"+i);if(!pd)continue;pd.classList.remove("active","done");pl.classList.remove("active");if(i<n)pd.classList.add("done");else if(i===n){pd.classList.add("active");pl.classList.add("active");}}
+  window.scrollTo(0,0);
+}
 function printSheet(){
   var svg=document.getElementById("sheetSVG");
-  var w=window.open('','_blank');
-  w.document.write('<!DOCTYPE html><html><head><title>Sticker Sheet · '+selWord+'</title><style>*{margin:0;padding:0;}body{background:#fff;}svg{width:8.5in;height:11in;display:block;}@media print{@page{size:letter;margin:0;}}</style></head><body>'+svg.outerHTML+'<script>window.onload=function(){window.print();window.onafterprint=function(){window.close();};};<\/script></body></html>');
+  var s=new XMLSerializer().serializeToString(svg);
+  var w=window.open("","_blank");
+  w.document.write("<!DOCTYPE html><html><head><title>Stickers \u00B7 "+escXml(selWord||"")+"<\/title><style>*{margin:0;padding:0;}body{background:#fff;}@media print{@page{size:8.5in 11in;margin:0;}svg{width:8.5in;height:11in;display:block;}}<\/style><\/head><body>"+s+"<script>window.onload=function(){window.print();window.onafterprint=function(){window.close();};};<\/script><\/body><\/html>");
   w.document.close();
 }
-
 function doSubmit(){
   var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
   document.getElementById("tokCode").textContent=tok;
-  var payload={studentName:sName,class:sClass,teacher:"Robin Hoffman",word:selWord,style:selStyle,token:tok};
+  var payload={studentName:sName,class:sClass,teacher:"Robin Hoffman",word:selWord,font:selFont?selFont.name:"",color:selColor?selColor.name:"",image:selImage,token:tok};
   if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){showDone();return;}
   fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)}).then(function(){showDone();}).catch(function(){showDone();});
 }
 function showDone(){document.getElementById("notSub").style.display="none";document.getElementById("subBox").style.display="block";}
-
-function nav(n){
-  document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});
-  document.getElementById("scr"+n).classList.add("active");
-  for(var i=0;i<=3;i++){
-    var pd=document.getElementById("pd"+i),pl=document.getElementById("pl"+i);
-    if(!pd)continue;pd.classList.remove("active","done");pl.classList.remove("active");
-    if(i<n)pd.classList.add("done");else if(i===n){pd.classList.add("active");pl.classList.add("active");}
-  }
-  window.scrollTo(0,0);
-}
 </script>
 </body>
 </html>
