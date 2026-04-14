@@ -6,488 +6,243 @@
 <title>Teacher Guide · Culinary Arts · Smile Bags</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet"/>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  --navy:#1A2744;--navy2:#223366;
-  --gold:#E8A820;--gold2:#F5CC70;--gold3:#C8860A;
-  --cream:#FFF8EE;--mid:#7A3E10;--light:#C87A2F;
-  --success:#2D7A4F;--radius:10px;
-}
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#1A2744;--navy2:#0F1B35;--gold:#E8A820;--gold2:#C8860A;--green:#2D7A4F;--cream:#FFFDF7;--red:#B22222;--teal:#00838F;}
+body{font-family:'Nunito',sans-serif;background:#f4f1ec;color:#1a1a2e;padding-bottom:80px;}
 
-body{font-family:'Nunito',sans-serif;background:#f4f1ec;color:#333;min-height:100vh;}
-
-/* ── HERO ── */
-.hero{
-  background:var(--navy);
-  padding:36px 40px 32px;
-  color:white;
-  position:relative;
-  overflow:hidden;
-}
-.hero::before{
-  content:'';position:absolute;top:-40px;right:-40px;
-  width:260px;height:260px;border-radius:50%;
-  background:rgba(232,168,32,.07);
-  pointer-events:none;
-}
-.hero::after{
-  content:'';position:absolute;bottom:-30px;left:60px;
-  width:180px;height:180px;border-radius:50%;
-  background:rgba(232,168,32,.05);
-  pointer-events:none;
-}
-.hero-eyebrow{
-  font-size:.62rem;font-weight:800;text-transform:uppercase;
-  letter-spacing:.14em;color:var(--gold2);margin-bottom:10px;
-}
-.hero-title{
-  font-family:'Playfair Display',serif;
-  font-size:2rem;font-weight:700;line-height:1.15;
-  margin-bottom:8px;
-}
-.hero-title span{color:var(--gold);}
-.hero-sub{
-  font-size:.88rem;color:rgba(255,255,255,.6);
-  font-weight:600;line-height:1.6;max-width:560px;
-  margin-bottom:18px;
-}
+.hero{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:44px 40px 38px;position:relative;overflow:hidden;}
+.hero::after{content:'🍪';position:absolute;right:40px;top:50%;transform:translateY(-50%);font-size:80px;opacity:.1;pointer-events:none;}
+.hero-tag{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.2;}
+.hero h1 span{color:var(--gold);}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.6);line-height:1.7;max-width:560px;margin-bottom:20px;}
 .hero-pills{display:flex;flex-wrap:wrap;gap:8px;}
-.pill{
-  font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;
-  padding:4px 12px;border-radius:20px;
-}
+.pill{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:5px 14px;border-radius:20px;}
 .pill-gold{background:rgba(232,168,32,.18);color:var(--gold);border:1px solid rgba(232,168,32,.3);}
-.pill-green{background:rgba(45,122,79,.25);color:#81C784;border:1px solid rgba(45,122,79,.3);}
-.pill-blue{background:rgba(21,101,192,.25);color:#90CAF9;border:1px solid rgba(21,101,192,.3);}
-.pill-teal{background:rgba(0,131,143,.25);color:#80DEEA;border:1px solid rgba(0,131,143,.3);}
+.pill-green{background:rgba(45,122,79,.18);color:#A5D6A7;border:1px solid rgba(45,122,79,.3);}
+.pill-teal{background:rgba(0,131,143,.18);color:#80DEEA;border:1px solid rgba(0,131,143,.3);}
 
-/* ── LAYOUT ── */
-.container{max-width:860px;margin:0 auto;padding:32px 24px 60px;}
+.print-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);border:none;color:var(--navy);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;border-radius:6px;cursor:pointer;margin:20px 40px 0;}
+.print-btn:hover{background:#f5cc70;}
 
-/* ── SECTION ── */
-.section{margin-bottom:28px;}
-.section-title{
-  font-family:'Fredoka One',cursive;
-  font-size:1.05rem;color:var(--navy);
-  letter-spacing:.04em;
-  display:flex;align-items:center;gap:10px;
-  margin-bottom:14px;
-  padding-bottom:8px;
-  border-bottom:2px solid var(--gold2);
-}
-.section-icon{font-size:1.2rem;}
+.content{max-width:860px;margin:0 auto;padding:0 32px;}
+.section{margin-top:44px;}
+.section-tag{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:6px;}
+.section-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid #e8e4dc;}
 
-/* ── CARDS ── */
-.card{
-  background:white;border-radius:var(--radius);
-  padding:18px 20px;margin-bottom:12px;
-  border:1px solid #e8e0d4;
-  box-shadow:0 2px 8px rgba(0,0,0,.06);
-}
-.card-title{
-  font-family:'Fredoka One',cursive;
-  font-size:.9rem;color:var(--navy);
-  margin-bottom:6px;display:flex;align-items:center;gap:8px;
-}
-.card-body{font-size:.82rem;color:#555;line-height:1.75;}
-.card-body strong{color:var(--navy);}
+.card{background:#fff;border:1px solid #e8e4dc;border-radius:12px;padding:22px;margin-bottom:12px;box-shadow:0 2px 8px rgba(26,39,68,.04);}
+.card p{font-size:13px;color:#444;line-height:1.75;margin-bottom:10px;}
+.card p:last-child{margin-bottom:0;}
 
-/* ── INFO TABLE ── */
-.info-table{width:100%;border-collapse:collapse;font-size:.82rem;}
-.info-table th{
-  background:var(--navy);color:var(--gold);
-  font-family:'Fredoka One',cursive;font-size:.78rem;
-  letter-spacing:.04em;padding:9px 14px;text-align:left;
-}
-.info-table td{
-  padding:9px 14px;color:#444;line-height:1.6;
-  border-bottom:1px solid #f0e8dc;vertical-align:top;
-}
-.info-table tr:last-child td{border-bottom:none;}
-.info-table tr:nth-child(even) td{background:#fdfaf6;}
-.info-table td:first-child{font-weight:800;color:var(--navy);width:36%;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.info-block{background:#fff;border:1px solid #e8e4dc;border-radius:10px;padding:16px;}
+.info-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#999;margin-bottom:4px;}
+.info-value{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--navy);line-height:1.3;}
+.info-sub{font-size:11px;color:#888;margin-top:3px;}
 
-/* ── OPTION CARDS ── */
-.option-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.opt{
-  border-radius:var(--radius);overflow:hidden;
-  border:1px solid #e8e0d4;
-  box-shadow:0 2px 8px rgba(0,0,0,.06);
-}
-.opt-header{padding:12px 16px;}
-.opt-letter{font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;opacity:.7;margin-bottom:3px;}
-.opt-title{font-family:'Fredoka One',cursive;font-size:1rem;color:white;}
-.opt-body{background:white;padding:14px 16px;}
-.opt-url{
-  font-size:.68rem;font-family:monospace;
-  background:#f4f1ec;color:var(--navy2);
-  padding:4px 8px;border-radius:5px;
-  display:block;margin-bottom:8px;word-break:break-all;
-}
-.opt-list{font-size:.78rem;color:#555;line-height:1.8;list-style:none;padding:0;}
-.opt-list li::before{content:'→ ';color:var(--gold3);font-weight:700;}
+.kiosk-card{background:#fff;border:1px solid #e8e4dc;border-radius:12px;overflow:hidden;margin-bottom:12px;}
+.kiosk-header{padding:14px 18px;display:flex;align-items:center;gap:12px;}
+.kiosk-letter{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:14px;color:#fff;flex-shrink:0;}
+.kiosk-name{font-family:'Fredoka One',cursive;font-size:14px;color:var(--navy);}
+.kiosk-url{font-size:11px;color:#888;font-family:'Courier New',monospace;margin-top:1px;}
+.kiosk-body{padding:0 18px 16px;border-top:1px solid #f0ece8;}
+.kiosk-desc{font-size:13px;color:#444;line-height:1.7;margin-top:12px;}
+.kiosk-log{font-size:12px;color:#666;margin-top:8px;background:#f8f7f4;border-radius:6px;padding:8px 12px;}
 
-.opt-a .opt-header{background:var(--navy);}
-.opt-b .opt-header{background:#2D7A4F;}
-.opt-c .opt-header{background:#00838F;}
-.opt-d .opt-header{background:#1B5E20;}
+.color-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.color-chip{display:flex;align-items:center;gap:6px;font-size:12px;color:#444;}
+.chip-dot{width:18px;height:18px;border-radius:50%;border:2px solid rgba(0,0,0,.12);flex-shrink:0;}
 
-/* ── STEPS ── */
-.steps{display:flex;flex-direction:column;gap:10px;}
-.step-row{display:flex;align-items:flex-start;gap:12px;}
-.step-num{
-  min-width:28px;height:28px;border-radius:50%;
-  background:var(--navy);color:var(--gold);
-  font-family:'Fredoka One',cursive;font-size:.82rem;
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;margin-top:1px;
-}
-.step-text{font-size:.82rem;color:#444;line-height:1.7;}
-.step-text strong{color:var(--navy);}
+.step-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.step-item{display:flex;gap:12px;align-items:flex-start;}
+.step-num{background:var(--navy);color:var(--gold);font-family:'Fredoka One',cursive;font-size:13px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.step-title{font-family:'Fredoka One',cursive;font-size:13px;color:var(--navy);margin-bottom:2px;}
+.step-desc{font-size:12px;color:#555;line-height:1.6;}
 
-/* ── SPREADSHEET LAYOUT ── */
-.sheet-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
-.sheet-tab{
-  padding:5px 14px;border-radius:20px;
-  font-size:.7rem;font-weight:800;
-  border:1px solid;
-}
-.tab-cookie{background:#E3F2FD;color:#1565C0;border-color:#90CAF9;}
-.tab-recipe{background:#E8F5E9;color:#2D7A4F;border-color:#A5D6A7;}
-.tab-dna{background:#E0F7FA;color:#00838F;border-color:#80DEEA;}
-.tab-bake{background:#F1F8E9;color:#1B5E20;border-color:#C5E1A5;}
+.url-strip{background:var(--navy);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+.url-icon{font-size:1.4rem;flex-shrink:0;}
+.url-label{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:3px;}
+.url-value{font-family:'Courier New',monospace;font-size:12px;color:#fff;}
+.url-desc{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px;}
 
-/* ── BAMBU SECTION ── */
-.bambu-box{
-  background:linear-gradient(135deg,#0D1117,#1B2333);
-  border-radius:var(--radius);padding:18px 20px;
-  color:white;
-}
-.bambu-box-title{
-  font-family:'Fredoka One',cursive;
-  font-size:.9rem;color:var(--gold);
-  margin-bottom:10px;display:flex;align-items:center;gap:8px;
-}
-.bambu-list{font-size:.8rem;color:rgba(255,255,255,.7);line-height:2;list-style:none;}
-.bambu-list li::before{content:'▸ ';color:var(--gold2);}
-.color-chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;}
-.chip{
-  display:flex;align-items:center;gap:5px;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:20px;padding:3px 10px;
-  font-size:.65rem;font-weight:700;color:rgba(255,255,255,.8);
-}
-.chip-dot{width:12px;height:12px;border-radius:50%;border:1px solid rgba(255,255,255,.2);}
+.ow-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.ow-pill{background:#f0ece8;border-radius:8px;padding:8px 6px;text-align:center;font-family:'Fredoka One',cursive;font-size:11px;color:var(--navy);letter-spacing:.5px;}
 
-/* ── HIGHLIGHT BOX ── */
-.highlight{
-  background:#FFF8EE;border-left:4px solid var(--gold);
-  border-radius:0 var(--radius) var(--radius) 0;
-  padding:14px 16px;font-size:.82rem;color:#555;line-height:1.7;
-  margin-bottom:12px;
-}
-.highlight strong{color:var(--navy);}
+.note{background:#fff9e6;border-left:4px solid var(--gold);border-radius:4px;padding:12px 16px;font-size:13px;color:#555;line-height:1.65;margin-bottom:12px;}
+.note strong{color:var(--navy);}
 
-/* ── WORDS GRID ── */
-.words-grid{
-  display:grid;grid-template-columns:repeat(5,1fr);
-  gap:5px;margin-top:8px;
-}
-.word-chip{
-  text-align:center;padding:5px 4px;
-  background:#fdfaf6;border:1px solid #e8ddd0;
-  border-radius:7px;font-size:.65rem;font-weight:700;
-  color:var(--navy);
-}
+.link-btn{display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:var(--gold);font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:9px 16px;border-radius:7px;text-decoration:none;margin-top:10px;margin-right:8px;}
 
-/* ── FOOTER ── */
-.footer{
-  text-align:center;padding:24px;
-  border-top:1px solid #e8e0d4;
-  margin-top:32px;
-}
-.footer-sig{font-family:'Fredoka One',cursive;font-size:.75rem;color:#bbb;letter-spacing:.06em;}
+.footer{text-align:center;padding:32px;margin-top:48px;border-top:1px solid #e8e4dc;}
+.footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spacing:1px;}
 
-/* ── PRINT ── */
 @media print{
-  @page{size:letter portrait;margin:.45in;}
-  body{background:white;}
+  body{background:#fff;}
   .hero{background:var(--navy)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .opt-a .opt-header{background:var(--navy)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .opt-b .opt-header{background:#2D7A4F!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .opt-c .opt-header{background:#00838F!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .opt-d .opt-header{background:#1B5E20!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .bambu-box{background:#0D1117!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .section{page-break-inside:avoid;}
-  .option-grid{page-break-inside:avoid;}
-}
-
-@media(max-width:580px){
-  .option-grid{grid-template-columns:1fr;}
-  .words-grid{grid-template-columns:repeat(4,1fr);}
+  .print-btn{display:none;}
+  .url-strip{background:var(--navy)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  @page{size:letter;margin:.5in;}
 }
 </style>
 </head>
 <body>
 
-<!-- HERO -->
 <div class="hero">
-  <div class="hero-eyebrow">🍪 Smile Bags · Word &amp; Wonder Experience · Teacher Guide</div>
-  <h1 class="hero-title">Culinary Arts<br><span>Ms. Betsabe Sayers</span></h1>
-  <p class="hero-sub">Everything you need to run four culinary kiosk experiences, manage cookie cutter print orders, and guide students through the Smile Bags project — start to finish.</p>
+  <div class="hero-tag">Smile Bags · A Word &amp; Wonder Experience · Teacher Guide</div>
+  <h1>Culinary Arts<br><span>Kiosk Guide</span></h1>
+  <p class="hero-sub">Everything Ms. Sayers needs to run the Culinary Arts Smile Bags experience — four student kiosks, two Google Sheets, and a Bambu Lab 3D print queue.</p>
   <div class="hero-pills">
-    <div class="pill pill-gold">🍪 4 Kiosk Options</div>
-    <div class="pill pill-green">📋 2 Spreadsheets</div>
-    <div class="pill pill-blue">🖨️ Bambu Lab Print Queue</div>
-    <div class="pill pill-teal">25 OneWords</div>
+    <div class="pill pill-gold">🍪 Ms. Betsabe Sayers</div>
+    <div class="pill pill-green">4 Kiosk Activities</div>
+    <div class="pill pill-teal">2 Google Sheets</div>
+    <div class="pill pill-gold">Bambu Lab 3D Printing</div>
   </div>
 </div>
 
-<!-- MAIN CONTENT -->
-<div class="container">
+<button class="print-btn no-print" onclick="window.print()">🖨️ Print This Guide</button>
+
+<div class="content">
+
+  <!-- MINI-SITE URL -->
+  <div class="section">
+    <div class="section-tag">Start Here</div>
+    <div class="section-title">The Culinary Arts Hub</div>
+    <div class="url-strip">
+      <div class="url-icon">🌐</div>
+      <div>
+        <div class="url-label">Mini-Site URL — Share This With Students</div>
+        <div class="url-value">lhhowell.github.io/kellamsmilebags/Culinary_Menu.html</div>
+        <div class="url-desc">All four kiosks are accessible from this single page.</div>
+      </div>
+    </div>
+  </div>
 
   <!-- AT A GLANCE -->
   <div class="section">
-    <div class="section-title"><span class="section-icon">📋</span> Project at a Glance</div>
-    <div class="card">
-      <table class="info-table">
-        <tr><td>Class</td><td>Culinary Arts</td></tr>
-        <tr><td>Teacher</td><td>Ms. Betsabe Sayers</td></tr>
-        <tr><td>Project</td><td>Smile Bags: A Word &amp; Wonder Experience · Spring 2026</td></tr>
-        <tr><td>Student Task</td><td>Complete at least one of four culinary kiosk activities connected to a OneWord</td></tr>
-        <tr><td>Bag Contribution</td><td>3D printed cookie cutter (via Order Kiosk) + Play-Doh activity card</td></tr>
-        <tr><td>Bag Recipients</td><td>TBD — Elementary school to be confirmed</td></tr>
-        <tr><td>Hub URL</td><td><code>lhhowell.github.io/kellamsmilebags/Culinary_Menu.html</code></td></tr>
-        <tr><td>Spreadsheet 1</td><td>KSB Cookie Cutter Orders · Spring 2026</td></tr>
-        <tr><td>Spreadsheet 2</td><td>KSB Culinary Activities · Spring 2026</td></tr>
-      </table>
+    <div class="section-tag">Overview</div>
+    <div class="section-title">Project at a Glance</div>
+    <div class="info-grid">
+      <div class="info-block"><div class="info-label">Teacher</div><div class="info-value">Ms. Betsabe Sayers</div><div class="info-sub">Culinary Arts · WRS 1 / WRS 5 / WRS 14</div></div>
+      <div class="info-block"><div class="info-label">Activities</div><div class="info-value">4 Kiosk Options</div><div class="info-sub">All students complete Option A · B/C/D are choice</div></div>
+      <div class="info-block"><div class="info-label">3D Printing</div><div class="info-value">Bambu Lab Printer</div><div class="info-sub">7 filament colors · Cookie cutter per student</div></div>
+      <div class="info-block"><div class="info-label">Deadline</div><div class="info-value">May 30, 2026</div><div class="info-sub">Cutters printed &amp; items assembled in bags</div></div>
     </div>
   </div>
 
-  <!-- THE 25 ONEWORDS -->
+  <!-- FOUR KIOSKS -->
   <div class="section">
-    <div class="section-title"><span class="section-icon">🌟</span> The 25 OneWords</div>
-    <div class="highlight">
-      Every kiosk activity is built around one of these 25 words. Students choose their word and all activity content — recipes, flavor pairings, binary codes, and cookie shapes — connects to that word's meaning.
-    </div>
-    <div class="words-grid">
-      <div class="word-chip">Absorb</div><div class="word-chip">Adapt</div><div class="word-chip">Anchor</div>
-      <div class="word-chip">Balance</div><div class="word-chip">Bloom</div><div class="word-chip">Breathe</div>
-      <div class="word-chip">Clear</div><div class="word-chip">Connect</div><div class="word-chip">Cycle</div>
-      <div class="word-chip">Emerge</div><div class="word-chip">Filter</div><div class="word-chip">Flow</div>
-      <div class="word-chip">Grow</div><div class="word-chip">Heal</div><div class="word-chip">Migrate</div>
-      <div class="word-chip">Persist</div><div class="word-chip">Renew</div><div class="word-chip">Restore</div>
-      <div class="word-chip">Return</div><div class="word-chip">Rise</div><div class="word-chip">Root</div>
-      <div class="word-chip">Shine</div><div class="word-chip">Sustain</div><div class="word-chip">Thrive</div>
-      <div class="word-chip">Transform</div>
-    </div>
-  </div>
+    <div class="section-tag">The Four Options</div>
+    <div class="section-title">Kiosk Activities</div>
+    <div class="note"><strong>Option A is required for all students.</strong> Options B, C, and D are choice — students pick one (or more) to complete alongside their cookie cutter order.</div>
 
-  <!-- FOUR KIOSK OPTIONS -->
-  <div class="section">
-    <div class="section-title"><span class="section-icon">💻</span> The Four Kiosk Options</div>
-    <div class="highlight">
-      All four options are accessed from the <strong>Culinary Arts Kiosk hub</strong>. Direct students to:
-      <code style="display:block;margin-top:6px;background:#f4f1ec;padding:5px 10px;border-radius:6px;font-size:.8rem;">lhhowell.github.io/kellamsmilebags/Culinary_Menu.html</code>
-    </div>
-    <div class="option-grid">
-
-      <div class="opt opt-a">
-        <div class="opt-header">
-          <div class="opt-letter">Option A</div>
-          <div class="opt-title">🖨️ Cookie Cutter Order</div>
-        </div>
-        <div class="opt-body">
-          <span class="opt-url">Culinary_Kiosk_v3.html</span>
-          <ul class="opt-list">
-            <li>Student enters name + last initial</li>
-            <li>Chooses recipient level (Elementary, Middle, or High School)</li>
-            <li>Selects their OneWord → cutter shape appears</li>
-            <li>Picks filament color from Bambu palette</li>
-            <li>Submits → logs to <strong>Cookie Cutter Orders</strong> spreadsheet</li>
-          </ul>
+    <div class="kiosk-card">
+      <div class="kiosk-header"><div class="kiosk-letter" style="background:#B22222;">A</div><div><div class="kiosk-name">🖨️ Cookie Cutter Order</div><div class="kiosk-url">lhhowell.github.io/kellamsmilebags/Culinary_Kiosk_v3.html</div></div></div>
+      <div class="kiosk-body">
+        <div class="kiosk-desc">Students choose their OneWord, select a recipient level (Elementary/Middle = image shape, High School = word shape), pick from 7 filament colors, and submit their order. You print all cutters on the Bambu Lab.</div>
+        <div class="kiosk-log">📊 Logs to: <strong>KSB Cookie Cutter Orders · Spring 2026</strong> — columns: Student Name, Teacher, Recipient Level, OneWord, Cutter Type, Color, Timestamp</div>
+        <div class="color-chips">
+          <div class="color-chip"><div class="chip-dot" style="background:#CC0000;"></div>Red</div>
+          <div class="color-chip"><div class="chip-dot" style="background:#808080;"></div>Grey</div>
+          <div class="color-chip"><div class="chip-dot" style="background:#2D6A2D;"></div>Green</div>
+          <div class="color-chip"><div class="chip-dot" style="background:#C8860A;"></div>Gold</div>
+          <div class="color-chip"><div class="chip-dot" style="background:#1565C0;"></div>Blue</div>
+          <div class="color-chip"><div class="chip-dot" style="background:#A8A9AD;border:2px solid #ccc;"></div>Silver</div>
+          <div class="color-chip"><div class="chip-dot" style="background:#F5F5F5;border:2px solid #ccc;"></div>White</div>
         </div>
       </div>
-
-      <div class="opt opt-b">
-        <div class="opt-header">
-          <div class="opt-letter">Option B</div>
-          <div class="opt-title">📖 OneWord Recipe Card</div>
-        </div>
-        <div class="opt-body">
-          <span class="opt-url">Culinary_RecipeCard.html</span>
-          <ul class="opt-list">
-            <li>Student chooses their OneWord</li>
-            <li>Picks Simple (family-friendly) or Advanced (culinary-level) recipe</li>
-            <li>Both recipes are connected to the word's meaning</li>
-            <li>Adds optional personal message</li>
-            <li>Prints card → goes in the Smile Bag</li>
-            <li>Logs to <strong>Recipe Cards</strong> tab</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="opt opt-c">
-        <div class="opt-header">
-          <div class="opt-letter">Option C</div>
-          <div class="opt-title">🧬 DNA Flavor Pairing Lab</div>
-        </div>
-        <div class="opt-body">
-          <span class="opt-url">Culinary_DNAFlavor.html</span>
-          <ul class="opt-list">
-            <li><strong>Word Lab</strong> — OneWord → hero ingredient → surprise pairings</li>
-            <li><strong>Pairing Test</strong> — pick 2 ingredients → compatibility score</li>
-            <li><strong>Science Lab</strong> — molecular gastronomy science report per word</li>
-            <li><strong>Surprise Lab</strong> — pick a food → 3 shocking pairings revealed</li>
-            <li>Prints flavor pairing card · Logs to <strong>DNA Flavor Lab</strong> tab</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="opt opt-d">
-        <div class="opt-header">
-          <div class="opt-letter">Option D</div>
-          <div class="opt-title">💻 Bake the Code</div>
-        </div>
-        <div class="opt-body">
-          <span class="opt-url">Culinary_BakeTheCode.html</span>
-          <ul class="opt-list">
-            <li>Student picks their OneWord → sees a 4-letter binary code</li>
-            <li>Decodes each letter using ASCII reference chart</li>
-            <li>Cookie decorates live as each letter is solved</li>
-            <li>Free-paint coloring canvas: Round or Word shape</li>
-            <li>Prints result card + coloring sheet</li>
-            <li>Logs to <strong>Bake the Code</strong> tab</li>
-          </ul>
-        </div>
-      </div>
-
     </div>
-  </div>
 
-  <!-- SPREADSHEETS -->
-  <div class="section">
-    <div class="section-title"><span class="section-icon">📊</span> Your Spreadsheets</div>
-    <div class="card">
-      <div class="card-title">📋 Spreadsheet 1 — KSB Cookie Cutter Orders</div>
-      <div class="card-body">
-        This is your <strong>print queue</strong>. Every time a student submits Option A, a new row appears here with their name, word, recipient level, cutter type, and filament color. Use this to batch your Bambu Lab prints.
-        <div class="sheet-tabs" style="margin-top:10px;">
-          <span class="sheet-tab tab-cookie">Cookie Cutter Orders</span>
-        </div>
-        <strong>Columns:</strong> Timestamp · Student Name · Teacher · Recipient Level · OneWord · Cutter Type · Filament Color · Color Hex
+    <div class="kiosk-card">
+      <div class="kiosk-header"><div class="kiosk-letter" style="background:#2D7A4F;">B</div><div><div class="kiosk-name">📖 OneWord Recipe Card</div><div class="kiosk-url">lhhowell.github.io/kellamsmilebags/Culinary_RecipeCard.html</div></div></div>
+      <div class="kiosk-body">
+        <div class="kiosk-desc">Students select a OneWord and choose from two curated recipes connected to its meaning — one simple (for families), one advanced (showing culinary skill). They add a personal message and print their card.</div>
+        <div class="kiosk-log">📊 Logs to: <strong>KSB Culinary Activities · Spring 2026</strong> — Recipe Card tab</div>
       </div>
     </div>
-    <div class="card">
-      <div class="card-title">📋 Spreadsheet 2 — KSB Culinary Activities</div>
-      <div class="card-body">
-        This tracks Options B, C, and D — three tabs, one spreadsheet.
-        <div class="sheet-tabs" style="margin-top:10px;">
-          <span class="sheet-tab tab-recipe">Recipe Cards</span>
-          <span class="sheet-tab tab-dna">DNA Flavor Lab</span>
-          <span class="sheet-tab tab-bake">Bake the Code</span>
-        </div>
-        Each tab shows student name, word, activity details, and timestamp.
+
+    <div class="kiosk-card">
+      <div class="kiosk-header"><div class="kiosk-letter" style="background:#00838F;">C</div><div><div class="kiosk-name">🧬 DNA Flavor Pairing Lab</div><div class="kiosk-url">lhhowell.github.io/kellamsmilebags/Culinary_DNAFlavor.html</div></div></div>
+      <div class="kiosk-body">
+        <div class="kiosk-desc">Four molecular gastronomy experiments — Word Lab, Pairing Test, Science Lab, and Surprise Lab. Students discover the flavor compounds connecting unexpected foods, then print their results card.</div>
+        <div class="kiosk-log">📊 Logs to: <strong>KSB Culinary Activities · Spring 2026</strong> — DNA Flavor tab</div>
+      </div>
+    </div>
+
+    <div class="kiosk-card">
+      <div class="kiosk-header"><div class="kiosk-letter" style="background:#1B5E20;">D</div><div><div class="kiosk-name">💻 Bake the Code</div><div class="kiosk-url">lhhowell.github.io/kellamsmilebags/Culinary_BakeTheCode.html</div></div></div>
+      <div class="kiosk-body">
+        <div class="kiosk-desc">Students decode a binary message to unlock cookie decoration instructions. The cookie decorates itself letter by letter as they crack the code. Includes a free-paint coloring canvas and two printable cards.</div>
+        <div class="kiosk-log">📊 Logs to: <strong>KSB Culinary Activities · Spring 2026</strong> — Bake the Code tab</div>
       </div>
     </div>
   </div>
 
   <!-- BAMBU PRINT QUEUE -->
   <div class="section">
-    <div class="section-title"><span class="section-icon">🖨️</span> Cookie Cutter Print Queue</div>
-    <div class="bambu-box">
-      <div class="bambu-box-title">🖨️ Bambu Lab Print Instructions</div>
-      <ul class="bambu-list">
-        <li>Open <strong>KSB Cookie Cutter Orders</strong> spreadsheet to see pending orders</li>
-        <li>Sort by <strong>Filament Color</strong> to batch prints by color — saves filament swaps</li>
-        <li>For <strong>Elementary/Middle</strong> orders — print the image-shaped cutter for that word</li>
-        <li>For <strong>High School</strong> orders — print the word-text shaped cutter</li>
-        <li>Label each cutter with the student's name before returning</li>
-        <li>Cookie cutter images/files: add to CUTTER_IMAGES in Culinary_Kiosk_v3.html when ready</li>
+    <div class="section-tag">3D Printing</div>
+    <div class="section-title">Managing the Bambu Print Queue</div>
+    <div class="card">
+      <p>After students submit their orders, open the <strong>KSB Cookie Cutter Orders</strong> spreadsheet. Sort by the <strong>Color</strong> column to batch prints by filament — this minimizes filament swaps on the Bambu Lab.</p>
+      <ul class="step-list" style="margin-top:14px;">
+        <li class="step-item"><div class="step-num">1</div><div><div class="step-title">Open the spreadsheet</div><div class="step-desc">Filter by color to see all Red orders, all Blue orders, etc.</div></div></li>
+        <li class="step-item"><div class="step-num">2</div><div><div class="step-title">Check cutter type</div><div class="step-desc">Elementary &amp; Middle School = Image Shape (thematic). High School = Word Shape (text cookie cutter).</div></div></li>
+        <li class="step-item"><div class="step-num">3</div><div><div class="step-title">Print each color batch</div><div class="step-desc">Load filament → print all orders for that color → swap filament → next batch.</div></div></li>
+        <li class="step-item"><div class="step-num">4</div><div><div class="step-title">Add Play-Doh</div><div class="step-desc">Each printed cutter ships with a mini Play-Doh container in the Smile Bag.</div></div></li>
       </ul>
-      <div class="color-chips">
-        <div class="chip"><div class="chip-dot" style="background:#CC0000;"></div>Red</div>
-        <div class="chip"><div class="chip-dot" style="background:#808080;"></div>Grey</div>
-        <div class="chip"><div class="chip-dot" style="background:#2D6A2D;"></div>Green</div>
-        <div class="chip"><div class="chip-dot" style="background:#C8860A;"></div>Gold</div>
-        <div class="chip"><div class="chip-dot" style="background:#1565C0;"></div>Blue</div>
-        <div class="chip"><div class="chip-dot" style="background:#A8A9AD;border:1px solid #ccc;"></div>Silver</div>
-        <div class="chip"><div class="chip-dot" style="background:#F5F5F5;border:1px solid #ccc;"></div>White</div>
-      </div>
     </div>
   </div>
 
-  <!-- PLAY-DOH CARD -->
+  <!-- RUNNING IN CLASS -->
   <div class="section">
-    <div class="section-title"><span class="section-icon">🎨</span> Play-Doh Activity Card</div>
-    <div class="highlight">
-      <strong>The Play-Doh card is the child-facing piece of the Culinary contribution.</strong> The cookie cutter is meaningful to the high schooler who chose it — but the Play-Doh card is what makes the bag magical for a 5-year-old.
-    </div>
+    <div class="section-tag">In the Classroom</div>
+    <div class="section-title">Running the Kiosk</div>
     <div class="card">
-      <div class="card-title">What the Card Should Include</div>
-      <div class="card-body">
-        Each student creates a card with <strong>2–3 play ideas</strong> for their cookie cutter word — some using the cutter with Play-Doh, some without. Example for <em>Bloom</em>:
-        <br><br>
-        <strong>With Play-Doh:</strong> Press your Bloom cutter into the dough to make a flower garden!<br>
-        <strong>Without Play-Doh:</strong> Trace the cutter on paper and color your flower in your favorite colors.<br>
-        <strong>Without Play-Doh:</strong> Use the cutter as a stencil and paint over it with watercolors!
-        <br><br>
-        Cards should be simple, joyful, and written for a young child to understand. The student's name should appear as "Made for you by [First Name]."
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">How to Run This Activity</div>
-      <div class="card-body">
-        <div class="steps">
-          <div class="step-row"><div class="step-num">1</div><div class="step-text">Student completes the <strong>Cookie Cutter Order kiosk</strong> (Option A) first to confirm their word.</div></div>
-          <div class="step-row"><div class="step-num">2</div><div class="step-text">Student writes their <strong>2–3 play ideas</strong> on the provided card template.</div></div>
-          <div class="step-row"><div class="step-num">3</div><div class="step-text">Card is <strong>printed or hand-written</strong>, laminated if possible, and placed in the Smile Bag alongside the cookie cutter and Play-Doh.</div></div>
-          <div class="step-row"><div class="step-num">4</div><div class="step-text">Each bag contains: <strong>cookie cutter + Play-Doh + activity card</strong> = the complete Culinary Arts contribution.</div></div>
-        </div>
-      </div>
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">1</div><div><div class="step-title">Share the hub URL</div><div class="step-desc">Post <code style="background:#f0ece8;padding:1px 6px;border-radius:4px;font-size:11px;">lhhowell.github.io/kellamsmilebags/Culinary_Menu.html</code> in Canvas or project on screen.</div></div></li>
+        <li class="step-item"><div class="step-num">2</div><div><div class="step-title">All students complete Option A first</div><div class="step-desc">Cookie Cutter Order — this populates your Bambu print queue.</div></div></li>
+        <li class="step-item"><div class="step-num">3</div><div><div class="step-title">Students choose Option B, C, or D</div><div class="step-desc">Choice activity — print their card when done.</div></div></li>
+        <li class="step-item"><div class="step-num">4</div><div><div class="step-title">After class — check spreadsheets</div><div class="step-desc">Cookie Cutter Orders for print queue. Culinary Activities for B/C/D submissions.</div></div></li>
+        <li class="step-item"><div class="step-num">5</div><div><div class="step-title">Assemble bags</div><div class="step-desc">Printed cutter + Play-Doh + student's activity card go into each Smile Bag.</div></div></li>
+      </ul>
     </div>
   </div>
 
-  <!-- HOW TO RUN -->
+  <!-- ONEWORDS -->
   <div class="section">
-    <div class="section-title"><span class="section-icon">🚀</span> Running the Kiosk in Class</div>
+    <div class="section-tag">Reference</div>
+    <div class="section-title">The 25 OneWords</div>
     <div class="card">
-      <div class="card-body">
-        <div class="steps">
-          <div class="step-row"><div class="step-num">1</div><div class="step-text"><strong>Project or share the hub URL</strong> — <code>lhhowell.github.io/kellamsmilebags/Culinary_Menu.html</code> — students open it on a shared device or their own.</div></div>
-          <div class="step-row"><div class="step-num">2</div><div class="step-text"><strong>All students must complete Option A</strong> (Cookie Cutter Order) — this is what generates the print queue for you.</div></div>
-          <div class="step-row"><div class="step-num">3</div><div class="step-text">Options B, C, and D are <strong>choice activities</strong> — students pick one (or more) to explore and print their card.</div></div>
-          <div class="step-row"><div class="step-num">4</div><div class="step-text"><strong>After class</strong> — open the Cookie Cutter Orders spreadsheet, sort by color, and batch your Bambu prints.</div></div>
-          <div class="step-row"><div class="step-num">5</div><div class="step-text"><strong>Assemble bags</strong> — printed cutter + Play-Doh + student's activity card go into each bag together.</div></div>
-        </div>
+      <div class="ow-grid">
+        <div class="ow-pill">ABSORB</div><div class="ow-pill">ADAPT</div><div class="ow-pill">ANCHOR</div><div class="ow-pill">BALANCE</div><div class="ow-pill">BLOOM</div>
+        <div class="ow-pill">BREATHE</div><div class="ow-pill">CLEAR</div><div class="ow-pill">CONNECT</div><div class="ow-pill">CYCLE</div><div class="ow-pill">EMERGE</div>
+        <div class="ow-pill">FILTER</div><div class="ow-pill">FLOW</div><div class="ow-pill">GROW</div><div class="ow-pill">HEAL</div><div class="ow-pill">MIGRATE</div>
+        <div class="ow-pill">PERSIST</div><div class="ow-pill">RENEW</div><div class="ow-pill">RESTORE</div><div class="ow-pill">RETURN</div><div class="ow-pill">RISE</div>
+        <div class="ow-pill">ROOT</div><div class="ow-pill">SHINE</div><div class="ow-pill">SUSTAIN</div><div class="ow-pill">THRIVE</div><div class="ow-pill">TRANSFORM</div>
       </div>
     </div>
   </div>
 
   <!-- QUICK LINKS -->
   <div class="section">
-    <div class="section-title"><span class="section-icon">🔗</span> Quick Reference Links</div>
+    <div class="section-tag">Quick Reference</div>
+    <div class="section-title">All URLs</div>
     <div class="card">
-      <table class="info-table">
-        <tr><td>Kiosk Hub</td><td><code>lhhowell.github.io/kellamsmilebags/Culinary_Menu.html</code></td></tr>
-        <tr><td>Option A — Cookie Cutter</td><td><code>lhhowell.github.io/kellamsmilebags/Culinary_Kiosk_v3.html</code></td></tr>
-        <tr><td>Option B — Recipe Card</td><td><code>lhhowell.github.io/kellamsmilebags/Culinary_RecipeCard.html</code></td></tr>
-        <tr><td>Option C — DNA Flavor Lab</td><td><code>lhhowell.github.io/kellamsmilebags/Culinary_DNAFlavor.html</code></td></tr>
-        <tr><td>Option D — Bake the Code</td><td><code>lhhowell.github.io/kellamsmilebags/Culinary_BakeTheCode.html</code></td></tr>
-        <tr><td>Spreadsheet 1 (Cookie Cutters)</td><td>KSB Cookie Cutter Orders · Spring 2026 — in your Google Drive</td></tr>
-        <tr><td>Spreadsheet 2 (Activities)</td><td>KSB Culinary Activities · Spring 2026 — in your Google Drive</td></tr>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <tr style="border-bottom:2px solid #e8e4dc;"><th style="text-align:left;padding:8px 12px;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;color:#999;text-transform:uppercase;">Page</th><th style="text-align:left;padding:8px 12px;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;color:#999;text-transform:uppercase;">URL</th></tr>
+        <tr style="border-bottom:1px solid #f0ece8;"><td style="padding:10px 12px;color:#444;font-weight:700;">🌐 Kiosk Hub</td><td style="padding:10px 12px;font-family:'Courier New',monospace;color:#555;font-size:11px;">lhhowell.github.io/kellamsmilebags/Culinary_Menu.html</td></tr>
+        <tr style="border-bottom:1px solid #f0ece8;"><td style="padding:10px 12px;color:#444;">Option A — Cookie Cutter</td><td style="padding:10px 12px;font-family:'Courier New',monospace;color:#555;font-size:11px;">lhhowell.github.io/kellamsmilebags/Culinary_Kiosk_v3.html</td></tr>
+        <tr style="border-bottom:1px solid #f0ece8;"><td style="padding:10px 12px;color:#444;">Option B — Recipe Card</td><td style="padding:10px 12px;font-family:'Courier New',monospace;color:#555;font-size:11px;">lhhowell.github.io/kellamsmilebags/Culinary_RecipeCard.html</td></tr>
+        <tr style="border-bottom:1px solid #f0ece8;"><td style="padding:10px 12px;color:#444;">Option C — DNA Flavor Lab</td><td style="padding:10px 12px;font-family:'Courier New',monospace;color:#555;font-size:11px;">lhhowell.github.io/kellamsmilebags/Culinary_DNAFlavor.html</td></tr>
+        <tr style="border-bottom:1px solid #f0ece8;"><td style="padding:10px 12px;color:#444;">Option D — Bake the Code</td><td style="padding:10px 12px;font-family:'Courier New',monospace;color:#555;font-size:11px;">lhhowell.github.io/kellamsmilebags/Culinary_BakeTheCode.html</td></tr>
+        <tr style="border-bottom:1px solid #f0ece8;"><td style="padding:10px 12px;color:#444;">Spreadsheet 1 (Cutters)</td><td style="padding:10px 12px;color:#555;font-size:12px;">KSB Cookie Cutter Orders · Spring 2026 — Google Drive</td></tr>
+        <tr><td style="padding:10px 12px;color:#444;">Spreadsheet 2 (Activities)</td><td style="padding:10px 12px;color:#555;font-size:12px;">KSB Culinary Activities · Spring 2026 — Google Drive</td></tr>
       </table>
     </div>
   </div>
 
 </div>
 
-<!-- FOOTER -->
-<div class="footer">
-  <div class="footer-sig">🍪 Smile Bags · Word &amp; Wonder Experience · Culinary Arts · Ms. Betsabe Sayers · Spring 2026</div>
-  <div style="font-size:.65rem;color:#ccc;margin-top:4px;">Prepared by the Instructional Technology Specialist · Kellam High School</div>
-</div>
+<div class="footer"><p>🍪 Smile Bags · A Word &amp; Wonder Experience · Culinary Arts · Ms. Betsabe Sayers · Spring 2026</p></div>
 
 </body>
 </html>

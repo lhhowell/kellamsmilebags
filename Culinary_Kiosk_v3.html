@@ -463,6 +463,19 @@ const SHAPE_LABELS = {
 
 /* ══ STATE ════════════════════════════════════════════════════ */
 const S = { name:'', teacher:'', level:'', word:'', color:'', colorHex:'', classType:'' };
+let classSelected = '';
+
+/* ══ CLASS SELECTION ══════════════════════════════════════════ */
+function setClass(cls) {
+  classSelected = cls;
+  const btnCulinary = document.getElementById('classBtnCulinary');
+  const btnCatering = document.getElementById('classBtnCatering');
+  const selectedStyle = 'flex:1;padding:11px;border-radius:10px;border:2px solid var(--navy);background:#fff8ee;font-family:\'Nunito\',sans-serif;font-weight:800;font-size:.88rem;color:var(--navy);cursor:pointer;transition:all .15s;';
+  const defaultStyle  = 'flex:1;padding:11px;border-radius:10px;border:2px solid #e8ddd0;background:#fdfaf6;font-family:\'Nunito\',sans-serif;font-weight:800;font-size:.88rem;color:#1A2744;cursor:pointer;transition:all .15s;';
+  btnCulinary.style.cssText = (cls === 'Intro to Culinary') ? selectedStyle : defaultStyle;
+  btnCatering.style.cssText = (cls === 'Catering')          ? selectedStyle : defaultStyle;
+  if (cls) hide('classErr');
+}
 
 /* ══ NAV ══════════════════════════════════════════════════════ */
 function goTo(n) {

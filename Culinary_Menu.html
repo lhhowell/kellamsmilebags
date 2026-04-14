@@ -327,6 +327,58 @@ body::before{
   <p class="hero-desc">Choose your experience below · Each activity connects your OneWord to the science and art of food</p>
 </section>
 
+<!-- ── MISSION STRIP ── -->
+<div style="position:relative;z-index:10;background:rgba(232,168,32,.12);border-top:3px solid var(--gold);border-bottom:1px solid rgba(232,168,32,.2);padding:22px 48px;display:flex;align-items:center;gap:20px;">
+  <span style="font-size:26px;flex-shrink:0;">🍪</span>
+  <p style="font-size:15px;color:rgba(255,255,255,.85);line-height:1.65;font-weight:300;">At Kellam High School in Virginia Beach, <strong style="color:#fff;font-weight:700;">Culinary Arts students are crafting one-of-a-kind items</strong> for children who need encouragement. Every cookie cutter, recipe card, and flavor lab result is built around <strong style="color:#fff;font-weight:700;">one shared word</strong> — connecting the science of food to the meaning of a word chosen just for them.</p>
+</div>
+
+<!-- ── ONEWORD STRIP ── -->
+<div style="position:relative;z-index:10;background:rgba(13,20,40,.8);border-top:1px solid rgba(232,168,32,.15);padding:22px 48px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+  <p style="font-size:15px;color:rgba(255,255,255,.85);font-weight:400;line-height:1.5;max-width:640px;"><strong style="color:var(--gold);font-weight:700;">At the heart of Smile Bags are 25 OneWords</strong> &mdash; connecting environmental science to social emotional well-being.</p>
+  <button onclick="toggleOW()" id="owBtn" style="display:inline-flex;align-items:center;gap:10px;background:rgba(232,168,32,.1);border:1.5px solid rgba(232,168,32,.4);color:var(--gold);font-family:'Fredoka One',cursive;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;padding:11px 22px;border-radius:8px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .2s;">
+    🌿 <span id="owBtnLabel">Explore the 25 OneWords</span> <span id="owArrow" style="transition:transform .3s;display:inline-block;">▼</span>
+  </button>
+</div>
+
+<div id="owPanel" style="display:none;position:relative;z-index:10;background:#070d1a;padding:36px 48px;border-bottom:1px solid rgba(255,255,255,.05);">
+  <div style="max-width:960px;margin:0 auto;">
+    <div style="background:rgba(232,168,32,.06);border:1px solid rgba(232,168,32,.15);border-left:4px solid var(--gold);border-radius:12px;padding:20px 24px;margin-bottom:28px;">
+      <p style="color:rgba(255,255,255,.85);font-size:14px;line-height:1.75;">Each of the 25 OneWords lives in two worlds at once &mdash; in the natural systems students study, and in the inner lives students navigate every day. From <strong style="color:var(--gold);">Absorb</strong> to <strong style="color:var(--gold);">Transform</strong>, these words remind us that the same forces that sustain ecosystems are the forces that sustain people too.</p>
+    </div>
+    <div style="display:flex;gap:16px;margin-bottom:14px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#aaa;"><div style="width:9px;height:9px;border-radius:50%;background:#4caf82;"></div>Environmental Science</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#aaa;"><div style="width:9px;height:9px;border-radius:50%;background:var(--gold);"></div>Social Emotional Well-Being</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:14px;">
+      <button onclick="owAll(true)" style="font-family:'Courier New',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#888;background:none;border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:5px 12px;cursor:pointer;">Expand All</button>
+      <button onclick="owAll(false)" style="font-family:'Courier New',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#888;background:none;border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:5px 12px;cursor:pointer;">Collapse All</button>
+    </div>
+    <div id="owGrid" style="display:grid;gap:8px;"></div>
+  </div>
+</div>
+
+<!-- ── WHO RECEIVES ── -->
+<div style="position:relative;z-index:10;max-width:960px;margin:32px auto;padding:0 20px;">
+  <div style="background:rgba(13,20,40,.9);border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;">
+    <div style="background:linear-gradient(135deg,rgba(26,39,68,.95) 60%,rgba(232,168,32,.08));padding:32px 28px 24px;">
+      <div style="font-family:'Fredoka One',cursive;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">Who Receives a Smile Bag</div>
+      <h2 style="font-family:'Baloo 2',cursive;font-size:1.5rem;font-weight:900;color:#fff;margin-bottom:14px;line-height:1.2;">A bag finds its way to a student<br>who needs it most.</h2>
+      <p style="font-size:14px;color:rgba(255,255,255,.7);line-height:1.8;max-width:680px;margin-bottom:14px;">Smile Bags are distributed across <strong style="color:#fff;">Kellam's eight feeder schools and Kellam High School itself</strong> — ten bags per school, ninety students reached. Guidance counselors identify students who may need encouragement, motivation, or simply a reason to smile. A bag is chosen for them <em style="color:var(--gold2);">deliberately, not randomly</em> — at exactly the right moment.</p>
+      <p style="font-size:14px;color:rgba(255,255,255,.7);line-height:1.8;max-width:680px;margin-bottom:24px;">Every item inside was made by a Kellam student who didn't know your name — but made something <em style="color:rgba(214,238,238,.9);">just for you.</em></p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;">
+        <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;text-align:center;"><div style="font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);">9</div><div style="font-family:'Courier New',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:4px;">Schools</div></div>
+        <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;text-align:center;"><div style="font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);">10</div><div style="font-family:'Courier New',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:4px;">Bags Per School</div></div>
+        <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;text-align:center;"><div style="font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);">90</div><div style="font-family:'Courier New',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:4px;">Students Reached</div></div>
+        <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;text-align:center;"><div style="font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);">🍪</div><div style="font-family:'Courier New',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:4px;">Made With Care</div></div>
+      </div>
+    </div>
+    <div style="background:rgba(232,168,32,.1);border-top:1px solid rgba(232,168,32,.2);padding:16px 28px;">
+      <p style="font-size:13px;color:rgba(255,255,255,.75);line-height:1.7;font-style:italic;">&ldquo;Guidance counselors identify students who may need encouragement, motivation, or simply a reason to smile. A bag is chosen for them &mdash; not randomly, but with intention.&rdquo;</p>
+    </div>
+  </div>
+</div>
+
 <!-- OPTIONS -->
 <section class="options-section">
 
@@ -451,8 +503,83 @@ body::before{
 
 <footer class="footer">
   <div class="footer-brand">🍪 Smile Bags · Word &amp; Wonder Experience</div>
-  <div class="footer-sub">Culinary Arts with Ms. Sayers · Spring 2026 · North Landing Elementary</div>
+  <div class="footer-sub">Culinary Arts with Ms. Sayers · Spring 2026</div>
 </footer>
 
+<script>
+var OW=[
+  {w:"ABSORB",sci:"Plants and soils absorb carbon, water, and nutrients to sustain ecosystems.",sel:"Taking in new information and experiences with an open, curious mind."},
+  {w:"ADAPT",sci:"Species adapt to changing environments through evolution and behavioral shifts.",sel:"Adjusting thoughts and responses when life feels uncertain or unfamiliar."},
+  {w:"ANCHOR",sci:"Root systems anchor soil, preventing erosion and stabilizing ecosystems.",sel:"Finding people, places, and practices that keep you grounded and steady."},
+  {w:"BALANCE",sci:"Ecosystems depend on balance between predators, prey, and available resources.",sel:"Maintaining equilibrium between work, rest, relationships, and personal needs."},
+  {w:"BLOOM",sci:"Flowering plants bloom in response to light, temperature, and seasonal cues.",sel:"Thriving naturally when your environment and essential needs are consistently met."},
+  {w:"BREATHE",sci:"Photosynthesis and respiration are Earth's breath — oxygen and carbon in continuous exchange.",sel:"Breath is the body's fastest tool for calming the nervous system and resetting."},
+  {w:"CLEAR",sci:"Clear water, clear skies, and clear-cut forests all signal environmental health or harm.",sel:"Clarity of mind comes when we slow down, process emotions, and release what isn't ours."},
+  {w:"CONNECT",sci:"Food webs connect every organism in an ecosystem — nothing exists in true isolation.",sel:"Healthy relationships and a sense of belonging are essential to human well-being."},
+  {w:"CYCLE",sci:"Water, carbon, and nitrogen move through Earth in continuous, life-sustaining cycles.",sel:"Life moves in cycles — rest, effort, grief, and renewal are all natural and necessary."},
+  {w:"EMERGE",sci:"Species emerge from dormancy, cocoons, and seeds when conditions are right.",sel:"Growth happens gradually — and then suddenly, you emerge stronger than before."},
+  {w:"FILTER",sci:"Wetlands and organisms filter toxins and pollutants from water and air.",sel:"Learning to filter out negativity and noise so you can focus on what truly matters."},
+  {w:"FLOW",sci:"Rivers flow through watersheds, carrying energy and life across vast landscapes.",sel:"Finding your flow state — where effort feels effortless and purpose feels clear."},
+  {w:"GROW",sci:"Growth requires sunlight, nutrients, water, and time — it cannot be forced or rushed.",sel:"Personal growth requires the same patience and conditions that ecosystems demand."},
+  {w:"HEAL",sci:"Ecosystems heal after disturbance through succession, regeneration, and time.",sel:"Healing is not linear — for people or for nature — and both deserve patience."},
+  {w:"MIGRATE",sci:"Animals migrate seasonally in response to temperature, food availability, and light.",sel:"Transitions and change are a natural part of every life journey — not something to fear."},
+  {w:"PERSIST",sci:"Resilient species persist through drought, wildfire, and long-term climate shifts.",sel:"Persistence through difficulty builds strength, character, and a deeper sense of identity."},
+  {w:"RENEW",sci:"Forests renew after fire; soils renew through decomposition and the return of nutrients.",sel:"Rest and recovery are how we renew our energy, creativity, and sense of purpose."},
+  {w:"RESTORE",sci:"Habitat restoration rebuilds what was lost or degraded through human impact.",sel:"Restoring relationships and self-trust after hard seasons is an act of quiet courage."},
+  {w:"RETURN",sci:"Salmon return to their birth streams — nature is always drawn back toward its origin.",sel:"Returning to your values and sense of self after feeling lost is always possible."},
+  {w:"RISE",sci:"Sea levels rise, but so do tides, seeds breaking soil, and birds at first light.",sel:"Rising above challenges without denying they existed — that is resilience in action."},
+  {w:"ROOT",sci:"Deep root systems stabilize plants and reach water sources during periods of drought.",sel:"Your roots — family, culture, values, and history — keep you stable when life shifts."},
+  {w:"SHINE",sci:"The sun powers all life on Earth through light energy and the process of photosynthesis.",sel:"Letting your authentic self shine is both a gift to others and an act of personal courage."},
+  {w:"SUSTAIN",sci:"Sustainability keeps ecosystems and communities viable and thriving for future generations.",sel:"Building habits that sustain your mental and physical health is an investment in your future."},
+  {w:"THRIVE",sci:"Species thrive in ecosystems where their needs are consistently and reliably met.",sel:"You deserve environments — social and physical — where you can truly and fully thrive."},
+  {w:"TRANSFORM",sci:"Metamorphosis, decomposition, and erosion transform matter into something entirely new.",sel:"Every challenge you survive has the power to transform you into someone stronger."}
+];
+function buildOW(){
+  var h='';
+  OW.forEach(function(o,i){
+    h+='<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;" id="owc'+i+'">' +
+      '<div style="display:flex;align-items:center;gap:14px;padding:12px 16px;cursor:pointer;user-select:none;" onclick="toggleOWC('+i+')">' +
+        '<span style="font-family:\'Courier New\',monospace;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--gold);min-width:110px;text-transform:uppercase;">'+o.w+'</span>' +
+        '<span style="font-size:12px;color:rgba(255,255,255,.3);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+o.sci+'</span>' +
+        '<span style="font-size:10px;color:rgba(255,255,255,.2);" id="owarr'+i+'">▼</span>' +
+      '</div>' +
+      '<div style="display:none;padding:0 16px 14px;border-top:1px solid rgba(255,255,255,.06);" id="owb'+i+'">' +
+        '<div style="display:flex;gap:10px;margin-top:10px;align-items:flex-start;">' +
+          '<div style="width:8px;height:8px;border-radius:50%;background:#4caf82;flex-shrink:0;margin-top:4px;"></div>' +
+          '<div><span style="font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#888;display:block;margin-bottom:2px;font-family:\'Courier New\',monospace;">Environmental Science</span>' +
+          '<span style="font-size:13px;color:rgba(255,255,255,.8);line-height:1.6;font-weight:300;">'+o.sci+'</span></div>' +
+        '</div>' +
+        '<div style="display:flex;gap:10px;margin-top:10px;align-items:flex-start;">' +
+          '<div style="width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:4px;"></div>' +
+          '<div><span style="font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#888;display:block;margin-bottom:2px;font-family:\'Courier New\',monospace;">Social Emotional Well-Being</span>' +
+          '<span style="font-size:13px;color:rgba(255,255,255,.8);line-height:1.6;font-weight:300;">'+o.sel+'</span></div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  });
+  document.getElementById('owGrid').innerHTML=h;
+}
+function toggleOWC(i){
+  var b=document.getElementById('owb'+i);
+  var a=document.getElementById('owarr'+i);
+  var open=b.style.display==='none';
+  b.style.display=open?'block':'none';
+  a.style.transform=open?'rotate(180deg)':'';
+}
+function owAll(open){
+  OW.forEach(function(_,i){
+    document.getElementById('owb'+i).style.display=open?'block':'none';
+    document.getElementById('owarr'+i).style.transform=open?'rotate(180deg)':'';
+  });
+}
+function toggleOW(){
+  var p=document.getElementById('owPanel');
+  var open=p.style.display==='none';
+  p.style.display=open?'block':'none';
+  document.getElementById('owArrow').style.transform=open?'rotate(180deg)':'';
+  document.getElementById('owBtnLabel').textContent=open?'Collapse — The 25 OneWords':'Explore the 25 OneWords';
+}
+buildOW();
+</script>
 </body>
 </html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Culinary Arts Package · Ms. Sayers · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#1A2744;--gold:#E8A820;--gold2:#C8860A;--green:#2D7A4F;--cream:#FFFDF7;--red:#B22222;--teal:#00838F;}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:#1a1a2e;padding-bottom:60px;}
+
+/* PRINT */
+@media print{
+  .no-print{display:none!important;}
+  .page-break{page-break-before:always;}
+  body{background:#fff;}
+  .hero,.kiosk-header,.url-block{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  @page{size:letter;margin:.5in;}
+}
+
+.hero{background:linear-gradient(135deg,var(--navy),#0F1B35);padding:40px 48px 36px;position:relative;overflow:hidden;}
+.hero::after{content:'🍪';position:absolute;right:48px;top:50%;transform:translateY(-50%);font-size:80px;opacity:.1;pointer-events:none;}
+.hero-tag{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:#fff;line-height:1.15;margin-bottom:8px;}
+.hero h1 span{color:var(--gold);}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.6);line-height:1.7;max-width:580px;margin-bottom:20px;}
+.hero-pills{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:5px 14px;border-radius:20px;}
+.pill-gold{background:rgba(232,168,32,.18);color:var(--gold);border:1px solid rgba(232,168,32,.3);}
+.pill-green{background:rgba(45,122,79,.18);color:#A5D6A7;border:1px solid rgba(45,122,79,.3);}
+
+.print-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);border:none;color:var(--navy);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;border-radius:6px;cursor:pointer;margin:20px 48px 0;}
+
+.main{max-width:860px;margin:0 auto;padding:0 40px;}
+.section{margin-top:40px;}
+.section-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:6px;}
+.section-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy);margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid #e8e4dc;}
+
+.url-block{background:var(--navy);border-radius:12px;padding:20px 24px;display:flex;align-items:center;gap:16px;margin-bottom:12px;}
+.url-icon{font-size:1.8rem;flex-shrink:0;}
+.url-label{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+.url-value{font-family:'Courier New',monospace;font-size:13px;color:#fff;word-break:break-all;}
+.url-desc{font-size:12px;color:rgba(255,255,255,.5);margin-top:4px;}
+
+.card{background:#fff;border:1px solid #e8e4dc;border-radius:12px;padding:22px;margin-bottom:12px;box-shadow:0 2px 8px rgba(26,39,68,.04);}
+.card-title{font-family:'Fredoka One',cursive;font-size:15px;color:var(--navy);margin-bottom:10px;}
+.card p{font-size:13px;color:#444;line-height:1.75;margin-bottom:8px;}
+.card p:last-child{margin-bottom:0;}
+
+.kiosk-row{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #f0ece8;}
+.kiosk-row:last-child{border-bottom:none;}
+.kiosk-badge{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:13px;color:#fff;flex-shrink:0;margin-top:2px;}
+.kiosk-info{}
+.kiosk-name{font-family:'Fredoka One',cursive;font-size:13px;color:var(--navy);margin-bottom:2px;}
+.kiosk-url-sm{font-family:'Courier New',monospace;font-size:10px;color:#888;margin-bottom:4px;}
+.kiosk-desc{font-size:12px;color:#555;line-height:1.6;}
+
+.note{background:#fff9e6;border-left:4px solid var(--gold);padding:12px 16px;border-radius:4px;font-size:13px;color:#555;line-height:1.6;margin-bottom:12px;}
+.note strong{color:var(--navy);}
+
+.step-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.step-item{display:flex;gap:10px;align-items:flex-start;}
+.step-num{background:var(--navy);color:var(--gold);font-family:'Fredoka One',cursive;font-size:12px;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.step-body{font-size:13px;color:#444;line-height:1.65;}
+.step-body strong{color:var(--navy);}
+
+.footer{text-align:center;padding:32px;margin-top:48px;border-top:1px solid #e8e4dc;}
+.footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spacing:1px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">Smile Bags · A Word &amp; Wonder Experience · Spring 2026</div>
+  <h1>Culinary Arts<br><span>Kiosk Package</span></h1>
+  <p class="hero-sub">Everything Ms. Sayers needs to launch the Culinary Arts Smile Bags experience — hub URL, kiosk overview, student workflow, and setup checklist.</p>
+  <div class="hero-pills">
+    <div class="pill pill-gold">🍪 Ms. Betsabe Sayers</div>
+    <div class="pill pill-green">4 Kiosk Activities</div>
+    <div class="pill pill-gold">Bambu Lab 3D Printing</div>
+    <div class="pill pill-green">2 Google Sheets</div>
+  </div>
+</div>
+
+<button class="print-btn no-print" onclick="window.print()">🖨️ Print This Package</button>
+
+<div class="main">
+
+  <!-- MINI-SITE URL -->
+  <div class="section">
+    <div class="section-label">Start Here</div>
+    <div class="section-title">The Culinary Arts Hub</div>
+    <div class="url-block">
+      <div class="url-icon">🌐</div>
+      <div>
+        <div class="url-label">Share This URL With Students</div>
+        <div class="url-value">lhhowell.github.io/kellamsmilebags/Culinary_Menu.html</div>
+        <div class="url-desc">All four kiosk activities are linked from this single page.</div>
+      </div>
+    </div>
+    <div class="url-block" style="background:#2D7A4F;">
+      <div class="url-icon">📋</div>
+      <div>
+        <div class="url-label">Teacher Guide (Detailed)</div>
+        <div class="url-value">lhhowell.github.io/kellamsmilebags/Culinary_TeacherGuide.html</div>
+        <div class="url-desc">Full guide including spreadsheets, print queue, and kiosk management.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOUR KIOSKS -->
+  <div class="section">
+    <div class="section-label">The Four Options</div>
+    <div class="section-title">What Students Do</div>
+    <div class="note"><strong>Option A is required for all students.</strong> Options B, C, and D are choice activities.</div>
+    <div class="card">
+      <div class="kiosk-row">
+        <div class="kiosk-badge" style="background:#B22222;">A</div>
+        <div class="kiosk-info">
+          <div class="kiosk-name">🖨️ Cookie Cutter Order — REQUIRED</div>
+          <div class="kiosk-url-sm">Culinary_Kiosk_v3.html</div>
+          <div class="kiosk-desc">Student picks OneWord → recipient level → filament color → submits order. You print on Bambu Lab. Every student gets one 3D printed cookie cutter in their bag.</div>
+        </div>
+      </div>
+      <div class="kiosk-row">
+        <div class="kiosk-badge" style="background:#2D7A4F;">B</div>
+        <div class="kiosk-info">
+          <div class="kiosk-name">📖 OneWord Recipe Card — Choice</div>
+          <div class="kiosk-url-sm">Culinary_RecipeCard.html</div>
+          <div class="kiosk-desc">Student picks OneWord → chooses a recipe connected to its meaning → adds personal message → prints card for the bag.</div>
+        </div>
+      </div>
+      <div class="kiosk-row">
+        <div class="kiosk-badge" style="background:#00838F;">C</div>
+        <div class="kiosk-info">
+          <div class="kiosk-name">🧬 DNA Flavor Pairing Lab — Choice</div>
+          <div class="kiosk-url-sm">Culinary_DNAFlavor.html</div>
+          <div class="kiosk-desc">Molecular gastronomy — 4 experiment modes. Student discovers flavor compounds connecting unexpected foods, prints results card.</div>
+        </div>
+      </div>
+      <div class="kiosk-row">
+        <div class="kiosk-badge" style="background:#1B5E20;">D</div>
+        <div class="kiosk-info">
+          <div class="kiosk-name">💻 Bake the Code — Choice</div>
+          <div class="kiosk-url-sm">Culinary_BakeTheCode.html</div>
+          <div class="kiosk-desc">Binary decoder → unlock cookie decoration instructions → free-paint canvas → print decoration card.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STUDENT WORKFLOW -->
+  <div class="section">
+    <div class="section-label">For Students</div>
+    <div class="section-title">Student Workflow</div>
+    <div class="card">
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">1</div><div class="step-body"><strong>Open the Kiosk Hub</strong> — lhhowell.github.io/kellamsmilebags/Culinary_Menu.html</div></li>
+        <li class="step-item"><div class="step-num">2</div><div class="step-body"><strong>Complete Option A</strong> — Cookie Cutter Order. Choose your OneWord, recipient level, and filament color. Submit your order.</div></li>
+        <li class="step-item"><div class="step-num">3</div><div class="step-body"><strong>Choose Option B, C, or D</strong> — Pick the activity that interests you most and complete it.</div></li>
+        <li class="step-item"><div class="step-num">4</div><div class="step-body"><strong>Print your card</strong> — Use the print button inside the kiosk. Hand it to your teacher with your submission code.</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- TEACHER SETUP -->
+  <div class="section">
+    <div class="section-label">Teacher Setup</div>
+    <div class="section-title">Before You Launch</div>
+    <div class="card">
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">1</div><div class="step-body"><strong>Confirm Apps Script URLs</strong> — Both kiosks submit to Google Sheets via Apps Script. Verify both spreadsheets are receiving data before running with students.</div></li>
+        <li class="step-item"><div class="step-num">2</div><div class="step-body"><strong>Post the hub URL in Canvas</strong> — lhhowell.github.io/kellamsmilebags/Culinary_Menu.html</div></li>
+        <li class="step-item"><div class="step-num">3</div><div class="step-body"><strong>Load Bambu Lab filament</strong> — 7 colors available. Have all colors ready or note which are unavailable.</div></li>
+        <li class="step-item"><div class="step-num">4</div><div class="step-body"><strong>Stock Play-Doh</strong> — One mini container per student goes in the bag alongside the cookie cutter.</div></li>
+        <li class="step-item"><div class="step-num">5</div><div class="step-body"><strong>After class</strong> — Open the Cookie Cutter Orders spreadsheet, sort by color, batch your Bambu prints.</div></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer"><p>🍪 Smile Bags · A Word &amp; Wonder Experience · Culinary Arts · Ms. Betsabe Sayers · Spring 2026</p></div>
+
+</body>
+</html>
