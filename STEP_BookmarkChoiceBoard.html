@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Bookmark Choice Board · STEP + Inclusion · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#1A2744;--blue:#1565C0;--gold:#C8860A;--border:#BBDEFB;--cream:#F5F7FF;}
+body{font-family:'Nunito',sans-serif;background:#fff;color:#1a1a2e;padding:0;}
+
+/* ── SCREEN HEADER (no-print) ── */
+.screen-hdr{background:linear-gradient(135deg,var(--navy),#0F1B35);padding:18px 28px;text-align:center;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.screen-hdr h1{font-family:'Fredoka One',cursive;font-size:20px;color:#fff;}
+.screen-hdr p{font-size:12px;color:rgba(255,255,255,.7);}
+.btn-print{background:var(--gold);border:none;color:#fff;font-family:'Fredoka One',cursive;font-size:13px;padding:9px 20px;border-radius:6px;cursor:pointer;white-space:nowrap;}
+.btn-print:hover{background:#a06800;}
+
+/* ── PAGE ── */
+.page{max-width:720px;margin:0 auto;padding:20px 24px 32px;}
+
+/* ── PAGE HEADER ── */
+.page-hdr{text-align:center;border-bottom:3px solid var(--navy);padding-bottom:14px;margin-bottom:20px;}
+.page-hdr .logo{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.page-hdr h2{font-family:'Fredoka One',cursive;font-size:26px;color:var(--navy);margin-bottom:4px;}
+.page-hdr p{font-size:12px;color:#555;}
+
+/* ── STUDENT INFO ── */
+.student-info{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:22px;}
+.info-field label{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:4px;}
+.info-line{border:none;border-bottom:2px solid var(--navy);width:100%;height:28px;font-size:15px;font-family:'Nunito',sans-serif;outline:none;background:transparent;}
+
+/* ── SECTION HEADERS ── */
+.section{margin-bottom:24px;}
+.section-hdr{background:var(--navy);color:#fff;padding:8px 16px;border-radius:8px 8px 0 0;display:flex;align-items:center;gap:10px;}
+.section-hdr .num{background:var(--gold);color:#fff;font-family:'Fredoka One',cursive;font-size:14px;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.section-hdr span{font-family:'Fredoka One',cursive;font-size:16px;}
+.section-hdr p{font-size:11px;color:rgba(255,255,255,.7);margin-left:auto;}
+.section-body{border:2px solid var(--navy);border-top:none;border-radius:0 0 8px 8px;padding:14px;}
+
+/* ── WORD GRID ── */
+.word-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.word-item{border:2px solid var(--border);border-radius:8px;padding:8px 4px;text-align:center;position:relative;}
+.word-item .circle{width:22px;height:22px;border:2px solid #ccc;border-radius:50%;position:absolute;top:4px;right:4px;flex-shrink:0;}
+.word-item .w{font-family:'Fredoka One',cursive;font-size:12px;color:var(--navy);margin-top:4px;}
+.word-item .m{font-size:9px;color:#888;line-height:1.3;margin-top:2px;}
+
+/* ── EMOJI GRID ── */
+.emoji-cat{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#aaa;margin-bottom:6px;margin-top:12px;}
+.emoji-cat:first-child{margin-top:0;}
+.emoji-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;margin-bottom:4px;}
+.emoji-item{border:2px solid var(--border);border-radius:8px;padding:6px 4px;text-align:center;position:relative;}
+.emoji-item .e{font-size:1.4rem;display:block;line-height:1;}
+.emoji-item .circle{width:14px;height:14px;border:1.5px solid #ccc;border-radius:50%;position:absolute;top:2px;right:2px;}
+
+/* ── COLOR GRID ── */
+.color-section{margin-bottom:16px;}
+.color-section-label{font-family:'Fredoka One',cursive;font-size:13px;color:var(--blue);margin-bottom:8px;}
+.color-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.color-item{border:2px solid #ddd;border-radius:8px;padding:8px 4px;text-align:center;position:relative;}
+.color-item .swatch{width:36px;height:36px;border-radius:50%;margin:0 auto 5px;border:2px solid rgba(0,0,0,.1);}
+.color-item .cn{font-family:'Fredoka One',cursive;font-size:11px;color:#333;}
+.color-item .circle{width:16px;height:16px;border:2px solid #ccc;border-radius:50%;position:absolute;top:3px;right:3px;}
+
+/* ── TEACHER NOTE ── */
+.teacher-note{background:#FFF9E6;border:1.5px solid var(--gold);border-radius:8px;padding:12px 16px;margin-top:20px;font-size:12px;color:#5A3000;line-height:1.6;}
+.teacher-note strong{color:var(--navy);}
+
+/* ── FOOTER ── */
+.page-footer{text-align:center;margin-top:20px;padding-top:12px;border-top:1px solid #ddd;font-family:'Fredoka One',cursive;font-size:10px;color:#aaa;letter-spacing:1px;}
+
+/* ── PRINT ── */
+@media print{
+  .screen-hdr{display:none !important;}
+  .page{padding:12px 16px;}
+  body{background:#fff;}
+  @page{size:letter;margin:.4in;}
+  .word-item,.emoji-item,.color-item{break-inside:avoid;}
+}
+</style>
+</head>
+<body>
+
+<!-- SCREEN HEADER (no print) -->
+<div class="screen-hdr">
+  <div>
+    <h1>🔖 Bookmark Choice Board</h1>
+    <p>Print one per student · Teacher enters choices into the kiosk</p>
+  </div>
+  <button class="btn-print" onclick="window.print()">🖨️ Print</button>
+</div>
+
+<div class="page">
+
+  <!-- PAGE HEADER -->
+  <div class="page-hdr">
+    <div class="logo">Smile Bags · A Word &amp; Wonder Experience · Spring 2026</div>
+    <h2>🔖 Bookmark Choice Board</h2>
+    <p>Sharon Glover · STEP + Inclusion · Circle your choices, then give this to Ms. Glover!</p>
+  </div>
+
+  <!-- STUDENT INFO -->
+  <div class="student-info">
+    <div class="info-field">
+      <label>My Name</label>
+      <input class="info-line" type="text"/>
+    </div>
+    <div class="info-field">
+      <label>My Class</label>
+      <input class="info-line" type="text"/>
+    </div>
+    <div class="info-field">
+      <label>Date</label>
+      <input class="info-line" type="text"/>
+    </div>
+  </div>
+
+  <!-- SECTION 1: WORD -->
+  <div class="section">
+    <div class="section-hdr">
+      <div class="num">1</div>
+      <span>My OneWord</span>
+      <p>Circle ONE word</p>
+    </div>
+    <div class="section-body">
+      <div class="word-grid" id="wordGrid"></div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: EMOJI -->
+  <div class="section">
+    <div class="section-hdr">
+      <div class="num">2</div>
+      <span>My Emoji</span>
+      <p>Circle ONE emoji</p>
+    </div>
+    <div class="section-body">
+      <div class="emoji-cat">🌿 Nature</div>
+      <div class="emoji-grid" id="emojiNature"></div>
+      <div class="emoji-cat">✨ Hope &amp; Light</div>
+      <div class="emoji-grid" id="emojiHope"></div>
+      <div class="emoji-cat">💛 Hearts &amp; Connection</div>
+      <div class="emoji-grid" id="emojiHearts"></div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: COLORS -->
+  <div class="section">
+    <div class="section-hdr">
+      <div class="num">3</div>
+      <span>My Colors</span>
+      <p>Circle ONE for each color</p>
+    </div>
+    <div class="section-body">
+      <div class="color-section">
+        <div class="color-section-label">Color 1 — Bookmark body (background)</div>
+        <div class="color-grid" id="color1Grid"></div>
+      </div>
+      <div class="color-section">
+        <div class="color-section-label">Color 2 — Word &amp; emoji on top</div>
+        <div class="color-grid" id="color2Grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEACHER NOTE -->
+  <div class="teacher-note">
+    <strong>📋 Ms. Glover:</strong> Once the student has circled their choices, open the
+    <strong>STEP + Inclusion Activity Kiosk</strong>, enter the student's name and class,
+    select <strong>Design My Bookmark</strong>, then enter their word, emoji, and two colors.
+    Submit on their behalf. The bookmark order will be logged automatically.
+  </div>
+
+  <div class="page-footer">STEP + Inclusion · Sharon Glover · Smile Bags · Spring 2026</div>
+
+</div>
+
+<script>
+var WORDS = [
+  {w:"ABSORB",  m:"Taking it all in"},
+  {w:"ADAPT",   m:"Adjusting to change"},
+  {w:"ANCHOR",  m:"Staying steady"},
+  {w:"BALANCE", m:"Finding your center"},
+  {w:"BLOOM",   m:"Growing beautifully"},
+  {w:"BREATHE", m:"Finding calm"},
+  {w:"CLEAR",   m:"Seeing clearly"},
+  {w:"CONNECT", m:"Building bridges"},
+  {w:"CYCLE",   m:"Moving through change"},
+  {w:"EMERGE",  m:"Coming out stronger"},
+  {w:"FILTER",  m:"Choosing wisely"},
+  {w:"FLOW",    m:"Moving forward"},
+  {w:"GROW",    m:"Becoming more"},
+  {w:"HEAL",    m:"Getting better"},
+  {w:"MIGRATE", m:"Finding new paths"},
+  {w:"PERSIST", m:"Keeping going"},
+  {w:"RENEW",   m:"Fresh start"},
+  {w:"RESTORE", m:"Bringing back good"},
+  {w:"RETURN",  m:"Coming back to you"},
+  {w:"RISE",    m:"Standing tall"},
+  {w:"ROOT",    m:"Staying grounded"},
+  {w:"SHINE",   m:"Sharing your light"},
+  {w:"SUSTAIN", m:"Taking care"},
+  {w:"THRIVE",  m:"Living fully"},
+  {w:"TRANSFORM",m:"Becoming new"},
+];
+
+var EMOJIS = {
+  nature:["\uD83C\uDF31","\uD83C\uDF38","\uD83C\uDF3F","\uD83C\uDF43","\uD83C\uDF3A","\uD83C\uDF0A","\uD83C\uDF32","\uD83C\uDF42","\uD83E\uDD8B","\uD83C\uDF3B","\uD83C\uDF19","\u2600\uFE0F"],
+  hope:["\u2728","\u2B50","\uD83C\uDF08","\uD83D\uDD25","\uD83D\uDCAB","\uD83D\uDD4A\uFE0F","\uD83C\uDF05","\u26A1","\uD83C\uDFAF","\uD83C\uDF1F","\uD83C\uDFC6","\uD83C\uDF04"],
+  hearts:["\uD83D\uDCDB","\uD83D\uDCD9","\uD83D\uDCDA","\uD83D\uDC9C","\uD83E\uDD0D","\uD83D\uDC97","\uD83E\uFAF6","\uD83E\uDD1D","\uD83C\uDF0D","\uD83C\uDF81","\uD83E\uDEB4","\uD83E\uDEA7"]
+};
+
+var COLORS = [
+  {n:"Red",    h:"#CC0000"},
+  {n:"Blue",   h:"#1565C0"},
+  {n:"Green",  h:"#2D6A2D"},
+  {n:"Gold",   h:"#C8860A"},
+  {n:"Purple", h:"#5B2D9E"},
+  {n:"Teal",   h:"#1B7A78"},
+  {n:"Orange", h:"#E65100"},
+  {n:"Black",  h:"#1A1A1A"},
+  {n:"White",  h:"#F5F5F5"},
+  {n:"Pink",   h:"#C2185B"},
+];
+
+// Build word grid
+var wg = document.getElementById("wordGrid");
+WORDS.forEach(function(w){
+  var d = document.createElement("div"); d.className="word-item";
+  d.innerHTML='<div class="circle"></div><div class="w">'+w.w+'</div><div class="m">'+w.m+'</div>';
+  wg.appendChild(d);
+});
+
+// Build emoji grids
+function buildEmojiGrid(id, emojis){
+  var g = document.getElementById(id);
+  emojis.forEach(function(e){
+    var d = document.createElement("div"); d.className="emoji-item";
+    d.innerHTML='<span class="e">'+e+'</span><div class="circle"></div>';
+    g.appendChild(d);
+  });
+}
+buildEmojiGrid("emojiNature", EMOJIS.nature);
+buildEmojiGrid("emojiHope",   EMOJIS.hope);
+buildEmojiGrid("emojiHearts", EMOJIS.hearts);
+
+// Build color grids
+function buildColorGrid(id){
+  var g = document.getElementById(id);
+  COLORS.forEach(function(c){
+    var border = c.h==="#F5F5F5" ? "border:2px solid #aaa;" : "";
+    var d = document.createElement("div"); d.className="color-item";
+    d.innerHTML='<div class="circle"></div><div class="swatch" style="background:'+c.h+';'+border+'"></div><div class="cn">'+c.n+'</div>';
+    g.appendChild(d);
+  });
+}
+buildColorGrid("color1Grid");
+buildColorGrid("color2Grid");
+</script>
+</body>
+</html>
