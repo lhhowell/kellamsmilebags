@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Science Supply Bar &mdash; Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:100vh;padding:0 0 60px;}
+.hero{background:#0a0f14;border-bottom:1px solid #1a2a1a;padding:40px 32px 36px;text-align:center;position:relative;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(76,175,130,.1) 0%,transparent 65%);pointer-events:none;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:4px;color:#4caf82;text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4.5vw,50px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:10px;}
+.hero-title span{color:#c9a84c;}
+.hero-sub{font-size:14px;color:#c8c4bc;max-width:600px;margin:0 auto;line-height:1.7;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(76,175,130,.06);border:1px solid #4caf82;color:#4caf82;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;margin:24px 24px 0;}
+
+/* Ticker */
+.ticker-bar{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:12px;padding:16px 20px;margin:20px 24px 0;max-width:900px;margin-left:auto;margin-right:auto;}
+.ticker-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;}
+.ticker-label{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#4caf82;}
+.ticker-count{font-family:'Fredoka One',cursive;font-size:22px;color:#c9a84c;}
+.ticker-count span{font-size:13px;color:#4caf82;}
+.ticker-track{background:#0a0f0a;border-radius:20px;height:12px;overflow:hidden;width:100%;}
+.ticker-fill{background:linear-gradient(90deg,#4caf82,#c9a84c);height:100%;border-radius:20px;transition:width .8s ease;width:0%;}
+.ticker-log{font-size:11px;color:#1a4a1a;margin-top:8px;font-family:'Fredoka One',cursive;letter-spacing:1px;}
+
+.workspace{max-width:900px;margin:0 auto;padding:0 24px;}
+.step-card{background:#0d0d0d;border:1px solid #1a2a1a;border-radius:14px;padding:24px;margin-bottom:14px;margin-top:14px;}
+.step-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#1a4a1a;margin-bottom:8px;}
+.step-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:6px;}
+.step-desc{font-size:13px;color:#c8c4bc;line-height:1.65;margin-bottom:16px;}
+
+/* OneWord grid */
+.ow-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;}
+.ow-btn{background:#0a0f14;border:2px solid #1a2a1a;border-radius:8px;padding:9px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#c8c4bc;cursor:pointer;width:100%;text-align:center;}
+.ow-btn:hover{border-color:#c9a84c;color:#c9a84c;}
+.ow-btn.on{border-color:#4caf82;color:#4caf82;background:rgba(76,175,130,.1);}
+
+/* Supply grid */
+.supply-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;}
+.supply-card{background:#0a0f14;border:2px solid #1a2a1a;border-radius:12px;padding:16px;cursor:pointer;text-align:center;transition:all .2s;position:relative;}
+.supply-card:hover{border-color:#4caf82;}
+.supply-card.selected{border-color:#4caf82;background:rgba(76,175,130,.08);}
+.supply-card.maxed{opacity:.4;cursor:not-allowed;}
+.supply-card.selected.maxed{opacity:1;cursor:pointer;}
+.supply-icon{font-size:28px;display:block;margin-bottom:8px;}
+.supply-name{font-family:'Fredoka One',cursive;font-size:12px;color:#4caf82;display:block;margin-bottom:4px;}
+.supply-desc{font-size:11px;color:#c8c4bc;line-height:1.4;}
+.supply-check{position:absolute;top:8px;right:8px;background:#4caf82;color:#fff;font-size:11px;border-radius:50%;width:20px;height:20px;display:none;align-items:center;justify-content:center;font-weight:700;}
+.supply-card.selected .supply-check{display:flex;}
+.supply-tally{font-family:'Fredoka One',cursive;font-size:13px;color:#c8c4bc;margin-top:12px;}
+.supply-tally span{color:#4caf82;font-size:16px;}
+
+/* Confirm button */
+.confirm-btn{width:100%;background:#4caf82;color:#111;font-family:'Fredoka One',cursive;font-size:14px;letter-spacing:3px;text-transform:uppercase;padding:18px;border:none;border-radius:12px;cursor:pointer;transition:all .2s;font-weight:700;margin-top:14px;}
+.confirm-btn:hover{background:#3d9e72;}
+.confirm-btn.off{background:#1a2a1a;color:#2a4a2a;cursor:not-allowed;}
+
+/* Path cards - shown after confirm */
+.path-section{display:none;margin-top:14px;}
+.path-section.show{display:block;}
+.path-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#4caf82;margin-bottom:14px;text-align:center;}
+.path-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.path-card{border-radius:14px;padding:24px;text-align:center;transition:all .2s;}
+.path-card.recipe{background:#0d1a0d;border:2px solid #4caf82;}
+.path-card.bookmark{background:#0d0d1a;border:2px solid #5b9bd5;}
+.path-icon{font-size:36px;display:block;margin-bottom:12px;}
+.path-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:8px;}
+.path-card.recipe .path-title{color:#4caf82;}
+.path-card.bookmark .path-title{color:#5b9bd5;}
+.path-desc{font-size:13px;color:#c8c4bc;line-height:1.6;margin-bottom:16px;}
+.path-btn{display:block;width:100%;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:12px 16px;border-radius:10px;text-decoration:none;text-align:center;border:none;cursor:pointer;}
+.path-btn.recipe{background:#4caf82;color:#111;}
+.path-btn.bookmark{background:#5b9bd5;color:#fff;}
+.path-btn:hover{opacity:.88;}
+
+/* Summary badge */
+.summary{background:#111;border:1px solid #1a2a1a;border-radius:10px;padding:14px 18px;margin-bottom:14px;display:none;}
+.summary.show{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.summary-word{font-family:'Fredoka One',cursive;font-size:14px;color:#c9a84c;letter-spacing:1px;}
+.summary-supplies{font-size:13px;color:#c8c4bc;}
+.summary-divider{color:#333;}
+
+/* Return button */
+.return-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(76,175,130,.08);border:1.5px solid #4caf82;color:#4caf82;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:12px 20px;border-radius:10px;text-decoration:none;margin-top:14px;width:100%;justify-content:center;}
+.return-btn:hover{background:#4caf82;color:#111;}
+
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #0a151f;max-width:900px;margin:32px auto 0;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:12px;color:#1a2a1a;letter-spacing:1px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">Smile Bags &middot; AP Bio &amp; T.I.D.E. &middot; Creation Kiosk</div>
+  <h1 class="hero-title">Elementary<br><span>Science Supply Bar</span></h1>
+  <p class="hero-sub">Choose your OneWord and your supplies — then decide whether to create a Science Recipe Card or a Bookmark. You will come back to complete the other one!</p>
+</div>
+
+<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to Kiosk Menu</a>
+
+<!-- Ticker -->
+<div class="ticker-bar">
+  <div class="ticker-top">
+    <div class="ticker-label">&#127807; AP Bio &amp; T.I.D.E. &middot; Bag Progress</div>
+    <div class="ticker-count" id="tickerCount">-- <span>of 10 bags complete</span></div>
+  </div>
+  <div class="ticker-track"><div class="ticker-fill" id="tickerFill"></div></div>
+  <div class="ticker-log" id="tickerLog">Loading progress...</div>
+</div>
+
+<div class="workspace">
+
+  <!-- STEP 1: ONEWORD -->
+  <div class="step-card">
+    <div class="step-num">Step 1 of 3</div>
+    <div class="step-title">Choose your OneWord</div>
+    <div class="step-desc">Select the OneWord that is guiding everything in your Smile Bag.</div>
+    <div class="ow-grid">
+      <button class="ow-btn" onclick="selectWord('ABSORB',this)">ABSORB</button>
+      <button class="ow-btn" onclick="selectWord('ADAPT',this)">ADAPT</button>
+      <button class="ow-btn" onclick="selectWord('ANCHOR',this)">ANCHOR</button>
+      <button class="ow-btn" onclick="selectWord('BALANCE',this)">BALANCE</button>
+      <button class="ow-btn" onclick="selectWord('BLOOM',this)">BLOOM</button>
+      <button class="ow-btn" onclick="selectWord('BREATHE',this)">BREATHE</button>
+      <button class="ow-btn" onclick="selectWord('CLEAR',this)">CLEAR</button>
+      <button class="ow-btn" onclick="selectWord('CONNECT',this)">CONNECT</button>
+      <button class="ow-btn" onclick="selectWord('CYCLE',this)">CYCLE</button>
+      <button class="ow-btn" onclick="selectWord('EMERGE',this)">EMERGE</button>
+      <button class="ow-btn" onclick="selectWord('FILTER',this)">FILTER</button>
+      <button class="ow-btn" onclick="selectWord('FLOW',this)">FLOW</button>
+      <button class="ow-btn" onclick="selectWord('GROW',this)">GROW</button>
+      <button class="ow-btn" onclick="selectWord('HEAL',this)">HEAL</button>
+      <button class="ow-btn" onclick="selectWord('MIGRATE',this)">MIGRATE</button>
+      <button class="ow-btn" onclick="selectWord('PERSIST',this)">PERSIST</button>
+      <button class="ow-btn" onclick="selectWord('RENEW',this)">RENEW</button>
+      <button class="ow-btn" onclick="selectWord('RESTORE',this)">RESTORE</button>
+      <button class="ow-btn" onclick="selectWord('RETURN',this)">RETURN</button>
+      <button class="ow-btn" onclick="selectWord('RISE',this)">RISE</button>
+      <button class="ow-btn" onclick="selectWord('ROOT',this)">ROOT</button>
+      <button class="ow-btn" onclick="selectWord('SHINE',this)">SHINE</button>
+      <button class="ow-btn" onclick="selectWord('SUSTAIN',this)">SUSTAIN</button>
+      <button class="ow-btn" onclick="selectWord('THRIVE',this)">THRIVE</button>
+      <button class="ow-btn" onclick="selectWord('TRANSFORM',this)">TRANSFORM</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: SUPPLIES -->
+  <div class="step-card">
+    <div class="step-num">Step 2 of 3</div>
+    <div class="step-title">Choose 2 or 3 supplies</div>
+    <div class="step-desc">Click each supply you want to include in your bag. Choose 2 or 3 only. When you are done selecting, click the <strong style="color:#4caf82;">Confirm My Supplies</strong> button below to lock in your choices.</div>
+    <div class="supply-grid">
+      <div class="supply-card" onclick="toggleSupply('Crayons & Colored Pencils',this)">
+        <div class="supply-check">&#10003;</div>
+        <span class="supply-icon">&#128396;</span>
+        <span class="supply-name">Crayons &amp; Colored Pencils</span>
+        <span class="supply-desc">For drawing, coloring, and recording observations</span>
+      </div>
+      <div class="supply-card" onclick="toggleSupply('Stickers',this)">
+        <div class="supply-check">&#10003;</div>
+        <span class="supply-icon">&#11088;</span>
+        <span class="supply-name">Stickers</span>
+        <span class="supply-desc">For labeling, marking progress, and celebrating</span>
+      </div>
+      <div class="supply-card" onclick="toggleSupply('Play-Doh',this)">
+        <div class="supply-check">&#10003;</div>
+        <span class="supply-icon">&#127758;</span>
+        <span class="supply-name">Play-Doh</span>
+        <span class="supply-desc">For modeling, sculpting, and hands-on exploration</span>
+      </div>
+      <div class="supply-card" onclick="toggleSupply('Ruler',this)">
+        <div class="supply-check">&#10003;</div>
+        <span class="supply-icon">&#128207;</span>
+        <span class="supply-name">Ruler</span>
+        <span class="supply-desc">For measuring growth, distance, and change over time</span>
+      </div>
+      <div class="supply-card" onclick="toggleSupply('Mini Notepad',this)">
+        <div class="supply-check">&#10003;</div>
+        <span class="supply-icon">&#128221;</span>
+        <span class="supply-name">Mini Notepad</span>
+        <span class="supply-desc">For recording observations like a real scientist</span>
+      </div>
+      <div class="supply-card" onclick="toggleSupply('Rubber Bands',this)">
+        <div class="supply-check">&#10003;</div>
+        <span class="supply-icon">&#128308;</span>
+        <span class="supply-name">Rubber Bands</span>
+        <span class="supply-desc">For testing elasticity, force, and simple machines</span>
+      </div>
+      <div class="supply-card" onclick="toggleSupply('Seeds',this)">
+        <div class="supply-check">&#10003;</div>
+        <span class="supply-icon">&#127807;</span>
+        <span class="supply-name">Seeds</span>
+        <span class="supply-desc">For growing, observing germination, and plant science</span>
+      </div>
+      <div class="supply-card" onclick="toggleSupply('Mirror',this)">
+        <div class="supply-check">&#10003;</div>
+        <span class="supply-icon">&#129359;</span>
+        <span class="supply-name">Mirror</span>
+        <span class="supply-desc">For exploring light, reflection, and symmetry</span>
+      </div>
+    </div>
+    <div class="supply-tally" id="supplyTally">Select <span>2 or 3</span> supplies above</div>
+    <button class="confirm-btn off" id="confirmBtn" onclick="confirmSelections()">&#10003; Confirm My Supplies</button>
+  </div>
+
+  <!-- STEP 3: PATH CHOICE -->
+  <div class="step-card" id="step3Card" style="display:none;">
+    <div class="step-num">Step 3 of 3</div>
+    <div class="step-title">What would you like to create first?</div>
+    <div class="step-desc">You will need to make both items &mdash; a Recipe Card AND a Bookmark. Start with one now and return here to complete the other when you are done.</div>
+
+    <!-- Summary badge -->
+    <div class="summary show" id="summaryBadge">
+      <span class="summary-word" id="summaryWord"></span>
+      <span class="summary-divider">&middot;</span>
+      <span class="summary-supplies" id="summarySupplies"></span>
+    </div>
+
+    <div class="path-grid">
+      <div class="path-card recipe">
+        <span class="path-icon">&#127380;</span>
+        <div class="path-title">Science Recipe Card</div>
+        <div class="path-desc">Design a mini science activity using your supplies. The elementary student follows the recipe at home!</div>
+        <a id="recipeBtn" href="ScienceRecipeCard_Kiosk.html" class="path-btn recipe">Create My Recipe Card &#8594;</a>
+      </div>
+      <div class="path-card bookmark">
+        <span class="path-icon">&#128278;</span>
+        <div class="path-title">Science Bookmark</div>
+        <div class="path-desc">Design a bookmark connecting your supplies to your OneWord. Laminated and placed in the bag!</div>
+        <a id="bookmarkBtn" href="KellamSmileBags_APResearch_BookmarkBuilder_Kiosk.html" class="path-btn bookmark">Create My Bookmark &#8594;</a>
+      </div>
+    </div>
+
+    <!-- Return prompts (shown after first path completed) -->
+    <div id="returnRecipe" style="display:none;">
+      <a href="ScienceRecipeCard_Kiosk.html" class="return-btn">&#8592; Return to create your Recipe Card</a>
+    </div>
+    <div id="returnBookmark" style="display:none;">
+      <a href="KellamSmileBags_APResearch_BookmarkBuilder_Kiosk.html" class="return-btn">&#8592; Return to create your Bookmark</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
+</div>
+
+<script>
+var TRACKER_URL = 'https://script.google.com/macros/s/AKfycby2KBYbnyuesJFnzMRx77TiLma8rWfIpr-fC3In-vjUz8up-JVMyaQEmJSKqpsKtzcMhw/exec';
+var selectedWord = '';
+var selectedSupplies = [];
+
+function selectWord(w, btn) {
+  selectedWord = w;
+  var btns = document.getElementsByClassName('ow-btn');
+  for (var i = 0; i < btns.length; i++) { btns[i].className = 'ow-btn'; }
+  btn.className = 'ow-btn on';
+  checkReady();
+}
+
+function toggleSupply(s, card) {
+  if (card.classList.contains('maxed') && !card.classList.contains('selected')) { return; }
+  var idx = selectedSupplies.indexOf(s);
+  if (idx !== -1) {
+    selectedSupplies.splice(idx, 1);
+    card.classList.remove('selected');
+  } else {
+    if (selectedSupplies.length >= 3) { return; }
+    selectedSupplies.push(s);
+    card.classList.add('selected');
+  }
+  var n = selectedSupplies.length;
+  // Gray out unselected if at max
+  var cards = document.getElementsByClassName('supply-card');
+  for (var i = 0; i < cards.length; i++) {
+    if (n >= 3 && !cards[i].classList.contains('selected')) {
+      cards[i].classList.add('maxed');
+    } else {
+      cards[i].classList.remove('maxed');
+    }
+  }
+  document.getElementById('supplyTally').innerHTML = n === 0 ?
+    'Select <span>2 or 3</span> supplies above' :
+    '<span>' + n + ' selected</span>' + (n < 2 ? ' &mdash; choose ' + (2-n) + ' more' : n === 3 ? ' &mdash; maximum reached' : ' &mdash; or add one more');
+  checkReady();
+}
+
+function checkReady() {
+  var ready = selectedWord && selectedSupplies.length >= 2;
+  document.getElementById('confirmBtn').className = ready ? 'confirm-btn' : 'confirm-btn off';
+}
+
+function confirmSelections() {
+  if (!selectedWord || selectedSupplies.length < 2) { return; }
+
+  // Update summary badge
+  document.getElementById('summaryWord').textContent = selectedWord;
+  document.getElementById('summarySupplies').textContent = selectedSupplies.join(' \u00b7 ');
+
+  // Update links with query params so kiosks can pre-fill
+  var params = '?word=' + encodeURIComponent(selectedWord) + '&supplies=' + encodeURIComponent(selectedSupplies.join(','));
+  document.getElementById('recipeBtn').href = 'ScienceRecipeCard_Kiosk.html' + params;
+  document.getElementById('bookmarkBtn').href = 'KellamSmileBags_APResearch_BookmarkBuilder_Kiosk.html' + params;
+
+  // Show step 3
+  document.getElementById('step3Card').style.display = 'block';
+  document.getElementById('confirmBtn').textContent = '\u2713 Supplies Confirmed!';
+  document.getElementById('confirmBtn').style.background = '#1B7A78';
+  document.getElementById('confirmBtn').className = 'confirm-btn';
+  document.getElementById('step3Card').scrollIntoView({behavior:'smooth'});
+
+  // Log to tracker
+  logToSheet('SUPPLY_CONFIRM');
+}
+
+function logToSheet(eventType) {
+  if (!TRACKER_URL) { return; }
+  fetch(TRACKER_URL, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      group: 'AP Bio & TIDE',
+      kiosk: 'Elementary Science Supply Bar',
+      supply: selectedSupplies.join(', '),
+      oneword: selectedWord,
+      eventType: eventType
+    })
+  }).then(function(r){ return r.json(); }).then(function(data){
+    if (data.bagsCompleted !== undefined) { updateTicker(data.bagsCompleted, data.target); }
+  }).catch(function(){});
+}
+
+function updateTicker(completed, target) {
+  var t = target || 10;
+  var pct = Math.min(100, Math.round((completed / t) * 100));
+  document.getElementById('tickerCount').innerHTML = completed + ' <span>of ' + t + ' bags complete</span>';
+  document.getElementById('tickerFill').style.width = pct + '%';
+  document.getElementById('tickerLog').textContent = pct + '% complete \u00b7 ' + (t - completed) + ' bags remaining';
+}
+
+function loadTicker() {
+  if (!TRACKER_URL) { return; }
+  fetch(TRACKER_URL)
+    .then(function(r){ return r.json(); })
+    .then(function(data){ updateTicker(data.bagsCompleted, data.target); })
+    .catch(function(){ document.getElementById('tickerLog').textContent = 'Tracker loading...'; });
+}
+
+loadTicker();
+setInterval(loadTicker, 60000);
+</script>
+</body>
+</html>

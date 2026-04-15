@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Color-by-Code Kiosk &mdash; Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#0a0a0f;color:#fff;min-height:100vh;padding:0 0 60px;}
+.hero{background:#0a0a0f;border-bottom:1px solid #1a1a2e;padding:40px 32px 36px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(212,83,126,.1) 0%,transparent 65%);pointer-events:none;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:4px;color:#D4537E;text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4.5vw,50px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:10px;}
+.hero-title span{color:#c9a84c;}
+.hero-sub{font-size:14px;color:#555;max-width:580px;margin:0 auto;line-height:1.7;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid #D4537E;color:#D4537E;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;margin:24px 24px 0;}
+
+/* Mode tabs */
+.mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:0;background:#111;border:1px solid #1a1a2e;border-radius:12px;overflow:hidden;max-width:900px;margin:28px auto 0;}
+.mode-tab{padding:18px 24px;text-align:center;cursor:pointer;border:none;background:transparent;color:#444;width:100%;transition:all .2s;}
+.mode-tab.active{background:#1a1a2e;color:#fff;}
+.mode-tab-icon{font-size:22px;display:block;margin-bottom:6px;}
+.mode-tab-title{font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;color:inherit;display:block;margin-bottom:4px;}
+.mode-tab.active.make .mode-tab-title{color:#D4537E;}
+.mode-tab.active.play .mode-tab-title{color:#4caf82;}
+.mode-tab-desc{font-size:12px;color:#333;line-height:1.4;}
+.mode-tab.active .mode-tab-desc{color:#666;}
+
+.workspace{max-width:900px;margin:0 auto;padding:0 24px;}
+.mode-panel{display:none;padding-top:20px;}
+.mode-panel.active{display:block;}
+
+/* Step cards */
+.step-card{background:#111;border:1px solid #1a1a2e;border-radius:14px;padding:24px;margin-bottom:16px;}
+.step-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#333;margin-bottom:8px;}
+.step-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:16px;}
+
+/* Animal/scene selector */
+.scene-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+.scene-btn{background:#0a0a0f;border:1.5px solid #1a1a2e;border-radius:10px;padding:16px 12px;cursor:pointer;transition:all .2s;text-align:center;width:100%;}
+.scene-btn:hover{border-color:#D4537E;}
+.scene-btn.active{border-color:#D4537E;background:rgba(212,83,126,.08);}
+.scene-btn-icon{font-size:28px;display:block;margin-bottom:8px;}
+.scene-btn-name{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:1px;color:#D4537E;display:block;margin-bottom:4px;}
+.scene-btn-desc{font-size:11px;color:#444;line-height:1.4;}
+
+/* OneWord */
+.ow-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-bottom:12px;}
+.ow-btn{background:#0a0a0f;border:1px solid #1a1a2e;border-radius:8px;padding:8px 10px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#444;cursor:pointer;transition:all .2s;text-align:center;}
+.ow-btn:hover{border-color:#c9a84c;color:#c9a84c;}
+.ow-btn.active{border-color:#4caf82;color:#4caf82;background:rgba(76,175,130,.08);}
+
+/* Generate button */
+.gen-btn{width:100%;background:#D4537E;color:#fff;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:3px;text-transform:uppercase;padding:16px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;}
+.gen-btn:hover{background:#c3426d;}
+.gen-btn:disabled{background:#1a1a1a;color:#333;cursor:not-allowed;}
+
+/* Color key */
+.color-key{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
+.color-swatch{display:flex;align-items:center;gap:8px;background:#111;border:1px solid #1a1a2e;border-radius:8px;padding:8px 12px;}
+.swatch-box{width:24px;height:24px;border-radius:4px;flex-shrink:0;}
+.swatch-label{font-family:'Fredoka One',cursive;font-size:11px;color:#888;letter-spacing:1px;}
+
+/* Canvas area */
+.canvas-wrap{background:#fff;border-radius:12px;padding:16px;margin-bottom:14px;display:none;}
+.canvas-wrap.show{display:block;}
+canvas{display:block;width:100%;height:auto;border-radius:8px;}
+
+/* Print sheet */
+.print-section{background:#fff;color:#111;border-radius:12px;padding:28px;margin-bottom:4px;display:none;}
+.print-section.show{display:block;}
+.print-section::before{content:'PREVIEW';position:absolute;top:12px;right:16px;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;color:#eee;}
+.print-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:#111;text-align:center;margin-bottom:4px;}
+.print-subtitle{font-size:12px;color:#999;text-align:center;margin-bottom:16px;font-family:'Fredoka One',cursive;letter-spacing:1px;text-transform:uppercase;}
+.print-instr{background:#f9f9f9;border-left:4px solid #D4537E;border-radius:4px;padding:10px 14px;font-size:13px;color:#333;margin-bottom:16px;line-height:1.6;}
+.print-key-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+.print-key-item{display:flex;align-items:center;gap:6px;font-size:13px;color:#333;}
+.print-key-dot{width:20px;height:20px;border-radius:4px;border:1px solid #ddd;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:11px;color:#888;}
+.print-canvas-wrap{margin-bottom:16px;}
+.print-bio{background:#f0fff8;border:1px solid #c0e8d4;border-radius:8px;padding:14px;}
+.print-bio-title{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;margin-bottom:6px;}
+.print-bio-text{font-size:12px;color:#444;line-height:1.65;}
+.print-footer-sig{text-align:center;margin-top:16px;font-size:10px;color:#ccc;font-family:'Fredoka One',cursive;letter-spacing:1px;}
+
+.print-btn{width:100%;background:#0a0a0f;color:#D4537E;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:14px;border:1.5px solid #D4537E;border-radius:10px;cursor:pointer;transition:all .2s;margin-top:12px;}
+.print-btn:hover{background:#D4537E;color:#fff;}
+
+/* PLAY mode */
+.play-card{background:#111;border:1px solid #1a1a2e;border-radius:14px;padding:24px;margin-bottom:16px;}
+.play-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:16px;}
+.play-scene-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:16px;}
+.color-palette{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;}
+.color-btn{width:44px;height:44px;border-radius:8px;border:3px solid transparent;cursor:pointer;transition:all .2s;position:relative;}
+.color-btn.selected{border-color:#fff;transform:scale(1.15);}
+.color-btn-num{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-family:'Fredoka One',cursive;font-size:10px;color:#555;white-space:nowrap;}
+.play-canvas-wrap{background:#fff;border-radius:12px;padding:12px;margin-bottom:14px;}
+.play-canvas{display:block;width:100%;cursor:crosshair;}
+.play-hint{font-size:13px;color:#555;margin-bottom:10px;line-height:1.5;}
+.celebrate-play{display:none;background:rgba(76,175,130,.1);border:2px solid #4caf82;border-radius:14px;padding:24px;text-align:center;margin-top:14px;}
+.celebrate-play.show{display:block;}
+.celebrate-play-emoji{font-size:48px;display:block;margin-bottom:12px;}
+.celebrate-play-title{font-family:'Playfair Display',serif;font-size:22px;color:#4caf82;margin-bottom:8px;}
+.celebrate-play-text{font-size:14px;color:#888;line-height:1.7;}
+
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #111;max-width:900px;margin:32px auto 0;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:12px;color:#222;letter-spacing:1px;}
+
+@media print{
+  body{background:#fff;padding:0;}
+  .hero,.mode-tabs,.workspace>.mode-panel .step-card,.workspace>.mode-panel .gen-btn,.print-btn,.back-btn,.footer{display:none!important;}
+  .print-section{display:block!important;position:static;box-shadow:none;border:none;padding:0;border-radius:0;}
+  .print-section::before{display:none;}
+  @page{size:letter;margin:.5in;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">Smile Bags &middot; AP Bio &amp; T.I.D.E. &middot; Creation Kiosk</div>
+  <h1 class="hero-title">Color-by-Code<br><span>Activity Builder</span></h1>
+  <p class="hero-sub">Generate a number-coded coloring sheet of a zoo animal or ecosystem. The elementary student decodes the color key and brings the scene to life!</p>
+</div>
+
+<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to Kiosk Menu</a>
+
+<div class="mode-tabs">
+  <button class="mode-tab make active" onclick="switchMode('make')">
+    <span class="mode-tab-icon">&#127912;</span>
+    <span class="mode-tab-title">Make It</span>
+    <span class="mode-tab-desc">Generate a printable color-by-code sheet for your bag</span>
+  </button>
+  <button class="mode-tab play" onclick="switchMode('play')">
+    <span class="mode-tab-icon">&#127774;</span>
+    <span class="mode-tab-title">Color It</span>
+    <span class="mode-tab-desc">Color the scene interactively online</span>
+  </button>
+</div>
+
+<div class="workspace">
+
+<!-- MAKE IT -->
+<div class="mode-panel active" id="panel-make">
+
+  <div class="step-card" style="margin-top:20px;">
+    <div class="step-num">Step 1 of 3</div>
+    <div class="step-title">Choose your scene</div>
+    <div class="scene-grid">
+      <button class="scene-btn" onclick="selectScene('lion')" id="sc-lion">
+        <span class="scene-btn-icon">&#129409;</span>
+        <span class="scene-btn-name">Lion</span>
+        <span class="scene-btn-desc">African Safari Trail &middot; predator, habitat, food web</span>
+      </button>
+      <button class="scene-btn" onclick="selectScene('turtle')" id="sc-turtle">
+        <span class="scene-btn-icon">&#128034;</span>
+        <span class="scene-btn-name">Sea Turtle</span>
+        <span class="scene-btn-desc">Turtle Oasis &middot; conservation, ocean ecosystem</span>
+      </button>
+      <button class="scene-btn" onclick="selectScene('elephant')" id="sc-elephant">
+        <span class="scene-btn-icon">&#128024;</span>
+        <span class="scene-btn-name">Elephant</span>
+        <span class="scene-btn-desc">African Safari Trail &middot; behavior, memory, social bonds</span>
+      </button>
+      <button class="scene-btn" onclick="selectScene('frog')" id="sc-frog">
+        <span class="scene-btn-icon">&#128056;</span>
+        <span class="scene-btn-name">Tree Frog</span>
+        <span class="scene-btn-desc">Reptiles &amp; Friends &middot; adaptation, camouflage, wetlands</span>
+      </button>
+      <button class="scene-btn" onclick="selectScene('butterfly')" id="sc-butterfly">
+        <span class="scene-btn-icon">&#129419;</span>
+        <span class="scene-btn-name">Butterfly</span>
+        <span class="scene-btn-desc">Flora Point &middot; metamorphosis, pollination, life cycle</span>
+      </button>
+      <button class="scene-btn" onclick="selectScene('fish')" id="sc-fish">
+        <span class="scene-btn-icon">&#128032;</span>
+        <span class="scene-btn-name">Tropical Fish</span>
+        <span class="scene-btn-desc">World of Reptiles &middot; coral reefs, color, camouflage</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-num">Step 2 of 3</div>
+    <div class="step-title">Choose your OneWord</div>
+    <div class="ow-grid" id="owGridMake"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-num">Step 3 of 3</div>
+    <div class="step-title">Generate your color-by-code sheet</div>
+    <button class="gen-btn" id="genBtn" onclick="generateSheet()" disabled>&#127912; Generate Color-by-Code Sheet</button>
+  </div>
+
+  <div class="print-section" id="printSection" style="position:relative;">
+    <div class="print-title">&#127912; Color-by-Code!</div>
+    <div class="print-subtitle" id="printSubtitle">A Smile Bags Coloring Activity &middot; Elementary Edition</div>
+    <div class="print-instr">Use the <strong>color key</strong> below to color each numbered section. Match the number in the shape to the number in the key. When you finish, a hidden animal will appear!</div>
+    <div class="print-key-row" id="printKeyRow"></div>
+    <div class="print-canvas-wrap">
+      <canvas id="printCanvas" width="520" height="380"></canvas>
+    </div>
+    <div class="print-bio">
+      <div class="print-bio-title">&#128300; Did You Know?</div>
+      <div class="print-bio-text" id="printBioText"></div>
+    </div>
+    <div class="print-footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>
+  </div>
+  <button class="print-btn" id="printBtn" onclick="window.print()" style="display:none;">&#128438; Print This Color-by-Code Sheet</button>
+
+</div>
+
+<!-- COLOR IT (Play mode) -->
+<div class="mode-panel" id="panel-play">
+
+  <div class="play-card" style="margin-top:20px;">
+    <div class="step-num">Step 1 of 2</div>
+    <div class="play-title">Choose a scene to color</div>
+    <div class="play-scene-grid">
+      <button class="scene-btn" onclick="selectPlayScene('lion')" id="psc-lion">
+        <span class="scene-btn-icon">&#129409;</span>
+        <span class="scene-btn-name">Lion</span>
+        <span class="scene-btn-desc">African Safari Trail</span>
+      </button>
+      <button class="scene-btn" onclick="selectPlayScene('turtle')" id="psc-turtle">
+        <span class="scene-btn-icon">&#128034;</span>
+        <span class="scene-btn-name">Sea Turtle</span>
+        <span class="scene-btn-desc">Turtle Oasis</span>
+      </button>
+      <button class="scene-btn" onclick="selectPlayScene('elephant')" id="psc-elephant">
+        <span class="scene-btn-icon">&#128024;</span>
+        <span class="scene-btn-name">Elephant</span>
+        <span class="scene-btn-desc">African Safari Trail</span>
+      </button>
+      <button class="scene-btn" onclick="selectPlayScene('frog')" id="psc-frog">
+        <span class="scene-btn-icon">&#128056;</span>
+        <span class="scene-btn-name">Tree Frog</span>
+        <span class="scene-btn-desc">Reptiles &amp; Friends</span>
+      </button>
+      <button class="scene-btn" onclick="selectPlayScene('butterfly')" id="psc-butterfly">
+        <span class="scene-btn-icon">&#129419;</span>
+        <span class="scene-btn-name">Butterfly</span>
+        <span class="scene-btn-desc">Flora Point</span>
+      </button>
+      <button class="scene-btn" onclick="selectPlayScene('fish')" id="psc-fish">
+        <span class="scene-btn-icon">&#128032;</span>
+        <span class="scene-btn-name">Tropical Fish</span>
+        <span class="scene-btn-desc">World of Reptiles</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="play-card" id="coloringArea" style="display:none;">
+    <div class="step-num">Step 2 of 2</div>
+    <div class="play-title">Pick a color, then click a section!</div>
+    <div class="play-hint">Click a color from the palette, then click any numbered section on the drawing to fill it in.</div>
+    <div class="color-palette" id="colorPalette"></div>
+    <div class="play-canvas-wrap">
+      <canvas id="playCanvas" width="520" height="380" class="play-canvas" onclick="handleCanvasClick(event)"></canvas>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button onclick="clearColoring()" style="background:transparent;border:1px solid #333;color:#555;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 18px;border-radius:8px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#D4537E';this.style.color='#D4537E'" onmouseout="this.style.borderColor='#333';this.style.color='#555'">&#10006; Clear</button>
+    </div>
+    <div class="celebrate-play" id="celebratePlay">
+      <span class="celebrate-play-emoji">&#127881;</span>
+      <div class="celebrate-play-title">Beautiful!</div>
+      <div class="celebrate-play-text" id="celebPlayText"></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="footer">
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
+</div>
+
+<script>
+var oneWords = ['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT','CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST','RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
+
+var scenes = {
+  lion:{name:'Lion',icon:'&#129409;',bio:'Lions are apex predators — the top of their food web. Every ecosystem needs predators to keep prey populations balanced. Without lions, zebra and wildebeest populations would explode, overgrazing the savanna. This is called a trophic cascade, and it shows how every living thing is connected.',colors:['#F5C842','#D4854A','#8B6914','#E8E0C8','#5C8A3C','#87CEEB'],labels:['Mane','Body','Shadow','Sky','Grass','Background'],zones:[[80,60,200,160,'body'],[280,40,160,100,'mane'],[60,200,360,80,'grass'],[0,0,520,60,'sky'],[100,160,100,60,'shadow'],[300,180,180,60,'ground']]},
+  turtle:{name:'Sea Turtle',icon:'&#128034;',bio:'Sea turtles have existed for over 100 million years — they survived the asteroid that wiped out the dinosaurs! They are a keystone species in ocean ecosystems, grazing on sea grass that would otherwise choke coral reefs. Protecting sea turtles protects the whole ocean.',colors:['#2E8B57','#8FBC8F','#4682B4','#87CEEB','#F5E6A3','#1A5276'],labels:['Shell','Flippers','Deep Water','Ocean','Sand','Shadow'],zones:[[120,80,280,200,'shell'],[60,160,100,60,'flipper-l'],[360,160,100,60,'flipper-r'],[0,0,520,100,'sky'],[0,280,520,100,'sand'],[140,260,240,40,'shadow']]},
+  elephant:{name:'Elephant',icon:'&#128024;',bio:'Elephants have the largest brain of any land animal and demonstrate empathy, grief, and complex social bonds — behaviors scientists once thought were uniquely human. They are ecosystem engineers: their footprints create water holes used by dozens of other species, and their dung spreads seeds across the savanna.',colors:['#808080','#A0A0A0','#C8A96E','#87CEEB','#5C8A3C','#D2B48C'],labels:['Body','Highlights','Ground','Sky','Bush','Dust'],zones:[[100,80,320,220,'body'],[140,100,100,80,'highlight'],[0,300,520,80,'ground'],[0,0,520,80,'sky'],[360,200,120,120,'bush'],[80,280,180,40,'dust']]},
+  frog:{name:'Tree Frog',icon:'&#128056;',bio:'Tree frogs are bioindicators — scientists watch their health to measure ecosystem health. Because they absorb water directly through their skin, they are the first species harmed by water pollution. Healthy frog populations mean a healthy wetland. Their dramatic color patterns warn predators of toxic skin.',colors:['#32CD32','#228B22','#FFD700','#1A1A1A','#87CEEB','#8FBC8F'],labels:['Body','Markings','Belly','Eyes','Sky','Leaves'],zones:[[150,100,220,200,'body'],[160,120,60,40,'spot-l'],[320,120,60,40,'spot-r'],[180,200,160,80,'belly'],[165,105,30,25,'eye-l'],[325,105,30,25,'eye-r']]},
+  butterfly:{name:'Butterfly',icon:'&#129419;',bio:'Butterflies undergo complete metamorphosis — egg, larva, pupa, adult — one of biology\'s most dramatic transformations. They are essential pollinators. Scientists use butterfly migration patterns to track climate change: as temperatures rise, species are shifting their ranges northward at measurable rates.',colors:['#FF6B35','#FFD700','#1A1A1A','#FFFFFF','#5C8A3C','#87CEEB'],labels:['Wings','Pattern','Body','Spots','Flower','Sky'],zones:[[80,80,180,200,'wing-l'],[260,80,180,200,'wing-r'],[230,120,60,200,'body'],[100,100,60,60,'spot-1'],[280,260,80,80,'spot-2'],[0,320,520,60,'ground']]},
+  fish:{name:'Tropical Fish',icon:'&#128032;',bio:'The brilliant colors of tropical fish serve as communication, camouflage, and warning. Some fish can change color in seconds using specialized cells called chromatophores. Coral reef fish are among the most biodiverse communities on Earth — a single reef can house more species than an entire temperate forest.',colors:['#FF6B35','#FFD700','#1A5276','#FFFFFF','#E74C3C','#87CEEB'],labels:['Body','Stripes','Fins','Belly','Tail','Water'],zones:[[120,100,280,200,'body'],[130,120,260,30,'stripe-1'],[130,190,260,30,'stripe-2'],[120,150,260,50,'belly'],[60,100,80,200,'fin-l'],[380,100,80,200,'fin-r']]}
+};
+
+var selectedScene = '';
+var selectedWord = '';
+var selectedPlayScene = '';
+var selectedColor = 0;
+var filledZones = {};
+var playFilledZones = {};
+
+function switchMode(mode) {
+  document.getElementById('panel-make').classList.toggle('active', mode === 'make');
+  document.getElementById('panel-play').classList.toggle('active', mode === 'play');
+  var tabs = document.querySelectorAll('.mode-tab');
+  tabs[0].classList.toggle('active', mode === 'make');
+  tabs[1].classList.toggle('active', mode === 'play');
+}
+
+function buildOWGrid() {
+  var html = '';
+  for (var i = 0; i < oneWords.length; i++) {
+    html += '<button class="ow-btn" onclick="selectWord(\'' + oneWords[i] + '\')" id="ow-' + i + '">' + oneWords[i] + '</button>';
+  }
+  document.getElementById('owGridMake').innerHTML = html;
+}
+
+function selectScene(s) {
+  selectedScene = s;
+  document.querySelectorAll('.scene-btn:not([id^="psc"])').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('sc-' + s).classList.add('active');
+  checkReady();
+}
+
+function selectWord(w) {
+  selectedWord = w;
+  document.querySelectorAll('.ow-btn').forEach(function(b){ b.classList.remove('active'); });
+  for (var i = 0; i < oneWords.length; i++) {
+    if (oneWords[i] === w) { document.getElementById('ow-' + i).classList.add('active'); break; }
+  }
+  checkReady();
+}
+
+function checkReady() {
+  document.getElementById('genBtn').disabled = !(selectedScene && selectedWord);
+}
+
+function generateSheet() {
+  var scene = scenes[selectedScene];
+  filledZones = {};
+
+  // Print key
+  var keyHtml = '';
+  for (var i = 0; i < scene.colors.length; i++) {
+    keyHtml += '<div class="print-key-item"><div class="print-key-dot" style="background:' + scene.colors[i] + ';border-color:' + scene.colors[i] + ';color:#fff;">' + (i+1) + '</div><span>' + scene.labels[i] + '</span></div>';
+  }
+  document.getElementById('printKeyRow').innerHTML = keyHtml;
+  document.getElementById('printSubtitle').textContent = scene.name + ' &mdash; ' + selectedWord + ' &middot; A Smile Bags Coloring Activity';
+  document.getElementById('printBioText').innerHTML = scene.bio;
+
+  drawNumberedScene('printCanvas', selectedScene, true);
+  document.getElementById('printSection').classList.add('show');
+  document.getElementById('printBtn').style.display = 'block';
+  document.getElementById('printSection').scrollIntoView({behavior:'smooth'});
+}
+
+function drawScene(canvasId, sceneKey, colored, fills) {
+  var canvas = document.getElementById(canvasId);
+  var ctx = canvas.getContext('2d');
+  var scene = scenes[sceneKey];
+  var W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  for (var i = 0; i < scene.zones.length; i++) {
+    var z = scene.zones[i];
+    var fill = (fills && fills[i] !== undefined) ? fills[i] : (colored ? scene.colors[i] : '#f8f8f8');
+    var stroke = colored ? 'rgba(0,0,0,0.15)' : '#ccc';
+    ctx.fillStyle = fill;
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+
+    // Draw rounded rect zones
+    var rx = z[0], ry = z[1], rw = z[2], rh = z[3];
+    var radius = 12;
+    ctx.moveTo(rx+radius, ry);
+    ctx.lineTo(rx+rw-radius, ry);
+    ctx.quadraticCurveTo(rx+rw, ry, rx+rw, ry+radius);
+    ctx.lineTo(rx+rw, ry+rh-radius);
+    ctx.quadraticCurveTo(rx+rw, ry+rh, rx+rw-radius, ry+rh);
+    ctx.lineTo(rx+radius, ry+rh);
+    ctx.quadraticCurveTo(rx, ry+rh, rx, ry+rh-radius);
+    ctx.lineTo(rx, ry+radius);
+    ctx.quadraticCurveTo(rx, ry, rx+radius, ry);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+  }
+
+  // Draw numbers on uncolored zones
+  if (!colored) {
+    ctx.fillStyle = '#999';
+    ctx.font = 'bold 14px Fredoka One, cursive';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    for (var i = 0; i < scene.zones.length; i++) {
+      var z = scene.zones[i];
+      ctx.fillText(String(i+1), z[0]+z[2]/2, z[1]+z[3]/2);
+    }
+  }
+}
+
+function drawNumberedScene(canvasId, sceneKey, numbered) {
+  drawScene(canvasId, sceneKey, false, null);
+}
+
+// ── Play mode ──
+function selectPlayScene(s) {
+  selectedPlayScene = s;
+  document.querySelectorAll('[id^="psc-"]').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('psc-' + s).classList.add('active');
+  playFilledZones = {};
+  buildColorPalette();
+  drawScene('playCanvas', s, false, playFilledZones);
+  document.getElementById('coloringArea').style.display = 'block';
+  document.getElementById('celebratePlay').classList.remove('show');
+  document.getElementById('coloringArea').scrollIntoView({behavior:'smooth'});
+}
+
+function buildColorPalette() {
+  var scene = scenes[selectedPlayScene];
+  var html = '';
+  for (var i = 0; i < scene.colors.length; i++) {
+    html += '<div style="text-align:center;">' +
+      '<button class="color-btn' + (i===0?' selected':'') + '" style="background:' + scene.colors[i] + ';" onclick="selectColor(' + i + ')" id="cbtn-' + i + '"></button>' +
+      '<div style="font-family:Fredoka One,cursive;font-size:10px;color:#555;margin-top:22px;">' + (i+1) + '</div>' +
+    '</div>';
+  }
+  document.getElementById('colorPalette').innerHTML = html;
+  selectedColor = 0;
+}
+
+function selectColor(i) {
+  selectedColor = i;
+  document.querySelectorAll('.color-btn').forEach(function(b){ b.classList.remove('selected'); });
+  document.getElementById('cbtn-' + i).classList.add('selected');
+}
+
+function handleCanvasClick(e) {
+  if (!selectedPlayScene) return;
+  var canvas = document.getElementById('playCanvas');
+  var rect = canvas.getBoundingClientRect();
+  var scaleX = canvas.width / rect.width;
+  var scaleY = canvas.height / rect.height;
+  var x = (e.clientX - rect.left) * scaleX;
+  var y = (e.clientY - rect.top) * scaleY;
+
+  var scene = scenes[selectedPlayScene];
+  for (var i = scene.zones.length - 1; i >= 0; i--) {
+    var z = scene.zones[i];
+    if (x >= z[0] && x <= z[0]+z[2] && y >= z[1] && y <= z[1]+z[3]) {
+      playFilledZones[i] = scene.colors[selectedColor];
+      redrawPlay();
+      checkPlayComplete();
+      return;
+    }
+  }
+}
+
+function redrawPlay() {
+  var scene = scenes[selectedPlayScene];
+  var canvas = document.getElementById('playCanvas');
+  var ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  for (var i = 0; i < scene.zones.length; i++) {
+    var z = scene.zones[i];
+    var fill = playFilledZones[i] !== undefined ? playFilledZones[i] : '#f8f8f8';
+    var stroke = playFilledZones[i] ? 'rgba(0,0,0,0.15)' : '#ccc';
+    ctx.fillStyle = fill;
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    var rx=z[0],ry=z[1],rw=z[2],rh=z[3],radius=12;
+    ctx.moveTo(rx+radius,ry);ctx.lineTo(rx+rw-radius,ry);ctx.quadraticCurveTo(rx+rw,ry,rx+rw,ry+radius);ctx.lineTo(rx+rw,ry+rh-radius);ctx.quadraticCurveTo(rx+rw,ry+rh,rx+rw-radius,ry+rh);ctx.lineTo(rx+radius,ry+rh);ctx.quadraticCurveTo(rx,ry+rh,rx,ry+rh-radius);ctx.lineTo(rx,ry+radius);ctx.quadraticCurveTo(rx,ry,rx+radius,ry);ctx.closePath();
+    ctx.fill();ctx.stroke();
+
+    if (!playFilledZones[i]) {
+      ctx.fillStyle='#bbb';
+      ctx.font='bold 14px sans-serif';
+      ctx.textAlign='center';
+      ctx.textBaseline='middle';
+      ctx.fillText(String(i+1),z[0]+z[2]/2,z[1]+z[3]/2);
+    }
+  }
+}
+
+function checkPlayComplete() {
+  var scene = scenes[selectedPlayScene];
+  var filled = Object.keys(playFilledZones).length;
+  if (filled >= scene.zones.length) {
+    document.getElementById('celebPlayText').innerHTML = scene.bio;
+    document.getElementById('celebratePlay').classList.add('show');
+    document.getElementById('celebratePlay').scrollIntoView({behavior:'smooth'});
+  }
+}
+
+function clearColoring() {
+  playFilledZones = {};
+  drawScene('playCanvas', selectedPlayScene, false, null);
+  document.getElementById('celebratePlay').classList.remove('show');
+}
+
+buildOWGrid();
+</script>
+</body>
+</html>

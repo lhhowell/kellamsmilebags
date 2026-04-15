@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Story Sequence Challenge &mdash; Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:100vh;padding:0 0 60px;}
+.hero{background:#0a0f14;border-bottom:1px solid #2a1a3a;padding:40px 32px 36px;text-align:center;position:relative;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,.12) 0%,transparent 65%);pointer-events:none;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:4px;color:#c9a84c;text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4.5vw,50px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:10px;}
+.hero-title span{color:#c9a84c;}
+.hero-sub{font-size:14px;color:#c8c4bc;max-width:620px;margin:0 auto;line-height:1.7;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #c9a84c;color:#c9a84c;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;margin:24px 24px 0;}
+
+.mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:0;background:#111;border:1px solid #1a2a1a;border-radius:12px;overflow:hidden;max-width:900px;margin:24px auto 0;}
+.mode-tab{padding:18px 24px;text-align:center;cursor:pointer;border:none;background:transparent;color:#444;width:100%;transition:all .2s;}
+.mode-tab.active{background:#0d1a0d;}
+.mode-tab-icon{font-size:22px;display:block;margin-bottom:6px;}
+.mode-tab-title{font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;display:block;margin-bottom:4px;}
+.mode-tab.active .mode-tab-title{color:#c9a84c;}
+.mode-tab-desc{font-size:12px;color:#333;line-height:1.4;}
+.mode-tab.active .mode-tab-desc{color:#c8c4bc;}
+
+.workspace{max-width:900px;margin:0 auto;padding:0 24px;}
+.mode-panel{display:none;padding-top:20px;}
+.mode-panel.active{display:block;}
+.step-card{background:#0d0d0d;border:1px solid #1a2a1a;border-radius:14px;padding:24px;margin-bottom:14px;}
+.step-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#2a2a0a;margin-bottom:8px;}
+.step-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:12px;}
+.step-desc{font-size:13px;color:#c8c4bc;line-height:1.65;margin-bottom:16px;}
+
+.ow-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;}
+.ow-btn{background:#0a0f14;border:2px solid #1a2a1a;border-radius:8px;padding:9px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#c8c4bc;cursor:pointer;width:100%;text-align:center;}
+.ow-btn:hover{border-color:#c9a84c;color:#c9a84c;}
+.ow-btn.on{border-color:#c9a84c;color:#c9a84c;background:rgba(201,168,76,.1);}
+
+.gen-btn{width:100%;background:#c9a84c;color:#111;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:3px;text-transform:uppercase;padding:16px;border:none;border-radius:10px;cursor:pointer;font-weight:700;}
+.gen-btn:hover{background:#b89a3c;}
+.gen-btn.off{background:#1a2a1a;color:#2a3a0a;cursor:not-allowed;}
+
+/* Print section */
+.print-section{display:none;background:#fff;color:#111;border-radius:12px;padding:28px;margin-bottom:4px;position:relative;}
+.print-section.show{display:block;}
+.print-section::before{content:'PREVIEW';position:absolute;top:12px;right:16px;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;color:#eee;}
+
+.print-header{text-align:center;margin-bottom:20px;}
+.print-kicker{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#c9a84c;margin-bottom:8px;}
+.print-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:#111;margin-bottom:6px;}
+.print-divider{border:none;border-top:3px solid #c9a84c;width:60px;margin:12px auto 16px;}
+.print-word{font-family:'Fredoka One',cursive;font-size:36px;color:#1a1a2e;letter-spacing:4px;text-align:center;margin-bottom:16px;}
+.print-instr{background:#fff9e6;border-left:4px solid #c9a84c;border-radius:4px;padding:12px 14px;font-size:13px;color:#333;line-height:1.65;margin-bottom:20px;}
+.print-instr strong{color:#111;}
+
+/* Story panels for print */
+.print-panels{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.print-panel{border:2px dashed #ccc;border-radius:10px;padding:14px;}
+.print-panel-num{font-family:'Fredoka One',cursive;font-size:28px;color:#e0e0e0;float:right;margin:-4px -4px 6px 8px;}
+.print-panel-text{font-size:13px;color:#333;line-height:1.7;clear:both;}
+.print-panel.scrambled{border-color:#c9a84c;background:#fff9e6;}
+
+.print-answer{background:#f8f7f4;border-radius:10px;padding:16px;margin-bottom:16px;}
+.print-answer-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c9a84c;margin-bottom:12px;}
+.print-answer-boxes{display:flex;gap:10px;justify-content:center;}
+.print-answer-box{width:50px;height:50px;border:2px solid #1a1a2e;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:22px;color:#e0e0e0;}
+
+.print-reveal{background:#e8f5ee;border-left:4px solid #4caf82;border-radius:4px;padding:12px 14px;margin-bottom:16px;}
+.print-reveal-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;margin-bottom:6px;}
+.print-reveal-text{font-size:12px;color:#444;line-height:1.65;}
+.print-footer-sig{text-align:center;margin-top:16px;font-size:10px;color:#ccc;font-family:'Fredoka One',cursive;letter-spacing:1px;}
+
+.print-btn{width:100%;background:#0a0f14;color:#c9a84c;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:14px;border:1.5px solid #c9a84c;border-radius:10px;cursor:pointer;margin-top:12px;}
+.print-btn:hover{background:#c9a84c;color:#111;}
+
+/* Sequence It mode */
+.seq-clue{font-size:13px;color:#c8c4bc;font-style:italic;line-height:1.65;padding:14px 18px;background:#111;border:1px solid #1a2a1a;border-radius:8px;margin-bottom:16px;text-align:center;}
+.seq-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#2a2a0a;margin-bottom:12px;}
+.seq-panels{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+.seq-panel{background:#111;border:2px solid #1a2a1a;border-radius:10px;padding:14px 16px;cursor:grab;display:flex;align-items:flex-start;gap:12px;transition:all .2s;user-select:none;}
+.seq-panel:hover{border-color:#c9a84c;}
+.seq-panel.dragging{opacity:.5;border-color:#c9a84c;}
+.seq-panel.correct{border-color:#4caf82;background:rgba(76,175,130,.08);cursor:default;}
+.seq-panel.wrong{border-color:#D4537E;animation:shake .3s;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);};}
+.seq-drag-handle{font-size:16px;color:#333;flex-shrink:0;margin-top:2px;}
+.seq-panel-text{font-size:13px;color:#c8c4bc;line-height:1.65;flex:1;}
+.seq-panel.correct .seq-panel-text{color:#4caf82;}
+
+.seq-slots{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+.seq-slot{background:#0a0f14;border:2px dashed #1a2a1a;border-radius:10px;padding:14px 16px;min-height:60px;display:flex;align-items:center;gap:12px;transition:all .2s;}
+.seq-slot.drag-over{border-color:#c9a84c;background:rgba(201,168,76,.05);}
+.seq-slot-num{font-family:'Fredoka One',cursive;font-size:20px;color:#2a2a0a;width:28px;flex-shrink:0;}
+.seq-slot-text{font-size:13px;color:#c8c4bc;line-height:1.65;flex:1;font-style:italic;}
+
+.check-btn{background:#c9a84c;color:#111;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:12px 24px;border:none;border-radius:10px;cursor:pointer;font-weight:700;margin-top:4px;}
+.hint-btn{background:transparent;border:1.5px solid #333;color:#666;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:12px 16px;border-radius:10px;cursor:pointer;margin-top:4px;margin-left:10px;}
+
+.celebrate{display:none;background:rgba(201,168,76,.08);border:2px solid #c9a84c;border-radius:14px;padding:28px;text-align:center;margin-top:14px;}
+.celebrate.show{display:block;}
+.celebrate-emoji{font-size:48px;display:block;margin-bottom:14px;}
+.celebrate-title{font-family:'Playfair Display',serif;font-size:24px;color:#c9a84c;margin-bottom:8px;}
+.celebrate-word{font-family:'Fredoka One',cursive;font-size:36px;color:#fff;display:block;letter-spacing:4px;margin:12px 0;}
+.celebrate-text{font-size:13px;color:#c8c4bc;line-height:1.7;max-width:560px;margin:0 auto;}
+
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #0a151f;max-width:900px;margin:32px auto 0;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:12px;color:#1a2a1a;letter-spacing:1px;}
+
+@media print{
+  body{background:#fff;padding:0;}
+  .hero,.mode-tabs,.workspace .step-card,.workspace .seq-clue,.workspace .seq-panels,.workspace .seq-slots,.check-btn,.hint-btn,.celebrate,.print-btn,.back-btn,.footer{display:none!important;}
+  .print-section{display:block!important;position:static;box-shadow:none;border:none;padding:0;border-radius:0;}
+  .print-section::before{display:none;}
+  @page{size:letter;margin:.5in;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">Smile Bags &middot; T.I.D.E. Coalition &middot; Creation Kiosk</div>
+  <h1 class="hero-title">Story Sequence<br><span>Challenge</span></h1>
+  <p class="hero-sub">A short story connected to your OneWord &mdash; scrambled into panels and waiting to be reassembled. Cut the panels apart, read the clues, and put the story back in the right order. Can you crack the sequence?</p>
+</div>
+
+<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to Kiosk Menu</a>
+
+<div class="mode-tabs">
+  <button class="mode-tab active" onclick="switchMode('make')">
+    <span class="mode-tab-icon">&#128196;</span>
+    <span class="mode-tab-title">Make It</span>
+    <span class="mode-tab-desc">Generate a printable scrambled story sheet for the bag</span>
+  </button>
+  <button class="mode-tab" onclick="switchMode('seq')">
+    <span class="mode-tab-icon">&#127922;</span>
+    <span class="mode-tab-title">Sequence It</span>
+    <span class="mode-tab-desc">Drag the story panels into the correct order</span>
+  </button>
+</div>
+
+<div class="workspace">
+
+<!-- MAKE IT -->
+<div class="mode-panel active" id="panel-make">
+  <div class="step-card" style="margin-top:20px;">
+    <div class="step-num">How it works</div>
+    <div class="step-title">Cut, scramble, and reassemble</div>
+    <div class="step-desc">Choose your OneWord. The kiosk generates a short 4-panel story connected to your word, printed in scrambled order. The student receiving the bag cuts the panels apart, reads each one, and puts the story back in the right sequence. Answer boxes at the bottom let them record the correct order. The story reveal and science connection are printed on the back of the sheet.</div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-num">Step 1 of 2</div>
+    <div class="step-title">Choose your OneWord</div>
+    <div class="ow-grid">
+      <button class="ow-btn" onclick="selectMakeWord('ABSORB',this)">ABSORB</button>
+      <button class="ow-btn" onclick="selectMakeWord('ADAPT',this)">ADAPT</button>
+      <button class="ow-btn" onclick="selectMakeWord('ANCHOR',this)">ANCHOR</button>
+      <button class="ow-btn" onclick="selectMakeWord('BALANCE',this)">BALANCE</button>
+      <button class="ow-btn" onclick="selectMakeWord('BLOOM',this)">BLOOM</button>
+      <button class="ow-btn" onclick="selectMakeWord('BREATHE',this)">BREATHE</button>
+      <button class="ow-btn" onclick="selectMakeWord('CLEAR',this)">CLEAR</button>
+      <button class="ow-btn" onclick="selectMakeWord('CONNECT',this)">CONNECT</button>
+      <button class="ow-btn" onclick="selectMakeWord('CYCLE',this)">CYCLE</button>
+      <button class="ow-btn" onclick="selectMakeWord('EMERGE',this)">EMERGE</button>
+      <button class="ow-btn" onclick="selectMakeWord('FILTER',this)">FILTER</button>
+      <button class="ow-btn" onclick="selectMakeWord('FLOW',this)">FLOW</button>
+      <button class="ow-btn" onclick="selectMakeWord('GROW',this)">GROW</button>
+      <button class="ow-btn" onclick="selectMakeWord('HEAL',this)">HEAL</button>
+      <button class="ow-btn" onclick="selectMakeWord('MIGRATE',this)">MIGRATE</button>
+      <button class="ow-btn" onclick="selectMakeWord('PERSIST',this)">PERSIST</button>
+      <button class="ow-btn" onclick="selectMakeWord('RENEW',this)">RENEW</button>
+      <button class="ow-btn" onclick="selectMakeWord('RESTORE',this)">RESTORE</button>
+      <button class="ow-btn" onclick="selectMakeWord('RETURN',this)">RETURN</button>
+      <button class="ow-btn" onclick="selectMakeWord('RISE',this)">RISE</button>
+      <button class="ow-btn" onclick="selectMakeWord('ROOT',this)">ROOT</button>
+      <button class="ow-btn" onclick="selectMakeWord('SHINE',this)">SHINE</button>
+      <button class="ow-btn" onclick="selectMakeWord('SUSTAIN',this)">SUSTAIN</button>
+      <button class="ow-btn" onclick="selectMakeWord('THRIVE',this)">THRIVE</button>
+      <button class="ow-btn" onclick="selectMakeWord('TRANSFORM',this)">TRANSFORM</button>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-num">Step 2 of 2</div>
+    <div class="step-title">Generate your Story Sequence Sheet</div>
+    <button class="gen-btn off" id="genBtnMake" onclick="generateMake()">&#128196; Generate My Story Sequence Sheet</button>
+  </div>
+
+  <div class="print-section" id="makePrint">
+    <div class="print-header">
+      <div class="print-kicker">Story Sequence Challenge &middot; <span id="makeWordLabel"></span></div>
+      <div class="print-title">Put the Story<br>Back Together!</div>
+      <hr class="print-divider"/>
+    </div>
+    <div class="print-word" id="makeWordDisplay"></div>
+    <div class="print-instr"><strong>Your challenge:</strong> Cut out the four story panels below. Read each one carefully. Then number them 1&ndash;4 in the boxes at the bottom to show the correct order. What happens first? What happens last? Clue: look for words like <em>first, then, next, finally</em> &mdash; they help tell the order!</div>
+
+    <div class="print-panels" id="makePanels"></div>
+
+    <div class="print-answer">
+      <div class="print-answer-label">&#9997; Write the correct order here &mdash; which panel is 1st, 2nd, 3rd, 4th?</div>
+      <div class="print-answer-boxes" id="makeAnswerBoxes"></div>
+    </div>
+
+    <div class="print-reveal">
+      <div class="print-reveal-label">&#127807; The Science Connection</div>
+      <div class="print-reveal-text" id="makeReveal"></div>
+    </div>
+    <div class="print-footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>
+  </div>
+  <button class="print-btn" id="makePrintBtn" onclick="window.print()" style="display:none;">&#128438; Print This Story Sequence Sheet</button>
+</div>
+
+<!-- SEQUENCE IT -->
+<div class="mode-panel" id="panel-seq">
+  <div class="step-card" style="margin-top:20px;">
+    <div class="step-num">Step 1 of 2</div>
+    <div class="step-title">Choose a OneWord to sequence</div>
+    <div class="ow-grid">
+      <button class="ow-btn" onclick="selectSeqWord('ABSORB',this)">ABSORB</button>
+      <button class="ow-btn" onclick="selectSeqWord('ADAPT',this)">ADAPT</button>
+      <button class="ow-btn" onclick="selectSeqWord('ANCHOR',this)">ANCHOR</button>
+      <button class="ow-btn" onclick="selectSeqWord('BALANCE',this)">BALANCE</button>
+      <button class="ow-btn" onclick="selectSeqWord('BLOOM',this)">BLOOM</button>
+      <button class="ow-btn" onclick="selectSeqWord('BREATHE',this)">BREATHE</button>
+      <button class="ow-btn" onclick="selectSeqWord('CLEAR',this)">CLEAR</button>
+      <button class="ow-btn" onclick="selectSeqWord('CONNECT',this)">CONNECT</button>
+      <button class="ow-btn" onclick="selectSeqWord('CYCLE',this)">CYCLE</button>
+      <button class="ow-btn" onclick="selectSeqWord('EMERGE',this)">EMERGE</button>
+      <button class="ow-btn" onclick="selectSeqWord('FILTER',this)">FILTER</button>
+      <button class="ow-btn" onclick="selectSeqWord('FLOW',this)">FLOW</button>
+      <button class="ow-btn" onclick="selectSeqWord('GROW',this)">GROW</button>
+      <button class="ow-btn" onclick="selectSeqWord('HEAL',this)">HEAL</button>
+      <button class="ow-btn" onclick="selectSeqWord('MIGRATE',this)">MIGRATE</button>
+      <button class="ow-btn" onclick="selectSeqWord('PERSIST',this)">PERSIST</button>
+      <button class="ow-btn" onclick="selectSeqWord('RENEW',this)">RENEW</button>
+      <button class="ow-btn" onclick="selectSeqWord('RESTORE',this)">RESTORE</button>
+      <button class="ow-btn" onclick="selectSeqWord('RETURN',this)">RETURN</button>
+      <button class="ow-btn" onclick="selectSeqWord('RISE',this)">RISE</button>
+      <button class="ow-btn" onclick="selectSeqWord('ROOT',this)">ROOT</button>
+      <button class="ow-btn" onclick="selectSeqWord('SHINE',this)">SHINE</button>
+      <button class="ow-btn" onclick="selectSeqWord('SUSTAIN',this)">SUSTAIN</button>
+      <button class="ow-btn" onclick="selectSeqWord('THRIVE',this)">THRIVE</button>
+      <button class="ow-btn" onclick="selectSeqWord('TRANSFORM',this)">TRANSFORM</button>
+    </div>
+  </div>
+
+  <div class="step-card" id="seqDisplay" style="display:none;">
+    <div class="step-num">Step 2 of 2 &mdash; Drag into the correct order</div>
+    <div class="seq-clue" id="seqClue"></div>
+    <div class="seq-label">&#129354; Drag each panel into the correct slot below</div>
+    <div class="seq-panels" id="seqPanels" ondragover="event.preventDefault()" ondrop="dropOnBank(event)"></div>
+    <div class="seq-label" style="margin-top:16px;">&#9679; Drop here in order &mdash; 1st through 4th</div>
+    <div class="seq-slots" id="seqSlots"></div>
+    <div>
+      <button class="check-btn" onclick="checkSeq()">&#10003; Check My Order</button>
+      <button class="hint-btn" onclick="giveHint()">&#128161; Hint</button>
+    </div>
+    <div class="celebrate" id="celebrate">
+      <span class="celebrate-emoji">&#127881;</span>
+      <div class="celebrate-title">You got it right!</div>
+      <span class="celebrate-word" id="celebWord"></span>
+      <div class="celebrate-text" id="celebText"></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
+</div>
+
+<script>
+var stories = {
+  ABSORB:{clue:'A sponge and a plant have something amazing in common. Read the four panels and put the story in order to find out what!',panels:['Finally, the scientist understood: the sponge and the plant were doing the exact same thing \u2014 absorbing exactly what they needed to stay alive.','First, a scientist watched a dry sponge sitting next to a bowl of water. She wondered: what would happen if she dropped it in?','Next, she walked outside and poured water near a plant\'s roots. She watched the roots pull the water in, slowly and silently.','Then, she dropped the sponge into the water. It soaked up every drop, growing heavy and full.'],answer:[2,4,3,1],reveal:'Plants absorb water through tiny tubes in their roots. Sponges absorb through millions of tiny holes. Both are built to take in exactly what they need.'},
+  ADAPT:{clue:'An arctic fox has to deal with two very different worlds. Read the panels and find the correct order to discover its secret!',panels:['Finally, scientists realized: the fox was not two different animals. It was one animal with an incredible ability to adapt.','First, in summer, the arctic fox had brown fur that helped it blend into the rocks and tundra grass.','Then, as temperatures dropped and snow covered the ground, something remarkable happened.','Next, the fox\'s fur slowly turned white \u2014 until it was nearly invisible against the snow.'],answer:[2,3,4,1],reveal:'The arctic fox is one of nature\'s best adapters. Its coat changes color with the seasons \u2014 a built-in camouflage system that took thousands of years of evolution to develop.'},
+  ANCHOR:{clue:'A tiny plant holds an entire hillside together. Find the correct order of this story about what it means to be an anchor!',panels:['Finally, the scientist understood: the roots were the anchor. Remove them, and everything falls apart.','First, a heavy rainstorm hit the hillside. The water rushed down fast, looking for anything loose to carry away.','Next, on one side of the hill, there were no plants. That side crumbled quickly, mud sliding into the valley below.','Then, on the other side, the grass roots held the soil tight. The water rushed past, but the hillside stayed whole.'],answer:[2,3,4,1],reveal:'Root systems anchor the soil and prevent erosion. One acre of grassland can hold millions of pounds of soil in place during a rainstorm. Roots are nature\'s anchors.'},
+  BALANCE:{clue:'A park was perfectly peaceful \u2014 until something went wrong. Put the story in order to discover why balance matters!',panels:['Finally, when the wolves returned, the deer moved around more. The grass recovered. The river banks held. Balance was restored.','First, a national park had wolves, deer, and rivers full of fish. Everything lived in balance with everything else.','Next, when the wolves were removed, the deer population exploded. They ate all the grass near the rivers.','Then, without grass to hold the banks, the rivers changed course. Fish disappeared. Birds lost their nesting spots.'],answer:[2,3,4,1],reveal:'This really happened in Yellowstone National Park. When wolves were reintroduced in 1995, their presence changed the behavior of deer \u2014 which allowed rivers and forests to recover. Scientists call it a trophic cascade.'},
+  BLOOM:{clue:'A flower and a bee have been working together for millions of years. Find the order of their amazing partnership!',panels:['Finally, scientists call this relationship co-evolution: the flower and the bee changed together, over millions of years, to help each other thrive.','First, a bee smelled something sweet from far away and flew toward it. A flower was blooming, ready and waiting.','Then, the bee landed and drank the nectar. While it fed, yellow pollen stuck to its fuzzy legs.','Next, the bee flew to another flower. The pollen from the first flower fell off and fertilized the second flower\u2019s seeds.'],answer:[2,3,4,1],reveal:'Flowers bloom at specific times of year to match when their pollinators are active. The color, shape, and scent of a flower evolved to attract specific insects, birds, or bats. Blooming is never random.'},
+  BREATHE:{clue:'You breathe in. A tree breathes in too. But you are breathing opposite things! Put this surprising story in order.',panels:['Finally, the scientist smiled: every breath you take is part of an ancient, perfect trade between plants and animals.','First, a scientist asked her class: what do you breathe out? "Carbon dioxide," they answered. "And what do you breathe in?" "Oxygen."','Then, she took them outside and asked them to look at the trees. "What do trees breathe in?" she asked.','Next, a quiet student raised his hand: "Carbon dioxide," he said. "And they breathe out oxygen."'],answer:[2,3,4,1],reveal:'Photosynthesis is Earth\u2019s original breathing system. Plants take in CO2 and release oxygen. Animals take in oxygen and release CO2. Together, we keep the atmosphere in balance.'},
+  CLEAR:{clue:'A pond that used to be clean became murky and strange. Read the story panels in order to find out why \u2014 and what changed it back!',panels:['Finally, with the cattails restored and the buffers in place, the pond slowly cleared again \u2014 clean enough to see the bottom.','First, the pond at the edge of the field had always been clear, full of frogs and dragonflies and clean, cold water.','Next, a new farm started adding fertilizer to the nearby field. Rain washed the chemicals into the pond.','Then, the algae bloomed, blocking sunlight. The frogs disappeared. The dragonflies left. The water turned green.'],answer:[2,3,4,1],reveal:'Nutrient pollution causes algae blooms that suffocate aquatic ecosystems. Restored wetlands and plant buffers along waterways filter these pollutants before they reach the water \u2014 nature\u2019s own filter system.'},
+  CONNECT:{clue:'In a forest, trees help each other survive using something scientists only recently discovered. Find the correct order of this amazing story!',panels:['Finally, scientists named this underground system the Wood Wide Web \u2014 because it connects the entire forest like the internet connects people.','First, scientists noticed something strange: when a large tree was dying, nearby trees seemed healthier than usual.','Then, they dug beneath the soil and discovered: the trees were connected by a vast network of fungi.','Next, the large tree was sending sugar through the fungal network to the younger trees around it. It was feeding them.'],answer:[2,3,4,1],reveal:'Mycorrhizal fungi connect tree roots underground. Trees share nutrients, water, and chemical signals through this network. Some scientists believe older trees actively support younger trees through these connections.'},
+  CYCLE:{clue:'A single water droplet goes on an incredible journey. Put the story panels in order to follow it all the way around!',panels:['Finally, back in the ocean, the water droplet was ready to begin the whole cycle again. It had been rain, cloud, river, and ocean \u2014 all in one journey.','First, the sun\u2019s heat caused a water droplet to evaporate from the surface of the ocean and rise into the sky.','Next, the droplet joined millions of others to form a cloud. The cloud grew heavy with water.','Then, the cloud released the water as rain. The droplet fell onto a mountain, then flowed down a river to the ocean.'],answer:[2,3,4,1],reveal:'The water cycle has been running for billions of years. The water you drink today may have once been inside a dinosaur, a cloud above ancient Egypt, or a glacier from the last ice age. Water is endlessly recycled.'},
+  EMERGE:{clue:'Something incredible is happening inside a chrysalis. Put the story in order to discover what!',panels:['Finally, after two weeks, a butterfly with brand-new wings slowly emerged from the chrysalis and stretched toward the sun.','First, a caterpillar attached itself to a branch and formed a hard shell around its body called a chrysalis.','Then, inside the chrysalis, the caterpillar\u2019s body began to dissolve into a biological soup of cells.','Next, from that soup, a completely new body began to form \u2014 wings, antennae, compound eyes, a new way of seeing the world.'],answer:[2,3,4,1],reveal:'Complete metamorphosis is one of biology\u2019s most dramatic transformations. The caterpillar does not just grow wings \u2014 it partially dissolves and reorganizes into a completely different organism. Scientists have found that butterflies can remember things they learned as caterpillars.'},
+  FILTER:{clue:'A swamp that everyone thought was useless turned out to be one of the most important places in the ecosystem. Find the correct order!',panels:['Finally, engineers began building artificial wetlands in cities to do the same work \u2014 filtering stormwater before it reached rivers and drinking sources.','First, a town near a swamp wanted to drain it to build houses. Scientists asked them to wait.','Then, scientists showed the town how the swamp filtered polluted water from the nearby farms \u2014 cleaning thousands of gallons every day.','Next, they showed how the swamp supported dozens of bird species, fish nurseries, and flood protection. The town changed its plan.'],answer:[2,3,4,1],reveal:'Wetlands are called nature\u2019s kidneys. They filter pollutants, reduce flooding, store carbon, and support more biodiversity per acre than almost any other ecosystem. They are among the most valuable and threatened habitats on Earth.'},
+  FLOW:{clue:'A river looks like it is just flowing downhill. But it is actually building something extraordinary. Put the story in the right order!',panels:['Finally, where the river met the sea, all that carried sand and silt had built an enormous, flat, fertile delta \u2014 home to millions of plants, animals, and people.','First, high in the mountains, a river began as melted snow. It was small and fast, cutting through rock.','Then, as the river moved downhill, it slowed. It picked up sand, silt, and tiny bits of rock along the way.','Next, the river widened and began to curve, depositing layers of rich material on its banks as it flowed.'],answer:[2,3,4,1],reveal:'Rivers are one of Earth\u2019s great builders. The Nile Delta, the Amazon Delta, and the Mississippi Delta were all built by rivers carrying sediment over millions of years. Rivers flow \u2014 and build \u2014 simultaneously.'},
+  GROW:{clue:'A seed does not grow by accident. There is a whole science to it! Find the correct order of this growing story.',panels:['Finally, two weeks after planting, a green shoot broke through the soil and reached toward the sunlight it had been searching for.','First, a gardener planted a seed one inch below the soil and watered it gently. Nothing seemed to happen.','Then, inside the seed, moisture triggered a chemical signal: it was time to wake up. Scientists call this germination.','Next, a tiny root pushed downward, anchoring the seedling. A shoot pushed upward, searching for light.'],answer:[2,3,4,1],reveal:'Seeds can stay dormant for years, waiting for the right conditions: moisture, warmth, and light. When conditions are right, hormones called gibberellins trigger germination. The root always grows down and the shoot always grows up \u2014 a response called gravitropism.'},
+  HEAL:{clue:'A forest burned down. But the story did not end there. Put the panels in the correct order to discover what happened next!',panels:['Finally, twenty years after the fire, the forest was fuller and more diverse than it had ever been before. Healing, it turned out, had made it stronger.','First, a wildfire swept through an old-growth forest, leaving behind a landscape of ash and charred tree stumps.','Then, within weeks, pioneer plants \u2014 fireweed and clover \u2014 began growing in the ash, which was rich in nutrients.','Next, as the pioneer plants grew, they created shade and improved the soil. Shrubs, then trees, began to follow.'],answer:[2,3,4,1],reveal:'Ecological succession is the process by which ecosystems recover after disturbance. Pioneer species prepare the ground for later species. Full forest recovery after a major fire can take 50\u2013200 years, but the process begins within weeks.'},
+  MIGRATE:{clue:'Every fall, millions of monarch butterflies do something extraordinary. Put the story in order to follow their journey!',panels:['Finally, in spring, the great-grandchildren of the butterflies that left would make the return journey north \u2014 guided by the same magnetic map.','First, in late summer, monarch butterflies in Canada sensed the days growing shorter and the air growing cooler.','Then, millions of them began flying south \u2014 up to 3,000 miles \u2014 to a specific forest in central Mexico they had never been to before.','Next, they arrived at the exact same trees their ancestors had used, clustering by the millions to survive the winter.'],answer:[2,3,4,1],reveal:'No single monarch butterfly makes the full round trip. It takes four generations. Scientists believe monarchs navigate using the sun as a compass and Earth\u2019s magnetic field as a backup. How they know where to go remains one of nature\u2019s great mysteries.'},
+  PERSIST:{clue:'A tiny seed found itself in the most unlikely place. Read the panels in order to discover what persisting really looks like!',panels:['Finally, three years later, a small tree was growing in the crack of the rock, its roots slowly splitting the stone to make more room.','First, a maple seed spun down from a tree and landed in a tiny crack in a granite boulder. There was almost no soil.','Then, rain washed in a little dirt. The seed absorbed just enough moisture to begin to germinate.','Next, the seedling\u2019s roots found the crack and pushed deeper, pulling in whatever nutrients the rock could offer.'],answer:[2,3,4,1],reveal:'Trees growing in rock cracks can exert enormous force \u2014 eventually splitting boulders that weigh thousands of pounds. Persistence in nature is not just survival. It is transformation. The tree does not go around the obstacle. It goes through it.'},
+  RENEW:{clue:'Every autumn, something incredible happens beneath the forest floor. Put the story panels in order to discover what!',panels:['Finally, scientists called this the great renewal: death feeding life, over and over, in an endless cycle below the forest floor.','First, a leaf fell from a maple tree in autumn and drifted to the forest floor, joining millions of others.','Then, bacteria and fungi began breaking down the leaf, releasing the nutrients locked inside it back into the soil.','Next, the roots of a nearby tree absorbed those nutrients. The tree used them to grow new leaves in spring.'],answer:[2,3,4,1],reveal:'Decomposition is nature\u2019s recycling system. A single fallen leaf can take one to three years to fully decompose, depending on the climate and the soil organisms present. Every fallen thing becomes food for new life.'},
+  RESTORE:{clue:'A river had been changed by people \u2014 and then changed back again. Find the correct order of this restoration story!',panels:['Finally, within ten years of the restoration, salmon had returned to the river for the first time in a century. Restoration worked.','First, a century ago, engineers straightened a winding river to prevent floods, destroying the habitat along its banks.','Then, scientists proposed restoring the river to its original curves by removing the concrete walls and replanting the banks.','Next, the river, given its natural shape back, slowed down, deposited silt, and began rebuilding its own wetland edges.'],answer:[2,3,4,1],reveal:'River restoration is one of the most successful forms of ecological restoration. When rivers are allowed to meander naturally, they slow water flow, reduce flooding, rebuild wetland habitat, and support far more biodiversity than straightened channels.'},
+  RETURN:{clue:'A salmon begins life in a stream and returns to it years later \u2014 from thousands of miles away. Find the correct order of this incredible journey!',panels:['Finally, the salmon laid her eggs in the same streambed where she had hatched. And then the cycle began again.','First, a salmon hatched in a small, cold mountain stream. She spent the first two years of her life there, in the same gravel bed.','Then, she swam downstream to the ocean, where she spent three years growing strong in the open sea.','Next, something stirred in her memory: the exact chemical smell of her birth stream. She began swimming back.'],answer:[2,3,4,1],reveal:'Salmon navigate using the unique smell of their birth stream, which they memorize as young fish. Scientists believe they also use Earth\u2019s magnetic field during the ocean portion of their journey. The return migration is one of biology\u2019s most remarkable feats.'},
+  RISE:{clue:'A phoenix is a mythical bird that rises from ashes. But there is a real creature that does something similar. Find the correct order!',panels:['Finally, scientists who study extremophiles \u2014 creatures that survive extreme conditions \u2014 consider the wood frog one of the most remarkable animals on Earth.','First, each winter, the wood frog freezes solid. Its heart stops. Its blood turns to ice crystals. By any measure, it appears dead.','Then, in spring, the sun warms the forest floor. The ice in the wood frog\u2019s body begins to thaw.','Next, the frog\u2019s heart beats once. Then again. Within hours, it is fully alive and searching for a pond to lay its eggs.'],answer:[2,3,4,1],reveal:'The wood frog produces a natural antifreeze using glucose from its liver. This prevents ice crystals from destroying its cells during freezing. It can survive temperatures of -8\u00b0C. Scientists are studying wood frog biochemistry to improve human organ preservation for transplant.'},
+  ROOT:{clue:'Trees in a forest share more than sunlight. Put these story panels in the right order to uncover their underground secret!',panels:['Finally, scientists called these connections the Wood Wide Web \u2014 and they realized: forests are communities, not just collections of individual trees.','First, a scientist noticed that trees growing near each other seemed to send nutrients to sick neighbors. She wanted to know how.','Then, she dug into the soil and found a vast network of fungal threads called mycorrhizae, connecting the root systems of hundreds of trees.','Next, she used radioactive tracers to prove that sugar was traveling from the roots of healthy trees through the fungal network to struggling ones.'],answer:[2,3,4,1],reveal:'Mycorrhizal networks connect up to 90% of the world\u2019s plants. Trees use these networks to share nutrients, water, and even chemical warnings about insect attacks. Forest communities cooperate underground in ways scientists are still discovering.'},
+  SHINE:{clue:'Deep in the ocean where no sunlight can reach, something glows in the dark. Find the correct order of this bioluminescence story!',panels:['Finally, scientists realized bioluminescence had evolved independently dozens of times \u2014 in fish, jellyfish, bacteria, and fireflies \u2014 because light, even in darkness, is one of life\u2019s most powerful tools.','First, a researcher in a submersible dove to 3,000 feet below the ocean surface, where no sunlight has ever reached.','Then, she turned off the submersible\u2019s lights. In the absolute darkness, she waited.','Next, slowly, tiny lights began to appear \u2014 blue and green sparks, trails and flashes from creatures all around her.'],answer:[2,3,4,1],reveal:'Bioluminescence is produced by a chemical reaction involving a protein called luciferin and an enzyme called luciferase. It is used for hunting, attracting mates, and warning predators. Scientists estimate that 76% of deep-sea animals can produce their own light.'},
+  SUSTAIN:{clue:'A small island community learned an important lesson about food, fish, and the future. Put the story in order!',panels:['Finally, the community that had learned to fish sustainably still had fish 50 years later. The others had empty oceans.','First, two fishing communities discovered the same rich fishing ground. Both began harvesting as much fish as possible.','Then, one community decided to limit their catch each year and allow the fish time to reproduce.','Next, the other community continued fishing at maximum capacity. Within 20 years, the fish population collapsed.'],answer:[2,3,4,1],reveal:'Sustainable fishing limits catch to what a fish population can replace through reproduction. When harvest exceeds renewal, populations collapse \u2014 sometimes in just a few years. Sustainable practices protect both the ecosystem and the communities that depend on it.'},
+  THRIVE:{clue:'A plant growing in the wrong place struggles. The same plant in the right place does something extraordinary. Put the panels in order!',panels:['Finally, the scientists concluded: every organism has an ecological niche \u2014 the exact set of conditions where it is built to thrive.','First, a scientist moved a cactus from the desert into a rainforest greenhouse. It survived, but barely, slowly rotting in the humidity.','Then, she moved a fern from the rainforest into a dry terrarium. It wilted within a week, despite daily watering.','Next, she placed each plant back in its native environment. Both immediately showed new growth within days.'],answer:[2,3,4,1],reveal:'An ecological niche is the precise combination of conditions \u2014 temperature, humidity, light, soil type, and available food \u2014 where a species is built to thrive. Species removed from their niche struggle even when all their basic needs appear to be met.'},
+  TRANSFORM:{clue:'A caterpillar does not just change on the outside. Something even more radical happens inside. Put the story panels in order!',panels:['Finally, biologists confirmed the most astonishing part: studies showed that butterflies could remember things they had learned as caterpillars, even after complete transformation.','First, a caterpillar attached to a branch and enclosed itself in a hard outer case called a chrysalis.','Then, inside the chrysalis, the caterpillar\u2019s body broke down into a biological soup of undifferentiated cells.','Next, those cells reorganized into a completely different body: wings, compound eyes, a proboscis for drinking nectar instead of a jaw for chewing leaves.'],answer:[2,3,4,1],reveal:'Complete metamorphosis is called holometabolism. The four stages are egg, larva (caterpillar), pupa (chrysalis), and adult (butterfly). The chrysalis stage involves genuine dissolution and reconstruction of the organism\u2019s body plan \u2014 not just growth, but radical transformation.'}
+};
+
+var makeWord = '';
+var seqWord = '';
+var dragSrc = null;
+var slots = ['','','',''];
+
+function switchMode(mode) {
+  document.getElementById('panel-make').classList.toggle('active', mode==='make');
+  document.getElementById('panel-seq').classList.toggle('active', mode==='seq');
+  var tabs = document.querySelectorAll('.mode-tab');
+  tabs[0].classList.toggle('active', mode==='make');
+  tabs[1].classList.toggle('active', mode==='seq');
+}
+
+function selectMakeWord(w, btn) {
+  makeWord = w;
+  var bs = document.querySelectorAll('#panel-make .ow-btn');
+  for(var i=0;i<bs.length;i++) bs[i].className='ow-btn';
+  btn.className='ow-btn on';
+  document.getElementById('genBtnMake').className='gen-btn';
+}
+
+function generateMake() {
+  if(!makeWord) return;
+  var d = stories[makeWord];
+  if(!d) return;
+
+  document.getElementById('makeWordLabel').textContent = makeWord;
+  document.getElementById('makeWordDisplay').textContent = makeWord;
+
+  // Shuffle panels
+  var shuffled = [];
+  for(var i=0;i<d.panels.length;i++) shuffled.push({text:d.panels[i], correctPos: d.answer.indexOf(i+1)+1 || i+1});
+  // Simple shuffle
+  for(var i=shuffled.length-1;i>0;i--) {
+    var j=Math.floor(Math.random()*(i+1));
+    var t=shuffled[i]; shuffled[i]=shuffled[j]; shuffled[j]=t;
+  }
+
+  var letters = ['A','B','C','D'];
+  var panelsHtml = '';
+  for(var i=0;i<shuffled.length;i++) {
+    panelsHtml += '<div class="print-panel scrambled">' +
+      '<div class="print-panel-num">'+letters[i]+'</div>' +
+      '<div class="print-panel-text">'+shuffled[i].text+'</div>' +
+    '</div>';
+  }
+  document.getElementById('makePanels').innerHTML = panelsHtml;
+
+  var boxesHtml = '';
+  for(var i=0;i<4;i++) {
+    boxesHtml += '<div style="text-align:center;">' +
+      '<div style="font-family:Fredoka One,cursive;font-size:11px;color:#c9a84c;margin-bottom:4px;">'+(i+1)+'st '+['','2nd','3rd','4th'][i]+'</div>' +
+      '<div class="print-answer-box">'+letters[i]+'?</div>' +
+    '</div>';
+  }
+  document.getElementById('makeAnswerBoxes').innerHTML = boxesHtml;
+  document.getElementById('makeReveal').textContent = d.reveal;
+
+  document.getElementById('makePrint').classList.add('show');
+  document.getElementById('makePrintBtn').style.display='block';
+  document.getElementById('makePrint').scrollIntoView({behavior:'smooth'});
+}
+
+// SEQUENCE IT
+function selectSeqWord(w, btn) {
+  seqWord = w;
+  var bs = document.querySelectorAll('#panel-seq .ow-btn');
+  for(var i=0;i<bs.length;i++) bs[i].className='ow-btn';
+  btn.className='ow-btn on';
+  buildSeq();
+}
+
+function buildSeq() {
+  var d = stories[seqWord];
+  if(!d) return;
+
+  document.getElementById('seqClue').textContent = d.clue;
+
+  // Shuffle panels
+  var order = [0,1,2,3];
+  for(var i=order.length-1;i>0;i--) { var j=Math.floor(Math.random()*(i+1)); var t=order[i];order[i]=order[j];order[j]=t; }
+
+  var panelsHtml = '';
+  for(var i=0;i<4;i++) {
+    var idx = order[i];
+    panelsHtml += '<div class="seq-panel" draggable="true" id="sp'+idx+'" data-idx="'+idx+'" ' +
+      'ondragstart="dragStart(event)" ondragend="dragEnd(event)">' +
+      '<span class="seq-drag-handle">&#8597;</span>' +
+      '<span class="seq-panel-text">'+d.panels[idx]+'</span>' +
+    '</div>';
+  }
+  document.getElementById('seqPanels').innerHTML = panelsHtml;
+
+  slots = ['','','',''];
+  var slotsHtml = '';
+  for(var i=0;i<4;i++) {
+    slotsHtml += '<div class="seq-slot" id="slot'+i+'" data-slot="'+i+'" ' +
+      'ondragover="dragOver(event)" ondrop="dropOnSlot(event,'+i+')" onclick="clickSlot('+i+')">' +
+      '<span class="seq-slot-num">'+(i+1)+'</span>' +
+      '<span class="seq-slot-text" id="slotText'+i+'">Drop a panel here...</span>' +
+    '</div>';
+  }
+  document.getElementById('seqSlots').innerHTML = slotsHtml;
+  document.getElementById('celebrate').className='celebrate';
+  document.getElementById('seqDisplay').style.display='block';
+  document.getElementById('seqDisplay').scrollIntoView({behavior:'smooth'});
+}
+
+function dragStart(e) {
+  dragSrc = e.currentTarget.getAttribute('data-idx');
+  e.currentTarget.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+function dragEnd(e) { e.currentTarget.classList.remove('dragging'); }
+function dragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+
+function dropOnSlot(e, slotIdx) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if(dragSrc === null && dragSrc !== 0) return;
+  var idx = parseInt(dragSrc);
+
+  // Remove from any previous slot
+  for(var i=0;i<4;i++) {
+    if(slots[i]===idx) {
+      slots[i]='';
+      document.getElementById('slotText'+i).textContent='Drop a panel here...';
+      var slotEl = document.getElementById('slot'+i);
+      slotEl.className='seq-slot';
+    }
+  }
+
+  // Remove the panel from bank if it is there
+  var panelEl = document.getElementById('sp'+idx);
+
+  slots[slotIdx] = idx;
+  var d = stories[seqWord];
+  document.getElementById('slotText'+slotIdx).textContent = d.panels[idx];
+  var slotEl = document.getElementById('slot'+slotIdx);
+  slotEl.className = 'seq-slot';
+
+  // Hide from bank
+  if(panelEl) panelEl.style.display='none';
+  dragSrc = null;
+}
+
+function dropOnBank(e) {
+  e.preventDefault();
+}
+
+function clickSlot(slotIdx) {
+  if(slots[slotIdx]==='') return;
+  var idx = slots[slotIdx];
+  slots[slotIdx]='';
+  document.getElementById('slotText'+slotIdx).textContent='Drop a panel here...';
+  document.getElementById('slot'+slotIdx).className='seq-slot';
+  var panelEl = document.getElementById('sp'+idx);
+  if(panelEl) panelEl.style.display='flex';
+}
+
+function checkSeq() {
+  var d = stories[seqWord];
+  var correct = true;
+  for(var i=0;i<4;i++) {
+    var slotEl = document.getElementById('slot'+i);
+    if(slots[i]==='' || slots[i]===undefined) { correct=false; slotEl.className='seq-slot wrong'; continue; }
+    var panelIdx = slots[i];
+    var correctPanelForSlot = d.answer[i]-1;
+    if(panelIdx === correctPanelForSlot) {
+      slotEl.className='seq-slot correct';
+    } else {
+      slotEl.className='seq-slot wrong';
+      correct=false;
+    }
+  }
+  if(correct) {
+    document.getElementById('celebWord').textContent = seqWord;
+    document.getElementById('celebText').textContent = d.reveal;
+    document.getElementById('celebrate').className='celebrate show';
+    document.getElementById('celebrate').scrollIntoView({behavior:'smooth'});
+  }
+}
+
+function giveHint() {
+  var d = stories[seqWord];
+  for(var i=0;i<4;i++) {
+    if(slots[i]==='' || slots[i]===undefined) {
+      var correctPanel = d.answer[i]-1;
+      // Place it
+      var panelEl = document.getElementById('sp'+correctPanel);
+      if(panelEl && panelEl.style.display!=='none') {
+        slots[i] = correctPanel;
+        document.getElementById('slotText'+i).textContent = d.panels[correctPanel];
+        panelEl.style.display='none';
+        return;
+      }
+    }
+  }
+}
+</script>
+</body>
+</html>
