@@ -3,432 +3,122 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OneWord Trading Card · AVID · Smile Bags</title>
+<title>OneWord Trading Card · Digital Arts · Smile Bags</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #1a2410;
-    --cream: #f5ecd0;
-    --gold: #c8a84b;
-    --gold-light: #e8d5a0;
-    --parchment: #faf4e4;
-    --muted: #a09070;
-    --card-bg: #1a2410;
-    --card-cream: #f0e6c0;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--ink);
-    color: var(--cream);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* Subtle texture overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%231a2410'/%3E%3Ccircle cx='1' cy='1' r='0.5' fill='%23ffffff08'/%3E%3Ccircle cx='3' cy='3' r='0.5' fill='%23ffffff05'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .wrap { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 24px 20px 60px; }
-
-  /* HEADER */
-  .site-header {
-    text-align: center;
-    padding: 32px 0 24px;
-    border-bottom: 1px solid rgba(200,168,75,0.3);
-    margin-bottom: 36px;
-  }
-  .site-header .eyebrow {
-    font-size: 11px;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 10px;
-  }
-  .site-header h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(26px, 5vw, 40px);
-    color: var(--cream);
-    line-height: 1.1;
-    margin-bottom: 8px;
-  }
-  .site-header .sub {
-    font-size: 13px;
-    color: var(--muted);
-    font-weight: 300;
-  }
-
-  /* SCREENS */
-  .screen { display: none; animation: fadeUp .4s ease; }
-  .screen.active { display: block; }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* SECTION LABELS */
-  .step-label {
-    font-size: 11px;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 12px;
-  }
-  .section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(20px, 4vw, 28px);
-    color: var(--cream);
-    margin-bottom: 6px;
-  }
-  .section-hint {
-    font-size: 13px;
-    color: var(--muted);
-    margin-bottom: 28px;
-    font-weight: 300;
-  }
-
-  /* WORD GRID */
-  .word-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 10px;
-    margin-bottom: 8px;
-  }
-  .word-btn {
-    background: rgba(200,168,75,0.08);
-    border: 1px solid rgba(200,168,75,0.25);
-    color: var(--cream);
-    font-family: 'Playfair Display', serif;
-    font-size: 13px;
-    letter-spacing: .06em;
-    padding: 12px 8px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: all .2s;
-    text-align: center;
-  }
-  .word-btn:hover, .word-btn.selected {
-    background: var(--gold);
-    color: var(--ink);
-    border-color: var(--gold);
-    transform: translateY(-1px);
-  }
-
-  /* LEVEL PICKER */
-  .level-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-    margin-bottom: 28px;
-  }
-  .level-card {
-    border: 1px solid rgba(200,168,75,0.25);
-    background: rgba(200,168,75,0.05);
-    border-radius: 8px;
-    padding: 20px 14px;
-    cursor: pointer;
-    text-align: center;
-    transition: all .25s;
-  }
-  .level-card:hover, .level-card.selected {
-    background: rgba(200,168,75,0.15);
-    border-color: var(--gold);
-  }
-  .level-card .icon { font-size: 28px; margin-bottom: 8px; }
-  .level-card .level-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 15px;
-    color: var(--cream);
-    margin-bottom: 4px;
-  }
-  .level-card .level-grade {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: .06em;
-  }
-
-  /* NAME INPUT */
-  .name-field {
-    width: 100%;
-    background: rgba(200,168,75,0.06);
-    border: 1px solid rgba(200,168,75,0.3);
-    border-radius: 6px;
-    padding: 14px 18px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
-    color: var(--cream);
-    outline: none;
-    margin-bottom: 28px;
-    transition: border-color .2s;
-  }
-  .name-field::placeholder { color: var(--muted); }
-  .name-field:focus { border-color: var(--gold); }
-
-  /* BUTTONS */
-  .btn-primary {
-    background: var(--gold);
-    color: var(--ink);
-    border: none;
-    padding: 14px 36px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: all .2s;
-  }
-  .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
-  .btn-primary:disabled { opacity: .35; cursor: not-allowed; transform: none; }
-
-  .btn-ghost {
-    background: transparent;
-    color: var(--muted);
-    border: 1px solid rgba(200,168,75,0.2);
-    padding: 12px 28px;
-    font-size: 13px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: all .2s;
-    margin-right: 12px;
-  }
-  .btn-ghost:hover { color: var(--cream); border-color: var(--gold); }
-
-  /* CARD PREVIEW */
-  .card-stage {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 32px;
-  }
-
-  .trading-card {
-    width: 340px;
-    background: var(--card-bg);
-    border: 3px solid var(--gold);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 0 60px rgba(200,168,75,0.2), 0 20px 40px rgba(0,0,0,0.6);
-    position: relative;
-  }
-
-  /* Outer glow border */
-  .trading-card::before {
-    content: '';
-    position: absolute;
-    inset: 6px;
-    border: 1px solid rgba(200,168,75,0.3);
-    border-radius: 8px;
-    pointer-events: none;
-    z-index: 10;
-  }
-
-  .card-art {
-    width: 100%;
-    aspect-ratio: 3/4;
-    object-fit: cover;
-    display: block;
-    filter: contrast(1.05);
-  }
-
-  .card-art-placeholder {
-    width: 100%;
-    aspect-ratio: 3/4;
-    background: linear-gradient(135deg, #1a2410 0%, #2a3820 50%, #1a2410 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .card-art-placeholder .word-big {
-    font-family: 'Playfair Display', serif;
-    font-size: 36px;
-    color: var(--gold);
-    letter-spacing: .1em;
-  }
-  .card-art-placeholder .hint { font-size: 11px; color: var(--muted); }
-
-  .card-bottom {
-    background: var(--card-bg);
-    border-top: 1px solid rgba(200,168,75,0.4);
-    padding: 16px 20px 14px;
-  }
-
-  .card-quote {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 13px;
-    color: var(--card-cream);
-    line-height: 1.6;
-    text-align: center;
-    margin-bottom: 14px;
-    min-height: 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .card-sig-line {
-    display: flex;
-    align-items: flex-end;
-    gap: 0;
-    border-top: 1px solid rgba(200,168,75,0.25);
-    padding-top: 10px;
-  }
-  .card-sig-text {
-    font-family: 'Pinyon Script', cursive;
-    font-size: 22px;
-    color: var(--gold);
-    flex: 1;
-    min-height: 28px;
-    letter-spacing: .02em;
-  }
-  .card-sig-label {
-    font-size: 9px;
-    color: var(--muted);
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    line-height: 1;
-    padding-bottom: 2px;
-  }
-
-  .card-footer-tag {
-    text-align: center;
-    font-size: 9px;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: rgba(200,168,75,0.5);
-    padding: 8px 0 4px;
-    border-top: 1px solid rgba(200,168,75,0.15);
-    margin-top: 10px;
-  }
-
-  /* DIVIDER */
-  .gold-divider {
-    border: none;
-    border-top: 1px solid rgba(200,168,75,0.2);
-    margin: 28px 0;
-  }
-
-  /* SUMMARY CHIP */
-  .chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-  .chip {
-    background: rgba(200,168,75,0.12);
-    border: 1px solid rgba(200,168,75,0.3);
-    color: var(--gold);
-    font-size: 12px;
-    padding: 4px 12px;
-    border-radius: 20px;
-    letter-spacing: .04em;
-  }
-
-  /* PRINT STYLES */
+  :root { --ink:#1a2410; --cream:#f5ecd0; --gold:#c8a84b; --gold-light:#e8d5a0; --parchment:#faf4e4; --muted:#a09070; --card-bg:#1a2410; --card-cream:#f0e6c0; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--ink); color:var(--cream); font-family:'DM Sans',sans-serif; min-height:100vh; overflow-x:hidden; }
+  body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%231a2410'/%3E%3Ccircle cx='1' cy='1' r='0.5' fill='%23ffffff08'/%3E%3Ccircle cx='3' cy='3' r='0.5' fill='%23ffffff05'/%3E%3C/svg%3E"); pointer-events:none; z-index:0; }
+  .wrap { position:relative; z-index:1; max-width:900px; margin:0 auto; padding:24px 20px 60px; }
+  .back-to-hub { display:inline-flex; align-items:center; gap:8px; background:rgba(200,168,75,0.1); border:1px solid rgba(200,168,75,0.3); color:var(--gold); font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; letter-spacing:.06em; text-transform:uppercase; padding:8px 18px; border-radius:4px; text-decoration:none; transition:all .2s; margin-bottom:24px; }
+  .back-to-hub:hover { background:rgba(200,168,75,0.2); color:var(--cream); }
+  .site-header { text-align:center; padding:32px 0 24px; border-bottom:1px solid rgba(200,168,75,0.3); margin-bottom:36px; }
+  .site-header .eyebrow { font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+  .site-header h1 { font-family:'Playfair Display',serif; font-size:clamp(26px,5vw,40px); color:var(--cream); line-height:1.1; margin-bottom:8px; }
+  .site-header .sub { font-size:13px; color:var(--muted); font-weight:300; }
+  .screen { display:none; animation:fadeUp .4s ease; }
+  .screen.active { display:block; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  .step-label { font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); margin-bottom:12px; }
+  .section-title { font-family:'Playfair Display',serif; font-size:clamp(20px,4vw,28px); color:var(--cream); margin-bottom:6px; }
+  .section-hint { font-size:13px; color:var(--muted); margin-bottom:28px; font-weight:300; }
+  .word-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:10px; margin-bottom:8px; }
+  .word-btn { background:rgba(200,168,75,0.08); border:1px solid rgba(200,168,75,0.25); color:var(--cream); font-family:'Playfair Display',serif; font-size:13px; letter-spacing:.06em; padding:12px 8px; cursor:pointer; border-radius:4px; transition:all .2s; text-align:center; }
+  .word-btn:hover,.word-btn.selected { background:var(--gold); color:var(--ink); border-color:var(--gold); transform:translateY(-1px); }
+  .level-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:28px; }
+  .level-card { border:1px solid rgba(200,168,75,0.25); background:rgba(200,168,75,0.05); border-radius:8px; padding:20px 14px; cursor:pointer; text-align:center; transition:all .25s; }
+  .level-card:hover,.level-card.selected { background:rgba(200,168,75,0.15); border-color:var(--gold); }
+  .level-card .icon { font-size:28px; margin-bottom:8px; }
+  .level-card .level-name { font-family:'Playfair Display',serif; font-size:15px; color:var(--cream); margin-bottom:4px; }
+  .level-card .level-grade { font-size:11px; color:var(--muted); letter-spacing:.06em; }
+  .name-field { width:100%; background:rgba(200,168,75,0.06); border:1px solid rgba(200,168,75,0.3); border-radius:6px; padding:14px 18px; font-family:'DM Sans',sans-serif; font-size:16px; color:var(--cream); outline:none; margin-bottom:28px; transition:border-color .2s; }
+  .name-field::placeholder { color:var(--muted); }
+  .name-field:focus { border-color:var(--gold); }
+  .btn-primary { background:var(--gold); color:var(--ink); border:none; padding:14px 36px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; letter-spacing:.06em; text-transform:uppercase; cursor:pointer; border-radius:4px; transition:all .2s; }
+  .btn-primary:hover { background:var(--gold-light); transform:translateY(-1px); }
+  .btn-primary:disabled { opacity:.35; cursor:not-allowed; transform:none; }
+  .btn-ghost { background:transparent; color:var(--muted); border:1px solid rgba(200,168,75,0.2); padding:12px 28px; font-size:13px; cursor:pointer; border-radius:4px; transition:all .2s; margin-right:12px; }
+  .btn-ghost:hover { color:var(--cream); border-color:var(--gold); }
+  .card-stage { display:flex; justify-content:center; margin-bottom:32px; }
+  .trading-card { width:340px; background:var(--card-bg); border:3px solid var(--gold); border-radius:12px; overflow:hidden; box-shadow:0 0 60px rgba(200,168,75,0.2),0 20px 40px rgba(0,0,0,0.6); position:relative; }
+  .trading-card::before { content:''; position:absolute; inset:6px; border:1px solid rgba(200,168,75,0.3); border-radius:8px; pointer-events:none; z-index:10; }
+  .card-art { width:100%; aspect-ratio:3/4; object-fit:cover; display:block; filter:contrast(1.05); }
+  .card-art-placeholder { width:100%; aspect-ratio:3/4; background:linear-gradient(135deg,#1a2410 0%,#2a3820 50%,#1a2410 100%); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:12px; }
+  .card-art-placeholder .word-big { font-family:'Playfair Display',serif; font-size:36px; color:var(--gold); letter-spacing:.1em; }
+  .card-art-placeholder .hint { font-size:11px; color:var(--muted); }
+  .card-bottom { background:var(--card-bg); border-top:1px solid rgba(200,168,75,0.4); padding:16px 20px 14px; }
+  .card-quote { font-family:'Playfair Display',serif; font-style:italic; font-size:13px; color:var(--card-cream); line-height:1.6; text-align:center; margin-bottom:14px; min-height:42px; display:flex; align-items:center; justify-content:center; }
+  .card-sig-line { display:flex; align-items:flex-end; border-top:1px solid rgba(200,168,75,0.25); padding-top:10px; }
+  .card-sig-text { font-family:'Pinyon Script',cursive; font-size:22px; color:var(--gold); flex:1; min-height:28px; letter-spacing:.02em; }
+  .card-sig-label { font-size:9px; color:var(--muted); letter-spacing:.12em; text-transform:uppercase; line-height:1; padding-bottom:2px; }
+  .card-footer-tag { text-align:center; font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:rgba(200,168,75,0.5); padding:8px 0 4px; border-top:1px solid rgba(200,168,75,0.15); margin-top:10px; }
+  .gold-divider { border:none; border-top:1px solid rgba(200,168,75,0.2); margin:28px 0; }
+  .chip-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+  .chip { background:rgba(200,168,75,0.12); border:1px solid rgba(200,168,75,0.3); color:var(--gold); font-size:12px; padding:4px 12px; border-radius:20px; letter-spacing:.04em; }
   @media print {
-    body { background: white !important; }
-    body::before { display: none; }
-    .site-header, .screen:not(.active), .no-print { display: none !important; }
-    .wrap { padding: 0; max-width: 100%; }
-    .card-stage { margin: 0; }
-    .trading-card {
-      width: 3.5in;
-      box-shadow: none;
-      border: 2pt solid #1a2410;
-      margin: 0.25in auto;
-      display: block;
-    }
-    .trading-card::before { display: none; }
-    .card-art { filter: none; }
-    .card-bottom { background: #1a2410 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .btn-row, .print-note { display: none; }
+    body { background:white !important; } body::before { display:none; }
+    .site-header,.screen:not(.active),.no-print { display:none !important; }
+    .wrap { padding:0; max-width:100%; } .card-stage { margin:0; }
+    .trading-card { width:3.5in; box-shadow:none; border:2pt solid #1a2410; margin:0.25in auto; display:block; }
+    .trading-card::before { display:none; } .card-art { filter:none; }
+    .card-bottom { background:#1a2410 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .btn-row,.print-note,.back-to-hub { display:none; }
   }
 </style>
 </head>
 <body>
-
 <div class="wrap">
+
+  <a href="DigitalArts_Menu.html" class="back-to-hub no-print">← Digital Arts Hub</a>
 
   <header class="site-header">
     <div class="eyebrow">Smile Bags · Word &amp; Wonder Experience</div>
     <h1>OneWord Trading Card</h1>
-    <div class="sub">Word &amp; Wonder Experience</div>
+    <div class="sub">Digital Arts · Kara Gau · Spring 2026</div>
   </header>
 
-  <!-- SCREEN 1: Pick Word -->
   <div class="screen active" id="scr1">
     <div class="step-label">Step 1 of 3</div>
     <div class="section-title">Choose Your OneWord</div>
     <div class="section-hint">Select the word that speaks to you today.</div>
-
     <div class="word-grid" id="wordGrid"></div>
-
     <hr class="gold-divider">
-    <div style="display:flex; justify-content:flex-end;">
+    <div style="display:flex;justify-content:flex-end;">
       <button class="btn-primary" id="btn1" onclick="goTo(2)" disabled>Next →</button>
     </div>
   </div>
 
-  <!-- SCREEN 2: Level + Name -->
   <div class="screen" id="scr2">
     <div class="step-label">Step 2 of 3</div>
     <div class="section-title">Your Level &amp; Signature</div>
     <div class="section-hint">Choose your grade level to unlock your quote, then sign your card.</div>
-
     <div class="level-grid">
-      <div class="level-card" onclick="pickLevel('Elementary')" id="lv-Elementary">
-        <div class="icon">🌱</div>
-        <div class="level-name">Elementary</div>
-        <div class="level-grade">Grades 3–5</div>
-      </div>
-      <div class="level-card" onclick="pickLevel('Middle')" id="lv-Middle">
-        <div class="icon">🌿</div>
-        <div class="level-name">Middle School</div>
-        <div class="level-grade">Grades 6–8</div>
-      </div>
-      <div class="level-card" onclick="pickLevel('High')" id="lv-High">
-        <div class="icon">🌳</div>
-        <div class="level-name">High School</div>
-        <div class="level-grade">Grades 9–12</div>
-      </div>
+      <div class="level-card" onclick="pickLevel('Elementary')" id="lv-Elementary"><div class="icon">🌱</div><div class="level-name">Elementary</div><div class="level-grade">Grades 3–5</div></div>
+      <div class="level-card" onclick="pickLevel('Middle')" id="lv-Middle"><div class="icon">🌿</div><div class="level-name">Middle School</div><div class="level-grade">Grades 6–8</div></div>
+      <div class="level-card" onclick="pickLevel('High')" id="lv-High"><div class="icon">🌳</div><div class="level-name">High School</div><div class="level-grade">Grades 9–12</div></div>
     </div>
-
-    <label style="display:block; font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); margin-bottom:8px;">Your Name (for signature)</label>
+    <label style="display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Your Name (for signature)</label>
     <input type="text" class="name-field" id="nameInput" placeholder="Sign your card…" oninput="checkStep2()">
-
     <hr class="gold-divider">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
       <button class="btn-ghost" onclick="goTo(1)">← Back</button>
       <button class="btn-primary" id="btn2" onclick="buildCard()" disabled>Preview My Card →</button>
     </div>
   </div>
 
-  <!-- SCREEN 3: Card Preview -->
   <div class="screen" id="scr3">
     <div class="step-label">Step 3 of 3 · Your Trading Card</div>
-    <div class="section-title">Here's Your Card</div>
+    <div class="section-title">Here’s Your Card</div>
     <div class="section-hint">Print it on cardstock and cut it out to keep or trade!</div>
-
     <div class="chip-row" id="chipRow"></div>
-
     <div class="card-stage">
       <div class="trading-card" id="theCard">
-
-        <!-- Art section -->
-        <img id="cardImg" class="card-art" src="" alt="" onerror="this.style.display='none'; document.getElementById('cardArtFallback').style.display='flex';">
+        <img id="cardImg" class="card-art" src="" alt="" onerror="this.style.display='none';document.getElementById('cardArtFallback').style.display='flex';">
         <div class="card-art-placeholder" id="cardArtFallback" style="display:none;">
           <div class="word-big" id="fallbackWord"></div>
           <div class="hint">TC_{word}.png · place in same folder</div>
         </div>
-
-        <!-- Quote + signature -->
         <div class="card-bottom">
           <div class="card-quote" id="cardQuote"></div>
           <div class="card-sig-line">
@@ -437,233 +127,26 @@
           </div>
           <div class="card-footer-tag">Smile Bags · Word &amp; Wonder · 2026</div>
         </div>
-
       </div>
     </div>
-
-    <div class="btn-row no-print" style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+    <div class="btn-row no-print" style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
       <button class="btn-ghost" onclick="goTo(1)">← New Card</button>
       <button class="btn-primary" onclick="window.print()">🖨 Print Card</button>
     </div>
-
-    <p class="print-note no-print" style="text-align:center; font-size:12px; color:var(--muted); margin-top:16px;">
-      Print on cardstock · Standard letter size · Cut along the card border
-    </p>
+    <p class="print-note no-print" style="text-align:center;font-size:12px;color:var(--muted);margin-top:16px;">Print on cardstock · Standard letter size · Cut along the card border</p>
   </div>
 
 </div>
-
 <script>
-// ─── DATA ────────────────────────────────────────────────────────────────────
-
-const WORDS = [
-  'ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT',
-  'CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST',
-  'RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'
-];
-
-const QUOTES = {
-  ABSORB: {
-    Elementary: "Soak it all in — like sunshine on your skin!",
-    Middle:     "Learning happens when we slow down and truly take things in.",
-    High:       "The most transformative experiences are the ones you let fully reach you."
-  },
-  ADAPT: {
-    Elementary: "When things change, you change too — that's your superpower!",
-    Middle:     "The strongest creatures aren't the biggest — they're the most flexible.",
-    High:       "Flexibility is not weakness — it is the intelligence of the living."
-  },
-  ANCHOR: {
-    Elementary: "Find what keeps you steady when the waves get big.",
-    Middle:     "Everyone needs something to hold onto when life gets stormy.",
-    High:       "Know what holds you. In drift, it is the only thing that matters."
-  },
-  BALANCE: {
-    Elementary: "Not too much, not too little — just right!",
-    Middle:     "Balance isn't standing still — it's making constant small adjustments.",
-    High:       "Equilibrium is not a destination — it is a practice, chosen daily."
-  },
-  BLOOM: {
-    Elementary: "You are growing into something beautiful every single day.",
-    Middle:     "Growth isn't always visible — until suddenly, it is.",
-    High:       "Some growth is invisible until the moment it suddenly, completely, is not."
-  },
-  BREATHE: {
-    Elementary: "Slow down, breathe deep — everything is going to be okay.",
-    Middle:     "The most powerful reset button you have costs nothing.",
-    High:       "The body knows what the mind resists — return to the breath."
-  },
-  CLEAR: {
-    Elementary: "A clear mind is like a clear sky — full of possibility!",
-    Middle:     "Clarity doesn't come from thinking harder — it comes from letting go.",
-    High:       "What you release makes room for what you actually need."
-  },
-  CONNECT: {
-    Elementary: "The best things happen when we reach out to each other.",
-    Middle:     "We are stronger, smarter, and kinder when we are connected.",
-    High:       "No one becomes who they are alone."
-  },
-  CYCLE: {
-    Elementary: "Everything comes back around — like seasons, like hope!",
-    Middle:     "Nothing is truly lost — it simply transforms and returns.",
-    High:       "Every ending is a system completing itself — not a loss, but a turn."
-  },
-  EMERGE: {
-    Elementary: "Break out of your shell — the world is waiting for you!",
-    Middle:     "Every breakthrough begins with the courage to push through.",
-    High:       "The version of you on the other side of this has been waiting."
-  },
-  FILTER: {
-    Elementary: "Choose what you let in — your mind is worth protecting.",
-    Middle:     "Not everything deserves your energy — choose what gets in.",
-    High:       "Your attention is your life — guard what receives it."
-  },
-  FLOW: {
-    Elementary: "Go with the current — sometimes the river knows the way.",
-    Middle:     "Resistance is exhausting. Trust the current and move forward.",
-    High:       "When effort disappears into purpose, you have found your work."
-  },
-  GROW: {
-    Elementary: "Every day you grow a little stronger, a little taller!",
-    Middle:     "Growth is often invisible from the inside — keep going anyway.",
-    High:       "The discomfort you are avoiding may be exactly the shape of your growth."
-  },
-  HEAL: {
-    Elementary: "Give yourself time — even flowers need rain to bloom again.",
-    Middle:     "Healing isn't linear — it's a journey worth taking at your own pace.",
-    High:       "Healing is not the absence of the wound — it is what you build around it."
-  },
-  MIGRATE: {
-    Elementary: "Sometimes moving forward means finding a brand new home.",
-    Middle:     "Moving toward something better takes courage and trust.",
-    High:       "Courage is leaving behind what is known for what is necessary."
-  },
-  PERSIST: {
-    Elementary: "Keep going! Even tiny seeds push through solid rock.",
-    Middle:     "The difference between almost and achieved is simply not stopping.",
-    High:       "The distance between who you are and who you could be is made of days like this one."
-  },
-  RENEW: {
-    Elementary: "Every morning is a fresh start — a brand new you!",
-    Middle:     "You are allowed to begin again — as many times as you need.",
-    High:       "You are not required to carry every version of yourself forward."
-  },
-  RESTORE: {
-    Elementary: "Put things back together — including yourself.",
-    Middle:     "What has been broken can be repaired — often stronger than before.",
-    High:       "Some things must be taken apart before they can be what they were meant to be."
-  },
-  RETURN: {
-    Elementary: "Home is always waiting for you with open arms.",
-    Middle:     "Some things are worth coming back to — including yourself.",
-    High:       "You will recognize yourself again — give it time."
-  },
-  RISE: {
-    Elementary: "You can always get back up — that's what rising means!",
-    Middle:     "Falling is part of rising — you cannot have one without the other.",
-    High:       "Rising is not loud. Most of the time, it looks like simply continuing."
-  },
-  ROOT: {
-    Elementary: "Know where you come from — your roots make you strong.",
-    Middle:     "Deep roots make it possible to reach great heights.",
-    High:       "Identity is not a cage — it is the ground from which you grow."
-  },
-  SHINE: {
-    Elementary: "You have a light inside you — let the whole world see it!",
-    Middle:     "Your light doesn't dim anyone else's — shine without apology.",
-    High:       "Dimming yourself for others' comfort costs more than you know."
-  },
-  SUSTAIN: {
-    Elementary: "Take care of the earth and it will take care of you.",
-    Middle:     "What we protect today determines what exists tomorrow.",
-    High:       "Legacy is not what you leave behind — it is what you keep alive."
-  },
-  THRIVE: {
-    Elementary: "Don't just survive — bloom, grow, and absolutely thrive!",
-    Middle:     "Surviving is the floor — thriving is the whole sky above it.",
-    High:       "You were not made for mere survival. Claim the whole sky."
-  },
-  TRANSFORM: {
-    Elementary: "Change is not scary — it's the beginning of something amazing.",
-    Middle:     "You are not who you were — and that is something to celebrate.",
-    High:       "Transformation does not erase you — it reveals you."
-  }
-};
-
-// ─── STATE ───────────────────────────────────────────────────────────────────
-let selectedWord = '';
-let selectedLevel = '';
-
-// ─── INIT ────────────────────────────────────────────────────────────────────
-function init() {
-  const grid = document.getElementById('wordGrid');
-  WORDS.forEach(w => {
-    const btn = document.createElement('button');
-    btn.className = 'word-btn';
-    btn.textContent = w;
-    btn.onclick = () => pickWord(w);
-    btn.id = 'w-' + w;
-    grid.appendChild(btn);
-  });
-}
-
-// ─── NAVIGATION ──────────────────────────────────────────────────────────────
-function goTo(n) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('scr' + n).classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// ─── STEP 1 ──────────────────────────────────────────────────────────────────
-function pickWord(w) {
-  selectedWord = w;
-  document.querySelectorAll('.word-btn').forEach(b => b.classList.remove('selected'));
-  document.getElementById('w-' + w).classList.add('selected');
-  document.getElementById('btn1').disabled = false;
-}
-
-// ─── STEP 2 ──────────────────────────────────────────────────────────────────
-function pickLevel(lv) {
-  selectedLevel = lv;
-  document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
-  document.getElementById('lv-' + lv).classList.add('selected');
-  checkStep2();
-}
-
-function checkStep2() {
-  const name = document.getElementById('nameInput').value.trim();
-  document.getElementById('btn2').disabled = !(selectedLevel && name.length > 0);
-}
-
-// ─── BUILD CARD ───────────────────────────────────────────────────────────────
-function buildCard() {
-  const name = document.getElementById('nameInput').value.trim();
-  const quote = QUOTES[selectedWord]?.[selectedLevel] || '';
-
-  // Chips
-  const chips = document.getElementById('chipRow');
-  chips.innerHTML = `
-    <span class="chip">${selectedWord}</span>
-    <span class="chip">${selectedLevel} Level</span>
-    <span class="chip">Signed by ${name}</span>
-  `;
-
-  // Card image — TC_{Word}.png (capitalize first letter)
-  const wordTitle = selectedWord.charAt(0) + selectedWord.slice(1).toLowerCase();
-  const imgEl = document.getElementById('cardImg');
-  const fallback = document.getElementById('cardArtFallback');
-  imgEl.style.display = 'block';
-  fallback.style.display = 'none';
-  imgEl.src = `TC_${wordTitle}.png`;
-  document.getElementById('fallbackWord').textContent = selectedWord;
-
-  // Quote and signature
-  document.getElementById('cardQuote').textContent = `"${quote}"`;
-  document.getElementById('cardSig').textContent = name;
-
-  goTo(3);
-}
-
+const WORDS=['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT','CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST','RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
+const QUOTES={ABSORB:{Elementary:"Soak it all in — like sunshine on your skin!",Middle:"Learning happens when we slow down and truly take things in.",High:"The most transformative experiences are the ones you let fully reach you."},ADAPT:{Elementary:"When things change, you change too — that's your superpower!",Middle:"The strongest creatures aren't the biggest — they're the most flexible.",High:"Flexibility is not weakness — it is the intelligence of the living."},ANCHOR:{Elementary:"Find what keeps you steady when the waves get big.",Middle:"Everyone needs something to hold onto when life gets stormy.",High:"Know what holds you. In drift, it is the only thing that matters."},BALANCE:{Elementary:"Not too much, not too little — just right!",Middle:"Balance isn't standing still — it's making constant small adjustments.",High:"Equilibrium is not a destination — it is a practice, chosen daily."},BLOOM:{Elementary:"You are growing into something beautiful every single day.",Middle:"Growth isn't always visible — until suddenly, it is.",High:"Some growth is invisible until the moment it suddenly, completely, is not."},BREATHE:{Elementary:"Slow down, breathe deep — everything is going to be okay.",Middle:"The most powerful reset button you have costs nothing.",High:"The body knows what the mind resists — return to the breath."},CLEAR:{Elementary:"A clear mind is like a clear sky — full of possibility!",Middle:"Clarity doesn't come from thinking harder — it comes from letting go.",High:"What you release makes room for what you actually need."},CONNECT:{Elementary:"The best things happen when we reach out to each other.",Middle:"We are stronger, smarter, and kinder when we are connected.",High:"No one becomes who they are alone."},CYCLE:{Elementary:"Everything comes back around — like seasons, like hope!",Middle:"Nothing is truly lost — it simply transforms and returns.",High:"Every ending is a system completing itself — not a loss, but a turn."},EMERGE:{Elementary:"Break out of your shell — the world is waiting for you!",Middle:"Every breakthrough begins with the courage to push through.",High:"The version of you on the other side of this has been waiting."},FILTER:{Elementary:"Choose what you let in — your mind is worth protecting.",Middle:"Not everything deserves your energy — choose what gets in.",High:"Your attention is your life — guard what receives it."},FLOW:{Elementary:"Go with the current — sometimes the river knows the way.",Middle:"Resistance is exhausting. Trust the current and move forward.",High:"When effort disappears into purpose, you have found your work."},GROW:{Elementary:"Every day you grow a little stronger, a little taller!",Middle:"Growth is often invisible from the inside — keep going anyway.",High:"The discomfort you are avoiding may be exactly the shape of your growth."},HEAL:{Elementary:"Give yourself time — even flowers need rain to bloom again.",Middle:"Healing isn't linear — it's a journey worth taking at your own pace.",High:"Healing is not the absence of the wound — it is what you build around it."},MIGRATE:{Elementary:"Sometimes moving forward means finding a brand new home.",Middle:"Moving toward something better takes courage and trust.",High:"Courage is leaving behind what is known for what is necessary."},PERSIST:{Elementary:"Keep going! Even tiny seeds push through solid rock.",Middle:"The difference between almost and achieved is simply not stopping.",High:"The distance between who you are and who you could be is made of days like this one."},RENEW:{Elementary:"Every morning is a fresh start — a brand new you!",Middle:"You are allowed to begin again — as many times as you need.",High:"You are not required to carry every version of yourself forward."},RESTORE:{Elementary:"Put things back together — including yourself.",Middle:"What has been broken can be repaired — often stronger than before.",High:"Some things must be taken apart before they can be what they were meant to be."},RETURN:{Elementary:"Home is always waiting for you with open arms.",Middle:"Some things are worth coming back to — including yourself.",High:"You will recognize yourself again — give it time."},RISE:{Elementary:"You can always get back up — that's what rising means!",Middle:"Falling is part of rising — you cannot have one without the other.",High:"Rising is not loud. Most of the time, it looks like simply continuing."},ROOT:{Elementary:"Know where you come from — your roots make you strong.",Middle:"Deep roots make it possible to reach great heights.",High:"Identity is not a cage — it is the ground from which you grow."},SHINE:{Elementary:"You have a light inside you — let the whole world see it!",Middle:"Your light doesn't dim anyone else's — shine without apology.",High:"Dimming yourself for others' comfort costs more than you know."},SUSTAIN:{Elementary:"Take care of the earth and it will take care of you.",Middle:"What we protect today determines what exists tomorrow.",High:"Legacy is not what you leave behind — it is what you keep alive."},THRIVE:{Elementary:"Don't just survive — bloom, grow, and absolutely thrive!",Middle:"Surviving is the floor — thriving is the whole sky above it.",High:"You were not made for mere survival. Claim the whole sky."},TRANSFORM:{Elementary:"Change is not scary — it's the beginning of something amazing.",Middle:"You are not who you were — and that is something to celebrate.",High:"Transformation does not erase you — it reveals you."}};
+let selectedWord='',selectedLevel='';
+function init(){const g=document.getElementById('wordGrid');WORDS.forEach(w=>{const b=document.createElement('button');b.className='word-btn';b.textContent=w;b.onclick=()=>pickWord(w);b.id='w-'+w;g.appendChild(b);});}
+function goTo(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('scr'+n).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+function pickWord(w){selectedWord=w;document.querySelectorAll('.word-btn').forEach(b=>b.classList.remove('selected'));document.getElementById('w-'+w).classList.add('selected');document.getElementById('btn1').disabled=false;}
+function pickLevel(lv){selectedLevel=lv;document.querySelectorAll('.level-card').forEach(c=>c.classList.remove('selected'));document.getElementById('lv-'+lv).classList.add('selected');checkStep2();}
+function checkStep2(){const n=document.getElementById('nameInput').value.trim();document.getElementById('btn2').disabled=!(selectedLevel&&n.length>0);}
+function buildCard(){const name=document.getElementById('nameInput').value.trim();const quote=QUOTES[selectedWord]?.[selectedLevel]||'';document.getElementById('chipRow').innerHTML='<span class="chip">'+selectedWord+'</span><span class="chip">'+selectedLevel+' Level</span><span class="chip">Signed by '+name+'</span>';const wt=selectedWord.charAt(0)+selectedWord.slice(1).toLowerCase();const img=document.getElementById('cardImg');img.style.display='block';document.getElementById('cardArtFallback').style.display='none';img.src='https://lhhowell.github.io/kellamsmilebags/TC_'+wt+'.png';document.getElementById('fallbackWord').textContent=selectedWord;document.getElementById('cardQuote').textContent='"'+quote+'"';document.getElementById('cardSig').textContent=name;goTo(3);}
 init();
 </script>
 </body>
