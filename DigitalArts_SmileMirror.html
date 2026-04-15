@@ -97,7 +97,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;pa
 
 <div class="hdr">
   <h1>🪞 Smile Mirror Design</h1>
-  <p>Digital Arts · Smile Bags · A Word &amp; Wonder Experience · Kara Gau · Spring 2026</p>
+  <p>Digital Arts · Smile Bags · A Word &amp; Wonder Experience · Kayla Gau · Spring 2026</p>
 </div>
 
 <div class="prog">
@@ -287,7 +287,7 @@ function drawSheet(){
          '<line x1="0" y1="792" x2="16" y2="792" stroke="#000" stroke-width="0.5"/><line x1="0" y1="792" x2="0" y2="776" stroke="#000" stroke-width="0.5"/>'+
          '<line x1="612" y1="792" x2="596" y2="792" stroke="#000" stroke-width="0.5"/><line x1="612" y1="792" x2="612" y2="776" stroke="#000" stroke-width="0.5"/>';
   svg.innerHTML='<rect width="612" height="792" fill="#fff"/>'+rm+stickers+
-    '<text x="306" y="784" text-anchor="middle" font-family="Fredoka One,cursive" font-size="9" fill="#ccc" letter-spacing="1">Smile Bags · Word &amp; Wonder · '+esc(name)+' · Digital Arts · Kara Gau · Spring 2026</text>';
+    '<text x="306" y="784" text-anchor="middle" font-family="Fredoka One,cursive" font-size="9" fill="#ccc" letter-spacing="1">Smile Bags · Word &amp; Wonder · '+esc(name)+' · Digital Arts · Kayla Gau · Spring 2026</text>';
 }
 
 function toWord(){sName=document.getElementById("iName").value.trim();sPeriod=document.getElementById("iPeriod").value;if(!sName){alert("Please enter your name!");return;}drawPreview();nav(1);}
@@ -311,7 +311,7 @@ function printSheet(){
 function doSubmit(){
   var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
   document.getElementById("tokCode").textContent=tok;
-  var payload={studentName:sName,period:sPeriod,teacher:"Kara Gau",word:selWord,style:selStyle?selStyle.name:"",color:selColor?selColor.name:"",font:selFont?selFont.name:"",token:tok};
+  var payload={studentName:sName,period:sPeriod,teacher:"Kayla Gau",word:selWord,style:selStyle?selStyle.name:"",color:selColor?selColor.name:"",font:selFont?selFont.name:"",token:tok};
   if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){showDone();return;}
   fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)}).then(function(){showDone();}).catch(function(){showDone();});
 }
