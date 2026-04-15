@@ -11,7 +11,7 @@
 body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; padding:0 0 48px; }
 .banner { display:flex; align-items:stretch; width:100%; height:64px; font-family:'Fredoka One',cursive; font-size:28px; letter-spacing:1px; box-shadow:0 3px 12px rgba(0,0,0,0.18); }
 .banner-left  { background:linear-gradient(135deg,#E8820A,#FFB300); color:#fff; flex:1; display:flex; align-items:center; padding:0 24px; text-shadow:1px 1px 3px rgba(0,0,0,0.25); }
-.banner-right { background:#C8200A; color:#fff; padding:0 28px; display:flex; align-items:center; text-shadow:1px 1px 3px rgba(0,0,0,0.25); min-width:200px; justify-content:center; }
+.banner-right { background:#6A1B9A; color:#fff; padding:0 28px; display:flex; align-items:center; text-shadow:1px 1px 3px rgba(0,0,0,0.25); min-width:200px; justify-content:center; }
 .tagline { text-align:center; font-size:18px; font-weight:700; color:#444; padding:14px 20px 10px; }
 .layout { display:flex; gap:20px; max-width:1100px; margin:0 auto; padding:16px 20px 0; align-items:flex-start; flex-wrap:wrap; }
 .img-wrap { position:relative; flex:1 1 520px; max-width:620px; border-radius:var(--radius); overflow:hidden; box-shadow:0 8px 32px rgba(106,27,154,0.18); background:#fff; user-select:none; cursor:crosshair; }
@@ -78,7 +78,7 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
     <div class="hotspot" id="hs-1"  style="left:30%;top:72%" data-id="1"  data-label="&#x1F50C; Cable / Cord"            data-hint="A cable or cord winding through the plants in the lower left">&#x1F50C;</div>
     <div class="hotspot" id="hs-2"  style="left:35%;top:75%" data-id="2"  data-label="&#x1F50C; Plug Ends / Connectors"  data-hint="Two plug ends or connector tips near the lower center-left">&#x1F50C;</div>
     <div class="hotspot" id="hs-3"  style="left:55%;top:90%" data-id="3"  data-label="&#x1F9E9; Puzzle Piece (bottom)"   data-hint="A puzzle piece near the bottom path in the foreground">&#x1F9E9;</div>
-    <div class="hotspot" id="hs-4"  style="left:72%;top:85%" data-id="4"  data-label="&#x1F9E9; Puzzle Piece (shoe)"    data-hint="A puzzle piece tucked beside the right shoe">&#x1F9E9;</div>
+    <div class="hotspot" id="hs-4"  style="left:55%;top:90%" data-id="4"  data-label="&#x1F9E9; Puzzle Piece (shoe)"    data-hint="A puzzle piece tucked beside the right shoe">&#x1F9E9;</div>
     <div class="hotspot" id="hs-5"  style="left:14%;top:88%" data-id="5"  data-label="&#x1F50D; Magnifying Glass"        data-hint="A magnifying glass on the ground at the lower left">&#x1F50D;</div>
     <div class="hotspot" id="hs-6"  style="left:18%;top:83%" data-id="6"  data-label="&#x1F453; Glasses / Lenses"        data-hint="A pair of glasses lying near the lower left foreground">&#x1F453;</div>
     <div class="hotspot" id="hs-7"  style="left:75%;top:55%" data-id="7"  data-label="&#x1F4F1; Keypad / Phone Device"   data-hint="A small keypad or phone-like device on the right side of the bag">&#x1F4F1;</div>
@@ -153,6 +153,8 @@ function showToast(msg){const t=document.getElementById('toast');t.innerHTML=msg
 function giveHint(){const unfound=OBJECTS.filter(o=>!found.has(o.id));if(!unfound.length){showToast('&#x1F389; You already found everything!');return;}const candidates=unfound.filter(o=>!hintUsed.includes(o.id));const pick=candidates.length?candidates[Math.floor(Math.random()*candidates.length)]:unfound[Math.floor(Math.random()*unfound.length)];hintUsed.push(pick.id);const hs=document.getElementById('hs-'+pick.id);document.querySelectorAll('.hotspot.hint-pulse').forEach(h=>h.classList.remove('hint-pulse'));hs.classList.add('hint-pulse');showToast('&#x1F4A1; Hint: '+hs.dataset.hint);setTimeout(()=>hs.classList.remove('hint-pulse'),3500);}
 function resetGame(){found.clear();hintUsed=[];document.querySelectorAll('.hotspot').forEach(h=>h.classList.remove('found','hint-pulse'));document.querySelectorAll('.check-item').forEach(c=>c.classList.remove('found-item'));document.querySelectorAll('.check-box').forEach(c=>c.classList.remove('checked'));updateScore();}
 function downloadActivity(){const blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Connect_HiddenPicture_Activity.html';a.click();}
+function toggleCal(){document.body.classList.toggle("calibrate-mode");}
 </script>
+<button class="cal-btn" onclick="toggleCal()">&#x1F527; Cal</button>
 </body>
 </html>
