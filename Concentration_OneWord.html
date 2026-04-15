@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Concentration — OneWord Memory Match | Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --gold:#F0C040;--gold-dark:#C8860A;--black:#111;--dark:#1A1A1A;
+  --teal:#1B7A78;--card-bg:#1A1A2E;--card-border:#2A2A4A;
+  --match:#28A745;--wrong:#D4537E;--back:#0A0A1A;
+}
+body{font-family:'Nunito',sans-serif;background:var(--black);color:#fff;min-height:100vh;padding:0 0 48px;}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#0A0A0A,#151520);border-bottom:3px solid var(--gold-dark);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:22px;color:var(--gold);}
+.hdr-sub{font-size:12px;color:rgba(255,255,255,.4);margin-top:2px;}
+.back-btn{display:inline-flex;align-items:center;gap:7px;border:1.5px solid #333;border-radius:50px;padding:8px 16px;font-family:'Fredoka One',cursive;font-size:11px;color:#777;text-decoration:none;transition:all .2s;}
+.back-btn:hover{border-color:var(--gold-dark);color:var(--gold);}
+
+/* SETUP SCREEN */
+.setup{max-width:680px;margin:0 auto;padding:32px 24px;}
+.setup-title{font-family:'Playfair Display',serif;font-size:28px;color:var(--gold);text-align:center;margin-bottom:6px;}
+.setup-sub{font-size:14px;color:#555;text-align:center;margin-bottom:28px;line-height:1.6;}
+.word-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:20px;}
+.word-btn{background:#1A1A1A;border:2px solid #2A2A2A;border-radius:8px;padding:9px 6px;font-family:'Fredoka One',cursive;font-size:12px;color:#666;cursor:pointer;text-align:center;transition:all .2s;letter-spacing:.5px;}
+.word-btn:hover{border-color:var(--gold-dark);color:var(--gold);}
+.word-btn.selected{background:rgba(200,134,10,.12);border-color:var(--gold);color:var(--gold);}
+.select-info{text-align:center;font-size:13px;color:#555;margin-bottom:20px;}
+.select-info span{color:var(--gold);font-weight:800;}
+.start-btn{display:block;width:100%;padding:16px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:12px;font-family:'Fredoka One',cursive;font-size:18px;color:var(--black);cursor:pointer;transition:all .2s;letter-spacing:.5px;}
+.start-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,134,10,.4);}
+.start-btn:disabled{background:#1A1A1A;color:#333;cursor:not-allowed;}
+.quick-btns{display:flex;gap:10px;margin-bottom:16px;justify-content:center;}
+.quick-btn{padding:7px 18px;border-radius:50px;border:1.5px solid #2A2A2A;background:transparent;font-family:'Fredoka One',cursive;font-size:12px;color:#555;cursor:pointer;transition:all .2s;}
+.quick-btn:hover{border-color:var(--teal);color:#4EC9C7;}
+
+/* GAME SCREEN */
+.game{display:none;max-width:900px;margin:0 auto;padding:20px 24px;}
+.scorebar{display:flex;gap:20px;align-items:center;justify-content:center;margin-bottom:20px;flex-wrap:wrap;}
+.score-chip{background:#1A1A1A;border:1.5px solid #2A2A2A;border-radius:50px;padding:8px 20px;text-align:center;}
+.score-chip-label{font-size:10px;color:#444;letter-spacing:1px;text-transform:uppercase;}
+.score-chip-val{font-family:'Fredoka One',cursive;font-size:22px;color:var(--gold);line-height:1;}
+.card-grid{display:grid;gap:10px;}
+.card{background:var(--back);border:2px solid var(--card-border);border-radius:12px;cursor:pointer;transition:border-color .2s,background .2s;position:relative;overflow:hidden;min-height:80px;display:flex;align-items:center;justify-content:center;padding:12px;}
+.card:hover:not(.revealed):not(.matched){border-color:var(--gold-dark);}
+.card-dot{font-size:24px;color:#2A2A4A;transition:opacity .15s;}
+.card-content{display:none;width:100%;text-align:center;}
+.card.revealed .card-dot{display:none;}
+.card.revealed .card-content{display:block;}
+.card.matched{background:rgba(40,167,69,.12);border-color:var(--match);cursor:default;}
+.card.matched .card-dot{display:none;}
+.card.matched .card-content{display:block;}
+.card.wrong{background:rgba(212,83,126,.12);border-color:var(--wrong);}
+.card-word{font-family:'Fredoka One',cursive;font-size:18px;color:var(--gold);letter-spacing:.5px;}
+.card-def{font-size:12px;color:#aaa;line-height:1.5;}
+.card-type-badge{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#444;margin-bottom:6px;}
+
+/* WIN OVERLAY */
+.win-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;align-items:center;justify-content:center;}
+.win-overlay.show{display:flex;}
+.win-box{background:#1A1A1A;border:2px solid var(--gold-dark);border-radius:20px;padding:40px;text-align:center;max-width:400px;animation:popIn .4s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popIn{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.win-emoji{font-size:56px;margin-bottom:12px;}
+.win-title{font-family:'Fredoka One',cursive;font-size:30px;color:var(--gold);margin-bottom:8px;}
+.win-stats{font-size:14px;color:#777;margin-bottom:24px;line-height:1.8;}
+.win-stats strong{color:#fff;}
+.win-actions{display:flex;flex-direction:column;gap:10px;}
+.win-btn{padding:13px;border-radius:10px;font-family:'Fredoka One',cursive;font-size:15px;border:none;cursor:pointer;transition:all .2s;}
+.win-btn.gold{background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:var(--black);}
+.win-btn.dark{background:#2A2A2A;color:#aaa;}
+.win-btn:hover{transform:translateY(-2px);}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <div class="hdr-title">&#127183; Concentration</div>
+    <div class="hdr-sub">OneWord Memory Match &middot; Smile Bags</div>
+  </div>
+  <a href="javascript:history.back()" class="back-btn">&#8592; Back to Hub</a>
+</div>
+
+<!-- SETUP -->
+<div class="setup" id="setupScreen">
+  <div class="setup-title">Choose Your Words</div>
+  <div class="setup-sub">Select 6 words to play. Each word card will be matched to its definition. Find all 6 pairs to win!</div>
+
+  <div class="quick-btns">
+    <button class="quick-btn" onclick="selectRandom()">&#127922; Random 6</button>
+    <button class="quick-btn" onclick="selectAll()">&#10003; Select All</button>
+    <button class="quick-btn" onclick="clearAll()">&#10005; Clear</button>
+  </div>
+
+  <div class="word-grid" id="wordGrid"></div>
+  <div class="select-info">Selected: <span id="selectedCount">0</span> of 6</div>
+  <button class="start-btn" id="startBtn" onclick="startGame()" disabled>&#127183; Start Concentration!</button>
+</div>
+
+<!-- GAME -->
+<div class="game" id="gameScreen">
+  <div class="scorebar">
+    <div class="score-chip"><div class="score-chip-label">Matches</div><div class="score-chip-val" id="matchCount">0/6</div></div>
+    <div class="score-chip"><div class="score-chip-label">Flips</div><div class="score-chip-val" id="flipCount">0</div></div>
+    <div class="score-chip"><div class="score-chip-label">Time</div><div class="score-chip-val" id="timer">0:00</div></div>
+  </div>
+  <div class="card-grid" id="cardGrid" style="grid-template-columns:repeat(4,1fr);"></div>
+</div>
+
+<!-- WIN -->
+<div class="win-overlay" id="winOverlay">
+  <div class="win-box">
+    <div class="win-emoji">&#127389;</div>
+    <div class="win-title">You matched them all!</div>
+    <div class="win-stats" id="winStats"></div>
+    <div class="win-actions">
+      <button class="win-btn gold" onclick="playAgain()">&#127922; Play Again — Same Words</button>
+      <button class="win-btn dark" onclick="backToSetup()">&#9654; Choose New Words</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var WORDS = [
+  {w:"ABSORB",   d:"Taking in everything around you"},
+  {w:"ADAPT",    d:"Adjusting to what comes your way"},
+  {w:"ANCHOR",   d:"Holding steady through the storm"},
+  {w:"BALANCE",  d:"Finding your steady place"},
+  {w:"BLOOM",    d:"Growing into your best self"},
+  {w:"BREATHE",  d:"Finding calm in the middle of chaos"},
+  {w:"CLEAR",    d:"Seeing things as they really are"},
+  {w:"CONNECT",  d:"Building bridges between hearts"},
+  {w:"CYCLE",    d:"Endings make way for new beginnings"},
+  {w:"EMERGE",   d:"Becoming who you were meant to be"},
+  {w:"FILTER",   d:"Choosing what gets your energy"},
+  {w:"FLOW",     d:"Moving forward without forcing"},
+  {w:"GROW",     d:"Becoming more than you were"},
+  {w:"HEAL",     d:"Finding your way back to whole"},
+  {w:"MIGRATE",  d:"Moving toward what calls you"},
+  {w:"PERSIST",  d:"Refusing to be stopped"},
+  {w:"RENEW",    d:"Starting fresh with what you've learned"},
+  {w:"RESTORE",  d:"Bringing back what was lost"},
+  {w:"RETURN",   d:"Coming back to what is true"},
+  {w:"RISE",     d:"Lifting yourself to meet the moment"},
+  {w:"ROOT",     d:"Staying grounded in who you are"},
+  {w:"SHINE",    d:"Letting your light be seen"},
+  {w:"SUSTAIN",  d:"Keeping what is good alive"},
+  {w:"THRIVE",   d:"Living at your fullest"},
+  {w:"TRANSFORM",d:"Becoming something beautifully new"}
+];
+
+var selected = [];
+var cards = [];
+var flipped = [];
+var matched = 0;
+var flips = 0;
+var locked = false;
+var timerInterval = null;
+var seconds = 0;
+var startTime = null;
+
+// ── SETUP ──────────────────────────────────────────────
+function buildWordGrid() {
+  var g = document.getElementById('wordGrid');
+  WORDS.forEach(function(obj) {
+    var btn = document.createElement('button');
+    btn.className = 'word-btn';
+    btn.textContent = obj.w;
+    btn.onclick = function() { toggleWord(obj.w, btn); };
+    g.appendChild(btn);
+  });
+}
+
+function toggleWord(w, btn) {
+  var idx = selected.indexOf(w);
+  if(idx > -1) {
+    selected.splice(idx, 1);
+    btn.classList.remove('selected');
+  } else {
+    if(selected.length >= 6) return;
+    selected.push(w);
+    btn.classList.add('selected');
+  }
+  document.getElementById('selectedCount').textContent = selected.length;
+  document.getElementById('startBtn').disabled = selected.length !== 6;
+}
+
+function selectRandom() {
+  clearAll();
+  var shuffled = WORDS.slice().sort(function(){ return Math.random()-.5; }).slice(0,6);
+  shuffled.forEach(function(obj) {
+    selected.push(obj.w);
+    document.querySelectorAll('.word-btn').forEach(function(btn) {
+      if(btn.textContent === obj.w) btn.classList.add('selected');
+    });
+  });
+  document.getElementById('selectedCount').textContent = 6;
+  document.getElementById('startBtn').disabled = false;
+}
+
+function selectAll() {
+  clearAll();
+  // just pick first 6
+  WORDS.slice(0,6).forEach(function(obj) {
+    selected.push(obj.w);
+    document.querySelectorAll('.word-btn').forEach(function(btn) {
+      if(btn.textContent === obj.w) btn.classList.add('selected');
+    });
+  });
+  document.getElementById('selectedCount').textContent = 6;
+  document.getElementById('startBtn').disabled = false;
+}
+
+function clearAll() {
+  selected = [];
+  document.querySelectorAll('.word-btn').forEach(function(b){ b.classList.remove('selected'); });
+  document.getElementById('selectedCount').textContent = 0;
+  document.getElementById('startBtn').disabled = true;
+}
+
+// ── GAME ───────────────────────────────────────────────
+function startGame() {
+  // Build 12 cards: 6 word cards + 6 definition cards
+  var pairs = selected.map(function(w) {
+    var obj = WORDS.find(function(o){ return o.w === w; });
+    return {w: obj.w, d: obj.d};
+  });
+
+  cards = [];
+  pairs.forEach(function(p) {
+    cards.push({type:'word', w:p.w, d:p.d});
+    cards.push({type:'def',  w:p.w, d:p.d});
+  });
+
+  // Shuffle
+  cards.sort(function(){ return Math.random()-.5; });
+
+  // Reset state
+  flipped = []; matched = 0; flips = 0; locked = false; seconds = 0;
+  document.getElementById('matchCount').textContent = '0/6';
+  document.getElementById('flipCount').textContent = '0';
+  document.getElementById('timer').textContent = '0:00';
+  clearInterval(timerInterval);
+
+  // Build grid
+  var grid = document.getElementById('cardGrid');
+  grid.innerHTML = '';
+  // 4 cols for 12 cards (3 rows)
+  grid.style.gridTemplateColumns = 'repeat(4,1fr)';
+
+  cards.forEach(function(card, i) {
+    var el = document.createElement('div');
+    el.className = 'card';
+    el.innerHTML =
+      '<div class="card-dot">&#9679;</div>' +
+      '<div class="card-content">' +
+        '<div class="card-type-badge">' + (card.type==='word' ? '&#128218; Word' : '&#128196; Definition') + '</div>' +
+        (card.type==='word'
+          ? '<div class="card-word">' + card.w + '</div>'
+          : '<div class="card-def">' + card.d + '</div>') +
+      '</div>';
+    el.onclick = (function(idx){ return function(){ flipCard(idx); }; })(i);
+    grid.appendChild(el);
+  });
+
+  // Show game
+  document.getElementById('setupScreen').style.display = 'none';
+  document.getElementById('gameScreen').style.display = 'block';
+
+  // Start timer
+  startTime = Date.now();
+  timerInterval = setInterval(function() {
+    seconds = Math.floor((Date.now() - startTime) / 1000);
+    var m = Math.floor(seconds/60);
+    var s = seconds % 60;
+    document.getElementById('timer').textContent = m + ':' + (s<10?'0':'') + s;
+  }, 1000);
+}
+
+function flipCard(idx) {
+  if(locked) return;
+  if(flipped.includes(idx)) return;
+  var cardEls = document.getElementById('cardGrid').children;
+  var el = cardEls[idx];
+  if(el.classList.contains('matched')) return;
+
+  el.classList.add('revealed');
+  flipped.push(idx);
+  flips++;
+  document.getElementById('flipCount').textContent = flips;
+
+  if(flipped.length === 2) {
+    locked = true;
+    var a = cards[flipped[0]];
+    var b = cards[flipped[1]];
+
+    if(a.w === b.w && a.type !== b.type) {
+      // Match!
+      setTimeout(function() {
+        cardEls[flipped[0]].classList.add('matched');
+        cardEls[flipped[1]].classList.add('matched');
+        cardEls[flipped[0]].classList.remove('revealed');
+        cardEls[flipped[1]].classList.remove('revealed');
+        matched++;
+        document.getElementById('matchCount').textContent = matched + '/6';
+        flipped = [];
+        locked = false;
+        if(matched === 6) showWin();
+      }, 400);
+    } else {
+      // No match
+      cardEls[flipped[0]].classList.add('wrong');
+      cardEls[flipped[1]].classList.add('wrong');
+      setTimeout(function() {
+        cardEls[flipped[0]].classList.remove('revealed','wrong');
+        cardEls[flipped[1]].classList.remove('revealed','wrong');
+        flipped = [];
+        locked = false;
+      }, 900);
+    }
+  }
+}
+
+function showWin() {
+  clearInterval(timerInterval);
+  var m = Math.floor(seconds/60);
+  var s = seconds % 60;
+  var timeStr = m + ':' + (s<10?'0':'') + s;
+  document.getElementById('winStats').innerHTML =
+    'Time: <strong>' + timeStr + '</strong><br>' +
+    'Flips: <strong>' + flips + '</strong><br>' +
+    'Words matched: <strong>' + selected.join(', ') + '</strong>';
+  document.getElementById('winOverlay').classList.add('show');
+}
+
+function playAgain() {
+  document.getElementById('winOverlay').classList.remove('show');
+  startGame();
+}
+
+function backToSetup() {
+  document.getElementById('winOverlay').classList.remove('show');
+  document.getElementById('gameScreen').style.display = 'none';
+  document.getElementById('setupScreen').style.display = 'block';
+}
+
+buildWordGrid();
+</script>
+</body>
+</html>
