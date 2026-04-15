@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AVID Quote Card · Teacher Guide · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#1A2744;--navy2:#243352;--gold:#C8860A;--gold2:#E8C97A;
+  --cream:#FDFAF3;--border:#D4DCF0;--text:#1a1a2e;--muted:#6B7A99;
+  --teal:#1B5E6E;--teal2:#E0F4F8;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);font-size:14px;line-height:1.6;}
+
+/* ── TOOLBAR ── */
+.toolbar{background:var(--navy);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:100;}
+.toolbar-left h1{font-family:'Fredoka One',cursive;font-size:18px;color:#fff;}
+.toolbar-left p{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;}
+.toolbar-btns{display:flex;gap:10px;}
+.btn-tool{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;border:none;letter-spacing:.03em;transition:all .2s;}
+.btn-print{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);}
+.btn-print:hover{background:rgba(255,255,255,.22);}
+.btn-download{background:var(--gold);color:#fff;}
+.btn-download:hover{background:#a06800;}
+
+/* ── PAGE ── */
+.page{max-width:760px;margin:0 auto;padding:32px 40px 48px;}
+
+/* ── DOC HEADER ── */
+.doc-header{border-bottom:3px solid var(--navy);padding-bottom:20px;margin-bottom:28px;}
+.doc-eyebrow{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.doc-title{font-family:'Playfair Display',serif;font-size:30px;color:var(--navy);line-height:1.1;margin-bottom:4px;}
+.doc-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:var(--muted);margin-bottom:10px;}
+.doc-meta{font-size:12px;color:var(--muted);}
+
+/* ── AT A GLANCE ── */
+.at-glance{background:var(--navy);border-radius:10px;padding:18px 22px;margin-bottom:28px;display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.glance-item .glance-label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold2);margin-bottom:3px;}
+.glance-item .glance-val{font-size:12px;color:rgba(255,255,255,.85);line-height:1.5;}
+
+/* ── HEADINGS ── */
+h2{font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin:28px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--border);}
+h3{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:16px 0 8px;}
+p{margin-bottom:10px;}
+strong{font-weight:600;color:var(--navy);}
+
+/* ── WICOR TABLE ── */
+.wicor-table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:12px;}
+.wicor-table th{background:var(--navy);color:var(--gold2);font-family:'Fredoka One',cursive;font-weight:400;font-size:11px;letter-spacing:.05em;text-align:left;padding:9px 14px;}
+.wicor-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.6;}
+.wicor-table tr:last-child td{border-bottom:none;}
+.wicor-table td:first-child{font-weight:700;color:var(--navy);width:80px;}
+.wicor-table tr:nth-child(even) td{background:rgba(200,134,10,.04);}
+
+/* ── MATERIALS LIST ── */
+.materials-list{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.materials-list li{display:flex;align-items:flex-start;gap:8px;font-size:12px;padding:8px 12px;background:#fff;border:1px solid var(--border);border-radius:7px;}
+.mat-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:4px;}
+
+/* ── SETUP STEPS ── */
+.setup-steps{counter-reset:setup;display:flex;flex-direction:column;gap:7px;margin-bottom:16px;}
+.setup-step{counter-increment:setup;display:grid;grid-template-columns:28px 1fr;gap:8px;font-size:12px;align-items:start;}
+.setup-step::before{content:counter(setup);background:var(--navy);color:var(--gold2);font-family:'Fredoka One',cursive;font-size:13px;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+
+/* ── FLOW TABLE ── */
+.flow-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:16px;}
+.flow-table th{background:var(--navy);color:var(--gold2);font-family:'Fredoka One',cursive;font-weight:400;font-size:11px;letter-spacing:.05em;text-align:left;padding:9px 14px;}
+.flow-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.6;}
+.flow-table tr:last-child td{border-bottom:none;}
+.flow-table td:first-child{font-weight:700;color:var(--navy);white-space:nowrap;width:110px;}
+.flow-table tr:nth-child(even) td{background:rgba(200,134,10,.04);}
+
+/* ── TIPS ── */
+.tips{display:flex;flex-direction:column;gap:9px;margin-bottom:16px;}
+.tip{background:#fff;border:1.5px solid var(--border);border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:11px 16px;font-size:12px;line-height:1.65;}
+.tip strong{color:var(--gold);}
+
+/* ── CALLOUT ── */
+.callout{background:#FFF9E6;border:1.5px solid var(--gold);border-radius:8px;padding:13px 16px;margin-bottom:14px;font-size:12px;color:#5A3000;line-height:1.6;}
+.callout strong{color:var(--navy);}
+
+/* ── PRINT NOTES ── */
+.print-section{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.print-card{border:1.5px solid var(--border);border-radius:8px;padding:13px 16px;}
+.print-card h4{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);margin-bottom:8px;}
+.print-card ul{padding-left:14px;}
+.print-card li{font-size:12px;line-height:1.7;color:#444;}
+
+/* ── FOOTER ── */
+.doc-footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);text-align:center;letter-spacing:.06em;font-family:'Fredoka One',cursive;}
+
+/* ── PRINT ── */
+@media print{
+  .toolbar{display:none !important;}
+  .page{padding:16px 20px;}
+  body{background:#fff;font-size:11.5px;}
+  @page{size:letter;margin:.45in;}
+  .at-glance,.wicor-table,.flow-table,.tip{break-inside:avoid;}
+  h2{page-break-after:avoid;}
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="toolbar-left">
+    <h1>AVID Quote Card · Teacher Guide</h1>
+    <p>Smile Bags · A Word &amp; Wonder Experience · Spring 2026</p>
+  </div>
+  <div class="toolbar-btns">
+    <button class="btn-tool btn-print" onclick="window.print()">🖨️ Print</button>
+    <button class="btn-tool btn-download" onclick="downloadFile()">⬇️ Download</button>
+  </div>
+</div>
+
+<div class="page">
+
+  <div class="doc-header">
+    <div class="doc-eyebrow">Smile Bags · AVID</div>
+    <div class="doc-title">AVID Quote Card</div>
+    <div class="doc-sub">Teacher Guide</div>
+    <div class="doc-meta">Deena Vinson · AVID · Grades 9–12 · Kellam High School · Spring 2026</div>
+  </div>
+
+  <p>AVID students create original inspirational quote cards for children receiving Smile Bags. Each student selects one of the 25 shared OneWords, completes a Quick Write reflection using Costa's Levels of Thinking, works with a Gemini AI writing tutor to refine their quote, and designs a 4-inch card in their chosen colors and font. Cards are printed and cut on cardstock and placed in the smile bags.</p>
+
+  <div class="at-glance">
+    <div class="glance-item"><div class="glance-label">Class</div><div class="glance-val">AVID · Deena Vinson · Grades 9–12</div></div>
+    <div class="glance-item"><div class="glance-label">Activity Time</div><div class="glance-val">1–2 class periods</div></div>
+    <div class="glance-item"><div class="glance-label">Output</div><div class="glance-val">One 4″ square or circle quote card per student, printed on cardstock</div></div>
+    <div class="glance-item"><div class="glance-label">AVID Strategies</div><div class="glance-val">WICOR · Costa's Levels · Quick Write · Socratic Questioning</div></div>
+    <div class="glance-item" style="grid-column:1/-1;"><div class="glance-label">Future Ready</div><div class="glance-val">Balanced Communicators &amp; Collaborators · Personally &amp; Socially Responsible</div></div>
+  </div>
+
+  <h2>Standards Alignment — WICOR</h2>
+  <table class="wicor-table">
+    <tr><th>Domain</th><th>How It's Applied</th></tr>
+    <tr><td>W — Writing</td><td>Students compose an original 120-character inspirational quote</td></tr>
+    <tr><td>I — Inquiry</td><td>Socratic questioning drives the Gemini tutor conversation</td></tr>
+    <tr><td>C — Collaboration</td><td>Pair-share option before submitting (see Teacher Tips)</td></tr>
+    <tr><td>O — Organization</td><td>The kiosk guides students step by step through the process</td></tr>
+    <tr><td>R — Reading</td><td>Students read and interpret the OneWord meaning, then connect it to a child's experience</td></tr>
+  </table>
+
+  <h2>Materials &amp; Setup</h2>
+  <h3>What You Need</h3>
+  <ul class="materials-list">
+    <li><div class="mat-dot"></div><span>Chromebooks or laptops with internet access (1 per student)</span></li>
+    <li><div class="mat-dot"></div><span>AVID Quote Card Kiosk: <strong>lhhowell.github.io/kellamsmilebags/AVID_QuoteCard_Kiosk.html</strong></span></li>
+    <li><div class="mat-dot"></div><span>Gemini Writing Tutor Gem link shared with students (see Gemini Gem Setup Guide)</span></li>
+    <li><div class="mat-dot"></div><span>Cardstock for printing — letter size, any color</span></li>
+    <li><div class="mat-dot"></div><span>Cricut machine or scissors for cutting circle cards</span></li>
+    <li><div class="mat-dot"></div><span>Google Sheet — AVID Quote Card Submissions — to monitor submissions in real time</span></li>
+  </ul>
+
+  <h3>Before the Activity</h3>
+  <div class="setup-steps">
+    <div class="setup-step">Set up the Gemini Gem using the separate Gemini Gem Setup Guide.</div>
+    <div class="setup-step">Paste the Gem link into the kiosk HTML where it says <strong>GEM_LINK_HERE</strong>, then re-upload to GitHub.</div>
+    <div class="setup-step">Share the kiosk link with students via Google Classroom or project on screen.</div>
+    <div class="setup-step">Post the Gem link in Google Classroom or display as a QR code.</div>
+    <div class="setup-step">Open the AVID Quote Card Submissions Google Sheet to monitor in real time.</div>
+  </div>
+
+  <h2>Activity Flow — 8 Steps</h2>
+  <table class="flow-table">
+    <tr><th>Step</th><th>What Happens</th></tr>
+    <tr><td>Step 1 — Shape</td><td>Students choose Square (4″ × 4″) or Circle (4″ round). Circle cards are cut with the Cricut.</td></tr>
+    <tr><td>Step 2 — Name &amp; Grade</td><td>Students enter their first name and grade. The name appears on the printed card.</td></tr>
+    <tr><td>Step 3 — OneWord</td><td>Students choose one of 25 shared OneWords. Each word shows its meaning to help students connect.</td></tr>
+    <tr><td>Step 4 — Reflect</td><td><strong>AVID strategy step.</strong> Students complete a Costa's Quick Write (2–3 sentences), then open the Gemini Writing Tutor. The tutor uses Socratic questioning to deepen thinking before they write their quote.</td></tr>
+    <tr><td>Step 5 — Write Quote</td><td>Students enter their final 120-character quote — refined through the Gemini tutor conversation.</td></tr>
+    <tr><td>Step 6 — Color Pair</td><td>Students choose one of 7 color pairs. Color 1 = card background. Color 2 = text and border.</td></tr>
+    <tr><td>Step 7 — Font Style</td><td>Students choose from 4 font styles: Elegant, Friendly, Script, or Bold.</td></tr>
+    <tr><td>Step 8 — Preview &amp; Submit</td><td>Students see a live preview of their finished card. They submit and receive a KSB-XXXX token code as their receipt.</td></tr>
+  </table>
+
+  <h2>Printing &amp; Production</h2>
+  <div class="print-section">
+    <div class="print-card">
+      <h4>🖨️ Printing</h4>
+      <ul>
+        <li>Open AVID Quote Card Submissions Sheet after class</li>
+        <li>Each row contains all design data: word, quote, shape, color pair, font, name</li>
+        <li>Print directly from the kiosk SVG preview, or recreate in Canva / Google Slides</li>
+        <li>Print on cardstock, letter size, color printer</li>
+      </ul>
+    </div>
+    <div class="print-card">
+      <h4>✂️ Cutting</h4>
+      <ul>
+        <li><strong>Square cards:</strong> trim to 4″ × 4″ with paper cutter</li>
+        <li><strong>Circle cards:</strong> cut with Cricut using 4″ circle template</li>
+        <li>No design file needed — just set cut to 4″ circle</li>
+        <li>Optional: laminate for durability</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Teacher Tips</h2>
+  <div class="tips">
+    <div class="tip"><strong>Pair-share option:</strong> Before students open the Gemini tutor, have them share their Quick Write with a partner. This mirrors the Socratic seminar structure AVID students know.</div>
+    <div class="tip"><strong>Model the process:</strong> Do a live demo with your own OneWord before students start. Show them what a Level 3 quote looks like versus a Level 1 quote.</div>
+    <div class="tip"><strong>Vocabulary connection:</strong> The 25 OneWords are all environmental science terms. Consider connecting to Environmental Science content or current events.</div>
+    <div class="tip"><strong>Token codes:</strong> Each student receives a KSB-XXXX token code after submitting. This serves as their submission receipt and can be used to verify completion.</div>
+    <div class="tip"><strong>Monitoring:</strong> The Google Sheet updates in real time. You can monitor who has submitted during class.</div>
+  </div>
+
+  <div class="doc-footer">Smile Bags · AVID · Deena Vinson · Kellam High School · Spring 2026</div>
+</div>
+
+<script>
+function downloadFile(){
+  var html = document.documentElement.outerHTML;
+  var blob = new Blob([html], {type:'text/html'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'AVID_Teacher_Guide.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AVID Quote Card · Student Guide · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#1A2744;--navy2:#243352;--gold:#C8860A;--gold2:#E8C97A;
+  --cream:#FDFAF3;--border:#D4DCF0;--text:#1a1a2e;--muted:#6B7A99;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);font-size:14px;line-height:1.6;}
+
+/* ── TOOLBAR (no print) ── */
+.toolbar{background:var(--navy);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:100;}
+.toolbar-left h1{font-family:'Fredoka One',cursive;font-size:18px;color:#fff;}
+.toolbar-left p{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;}
+.toolbar-btns{display:flex;gap:10px;}
+.btn-tool{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;border:none;letter-spacing:.03em;transition:all .2s;}
+.btn-print{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);}
+.btn-print:hover{background:rgba(255,255,255,.22);}
+.btn-download{background:var(--gold);color:#fff;}
+.btn-download:hover{background:#a06800;}
+
+/* ── PAGE ── */
+.page{max-width:760px;margin:0 auto;padding:32px 40px 48px;}
+
+/* ── DOC HEADER ── */
+.doc-header{border-bottom:3px solid var(--navy);padding-bottom:20px;margin-bottom:28px;}
+.doc-eyebrow{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.doc-title{font-family:'Playfair Display',serif;font-size:30px;color:var(--navy);line-height:1.1;margin-bottom:4px;}
+.doc-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:var(--muted);margin-bottom:10px;}
+.doc-meta{font-size:12px;color:var(--muted);}
+
+/* ── SUMMARY BOX ── */
+.summary-box{background:var(--navy);border-radius:10px;padding:18px 22px;margin-bottom:28px;}
+.summary-box p{font-size:13px;color:rgba(255,255,255,.85);line-height:1.7;}
+.summary-box .summary-title{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold2);margin-bottom:8px;}
+.checklist{margin-top:12px;display:flex;flex-direction:column;gap:5px;}
+.checklist-item{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:rgba(255,255,255,.8);}
+.check-mark{color:var(--gold2);font-size:14px;flex-shrink:0;margin-top:1px;}
+
+/* ── SECTION HEADINGS ── */
+h2{font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin:28px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--border);}
+h3{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:16px 0 8px;}
+
+/* ── BODY TEXT ── */
+p{margin-bottom:12px;color:var(--text);}
+strong{font-weight:600;color:var(--navy);}
+
+/* ── STEP CARDS ── */
+.steps{display:flex;flex-direction:column;gap:10px;margin-bottom:8px;}
+.step-card{display:grid;grid-template-columns:48px 1fr;gap:0;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;}
+.step-num{background:var(--navy);color:var(--gold2);font-family:'Playfair Display',serif;font-size:20px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-body{padding:12px 16px;}
+.step-title{font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;color:var(--navy);margin-bottom:4px;}
+.step-body p{font-size:12px;color:#444;margin:0;line-height:1.6;}
+.step-card.highlight{border-color:var(--gold);}
+.step-card.highlight .step-num{background:var(--gold);}
+.step-card.highlight .step-title{color:var(--gold);}
+
+/* ── TWO COLUMN ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.col-card{border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;}
+.col-card h4{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;}
+.col-card.good h4{color:#2D7A2D;}
+.col-card.bad h4{color:#9B2020;}
+.col-card ul{padding-left:14px;}
+.col-card li{font-size:12px;color:#444;line-height:1.7;}
+
+/* ── EXAMPLE BOX ── */
+.example-box{background:#F5F7FF;border:1.5px solid var(--border);border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:16px;}
+.example-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.example-row{display:grid;grid-template-columns:60px 1fr;gap:8px;margin-bottom:6px;font-size:12px;align-items:start;}
+.example-row:last-child{margin-bottom:0;}
+.ex-tag{font-weight:700;color:var(--muted);}
+.ex-weak{color:#9B2020;}
+.ex-strong{color:#2D7A2D;font-weight:600;}
+
+/* ── COSTA'S TABLE ── */
+.costa-table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:12px;}
+.costa-table th{background:var(--navy);color:var(--gold2);font-family:'Fredoka One',cursive;font-weight:400;font-size:11px;letter-spacing:.05em;text-align:left;padding:9px 14px;}
+.costa-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.6;}
+.costa-table tr:last-child td{border-bottom:none;}
+.costa-table td:first-child{font-weight:600;color:var(--navy);white-space:nowrap;}
+.costa-table tr:nth-child(even) td{background:rgba(200,134,10,.04);}
+
+/* ── CALLOUT ── */
+.callout{background:#FFF9E6;border:1.5px solid var(--gold);border-radius:8px;padding:13px 16px;margin-bottom:16px;font-size:12px;color:#5A3000;line-height:1.6;}
+.callout strong{color:var(--navy);}
+
+/* ── FOOTER ── */
+.doc-footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);text-align:center;letter-spacing:.06em;font-family:'Fredoka One',cursive;}
+
+/* ── PRINT ── */
+@media print{
+  .toolbar{display:none !important;}
+  .page{padding:16px 20px;}
+  body{background:#fff;font-size:11.5px;}
+  @page{size:letter;margin:.45in;}
+  .step-card,.two-col,.example-box{break-inside:avoid;}
+  h2{page-break-after:avoid;}
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="toolbar-left">
+    <h1>AVID Quote Card · Student Guide</h1>
+    <p>Smile Bags · A Word &amp; Wonder Experience · Spring 2026</p>
+  </div>
+  <div class="toolbar-btns">
+    <button class="btn-tool btn-print" onclick="window.print()">🖨️ Print</button>
+    <button class="btn-tool btn-download" onclick="downloadFile()">⬇️ Download</button>
+  </div>
+</div>
+
+<div class="page">
+
+  <div class="doc-header">
+    <div class="doc-eyebrow">Smile Bags · AVID</div>
+    <div class="doc-title">AVID Quote Card</div>
+    <div class="doc-sub">Student Guide</div>
+    <div class="doc-meta">Deena Vinson · AVID · Kellam High School · Spring 2026</div>
+  </div>
+
+  <div class="summary-box">
+    <div class="summary-title">What You're Making</div>
+    <p>You are creating an original inspirational quote card for a child receiving a Smile Bag. Your quote will be printed on a 4-inch card in your chosen colors and font, and placed in the bag by the Operation Smiles Club. The child receiving your card may be going through something hard. Your words — connected to one of the 25 OneWords — can make a real difference.</p>
+    <div class="checklist">
+      <div class="checklist-item"><span class="check-mark">✓</span><span>Your OneWord displayed at the top</span></div>
+      <div class="checklist-item"><span class="check-mark">✓</span><span>Your original inspirational quote in the center</span></div>
+      <div class="checklist-item"><span class="check-mark">✓</span><span>Your first name at the bottom</span></div>
+      <div class="checklist-item"><span class="check-mark">✓</span><span>Your chosen colors and font style</span></div>
+      <div class="checklist-item"><span class="check-mark">✓</span><span>Shape of your choice — 4″ square or 4″ circle</span></div>
+    </div>
+  </div>
+
+  <h2>The 8 Steps</h2>
+  <div class="steps">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Choose Your Shape</div>
+        <p><strong>Square:</strong> 4″ × 4″ card — clean and bold &nbsp;|&nbsp; <strong>Circle:</strong> 4″ round card — soft and great for displaying</p>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Enter Your Name &amp; Grade</div>
+        <p>Type your first name. It will appear on the finished card. Select your grade from the dropdown.</p>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Choose Your OneWord</div>
+        <p>Browse all 25 OneWords and their meanings. Choose the word that speaks to you most. This word will be the heart of your quote.</p>
+      </div>
+    </div>
+    <div class="step-card highlight">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">Reflect — This is the most important step!</div>
+        <p>Complete a Quick Write — 2 to 3 sentences answering: <em>What does your word mean to you? When have you seen this word come alive in real life? What would this word mean to a child who is struggling right now?</em></p>
+        <p style="margin-top:6px;">Then open the Gemini Writing Tutor using the link your teacher shares. The tutor will ask you questions — it will <strong>NOT</strong> write the quote for you. Answer honestly. The tutor helps you go deeper, not easier.</p>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-title">Write Your Quote</div>
+        <p>Enter your final quote — refined through your tutor conversation. Maximum 120 characters. Shorter is stronger. Use 'you' language — speak directly to the child. Your word should appear in or clearly connect to the quote.</p>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <div class="step-title">Choose Your Color Pair</div>
+        <p>Color 1 = card background &nbsp;|&nbsp; Color 2 = text and border color. All colors are based on school color palette.</p>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">7</div>
+      <div class="step-body">
+        <div class="step-title">Choose Your Font</div>
+        <p><strong>Elegant</strong> — Playfair Display (classic and formal) &nbsp;·&nbsp; <strong>Friendly</strong> — Fredoka One (rounded and warm) &nbsp;·&nbsp; <strong>Script</strong> — Satisfy (handwritten feel) &nbsp;·&nbsp; <strong>Bold</strong> — Oswald (strong and powerful)</p>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">8</div>
+      <div class="step-body">
+        <div class="step-title">Preview &amp; Submit</div>
+        <p>See your finished card with your name, word, quote, colors, and font. When you are happy with it, click <strong>Submit My Quote Card!</strong> You will receive a KSB-XXXX code — write it down as your receipt. Ms. Vinson will print and cut your card. No printing needed from you!</p>
+      </div>
+    </div>
+  </div>
+
+  <h2>What Makes a Great Quote?</h2>
+  <div class="two-col">
+    <div class="col-card good">
+      <h4>✓ Strong Quotes</h4>
+      <ul>
+        <li>Speak directly to the child using 'you'</li>
+        <li>Connect deeply to the OneWord's meaning</li>
+        <li>Are original and true to you</li>
+        <li>Are short and powerful — every word counts</li>
+      </ul>
+    </div>
+    <div class="col-card bad">
+      <h4>✗ Weak Quotes</h4>
+      <ul>
+        <li>Could have been written by anyone</li>
+        <li>Are generic ("Be happy" · "Never give up")</li>
+        <li>Don't connect to the OneWord</li>
+        <li>Sound like they were written by AI</li>
+      </ul>
+    </div>
+  </div>
+  <div class="example-box">
+    <div class="example-label">Example — Word: BREATHE</div>
+    <div class="example-row"><span class="ex-tag">Weak</span><span class="ex-weak">"Always remember to breathe and stay calm."</span></div>
+    <div class="example-row"><span class="ex-tag">Strong</span><span class="ex-strong">"When everything feels like too much — just breathe. You've gotten through 100% of your hard days."</span></div>
+  </div>
+
+  <h2>Costa's Levels of Thinking</h2>
+  <p>Use these levels to push your thinking deeper before writing your quote.</p>
+  <table class="costa-table">
+    <tr><th>Level</th><th>Question to Answer</th></tr>
+    <tr>
+      <td>Level 1 — Recall</td>
+      <td>What does your word mean? What is its definition?</td>
+    </tr>
+    <tr>
+      <td>Level 2 — Connection</td>
+      <td>When have you seen this word come alive in real life? Give a specific example.</td>
+    </tr>
+    <tr>
+      <td>Level 3 — Application</td>
+      <td>What would this word mean to a child who is struggling right now? How could it help them?</td>
+    </tr>
+  </table>
+  <div class="callout">
+    <strong>Your quote should live at Level 3</strong> — applying the word as wisdom for someone who needs it.
+  </div>
+
+  <div class="doc-footer">Smile Bags · AVID · Deena Vinson · Kellam High School · Spring 2026</div>
+</div>
+
+<script>
+function downloadFile(){
+  var html = document.documentElement.outerHTML;
+  var blob = new Blob([html], {type:'text/html'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'AVID_Student_Guide.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+</script>
+</body>
+</html>
