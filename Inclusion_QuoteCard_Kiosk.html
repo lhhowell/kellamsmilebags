@@ -3,286 +3,408 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Inclusion · Inspirational Quote Card · Smile Bags</title>
+<title>STEP + Inclusion · Activity Kiosk · Smile Bags</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&family=Satisfy&family=Oswald:wght@600&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Nunito',sans-serif;background:#F0F4FF;min-height:100vh;padding-bottom:60px;}
-.hdr{background:linear-gradient(135deg,#1A2744,#0F1B35);padding:20px 28px;text-align:center;}
+:root{--navy:#1A2744;--blue:#1565C0;--blue2:#1976D2;--gold:#C8860A;--gold2:#E8C97A;--plum:#5B2D9E;--lav:#EDE7F6;--cream:#F5F7FF;--border:#BBDEFB;}
+body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;padding-bottom:60px;}
+
+.hdr{background:linear-gradient(135deg,var(--navy),#0F1B35);padding:20px 28px;text-align:center;}
 .hdr h1{font-family:'Fredoka One',cursive;font-size:24px;color:#fff;line-height:1.3;}
 .hdr p{font-size:13px;color:rgba(255,255,255,.75);margin-top:5px;}
-.prog{display:flex;align-items:flex-start;justify-content:center;padding:14px 16px;background:#fff;border-bottom:2px solid #BBDEFB;gap:4px;flex-wrap:wrap;}
+
+/* PROGRESS */
+.prog{display:flex;align-items:flex-start;justify-content:center;padding:12px 16px;background:#fff;border-bottom:2px solid var(--border);gap:4px;flex-wrap:wrap;}
 .prog-item{display:flex;flex-direction:column;align-items:center;gap:3px;}
-.prog-dot{width:32px;height:32px;border-radius:50%;background:#BBDEFB;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:13px;color:#fff;transition:all .3s;}
-.prog-dot.active{background:#1565C0;transform:scale(1.2);box-shadow:0 4px 12px rgba(21,101,192,.35);}
-.prog-dot.done{background:#1976D2;}
-.prog-lbl{font-size:9px;color:#aaa;font-family:'Fredoka One',cursive;text-align:center;max-width:52px;line-height:1.2;}
-.prog-lbl.active{color:#1565C0;}
-.prog-arr{color:#BBDEFB;font-size:14px;margin-top:8px;}
+.prog-dot{width:30px;height:30px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:12px;color:#fff;transition:all .3s;}
+.prog-dot.active{background:var(--blue);transform:scale(1.2);box-shadow:0 4px 12px rgba(21,101,192,.35);}
+.prog-dot.done{background:var(--blue2);}
+.prog-lbl{font-size:9px;color:#aaa;font-family:'Fredoka One',cursive;text-align:center;max-width:48px;line-height:1.2;}
+.prog-lbl.active{color:var(--blue);}
+.prog-arr{color:var(--border);font-size:13px;margin-top:8px;}
+.prog-badge{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;padding:4px 12px;border-radius:20px;margin-right:6px;}
+
+/* SCREENS */
 .screen{display:none;max-width:880px;margin:0 auto;padding:24px 16px;}
 .screen.active{display:block;}
 .scr-hd{text-align:center;margin-bottom:22px;}
-.scr-hd h2{font-family:'Fredoka One',cursive;font-size:26px;color:#1565C0;line-height:1.3;}
+.scr-hd h2{font-family:'Fredoka One',cursive;font-size:26px;color:var(--blue);}
 .scr-hd p{font-size:14px;color:#666;margin-top:7px;line-height:1.6;}
-.path-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px;}
-.path-card{background:#fff;border:4px solid #BBDEFB;border-radius:20px;padding:28px 20px;cursor:pointer;text-align:center;transition:all .25s;display:flex;flex-direction:column;align-items:center;gap:12px;}
-.path-card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,0,0,.12);}
-.path-card.sel{border-color:#1565C0;box-shadow:0 6px 24px rgba(21,101,192,.2);}
-.path-icon{font-size:52px;}
-.path-name{font-family:'Fredoka One',cursive;font-size:22px;color:#1565C0;}
-.path-desc{font-size:13px;color:#666;line-height:1.6;}
-.path-check{font-size:20px;display:none;}
-.path-card.sel .path-check{display:block;}
-.white-card{background:#fff;border-radius:18px;padding:24px;box-shadow:0 4px 18px rgba(0,0,0,.07);margin-bottom:16px;}
-.field-label{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#1565C0;display:block;margin-bottom:8px;}
-.field-inp{width:100%;padding:13px 16px;border:3px solid #BBDEFB;border-radius:12px;font-family:'Nunito',sans-serif;font-size:18px;outline:none;transition:border-color .2s;margin-bottom:14px;}
-.field-inp:focus{border-color:#1565C0;}
-.word-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
-.word-card{background:#fff;border:3px solid #BBDEFB;border-radius:12px;padding:10px 6px;cursor:pointer;text-align:center;transition:all .2s;}
-.word-card:hover{border-color:#1565C0;transform:translateY(-1px);}
-.word-card.sel{border-color:#1565C0;background:#E3F2FD;}
-.word-card-word{font-family:'Fredoka One',cursive;font-size:14px;color:#1565C0;}
-.word-card-meaning{font-size:10px;color:#888;margin-top:3px;line-height:1.3;}
-.section-lbl{font-family:'Fredoka One',cursive;font-size:17px;color:#1565C0;margin-bottom:12px;}
-.hint{background:#E3F2FD;border-left:4px solid #1565C0;border-radius:0 10px 10px 0;padding:10px 14px;font-size:13px;color:#0D47A1;line-height:1.6;margin-bottom:14px;}
 
-/* ── QUOTE SELECTION ── */
+.white-card{background:#fff;border-radius:18px;padding:24px;box-shadow:0 4px 18px rgba(0,0,0,.07);margin-bottom:16px;}
+.field-label{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:8px;}
+.field-inp{width:100%;padding:13px 16px;border:3px solid var(--border);border-radius:12px;font-family:'Nunito',sans-serif;font-size:16px;outline:none;transition:border-color .2s;margin-bottom:14px;}
+.field-inp:focus{border-color:var(--blue);}
+.hint{background:#E3F2FD;border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:10px 14px;font-size:13px;color:#0D47A1;line-height:1.6;margin-bottom:14px;}
+.section-lbl{font-family:'Fredoka One',cursive;font-size:16px;color:var(--blue);margin-bottom:10px;}
+
+/* HUB ACTIVITY CARDS */
+.activity-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px;}
+.activity-card{background:#fff;border:4px solid var(--border);border-radius:20px;padding:28px 20px;cursor:pointer;text-align:center;transition:all .25s;display:flex;flex-direction:column;align-items:center;gap:12px;}
+.activity-card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,0,0,.12);}
+.activity-icon{font-size:52px;}
+.activity-name{font-family:'Fredoka One',cursive;font-size:20px;color:var(--blue);}
+.activity-desc{font-size:13px;color:#666;line-height:1.6;}
+.activity-badge{font-size:11px;font-family:'Fredoka One',cursive;padding:4px 12px;border-radius:20px;background:#E3F2FD;color:var(--blue);}
+
+/* SHAPE / CHOICE CARDS */
+.path-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px;}
+.path-card{background:#fff;border:4px solid var(--border);border-radius:20px;padding:24px 16px;cursor:pointer;text-align:center;transition:all .25s;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.path-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1);}
+.path-card.sel{border-color:var(--blue);box-shadow:0 4px 18px rgba(21,101,192,.2);}
+.path-icon{font-size:44px;}
+.path-name{font-family:'Fredoka One',cursive;font-size:18px;color:var(--blue);}
+.path-desc{font-size:12px;color:#666;line-height:1.5;}
+.path-check{font-size:18px;display:none;}
+.path-card.sel .path-check{display:block;}
+
+/* WORD GRID */
+.word-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.word-btn{background:#fff;border:2.5px solid var(--border);border-radius:10px;padding:9px 4px;cursor:pointer;text-align:center;transition:all .2s;font-family:'Fredoka One',cursive;font-size:12px;color:var(--blue);}
+.word-btn:hover,.word-btn.sel{border-color:var(--blue);}
+.word-btn.sel{background:#E3F2FD;}
+
+/* EMOJI GRID */
+.emoji-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;}
+.emoji-btn{background:#fff;border:2.5px solid var(--border);border-radius:10px;padding:10px 6px;cursor:pointer;text-align:center;font-size:1.6rem;transition:all .2s;}
+.emoji-btn:hover,.emoji-btn.sel{border-color:var(--blue);transform:scale(1.05);}
+.emoji-btn.sel{background:#E3F2FD;}
+.emoji-cat-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#aaa;margin-bottom:6px;margin-top:14px;}
+.emoji-cat-label:first-child{margin-top:0;}
+
+/* COLOR SWATCHES */
+.bm-color-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:6px;}
+.bm-color-btn{border-radius:12px;padding:12px 6px;cursor:pointer;text-align:center;border:3px solid transparent;transition:all .2s;}
+.bm-color-btn:hover{transform:scale(1.05);}
+.bm-color-btn.sel{border-color:#000;box-shadow:0 0 0 2px #fff,0 0 0 4px #000;}
+.bm-swatch{width:36px;height:36px;border-radius:50%;margin:0 auto 5px;border:2px solid rgba(0,0,0,.1);}
+.bm-color-name{font-family:'Fredoka One',cursive;font-size:10px;color:#333;}
+
+/* QUOTE SELECTION */
 .q-grid{display:flex;flex-direction:column;gap:14px;}
-.q-card{background:#fff;border:4px solid #BBDEFB;border-radius:16px;padding:20px 22px;cursor:pointer;transition:all .22s;position:relative;}
-.q-card:hover{border-color:#1565C0;transform:translateY(-2px);box-shadow:0 8px 24px rgba(21,101,192,.12);}
-.q-card.sel{border-color:#1565C0;background:#E3F2FD;box-shadow:0 4px 18px rgba(21,101,192,.18);}
-.q-num{position:absolute;top:14px;right:16px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#aaa;}
-.q-card.sel .q-num{color:#1565C0;}
-.q-quote{font-family:'Playfair Display',serif;font-size:17px;font-style:italic;color:#1a1a2e;line-height:1.65;margin-bottom:6px;}
-.q-check{font-size:18px;display:none;margin-top:6px;color:#1565C0;}
+.q-card{background:#fff;border:4px solid var(--border);border-radius:16px;padding:18px 20px;cursor:pointer;transition:all .22s;position:relative;}
+.q-card:hover{border-color:var(--blue);transform:translateY(-2px);}
+.q-card.sel{border-color:var(--blue);background:#E3F2FD;}
+.q-num{position:absolute;top:12px;right:14px;font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;}
+.q-card.sel .q-num{color:var(--blue);}
+.q-quote{font-family:'Playfair Display',serif;font-size:16px;font-style:italic;color:#1a1a2e;line-height:1.65;margin-bottom:4px;}
+.q-check{font-size:16px;display:none;margin-top:4px;color:var(--blue);}
 .q-card.sel .q-check{display:block;}
 
-/* ── COLOR PICKER ── */
-.color-grid{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;padding:8px 0;}
-.color-btn{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 18px;border-radius:14px;border:3px solid #BBDEFB;background:#fdfbff;cursor:pointer;transition:all .18s;min-width:120px;}
-.color-btn:hover{border-color:#1565C0;transform:translateY(-2px);}
-.color-btn.sel{border-color:#1565C0;background:#E3F2FD;}
-.pair-swatches{display:flex;gap:6px;justify-content:center;}
-.pair-swatch{width:40px;height:40px;border-radius:50%;border:2px solid rgba(0,0,0,.1);}
-.color-name{font-family:'Fredoka One',cursive;font-size:13px;color:#1565C0;text-align:center;}
-.color-check{font-size:14px;display:none;}
+/* COLOR PAIR PICKER */
+.color-grid{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;padding:8px 0;}
+.color-btn{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 18px;border-radius:14px;border:3px solid var(--border);background:#fdfbff;cursor:pointer;transition:all .18s;min-width:120px;}
+.color-btn:hover,.color-btn.sel{border-color:var(--blue);}
+.color-btn.sel{background:#E3F2FD;}
+.pair-swatches{display:flex;gap:6px;}
+.pair-swatch{width:38px;height:38px;border-radius:50%;border:2px solid rgba(0,0,0,.1);}
+.color-name{font-family:'Fredoka One',cursive;font-size:13px;color:var(--blue);}
+.color-check{font-size:13px;display:none;}
 .color-btn.sel .color-check{display:block;}
 
-/* ── FONTS ── */
-.font-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
-.font-card{background:#fff;border:4px solid #E0E0E0;border-radius:16px;padding:18px;cursor:pointer;text-align:center;transition:all .2s;}
+/* FONT GRID */
+.font-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.font-card{background:#fff;border:4px solid #E0E0E0;border-radius:16px;padding:16px;cursor:pointer;text-align:center;transition:all .2s;}
 .font-card:hover{transform:translateY(-2px);}
-.font-card.sel{border-color:#1565C0;background:#E3F2FD;}
-.font-preview{font-size:22px;color:#1565C0;margin-bottom:6px;}
-.font-name{font-size:12px;color:#888;}
+.font-card.sel{border-color:var(--blue);background:#E3F2FD;}
+.font-preview{font-size:20px;color:var(--blue);margin-bottom:4px;}
+.font-name{font-size:11px;color:#888;}
 
-/* ── PREVIEW ── */
-.preview-wrap{display:flex;justify-content:center;padding:16px 0;}
-.det-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+/* PREVIEW */
+.preview-wrap{display:flex;justify-content:center;padding:14px 0;}
+.det-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
 .det-cell{background:#F5F5F5;border-radius:10px;padding:10px 12px;}
 .det-lbl{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#666;margin-bottom:3px;}
-.det-val{font-family:'Fredoka One',cursive;font-size:14px;color:#1565C0;}
+.det-val{font-family:'Fredoka One',cursive;font-size:14px;color:var(--blue);}
 
-/* ── NAV ── */
-.nav-row{display:flex;gap:12px;justify-content:flex-end;margin-top:10px;}
-.btn-next{padding:14px 28px;background:linear-gradient(135deg,#1565C0,#0D47A1);color:#fff;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;box-shadow:0 5px 16px rgba(21,101,192,.3);}
-.btn-back{padding:14px 20px;border:3px solid #BBDEFB;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;color:#888;background:#fff;}
-.submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,#1565C0,#0D47A1);color:#fff;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:18px;cursor:pointer;margin-bottom:8px;}
+/* NAV */
+.nav-row{display:flex;gap:12px;justify-content:flex-end;margin-top:12px;}
+.btn-next{padding:13px 26px;background:linear-gradient(135deg,var(--blue),#0D47A1);color:#fff;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:16px;cursor:pointer;box-shadow:0 5px 16px rgba(21,101,192,.3);}
+.btn-back{padding:13px 18px;border:3px solid var(--border);border-radius:50px;font-family:'Fredoka One',cursive;font-size:14px;cursor:pointer;color:#888;background:#fff;}
+.btn-home{width:100%;padding:16px;background:linear-gradient(135deg,var(--navy),#0F1B35);color:#fff;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;margin-top:10px;}
+.submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--blue),#0D47A1);color:#fff;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;margin-bottom:8px;}
 .submitted-box{background:#E3F2FD;border-radius:16px;padding:28px;text-align:center;display:none;}
-.token-box{background:#FFF3D6;border:2px solid #C8860A;border-radius:12px;padding:14px;display:inline-block;margin-top:14px;}
+.token-box{background:#FFF3D6;border:2px solid var(--gold);border-radius:12px;padding:14px;display:inline-block;margin-top:14px;}
 .token-code{font-family:'Fredoka One',cursive;font-size:28px;letter-spacing:4px;color:#7A4F00;}
 
+/* BM PREVIEW */
+.bm-preview-wrap{display:flex;justify-content:center;padding:14px 0;}
+
 @media(max-width:600px){
-  .path-grid{grid-template-columns:1fr;}
-  .word-grid{grid-template-columns:repeat(2,1fr);}
-  .font-grid{grid-template-columns:1fr;}
+  .activity-grid,.path-grid{grid-template-columns:1fr;}
+  .word-grid{grid-template-columns:repeat(3,1fr);}
+  .emoji-grid{grid-template-columns:repeat(4,1fr);}
+  .bm-color-grid{grid-template-columns:repeat(3,1fr);}
 }
 </style>
 </head>
 <body>
 
 <div class="hdr">
-  <h1>🔖 Inclusion · Inspirational Quote Card</h1>
-  <p>Smile Bags · A Word &amp; Wonder Experience · Sharon Glover · Inclusion · Spring 2026</p>
+  <h1>🔖 STEP + Inclusion · Activity Kiosk</h1>
+  <p>Smile Bags · A Word &amp; Wonder Experience · Sharon Glover · Spring 2026</p>
 </div>
 
-<div class="prog">
-  <div class="prog-item"><div class="prog-dot active" id="pd0">1</div><div class="prog-lbl active" id="pl0">Shape</div></div>
-  <div class="prog-arr">&rsaquo;</div>
-  <div class="prog-item"><div class="prog-dot" id="pd1">2</div><div class="prog-lbl" id="pl1">My Name</div></div>
-  <div class="prog-arr">&rsaquo;</div>
-  <div class="prog-item"><div class="prog-dot" id="pd2">3</div><div class="prog-lbl" id="pl2">My Word</div></div>
-  <div class="prog-arr">&rsaquo;</div>
-  <div class="prog-item"><div class="prog-dot" id="pd3">4</div><div class="prog-lbl" id="pl3">My Quote</div></div>
-  <div class="prog-arr">&rsaquo;</div>
-  <div class="prog-item"><div class="prog-dot" id="pd4">5</div><div class="prog-lbl" id="pl4">Colors</div></div>
-  <div class="prog-arr">&rsaquo;</div>
-  <div class="prog-item"><div class="prog-dot" id="pd5">6</div><div class="prog-lbl" id="pl5">Font</div></div>
-  <div class="prog-arr">&rsaquo;</div>
-  <div class="prog-item"><div class="prog-dot" id="pd6">7</div><div class="prog-lbl" id="pl6">Preview!</div></div>
+<!-- PROGRESS (hidden on hub, shown during activities) -->
+<div class="prog" id="progBar" style="display:none;">
+  <span class="prog-badge" id="progBadge" style="background:#E3F2FD;color:var(--blue);">Activity</span>
+  <div id="progDots"></div>
 </div>
 
-<!-- S0: SHAPE -->
-<div class="screen active" id="scr0">
-  <div class="scr-hd"><h2>Choose Your Card Shape 🎨</h2><p>Your inspirational quote card will be printed and cut to this shape for a student at Princess Anne Middle School.</p></div>
-  <div class="path-grid">
-    <div class="path-card" onclick="pickShape('square',this)">
-      <div class="path-icon">&#9632;</div>
-      <div class="path-name">Square</div>
-      <div class="path-desc">4&Prime; &times; 4&Prime; square card printed on cardstock.</div>
-      <div class="path-check">&#10003; Selected!</div>
-    </div>
-    <div class="path-card" onclick="pickShape('circle',this)">
-      <div class="path-icon">&#9679;</div>
-      <div class="path-name">Circle</div>
-      <div class="path-desc">4&Prime; round card cut with the Cricut.</div>
-      <div class="path-check">&#10003; Selected!</div>
-    </div>
+<!-- ══ HUB SCREEN ══ -->
+<div class="screen active" id="scrHub">
+  <div class="scr-hd">
+    <h2>Welcome! 👋</h2>
+    <p>Tell us who you are, then choose which activity you'd like to complete. You can do both!</p>
   </div>
-  <div class="nav-row"><button class="btn-next" onclick="toName()">Next &rarr;</button></div>
-</div>
-
-<!-- S1: NAME -->
-<div class="screen" id="scr1">
-  <div class="scr-hd"><h2>What is your name? 👋</h2><p>Your name will appear on your card!</p></div>
   <div class="white-card">
     <label class="field-label">Your first name</label>
-    <input class="field-inp" id="iName" type="text" placeholder="Type your name here..."/>
+    <input class="field-inp" id="hubName" type="text" placeholder="Type your name..."/>
+    <label class="field-label">Your class</label>
+    <select class="field-inp" id="hubClass">
+      <option value="">-- Select your class --</option>
+      <option value="STEP">STEP</option>
+      <option value="Inclusion">Inclusion</option>
+    </select>
     <label class="field-label">Your grade</label>
-    <select class="field-inp" id="iGrade" style="cursor:pointer;">
+    <select class="field-inp" id="hubGrade">
       <option value="">-- Select your grade --</option>
-      <option>9th grade</option>
-      <option>10th grade</option>
-      <option>11th grade</option>
-      <option>12th grade</option>
+      <option>9th grade</option><option>10th grade</option><option>11th grade</option><option>12th grade</option>
     </select>
   </div>
-  <div class="nav-row">
-    <button class="btn-back" onclick="nav(0)">&#8592; Back</button>
-    <button class="btn-next" onclick="toWord()">Next &rarr;</button>
+  <div class="scr-hd" style="margin-top:8px;"><h2>Choose an Activity</h2></div>
+  <div class="activity-grid">
+    <div class="activity-card" onclick="startBookmark()">
+      <div class="activity-icon">🔖</div>
+      <div class="activity-name">Design My Bookmark</div>
+      <div class="activity-desc">Choose your OneWord, an emoji, and two filament colors. Ms. Glover will 3D print your bookmark on the Bambu Lab printer!</div>
+      <div class="activity-badge">Both Classes · All 9 Schools</div>
+    </div>
+    <div class="activity-card" onclick="startQuoteCard()">
+      <div class="activity-icon">💬</div>
+      <div class="activity-name">Inspirational Quote Card</div>
+      <div class="activity-desc">Choose your OneWord, pick a curated quote, select colors and a font, and design a 4&Prime; card for a student at Princess Anne Middle School.</div>
+      <div class="activity-badge">Both Classes · Princess Anne Middle</div>
+    </div>
   </div>
 </div>
 
-<!-- S2: WORD -->
-<div class="screen" id="scr2">
-  <div class="scr-hd"><h2>Choose Your OneWord 🌟</h2><p>This word will be the heart of your inspirational quote card. Choose the one that speaks to you!</p></div>
+<!-- ══ BOOKMARK SCREENS ══ -->
+
+<!-- BM-0: WORD -->
+<div class="screen" id="bmScr0">
+  <div class="scr-hd"><h2 id="bmS0h">Choose Your OneWord 🌿</h2><p>Your word will be embossed on your 3D printed bookmark!</p></div>
+  <div class="white-card"><div class="word-grid" id="bmWordGrid"></div></div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goHub()">← Back to Menu</button>
+    <button class="btn-next" onclick="bmToEmoji()">Next — Choose an Emoji →</button>
+  </div>
+</div>
+
+<!-- BM-1: EMOJI -->
+<div class="screen" id="bmScr1">
+  <div class="scr-hd"><h2>Choose Your Emoji 😊</h2><p>Your emoji will be printed on the bookmark alongside your word.</p></div>
   <div class="white-card">
-    <div class="section-lbl">Your OneWord</div>
-    <div class="word-grid" id="wordGrid"></div>
+    <div class="emoji-cat-label">🌿 Nature</div>
+    <div class="emoji-grid" id="bmEmojiNature"></div>
+    <div class="emoji-cat-label">✨ Hope & Light</div>
+    <div class="emoji-grid" id="bmEmojiHope"></div>
+    <div class="emoji-cat-label">💛 Hearts & Connection</div>
+    <div class="emoji-grid" id="bmEmojiHearts"></div>
   </div>
   <div class="nav-row">
-    <button class="btn-back" onclick="nav(1)">&#8592; Back</button>
-    <button class="btn-next" onclick="toQuote()">Next &mdash; Choose a Quote &rarr;</button>
+    <button class="btn-back" onclick="bmNav(0)">← Back</button>
+    <button class="btn-next" onclick="bmToColor1()">Next — Choose Colors →</button>
   </div>
 </div>
 
-<!-- S3: QUOTE SELECTION -->
-<div class="screen" id="scr3">
-  <div class="scr-hd">
-    <h2 id="s3h">Choose Your Quote 💬</h2>
-    <p>Read all three quotes for your OneWord and choose the one that feels right to you.</p>
-  </div>
+<!-- BM-2: COLOR 1 -->
+<div class="screen" id="bmScr2">
+  <div class="scr-hd"><h2>Choose Color 1 🎨</h2><p>This is the <strong>main body</strong> color of your bookmark — the background.</p></div>
   <div class="white-card">
-    <div class="hint">&#128140; These quotes were written to encourage a student who needs to hear something true. Choose the one that speaks to you most.</div>
-    <div class="section-lbl" id="q-word-label">Quotes for your word</div>
-    <div class="q-grid" id="qGrid"></div>
+    <div class="hint">💡 Your bookmark will be printed in two colors on the Bambu Lab printer using the AMS system. Color 1 is the body. Color 2 is the text and emoji.</div>
+    <div class="bm-color-grid" id="bmColor1Grid"></div>
   </div>
   <div class="nav-row">
-    <button class="btn-back" onclick="nav(2)">&#8592; Back</button>
-    <button class="btn-next" onclick="toColors()">Next &mdash; Choose Colors &rarr;</button>
+    <button class="btn-back" onclick="bmNav(1)">← Back</button>
+    <button class="btn-next" onclick="bmToColor2()">Next — Choose Color 2 →</button>
   </div>
 </div>
 
-<!-- S4: COLORS -->
-<div class="screen" id="scr4">
-  <div class="scr-hd"><h2>Choose Your Colors 🎨</h2><p>Pick the color combination for your card.</p></div>
+<!-- BM-3: COLOR 2 -->
+<div class="screen" id="bmScr3">
+  <div class="scr-hd"><h2>Choose Color 2 🎨</h2><p>This is the <strong>text and emoji</strong> color — it pops against Color 1.</p></div>
   <div class="white-card">
-    <div class="color-grid" id="colorGrid"></div>
+    <div id="bmColor1Preview" style="background:#f5f5f5;border-radius:10px;padding:12px;text-align:center;margin-bottom:14px;font-family:'Fredoka One',cursive;font-size:14px;color:#555;"></div>
+    <div class="bm-color-grid" id="bmColor2Grid"></div>
   </div>
   <div class="nav-row">
-    <button class="btn-back" onclick="nav(3)">&#8592; Back</button>
-    <button class="btn-next" onclick="toFont()">Next &mdash; Choose Font &rarr;</button>
+    <button class="btn-back" onclick="bmNav(2)">← Back</button>
+    <button class="btn-next" onclick="bmToPreview()">Preview My Bookmark →</button>
   </div>
 </div>
 
-<!-- S5: FONT -->
-<div class="screen" id="scr5">
-  <div class="scr-hd"><h2>Choose Your Font Style ✏️</h2><p>Pick the style that fits your quote's personality.</p></div>
-  <div class="white-card">
-    <div class="font-grid" id="fontGrid"></div>
-  </div>
-  <div class="nav-row">
-    <button class="btn-back" onclick="nav(4)">&#8592; Back</button>
-    <button class="btn-next" onclick="toPreview()">See My Card! &rarr;</button>
-  </div>
-</div>
-
-<!-- S6: PREVIEW & SUBMIT -->
-<div class="screen" id="scr6">
-  <div class="scr-hd"><h2 id="s6h">Your Quote Card! 🎉</h2><p>Submit it and Ms. Glover will print and cut it for a student at Princess Anne Middle School.</p></div>
+<!-- BM-4: PREVIEW & SUBMIT -->
+<div class="screen" id="bmScr4">
+  <div class="scr-hd"><h2 id="bmS4h">Your Bookmark! 🔖</h2><p>Submit and Ms. Glover will 3D print your bookmark on the Bambu Lab printer.</p></div>
   <div class="white-card">
     <div class="section-lbl">Preview</div>
-    <div class="preview-wrap"><svg id="cardSVG" width="300" height="300" viewBox="0 0 300 300"></svg></div>
-    <div style="background:#E3F2FD;border-radius:10px;padding:12px 16px;margin-top:10px;font-family:'Playfair Display',serif;font-size:14px;font-style:italic;color:#0D47A1;line-height:1.6;text-align:center;" id="quotePreviewText"></div>
+    <div class="bm-preview-wrap"><svg id="bmSVG" viewBox="0 0 120 360" xmlns="http://www.w3.org/2000/svg" style="width:120px;height:360px;filter:drop-shadow(0 4px 16px rgba(0,0,0,.15));"></svg></div>
     <div class="det-grid">
-      <div class="det-cell"><div class="det-lbl">Word</div><div class="det-val" id="dWord"></div></div>
-      <div class="det-cell"><div class="det-lbl">Shape</div><div class="det-val" id="dShape"></div></div>
-      <div class="det-cell"><div class="det-lbl">Colors</div><div class="det-val" id="dColors"></div></div>
-      <div class="det-cell"><div class="det-lbl">Font</div><div class="det-val" id="dFont"></div></div>
+      <div class="det-cell"><div class="det-lbl">Word</div><div class="det-val" id="bmDWord"></div></div>
+      <div class="det-cell"><div class="det-lbl">Emoji</div><div class="det-val" id="bmDEmoji"></div></div>
+      <div class="det-cell"><div class="det-lbl">Color 1</div><div class="det-val" id="bmDC1"></div></div>
+      <div class="det-cell"><div class="det-lbl">Color 2</div><div class="det-val" id="bmDC2"></div></div>
     </div>
   </div>
-  <div id="notSub">
-    <button class="submit-btn" onclick="doSubmit()">Submit My Quote Card!</button>
-    <p style="font-size:12px;color:#888;font-style:italic;text-align:center;">Ms. Glover will print and cut your card for Princess Anne Middle School!</p>
+  <div id="bmNotSub">
+    <button class="submit-btn" onclick="bmSubmit()">Submit My Bookmark!</button>
+    <p style="font-size:12px;color:#888;font-style:italic;text-align:center;">Ms. Glover will print your bookmark for a Smile Bag!</p>
   </div>
-  <div class="submitted-box" id="subBox">
-    <div style="font-size:52px;margin-bottom:12px;">&#127881;</div>
-    <div style="font-family:'Fredoka One',cursive;font-size:24px;color:#1565C0;margin-bottom:6px;">Card Submitted!</div>
-    <p style="font-size:14px;color:#555;line-height:1.7;">Your inspirational quote card will be placed in a Smile Bag for a student at Princess Anne Middle School!</p>
-    <div class="token-box">
-      <div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#C8860A;margin-bottom:4px;">Your submission code</div>
-      <div class="token-code" id="tokCode">KSB-0000</div>
-      <div style="font-size:11px;color:#888;margin-top:4px;">Write this down just in case!</div>
-    </div>
+  <div class="submitted-box" id="bmSubBox">
+    <div style="font-size:48px;margin-bottom:12px;">🎉</div>
+    <div style="font-family:'Fredoka One',cursive;font-size:22px;color:var(--blue);margin-bottom:6px;">Bookmark Submitted!</div>
+    <p style="font-size:14px;color:#555;line-height:1.7;">Ms. Glover will 3D print your bookmark for a Smile Bag!</p>
+    <div class="token-box"><div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;">Your code</div><div class="token-code" id="bmTokCode">KSB-0000</div></div>
+    <button class="btn-home" onclick="goHub()">🏠 Return to Main Menu</button>
   </div>
   <div class="nav-row" style="justify-content:flex-start;margin-top:12px;">
-    <button class="btn-back" onclick="nav(5)">&#8592; Change Something</button>
+    <button class="btn-back" onclick="bmNav(3)">← Change Something</button>
+  </div>
+</div>
+
+<!-- ══ QUOTE CARD SCREENS ══ -->
+
+<!-- QC-0: SHAPE -->
+<div class="screen" id="qcScr0">
+  <div class="scr-hd"><h2>Choose Your Card Shape 🎨</h2><p>Your inspirational quote card will be printed and cut to this shape for a student at Princess Anne Middle School.</p></div>
+  <div class="path-grid">
+    <div class="path-card" onclick="qcPickShape('square',this)"><div class="path-icon">&#9632;</div><div class="path-name">Square</div><div class="path-desc">4&Prime; &times; 4&Prime; square card printed on cardstock.</div><div class="path-check">&#10003; Selected!</div></div>
+    <div class="path-card" onclick="qcPickShape('circle',this)"><div class="path-icon">&#9679;</div><div class="path-name">Circle</div><div class="path-desc">4&Prime; round card cut with the Cricut.</div><div class="path-check">&#10003; Selected!</div></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="goHub()">← Back to Menu</button>
+    <button class="btn-next" onclick="qcToWord()">Next →</button>
+  </div>
+</div>
+
+<!-- QC-1: WORD -->
+<div class="screen" id="qcScr1">
+  <div class="scr-hd"><h2>Choose Your OneWord 🌟</h2><p>This word will be the heart of your inspirational quote card.</p></div>
+  <div class="white-card"><div class="word-grid" id="qcWordGrid"></div></div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="qcNav(0)">← Back</button>
+    <button class="btn-next" onclick="qcToQuote()">Next — Choose a Quote →</button>
+  </div>
+</div>
+
+<!-- QC-2: QUOTE -->
+<div class="screen" id="qcScr2">
+  <div class="scr-hd"><h2 id="qcS2h">Choose Your Quote 💬</h2><p>Read all three and choose the one that feels right.</p></div>
+  <div class="white-card">
+    <div class="hint">&#128140; These quotes were written to encourage a student who needs to hear something true.</div>
+    <div class="section-lbl" id="qcWordLabel">Quotes for your word</div>
+    <div class="q-grid" id="qcGrid"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="qcNav(1)">← Back</button>
+    <button class="btn-next" onclick="qcToColors()">Next — Choose Colors →</button>
+  </div>
+</div>
+
+<!-- QC-3: COLORS -->
+<div class="screen" id="qcScr3">
+  <div class="scr-hd"><h2>Choose Your Colors 🎨</h2></div>
+  <div class="white-card"><div class="color-grid" id="qcColorGrid"></div></div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="qcNav(2)">← Back</button>
+    <button class="btn-next" onclick="qcToFont()">Next — Choose Font →</button>
+  </div>
+</div>
+
+<!-- QC-4: FONT -->
+<div class="screen" id="qcScr4">
+  <div class="scr-hd"><h2>Choose Your Font ✏️</h2></div>
+  <div class="white-card"><div class="font-grid" id="qcFontGrid"></div></div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="qcNav(3)">← Back</button>
+    <button class="btn-next" onclick="qcToPreview()">See My Card! →</button>
+  </div>
+</div>
+
+<!-- QC-5: PREVIEW & SUBMIT -->
+<div class="screen" id="qcScr5">
+  <div class="scr-hd"><h2 id="qcS5h">Your Quote Card! 🎉</h2><p>Submit and Ms. Glover will print and cut it for Princess Anne Middle School.</p></div>
+  <div class="white-card">
+    <div class="section-lbl">Preview</div>
+    <div class="preview-wrap"><svg id="qcCardSVG" width="280" height="280" viewBox="0 0 300 300"></svg></div>
+    <div style="background:#E3F2FD;border-radius:10px;padding:12px;margin-top:10px;font-family:'Playfair Display',serif;font-size:13px;font-style:italic;color:#0D47A1;text-align:center;" id="qcQuoteText"></div>
+    <div class="det-grid">
+      <div class="det-cell"><div class="det-lbl">Word</div><div class="det-val" id="qcDWord"></div></div>
+      <div class="det-cell"><div class="det-lbl">Shape</div><div class="det-val" id="qcDShape"></div></div>
+      <div class="det-cell"><div class="det-lbl">Colors</div><div class="det-val" id="qcDColors"></div></div>
+      <div class="det-cell"><div class="det-lbl">Font</div><div class="det-val" id="qcDFont"></div></div>
+    </div>
+  </div>
+  <div id="qcNotSub">
+    <button class="submit-btn" onclick="qcSubmit()">Submit My Quote Card!</button>
+    <p style="font-size:12px;color:#888;font-style:italic;text-align:center;">Ms. Glover will print and cut your card for Princess Anne Middle School!</p>
+  </div>
+  <div class="submitted-box" id="qcSubBox">
+    <div style="font-size:48px;margin-bottom:12px;">🎉</div>
+    <div style="font-family:'Fredoka One',cursive;font-size:22px;color:var(--blue);margin-bottom:6px;">Card Submitted!</div>
+    <p style="font-size:14px;color:#555;line-height:1.7;">Your quote card will be placed in a Smile Bag for a student at Princess Anne Middle School!</p>
+    <div class="token-box"><div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;">Your code</div><div class="token-code" id="qcTokCode">KSB-0000</div></div>
+    <button class="btn-home" onclick="goHub()">🏠 Return to Main Menu</button>
+  </div>
+  <div class="nav-row" style="justify-content:flex-start;margin-top:12px;">
+    <button class="btn-back" onclick="qcNav(4)">← Change Something</button>
   </div>
 </div>
 
 <script>
-var SCRIPT_URL = "YOUR_APPS_SCRIPT_URL_HERE";
+var SCRIPT_URL="YOUR_APPS_SCRIPT_URL_HERE";
 
-var WORDS = [
-  {word:"ABSORB",  meaning:"Taking in everything around you"},
-  {word:"ADAPT",   meaning:"Adjusting to what comes your way"},
-  {word:"ANCHOR",  meaning:"Holding steady through the storm"},
-  {word:"BALANCE", meaning:"Finding your steady place"},
-  {word:"BLOOM",   meaning:"Growing into your best self"},
-  {word:"BREATHE", meaning:"Pausing to find your calm"},
-  {word:"CLEAR",   meaning:"Seeing things as they really are"},
-  {word:"CONNECT", meaning:"Building bridges between hearts"},
-  {word:"CYCLE",   meaning:"Moving through seasons of change"},
-  {word:"EMERGE",  meaning:"Rising into who you are becoming"},
-  {word:"FILTER",  meaning:"Choosing what deserves your energy"},
-  {word:"FLOW",    meaning:"Moving forward even slowly"},
-  {word:"GROW",    meaning:"Becoming more than you were"},
-  {word:"HEAL",    meaning:"Restoring what was broken"},
-  {word:"MIGRATE", meaning:"Carrying home within yourself"},
-  {word:"PERSIST", meaning:"Keeping going when it gets hard"},
-  {word:"RENEW",   meaning:"Starting fresh with new strength"},
-  {word:"RESTORE", meaning:"Bringing back what matters most"},
-  {word:"RETURN",  meaning:"Coming back to what is true"},
-  {word:"RISE",    meaning:"Standing tall after falling down"},
-  {word:"ROOT",    meaning:"Staying grounded in who you are"},
-  {word:"SHINE",   meaning:"Letting your light reach others"},
-  {word:"SUSTAIN", meaning:"Keeping what is good alive"},
-  {word:"THRIVE",  meaning:"Living at your fullest"},
-  {word:"TRANSFORM",meaning:"Becoming something beautifully new"},
+// Shared state
+var sName="",sClass="",sGrade="";
+
+// Bookmark state
+var bmWord=null,bmEmoji="\uD83C\uDF31",bmColor1=null,bmColor2=null;
+
+// Quote card state
+var qcShape=null,qcWord=null,qcQuote=null,qcPair=null,qcFont=null;
+
+var WORDS=["ABSORB","ADAPT","ANCHOR","BALANCE","BLOOM","BREATHE","CLEAR","CONNECT","CYCLE","EMERGE","FILTER","FLOW","GROW","HEAL","MIGRATE","PERSIST","RENEW","RESTORE","RETURN","RISE","ROOT","SHINE","SUSTAIN","THRIVE","TRANSFORM"];
+
+var BM_COLORS=[
+  {name:"Red",    hex:"#CC0000"},{name:"Blue",   hex:"#1565C0"},
+  {name:"Green",  hex:"#2D6A2D"},{name:"Gold",   hex:"#C8860A"},
+  {name:"Purple", hex:"#5B2D9E"},{name:"Teal",   hex:"#1B7A78"},
+  {name:"Orange", hex:"#E65100"},{name:"Black",  hex:"#1A1A1A"},
+  {name:"White",  hex:"#F5F5F5"},{name:"Pink",   hex:"#C2185B"},
 ];
 
-/* ══ CURATED QUOTES ══ */
-var QUOTES_CURATED = {
+var EMOJIS={
+  nature:["\uD83C\uDF31","\uD83C\uDF38","\uD83C\uDF3F","\uD83C\uDF43","\uD83C\uDF3A","\uD83C\uDF0A","\uD83C\uDF32","\uD83C\uDF42","\uD83E\uDD8B","\uD83C\uDF3B","\uD83C\uDF19","\u2600\uFE0F"],
+  hope:["\u2728","\u2B50","\uD83C\uDF08","\uD83D\uDD25","\uD83D\uDCAB","\uD83D\uDD4A\uFE0F","\uD83C\uDF05","\u26A1","\uD83C\uDFAF","\uD83C\uDF1F","\uD83C\uDFC6","\uD83C\uDF04"],
+  hearts:["\uD83D\uDCDB","\uD83D\uDCD9","\uD83D\uDCDA","\uD83D\uDC9C","\uD83E\uDD0D","\uD83D\uDC97","\uD83E\uFAF6","\uD83E\uDD1D","\uD83C\uDF0D","\uD83C\uDF81","\uD83E\uDEB4","\uD83E\uDEA7"]
+};
+
+var PAIRS=[
+  {name:"Blue & Gold",  c1:{n:"Blue",  h:"#1565C0"},c2:{n:"Gold",  h:"#C8860A"}},
+  {name:"Blue & White", c1:{n:"Blue",  h:"#1565C0"},c2:{n:"White", h:"#F5F5F5"}},
+  {name:"Gold & White", c1:{n:"Gold",  h:"#C8860A"},c2:{n:"White", h:"#F5F5F5"}},
+];
+
+var QC_FONTS=[
+  {name:"Elegant", css:"'Playfair Display', serif", sample:"Words that inspire"},
+  {name:"Friendly",css:"'Fredoka One', cursive",    sample:"Words that inspire"},
+  {name:"Script",  css:"'Satisfy', cursive",         sample:"Words that inspire"},
+  {name:"Bold",    css:"'Oswald', sans-serif",       sample:"Words that inspire"},
+];
+
+var QUOTES_CURATED={
   Absorb:["Like roots drinking rain, you take in everything you need to grow.","You don't have to rush. The best growth comes from slowly taking it all in.","Every experience you absorb — even the hard ones — becomes part of what makes you whole."],
   Adapt:["Like a tree that bends in the wind, you know how to find your way.","Change is how nature survives. Your ability to adapt is your greatest strength.","You don't have to stay the same to stay yourself. Adapting is how you keep growing."],
   Anchor:["You have people and places that keep you steady — hold onto them.","Even in a storm, roots hold. You have more holding you than you know.","The things that ground you aren't holding you back. They're keeping you whole."],
@@ -310,211 +432,261 @@ var QUOTES_CURATED = {
   Transform:["You are not the same as you were. And that is something to be proud of.","A caterpillar doesn't fight becoming a butterfly. It trusts the process. So can you.","Transformation doesn't happen to you — it happens through you, one quiet change at a time."]
 };
 
-/* ══ COLORS — Blue, Gold, White only ══ */
-var PAIRS = [
-  {name:"Blue & Gold",  c1:{n:"Blue",  h:"#1565C0"}, c2:{n:"Gold",  h:"#C8860A"}},
-  {name:"Blue & White", c1:{n:"Blue",  h:"#1565C0"}, c2:{n:"White", h:"#F5F5F5"}},
-  {name:"Gold & White", c1:{n:"Gold",  h:"#C8860A"}, c2:{n:"White", h:"#F5F5F5"}},
-];
-
-var FONTS = [
-  {name:"Elegant",  label:"Playfair Display", css:"'Playfair Display', serif",  sample:"Words that inspire"},
-  {name:"Friendly", label:"Fredoka One",       css:"'Fredoka One', cursive",     sample:"Words that inspire"},
-  {name:"Script",   label:"Satisfy",           css:"'Satisfy', cursive",         sample:"Words that inspire"},
-  {name:"Bold",     label:"Oswald",            css:"'Oswald', sans-serif",       sample:"Words that inspire"},
-];
-
-var selShape=null, selWord=null, selPair=null, selFont=FONTS[0], selQuote=null;
-var sName="", sGrade="";
-
+/* ── INIT ── */
 document.addEventListener("DOMContentLoaded",function(){
-  buildWordGrid(); buildColorGrid(); buildFontGrid();
+  buildBmWordGrid(); buildBmEmojiGrids(); buildBmColorGrids();
+  buildQcWordGrid(); buildQcColorGrid(); buildQcFontGrid();
+  bmColor1=BM_COLORS[0]; bmColor2=BM_COLORS[1];
+  qcFont=QC_FONTS[0];
 });
 
-function pickShape(s,el){
+/* ── HUB ── */
+function goHub(){
+  // Hide progress bar
+  document.getElementById("progBar").style.display="none";
+  showScreen("scrHub");
+  // Reset activity states but keep name/class
+  qcShape=null; qcWord=null; qcQuote=null; qcPair=null;
+  bmWord=null;
   document.querySelectorAll(".path-card").forEach(function(c){c.classList.remove("sel");});
-  el.classList.add("sel"); selShape=s;
+  document.querySelectorAll(".word-btn").forEach(function(c){c.classList.remove("sel");});
+  document.querySelectorAll(".q-card").forEach(function(c){c.classList.remove("sel");});
+  document.getElementById("bmSubBox").style.display="none";
+  document.getElementById("bmNotSub").style.display="block";
+  var bs=document.querySelector("#bmNotSub .submit-btn");
+  if(bs){bs.textContent="Submit My Bookmark!";bs.disabled=false;}
+  document.getElementById("qcSubBox").style.display="none";
+  document.getElementById("qcNotSub").style.display="block";
+  var qs=document.querySelector("#qcNotSub .submit-btn");
+  if(qs){qs.textContent="Submit My Quote Card!";qs.disabled=false;}
 }
 
-function buildWordGrid(){
-  var g=document.getElementById("wordGrid");
-  WORDS.forEach(function(w){
-    var c=document.createElement("div"); c.className="word-card";
-    c.innerHTML='<div class="word-card-word">'+w.word+'</div><div class="word-card-meaning">'+w.meaning+'</div>';
-    c.onclick=(function(wd,el){return function(){
-      document.querySelectorAll(".word-card").forEach(function(x){x.classList.remove("sel");});
-      el.classList.add("sel"); selWord=wd;
-    };})(w,c);
-    g.appendChild(c);
-  });
-}
-
-function buildQuoteGrid(){
-  if(!selWord) return;
-  var key=selWord.word.charAt(0)+selWord.word.slice(1).toLowerCase();
-  var quotes=QUOTES_CURATED[key]||[];
-  document.getElementById("q-word-label").textContent="Choose a quote for "+selWord.word;
-  var g=document.getElementById("qGrid"); g.innerHTML=''; selQuote=null;
-  quotes.forEach(function(q,i){
-    var c=document.createElement("div"); c.className="q-card";
-    c.innerHTML='<div class="q-num">Option '+(i+1)+'</div>'+
-      '<div class="q-quote">&#8220;'+q+'&#8221;</div>'+
-      '<div class="q-check">&#10003; Selected</div>';
-    c.onclick=(function(qt,el){return function(){
-      document.querySelectorAll(".q-card").forEach(function(x){x.classList.remove("sel");});
-      el.classList.add("sel"); selQuote=qt;
-    };})(q,c);
-    g.appendChild(c);
-  });
-}
-
-function buildColorGrid(){
-  var g=document.getElementById("colorGrid");
-  PAIRS.forEach(function(p){
-    var c=document.createElement("div"); c.className="color-btn";
-    c.innerHTML='<div class="pair-swatches">'+
-      '<div class="pair-swatch" style="background:'+p.c1.h+(p.c1.h==='#F5F5F5'?';border:2px solid #ccc':'')+'"></div>'+
-      '<div class="pair-swatch" style="background:'+p.c2.h+(p.c2.h==='#F5F5F5'?';border:2px solid #ccc':'')+'"></div>'+
-      '</div><div class="color-name">'+p.name+'</div><div class="color-check">&#10003;</div>';
-    c.onclick=(function(pr,el){return function(){
-      document.querySelectorAll(".color-btn").forEach(function(x){x.classList.remove("sel");});
-      el.classList.add("sel"); selPair=pr;
-    };})(p,c);
-    g.appendChild(c);
-  });
-}
-
-function buildFontGrid(){
-  var g=document.getElementById("fontGrid");
-  FONTS.forEach(function(f,i){
-    var c=document.createElement("div"); c.className="font-card"+(i===0?" sel":"");
-    c.innerHTML='<div class="font-preview" style="font-family:'+f.css+'">'+f.sample+'</div><div class="font-name">'+f.name+' — '+f.label+'</div>';
-    c.onclick=(function(fn,el){return function(){
-      document.querySelectorAll(".font-card").forEach(function(x){x.classList.remove("sel");});
-      el.classList.add("sel"); selFont=fn;
-    };})(f,c);
-    g.appendChild(c);
-  });
-}
-
-function toName(){if(!selShape){alert("Please choose a card shape!");return;} nav(1);}
-function toWord(){
-  sName=document.getElementById("iName").value.trim();
-  sGrade=document.getElementById("iGrade").value||"";
+function startBookmark(){
+  sName=document.getElementById("hubName").value.trim();
+  sClass=document.getElementById("hubClass").value;
+  sGrade=document.getElementById("hubGrade").value||"";
   if(!sName){alert("Please enter your name!");return;}
-  nav(2);
+  if(!sClass){alert("Please select your class!");return;}
+  document.getElementById("bmS0h").textContent="Choose Your OneWord, "+sName+"!";
+  showProgBar("🔖 Bookmark",["Word","Emoji","Color 1","Color 2","Preview!"],0);
+  showScreen("bmScr0");
 }
-function toQuote(){
-  if(!selWord){alert("Please choose your OneWord!");return;}
-  buildQuoteGrid();
-  document.getElementById("s3h").textContent="Choose a Quote for "+selWord.word+", "+sName+"!";
-  nav(3);
-}
-function toColors(){if(!selQuote){alert("Please choose a quote!");return;} nav(4);}
-function toFont(){if(!selPair){alert("Please choose a color pair!");return;} nav(5);}
-function toPreview(){buildFinalPreview(); nav(6);}
 
-function nav(n){
-  document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});
-  document.getElementById("scr"+n).classList.add("active");
-  for(var i=0;i<=6;i++){
+function startQuoteCard(){
+  sName=document.getElementById("hubName").value.trim();
+  sClass=document.getElementById("hubClass").value;
+  sGrade=document.getElementById("hubGrade").value||"";
+  if(!sName){alert("Please enter your name!");return;}
+  if(!sClass){alert("Please select your class!");return;}
+  showProgBar("💬 Quote Card",["Shape","Word","Quote","Colors","Font","Preview!"],0);
+  showScreen("qcScr0");
+}
+
+function showProgBar(label, steps, activeIdx){
+  var bar=document.getElementById("progBar");
+  bar.style.display="flex";
+  document.getElementById("progBadge").textContent=label;
+  var html="";
+  steps.forEach(function(s,i){
+    var cls="prog-dot"+(i===activeIdx?" active":i<activeIdx?" done":"");
+    html+='<div class="prog-item"><div class="'+cls+'" id="pd'+i+'">'+(i+1)+'</div><div class="prog-lbl'+(i===activeIdx?" active":"")+'" id="pl'+i+'">'+s+'</div></div>';
+    if(i<steps.length-1) html+='<div class="prog-arr">&rsaquo;</div>';
+  });
+  document.getElementById("progDots").innerHTML=html;
+}
+
+function updateProgBar(activeIdx, total){
+  for(var i=0;i<total;i++){
     var pd=document.getElementById("pd"+i),pl=document.getElementById("pl"+i);
     if(!pd)continue;
-    pd.classList.remove("active","done"); pl.classList.remove("active");
-    if(i<n) pd.classList.add("done");
-    else if(i===n){pd.classList.add("active"); pl.classList.add("active");}
+    pd.className="prog-dot"+(i===activeIdx?" active":i<activeIdx?" done":"");
+    pl.className="prog-lbl"+(i===activeIdx?" active":"");
   }
+}
+
+/* ── SHARED SCREEN SWITCHER ── */
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});
+  document.getElementById(id).classList.add("active");
   window.scrollTo(0,0);
 }
 
-function drawCard(svgId, quoteText){
-  var svg=document.getElementById(svgId);
-  if(!svg||!selPair) return;
-  var c1=selPair.c1.h, c2=selPair.c2.h;
-  var word=selWord?selWord.word:"WORD";
-  var quote=quoteText||"Your quote will appear here.";
-  var font=selFont?selFont.css:"'Playfair Display', serif";
-  var name=sName||"Student";
-  var isCircle=selShape==="circle";
-
-  function wrapText(text,max){
-    var words=text.split(" "),lines=[],line="";
-    words.forEach(function(w){
-      if((line+" "+w).trim().length>max){lines.push(line.trim());line=w;}
-      else{line=(line+" "+w).trim();}
-    });
-    if(line)lines.push(line.trim());
-    return lines;
-  }
-
-  var qLines=wrapText(quote,22);
-  var qFS=qLines.length>5?15:qLines.length>4?17:qLines.length>3?19:22;
-  var qLH=qFS+6;
-  var totalH=qLines.length*qLH;
-  var qStartY=106+(216-106-totalH)/2+qFS/2;
-  var qEls=qLines.map(function(l,i){
-    return '<text x="150" y="'+(qStartY+i*qLH)+'" text-anchor="middle" dominant-baseline="middle" font-family="'+escXml(font)+'" font-size="'+qFS+'" fill="'+c2+'" font-style="italic">'+escXml(l)+'</text>';
-  }).join('');
-
-  var clipId="cc"+svgId;
-  var clip=isCircle?
-    '<defs><clipPath id="'+clipId+'"><circle cx="150" cy="150" r="148"/></clipPath></defs>':
-    '<defs><clipPath id="'+clipId+'"><rect x="2" y="2" width="296" height="296" rx="12"/></clipPath></defs>';
-  var bg=isCircle?
-    '<circle cx="150" cy="150" r="148" fill="'+c1+'"/><circle cx="150" cy="150" r="148" fill="none" stroke="'+c2+'" stroke-width="8"/><circle cx="150" cy="150" r="134" fill="none" stroke="'+c2+'" stroke-width="2" stroke-dasharray="6 4" opacity="0.4"/>':
-    '<rect x="2" y="2" width="296" height="296" rx="12" fill="'+c1+'"/><rect x="2" y="2" width="296" height="296" rx="12" fill="none" stroke="'+c2+'" stroke-width="8"/><rect x="14" y="14" width="272" height="272" rx="8" fill="none" stroke="'+c2+'" stroke-width="2" stroke-dasharray="6 4" opacity="0.4"/>';
-
-  svg.setAttribute("viewBox","0 0 300 300");
-  svg.setAttribute("width","300");
-  svg.setAttribute("height","300");
-  svg.innerHTML=clip+'<g clip-path="url(#'+clipId+')">'+bg+
-    '<text x="150" y="42" text-anchor="middle" font-size="16" fill="'+c2+'" opacity="0.6">&#10022; &#10022; &#10022;</text>'+
-    '<text x="150" y="78" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="34" fill="'+c2+'" letter-spacing="4">'+escXml(word)+'</text>'+
-    '<line x1="70" y1="98" x2="230" y2="98" stroke="'+c2+'" stroke-width="1.5" opacity="0.5"/>'+
-    qEls+
-    '<line x1="80" y1="218" x2="220" y2="218" stroke="'+c2+'" stroke-width="1" opacity="0.3"/>'+
-    '<text x="150" y="228" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="12" fill="'+c2+'" opacity="0.9">'+escXml(name)+'</text>'+
-    '<text x="150" y="244" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="11" fill="'+c2+'" opacity="0.7" letter-spacing="1">INCLUSION · 2026</text>'+
-    '</g>';
+/* ── BOOKMARK BUILDERS ── */
+function buildBmWordGrid(){
+  var g=document.getElementById("bmWordGrid");
+  WORDS.forEach(function(w){
+    var b=document.createElement("button");b.className="word-btn";b.textContent=w;
+    b.onclick=function(){document.querySelectorAll("#bmWordGrid .word-btn").forEach(function(x){x.classList.remove("sel");});b.classList.add("sel");bmWord=w;};
+    g.appendChild(b);
+  });
+}
+function buildBmEmojiGrids(){
+  buildEmojiGrid("bmEmojiNature",EMOJIS.nature);
+  buildEmojiGrid("bmEmojiHope",EMOJIS.hope);
+  buildEmojiGrid("bmEmojiHearts",EMOJIS.hearts);
+  document.querySelector(".emoji-btn").classList.add("sel");
+}
+function buildEmojiGrid(id,emojis){
+  var g=document.getElementById(id);
+  emojis.forEach(function(e){
+    var b=document.createElement("div");b.className="emoji-btn";b.textContent=e;
+    b.onclick=(function(em,el){return function(){
+      document.querySelectorAll(".emoji-btn").forEach(function(x){x.classList.remove("sel");});
+      el.classList.add("sel");bmEmoji=em;
+    };})(e,b);
+    g.appendChild(b);
+  });
+}
+function buildBmColorGrids(){
+  buildBmColorGrid("bmColor1Grid",1);
+  buildBmColorGrid("bmColor2Grid",2);
+}
+function buildBmColorGrid(id, which){
+  var g=document.getElementById(id);
+  BM_COLORS.forEach(function(c,i){
+    var b=document.createElement("div");b.className="bm-color-btn"+(i===(which===1?0:1)?" sel":"");
+    var border=c.hex==="#F5F5F5"?"border:1px solid #ccc;":"";
+    b.innerHTML='<div class="bm-swatch" style="background:'+c.hex+';'+border+'"></div><div class="bm-color-name">'+c.name+'</div>';
+    b.onclick=(function(col,el){return function(){
+      document.querySelectorAll("#"+id+" .bm-color-btn").forEach(function(x){x.classList.remove("sel");});
+      el.classList.add("sel");
+      if(which===1) bmColor1=col; else bmColor2=col;
+    };})(c,b);
+    g.appendChild(b);
+  });
 }
 
-function escXml(str){return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+/* ── BOOKMARK NAV ── */
+function bmNav(n){
+  showScreen("bmScr"+n);
+  updateProgBar(n,5);
+}
+function bmToEmoji(){if(!bmWord){alert("Please choose your OneWord!");return;}bmNav(1);}
+function bmToColor1(){bmNav(2);}
+function bmToColor2(){if(!bmColor1){alert("Please choose Color 1!");return;}document.getElementById("bmColor1Preview").textContent="Color 1: "+bmColor1.name+" — now choose the text color!";bmNav(3);}
+function bmToPreview(){if(!bmColor2){alert("Please choose Color 2!");return;}drawBmPreview();bmNav(4);}
 
-function buildFinalPreview(){
-  drawCard("cardSVG", selQuote||"");
-  document.getElementById("quotePreviewText").textContent='"'+(selQuote||"")+'"';
-  document.getElementById("s6h").textContent="Your Quote Card, "+sName+"!";
-  document.getElementById("dWord").textContent=selWord?selWord.word:"";
-  document.getElementById("dShape").textContent=selShape==="circle"?"4\" Circle":"4\" Square";
-  document.getElementById("dColors").textContent=selPair?selPair.name:"";
-  document.getElementById("dFont").textContent=selFont?selFont.name:"";
+function drawBmPreview(){
+  var svg=document.getElementById("bmSVG");
+  var bg=bmColor1?bmColor1.hex:"#1565C0", tc=bmColor2?bmColor2.hex:"#C8860A";
+  var word=bmWord||"WORD", emoji=bmEmoji||"\uD83C\uDF31", name=sName||"Student";
+  var border=(bg==="#F5F5F5"?"stroke=\"#ccc\"":"stroke=\""+tc+"\"");
+  svg.innerHTML=
+    '<rect x="5" y="5" width="110" height="350" rx="12" fill="'+bg+'" '+border+' stroke-width="3"/>'+
+    '<rect x="10" y="10" width="100" height="340" rx="9" fill="none" stroke="'+tc+'" stroke-width="1" opacity="0.4"/>'+
+    // Top hole
+    '<circle cx="60" cy="28" r="8" fill="'+tc+'" opacity="0.7"/>'+
+    '<circle cx="60" cy="28" r="4" fill="'+bg+'"/>'+
+    // Emoji
+    '<text x="60" y="95" text-anchor="middle" dominant-baseline="middle" font-size="38">'+emoji+'</text>'+
+    // Divider
+    '<line x1="20" y1="120" x2="100" y2="120" stroke="'+tc+'" stroke-width="1" opacity="0.5"/>'+
+    // Word (vertical)
+    '<text x="60" y="230" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="22" fill="'+tc+'" letter-spacing="2" transform="rotate(0,60,230)">'+esc(word)+'</text>'+
+    // Divider
+    '<line x1="20" y1="300" x2="100" y2="300" stroke="'+tc+'" stroke-width="1" opacity="0.5"/>'+
+    // Name
+    '<text x="60" y="330" text-anchor="middle" dominant-baseline="middle" font-family="Nunito, sans-serif" font-size="10" fill="'+tc+'" opacity="0.8">'+esc(name)+'</text>';
+  document.getElementById("bmDWord").textContent=word;
+  document.getElementById("bmDEmoji").textContent=emoji;
+  document.getElementById("bmDC1").textContent=bmColor1?bmColor1.name:"";
+  document.getElementById("bmDC2").textContent=bmColor2?bmColor2.name:"";
+  document.getElementById("bmS4h").textContent="Your Bookmark, "+sName+"!";
 }
 
-function doSubmit(){
+function bmSubmit(){
   var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
-  document.getElementById("tokCode").textContent=tok;
-  var payload={
-    studentName:sName, studentGrade:sGrade, teacher:"Sharon Glover",
-    class:"Inclusion", school:"Princess Anne Middle",
-    word:selWord?selWord.word:"", wordMeaning:selWord?selWord.meaning:"",
-    quote:selQuote||"", shape:selShape,
-    colorPair:selPair?selPair.name:"",
-    color1Name:selPair?selPair.c1.n:"", color1Hex:selPair?selPair.c1.h:"",
-    color2Name:selPair?selPair.c2.n:"", color2Hex:selPair?selPair.c2.h:"",
-    font:selFont?selFont.name:"", token:tok
-  };
-  var btn=document.querySelector(".submit-btn");
-  btn.textContent="Submitting..."; btn.disabled=true;
-  if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){showDone();return;}
-  fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)})
-    .then(function(r){return r.json();})
-    .then(function(){showDone();})
-    .catch(function(){showDone();});
+  document.getElementById("bmTokCode").textContent=tok;
+  var payload={activity:"Bookmark",studentName:sName,class:sClass,grade:sGrade,teacher:"Sharon Glover",word:bmWord,emoji:bmEmoji,color1:bmColor1?bmColor1.name:"",color1Hex:bmColor1?bmColor1.hex:"",color2:bmColor2?bmColor2.name:"",color2Hex:bmColor2?bmColor2.hex:"",token:tok};
+  var btn=document.querySelector("#bmNotSub .submit-btn");btn.textContent="Submitting...";btn.disabled=true;
+  if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){bmShowDone();return;}
+  fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)}).then(function(){bmShowDone();}).catch(function(){bmShowDone();});
 }
-function showDone(){
-  document.getElementById("notSub").style.display="none";
-  document.getElementById("subBox").style.display="block";
+function bmShowDone(){document.getElementById("bmNotSub").style.display="none";document.getElementById("bmSubBox").style.display="block";}
+
+/* ── QUOTE CARD BUILDERS ── */
+function buildQcWordGrid(){
+  var g=document.getElementById("qcWordGrid");
+  WORDS.forEach(function(w){
+    var b=document.createElement("button");b.className="word-btn";b.textContent=w;
+    b.onclick=function(){document.querySelectorAll("#qcWordGrid .word-btn").forEach(function(x){x.classList.remove("sel");});b.classList.add("sel");qcWord=w;};
+    g.appendChild(b);
+  });
 }
+function buildQcColorGrid(){
+  var g=document.getElementById("qcColorGrid");
+  PAIRS.forEach(function(p){
+    var c=document.createElement("div");c.className="color-btn";
+    c.innerHTML='<div class="pair-swatches"><div class="pair-swatch" style="background:'+p.c1.h+(p.c1.h==="#F5F5F5"?";border:2px solid #ccc":"")+'"</div><div class="pair-swatch" style="background:'+p.c2.h+(p.c2.h==="#F5F5F5"?";border:2px solid #ccc":"")+'"</div></div><div class="color-name">'+p.name+'</div><div class="color-check">&#10003;</div>';
+    c.onclick=(function(pr,el){return function(){document.querySelectorAll(".color-btn").forEach(function(x){x.classList.remove("sel");});el.classList.add("sel");qcPair=pr;};})(p,c);
+    g.appendChild(c);
+  });
+}
+function buildQcFontGrid(){
+  var g=document.getElementById("qcFontGrid");
+  QC_FONTS.forEach(function(f,i){
+    var c=document.createElement("div");c.className="font-card"+(i===0?" sel":"");
+    c.innerHTML='<div class="font-preview" style="font-family:'+f.css+'">'+f.sample+'</div><div class="font-name">'+f.name+'</div>';
+    c.onclick=(function(fn,el){return function(){document.querySelectorAll("#qcFontGrid .font-card").forEach(function(x){x.classList.remove("sel");});el.classList.add("sel");qcFont=fn;};})(f,c);
+    g.appendChild(c);
+  });
+}
+function buildQcQuoteGrid(){
+  if(!qcWord) return;
+  var key=qcWord.charAt(0)+qcWord.slice(1).toLowerCase();
+  var quotes=QUOTES_CURATED[key]||[];
+  document.getElementById("qcWordLabel").textContent="Choose a quote for "+qcWord;
+  var g=document.getElementById("qcGrid");g.innerHTML='';qcQuote=null;
+  quotes.forEach(function(q,i){
+    var c=document.createElement("div");c.className="q-card";
+    c.innerHTML='<div class="q-num">Option '+(i+1)+'</div><div class="q-quote">&#8220;'+q+'&#8221;</div><div class="q-check">&#10003; Selected</div>';
+    c.onclick=(function(qt,el){return function(){document.querySelectorAll(".q-card").forEach(function(x){x.classList.remove("sel");});el.classList.add("sel");qcQuote=qt;};})(q,c);
+    g.appendChild(c);
+  });
+}
+
+/* ── QUOTE CARD NAV ── */
+function qcNav(n){
+  showScreen("qcScr"+n);
+  updateProgBar(n,6);
+}
+function qcPickShape(s,el){document.querySelectorAll(".path-card").forEach(function(c){c.classList.remove("sel");});el.classList.add("sel");qcShape=s;}
+function qcToWord(){if(!qcShape){alert("Please choose a card shape!");return;}qcNav(1);}
+function qcToQuote(){if(!qcWord){alert("Please choose your OneWord!");return;}buildQcQuoteGrid();document.getElementById("qcS2h").textContent="Choose a Quote for "+qcWord+", "+sName+"!";qcNav(2);}
+function qcToColors(){if(!qcQuote){alert("Please choose a quote!");return;}qcNav(3);}
+function qcToFont(){if(!qcPair){alert("Please choose a color pair!");return;}qcNav(4);}
+function qcToPreview(){drawQcPreview();qcNav(5);}
+
+function drawQcPreview(){
+  var svg=document.getElementById("qcCardSVG");
+  if(!svg||!qcPair)return;
+  var c1=qcPair.c1.h,c2=qcPair.c2.h,word=qcWord||"WORD",quote=qcQuote||"",font=qcFont?qcFont.css:"'Playfair Display',serif",name=sName||"Student",isCircle=qcShape==="circle";
+  function wrap(t,m){var ws=t.split(" "),ls=[],l="";ws.forEach(function(w){if((l+" "+w).trim().length>m){ls.push(l.trim());l=w;}else{l=(l+" "+w).trim();}});if(l)ls.push(l.trim());return ls;}
+  var ql=wrap(quote,22),qfs=ql.length>5?15:ql.length>4?17:ql.length>3?19:22,qlh=qfs+6,qsy=106+(216-106-ql.length*qlh)/2+qfs/2;
+  var qels=ql.map(function(l,i){return '<text x="150" y="'+(qsy+i*qlh)+'" text-anchor="middle" dominant-baseline="middle" font-family="'+esc(font)+'" font-size="'+qfs+'" fill="'+c2+'" font-style="italic">'+esc(l)+'</text>';}).join('');
+  var clip=isCircle?'<defs><clipPath id="ccqc"><circle cx="150" cy="150" r="148"/></clipPath></defs>':'<defs><clipPath id="ccqc"><rect x="2" y="2" width="296" height="296" rx="12"/></clipPath></defs>';
+  var bg=isCircle?'<circle cx="150" cy="150" r="148" fill="'+c1+'"/><circle cx="150" cy="150" r="148" fill="none" stroke="'+c2+'" stroke-width="8"/>':'<rect x="2" y="2" width="296" height="296" rx="12" fill="'+c1+'"/><rect x="2" y="2" width="296" height="296" rx="12" fill="none" stroke="'+c2+'" stroke-width="8"/>';
+  svg.setAttribute("viewBox","0 0 300 300");svg.setAttribute("width","280");svg.setAttribute("height","280");
+  svg.innerHTML=clip+'<g clip-path="url(#ccqc)">'+bg+'<text x="150" y="42" text-anchor="middle" font-size="16" fill="'+c2+'" opacity="0.6">&#10022; &#10022; &#10022;</text><text x="150" y="78" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One,cursive" font-size="34" fill="'+c2+'" letter-spacing="4">'+esc(word)+'</text><line x1="70" y1="98" x2="230" y2="98" stroke="'+c2+'" stroke-width="1.5" opacity="0.5"/>'+qels+'<line x1="80" y1="218" x2="220" y2="218" stroke="'+c2+'" stroke-width="1" opacity="0.3"/><text x="150" y="228" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One,cursive" font-size="12" fill="'+c2+'" opacity="0.9">'+esc(name)+'</text><text x="150" y="244" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One,cursive" font-size="11" fill="'+c2+'" opacity="0.7" letter-spacing="1">'+esc(sClass.toUpperCase())+' · 2026</text></g>';
+  document.getElementById("qcQuoteText").textContent='"'+(qcQuote||"")+'"';
+  document.getElementById("qcS5h").textContent="Your Quote Card, "+sName+"!";
+  document.getElementById("qcDWord").textContent=qcWord||"";
+  document.getElementById("qcDShape").textContent=qcShape==="circle"?'4" Circle':'4" Square';
+  document.getElementById("qcDColors").textContent=qcPair?qcPair.name:"";
+  document.getElementById("qcDFont").textContent=qcFont?qcFont.name:"";
+}
+
+function qcSubmit(){
+  var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
+  document.getElementById("qcTokCode").textContent=tok;
+  var payload={activity:"QuoteCard",studentName:sName,class:sClass,grade:sGrade,teacher:"Sharon Glover",school:"Princess Anne Middle",word:qcWord,quote:qcQuote,shape:qcShape,colorPair:qcPair?qcPair.name:"",font:qcFont?qcFont.name:"",token:tok};
+  var btn=document.querySelector("#qcNotSub .submit-btn");btn.textContent="Submitting...";btn.disabled=true;
+  if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){qcShowDone();return;}
+  fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)}).then(function(){qcShowDone();}).catch(function(){qcShowDone();});
+}
+function qcShowDone(){document.getElementById("qcNotSub").style.display="none";document.getElementById("qcSubBox").style.display="block";}
+
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 </script>
 </body>
 </html>
