@@ -151,7 +151,6 @@ function loadRound(){
   document.getElementById('winBanner').classList.remove('show');
   buildOptions();
   drawTiles();
-  startFlipping();
 }
 
 function buildOptions(){
@@ -166,12 +165,16 @@ function buildOptions(){
   });
 }
 
+var cachedImg = null;
+
 function drawTiles(){
   var canvas=document.getElementById('tileCanvas');
   var ctx=canvas.getContext('2d');
   tiles=[];
+  cachedImg=null;
   var img=new Image();img.crossOrigin='anonymous';
   img.onload=function(){
+    cachedImg=img;
     var W=Math.min(img.naturalWidth,500), scale=W/img.naturalWidth;
     var H=Math.round(img.naturalHeight*scale);
     canvas.width=W;canvas.height=H;
@@ -183,27 +186,35 @@ function drawTiles(){
       ctx.strokeStyle='rgba(64,145,108,.3)';ctx.lineWidth=2;ctx.strokeRect(c*tw,r*th,tw,th);
     }
     updateStats();
+    startFlipping();
+  };
+  img.onerror=function(){
+    canvas.width=500;canvas.height=400;
+    ctx.fillStyle='#1B4332';ctx.fillRect(0,0,500,400);
+    ctx.fillStyle='rgba(64,145,108,.5)';ctx.font='bold 24px Fredoka One,sans-serif';
+    ctx.textAlign='center';ctx.fillText('Image loading...',250,200);
   };
   img.src=getImg();
 }
 
 function startFlipping(){
+  if(!cachedImg)return;
+  var canvas=document.getElementById('tileCanvas');
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width, H=canvas.height;
+  var tw=Math.floor(W/COLS), th=Math.floor(H/ROWS);
+  var imgW=cachedImg.naturalWidth, imgH=cachedImg.naturalHeight;
   var order=tiles.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
   var idx=0;
   tileInterval=setInterval(function(){
     if(idx>=order.length||guessed){clearInterval(tileInterval);return;}
-    var canvas=document.getElementById('tileCanvas');
-    var ctx=canvas.getContext('2d');
     var t=tiles[order[idx]];
     t.visible=false;
-    // Redraw that cell from image
-    var img=new Image();img.crossOrigin='anonymous';
-    img.onload=function(){
-      var W=canvas.width, H=canvas.height;
-      var tw=Math.floor(W/COLS), th=Math.floor(H/ROWS);
-      ctx.drawImage(img,t.c*(img.naturalWidth/COLS),t.r*(img.naturalHeight/ROWS),img.naturalWidth/COLS,img.naturalHeight/ROWS,t.x,t.y,t.w,t.h);
-    };
-    img.src=getImg();
+    // Use cached image — no new load needed
+    ctx.drawImage(cachedImg,
+      Math.floor(t.c*(imgW/COLS)), Math.floor(t.r*(imgH/ROWS)),
+      Math.ceil(imgW/COLS), Math.ceil(imgH/ROWS),
+      t.x, t.y, t.w, t.h);
     idx++;tilesRemaining=ROWS*COLS-idx;roundScore=Math.max(0,tilesRemaining*10);
     updateStats();
     if(tilesRemaining===0&&!guessed){clearInterval(tileInterval);endRound(false);}
