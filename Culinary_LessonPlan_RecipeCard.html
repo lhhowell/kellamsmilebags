@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Lesson Plan — OneWord Recipe Card | Culinary Arts · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#1A2744;--gold:#C8860A;--gold-light:#E8A820;--cream:#FDF8F0;--warm:#F5EDD8;--border:#E0D5C0;--text:#2A2A2A;--muted:#777;}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;padding:0 0 60px;}
+@media print{
+  body{background:#fff;padding:0;}
+  .no-print{display:none!important;}
+  .page{box-shadow:none!important;margin:0!important;border-radius:0!important;}
+  @page{margin:.5in;}
+}
+.page{max-width:900px;margin:30px auto;background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.1);overflow:hidden;}
+/* HEADER */
+.lp-header{background:var(--navy);padding:32px 40px;position:relative;overflow:hidden;}
+.lp-header::before{content:'';position:absolute;right:-60px;top:-60px;width:240px;height:240px;background:rgba(200,134,10,.08);border-radius:50%;}
+.lp-header::after{content:'';position:absolute;right:40px;bottom:-40px;width:140px;height:140px;background:rgba(200,134,10,.05);border-radius:50%;}
+.lp-tag{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;color:var(--gold-light);text-transform:uppercase;margin-bottom:8px;}
+.lp-title{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,34px);font-weight:900;color:#fff;line-height:1.15;margin-bottom:6px;}
+.lp-title span{color:var(--gold-light);}
+.lp-sub{font-size:13px;color:rgba(255,255,255,.5);margin-top:4px;}
+.lp-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:24px;}
+.meta-chip{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 14px;}
+.meta-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:3px;font-family:'Fredoka One',cursive;}
+.meta-val{font-size:13px;font-weight:800;color:#fff;}
+/* BODY */
+.lp-body{padding:36px 40px;}
+/* SECTION */
+.section{margin-bottom:32px;}
+.section-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--warm);}
+.section-icon{font-size:20px;}
+.section-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--navy);}
+.section-tag{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-left:auto;}
+/* OBJECTIVE */
+.objective-box{background:var(--warm);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:16px 20px;font-size:14px;line-height:1.8;color:var(--text);}
+.objective-box strong{color:var(--navy);}
+/* STANDARDS */
+.standard-list{display:flex;flex-direction:column;gap:8px;}
+.standard-item{display:flex;gap:12px;align-items:flex-start;background:var(--warm);border-radius:10px;padding:12px 16px;}
+.standard-code{font-family:'Fredoka One',cursive;font-size:11px;color:var(--gold);background:var(--navy);padding:3px 8px;border-radius:6px;white-space:nowrap;flex-shrink:0;}
+.standard-text{font-size:13px;color:var(--text);line-height:1.6;}
+/* TIMELINE */
+.timeline{display:flex;flex-direction:column;gap:0;}
+.tl-item{display:flex;gap:0;}
+.tl-time{flex:0 0 90px;text-align:right;padding:16px 16px 16px 0;}
+.tl-time-label{font-family:'Fredoka One',cursive;font-size:13px;color:var(--gold);}
+.tl-time-dur{font-size:10px;color:var(--muted);letter-spacing:1px;}
+.tl-line{display:flex;flex-direction:column;align-items:center;flex:0 0 24px;}
+.tl-dot{width:12px;height:12px;border-radius:50%;background:var(--navy);flex-shrink:0;margin-top:20px;}
+.tl-vert{flex:1;width:2px;background:var(--border);}
+.tl-item:last-child .tl-vert{display:none;}
+.tl-content{flex:1;padding:12px 0 12px 16px;}
+.tl-phase{font-family:'Fredoka One',cursive;font-size:14px;color:var(--navy);margin-bottom:4px;}
+.tl-desc{font-size:13px;color:#555;line-height:1.7;}
+.tl-bullets{margin-top:6px;padding-left:16px;}
+.tl-bullets li{font-size:13px;color:#555;line-height:1.8;}
+/* ASSESSMENT */
+.assess-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
+.assess-card{border:2px solid var(--border);border-radius:12px;padding:16px;}
+.assess-card-title{font-family:'Fredoka One',cursive;font-size:13px;color:var(--navy);margin-bottom:6px;}
+.assess-card-text{font-size:12px;color:#666;line-height:1.7;}
+/* DIFFERENTIATION */
+.diff-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+@media(max-width:600px){.diff-grid{grid-template-columns:1fr;}}
+.diff-card{border-radius:12px;padding:14px 16px;}
+.diff-card.support{background:#EBF5FB;border:1px solid #AED6F1;}
+.diff-card.on-level{background:#EAFAF1;border:1px solid #A9DFBF;}
+.diff-card.extend{background:#FEF9E7;border:1px solid #F9E79F;}
+.diff-title{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.diff-card.support .diff-title{color:#1A5276;}
+.diff-card.on-level .diff-title{color:#1E8449;}
+.diff-card.extend .diff-title{color:#9A7D0A;}
+.diff-text{font-size:12px;line-height:1.7;color:#444;}
+/* MATERIALS */
+.materials-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:500px){.materials-grid{grid-template-columns:1fr;}}
+.mat-group-title{font-family:'Fredoka One',cursive;font-size:12px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.mat-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.mat-list li{font-size:13px;color:#555;padding-left:16px;position:relative;line-height:1.6;}
+.mat-list li::before{content:'•';position:absolute;left:0;color:var(--gold);}
+/* FOOTER */
+.lp-footer{background:var(--warm);border-top:2px solid var(--border);padding:20px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:12px;color:var(--muted);letter-spacing:1px;}
+.print-btn{padding:10px 22px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-family:'Fredoka One',cursive;font-size:13px;cursor:pointer;transition:all .2s;}
+.print-btn:hover{background:var(--gold);}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="lp-header">
+    <div class="lp-tag">Culinary Arts · Smile Bags · Lesson Plan 1 of 4</div>
+    <div class="lp-title">OneWord <span>Recipe Card</span> Kiosk</div>
+    <div class="lp-sub">Students select a OneWord, generate a themed recipe, cook and taste, then rate and reflect.</div>
+    <div class="lp-meta">
+      <div class="meta-chip"><div class="meta-label">Teacher</div><div class="meta-val">Betsabe Sayers</div></div>
+      <div class="meta-chip"><div class="meta-label">Classes</div><div class="meta-val">Intro to Culinary · Catering</div></div>
+      <div class="meta-chip"><div class="meta-label">Duration</div><div class="meta-val">90 Minutes</div></div>
+      <div class="meta-chip"><div class="meta-label">Project</div><div class="meta-val">Smile Bags</div></div>
+      <div class="meta-chip"><div class="meta-label">Term</div><div class="meta-val">Spring 2026</div></div>
+    </div>
+  </div>
+
+  <div class="lp-body">
+
+    <!-- OBJECTIVE -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-icon">🎯</div>
+        <div class="section-title">Learning Objective</div>
+      </div>
+      <div class="objective-box">
+        Students will <strong>select a OneWord</strong> from the Smile Bags vocabulary list, use a digital kiosk to generate a themed recipe connected to that word's meaning, <strong>prepare and taste the recipe</strong> in a professional culinary setting, and <strong>evaluate the result</strong> using a structured star rating and written reflection — contributing their feedback to a class-wide data set.
+      </div>
+    </div>
+
+    <!-- STANDARDS -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-icon">📋</div>
+        <div class="section-title">Future Ready Virginia Beach Standards</div>
+      </div>
+      <div class="standard-list">
+        <div class="standard-item">
+          <div class="standard-code">FR · CTE</div>
+          <div class="standard-text"><strong>Career &amp; Technical Education:</strong> Students apply industry-standard culinary techniques in a real-world service-learning context, producing items intended for community distribution.</div>
+        </div>
+        <div class="standard-item">
+          <div class="standard-code">FR · CC</div>
+          <div class="standard-text"><strong>Critical Thinking &amp; Communication:</strong> Students evaluate recipe outcomes using structured criteria, articulate observations in written form, and connect culinary science to vocabulary meaning.</div>
+        </div>
+        <div class="standard-item">
+          <div class="standard-code">FR · SR</div>
+          <div class="standard-text"><strong>Socially Responsible:</strong> Students contribute to a cross-curricular service-learning project that directly benefits elementary school students in need of encouragement and support.</div>
+        </div>
+        <div class="standard-item">
+          <div class="standard-code">FR · DL</div>
+          <div class="standard-text"><strong>Digital Literacy:</strong> Students navigate a web-based kiosk to select, generate, and submit a recipe card — using technology as a purposeful creative and organizational tool.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MATERIALS -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-icon">🧰</div>
+        <div class="section-title">Materials &amp; Resources</div>
+      </div>
+      <div class="materials-grid">
+        <div>
+          <div class="mat-group-title">Technology</div>
+          <ul class="mat-list">
+            <li>Student Chromebooks or classroom devices</li>
+            <li>OneWord Recipe Card Kiosk (browser-based)</li>
+            <li>Google Sheets submission log (auto-populated)</li>
+            <li>Projector for kiosk demonstration</li>
+          </ul>
+        </div>
+        <div>
+          <div class="mat-group-title">Culinary</div>
+          <ul class="mat-list">
+            <li>Ingredients per selected recipe (sourced by teacher)</li>
+            <li>Standard culinary lab equipment</li>
+            <li>Printed recipe cards (optional backup)</li>
+            <li>Taste evaluation rubric (embedded in kiosk)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-icon">⏱️</div>
+        <div class="section-title">90-Minute Lesson Timeline</div>
+        <div class="section-tag">Block Schedule</div>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-time"><div class="tl-time-label">0:00</div><div class="tl-time-dur">10 min</div></div>
+          <div class="tl-line"><div class="tl-dot"></div><div class="tl-vert"></div></div>
+          <div class="tl-content">
+            <div class="tl-phase">Introduction &amp; Kiosk Demo</div>
+            <div class="tl-desc">Teacher introduces the Smile Bags project context and models navigating the OneWord Recipe Card Kiosk on the projector. Students review the 25 OneWords and begin thinking about which word resonates with them.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time"><div class="tl-time-label">0:10</div><div class="tl-time-dur">15 min</div></div>
+          <div class="tl-line"><div class="tl-dot"></div><div class="tl-vert"></div></div>
+          <div class="tl-content">
+            <div class="tl-phase">Kiosk Navigation &amp; Recipe Selection</div>
+            <div class="tl-desc">Students open the kiosk, enter their name and class, select their OneWord, and choose one of two recipe options. They review the recipe card — ingredients, steps, and the "Why this word?" connection — and submit their card to the class log.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time"><div class="tl-time-label">0:25</div><div class="tl-time-dur">10 min</div></div>
+          <div class="tl-line"><div class="tl-dot"></div><div class="tl-vert"></div></div>
+          <div class="tl-content">
+            <div class="tl-phase">Mise en Place &amp; Lab Prep</div>
+            <div class="tl-desc">Students wash hands, gather equipment, and measure/organize ingredients based on their recipe card. Teacher reviews key techniques and safety reminders relevant to the day's recipes.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time"><div class="tl-time-label">0:35</div><div class="tl-time-dur">35 min</div></div>
+          <div class="tl-line"><div class="tl-dot"></div><div class="tl-vert"></div></div>
+          <div class="tl-content">
+            <div class="tl-phase">Cooking Lab</div>
+            <div class="tl-desc">Students prepare their recipe following the kiosk-generated steps. Teacher circulates to support technique, safety, and quality. Students practice professional kitchen behaviors appropriate to their class level.</div>
+            <ul class="tl-bullets">
+              <li>Intro to Culinary: focus on foundational techniques and following instructions precisely</li>
+              <li>Catering: focus on production efficiency, plating, and presentation quality</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time"><div class="tl-time-label">1:10</div><div class="tl-time-dur">10 min</div></div>
+          <div class="tl-line"><div class="tl-dot"></div><div class="tl-vert"></div></div>
+          <div class="tl-content">
+            <div class="tl-phase">Taste &amp; Evaluate</div>
+            <div class="tl-desc">Students taste their completed dish and return to the kiosk to submit a 1–5 star rating and written comment. Ratings log automatically to the class spreadsheet for Ms. Sayers to review.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time"><div class="tl-time-label">1:20</div><div class="tl-time-dur">10 min</div></div>
+          <div class="tl-line"><div class="tl-dot"></div><div class="tl-vert"></div></div>
+          <div class="tl-content">
+            <div class="tl-phase">Clean Up &amp; Reflection</div>
+            <div class="tl-desc">Students clean and sanitize their stations to industry standards. Class closes with a brief discussion: Which words got the highest ratings? What would you change about the recipe? How does the recipe connect to the word's meaning?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ASSESSMENT -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-icon">📊</div>
+        <div class="section-title">Assessment</div>
+      </div>
+      <div class="assess-grid">
+        <div class="assess-card">
+          <div class="assess-card-title">🖥️ Kiosk Submission</div>
+          <div class="assess-card-text">Completion of the recipe card kiosk — name, word selection, recipe choice, and dedication field submitted to the class log.</div>
+        </div>
+        <div class="assess-card">
+          <div class="assess-card-title">🍳 Lab Performance</div>
+          <div class="assess-card-text">Teacher observation of technique, safety, mise en place, and professional kitchen behavior during the cooking lab.</div>
+        </div>
+        <div class="assess-card">
+          <div class="assess-card-title">⭐ Taste Rating</div>
+          <div class="assess-card-text">Completion of 1–5 star rating and written comment submitted through the kiosk after tasting — logged to the class spreadsheet.</div>
+        </div>
+        <div class="assess-card">
+          <div class="assess-card-title">🧹 Station Sanitation</div>
+          <div class="assess-card-text">End-of-lab station check — equipment cleaned, surfaces sanitized, and materials returned to appropriate storage.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIFFERENTIATION -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-icon">🌱</div>
+        <div class="section-title">Differentiation</div>
+      </div>
+      <div class="diff-grid">
+        <div class="diff-card support">
+          <div class="diff-title">🤝 Support</div>
+          <div class="diff-text">Pre-selected word option available. Teacher pairs student with a lab partner. Printed recipe card provided as a physical backup. Step-by-step technique check-ins during lab.</div>
+        </div>
+        <div class="diff-card on-level">
+          <div class="diff-title">✅ On Level</div>
+          <div class="diff-text">Student selects their own word and recipe independently. Follows kiosk steps and lab procedures with standard teacher support. Completes rating and reflection.</div>
+        </div>
+        <div class="diff-card extend">
+          <div class="diff-title">🚀 Extension</div>
+          <div class="diff-text">Student modifies the recipe with one ingredient substitution and notes the change. Writes an extended reflection connecting the recipe to the word's deeper meaning. Presents to class.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONNECTION -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-icon">💙</div>
+        <div class="section-title">Smile Bags Connection</div>
+      </div>
+      <div class="objective-box">
+        The recipe card produced in this lesson represents Culinary Arts' contribution to the <strong>Smile Bags</strong> project — a cross-curricular service-learning initiative serving elementary students at Three Oaks Elementary. Students' recipe cards, once refined through the rating process, will be printed on cardstock and placed inside Smile Bags as a gift for a family to enjoy together. <strong>Every recipe is an act of care for a child who needs it.</strong>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="lp-footer">
+    <div class="footer-sig">Smile Bags: A Word &amp; Wonder Experience &nbsp;·&nbsp; Culinary Arts &nbsp;·&nbsp; Betsabe Sayers &nbsp;·&nbsp; Spring 2026</div>
+    <button class="print-btn no-print" onclick="window.print()">🖨️ Print / Save PDF</button>
+  </div>
+</div>
+
+</body>
+</html>
