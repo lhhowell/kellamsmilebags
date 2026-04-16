@@ -760,10 +760,12 @@ function buildPreview(){
 async function submitCard(){
   goTo(5);
   const r=RECIPES[S.word][S.recipeIdx];
+  const ratingComment = document.getElementById('ratingComment') ? document.getElementById('ratingComment').value : '';
   const payload={
     studentName:S.name, teacher:S.teacher, classType:S.classType||'', word:S.word,
     recipeLevel:r.level, recipeName:r.name,
     dedication:S.dedication,
+    rating:S_rating, ratingLabel:S_ratingLabels[S_rating]||'', comment:ratingComment,
     timestamp:new Date().toLocaleString('en-US',{timeZone:'America/New_York'})
   };
   try{ await fetch(SUBMIT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); }catch(e){console.warn(e);}
