@@ -135,7 +135,7 @@ body{font-family:'Nunito',sans-serif;background:#0A0A0A;color:#fff;min-height:10
 <div class="hdr">
   <div>
     <div class="hdr-title">&#127919; CYCLE — Activity Hub</div>
-    <div class="hdr-sub">Smile Bags &middot; High School Activities &middot; Play, Create &amp; Share</div>
+    <div class="hdr-sub">CYCLE &middot; Smile Bags &middot; High School Activities &middot; Play, Create &amp; Share</div>
   </div>
   <a href="KSB_Stories_Kiosk.html" class="back-btn">&#8592; Back to Word World</a>
 </div>
@@ -193,7 +193,7 @@ body{font-family:'Nunito',sans-serif;background:#0A0A0A;color:#fff;min-height:10
 
 <!-- PUZZLE TAB -->
 <div class="tab-panel active" id="tab-puzzle">
-  <div class="section-title">&#129513; ABSORB Jigsaw Puzzle</div>
+  <div class="section-title">&#129513; CYCLE Jigsaw Puzzle</div>
   <p style="font-size:14px;color:#555;margin-bottom:16px;">Solve the CYCLE illustration puzzle — then download your completed image to share with a child!</p>
   <div class="stat-bar">
     <div class="stat"><div class="stat-val" id="pMoves">0</div><div class="stat-label">Moves</div></div>
@@ -216,7 +216,7 @@ body{font-family:'Nunito',sans-serif;background:#0A0A0A;color:#fff;min-height:10
 
 <!-- MAZE TAB -->
 <div class="tab-panel" id="tab-maze">
-  <div class="section-title">&#128196; ABSORB Maze</div>
+  <div class="section-title">&#128196; CYCLE Maze</div>
   <p style="font-size:14px;color:#555;margin-bottom:16px;">Help the Smile Bag find its way through the CYCLE maze! Use arrow keys or WASD to move.</p>
   <div class="stat-bar">
     <div class="stat"><div class="stat-val" id="mSteps">0</div><div class="stat-label">Steps</div></div>
@@ -236,7 +236,7 @@ body{font-family:'Nunito',sans-serif;background:#0A0A0A;color:#fff;min-height:10
   <div class="section-title">&#129504; Brain Challenge</div>
   <p style="font-size:14px;color:#555;margin-bottom:20px;">Two challenges — word scramble and word search. Find all the hidden words and unscramble the vocabulary!</p>
   <div style="font-family:'Fredoka One',cursive;font-size:17px;color:var(--gold);margin-bottom:12px;">&#128257; Word Scramble</div>
-  <p style="font-size:13px;color:#555;margin-bottom:14px;">Unscramble each CYCLE vocabulary word. Type your answer and press Enter!</p>
+  <p style="font-size:13px;color:#555;margin-bottom:14px;">Unscramble each EMERGE vocabulary word. Type your answer and press Enter!</p>
   <div class="scramble-list" id="scrambleList"></div>
   <div class="btn-row">
     <button class="btn btn-gold" onclick="checkScramble()">&#10003; Check Answers</button>
@@ -255,7 +255,12 @@ body{font-family:'Nunito',sans-serif;background:#0A0A0A;color:#fff;min-height:10
 <!-- PAINT TAB -->
 <div class="tab-panel" id="tab-paint">
   <div class="section-title">&#127912; Digital Paint</div>
-  <p style="font-size:14px;color:#555;margin-bottom:16px;">Color the ABSORB scene your way! Choose your colors, paint the image, then download it to share with a child in the community.</p>
+  <p style="font-size:14px;color:#555;margin-bottom:16px;">Color the CYCLE scene your way! Choose your illustration set, pick your colors, paint the image, then download it to share with a child in the community.</p>
+  <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
+    <span style="font-family:'Fredoka One',cursive;font-size:11px;color:#555;letter-spacing:1px;text-transform:uppercase;">Illustration Set:</span>
+    <button id="setBtnI" onclick="switchPaintSet('I')" style="padding:7px 18px;border-radius:50px;border:2px solid var(--gold-dark);background:var(--gold);color:#111;font-family:'Fredoka One',cursive;font-size:12px;cursor:pointer;transition:all .2s;">&#128218; Set I &middot; Science Journal (ChatGPT)</button>
+    <button id="setBtnJ" onclick="switchPaintSet('J')" style="padding:7px 18px;border-radius:50px;border:2px solid #333;background:transparent;color:#555;font-family:'Fredoka One',cursive;font-size:12px;cursor:pointer;transition:all .2s;">&#127912; Set J &middot; Science Sketch (CoPilot)</button>
+  </div>
   <div class="paint-wrap">
     <div class="paint-tools">
       <div style="font-size:10px;color:#555;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Colors</div>
@@ -287,7 +292,7 @@ body{font-family:'Nunito',sans-serif;background:#0A0A0A;color:#fff;min-height:10
     <button class="btn btn-gold" onclick="downloadPainting()">&#11015;&#65039; Download My Painting</button>
     <button class="btn btn-dark" onclick="printPainting()">&#128438; Print My Painting</button>
   </div>
-  <p style="font-size:11px;color:#333;margin-top:10px;">Coloring page from the Smile Bags OneWord Stories &middot; CYCLE</p>
+  <p style="font-size:11px;color:#333;margin-top:10px;">AP Bio &amp; T.I.D.E. Science Illustration &middot; CYCLE &middot; Set I (ChatGPT) &amp; Set J (CoPilot)</p>
 </div>
 
 
@@ -318,14 +323,17 @@ body{font-family:'Nunito',sans-serif;background:#0A0A0A;color:#fff;min-height:10
   </div>
 </div>
 
-<div class="footer">Smile Bags: A Word &amp; Wonder Experience &middot; CYCLE &middot; Activity Hub</div>
+<div class="footer">Smile Bags: A Word &amp; Wonder Experience &middot; EMERGE &middot; Activity Hub</div>
 
 <script>
 var WORD = "CYCLE";
 var COLOR_IMG = "https://lhhowell.github.io/kellamsmilebags/Cycle_Color.png";
 var BW_IMG = "https://lhhowell.github.io/kellamsmilebags/Cycle_ColoringPage.png";
-var SCRAMBLE_WORDS = [{word:"CYCLE",scrambled:"CLCEY"},{word:"RENEW",scrambled:"REEWN"},{word:"RETURN",scrambled:"UNRTRE"},{word:"ROTATE",scrambled:"ORETTA"},{word:"REPEAT",scrambled:"TPEARE"},{word:"REVOLVE",scrambled:"VOEVELR"}];
-var WS_WORDS = ["CYCLE","RENEW","RETURN","ROTATE","REPEAT","REVOLVE","TURN","BEGIN"];
+var SET_I_IMG = "https://lhhowell.github.io/kellamsmilebags/SetI_Cycle.png";
+var SET_J_IMG = "https://lhhowell.github.io/kellamsmilebags/SetJ_Cycle.png";
+var activePaintSet = 'I';
+var SCRAMBLE_WORDS = [{word:"CYCLE",scrambled:"CCYLE"},{word:"WATER",scrambled:"RWATE"},{word:"CARBON",scrambled:"BONCAR"},{word:"NITROGEN",scrambled:"TGENIORN"},{word:"EVAPORATE",scrambled:"PEOARVETEA"},{word:"RAIN",scrambled:"NIAR"}];
+var WS_WORDS = ["CYCLE","WATER","CARBON","NITROGEN","RAIN","CLOUD","EVAPORATE","LOOP"];
 
 // ═══════════════════════ TABS ═══════════════════════
 function showTab(name, btn) {
@@ -624,7 +632,7 @@ function initPaint(){
     ctx.drawImage(paintImg,0,0,canvas.width,canvas.height);
     savePaintState();
   };
-  paintImg.src=BW_IMG;
+  paintImg.src=activePaintSet==='I'?SET_I_IMG:SET_J_IMG;
   var painting=false;
   canvas.addEventListener('mousedown',function(e){painting=true; paint(e);});
   canvas.addEventListener('mousemove',function(e){if(painting) paint(e);});
@@ -665,6 +673,19 @@ function clearPaint(){
   ctx.clearRect(0,0,c.width,c.height);
   ctx.drawImage(paintImg,0,0,c.width,c.height);
   savePaintState();
+}
+
+function switchPaintSet(set){
+  activePaintSet=set;
+  document.getElementById('setBtnI').style.background=set==='I'?'var(--gold)':'transparent';
+  document.getElementById('setBtnI').style.borderColor=set==='I'?'var(--gold-dark)':'#333';
+  document.getElementById('setBtnI').style.color=set==='I'?'#111':'#555';
+  document.getElementById('setBtnJ').style.background=set==='J'?'var(--gold)':'transparent';
+  document.getElementById('setBtnJ').style.borderColor=set==='J'?'var(--gold-dark)':'#333';
+  document.getElementById('setBtnJ').style.color=set==='J'?'#111':'#555';
+  paintReady=false;
+  paintHistory=[];
+  initPaint();
 }
 
 function setColor(color,el){
