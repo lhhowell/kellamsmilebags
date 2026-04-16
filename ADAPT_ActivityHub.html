@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>ABSORB — Activity Hub | Smile Bags</title>
+<title>ADAPT — Activity Hub | Smile Bags</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -97,7 +97,7 @@ body{font-family:'Nunito',sans-serif;background:#0A0A0A;color:#fff;min-height:10
 <body>
 <div class="hdr">
   <div>
-    <div class="hdr-title">&#127919; ABSORB — Activity Hub</div>
+    <div class="hdr-title">&#127919; ADAPT — Activity Hub</div>
     <div class="hdr-sub">Smile Bags &middot; High School Activities &middot; Play, Create &amp; Share</div>
   </div>
   <a href="KSB_Stories_Kiosk.html" class="back-btn">&#8592; Back to Word World</a>
@@ -115,8 +115,8 @@ body{font-family:'Nunito',sans-serif;background:#0A0A0A;color:#fff;min-height:10
 
 <!-- PUZZLE TAB -->
 <div class="tab-panel active" id="tab-puzzle">
-  <div class="section-title">&#129513; ABSORB Jigsaw Puzzle</div>
-  <p style="font-size:14px;color:#555;margin-bottom:16px;">Solve the ABSORB illustration puzzle — then download your completed image to share with a child!</p>
+  <div class="section-title">&#129513; ADAPT Jigsaw Puzzle</div>
+  <p style="font-size:14px;color:#555;margin-bottom:16px;">Solve the ADAPT illustration puzzle — then download your completed image to share with a child!</p>
   <div class="stat-bar">
     <div class="stat"><div class="stat-val" id="pMoves">0</div><div class="stat-label">Moves</div></div>
     <div class="stat"><div class="stat-val" id="pLeft">12</div><div class="stat-label">Pieces Left</div></div>
@@ -138,8 +138,8 @@ body{font-family:'Nunito',sans-serif;background:#0A0A0A;color:#fff;min-height:10
 
 <!-- MAZE TAB -->
 <div class="tab-panel" id="tab-maze">
-  <div class="section-title">&#128196; ABSORB Maze</div>
-  <p style="font-size:14px;color:#555;margin-bottom:16px;">Help the Smile Bag find its way through the ABSORB maze! Use arrow keys or WASD to move.</p>
+  <div class="section-title">&#128196; ADAPT Maze</div>
+  <p style="font-size:14px;color:#555;margin-bottom:16px;">Help the Smile Bag find its way through the ADAPT maze! Use arrow keys or WASD to move.</p>
   <div class="stat-bar">
     <div class="stat"><div class="stat-val" id="mSteps">0</div><div class="stat-label">Steps</div></div>
     <div class="stat"><div class="stat-val" id="mTime">0:00</div><div class="stat-label">Time</div></div>
@@ -158,7 +158,7 @@ body{font-family:'Nunito',sans-serif;background:#0A0A0A;color:#fff;min-height:10
   <div class="section-title">&#129504; Brain Challenge</div>
   <p style="font-size:14px;color:#555;margin-bottom:20px;">Two challenges — word scramble and word search. Find all the hidden words and unscramble the vocabulary!</p>
   <div style="font-family:'Fredoka One',cursive;font-size:17px;color:var(--gold);margin-bottom:12px;">&#128257; Word Scramble</div>
-  <p style="font-size:13px;color:#555;margin-bottom:14px;">Unscramble each ABSORB vocabulary word. Type your answer and press Enter!</p>
+  <p style="font-size:13px;color:#555;margin-bottom:14px;">Unscramble each ADAPT vocabulary word. Type your answer and press Enter!</p>
   <div class="scramble-list" id="scrambleList"></div>
   <div class="btn-row">
     <button class="btn btn-gold" onclick="checkScramble()">&#10003; Check Answers</button>
@@ -177,7 +177,7 @@ body{font-family:'Nunito',sans-serif;background:#0A0A0A;color:#fff;min-height:10
 <!-- PAINT TAB -->
 <div class="tab-panel" id="tab-paint">
   <div class="section-title">&#127912; Digital Paint</div>
-  <p style="font-size:14px;color:#555;margin-bottom:16px;">Color the ABSORB scene your way! Choose your colors, paint the image, then download it to share with a child in the community.</p>
+  <p style="font-size:14px;color:#555;margin-bottom:16px;">Color the ADAPT scene your way! Choose your colors, paint the image, then download it to share with a child in the community.</p>
   <div class="paint-wrap">
     <div class="paint-tools">
       <div style="font-size:10px;color:#555;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Colors</div>
@@ -209,7 +209,7 @@ body{font-family:'Nunito',sans-serif;background:#0A0A0A;color:#fff;min-height:10
     <button class="btn btn-gold" onclick="downloadPainting()">&#11015;&#65039; Download My Painting</button>
     <button class="btn btn-dark" onclick="printPainting()">&#128438; Print My Painting</button>
   </div>
-  <p style="font-size:11px;color:#333;margin-top:10px;">Coloring page from the Kellam Smile Bags OneWord Stories &middot; ABSORB</p>
+  <p style="font-size:11px;color:#333;margin-top:10px;">Coloring page from the Kellam Smile Bags OneWord Stories &middot; ADAPT</p>
 </div>
 
 
@@ -240,14 +240,14 @@ body{font-family:'Nunito',sans-serif;background:#0A0A0A;color:#fff;min-height:10
   </div>
 </div>
 
-<div class="footer">Smile Bags: A Word &amp; Wonder Experience &middot; ABSORB &middot; Activity Hub</div>
+<div class="footer">Smile Bags: A Word &amp; Wonder Experience &middot; ADAPT &middot; Activity Hub</div>
 
 <script>
-var WORD = "ABSORB";
-var COLOR_IMG = "https://lhhowell.github.io/kellamsmilebags/Absorb_Color.png";
-var BW_IMG = "https://lhhowell.github.io/kellamsmilebags/Absorb_ColoringPage.png";
-var SCRAMBLE_WORDS = [{word:"ABSORB",scrambled:"SBORAB"},{word:"GATHER",scrambled:"HAEGTR"},{word:"SPONGE",scrambled:"NGEPOS"},{word:"INTAKE",scrambled:"IENTKA"},{word:"SOAK",scrambled:"KSOA"},{word:"RECEIVE",scrambled:"EICVERE"}];
-var WS_WORDS = ["ABSORB","GATHER","SOAK","INTAKE","LEARN","OPEN","STILL","BREATHE"];
+var WORD = "ADAPT";
+var COLOR_IMG = "https://lhhowell.github.io/kellamsmilebags/Adapt_Color.png";
+var BW_IMG = "https://lhhowell.github.io/kellamsmilebags/Adapt_ColoringPage.png";
+var SCRAMBLE_WORDS = [{word:"ADAPT",scrambled:"ATDPA"},{word:"CHANGE",scrambled:"HCNEGA"},{word:"ADJUST",scrambled:"DJASUT"},{word:"EVOLVE",scrambled:"EVVOEL"},{word:"SHIFT",scrambled:"HTFSI"},{word:"GROW",scrambled:"WOGR"}];
+var WS_WORDS = ["ADAPT","CHANGE","ADJUST","EVOLVE","SHIFT","FLEX","PIVOT","GROW"];
 
 // ═══════════════════════ TABS ═══════════════════════
 function showTab(name, btn) {
