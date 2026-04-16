@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Color by Number Race · Digital Arts · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--forest:#1B4332;--forest2:#2D6A4F;--forest3:#40916C;--gold:#C9A84C;--gold2:#E8C97A;--dark:#0a140a;}
+body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-height:100vh;}
+.hdr{background:#0d1a0d;border-bottom:2px solid var(--forest2);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold2);}
+.hdr-sub{font-size:11px;color:#557055;margin-top:2px;}
+.timer-bar{background:#111;border-bottom:2px solid #1a3a1a;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;position:sticky;top:0;z-index:60;}
+.timer-display{display:flex;align-items:center;gap:12px;}
+.timer-clock{font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);min-width:70px;}
+.timer-clock.warning{color:#FF7043;}
+.timer-clock.danger{color:#E53935;animation:pulse .4s ease infinite alternate;}
+@keyframes pulse{from{opacity:1}to{opacity:.4}}
+.timer-track{flex:1;min-width:120px;height:8px;background:#1a1a1a;border-radius:8px;overflow:hidden;}
+.timer-fill{height:100%;background:linear-gradient(90deg,var(--forest2),var(--forest3));border-radius:8px;transition:width .5s linear;}
+.timer-fill.warning{background:linear-gradient(90deg,#E64A19,#FF7043);}
+.timer-fill.danger{background:linear-gradient(90deg,#880E4F,#E53935);}
+.score-section{font-family:'Fredoka One',cursive;font-size:18px;color:var(--gold);}
+.workspace{max-width:1000px;margin:0 auto;padding:24px;}
+.setup-card{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:14px;padding:24px;margin-bottom:16px;}
+.setup-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--forest3);margin-bottom:8px;}
+.word-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-bottom:16px;}
+.word-btn{background:#111;border:1.5px solid #1a3a1a;border-radius:8px;padding:9px 6px;font-family:'Fredoka One',cursive;font-size:11px;color:#557055;cursor:pointer;text-align:center;transition:all .2s;}
+.word-btn:hover{border-color:var(--forest3);color:var(--forest3);}
+.word-btn.active{background:var(--forest2);border-color:var(--forest3);color:#fff;}
+.set-row{display:flex;gap:10px;margin-bottom:16px;}
+.set-btn{flex:1;background:#111;border:2px solid #1a3a1a;border-radius:10px;padding:12px;cursor:pointer;text-align:center;transition:all .2s;font-family:'Fredoka One',cursive;font-size:12px;color:#557055;}
+.set-btn:hover{border-color:var(--forest3);}
+.set-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.08);}
+.btn{padding:12px 24px;border-radius:8px;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111;}
+.btn-gold:hover{transform:translateY(-2px);}
+.btn-gold:disabled{background:#1a3a1a;color:#333;cursor:not-allowed;transform:none;}
+.btn-outline{background:transparent;border:1.5px solid #1a3a1a;color:#557055;}
+.btn-outline:hover{border-color:var(--forest3);color:var(--forest3);}
+/* GAME */
+.game-area{display:flex;gap:20px;flex-wrap:wrap;}
+.key-panel{min-width:160px;background:#0d1a0d;border:1px solid #1a3a1a;border-radius:12px;padding:16px;}
+.key-title{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--forest3);margin-bottom:12px;}
+.key-item{display:flex;align-items:center;gap:10px;margin-bottom:8px;cursor:pointer;border-radius:8px;padding:6px 8px;transition:all .2s;}
+.key-item:hover{background:rgba(255,255,255,.05);}
+.key-item.active-color{background:rgba(201,168,76,.1);border:1px solid var(--gold);}
+.key-num{font-family:'Fredoka One',cursive;font-size:14px;color:#fff;width:22px;text-align:center;}
+.key-swatch{width:28px;height:28px;border-radius:6px;border:2px solid transparent;}
+.key-item.active-color .key-swatch{border-color:#fff;}
+.key-label{font-size:11px;color:#888;}
+.canvas-wrap{flex:1;min-width:300px;}
+#cbnCanvas{border-radius:12px;border:1px solid #1a3a1a;cursor:crosshair;display:block;max-width:100%;}
+.win-banner{display:none;background:linear-gradient(135deg,var(--forest),var(--forest2));border:2px solid var(--gold);border-radius:14px;padding:24px;text-align:center;margin-top:16px;}
+.win-banner.show{display:block;}
+.win-title{font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold2);margin-bottom:8px;}
+.win-sub{font-size:14px;color:rgba(255,255,255,.8);}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div><div class="hdr-title">🎨 Color by Number Race</div><div class="hdr-sub">Digital Arts · Smile Bags · Kara Gau</div></div>
+</div>
+<div class="timer-bar" id="timerBar" style="display:none;">
+  <div class="timer-display">
+    <div><div style="font-size:11px;color:#444;letter-spacing:1px;text-transform:uppercase;">Time Left</div>
+    <div class="timer-clock" id="timerClock">2:00</div></div>
+    <div style="flex:1;min-width:100px;"><div class="timer-track"><div class="timer-fill" id="timerFill" style="width:100%;"></div></div></div>
+  </div>
+  <div class="score-section">⭐ <span id="scoreVal">0</span> cells filled</div>
+</div>
+
+<a href="DigitalArts_Menu.html" style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid #2D6A4F;border-radius:50px;padding:7px 16px;font-family:'Fredoka One',cursive;font-size:11px;color:#40916C;text-decoration:none;margin:16px 0 0 24px;">&#8592; Back to Digital Arts Kiosk</a>
+<div class="workspace">
+  <div id="setupArea">
+    <div class="setup-card">
+      <div class="setup-label">Step 1 · Choose your OneWord</div>
+      <div class="word-grid" id="wordGrid"></div>
+      <div class="setup-label" style="margin-top:16px;">Step 2 · Choose illustration set</div>
+      <div class="set-row">
+        <button class="set-btn" id="setI" onclick="selSet('I')">Set I · Science Journal (ChatGPT)</button>
+        <button class="set-btn" id="setJ" onclick="selSet('J')">Set J · Science Sketch (CoPilot)</button>
+      </div>
+      <button class="btn btn-gold" id="startBtn" onclick="startGame()" disabled>🎨 Start Race!</button>
+    </div>
+  </div>
+  <div id="gameArea" style="display:none;">
+    <div class="game-area">
+      <div class="key-panel">
+        <div class="key-title">Color Key</div>
+        <div id="colorKey"></div>
+        <div style="margin-top:16px;">
+          <button class="btn btn-outline" onclick="undoCBN()" style="width:100%;margin-bottom:8px;padding:8px;">↩ Undo</button>
+          <button class="btn btn-outline" onclick="resetGame()" style="width:100%;padding:8px;">↩ New Game</button>
+        </div>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="cbnCanvas" width="500" height="500"></canvas>
+      </div>
+    </div>
+    <div class="win-banner" id="winBanner">
+      <div class="win-title">🎉 Race Complete!</div>
+      <div class="win-sub" id="winSub"></div>
+      <button class="btn btn-gold" onclick="resetGame()" style="margin-top:16px;">Play Again</button>
+    </div>
+  </div>
+</div>
+<script>
+var WORDS=['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT','CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST','RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
+var BASE='https://lhhowell.github.io/kellamsmilebags/';
+var COLORS=['#E87B5B','#F5D060','#66BB6A','#42A5F5','#CE93D8','#FF8A65','#80CBC4','#F48FB1','#A5D6A7','#90CAF9'];
+var COLOR_NAMES=['Coral','Yellow','Green','Blue','Purple','Orange','Teal','Pink','Mint','Sky'];
+var GRID=10, selWord='', selSetV='', activeColor=0, cells=[], history=[], score=0;
+var timerSecs=120, timerInt=null, timerRunning=false;
+
+function buildWordGrid(){
+  var g=document.getElementById('wordGrid');
+  WORDS.forEach(function(w){
+    var b=document.createElement('button');b.className='word-btn';b.textContent=w;
+    b.onclick=function(){selWord=w;document.querySelectorAll('.word-btn').forEach(function(x){x.classList.remove('active');});b.classList.add('active');checkReady();};
+    g.appendChild(b);
+  });
+}
+
+function selSet(s){selSetV=s;document.getElementById('setI').classList.toggle('active',s==='I');document.getElementById('setJ').classList.toggle('active',s==='J');checkReady();}
+function checkReady(){document.getElementById('startBtn').disabled=!(selWord&&selSetV);}
+
+function getImg(){
+  var w=selWord.charAt(0)+selWord.slice(1).toLowerCase();
+  return BASE+(selSetV==='I'?'SetI_':'SetJ_')+w+'.png';
+}
+
+function startGame(){
+  document.getElementById('setupArea').style.display='none';
+  document.getElementById('gameArea').style.display='block';
+  document.getElementById('timerBar').style.display='flex';
+  buildColorKey();
+  drawGame();
+  startTimer();
+}
+
+function buildColorKey(){
+  var k=document.getElementById('colorKey');k.innerHTML='';
+  COLORS.forEach(function(c,i){
+    var item=document.createElement('div');item.className='key-item'+(i===0?' active-color':'');item.id='ki'+i;
+    item.innerHTML='<span class="key-num">'+(i+1)+'</span><div class="key-swatch" style="background:'+c+'"></div><span class="key-label">'+COLOR_NAMES[i]+'</span>';
+    item.onclick=function(){setActiveColor(i);};
+    k.appendChild(item);
+  });
+}
+
+function setActiveColor(i){
+  activeColor=i;
+  document.querySelectorAll('.key-item').forEach(function(x){x.classList.remove('active-color');});
+  document.getElementById('ki'+i).classList.add('active-color');
+}
+
+function drawGame(){
+  var canvas=document.getElementById('cbnCanvas');
+  var ctx=canvas.getContext('2d');
+  cells=[];history=[];score=0;
+  document.getElementById('scoreVal').textContent='0';
+
+  var img=new Image();img.crossOrigin='anonymous';
+  img.onload=function(){
+    canvas.width=img.naturalWidth||500;
+    canvas.height=img.naturalHeight||500;
+    var cw=Math.floor(canvas.width/GRID), ch=Math.floor(canvas.height/GRID);
+
+    // Sample color from image for each cell
+    var tmpCanvas=document.createElement('canvas');
+    tmpCanvas.width=canvas.width;tmpCanvas.height=canvas.height;
+    var tctx=tmpCanvas.getContext('2d');
+    tctx.drawImage(img,0,0);
+
+    ctx.drawImage(img,0,0);
+
+    for(var row=0;row<GRID;row++){
+      for(var col=0;col<GRID;col++){
+        var cx=col*cw+Math.floor(cw/2), cy=row*ch+Math.floor(ch/2);
+        var px=tctx.getImageData(cx,cy,1,1).data;
+        // Map to nearest palette color
+        var nearest=0, bestDist=999999;
+        COLORS.forEach(function(c,i){
+          var r=parseInt(c.slice(1,3),16),g=parseInt(c.slice(3,5),16),b=parseInt(c.slice(5,7),16);
+          var d=Math.pow(px[0]-r,2)+Math.pow(px[1]-g,2)+Math.pow(px[2]-b,2);
+          if(d<bestDist){bestDist=d;nearest=i;}
+        });
+        cells.push({row:row,col:col,colorIdx:nearest,filled:false,x:col*cw,y:row*ch,w:cw,h:ch});
+
+        // Draw number overlay
+        ctx.fillStyle='rgba(0,0,0,0.45)';
+        ctx.fillRect(col*cw,row*ch,cw,ch);
+        ctx.fillStyle='#fff';
+        ctx.font='bold '+(cw>30?13:10)+'px Fredoka One,sans-serif';
+        ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillText(nearest+1,col*cw+cw/2,row*ch+ch/2);
+        ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=1;
+        ctx.strokeRect(col*cw,row*ch,cw,ch);
+      }
+    }
+    history.push(canvas.toDataURL());
+  };
+  img.src=getImg();
+
+  canvas.onclick=function(e){
+    var r=canvas.getBoundingClientRect();
+    var x=(e.clientX-r.left)*(canvas.width/r.width);
+    var y=(e.clientY-r.top)*(canvas.height/r.height);
+    var cw=Math.floor(canvas.width/GRID), ch=Math.floor(canvas.height/GRID);
+    var col=Math.floor(x/cw), row=Math.floor(y/ch);
+    var idx=row*GRID+col;
+    if(idx>=0&&idx<cells.length){
+      var cell=cells[idx];
+      if(cell.colorIdx===activeColor){
+        cell.filled=true;
+        var ctx2=canvas.getContext('2d');
+        ctx2.fillStyle=COLORS[activeColor];
+        ctx2.fillRect(cell.x,cell.y,cell.w,cell.h);
+        ctx2.strokeStyle='rgba(255,255,255,.15)';ctx2.lineWidth=1;
+        ctx2.strokeRect(cell.x,cell.y,cell.w,cell.h);
+        score++;
+        document.getElementById('scoreVal').textContent=score;
+        history.push(canvas.toDataURL());
+        checkWin();
+      }
+    }
+  };
+}
+
+function checkWin(){
+  var total=cells.length, filled=cells.filter(function(c){return c.filled;}).length;
+  if(filled===total){
+    clearInterval(timerInt);
+    document.getElementById('winBanner').classList.add('show');
+    document.getElementById('winSub').textContent='You colored all '+total+' cells with '+document.getElementById('timerClock').textContent+' remaining!';
+  }
+}
+
+function undoCBN(){
+  if(history.length<=1)return;
+  history.pop();
+  var canvas=document.getElementById('cbnCanvas');
+  var ctx=canvas.getContext('2d');
+  var img=new Image();
+  img.onload=function(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(img,0,0);};
+  img.src=history[history.length-1];
+  // Unmark last filled cell
+  var lastFilled=null;
+  for(var i=cells.length-1;i>=0;i--){if(cells[i].filled){lastFilled=i;break;}}
+  if(lastFilled!==null){cells[lastFilled].filled=false;score=Math.max(0,score-1);document.getElementById('scoreVal').textContent=score;}
+}
+
+function startTimer(){
+  timerSecs=120;timerRunning=true;
+  updateTimerDisplay();
+  timerInt=setInterval(function(){
+    timerSecs--;updateTimerDisplay();
+    if(timerSecs<=0){clearInterval(timerInt);timeUp();}
+  },1000);
+}
+
+function updateTimerDisplay(){
+  var m=Math.floor(timerSecs/60),s=timerSecs%60;
+  var clock=document.getElementById('timerClock');
+  var fill=document.getElementById('timerFill');
+  clock.textContent=m+':'+(s<10?'0':'')+s;
+  fill.style.width=(timerSecs/120*100)+'%';
+  clock.className='timer-clock'+(timerSecs<=15?' danger':timerSecs<=30?' warning':'');
+  fill.className='timer-fill'+(timerSecs<=15?' danger':timerSecs<=30?' warning':'');
+}
+
+function timeUp(){
+  var filled=cells.filter(function(c){return c.filled;}).length;
+  document.getElementById('winBanner').classList.add('show');
+  document.getElementById('winBanner').style.background='linear-gradient(135deg,#1a0a0a,#2a1a1a)';
+  document.getElementById('winBanner').style.borderColor='#E53935';
+  document.getElementById('winTitle')?null:null;
+  document.getElementById('winBanner').querySelector('.win-title').textContent="⏰ Time's Up!";
+  document.getElementById('winSub').textContent='You filled '+filled+' of '+cells.length+' cells. Try again!';
+}
+
+function resetGame(){
+  clearInterval(timerInt);
+  document.getElementById('setupArea').style.display='block';
+  document.getElementById('gameArea').style.display='none';
+  document.getElementById('timerBar').style.display='none';
+  document.getElementById('winBanner').classList.remove('show');
+  document.querySelectorAll('.word-btn,.set-btn').forEach(function(b){b.classList.remove('active');});
+  selWord='';selSetV='';document.getElementById('startBtn').disabled=true;
+}
+
+buildWordGrid();
+</script>
+</body>
+</html>

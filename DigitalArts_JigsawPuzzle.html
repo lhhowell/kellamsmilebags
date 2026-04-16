@@ -101,6 +101,7 @@ input[type=color]{width:28px;height:28px;border-radius:6px;border:none;cursor:po
     <div class="hdr-title">🧩 Jigsaw Puzzle Builder</div>
     <div class="hdr-sub">Digital Arts · Smile Bags · A Word &amp; Wonder Experience · Kara Gau</div>
   </div>
+  <a href="DigitalArts_Menu.html" style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid #2D6A4F;border-radius:50px;padding:7px 16px;font-family:'Fredoka One',cursive;font-size:11px;color:#40916C;text-decoration:none;">&#8592; Back to Digital Arts Kiosk</a>
 </div>
 
 <!-- STEP 1: WORD -->
@@ -199,9 +200,13 @@ input[type=color]{width:28px;height:28px;border-radius:6px;border:none;cursor:po
     <div class="puzzle-grid" id="puzzleGrid"></div>
   </div>
 
-  <div class="btn-row" style="margin-bottom:40px;">
-    <button class="btn btn-gold" onclick="printPuzzle()">🖨️ Print Puzzle Sheet</button>
-    <button class="btn btn-outline" onclick="resetAll()">↩ Start Over</button>
+  <div style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.12);border-radius:10px;padding:14px;margin-bottom:14px;font-size:13px;color:#8a7040;line-height:1.7;">
+    &#128161; <strong style="color:#E8C97A;">Two ways to use this puzzle:</strong> Color digitally then print the colored version — or download B&amp;W so the child receiving the bag can color the pieces themselves before connecting them!
+  </div>
+  <div class="btn-row" style="margin-bottom:40px;flex-wrap:wrap;">
+    <button class="btn btn-gold" onclick="printPuzzle()">&#128438; Print Colored Puzzle</button>
+    <button class="btn" style="background:linear-gradient(135deg,#1B4332,#2D6A4F);color:#fff;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;text-transform:uppercase;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;transition:all .2s;" onclick="downloadBW()">&#8595; Download B&amp;W Puzzle</button>
+    <button class="btn btn-outline" onclick="resetAll()">&#8617; Start Over</button>
   </div>
 </div>
 

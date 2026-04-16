@@ -12,11 +12,13 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
 .hdr{background:#0d1a0d;border-bottom:2px solid var(--forest2);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
 .hdr-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold2);}
 .hdr-sub{font-size:11px;color:#557055;margin-top:2px;}
-.prog-bar-wrap{background:#111;border-bottom:2px solid #1a3a1a;padding:10px 24px;display:flex;align-items:center;gap:16px;}
-.prog-label{font-family:'Fredoka One',cursive;font-size:13px;color:var(--gold);}
+.back-link{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--forest2);border-radius:50px;padding:7px 16px;font-family:'Fredoka One',cursive;font-size:11px;color:var(--forest3);text-decoration:none;transition:all .2s;}
+.back-link:hover{border-color:var(--forest3);color:#fff;}
+.prog-bar-wrap{background:#111;border-bottom:2px solid #1a3a1a;padding:10px 24px;display:none;align-items:center;gap:16px;}
+.prog-bar-wrap.show{display:flex;}
 .prog-track{flex:1;height:8px;background:#1a1a1a;border-radius:8px;overflow:hidden;}
 .prog-fill{height:100%;background:linear-gradient(90deg,var(--forest2),var(--forest3));border-radius:8px;transition:width .3s;}
-.prog-pct{font-family:'Fredoka One',cursive;font-size:13px;color:var(--forest3);min-width:45px;text-align:right;}
+.prog-pct{font-family:'Fredoka One',cursive;font-size:14px;color:var(--forest3);min-width:50px;text-align:right;}
 .workspace{max-width:900px;margin:0 auto;padding:24px;}
 .setup-card{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:14px;padding:24px;margin-bottom:16px;}
 .setup-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--forest3);margin-bottom:8px;}
@@ -34,189 +36,281 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
 .btn-gold:disabled{background:#1a3a1a;color:#333;cursor:not-allowed;transform:none;}
 .btn-outline{background:transparent;border:1.5px solid #1a3a1a;color:#557055;}
 .btn-outline:hover{border-color:var(--forest3);color:var(--forest3);}
-/* SCRATCH */
-.scratch-wrap{position:relative;display:inline-block;border-radius:12px;overflow:hidden;cursor:none;}
-#scratchCanvas{display:block;cursor:none;}
-.scratch-hint{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.15);border-radius:8px;padding:12px 16px;font-size:13px;color:#8a7040;margin-bottom:14px;}
-.tool-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#0d1a0d;border:1px solid #1a3a1a;border-radius:10px;padding:12px 16px;margin-bottom:14px;}
-.tool-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#557055;}
-.size-btn{background:#111;border:1.5px solid #1a3a1a;border-radius:8px;padding:8px 14px;font-family:'Fredoka One',cursive;font-size:12px;color:#557055;cursor:pointer;transition:all .2s;}
-.size-btn.active{border-color:var(--gold);color:var(--gold);}
-.cover-select{display:flex;gap:8px;flex-wrap:wrap;}
-.cover-btn{background:#111;border:1.5px solid #1a3a1a;border-radius:8px;padding:8px 14px;font-family:'Fredoka One',cursive;font-size:12px;color:#557055;cursor:pointer;transition:all .2s;}
-.cover-btn.active{border-color:var(--gold);color:var(--gold);}
-.win-banner{display:none;background:linear-gradient(135deg,var(--forest),var(--forest2));border:2px solid var(--gold);border-radius:14px;padding:24px;text-align:center;margin-top:16px;}
-.win-banner.show{display:block;}
-.win-title{font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold2);margin-bottom:8px;}
+/* GAME */
+.game-layout{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start;}
+.scratch-wrap{position:relative;border-radius:12px;overflow:hidden;display:block;}
+#baseCanvas{display:block;border-radius:12px;}
+#scratchCanvas{position:absolute;top:0;left:0;border-radius:12px;cursor:none;}
+.guess-panel{min-width:220px;display:flex;flex-direction:column;gap:12px;}
+.guess-card{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:12px;padding:16px;}
+.guess-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--forest3);margin-bottom:12px;}
+.guess-hint{font-size:13px;color:#557055;line-height:1.6;margin-bottom:12px;}
+.word-choices{display:flex;flex-direction:column;gap:8px;}
+.choice-btn{background:#111;border:1.5px solid #1a3a1a;border-radius:8px;padding:12px 14px;font-family:'Fredoka One',cursive;font-size:13px;color:#888;cursor:pointer;text-align:left;transition:all .2s;letter-spacing:.5px;}
+.choice-btn:hover:not(:disabled){border-color:var(--gold);color:var(--gold);}
+.choice-btn.correct{background:rgba(102,187,106,.15);border-color:#66BB6A;color:#66BB6A;}
+.choice-btn.wrong{background:rgba(229,57,53,.1);border-color:#E53935;color:#E53935;}
+.choice-btn:disabled{cursor:not-allowed;}
+.one-chance{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);border-radius:8px;padding:10px 12px;font-size:12px;color:#8a7040;line-height:1.6;margin-bottom:8px;}
+.brush-row{display:flex;gap:8px;margin-bottom:10px;}
+.brush-btn{background:#111;border:1.5px solid #1a3a1a;border-radius:8px;padding:8px 14px;font-family:'Fredoka One',cursive;font-size:11px;color:#557055;cursor:pointer;transition:all .2s;letter-spacing:.5px;}
+.brush-btn.active{border-color:var(--gold);color:var(--gold);}
+.score-card{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:12px;padding:16px;text-align:center;}
+.score-val{font-family:'Fredoka One',cursive;font-size:40px;color:var(--gold);}
+.score-lbl{font-size:11px;color:#557055;letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
+.result-banner{display:none;background:linear-gradient(135deg,var(--forest),var(--forest2));border:2px solid var(--gold);border-radius:14px;padding:24px;text-align:center;margin-top:16px;}
+.result-banner.show{display:block;}
+.result-title{font-family:'Fredoka One',cursive;font-size:26px;color:var(--gold2);margin-bottom:8px;}
+@media(max-width:700px){.game-layout{grid-template-columns:1fr;}.guess-panel{min-width:unset;}}
 </style>
 </head>
 <body>
 <div class="hdr">
   <div><div class="hdr-title">✨ Scratch &amp; Reveal</div><div class="hdr-sub">Digital Arts · Smile Bags · Kara Gau</div></div>
+  <a href="DigitalArts_Menu.html" class="back-link">&#8592; Back to Digital Arts Kiosk</a>
 </div>
-<div class="prog-bar-wrap" id="progBar" style="display:none;">
-  <div class="prog-label">Revealed:</div>
+<div class="prog-bar-wrap" id="progBar">
+  <span style="font-family:'Fredoka One',cursive;font-size:13px;color:var(--gold);">Revealed:</span>
   <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
   <div class="prog-pct" id="progPct">0%</div>
 </div>
 
-<a href="DigitalArts_Menu.html" style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid #2D6A4F;border-radius:50px;padding:7px 16px;font-family:'Fredoka One',cursive;font-size:11px;color:#40916C;text-decoration:none;margin:16px 0 0 24px;">&#8592; Back to Digital Arts Kiosk</a>
 <div class="workspace">
+  <!-- SETUP -->
   <div id="setupArea">
     <div class="setup-card">
-      <div class="setup-label">Step 1 · Choose your OneWord</div>
-      <div class="word-grid" id="wordGrid"></div>
-      <div class="setup-label" style="margin-top:16px;">Step 2 · Choose illustration set</div>
+      <div class="setup-label">Step 1 · Choose illustration set</div>
       <div class="set-row">
-        <button class="set-btn" id="setI" onclick="selSet('I')">Set I · Science Journal (ChatGPT)</button>
-        <button class="set-btn" id="setJ" onclick="selSet('J')">Set J · Science Sketch (CoPilot)</button>
+        <button class="set-btn" id="setI" onclick="pickSet('I')">Set I · Science Journal (ChatGPT)</button>
+        <button class="set-btn" id="setJ" onclick="pickSet('J')">Set J · Science Sketch (CoPilot)</button>
       </div>
-      <div class="setup-label" style="margin-top:16px;">Step 3 · Choose cover color</div>
-      <div class="cover-select" style="margin-bottom:16px;">
-        <button class="cover-btn active" id="cvForest" onclick="selCover('#1B4332',this)">🌲 Forest</button>
-        <button class="cover-btn" id="cvNavy" onclick="selCover('#1B2A6B',this)">🌊 Navy</button>
-        <button class="cover-btn" id="cvGold" onclick="selCover('#7A5A0A',this)">🌟 Gold</button>
-        <button class="cover-btn" id="cvRed" onclick="selCover('#6B1A1A',this)">🌹 Red</button>
-        <button class="cover-btn" id="cvPurple" onclick="selCover('#3A1A6B',this)">💜 Purple</button>
+      <div class="setup-label">Step 2 · Choose brush size</div>
+      <div class="brush-row" style="margin-bottom:16px;">
+        <button class="brush-btn active" onclick="setBrush(18,this)">Small</button>
+        <button class="brush-btn" onclick="setBrush(36,this)">Medium</button>
+        <button class="brush-btn" onclick="setBrush(60,this)">Large</button>
+      </div>
+      <div class="one-chance" style="margin-bottom:16px;">
+        🎯 <strong>One chance to guess!</strong> Scratch away the cover to reveal the hidden illustration — but choose wisely. You only get <strong>one guess</strong> at the OneWord. The less you scratch before guessing, the higher your score!
       </div>
       <button class="btn btn-gold" id="startBtn" onclick="startGame()" disabled>✨ Start Scratching!</button>
     </div>
   </div>
+
+  <!-- GAME -->
   <div id="gameArea" style="display:none;">
-    <div class="scratch-hint">🪙 Scratch away the cover layer to reveal the hidden illustration. Try to reveal as much as you can!</div>
-    <div class="tool-row">
-      <span class="tool-label">Brush Size</span>
-      <button class="size-btn active" onclick="setBrushSize(20,this)">Small</button>
-      <button class="size-btn" onclick="setBrushSize(40,this)">Medium</button>
-      <button class="size-btn" onclick="setBrushSize(70,this)">Large</button>
-      <div style="margin-left:auto;display:flex;gap:8px;">
-        <button class="btn btn-outline" onclick="resetGame()" style="padding:8px 16px;">↩ New Game</button>
-        <button class="btn btn-gold" onclick="revealAll()" style="padding:8px 16px;">👁 Full Reveal</button>
+    <div class="game-layout">
+      <div>
+        <div style="font-size:13px;color:#557055;margin-bottom:10px;">🪙 Scratch to reveal the hidden illustration — then make your one guess!</div>
+        <div class="scratch-wrap" id="scratchWrap">
+          <canvas id="baseCanvas"></canvas>
+          <canvas id="scratchCanvas"></canvas>
+        </div>
+      </div>
+      <div class="guess-panel">
+        <div class="guess-card">
+          <div class="guess-label">What's the OneWord?</div>
+          <div class="one-chance">⚠️ One guess only! Scratch more to be sure — but guessing early scores higher.</div>
+          <div class="word-choices" id="wordChoices"></div>
+        </div>
+        <div class="guess-card">
+          <div class="guess-label">Brush Size</div>
+          <div class="brush-row" id="gameBrushRow">
+            <button class="brush-btn active" onclick="setBrush(18,this)">S</button>
+            <button class="brush-btn" onclick="setBrush(36,this)">M</button>
+            <button class="brush-btn" onclick="setBrush(60,this)">L</button>
+          </div>
+          <button class="btn btn-outline" onclick="resetGame()" style="width:100%;padding:8px;margin-top:4px;font-size:11px;">↩ New Game</button>
+        </div>
+        <div class="score-card">
+          <div class="score-val" id="scoreVal">—</div>
+          <div class="score-lbl">Score</div>
+          <div style="font-size:12px;color:#3a5a3a;margin-top:6px;" id="scoreHint">Guess early for more points!</div>
+        </div>
       </div>
     </div>
-    <div class="scratch-wrap">
-      <canvas id="baseCanvas" style="display:block;"></canvas>
-      <canvas id="scratchCanvas" style="position:absolute;top:0;left:0;cursor:crosshair;"></canvas>
-    </div>
-    <div class="win-banner" id="winBanner">
-      <div class="win-title">🎉 Fully Revealed!</div>
-      <p style="color:rgba(255,255,255,.8);font-size:14px;margin:8px 0;">You uncovered the hidden <span id="winWord"></span> illustration!</p>
-      <button class="btn btn-gold" onclick="resetGame()" style="margin-top:16px;">Play Again</button>
+    <div class="result-banner" id="resultBanner">
+      <div class="result-title" id="resultTitle">🎉 Correct!</div>
+      <p style="color:rgba(255,255,255,.8);font-size:14px;margin:8px 0;" id="resultMsg"></p>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap;">
+        <button class="btn btn-gold" onclick="nextRound()">Next Word →</button>
+        <button class="btn btn-outline" onclick="resetGame()">↩ New Game</button>
+      </div>
     </div>
   </div>
 </div>
+
 <script>
 var WORDS=['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT','CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST','RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
 var BASE='https://lhhowell.github.io/kellamsmilebags/';
-var selWord='',selSetV='',coverColor='#1B4332',brushSize=20;
-var scratching=false, totalPixels=0, revealedPixels=0;
+var selSet='', brushSize=18, totalScore=0, currentWord='', guessLocked=false;
+var scratching=false, revealedPct=0;
 
-function buildWordGrid(){
-  var g=document.getElementById('wordGrid');
-  WORDS.forEach(function(w){
-    var b=document.createElement('button');b.className='word-btn';b.textContent=w;
-    b.onclick=function(){selWord=w;document.querySelectorAll('.word-btn').forEach(function(x){x.classList.remove('active');});b.classList.add('active');checkReady();};
-    g.appendChild(b);
-  });
+function pickSet(s){
+  selSet=s;
+  document.getElementById('setI').classList.toggle('active',s==='I');
+  document.getElementById('setJ').classList.toggle('active',s==='J');
+  document.getElementById('startBtn').disabled=false;
 }
-function selSet(s){selSetV=s;document.getElementById('setI').classList.toggle('active',s==='I');document.getElementById('setJ').classList.toggle('active',s==='J');checkReady();}
-function selCover(c,btn){coverColor=c;document.querySelectorAll('.cover-btn').forEach(function(x){x.classList.remove('active');});btn.classList.add('active');}
-function checkReady(){document.getElementById('startBtn').disabled=!(selWord&&selSetV);}
-function setBrushSize(s,btn){brushSize=s;document.querySelectorAll('.size-btn').forEach(function(x){x.classList.remove('active');});btn.classList.add('active');}
+function setBrush(s,btn){
+  brushSize=s;
+  document.querySelectorAll('.brush-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+}
 
-function getImg(){
-  var w=selWord.charAt(0)+selWord.slice(1).toLowerCase();
-  return BASE+(selSetV==='I'?'SetI_':'SetJ_')+w+'.png';
+function getImg(word,set){
+  var w=word.charAt(0)+word.slice(1).toLowerCase();
+  return BASE+(set==='I'?'SetI_':'SetJ_')+w+'.png';
 }
 
 function startGame(){
+  // Pick random word
+  currentWord=WORDS[Math.floor(Math.random()*WORDS.length)];
+  guessLocked=false; revealedPct=0;
   document.getElementById('setupArea').style.display='none';
   document.getElementById('gameArea').style.display='block';
-  document.getElementById('progBar').style.display='flex';
-
-  var baseCanvas=document.getElementById('baseCanvas');
-  var scratchCanvas=document.getElementById('scratchCanvas');
-  var img=new Image();img.crossOrigin='anonymous';
-  img.onload=function(){
-    var W=Math.min(img.naturalWidth,600), scale=W/img.naturalWidth;
-    var H=Math.round(img.naturalHeight*scale);
-    baseCanvas.width=scratchCanvas.width=W;
-    baseCanvas.height=scratchCanvas.height=H;
-    baseCanvas.style.width=scratchCanvas.style.width=W+'px';
-    baseCanvas.style.height=scratchCanvas.style.height=H+'px';
-
-    // Draw image on base
-    baseCanvas.getContext('2d').drawImage(img,0,0,W,H);
-
-    // Fill scratch canvas with cover color
-    var sctx=scratchCanvas.getContext('2d');
-    sctx.fillStyle=coverColor;
-    sctx.fillRect(0,0,W,H);
-
-    // Add "SCRATCH TO REVEAL" text
-    sctx.font='bold 28px Fredoka One,sans-serif';
-    sctx.fillStyle='rgba(255,255,255,.25)';
-    sctx.textAlign='center';sctx.textBaseline='middle';
-    sctx.fillText('SCRATCH TO REVEAL',W/2,H/2-20);
-    sctx.font='16px Nunito,sans-serif';
-    sctx.fillText(selWord,W/2,H/2+20);
-
-    totalPixels=W*H;revealedPixels=0;
-
-    // Scratch events
-    scratchCanvas.onmousedown=function(e){scratching=true;doScratch(e,scratchCanvas);};
-    scratchCanvas.onmousemove=function(e){if(scratching)doScratch(e,scratchCanvas);};
-    scratchCanvas.onmouseup=function(){scratching=false;checkReveal(scratchCanvas);};
-    scratchCanvas.ontouchstart=function(e){e.preventDefault();scratching=true;doScratch(e.touches[0],scratchCanvas);};
-    scratchCanvas.ontouchmove=function(e){e.preventDefault();if(scratching)doScratch(e.touches[0],scratchCanvas);};
-    scratchCanvas.ontouchend=function(){scratching=false;checkReveal(scratchCanvas);};
-  };
-  img.src=getImg();
+  document.getElementById('progBar').classList.add('show');
+  document.getElementById('resultBanner').classList.remove('show');
+  document.getElementById('scoreVal').textContent='—';
+  document.getElementById('scoreHint').textContent='Guess early for more points!';
+  buildChoices();
+  loadImage();
 }
 
-function doScratch(e,canvas){
+function buildChoices(){
+  var others=WORDS.filter(function(w){return w!==currentWord;}).sort(function(){return Math.random()-.5;}).slice(0,3);
+  var all=[currentWord].concat(others).sort(function(){return Math.random()-.5;});
+  var html='';
+  all.forEach(function(w){
+    html+='<button class="choice-btn" onclick="makeGuess(\''+w+'\',this)">'+w+'</button>';
+  });
+  document.getElementById('wordChoices').innerHTML=html;
+}
+
+function loadImage(){
+  var base=document.getElementById('baseCanvas');
+  var scratch=document.getElementById('scratchCanvas');
+  var bctx=base.getContext('2d');
+  var img=new Image(); img.crossOrigin='anonymous';
+  img.onload=function(){
+    var maxW=520;
+    var scale=Math.min(maxW/img.naturalWidth, maxW/img.naturalHeight, 1);
+    var W=Math.round(img.naturalWidth*scale);
+    var H=Math.round(img.naturalHeight*scale);
+    base.width=scratch.width=W;
+    base.height=scratch.height=H;
+    base.style.width=scratch.style.width=W+'px';
+    base.style.height=scratch.style.height=H+'px';
+    bctx.drawImage(img,0,0,W,H);
+
+    // Cover with gradient
+    var sctx=scratch.getContext('2d');
+    var grad=sctx.createLinearGradient(0,0,W,H);
+    grad.addColorStop(0,'#1B4332');
+    grad.addColorStop(.5,'#2D6A4F');
+    grad.addColorStop(1,'#1B4332');
+    sctx.fillStyle=grad;
+    sctx.fillRect(0,0,W,H);
+    // "SCRATCH TO REVEAL" text
+    sctx.fillStyle='rgba(232,200,122,.25)';
+    sctx.font='bold 22px Fredoka One,sans-serif';
+    sctx.textAlign='center';sctx.textBaseline='middle';
+    sctx.fillText('✨ SCRATCH TO REVEAL',W/2,H/2-14);
+    sctx.font='14px Nunito,sans-serif';
+    sctx.fillText('Guess the OneWord →',W/2,H/2+16);
+
+    attachScratch(scratch);
+  };
+  img.src=getImg(currentWord,selSet);
+}
+
+function attachScratch(canvas){
+  var ctx=canvas.getContext('2d');
+  canvas.addEventListener('mousedown',function(e){scratching=true;doScratch(e,canvas,ctx);});
+  canvas.addEventListener('mousemove',function(e){if(scratching){doScratch(e,canvas,ctx);updateProgress(canvas);}});
+  canvas.addEventListener('mouseup',function(){scratching=false;});
+  canvas.addEventListener('touchstart',function(e){e.preventDefault();scratching=true;doScratch(e.touches[0],canvas,ctx);},{passive:false});
+  canvas.addEventListener('touchmove',function(e){e.preventDefault();if(scratching){doScratch(e.touches[0],canvas,ctx);updateProgress(canvas);}},{passive:false});
+  canvas.addEventListener('touchend',function(){scratching=false;});
+}
+
+function doScratch(e,canvas,ctx){
+  if(guessLocked) return;
   var r=canvas.getBoundingClientRect();
   var x=(e.clientX-r.left)*(canvas.width/r.width);
   var y=(e.clientY-r.top)*(canvas.height/r.height);
-  var ctx=canvas.getContext('2d');
   ctx.globalCompositeOperation='destination-out';
   ctx.beginPath();ctx.arc(x,y,brushSize,0,Math.PI*2);ctx.fill();
   ctx.globalCompositeOperation='source-over';
 }
 
-function checkReveal(canvas){
+function updateProgress(canvas){
   var ctx=canvas.getContext('2d');
-  var data=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+  var d=ctx.getImageData(0,0,canvas.width,canvas.height).data;
   var transparent=0;
-  for(var i=3;i<data.length;i+=4){if(data[i]<128)transparent++;}
-  var pct=Math.round(transparent/(canvas.width*canvas.height)*100);
-  document.getElementById('progFill').style.width=pct+'%';
-  document.getElementById('progPct').textContent=pct+'%';
-  if(pct>=95){
-    document.getElementById('winWord').textContent=selWord;
-    document.getElementById('winBanner').classList.add('show');
-  }
+  for(var i=3;i<d.length;i+=4){if(d[i]<64)transparent++;}
+  revealedPct=Math.round(transparent/(canvas.width*canvas.height)*100);
+  document.getElementById('progFill').style.width=revealedPct+'%';
+  document.getElementById('progPct').textContent=revealedPct+'%';
 }
 
-function revealAll(){
-  var canvas=document.getElementById('scratchCanvas');
-  canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
+function makeGuess(word,btn){
+  if(guessLocked) return;
+  guessLocked=true;
+  // Lock all buttons
+  document.querySelectorAll('.choice-btn').forEach(function(b){b.disabled=true;});
+  // Fully reveal the image
+  var scratch=document.getElementById('scratchCanvas');
+  scratch.getContext('2d').clearRect(0,0,scratch.width,scratch.height);
   document.getElementById('progFill').style.width='100%';
   document.getElementById('progPct').textContent='100%';
-  document.getElementById('winWord').textContent=selWord;
-  document.getElementById('winBanner').classList.add('show');
+
+  var correct=(word===currentWord);
+  btn.classList.add(correct?'correct-ans':'wrong-ans');
+  btn.classList.add(correct?'correct':'wrong');
+  if(!correct){
+    document.querySelectorAll('.choice-btn').forEach(function(b){
+      if(b.textContent===currentWord) b.classList.add('correct');
+    });
+  }
+
+  // Score: more revealed = lower score. Max 100 if guessed at <10% revealed
+  var score = correct ? Math.max(10, Math.round(100 - revealedPct * 0.9)) : 0;
+  totalScore+=score;
+  document.getElementById('scoreVal').textContent=score;
+  document.getElementById('scoreHint').textContent='Total: '+totalScore+' pts';
+
+  var banner=document.getElementById('resultBanner');
+  document.getElementById('resultTitle').textContent=correct?'🎉 Correct!':'❌ Not quite!';
+  document.getElementById('resultMsg').textContent=correct
+    ? 'You identified '+currentWord+' with '+revealedPct+'% revealed! +'+score+' points.'
+    : 'The hidden word was '+currentWord+'. Better luck next time!';
+  banner.classList.add('show');
+  banner.scrollIntoView({behavior:'smooth'});
+}
+
+function nextRound(){
+  var prev=currentWord;
+  var pool=WORDS.filter(function(w){return w!==prev;});
+  currentWord=pool[Math.floor(Math.random()*pool.length)];
+  guessLocked=false; revealedPct=0;
+  document.getElementById('resultBanner').classList.remove('show');
+  document.getElementById('scoreVal').textContent='—';
+  document.getElementById('scoreHint').textContent='Guess early for more points!';
+  buildChoices();
+  loadImage();
 }
 
 function resetGame(){
   document.getElementById('setupArea').style.display='block';
   document.getElementById('gameArea').style.display='none';
-  document.getElementById('progBar').style.display='none';
-  document.getElementById('winBanner').classList.remove('show');
-  document.querySelectorAll('.word-btn,.set-btn').forEach(function(b){b.classList.remove('active');});
-  selWord='';selSetV='';document.getElementById('startBtn').disabled=true;
+  document.getElementById('progBar').classList.remove('show');
+  document.getElementById('resultBanner').classList.remove('show');
+  document.getElementById('setI').classList.remove('active');
+  document.getElementById('setJ').classList.remove('active');
+  selSet=''; totalScore=0;
+  document.getElementById('startBtn').disabled=true;
 }
-
-buildWordGrid();
 </script>
 </body>
 </html>

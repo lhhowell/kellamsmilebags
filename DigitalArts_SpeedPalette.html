@@ -114,8 +114,8 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
       <div class="word-grid" id="wordGrid"></div>
       <div class="setup-label" style="margin-top:16px;">Step 2 · Choose illustration set</div>
       <div class="set-row">
-        <button class="set-btn" id="setI" onclick="selSet('I')">Set I · Science Journal (ChatGPT)</button>
-        <button class="set-btn" id="setJ" onclick="selSet('J')">Set J · Science Sketch (CoPilot)</button>
+        <button class="set-btn" id="setI" onclick="pickSet('I')">Set I · Science Journal (ChatGPT)</button>
+        <button class="set-btn" id="setJ" onclick="pickSet('J')">Set J · Science Sketch (CoPilot)</button>
       </div>
       <div style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.12);border-radius:10px;padding:14px;margin-bottom:16px;">
         <div style="font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:var(--gold);margin-bottom:6px;">🎨 HOW IT WORKS</div>
@@ -259,7 +259,7 @@ function buildWordGrid(){
     g.appendChild(b);
   });
 }
-function selSet(s){selSet=s;document.getElementById('setI').classList.toggle('active',s==='I');document.getElementById('setJ').classList.toggle('active',s==='J');checkSetupReady();}
+function pickSet(s){selSet=s;document.getElementById('setI').classList.toggle('active',s==='I');document.getElementById('setJ').classList.toggle('active',s==='J');checkSetupReady();}
 function checkSetupReady(){document.getElementById('startBtn').disabled=!(selWord&&selSet);}
 
 function getImg(word, set){
