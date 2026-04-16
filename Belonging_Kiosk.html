@@ -132,20 +132,15 @@ body{font-family:'Nunito',sans-serif;background:#0f0a14;color:#fff;min-height:10
         <span class="activity-btn-name">Affirmation Card</span>
         <span class="activity-btn-desc">A powerful statement the elementary student can read to themselves every day</span>
       </button>
-      <button class="activity-btn" onclick="selectActivity('belonging')" id="act-belonging">
-        <span class="activity-btn-icon">&#128149;</span>
-        <span class="activity-btn-name">Belonging Prompt</span>
-        <span class="activity-btn-desc">A reflection prompt that helps the student think about what makes them unique and valued</span>
-      </button>
       <button class="activity-btn" onclick="selectActivity('kindness')" id="act-kindness">
         <span class="activity-btn-icon">&#127752;</span>
         <span class="activity-btn-name">Kindness Challenge</span>
         <span class="activity-btn-desc">A simple challenge to practice kindness and inclusion with classmates or family</span>
       </button>
-      <button class="activity-btn" onclick="selectActivity('commonground')" id="act-commonground">
-        <span class="activity-btn-icon">&#127760;</span>
-        <span class="activity-btn-name">Common Ground</span>
-        <span class="activity-btn-desc">An activity that helps the student find what they share with others who seem different</span>
+      <button class="activity-btn" onclick="selectActivity('quotes')" id="act-quotes">
+        <span class="activity-btn-icon">&#128220;</span>
+        <span class="activity-btn-name">Inspirational Quote</span>
+        <span class="activity-btn-desc">A meaningful quote to inspire and encourage the elementary student every day</span>
       </button>
     </div>
   </div>
@@ -186,7 +181,7 @@ body{font-family:'Nunito',sans-serif;background:#0f0a14;color:#fff;min-height:10
   <div class="print-section" id="printSection">
     <div class="print-card-outer" id="printCardOuter">
       <div class="print-card-word" id="printWord"></div>
-      <div class="print-card-msg" id="printMsg"></div>
+      <div class="print-card-msg" id="printMsg" style="position:relative;"></div>
       <div class="print-card-activity" id="printActivity"></div>
       <div class="print-card-footer">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>
     </div>
@@ -247,36 +242,6 @@ var activities = {
       TRANSFORM:["Read this with wonder: I am not who I was. I am becoming someone even better.","Hard things have changed me, and I am grateful. I am more because of what I have been through.","I embrace the changes in me. Every transformation has made me stronger, kinder, and more myself."]
     }
   },
-  belonging:{
-    label:'Belonging Prompt',
-    prompts:{
-      ABSORB:["What is one new thing you learned this week that surprised you? Draw or write it here.","Think about something kind someone did for you. Absorb that memory. Draw their face or write their name.","What is something you have absorbed from your family or culture that you carry with you everywhere?"],
-      ADAPT:["Think of a time you had to do something in a new way. What did you learn about yourself?","Draw two versions of yourself: who you were one year ago and who you are now. How have you adapted?","Name one way your classroom, family, or neighborhood has adapted to include everyone. How did it feel?"],
-      ANCHOR:["Name three things that keep you grounded when things feel hard. A person, a place, and one thing you do.","Draw an anchor. Inside it, write the names of three people who help you feel steady.","What is one memory that you return to when you need to feel calm and safe? Describe it."],
-      BALANCE:["Draw a balance scale. On one side, write something you give to others. On the other, something you need.","What does a good day feel like for you? What has to be in balance for that to happen?","Write about a time things felt out of balance. What helped you find your way back to steady?"],
-      BLOOM:["What is one thing about you that is just starting to bloom? Something you are getting good at?","Draw a flower. Each petal is one of your strengths. Label them. What is blooming in you?","Who has helped you bloom? Write them a thank you — even if you never send it."],
-      BREATHE:["Draw your breath. What color is it when you breathe in? What color is it when you breathe out?","Write about a time you were so nervous or excited that you forgot to breathe. What happened?","Close your eyes and take three deep breaths. Write one word for how you feel right now."],
-      CLEAR:["Write one worry on a cloud. Now imagine the wind blowing it away. What does the clear sky feel like?","What is one thing you need to say out loud to feel clear? Write it here — just for you.","Draw a glass of murky water and a glass of clear water. What would make your mind feel more clear today?"],
-      CONNECT:["Draw a web. Put yourself in the middle. Add five people or things you are connected to.","Write about a time you felt truly connected to someone. What made that moment special?","Who is one person you have lost touch with that you miss? What connected you to them?"],
-      CYCLE:["What is something that keeps coming back around in your life — a feeling, a season, a song?","Draw the seasons of your year — not weather seasons, but your emotional seasons. What cycles do you notice?","Write about a hard time that passed. How did that cycle ending help you grow?"],
-      EMERGE:["What is something you are proud of that took a long time to grow? You emerged from something hard.","Draw a butterfly coming out of its chrysalis. Inside the chrysalis, write what you are leaving behind.","What is something new you are stepping into right now? What does it feel like to be emerging?"],
-      FILTER:["Write three things that make you feel good. Write one thing you want less of. You get to choose.","What is something you used to let bother you that you have learned to filter out? How did you do it?","Draw a filter. What do you let through? What do you keep out? Label both sides."],
-      FLOW:["When do you feel like you are in a flow — where time disappears and things feel easy?","Draw a river with rocks in it. Label the rocks with challenges. How does the water flow around them?","What activity makes you feel like everything just flows? How do you feel after you do it?"],
-      GROW:["Draw a plant. Label its roots with people who support you. Label its flowers with your strengths.","What is something hard you went through that helped you grow? What did it teach you?","Write about someone you have watched grow and change. What did you learn from watching them?"],
-      HEAL:["Is there something you are healing from? You do not have to share it. But know: healing is happening.","Draw something that is healed or healing. What helped it? What does healed look like?","Write a kind note to yourself about something you are still working through. Use gentle words."],
-      MIGRATE:["Have you ever moved, changed schools, or started something new? What did you carry with you?","Where do you feel most at home? Is it a place, a person, or a feeling? Write about it.","Draw a map of the most important places in your life. What has moved with you from place to place?"],
-      PERSIST:["What is the hardest thing you have ever kept trying at? Write one word that describes your persistence.","Draw a staircase. Each step is something hard you kept going through. Where are you now?","Write about someone who persisted through something difficult. What did you admire most about them?"],
-      RENEW:["What does rest look like for you? Draw or describe your favorite way to recharge.","If you could press a reset button on one part of your life, what would it be? What would renew?","Write about a morning you woke up feeling genuinely renewed and ready. What made that day different?"],
-      RESTORE:["Write a letter to yourself on a hard day. What would you want to hear?","Is there a friendship, a habit, or a feeling you want to restore? What would it take?","Draw something that has been restored — a garden, a friendship, a room. What does restored feel like?"],
-      RETURN:["Is there something you left behind that you want to return to — a hobby, a friendship, a dream?","Write about a time you felt lost and then found your way back. What brought you back?","What is one thing from your childhood you want to return to? Draw or write about it."],
-      RISE:["Write about a time you rose above something difficult. What helped you get there?","Draw a sun rising. What does the darkness represent? What does the light mean for you?","Who is someone you have seen rise above a hard time? What did you learn from watching them?"],
-      ROOT:["List five things that are part of your roots — your culture, your family, your history, your home.","Draw a tree. Its roots are your history. Its trunk is who you are now. Its leaves are your future.","What is one tradition or story from your family that you never want to lose? Write about it."],
-      SHINE:["What is something you do that makes other people's lives better? That is your light. Let it shine.","When do you feel most like yourself — most alive and bright? Describe that moment.","Who is someone in your life who shines brightly? Write about what makes their light so special."],
-      SUSTAIN:["What one small habit helps you feel better every day? It does not have to be big.","Draw a garden. What does your garden need to sustain itself — water, sunlight, care? What do you need?","Write about one thing in your life worth sustaining. What do you do to keep it alive?"],
-      THRIVE:["Describe what thriving looks like for you. Not just okay — truly thriving.","Draw two faces: one just getting by, one truly thriving. What is different between them?","Write about a season of your life when you really thrived. What made that possible?"],
-      TRANSFORM:["Write about one way you have changed in the last year. What transformed you?","Draw a before-and-after: the caterpillar and the butterfly. What transformation are you in the middle of?","What is one belief about yourself that has transformed? What do you believe now that you did not before?"]
-    }
-  },
   kindness:{
     label:'Kindness Challenge',
     prompts:{
@@ -307,34 +272,34 @@ var activities = {
       TRANSFORM:["This week: transform one negative moment into something better with a single kind word or action.","This week: say something that transforms someone's opinion of themselves — one true, powerful compliment.","This week: transform a space or situation by bringing more kindness into it than existed before you arrived."]
     }
   },
-  commonground:{
-    label:'Common Ground Activity',
+  quotes:{
+    label:'Inspirational Quote',
     prompts:{
-      ABSORB:["Write five things you love. Find one person who loves one of them too. That is your common ground.","Ask someone: What is one thing you wish people knew about you? Share yours too. Absorb each other's stories.","Sit with someone from a different background. Ask: What do you love to learn about? Find what you share."],
-      ADAPT:["Ask a family member or neighbor: What is something you had to learn to do differently than you expected?","Ask two people: What is the hardest thing you have ever had to adapt to? Listen for what connects you.","Find someone who grew up differently than you. Ask what they adapted to when things changed. Share yours too."],
-      ANCHOR:["Ask three people: What is one thing that keeps you going when things get hard? Listen for what you share.","Ask a parent or older family member: What or who was your anchor when you were my age? Compare to yours.","Find someone who seems very different from you. Ask: What anchors you? You may find surprising common ground."],
-      BALANCE:["Play the balance game: for every difference you notice between you and someone, find one thing you share.","Ask a classmate: What do you do when life feels out of balance? Share yours. Find what you have in common.","Talk to someone who manages something you find hard — school, friendships, family. Ask how they find balance."],
-      BLOOM:["Ask a friend: What is something you are just starting to get good at? Share yours too. Bloom together.","Find someone you admire. Tell them what you see blooming in them. Ask what they see in you.","Ask three people: What has helped you become who you are today? Look for what you share."],
-      BREATHE:["Find someone to take three deep breaths with. Breathing is something every human shares.","Ask: What do you do when you need to calm down? Share yours. Find the breathing you have in common.","Sit with someone in a quiet moment. No phones. No talking. Just breathe together for one minute."],
-      CLEAR:["Write down one thing that confuses or worries you. Share it with someone. See if they feel the same.","Ask a friend: Is there anything you have been wanting to say clearly but have not found the words for yet?","Play honesty bingo: each person shares one honest thing about themselves. Find your common truths."],
-      CONNECT:["Make a Venn diagram with a friend. In the middle, write everything you have in common. You might be surprised.","Introduce yourself to one person you have never spoken to. Ask one question and really listen to the answer.","Find someone who seems very different from you. Have a five-minute conversation. What surprised you?"],
-      CYCLE:["Ask a grandparent or older adult: What seasons of life have you been through? Find the one you share.","Talk to someone older than you. Ask: What cycle kept repeating in your life? Has it repeated in yours?","Find someone going through a similar cycle of life as you — new school, new year, new change. Share the moment."],
-      EMERGE:["Share a story about something hard you came through. Invite someone to share theirs. Notice what connects you.","Ask someone: What is something you are just now becoming? Share what you are emerging into too.","Find a partner. Each person shares one thing they were scared of that they eventually emerged from."],
-      FILTER:["Make a list of things that stress you out. Share it. Find what you have in common and laugh about it together.","Ask a trusted friend: What do you try to filter out of your life? What helps you stay positive?","Ask three people: What is one thing you have learned to let go of? Find the common wisdom."],
-      FLOW:["Find out what someone else's flow state feels like. When do they lose track of time? Compare with yours.","Ask someone who seems calm: What helps you flow through hard days? Share your strategy too.","Find a partner. Each person describes their flow zone — where they feel most natural and free."],
-      GROW:["Ask: What is something you learned from a mistake? Share yours. Growing is something everyone does.","Find someone of a different age. Ask: What is the most important thing you have grown to understand?","Ask three people: Who helped you grow the most? Listen for what kinds of people show up in their stories."],
-      HEAL:["Share something gentle: I am still working through something. Do you have something you are healing from too?","Ask someone you trust: What has helped you heal from something hard? Listen without advice. Just receive.","Find someone and share one thing you are grateful for that came from a hard experience. Healing creates wisdom."],
-      MIGRATE:["Ask someone who has moved or changed schools: What did you miss most? What surprised you about the new place?","Find someone who has lived somewhere different from where they were born. Ask what they carried with them.","Ask: What is the biggest change you have ever had to move through? Share yours. Find what you have in common."],
-      PERSIST:["Tell someone about something you kept trying even when it was hard. Ask them to share one too.","Find someone who never gave up on something. Ask: What kept you going? Share what keeps you going too.","Ask two people: What is something you are still working on, even though it is taking a long time?"],
-      RENEW:["Ask: What do you do when you need to recharge? Share yours. Rest looks different for everyone.","Ask someone: What is something new you are looking forward to? Find the hope you have in common.","Find someone and share one way you have started fresh after something hard. Ask them to share theirs."],
-      RESTORE:["Find something broken — a friendship, a habit, a tradition — and invite someone to help you restore it.","Ask someone: Is there a relationship or a habit you are trying to restore? Find your common ground.","Tell someone about something that was lost and then came back in your life. Ask if they have something similar."],
-      RETURN:["Ask someone: Is there something you used to love that you want to return to? Maybe you can do it together.","Ask a friend or family member: What is something from your past that you are grateful still exists?","Find someone and both answer: What is one thing you would return to if you had the time? Plan to do it together."],
-      RISE:["Share a story about a time you got back up after falling down. Ask someone to share theirs.","Ask two people: What helped you rise after something hard? Look for what you all had in common.","Find someone you admire and ask: What is the thing that made you rise when everything was hard?"],
-      ROOT:["Ask: Where are you from? What is something from your roots that you carry with you everywhere?","Share one piece of your roots with someone — a food, a tradition, a word. Ask them to share one of theirs.","Find someone from a different background. Ask: What is one thing about your roots that makes you proud?"],
-      SHINE:["Tell someone specifically: This is what I see in you that shines. Then ask them what they see in you.","Ask three people: When do you feel most like yourself? Find the common thread in their answers.","Find someone and take turns saying: One thing that shines in you is... See how much common light you find."],
-      SUSTAIN:["Ask: What one small thing keeps you going every day? Coffee? Music? A walk? Find your common ground.","Find someone and ask: What do you do to keep the good things in your life going? Share yours too.","Ask a classmate: What makes your friendship sustainable? What keeps you showing up for each other?"],
-      THRIVE:["Ask someone: What does thriving look like for you? Compare. Thriving looks different for everyone.","Find someone and ask: When was the last time you truly thrived? What was happening? Find what you share.","Ask three people: What one condition has to be present for you to thrive? Look for the common answer."],
-      TRANSFORM:["Share a moment that changed you. Ask: What has transformed you? Find what you have in common.","Ask someone: What is the biggest way you have changed in the last two years? Share yours too.","Find a partner. Each person shares one transformation they are proud of. Celebrate each other's growth."]
+      ABSORB:["Every experience you have is teaching you something. Stay open. Stay curious. Keep absorbing.","The world is full of wonder waiting to be taken in. You were made to absorb it all.","Learning never stops. Every day you absorb something new — and that makes you more."],
+      ADAPT:["The most remarkable thing about you is not who you are today — it is who you are becoming.","Water finds its way around every obstacle. So can you.","You have adapted to every hard thing life has handed you. That strength is yours forever."],
+      ANCHOR:["No matter how far you go or how much you change, your roots will always hold you.","The strongest trees have the deepest roots. Grow your roots. They will hold you.","You are not alone in this world. You have people, memories, and values that anchor you."],
+      BALANCE:["You do not have to do everything perfectly. You just have to keep finding your balance.","Rest is not falling behind. Rest is how you prepare for the next good thing.","A life well lived is not about doing everything — it is about doing the right things."],
+      BLOOM:["Every flower blooms in its own season. Your season is coming. Trust the timing.","You are not behind. You are growing at exactly the pace you are meant to.","Something beautiful is unfolding inside you. Give it the sunshine of your own belief."],
+      BREATHE:["When everything feels too big, your breath is always there to bring you back to now.","One breath at a time. One moment at a time. That is all anyone can ask.","The pause before you act is often the wisest thing you can do."],
+      CLEAR:["When the path ahead feels murky, slow down. Clarity comes to those who stop and look.","A clear mind sees what a busy mind misses. Give yourself the gift of stillness.","You already know the answer. You just need a quiet moment to hear it."],
+      CONNECT:["Every person you meet is carrying a story you have never heard. That is worth paying attention to.","You are never as alone as you feel. Connection is always closer than you think.","The things we share are always greater than the things that divide us."],
+      CYCLE:["Difficult seasons do not last forever. Every winter holds the seeds of spring.","You have been through hard times before — and here you are. You made it. You will again.","Life moves in circles. What you put into the world has a way of returning to you."],
+      EMERGE:["The caterpillar does not know it will become a butterfly. But it trusts the process. So can you.","Something extraordinary is emerging in you right now — even if you cannot see it yet.","Every time you step into something new, you are becoming more than you were."],
+      FILTER:["Not everything that pulls at your attention deserves it. You get to choose.","Guard your peace like it is the most precious thing you have — because it is.","What you choose to focus on grows. Choose wisely and your life will reflect it."],
+      FLOW:["You do not have to force the river. Just keep moving, and the current will carry you.","The most beautiful things in life rarely come from pushing. They come from allowing.","Some days you paddle hard. Some days you float. Both are part of the journey."],
+      GROW:["Every person who ever became great at something started by being not-great. Growth is the bridge.","You are allowed to be a beginner. Every expert once had no idea what they were doing.","The version of you that is coming is worth every hard thing you are going through right now."],
+      HEAL:["Healing is not a straight line. Be patient with yourself. You are doing better than you know.","You are allowed to take your time. Good things are worth waiting for — including your own recovery.","Tenderness toward yourself is not weakness. It is one of the most courageous things you can choose."],
+      MIGRATE:["Courage is not the absence of fear. It is packing your bags anyway and heading toward the horizon.","Every great journey begins with the decision to move toward something worth going to.","Change is not something that happens to you. It is something you grow through."],
+      PERSIST:["The person who wins is rarely the most talented. It is almost always the one who does not quit.","Every time you show up after a hard day, you become a little harder to stop.","Progress is slow and quiet. But it is happening — even when you cannot see it."],
+      RENEW:["Every morning is a new beginning. Yesterday does not determine tomorrow. Start again.","You are not the same person you were a year ago. Growth is always happening, even quietly.","Rest is not giving up on the journey. It is gathering strength for the next part of it."],
+      RESTORE:["Nothing that is truly worth keeping is ever really lost. It can always be restored.","You have the power to bring good things back — to friendships, to habits, to yourself.","What seems broken often just needs care, time, and someone willing to try. Be that person."],
+      RETURN:["No matter how far you wander, the truest version of yourself is always waiting for you.","Some things are worth returning to. Your values, your joy, your people — go back to them.","Coming home to who you really are is one of the greatest journeys a person can take."],
+      RISE:["You have risen from hard things before. You did not even know you had it in you. But you did.","Rising does not mean the fall never happened. It means you decided it would not be the last word.","Every single time you get back up, you become a little harder to keep down."],
+      ROOT:["Strong trees do not fear the storm. Their roots go deeper than the wind can reach.","You come from people who survived. You carry their resilience in your bones.","Know where you come from. Your history is not a limitation — it is a foundation."],
+      SHINE:["Your light does not take anything away from anyone else. It simply adds to what is possible.","The world does not need a dimmer version of you. It needs all of you, fully shining.","You were not made to hide. You were made to let every good thing in you be seen."],
+      SUSTAIN:["The small things you do every day are quietly building the life you are going to live.","Consistency is quiet. It does not look dramatic. But over time, it changes everything.","Take care of the things that matter to you. Good things do not sustain themselves — but your love can."],
+      THRIVE:["You were not made to merely survive. You were made to flourish, fully and completely.","Thriving is not luck. It is what happens when you finally decide you are worth the effort.","Do not settle for a life that is fine when a life that is full is available to you."],
+      TRANSFORM:["You are not the person you used to be. Every experience has been shaping you into something more.","Transformation does not always feel like becoming. Sometimes it feels like loss. Trust the process.","The most beautiful things in the world — butterflies, diamonds, forests — all went through transformation first."]
     }
   }
 };
