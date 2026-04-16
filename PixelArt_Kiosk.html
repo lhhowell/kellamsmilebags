@@ -135,11 +135,12 @@ body{font-family:'Nunito',sans-serif;background:#0a0a0a;color:#fff;min-height:10
     <button class="gen-btn" id="genBtn" onclick="generate()" disabled>&#128290; Generate Pixel Art</button>
   </div>
 
-  <!-- Live pixel display -->
+  <!-- Live pixel display — hidden behind reveal toggle -->
   <div class="pixel-output" id="pixelOutput">
     <div class="pixel-screen">
-      <div class="pixel-screen-label">&#9654; Pixel art output</div>
-      <div class="pixel-grid" id="pixelGrid"></div>
+      <div class="pixel-screen-label">&#9654; Pixel art output &nbsp;<button onclick="toggleReveal()" id="revealToggle" style="background:rgba(0,255,68,.1);border:1px solid #00cc44;color:#00cc44;font-family:Fredoka One,cursive;font-size:10px;letter-spacing:1px;padding:4px 10px;border-radius:6px;cursor:pointer;">👁 Show Answer</button></div>
+      <div id="revealWrap" style="display:none;"><div class="pixel-grid" id="pixelGrid"></div></div>
+      <div id="revealHint" style="font-family:Fredoka One,cursive;font-size:12px;color:#1a4a1a;padding:12px 0;letter-spacing:1px;">Answer hidden — print the sheet first, then reveal!</div>
     </div>
   </div>
 
@@ -148,7 +149,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0a0a;color:#fff;min-height:10
     <div class="print-title" id="printTitle">Pixel Art Code</div>
     <div class="print-subtitle">A Smile Bags Binary Activity &middot; Elementary Edition</div>
     <div class="print-instr">
-      <strong>Color the grid!</strong> Each filled square = 1. Each empty square = 0. When you color in all the 1s, a secret word appears! Can you read it?
+      <strong>Color the 1s!</strong> Find every cell that says <strong>1</strong> and color it in. Leave the 0s blank. When you're done, a secret word will appear! Can you read it?
     </div>
     <div class="print-grid-wrap" id="printGridWrap"></div>
     <div class="print-bio">
@@ -275,12 +276,14 @@ function generate() {
   document.getElementById('pixelGrid').innerHTML = html;
   document.getElementById('pixelOutput').classList.add('show');
 
-  // Print grid
+  // Print grid — numbered boxes only, student colors the 1s
+  var cellSize = Math.max(12, Math.min(18, Math.floor(480 / grid[0].length)));
+  var fontSize = Math.max(6, cellSize - 6);
   var printHtml = '<div style="display:inline-flex;flex-direction:column;gap:2px;">';
   for (var r = 0; r < grid.length; r++) {
     printHtml += '<div style="display:flex;gap:2px;">';
     for (var c = 0; c < grid[r].length; c++) {
-      printHtml += '<div style="width:14px;height:14px;border-radius:2px;background:' + (grid[r][c] ? '#111' : '#efefef') + ';border:' + (grid[r][c] ? 'none' : '1px solid #ddd') + ';"></div>';
+      printHtml += '<div style="width:' + cellSize + 'px;height:' + cellSize + 'px;border-radius:2px;background:#fff;border:1px solid #bbb;display:inline-flex;align-items:center;justify-content:center;font-family:monospace;font-size:' + fontSize + 'px;font-weight:bold;color:#999;">' + grid[r][c] + '</div>';
     }
     printHtml += '</div>';
   }
@@ -290,6 +293,16 @@ function generate() {
   document.getElementById('printSection').classList.add('show');
   document.getElementById('printBtn').style.display = 'block';
   document.getElementById('pixelOutput').scrollIntoView({behavior:'smooth'});
+}
+
+function toggleReveal() {
+  var wrap = document.getElementById('revealWrap');
+  var hint = document.getElementById('revealHint');
+  var btn = document.getElementById('revealToggle');
+  var showing = wrap.style.display !== 'none';
+  wrap.style.display = showing ? 'none' : 'block';
+  hint.style.display = showing ? 'block' : 'none';
+  btn.textContent = showing ? '👁 Show Answer' : '🙈 Hide Answer';
 }
 
 buildOWGrid();
