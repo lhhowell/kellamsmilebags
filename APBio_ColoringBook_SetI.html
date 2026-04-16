@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Set I · Science Journal | AP Bio Coloring Book · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--accent:#2E7D32;--dot:#81C784;--navy:#1B3A6B;--gold:#C8860A;--bg:#F4F8F0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;padding:0 0 48px;}
+.hdr{background:linear-gradient(135deg,#0A1628,#1B3A6B);border-bottom:4px solid var(--accent);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.hdr-left{display:flex;align-items:center;gap:14px;}
+.hdr-dot{width:14px;height:14px;border-radius:50%;background:var(--dot);flex-shrink:0;}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:18px;color:#fff;letter-spacing:.5px;}
+.hdr-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:2px;}
+.hdr-badge{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:50px;padding:6px 14px;font-family:'Fredoka One',cursive;font-size:11px;color:rgba(255,255,255,.6);}
+.back-btn{display:inline-flex;align-items:center;gap:6px;border:1.5px solid rgba(255,255,255,.2);border-radius:50px;padding:7px 16px;font-family:'Fredoka One',cursive;font-size:11px;color:rgba(255,255,255,.5);text-decoration:none;transition:all .2s;}
+.back-btn:hover{border-color:var(--accent);color:var(--accent);}
+.viewer{max-width:960px;margin:0 auto;padding:24px 20px 0;}
+/* WORD GRID */
+.word-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:24px;}
+.word-btn{background:#fff;border:2px solid #dde8d8;border-radius:10px;padding:10px 6px;font-family:'Fredoka One',cursive;font-size:12px;color:#666;cursor:pointer;text-align:center;transition:all .2s;letter-spacing:.5px;}
+.word-btn:hover{border-color:var(--accent);color:var(--accent);}
+.word-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+/* PAGE VIEWER */
+.page-wrap{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;}
+.page-img-wrap{flex:1 1 320px;max-width:480px;background:#fff;border-radius:16px;box-shadow:0 6px 32px rgba(0,0,0,.1);overflow:hidden;position:relative;}
+.page-img{width:100%;height:auto;display:block;}
+.page-img-placeholder{width:100%;height:400px;display:flex;align-items:center;justify-content:center;background:#f5f5f5;}
+.page-img-placeholder-text{font-family:'Fredoka One',cursive;font-size:16px;color:#ccc;text-align:center;padding:20px;}
+.page-info{flex:1 1 260px;display:flex;flex-direction:column;gap:14px;}
+.info-card{background:#fff;border-radius:14px;padding:20px 22px;box-shadow:0 3px 16px rgba(0,0,0,.06);}
+.info-word{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:var(--navy);margin-bottom:4px;}
+.info-set{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+.info-science-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#aaa;font-family:'Fredoka One',cursive;margin-bottom:6px;}
+.info-science{font-size:13px;color:#555;line-height:1.7;font-style:italic;}
+.info-page{font-size:12px;color:#aaa;margin-top:10px;font-family:'Fredoka One',cursive;letter-spacing:1px;}
+.dl-btn{display:block;width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),#E8A820);border:none;border-radius:10px;font-family:'Fredoka One',cursive;font-size:15px;color:#fff;cursor:pointer;text-align:center;text-decoration:none;transition:all .2s;}
+.dl-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(200,134,10,.3);}
+.print-btn{display:block;width:100%;padding:12px;background:#fff;border:2px solid var(--accent);border-radius:10px;font-family:'Fredoka One',cursive;font-size:14px;color:var(--accent);cursor:pointer;text-align:center;transition:all .2s;}
+.print-btn:hover{background:var(--accent);color:#fff;}
+.nav-btns{display:flex;gap:10px;}
+.nav-btn{flex:1;padding:10px;background:#fff;border:1.5px solid #dde8d8;border-radius:10px;font-family:'Fredoka One',cursive;font-size:13px;color:#888;cursor:pointer;transition:all .2s;text-align:center;}
+.nav-btn:hover{border-color:var(--accent);color:var(--accent);}
+.nav-btn:disabled{opacity:.3;cursor:not-allowed;}
+.progress-bar{height:6px;background:#e8f0e4;border-radius:6px;overflow:hidden;margin-top:10px;}
+.progress-fill{height:100%;background:var(--accent);border-radius:6px;transition:width .4s ease;}
+.footer{text-align:center;font-size:12px;color:#aaa;padding:32px 20px 0;max-width:960px;margin:0 auto;}
+@media(max-width:600px){.word-grid{grid-template-columns:repeat(4,1fr);}.page-wrap{flex-direction:column;}}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-left">
+    <div class="hdr-dot"></div>
+    <div>
+      <div class="hdr-title">Set I &middot; Science Journal</div>
+      <div class="hdr-sub">ChatGPT · Detailed Nature Science Illustrations &middot; AP Bio &amp; T.I.D.E. &middot; Smile Bags</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+    <div class="hdr-badge">25 Pages &middot; Science Coloring</div>
+    <a href="APBio_TIDE_Preview.html" class="back-btn">&#8592; Back to Overview</a>
+  </div>
+</div>
+
+<div class="viewer">
+  <div class="word-grid" id="wordGrid"></div>
+  <div class="page-wrap">
+    <div class="page-img-wrap">
+      <img id="pageImg" class="page-img" src="" alt="" style="display:none;"/>
+      <div class="page-img-placeholder" id="pagePlaceholder">
+        <div class="page-img-placeholder-text">&#127912;<br/>Select a word<br/>to view the page</div>
+      </div>
+    </div>
+    <div class="page-info">
+      <div class="info-card">
+        <div class="info-set">Set I &middot; Science Journal &middot; Illustrated by ChatGPT</div>
+        <div class="info-word" id="infoWord">—</div>
+        <div class="info-science-label">Science Connection</div>
+        <div class="info-science" id="infoScience">Choose a word to see its science connection.</div>
+        <div class="info-page" id="infoPage">Page — of 25</div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      </div>
+      <a class="dl-btn" id="dlBtn" href="#" download onclick="return downloadPage()">&#11015;&#65039; Download This Page</a>
+      <button class="print-btn" onclick="printPage()">&#128438; Print This Page</button>
+      <div class="nav-btns">
+        <button class="nav-btn" id="prevBtn" onclick="navigate(-1)" disabled>&#8592; Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Next &#8594;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Set I &middot; Science Journal &middot; Illustrated by ChatGPT &middot; Smile Bags: A Word &amp; Wonder Experience &middot; AP Biology &amp; T.I.D.E. Coalition
+</div>
+
+<script>
+var PAGES = [
+    {word:"ABSORB",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Absorb.png",science:"A sponge cell soaking up water droplets under a magnifying glass"},
+    {word:"ADAPT",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Adapt.png",science:"A chameleon mid-color-change on a branch surrounded by different environments"},
+    {word:"ANCHOR",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Anchor.png",science:"A kelp forest with holdfasts gripping the ocean floor"},
+    {word:"BALANCE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Balance.png",science:"A food web mobile with predators and prey in perfect balance"},
+    {word:"BLOOM",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Bloom.png",science:"A cross-section of a flower showing pollen, petals, and a bee"},
+    {word:"BREATHE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Breathe.png",science:"Lung alveoli surrounded by oxygen and carbon dioxide molecules"},
+    {word:"CLEAR",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Clear.png",science:"A water filtration system flowing through layers of sand and rock"},
+    {word:"CONNECT",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Connect.png",science:"A mycorrhizal fungal network connecting tree roots underground"},
+    {word:"CYCLE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Cycle.png",science:"The water cycle — evaporation, clouds, rain, and river"},
+    {word:"EMERGE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Emerge.png",science:"A butterfly emerging from a chrysalis mid-transformation"},
+    {word:"FILTER",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Filter.png",science:"A whale with baleen plates filtering krill from ocean water"},
+    {word:"FLOW",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Flow.png",science:"A river cutting through a canyon showing erosion layers"},
+    {word:"GROW",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Grow.png",science:"A time-lapse sequence of a seed sprouting into a seedling"},
+    {word:"HEAL",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Heal.png",science:"A forest regenerating after a wildfire — new growth pushing through ash"},
+    {word:"MIGRATE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Migrate.png",science:"A monarch butterfly migration path over a map of North America"},
+    {word:"PERSIST",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Persist.png",science:"A dandelion pushing through a crack in concrete"},
+    {word:"RENEW",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Renew.png",science:"A coral reef being restored with new coral fragments being planted"},
+    {word:"RESTORE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Restore.png",science:"A wetland restoration scene — cattails, birds, and clean water returning"},
+    {word:"RETURN",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Return.png",science:"Salmon swimming upstream to spawn in the river where they were born"},
+    {word:"RISE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Rise.png",science:"A hot air balloon rising above a patchwork of ecosystems below"},
+    {word:"ROOT",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Root.png",science:"An underground cross-section showing deep root systems and soil layers"},
+    {word:"SHINE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Shine.png",science:"A sunflower turning toward the sun with light ray patterns"},
+    {word:"SUSTAIN",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Sustain.png",science:"A solar panel field beside a wind farm powering a small community"},
+    {word:"THRIVE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Thrive.png",science:"A tide pool teeming with starfish, anemones, crabs, and sea life"},
+    {word:"TRANSFORM",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Transform.png",science:"A caterpillar, chrysalis, and butterfly shown in three side-by-side panels"}
+];
+var current = -1;
+
+function buildGrid() {
+  var g = document.getElementById('wordGrid');
+  PAGES.forEach(function(p, i) {
+    var btn = document.createElement('button');
+    btn.className = 'word-btn';
+    btn.textContent = p.word;
+    btn.onclick = (function(idx) { return function() { showPage(idx); }; })(i);
+    btn.id = 'wb-' + i;
+    g.appendChild(btn);
+  });
+}
+
+function showPage(idx) {
+  current = idx;
+  var p = PAGES[idx];
+  document.querySelectorAll('.word-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById('wb-' + idx).classList.add('active');
+  var img = document.getElementById('pageImg');
+  var ph = document.getElementById('pagePlaceholder');
+  img.src = p.img;
+  img.alt = p.word + ' coloring page';
+  img.style.display = 'block';
+  ph.style.display = 'none';
+  document.getElementById('infoWord').textContent = p.word;
+  document.getElementById('infoScience').textContent = p.science;
+  document.getElementById('infoPage').textContent = 'Page ' + (idx+1) + ' of 25';
+  document.getElementById('progressFill').style.width = ((idx+1)/25*100) + '%';
+  document.getElementById('prevBtn').disabled = idx === 0;
+  document.getElementById('nextBtn').disabled = idx === PAGES.length - 1;
+}
+
+function navigate(dir) {
+  if(current + dir >= 0 && current + dir < PAGES.length) showPage(current + dir);
+}
+
+function downloadPage() {
+  if(current < 0) return false;
+  var a = document.createElement('a');
+  a.href = PAGES[current].img;
+  a.download = 'SetI_' + PAGES[current].word + '_ColoringPage.png';
+  a.click();
+  return false;
+}
+
+function printPage() {
+  if(current < 0) return;
+  var win = window.open('');
+  win.document.write('<img src="' + PAGES[current].img + '" style="max-width:100%;"/>');
+  win.document.close();
+  win.print();
+}
+
+buildGrid();
+showPage(0);
+</script>
+</body>
+</html>
