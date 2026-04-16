@@ -3,277 +3,238 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Digital Arts · Smile Bags · Kayla Gau</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<title>Digital Arts Creation Kiosk — Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  --forest:#1B4332;--forest2:#2D6A4F;--forest3:#40916C;
-  --gold:#C9A84C;--gold2:#E8C97A;--gold3:#F5E4A8;
-  --cream:#FDFAF3;--dark:#0D2818;--mid:#2D4A35;
-  --border:#D4E8D4;--radius:14px;
-}
-body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;overflow-x:hidden;}
-
-/* ── HERO ── */
-.hero{
-  background:linear-gradient(160deg,var(--dark) 0%,var(--forest) 55%,#1A3D2B 100%);
-  padding:56px 48px 48px;position:relative;overflow:hidden;
-}
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 80% 30%,rgba(201,168,76,.1) 0%,transparent 55%),
-             radial-gradient(ellipse at 15% 70%,rgba(64,145,108,.12) 0%,transparent 45%);
-  pointer-events:none;
-}
-.hero-deco{position:absolute;right:48px;top:50%;transform:translateY(-50%);font-size:7rem;opacity:.07;pointer-events:none;line-height:1;}
-.hero-tag{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;position:relative;}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:10px;position:relative;}
-.hero h1 em{color:var(--gold2);font-style:italic;}
-.hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:560px;line-height:1.7;margin-bottom:22px;position:relative;}
-.hero-pills{display:flex;flex-wrap:wrap;gap:8px;position:relative;}
-.pill{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;padding:5px 14px;border-radius:20px;}
-.pill-gold{background:rgba(201,168,76,.18);color:var(--gold2);border:1px solid rgba(201,168,76,.3);}
-.pill-green{background:rgba(64,145,108,.18);color:#95D5B2;border:1px solid rgba(64,145,108,.3);}
-
-/* ── MISSION STRIP ── */
-.mission{background:var(--forest2);padding:22px 48px;display:flex;align-items:center;gap:20px;border-top:3px solid var(--gold);}
-.mission p{font-size:15px;color:rgba(255,255,255,.9);line-height:1.65;font-weight:300;}
-.mission strong{color:#fff;font-weight:700;}
-
-/* ── ONEWORD STRIP ── */
-.ow-strip{background:var(--dark);border-top:1px solid rgba(201,168,76,.2);padding:20px 48px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
-.ow-strip-text{font-size:15px;color:rgba(255,255,255,.85);line-height:1.5;max-width:640px;}
-.ow-strip-text strong{color:var(--gold);font-weight:700;}
-.ow-btn{display:inline-flex;align-items:center;gap:10px;background:rgba(201,168,76,.1);border:1.5px solid rgba(201,168,76,.35);color:var(--gold);font-family:'Fredoka One',cursive;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;padding:11px 22px;border-radius:8px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .2s;}
-.ow-btn:hover{background:rgba(201,168,76,.2);}
-.ow-panel{display:none;background:#060f09;padding:36px 48px;border-bottom:1px solid rgba(255,255,255,.05);}
-.ow-inner{max-width:960px;margin:0 auto;}
-.ow-desc{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);border-left:4px solid var(--gold);border-radius:12px;padding:20px 24px;margin-bottom:24px;}
-.ow-desc p{color:rgba(255,255,255,.85);font-size:14px;line-height:1.75;}
-.ow-legend{display:flex;gap:16px;margin-bottom:14px;flex-wrap:wrap;}
-.ow-legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:#aaa;}
-.ow-legend-dot{width:9px;height:9px;border-radius:50%;}
-.ow-controls{display:flex;gap:8px;margin-bottom:14px;}
-.ow-ctrl{font-family:'Courier New',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#888;background:none;border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:5px 12px;cursor:pointer;}
-.ow-grid{display:grid;gap:8px;}
-.ow-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;}
-.ow-card-hd{display:flex;align-items:center;gap:14px;padding:12px 16px;cursor:pointer;user-select:none;}
-.ow-word{font-family:'Courier New',monospace;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--gold);min-width:110px;text-transform:uppercase;}
-.ow-preview{font-size:12px;color:rgba(255,255,255,.3);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.ow-arr{font-size:10px;color:rgba(255,255,255,.2);transition:transform .2s;}
-.ow-body{display:none;padding:0 16px 14px;border-top:1px solid rgba(255,255,255,.06);}
-.ow-conn{display:flex;gap:10px;margin-top:10px;align-items:flex-start;}
-.ow-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px;}
-.ow-conn-label{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#888;display:block;margin-bottom:2px;font-family:'Courier New',monospace;}
-.ow-conn-text{font-size:13px;color:rgba(255,255,255,.8);line-height:1.6;font-weight:300;}
-
-/* ── WHO RECEIVES ── */
-.who-wrap{max-width:960px;margin:36px auto;padding:0 48px;}
-.who-block{background:var(--dark);border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;}
-.who-inner{background:linear-gradient(135deg,rgba(13,40,24,.95) 60%,rgba(201,168,76,.07));padding:32px 28px 24px;}
-.who-tag{font-family:'Fredoka One',cursive;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
-.who-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:#fff;margin-bottom:14px;line-height:1.2;}
-.who-text{font-size:14px;color:rgba(255,255,255,.7);line-height:1.8;max-width:680px;margin-bottom:14px;}
-.who-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;}
-.who-stat{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;text-align:center;}
-.who-stat-num{font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);}
-.who-stat-lbl{font-family:'Courier New',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:4px;}
-.who-footer{background:rgba(201,168,76,.1);border-top:1px solid rgba(201,168,76,.2);padding:16px 28px;}
-.who-footer p{font-size:13px;color:rgba(255,255,255,.75);line-height:1.7;font-style:italic;}
-
-/* ── MAIN CONTENT ── */
-.main{max-width:960px;margin:0 auto;padding:40px 48px 80px;}
-.section-tag{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--forest2);margin-bottom:6px;}
-.section-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--forest);margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid var(--border);}
-
-/* ── RESOURCE CARDS ── */
-.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:32px;}
-.res-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;text-decoration:none;display:flex;align-items:flex-start;gap:14px;transition:all .2s;box-shadow:0 2px 8px rgba(27,67,50,.06);}
-.res-card:hover{border-color:var(--forest2);transform:translateY(-3px);box-shadow:0 8px 24px rgba(27,67,50,.12);}
-.res-accent{font-size:1.8rem;flex-shrink:0;width:44px;height:44px;background:rgba(27,67,50,.06);border-radius:10px;display:flex;align-items:center;justify-content:center;}
-.res-body{flex:1;min-width:0;}
-.res-tag{font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--forest3);margin-bottom:4px;}
-.res-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--forest);margin-bottom:4px;line-height:1.2;}
-.res-desc{font-size:12px;color:#666;line-height:1.55;}
-.res-arrow{color:var(--forest3);font-size:.9rem;flex-shrink:0;margin-top:2px;transition:transform .2s;}
-.res-card:hover .res-arrow{transform:translateX(4px);}
-
-/* ── SOL STRIP ── */
-.sol-strip{background:var(--forest);border-radius:10px;padding:14px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:24px;}
-.sol-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.6);}
-.sol-badge{background:rgba(201,168,76,.18);border:1px solid rgba(201,168,76,.35);color:var(--gold2);font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;padding:4px 12px;border-radius:20px;}
-
-/* ── BACK BUTTON ── */
-.back-btn{display:inline-flex;align-items:center;gap:8px;background:var(--forest);color:var(--gold2);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:11px 20px;border-radius:8px;text-decoration:none;transition:all .2s;}
-.back-btn:hover{background:var(--forest2);}
-
-/* ── FOOTER ── */
-footer{text-align:center;padding:28px;border-top:1px solid var(--border);margin-top:20px;}
-footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spacing:1px;}
-
-@media(max-width:640px){
-  .hero,.mission,.ow-strip,.ow-panel,.who-wrap,.main{padding-left:20px;padding-right:20px;}
-  .res-grid{grid-template-columns:1fr;}
-}
+body{font-family:'Nunito',sans-serif;background:#0a140a;color:#fff;min-height:100vh;padding:0 0 60px;}
+.hero{background:#0a140a;border-bottom:1px solid #1a2e1a;padding:40px 32px 36px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(64,145,108,.12) 0%,transparent 65%);pointer-events:none;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:4px;color:#40916C;text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,44px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:10px;}
+.hero-title span{color:#C9A84C;}
+.hero-sub{font-size:14px;color:#557055;max-width:580px;margin:0 auto 20px;line-height:1.7;}
+.hero-teacher{font-family:'Fredoka One',cursive;font-size:13px;color:#C9A84C;margin-bottom:16px;}
+.hero-teacher a{color:#C9A84C;text-decoration:underline;text-underline-offset:3px;}
+.hero-teacher a:hover{color:#E8C97A;}
+.hero-rule{display:flex;align-items:center;gap:12px;max-width:500px;margin:0 auto;font-size:12px;color:#2a4a2a;letter-spacing:1px;text-transform:uppercase;}
+.hero-rule::before,.hero-rule::after{content:'';flex:1;height:1px;background:#1a2e1a;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(64,145,108,.06);border:1px solid #40916C;color:#40916C;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;margin:24px 24px 0;transition:all .2s;}
+.back-btn:hover{background:#40916C;color:#111;}
+.req-strip{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:12px;padding:16px 24px;margin:24px auto;max-width:960px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:center;}
+.req-item{text-align:center;}
+.req-num{font-family:'Fredoka One',cursive;font-size:28px;color:#40916C;line-height:1;}
+.req-label{font-size:11px;color:#557055;letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+.wrap{max-width:1020px;margin:0 auto;padding:16px 24px;}
+.cat-section{margin-bottom:44px;}
+.cat-header{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid #1a2e1a;}
+.cat-icon{font-size:26px;}
+.cat-title{font-family:'Playfair Display',serif;font-size:21px;color:#fff;font-weight:700;}
+.cat-tag{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;color:#40916C;text-transform:uppercase;margin-left:auto;background:rgba(64,145,108,.08);border:1px solid #1a3a1a;padding:4px 10px;border-radius:20px;}
+.kiosk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;}
+.kiosk-card{background:#0d0d0d;border:1.5px solid #1a2e1a;border-radius:14px;padding:20px;transition:all .2s;display:flex;flex-direction:column;}
+.kiosk-card:hover{border-color:#40916C;transform:translateY(-3px);box-shadow:0 8px 24px rgba(64,145,108,.15);}
+.kiosk-card.coming-soon{opacity:.6;cursor:default;}
+.kiosk-card.coming-soon:hover{transform:none;border-color:#1a2e1a;box-shadow:none;}
+.kiosk-card-icon{font-size:30px;margin-bottom:10px;}
+.kiosk-card-name{font-family:'Fredoka One',cursive;font-size:16px;color:#fff;margin-bottom:6px;letter-spacing:.3px;}
+.kiosk-card-tag{display:inline-block;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:12px;}
+.tag-art{background:rgba(64,145,108,.1);color:#40916C;border:1px solid #1a3a1a;}
+.tag-game{background:rgba(201,168,76,.1);color:#C9A84C;border:1px solid #2a2010;}
+.tag-design{background:rgba(91,155,213,.1);color:#5b9bd5;border:1px solid #10202a;}
+.tag-soon{background:rgba(100,100,100,.1);color:#666;border:1px solid #333;}
+.kiosk-card-desc{font-size:13px;color:#557055;line-height:1.6;margin-bottom:16px;flex:1;}
+.kiosk-btn{display:block;width:100%;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:12px;border:none;border-radius:8px;cursor:pointer;text-decoration:none;text-align:center;transition:all .2s;margin-top:auto;}
+.kiosk-btn.green{background:#40916C;color:#fff;}.kiosk-btn.green:hover{background:#2D6A4F;}
+.kiosk-btn.gold{background:#C9A84C;color:#111;}.kiosk-btn.gold:hover{background:#b8973b;}
+.kiosk-btn.blue{background:#5b9bd5;color:#fff;}.kiosk-btn.blue:hover{background:#4a8ac4;}
+.kiosk-btn.ghost{background:transparent;border:1.5px solid #333;color:#555;cursor:not-allowed;}
+.sol-strip{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:10px;padding:14px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:24px;}
+.sol-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#557055;}
+.sol-badge{background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.25);color:#C9A84C;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;padding:4px 12px;border-radius:20px;}
+.footer{text-align:center;font-size:12px;color:#2a4a2a;padding:40px 20px 0;max-width:900px;margin:0 auto;font-family:'Fredoka One',cursive;letter-spacing:1px;}
+@media(max-width:600px){.kiosk-grid{grid-template-columns:1fr;}.hero{padding:28px 20px 24px;}}
 </style>
 </head>
 <body>
 
-<!-- HERO -->
 <div class="hero">
-  <div class="hero-deco">🎨</div>
-  <div class="hero-tag">Smile Bags · A Word &amp; Wonder Experience · Spring 2026</div>
-  <h1>Digital Arts<br><em>Student Experience</em></h1>
-  <p class="hero-sub">Kayla Gau's Digital Arts students generate AI art, design stencils, create jigsaw puzzles, and design original adhesive stickers for the Smile Mirror — all connected to one shared OneWord for a child who needs it.</p>
-  <div class="hero-pills">
-    <div class="pill pill-gold">🎨 Kayla Gau · Digital Arts</div>
-    <div class="pill pill-green">4 Student Contributions</div>
-    <div class="pill pill-green">AI · Cricut · 3D Print</div>
-    <div class="pill pill-gold">Virginia Visual Arts SOLs</div>
-  </div>
+  <div class="hero-brand">Smile Bags &middot; A Word &amp; Wonder Experience</div>
+  <h1 class="hero-title">Digital Arts <span>Creation Kiosk</span></h1>
+  <p class="hero-sub">Explore AI art styles, build color skills, design stencils, create puzzles, and design original stickers — all connected to one shared OneWord for a child who needs it.</p>
+  <div class="hero-teacher"><a href="empathy_design_framework.html" target="_blank">Kara Gau</a> &middot; Digital Arts &middot; Virginia Visual Arts SOL AI.1 &middot; AI.2 &middot; AII.7 &middot; AII.10</div>
+  <div class="hero-rule">4 categories &middot; 12 activities &middot; All open in a new tab</div>
 </div>
 
-<!-- MISSION STRIP -->
-<div class="mission">
-  <span style="font-size:24px;flex-shrink:0;">🌿</span>
-  <p>At Kellam High School in Virginia Beach, <strong>Digital Arts students are creating original AI-generated art, hand-designed stencils, laminated jigsaw puzzles, and original adhesive stickers for the Smile Mirror</strong> — each one connected to a shared OneWord and placed in a Smile Bag for a child in the community. Every piece of art was made by a student who didn't know the child's name, but made something <strong>just for them.</strong></p>
+<a href="index.html" class="back-btn">&#8592; Back to Smile Bags Home</a>
+
+<div class="req-strip">
+  <div class="req-item"><div class="req-num">2</div><div class="req-label">AI Art Sets</div></div>
+  <div class="req-item"><div class="req-num">5</div><div class="req-label">Color Tools</div></div>
+  <div class="req-item"><div class="req-num">4</div><div class="req-label">Art Games</div></div>
+  <div class="req-item"><div class="req-num">3</div><div class="req-label">Design Tools</div></div>
 </div>
 
-<!-- ONEWORD STRIP -->
-<div class="ow-strip">
-  <p class="ow-strip-text"><strong>At the heart of Smile Bags are 25 OneWords</strong> &mdash; connecting environmental science to social emotional well-being.</p>
-  <button class="ow-btn" onclick="toggleOW()">
-    🌿 <span id="owBtnLabel">Explore the 25 OneWords</span>
-    <span id="owArrow" style="transition:transform .3s;display:inline-block;">▼</span>
-  </button>
-</div>
+<div class="wrap">
 
-<div class="ow-panel" id="owPanel">
-  <div class="ow-inner">
-    <div class="ow-desc">
-      <p>Each of the 25 OneWords lives in two worlds at once &mdash; in the natural systems students study, and in the inner lives students navigate every day. From <strong style="color:var(--gold);">Absorb</strong> to <strong style="color:var(--gold);">Transform</strong>, these words remind us that the same forces that sustain ecosystems are the forces that sustain people too.</p>
+  <!-- ── AI ART & COLORING SETS ── -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-icon">&#127912;</div>
+      <div class="cat-title">AI Art &amp; Coloring Sets</div>
+      <div class="cat-tag">Category 1 &middot; 2 Sets</div>
     </div>
-    <div class="ow-legend">
-      <div class="ow-legend-item"><div class="ow-legend-dot" style="background:#4caf82;"></div>Environmental Science</div>
-      <div class="ow-legend-item"><div class="ow-legend-dot" style="background:var(--gold);"></div>Social Emotional Well-Being</div>
-    </div>
-    <div class="ow-controls">
-      <button class="ow-ctrl" onclick="owAll(true)">Expand All</button>
-      <button class="ow-ctrl" onclick="owAll(false)">Collapse All</button>
-    </div>
-    <div class="ow-grid" id="owGrid"></div>
-  </div>
-</div>
+    <div class="kiosk-grid">
 
-<!-- WHO RECEIVES -->
-<div class="who-wrap">
-  <div class="who-block">
-    <div class="who-inner">
-      <div class="who-tag">Who Receives a Smile Bag</div>
-      <h2 class="who-title">A bag finds its way to a student<br>who needs it most.</h2>
-      <p class="who-text">Smile Bags are distributed across <strong style="color:#fff;">Kellam's eight feeder schools and Kellam High School itself</strong> — ten bags per school, ninety students reached. Guidance counselors identify students who may need encouragement, motivation, or simply a reason to smile. A bag is chosen for them <em style="color:var(--gold2);">deliberately, not randomly</em> — at exactly the right moment.</p>
-      <p class="who-text" style="margin-bottom:24px;">Every item inside was made by a Kellam student who didn't know your name — but made something <em style="color:rgba(214,238,238,.9);">just for you.</em></p>
-      <div class="who-stats">
-        <div class="who-stat"><div class="who-stat-num">9</div><div class="who-stat-lbl">Schools</div></div>
-        <div class="who-stat"><div class="who-stat-num">10</div><div class="who-stat-lbl">Bags Per School</div></div>
-        <div class="who-stat"><div class="who-stat-num">90</div><div class="who-stat-lbl">Students Reached</div></div>
-        <div class="who-stat"><div class="who-stat-num">🎨</div><div class="who-stat-lbl">Made With Care</div></div>
+      <div class="kiosk-card">
+        <div class="kiosk-card-icon">&#127807;</div>
+        <div class="kiosk-card-name">Set G &middot; Nature Poster Collection</div>
+        <div class="kiosk-card-tag tag-art">CoPilot &middot; AI Art</div>
+        <div class="kiosk-card-desc">25 OneWords in bold nature poster style generated by CoPilot. Browse all 25 pages, compare AI outputs, and select pages to print for Smile Bags. Also used as jigsaw puzzle source art.</div>
+        <a href="setg_coloring_book.html" target="_blank" class="kiosk-btn green">Open Set G &#8599;</a>
       </div>
-    </div>
-    <div class="who-footer">
-      <p>&ldquo;Guidance counselors identify students who may need encouragement, motivation, or simply a reason to smile. A bag is chosen for them &mdash; not randomly, but with intention.&rdquo;</p>
+
+      <div class="kiosk-card">
+        <div class="kiosk-card-icon">&#127800;</div>
+        <div class="kiosk-card-name">Set H &middot; Fine Line Botanical</div>
+        <div class="kiosk-card-tag tag-art">Gemini / ChatGPT &middot; AI Art</div>
+        <div class="kiosk-card-desc">25 words in fine line botanical style across Gemini and ChatGPT. Compare AI outputs and explore style differences — intricate detail perfect for coloring prints going into Smile Bags.</div>
+        <a href="seth_coloring_book.html" target="_blank" class="kiosk-btn green">Open Set H &#8599;</a>
+      </div>
+
     </div>
   </div>
-</div>
 
-<!-- MAIN CONTENT -->
-<div class="main">
-
-  <div class="section-tag">Student Activities</div>
-  <div class="section-title">Digital Arts Contributions</div>
-
-  <div class="res-grid">
-
-    <a class="res-card" href="setg_coloring_book.html" target="_blank">
-      <div class="res-accent">🌲</div>
-      <div class="res-body">
-        <div class="res-tag">CoPilot · Contribution 01</div>
-        <div class="res-title">Set G · Nature Poster</div>
-        <div class="res-desc">25 OneWords in bold nature poster style. Students explore AI-generated art and select pages for coloring prints going into Smile Bags.</div>
-      </div>
-      <div class="res-arrow">→</div>
-    </a>
-
-    <a class="res-card" href="seth_coloring_book.html" target="_blank">
-      <div class="res-accent">🌸</div>
-      <div class="res-body">
-        <div class="res-tag">Gemini / ChatGPT · Contribution 01</div>
-        <div class="res-title">Set H · Fine Line Botanical</div>
-        <div class="res-desc">25 words in fine line botanical style across Gemini and ChatGPT. Compare AI outputs and explore style differences for printed coloring pages.</div>
-      </div>
-      <div class="res-arrow">→</div>
-    </a>
-
-    <a class="res-card" href="stencil_design_guidelines.html" target="_blank">
-      <div class="res-accent">✂️</div>
-      <div class="res-body">
-        <div class="res-tag">Student Guide · Contribution 02</div>
-        <div class="res-title">Stencil Set Design Guidelines</div>
-        <div class="res-desc">Student-facing guide covering the full stencil design process — rules, naming conventions, checklist, and submission instructions.</div>
-      </div>
-      <div class="res-arrow">→</div>
-    </a>
-
-    <div class="res-card" style="cursor:default;">
-      <div class="res-accent">🧩</div>
-      <div class="res-body">
-        <div class="res-tag">Physical Deliverable · Contribution 03</div>
-        <div class="res-title">Jigsaw Puzzle</div>
-        <div class="res-desc">Students prepare a Set G nature poster image as a jigsaw puzzle — printed, laminated, and cut into 8–20 pieces. Piece count must match the recipient's age and ability. A 20-piece puzzle designed for a 6-year-old is a design failure regardless of how well it was cut. This contribution pairs technical production skills with recipient awareness.</div>
-      </div>
+  <!-- ── COLOR STUDIO ── -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-icon">&#127775;</div>
+      <div class="cat-title">Color Studio</div>
+      <div class="cat-tag">Category 2 &middot; 5 Tools</div>
     </div>
+    <div class="kiosk-grid">
 
-    <a class="res-card" href="DigitalArts_SmileMirror.html" target="_blank">
-      <div class="res-accent">🪞</div>
-      <div class="res-body">
-        <div class="res-tag">Student Kiosk · Contribution 04</div>
-        <div class="res-title">Smile Mirror Sticker Kiosk</div>
-        <div class="res-desc">Students design an original 2.8&Prime; circular adhesive sticker for the back of the acrylic mirror. Choose a style, color, and font — print 6 per sheet on the Cricut.</div>
+      <div class="kiosk-card">
+        <div class="kiosk-card-icon">&#9898;</div>
+        <div class="kiosk-card-name">Color Wheel Mixer</div>
+        <div class="kiosk-card-tag tag-art">Color Theory</div>
+        <div class="kiosk-card-desc">Click the color wheel to pick colors, build a 5-swatch named palette for your OneWord, and explore how hue, saturation, and brightness work together.</div>
+        <a href="DigitalArts_ActivityHub.html" target="_blank" class="kiosk-btn green">Open Studio &#8599;</a>
       </div>
-      <div class="res-arrow">→</div>
-    </a>
 
-    <a class="res-card" href="oneword_coloring_book.html" target="_blank">
-      <div class="res-accent">🎨</div>
-      <div class="res-body">
-        <div class="res-tag">AI Art Styles · Step 4</div>
-        <div class="res-title">OneWord Coloring Book</div>
-        <div class="res-desc">175 pages across 7 AI art styles — scenic, cartoon, woodcut, artistic, K–4 icon, nature poster, and fine line botanical. Compare ChatGPT, CoPilot, and Gemini outputs.</div>
+      <div class="kiosk-card">
+        <div class="kiosk-card-icon">&#127752;</div>
+        <div class="kiosk-card-name">Color Emotion Map</div>
+        <div class="kiosk-card-tag tag-art">Color Psychology</div>
+        <div class="kiosk-card-desc">Colors carry feelings. Match 12 emotion-colors to your OneWord and build a personal emotional color palette — exploring the psychology behind color choices.</div>
+        <a href="DigitalArts_ActivityHub.html" target="_blank" class="kiosk-btn green">Open Studio &#8599;</a>
       </div>
-      <div class="res-arrow">→</div>
-    </a>
 
-    <a class="res-card" href="empathy_design_framework.html" target="_blank">
-      <div class="res-accent">💛</div>
-      <div class="res-body">
-        <div class="res-tag">Teacher Resource</div>
-        <div class="res-title">Empathy Design Framework</div>
-        <div class="res-desc">Teacher-facing guide for Kayla Gau — connecting design thinking, empathy, and the Smile Bags project to classroom learning.</div>
+      <div class="kiosk-card">
+        <div class="kiosk-card-icon">&#128396;</div>
+        <div class="kiosk-card-name">Color Story</div>
+        <div class="kiosk-card-tag tag-art">Abstract Expression</div>
+        <div class="kiosk-card-desc">Paint an abstract artwork using only the colors of your OneWord. Brush, spray, and eraser tools. No rules — just color, emotion, and expression on a digital canvas.</div>
+        <a href="DigitalArts_ActivityHub.html" target="_blank" class="kiosk-btn green">Open Studio &#8599;</a>
       </div>
-      <div class="res-arrow">→</div>
-    </a>
 
-    <a class="res-card" href="AVID_TradingCard_Kiosk.html" target="_blank">
-      <div class="res-accent">🃏</div>
-      <div class="res-body">
-        <div class="res-tag">Digital Arts · Trading Cards</div>
-        <div class="res-title">OneWord Trading Card Kiosk</div>
-        <div class="res-desc">Students generate and print laminated trading cards featuring their OneWord — a collectible item for every Smile Bag.</div>
+      <div class="kiosk-card">
+        <div class="kiosk-card-icon">&#127914;</div>
+        <div class="kiosk-card-name">Color Harmony</div>
+        <div class="kiosk-card-tag tag-art">Color Theory</div>
+        <div class="kiosk-card-desc">Learn real color theory — complementary, analogous, triadic, and split-complementary schemes. Click the wheel, choose a harmony type, and discover the colors that belong together.</div>
+        <a href="DigitalArts_ActivityHub.html" target="_blank" class="kiosk-btn green">Open Studio &#8599;</a>
       </div>
-      <div class="res-arrow">→</div>
-    </a>
 
+      <div class="kiosk-card">
+        <div class="kiosk-card-icon">&#11088;</div>
+        <div class="kiosk-card-name">Mood Palette Builder</div>
+        <div class="kiosk-card-tag tag-art">Visual Composition</div>
+        <div class="kiosk-card-desc">Drag colors from the library onto a 4×4 mood board grid. Arrange, replace, and compose until the visual feeling of your OneWord feels exactly right.</div>
+        <a href="DigitalArts_ActivityHub.html" target="_blank" class="kiosk-btn green">Open Studio &#8599;</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── ART GAMES ── -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-icon">&#127918;</div>
+      <div class="cat-title">Art Games</div>
+      <div class="cat-tag">Category 3 &middot; 4 Games</div>
+    </div>
+    <div class="kiosk-grid">
+
+      <div class="kiosk-card coming-soon">
+        <div class="kiosk-card-icon">&#127922;</div>
+        <div class="kiosk-card-name">Color by Number Race</div>
+        <div class="kiosk-card-tag tag-soon">Coming Soon</div>
+        <div class="kiosk-card-desc">A OneWord science scene divided into numbered cells — each number maps to a color. Fill in the cells against a countdown timer to reveal the hidden illustration.</div>
+        <button class="kiosk-btn ghost" disabled>Coming Soon</button>
+      </div>
+
+      <div class="kiosk-card coming-soon">
+        <div class="kiosk-card-icon">&#10024;</div>
+        <div class="kiosk-card-name">Scratch &amp; Reveal</div>
+        <div class="kiosk-card-tag tag-soon">Coming Soon</div>
+        <div class="kiosk-card-desc">The canvas starts fully covered. Use a digital brush to scratch away the color layer and uncover the hidden OneWord illustration underneath — like a scratch ticket.</div>
+        <button class="kiosk-btn ghost" disabled>Coming Soon</button>
+      </div>
+
+      <div class="kiosk-card coming-soon">
+        <div class="kiosk-card-icon">&#128243;</div>
+        <div class="kiosk-card-name">Color Tile Flip</div>
+        <div class="kiosk-card-tag tag-soon">Coming Soon</div>
+        <div class="kiosk-card-desc">Tiles cover the image and flip away one by one on a timer. Guess the OneWord before all tiles are gone — fewer tiles flipped means a higher score.</div>
+        <button class="kiosk-btn ghost" disabled>Coming Soon</button>
+      </div>
+
+      <div class="kiosk-card coming-soon">
+        <div class="kiosk-card-icon">&#9201;</div>
+        <div class="kiosk-card-name">Speed Palette</div>
+        <div class="kiosk-card-tag tag-soon">Coming Soon</div>
+        <div class="kiosk-card-desc">The colored image flashes for 3 seconds then disappears. Recreate its color palette from memory by selecting the colors you saw — match earns points.</div>
+        <button class="kiosk-btn ghost" disabled>Coming Soon</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── DESIGN & CREATE ── -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-icon">&#9986;&#65039;</div>
+      <div class="cat-title">Design &amp; Create</div>
+      <div class="cat-tag">Category 4 &middot; 3 Activities</div>
+    </div>
+    <div class="kiosk-grid">
+
+      <div class="kiosk-card">
+        <div class="kiosk-card-icon">&#9986;&#65039;</div>
+        <div class="kiosk-card-name">Stencil Set Design Guidelines</div>
+        <div class="kiosk-card-tag tag-design">Student Guide</div>
+        <div class="kiosk-card-desc">Student-facing guide covering the full stencil design process — rules, naming conventions, design checklist, and submission instructions for the Cricut cutter.</div>
+        <a href="stencil_design_guidelines.html" target="_blank" class="kiosk-btn blue">View Guidelines &#8599;</a>
+      </div>
+
+      <div class="kiosk-card">
+        <div class="kiosk-card-icon">&#129710;</div>
+        <div class="kiosk-card-name">Smile Mirror Sticker Kiosk</div>
+        <div class="kiosk-card-tag tag-design">Student Kiosk</div>
+        <div class="kiosk-card-desc">Design an original 2.8&Prime; circular adhesive sticker for the back of the acrylic Smile Mirror. Choose a style, color palette, and font — printed 6 per sheet on the Cricut.</div>
+        <a href="DigitalArts_SmileMirror.html" target="_blank" class="kiosk-btn blue">Open Kiosk &#8599;</a>
+      </div>
+
+      <div class="kiosk-card" style="cursor:default;">
+        <div class="kiosk-card-icon">&#129513;</div>
+        <div class="kiosk-card-name">Jigsaw Puzzle</div>
+        <div class="kiosk-card-tag tag-design">Physical Deliverable</div>
+        <div class="kiosk-card-desc">Prepare a Set G nature poster as a jigsaw puzzle — printed, laminated, and cut into 8–20 pieces. Piece count must match the recipient's age and ability. Open Set G to choose your image.</div>
+        <a href="setg_coloring_book.html" target="_blank" class="kiosk-btn blue">Choose Image in Set G &#8599;</a>
+      </div>
+
+    </div>
   </div>
 
   <!-- SOL STRIP -->
@@ -287,74 +248,6 @@ footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spac
 
 </div>
 
-<footer>
-  <p>Smile Bags · A Word &amp; Wonder Experience · Digital Arts · Kayla Gau · Spring 2026</p>
-</footer>
-
-<script>
-var OW=[
-  {w:"ABSORB",sci:"Plants and soils absorb carbon, water, and nutrients to sustain ecosystems.",sel:"Taking in new information and experiences with an open, curious mind."},
-  {w:"ADAPT",sci:"Species adapt to changing environments through evolution and behavioral shifts.",sel:"Adjusting thoughts and responses when life feels uncertain or unfamiliar."},
-  {w:"ANCHOR",sci:"Root systems anchor soil, preventing erosion and stabilizing ecosystems.",sel:"Finding people, places, and practices that keep you grounded and steady."},
-  {w:"BALANCE",sci:"Ecosystems depend on balance between predators, prey, and available resources.",sel:"Maintaining equilibrium between work, rest, relationships, and personal needs."},
-  {w:"BLOOM",sci:"Flowering plants bloom in response to light, temperature, and seasonal cues.",sel:"Thriving naturally when your environment and essential needs are consistently met."},
-  {w:"BREATHE",sci:"Photosynthesis and respiration are Earth's breath — oxygen and carbon in continuous exchange.",sel:"Breath is the body's fastest tool for calming the nervous system and resetting."},
-  {w:"CLEAR",sci:"Clear water, clear skies, and clear-cut forests all signal environmental health or harm.",sel:"Clarity of mind comes when we slow down, process emotions, and release what isn't ours."},
-  {w:"CONNECT",sci:"Food webs connect every organism in an ecosystem — nothing exists in true isolation.",sel:"Healthy relationships and a sense of belonging are essential to human well-being."},
-  {w:"CYCLE",sci:"Water, carbon, and nitrogen move through Earth in continuous, life-sustaining cycles.",sel:"Life moves in cycles — rest, effort, grief, and renewal are all natural and necessary."},
-  {w:"EMERGE",sci:"Species emerge from dormancy, cocoons, and seeds when conditions are right.",sel:"Growth happens gradually — and then suddenly, you emerge stronger than before."},
-  {w:"FILTER",sci:"Wetlands and organisms filter toxins and pollutants from water and air.",sel:"Learning to filter out negativity and noise so you can focus on what truly matters."},
-  {w:"FLOW",sci:"Rivers flow through watersheds, carrying energy and life across vast landscapes.",sel:"Finding your flow state — where effort feels effortless and purpose feels clear."},
-  {w:"GROW",sci:"Growth requires sunlight, nutrients, water, and time — it cannot be forced or rushed.",sel:"Personal growth requires the same patience and conditions that ecosystems demand."},
-  {w:"HEAL",sci:"Ecosystems heal after disturbance through succession, regeneration, and time.",sel:"Healing is not linear — for people or for nature — and both deserve patience."},
-  {w:"MIGRATE",sci:"Animals migrate seasonally in response to temperature, food availability, and light.",sel:"Transitions and change are a natural part of every life journey — not something to fear."},
-  {w:"PERSIST",sci:"Resilient species persist through drought, wildfire, and long-term climate shifts.",sel:"Persistence through difficulty builds strength, character, and a deeper sense of identity."},
-  {w:"RENEW",sci:"Forests renew after fire; soils renew through decomposition and the return of nutrients.",sel:"Rest and recovery are how we renew our energy, creativity, and sense of purpose."},
-  {w:"RESTORE",sci:"Habitat restoration rebuilds what was lost or degraded through human impact.",sel:"Restoring relationships and self-trust after hard seasons is an act of quiet courage."},
-  {w:"RETURN",sci:"Salmon return to their birth streams — nature is always drawn back toward its origin.",sel:"Returning to your values and sense of self after feeling lost is always possible."},
-  {w:"RISE",sci:"Sea levels rise, but so do tides, seeds breaking soil, and birds at first light.",sel:"Rising above challenges without denying they existed — that is resilience in action."},
-  {w:"ROOT",sci:"Deep root systems stabilize plants and reach water sources during periods of drought.",sel:"Your roots — family, culture, values, and history — keep you stable when life shifts."},
-  {w:"SHINE",sci:"The sun powers all life on Earth through light energy and the process of photosynthesis.",sel:"Letting your authentic self shine is both a gift to others and an act of personal courage."},
-  {w:"SUSTAIN",sci:"Sustainability keeps ecosystems and communities viable and thriving for future generations.",sel:"Building habits that sustain your mental and physical health is an investment in your future."},
-  {w:"THRIVE",sci:"Species thrive in ecosystems where their needs are consistently and reliably met.",sel:"You deserve environments — social and physical — where you can truly and fully thrive."},
-  {w:"TRANSFORM",sci:"Metamorphosis, decomposition, and erosion transform matter into something entirely new.",sel:"Every challenge you survive has the power to transform you into someone stronger."}
-];
-function buildOW(){
-  var h='';
-  OW.forEach(function(o,i){
-    h+='<div class="ow-card" id="owc'+i+'">' +
-      '<div class="ow-card-hd" onclick="toggleOWC('+i+')">' +
-        '<span class="ow-word">'+o.w+'</span>' +
-        '<span class="ow-preview">'+o.sci+'</span>' +
-        '<span class="ow-arr" id="owarr'+i+'">▼</span>' +
-      '</div>' +
-      '<div class="ow-body" id="owb'+i+'">' +
-        '<div class="ow-conn"><div class="ow-dot" style="background:#4caf82;"></div><div><span class="ow-conn-label">Environmental Science</span><span class="ow-conn-text">'+o.sci+'</span></div></div>' +
-        '<div class="ow-conn"><div class="ow-dot" style="background:var(--gold);"></div><div><span class="ow-conn-label">Social Emotional Well-Being</span><span class="ow-conn-text">'+o.sel+'</span></div></div>' +
-      '</div>' +
-    '</div>';
-  });
-  document.getElementById('owGrid').innerHTML=h;
-}
-function toggleOWC(i){
-  var b=document.getElementById('owb'+i),a=document.getElementById('owarr'+i);
-  var open=b.style.display==='none';
-  b.style.display=open?'block':'none';
-  a.style.transform=open?'rotate(180deg)':'';
-}
-function owAll(open){
-  OW.forEach(function(_,i){
-    document.getElementById('owb'+i).style.display=open?'block':'none';
-    document.getElementById('owarr'+i).style.transform=open?'rotate(180deg)':'';
-  });
-}
-function toggleOW(){
-  var p=document.getElementById('owPanel'),open=p.style.display==='none';
-  p.style.display=open?'block':'none';
-  document.getElementById('owArrow').style.transform=open?'rotate(180deg)':'';
-  document.getElementById('owBtnLabel').textContent=open?'Collapse — The 25 OneWords':'Explore the 25 OneWords';
-}
-buildOW();
-</script>
+<div class="footer">Digital Arts &middot; Creation Kiosk &middot; Smile Bags: A Word &amp; Wonder Experience &middot; Kara Gau &middot; Spring 2026</div>
 </body>
 </html>
