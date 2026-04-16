@@ -395,22 +395,20 @@ function checkReady() {
 }
 
 function updatePreview() {
-  var msg = document.getElementById('msgInput').value.trim();
-  document.getElementById('charCount').textContent = document.getElementById('msgInput').value.length;
   checkReady();
-  if (!selectedActivity || !selectedWord || !msg) { document.getElementById('previewCard').classList.remove('show'); return; }
+  if (!selectedActivity || !selectedWord || !selectedStatement) { document.getElementById('previewCard').classList.remove('show'); return; }
   var col = cardColors[selectedColor];
   var card = document.getElementById('previewCard');
   card.style.background = col.bg;
   card.style.color = col.text;
   document.getElementById('prevWord').style.color = col.accent;
   document.getElementById('prevWord').textContent = selectedWord + ' \u00b7 ' + activities[selectedActivity].label;
-  document.getElementById('prevMsg').textContent = msg;
+  document.getElementById('prevMsg').textContent = selectedStatement;
   card.classList.add('show');
 }
 
 function generateCard() {
-  var msg = document.getElementById('msgInput').value.trim();
+  var msg = selectedStatement;
   var col = cardColors[selectedColor];
   var act = activities[selectedActivity];
 
