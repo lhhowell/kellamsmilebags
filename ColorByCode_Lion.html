@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Color-by-Code: Lion · AP Bio · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--green:#4caf82;--gold:#c9a84c;--dark:#0a0f0a;--navy:#1B3A6B;}
+body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-height:100vh;padding:0 0 60px;}
+.hdr{background:#0d150d;border-bottom:2px solid var(--green);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);}
+.hdr-sub{font-size:11px;color:#3a6a3a;margin-top:2px;}
+.back-btn{display:inline-flex;align-items:center;gap:6px;border:1.5px solid #2a4a2a;border-radius:50px;padding:7px 16px;font-family:'Fredoka One',cursive;font-size:11px;color:#3a6a3a;text-decoration:none;transition:all .2s;}
+.back-btn:hover{border-color:var(--green);color:var(--green);}
+.workspace{max-width:960px;margin:0 auto;padding:24px;}
+.mode-tabs{display:flex;gap:0;background:#111;border:1px solid #1a3a1a;border-radius:12px;overflow:hidden;margin-bottom:24px;}
+.mode-tab{flex:1;padding:14px;text-align:center;cursor:pointer;border:none;background:transparent;font-family:'Fredoka One',cursive;font-size:14px;color:#3a6a3a;transition:all .2s;}
+.mode-tab.active{background:#1a3a1a;color:var(--gold);}
+.panel{display:none;}.panel.active{display:block;}
+/* MAKE IT */
+.make-wrap{display:flex;gap:24px;flex-wrap:wrap;}
+.lion-svg-wrap{flex:1;min-width:280px;background:#fff;border-radius:14px;padding:16px;text-align:center;}
+.key-wrap{min-width:200px;}
+.key-title{font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:12px;}
+.key-item{display:flex;align-items:center;gap:10px;margin-bottom:8px;background:#111;border-radius:8px;padding:8px 12px;}
+.key-num{font-family:'Fredoka One',cursive;font-size:16px;color:#fff;width:24px;text-align:center;}
+.key-swatch{width:28px;height:28px;border-radius:6px;flex-shrink:0;}
+.key-label{font-size:12px;color:#888;}
+.btn{padding:12px 24px;border-radius:8px;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s;margin-top:12px;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#E8C97A);color:#111;display:block;width:100%;}
+.btn-gold:hover{transform:translateY(-2px);}
+/* COLOR IT */
+.color-layout{display:flex;gap:20px;flex-wrap:wrap;}
+.tools-col{min-width:160px;}
+.canvas-col{flex:1;}
+.swatch-row{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.cswatch{width:36px;height:36px;border-radius:8px;cursor:pointer;border:3px solid transparent;transition:all .2s;}
+.cswatch.active{border-color:#fff;transform:scale(1.1);}
+.tool-btn{background:#111;border:1.5px solid #222;border-radius:8px;padding:8px;font-size:16px;cursor:pointer;color:#aaa;transition:all .2s;width:36px;height:36px;display:flex;align-items:center;justify-content:center;}
+.tool-btn.active{border-color:var(--gold);color:var(--gold);}
+#colorCanvas{border-radius:12px;border:1px solid #1a3a1a;cursor:crosshair;display:block;max-width:100%;}
+/* WIN */
+.win-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:center;justify-content:center;}
+.win-overlay.show{display:flex;}
+.win-box{background:#0d1a0d;border:2px solid var(--gold);border-radius:20px;padding:36px;text-align:center;max-width:480px;}
+.win-title{font-family:'Fredoka One',cursive;font-size:32px;color:var(--gold);margin-bottom:12px;}
+.bio-fact{background:rgba(76,175,130,.1);border:1px solid var(--green);border-radius:10px;padding:16px;font-size:14px;color:rgba(255,255,255,.85);line-height:1.7;margin:16px 0;}
+.bio-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:6px;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div><div class="hdr-title">🦁 Color-by-Code: Lion</div><div class="hdr-sub">AP Bio &amp; T.I.D.E. · Coding &amp; Decoding · Smile Bags</div></div>
+  <a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">← Back to Kiosk</a>
+</div>
+
+<div class="workspace">
+  <div class="mode-tabs">
+    <button class="mode-tab active" onclick="showMode('make',this)">📄 Make It — Printable Sheet</button>
+    <button class="mode-tab" onclick="showMode('color',this)">🎨 Color It — Interactive</button>
+  </div>
+
+  <!-- MAKE IT -->
+  <div class="panel active" id="panel-make">
+    <div class="make-wrap">
+      <div class="lion-svg-wrap">
+        <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#333;margin-bottom:12px;letter-spacing:1px;">COLOR BY NUMBER — LION</div>
+        <svg viewBox="0 0 300 320" xmlns="http://www.w3.org/2000/svg" style="max-width:280px;width:100%;">
+          <!-- Mane -->
+          <ellipse cx="150" cy="145" rx="95" ry="90" fill="white" stroke="#333" stroke-width="2"/>
+          <text x="150" y="150" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#333" font-weight="bold">2</text>
+          <!-- Face -->
+          <ellipse cx="150" cy="148" rx="72" ry="68" fill="white" stroke="#333" stroke-width="2"/>
+          <text x="150" y="153" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#333" font-weight="bold">1</text>
+          <!-- Left ear -->
+          <ellipse cx="84" cy="82" rx="22" ry="20" fill="white" stroke="#333" stroke-width="2"/>
+          <text x="84" y="87" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#333" font-weight="bold">2</text>
+          <!-- Right ear -->
+          <ellipse cx="216" cy="82" rx="22" ry="20" fill="white" stroke="#333" stroke-width="2"/>
+          <text x="216" y="87" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#333" font-weight="bold">2</text>
+          <!-- Inner ears -->
+          <ellipse cx="84" cy="82" rx="12" ry="11" fill="white" stroke="#333" stroke-width="1.5"/>
+          <text x="84" y="86" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#333" font-weight="bold">3</text>
+          <ellipse cx="216" cy="82" rx="12" ry="11" fill="white" stroke="#333" stroke-width="1.5"/>
+          <text x="216" y="86" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#333" font-weight="bold">3</text>
+          <!-- Left eye -->
+          <ellipse cx="120" cy="128" rx="16" ry="14" fill="white" stroke="#333" stroke-width="2"/>
+          <text x="120" y="133" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#333" font-weight="bold">5</text>
+          <!-- Right eye -->
+          <ellipse cx="180" cy="128" rx="16" ry="14" fill="white" stroke="#333" stroke-width="2"/>
+          <text x="180" y="133" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#333" font-weight="bold">5</text>
+          <!-- Pupils -->
+          <circle cx="120" cy="128" r="7" fill="white" stroke="#333" stroke-width="1.5"/>
+          <text x="120" y="132" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#333" font-weight="bold">6</text>
+          <circle cx="180" cy="128" r="7" fill="white" stroke="#333" stroke-width="1.5"/>
+          <text x="180" y="132" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#333" font-weight="bold">6</text>
+          <!-- Nose -->
+          <ellipse cx="150" cy="162" rx="14" ry="10" fill="white" stroke="#333" stroke-width="2"/>
+          <text x="150" y="166" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#333" font-weight="bold">4</text>
+          <!-- Mouth lines -->
+          <path d="M150 172 Q135 185 125 182" stroke="#333" stroke-width="2" fill="none"/>
+          <path d="M150 172 Q165 185 175 182" stroke="#333" stroke-width="2" fill="none"/>
+          <!-- Whisker dots -->
+          <circle cx="105" cy="168" r="3" fill="#333"/>
+          <circle cx="112" cy="163" r="3" fill="#333"/>
+          <circle cx="108" cy="175" r="3" fill="#333"/>
+          <circle cx="195" cy="168" r="3" fill="#333"/>
+          <circle cx="188" cy="163" r="3" fill="#333"/>
+          <circle cx="192" cy="175" r="3" fill="#333"/>
+          <!-- Body -->
+          <ellipse cx="150" cy="270" rx="80" ry="55" fill="white" stroke="#333" stroke-width="2"/>
+          <text x="150" y="275" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#333" font-weight="bold">1</text>
+          <!-- Paws -->
+          <ellipse cx="96" cy="308" rx="28" ry="16" fill="white" stroke="#333" stroke-width="2"/>
+          <text x="96" y="313" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#333" font-weight="bold">1</text>
+          <ellipse cx="204" cy="308" rx="28" ry="16" fill="white" stroke="#333" stroke-width="2"/>
+          <text x="204" y="313" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#333" font-weight="bold">1</text>
+        </svg>
+        <button class="btn btn-gold" onclick="window.print()">🖨️ Print Coloring Sheet</button>
+      </div>
+      <div class="key-wrap">
+        <div class="key-title">🎨 Color Key</div>
+        <div class="key-item"><span class="key-num">1</span><div class="key-swatch" style="background:#F5A623;"></div><span class="key-label">Golden Orange</span></div>
+        <div class="key-item"><span class="key-num">2</span><div class="key-swatch" style="background:#8B4513;"></div><span class="key-label">Warm Brown</span></div>
+        <div class="key-item"><span class="key-num">3</span><div class="key-swatch" style="background:#FFB6C1;"></div><span class="key-label">Soft Pink</span></div>
+        <div class="key-item"><span class="key-num">4</span><div class="key-swatch" style="background:#8B008B;"></div><span class="key-label">Deep Purple</span></div>
+        <div class="key-item"><span class="key-num">5</span><div class="key-swatch" style="background:#228B22;"></div><span class="key-label">Forest Green</span></div>
+        <div class="key-item"><span class="key-num">6</span><div class="key-swatch" style="background:#111111;"></div><span class="key-label">Deep Black</span></div>
+        <div style="background:rgba(76,175,130,.08);border:1px solid #1a3a1a;border-radius:10px;padding:14px;margin-top:16px;">
+          <div style="font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:6px;">AP Bio Connection</div>
+          <div style="font-size:12px;color:#888;line-height:1.6;">Lions are apex predators in the trophic cascade. Remove the lion and the whole ecosystem shifts — prey populations explode, vegetation disappears.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLOR IT -->
+  <div class="panel" id="panel-color">
+    <div style="font-size:13px;color:#557055;margin-bottom:16px;">Paint the lion interactively! Use the color key — select a color and paint the matching numbered sections.</div>
+    <div class="color-layout">
+      <div class="tools-col">
+        <div style="font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:8px;">Colors</div>
+        <div class="swatch-row" id="swatchRow"></div>
+        <div style="font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin:10px 0 8px;">Tools</div>
+        <div style="display:flex;gap:6px;margin-bottom:10px;">
+          <button class="tool-btn active" id="tbBrush" onclick="setTool('brush',this)">🖌️</button>
+          <button class="tool-btn" id="tbEraser" onclick="setTool('eraser',this)">✕</button>
+        </div>
+        <div style="font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:6px;">Size</div>
+        <input type="range" id="brushSize" min="4" max="30" value="12" style="accent-color:var(--gold);width:100%;"/>
+        <button class="btn btn-gold" onclick="downloadPainting()" style="margin-top:16px;padding:10px;">⬇ Download</button>
+        <button class="btn" style="background:transparent;border:1.5px solid #1a3a1a;color:#557055;width:100%;margin-top:8px;padding:10px;" onclick="clearPaint()">🗑 Clear</button>
+      </div>
+      <div class="canvas-col">
+        <canvas id="colorCanvas" width="500" height="540"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WIN OVERLAY -->
+<div class="win-overlay" id="winOverlay">
+  <div class="win-box">
+    <div class="win-title">🦁 Amazing Work!</div>
+    <p style="font-size:14px;color:#888;margin-bottom:4px;">Your lion is complete!</p>
+    <div class="bio-fact">
+      <div class="bio-label">🔬 AP Biology · Trophic Cascade</div>
+      Lions are apex predators that control the entire food web below them. When lions are removed from an ecosystem, herbivore populations explode, vegetation is overgrazed, and rivers can even change course — this is called a trophic cascade. Every organism in a food web depends on balance at the top.
+    </div>
+    <button class="btn btn-gold" onclick="document.getElementById('winOverlay').classList.remove('show')">Keep Coloring!</button>
+  </div>
+</div>
+
+<script>
+var COLORS = ['#F5A623','#8B4513','#FFB6C1','#8B008B','#228B22','#111111'];
+var paintColor = COLORS[0], paintTool = 'brush', paintHistory = [];
+var lionImg = new Image(), lionReady = false, paintReady = false;
+
+function showMode(m, btn) {
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.mode-tab').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('panel-'+m).classList.add('active');
+  btn.classList.add('active');
+  if(m==='color' && !paintReady) initPaint();
+}
+
+function buildSwatches() {
+  var row = document.getElementById('swatchRow');
+  COLORS.forEach(function(c,i) {
+    var s = document.createElement('div');
+    s.className = 'cswatch' + (i===0?' active':'');
+    s.style.background = c;
+    s.title = ['Golden Orange','Warm Brown','Soft Pink','Deep Purple','Forest Green','Deep Black'][i];
+    s.onclick = function(){ paintColor=c; document.querySelectorAll('.cswatch').forEach(function(x){x.classList.remove('active');}); s.classList.add('active'); if(paintTool==='eraser')setTool('brush',document.getElementById('tbBrush')); };
+    row.appendChild(s);
+  });
+}
+
+function initPaint() {
+  paintReady = true;
+  var canvas = document.getElementById('colorCanvas');
+  var ctx = canvas.getContext('2d');
+
+  // Draw lion on white background
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Draw the lion using canvas paths matching the SVG above
+  drawLionOnCanvas(ctx, canvas.width, canvas.height);
+  paintHistory.push(canvas.toDataURL());
+
+  var painting = false;
+  canvas.addEventListener('mousedown', function(e){ painting=true; paint(e); });
+  canvas.addEventListener('mousemove', function(e){ if(painting) paint(e); });
+  canvas.addEventListener('mouseup', function(){ painting=false; savePaintState(); checkWin(); });
+  canvas.addEventListener('touchstart', function(e){ e.preventDefault(); painting=true; paint(e.touches[0]); }, {passive:false});
+  canvas.addEventListener('touchmove', function(e){ e.preventDefault(); if(painting) paint(e.touches[0]); }, {passive:false});
+  canvas.addEventListener('touchend', function(){ painting=false; savePaintState(); }, {passive:false});
+}
+
+function drawLionOnCanvas(ctx, W, H) {
+  var scaleX = W/300, scaleY = H/320;
+  ctx.save();
+  ctx.scale(scaleX, scaleY);
+  ctx.strokeStyle = '#333'; ctx.lineWidth = 2;
+
+  // Mane
+  ctx.fillStyle='#fff'; ctx.beginPath(); ctx.ellipse(150,145,95,90,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle='#555'; ctx.font='bold 14px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('2',150,150);
+
+  // Face
+  ctx.fillStyle='#fff'; ctx.beginPath(); ctx.ellipse(150,148,72,68,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle='#555'; ctx.fillText('1',150,153);
+
+  // Ears
+  [[84,82],[216,82]].forEach(function(pos){
+    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.ellipse(pos[0],pos[1],22,20,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#555'; ctx.font='bold 11px sans-serif'; ctx.fillText('2',pos[0],pos[1]+5);
+    ctx.lineWidth=1.5;
+    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.ellipse(pos[0],pos[1],12,11,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#555'; ctx.font='bold 9px sans-serif'; ctx.fillText('3',pos[0],pos[1]+4);
+    ctx.lineWidth=2;
+  });
+
+  // Eyes
+  [[120,128],[180,128]].forEach(function(pos){
+    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.ellipse(pos[0],pos[1],16,14,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#555'; ctx.font='bold 11px sans-serif'; ctx.fillText('5',pos[0],pos[1]+5);
+    ctx.lineWidth=1.5;
+    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(pos[0],pos[1],7,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#555'; ctx.font='bold 8px sans-serif'; ctx.fillText('6',pos[0],pos[1]+3);
+    ctx.lineWidth=2;
+  });
+
+  // Nose
+  ctx.fillStyle='#fff'; ctx.beginPath(); ctx.ellipse(150,162,14,10,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle='#555'; ctx.font='bold 9px sans-serif'; ctx.fillText('4',150,166);
+
+  // Mouth
+  ctx.beginPath(); ctx.moveTo(150,172); ctx.quadraticCurveTo(135,185,125,182); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(150,172); ctx.quadraticCurveTo(165,185,175,182); ctx.stroke();
+
+  // Whisker dots
+  [[105,168],[112,163],[108,175],[195,168],[188,163],[192,175]].forEach(function(p){
+    ctx.beginPath(); ctx.arc(p[0],p[1],3,0,Math.PI*2); ctx.fillStyle='#333'; ctx.fill();
+  });
+
+  // Body
+  ctx.fillStyle='#fff'; ctx.beginPath(); ctx.ellipse(150,270,80,55,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle='#555'; ctx.font='bold 14px sans-serif'; ctx.fillText('1',150,275);
+
+  // Paws
+  [[96,308],[204,308]].forEach(function(pos){
+    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.ellipse(pos[0],pos[1],28,16,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#555'; ctx.font='bold 11px sans-serif'; ctx.fillText('1',pos[0],pos[1]+5);
+  });
+  ctx.restore();
+}
+
+function paint(e) {
+  var canvas=document.getElementById('colorCanvas');
+  var ctx=canvas.getContext('2d');
+  var r=canvas.getBoundingClientRect();
+  var x=(e.clientX-r.left)*(canvas.width/r.width);
+  var y=(e.clientY-r.top)*(canvas.height/r.height);
+  var size=parseInt(document.getElementById('brushSize').value);
+  if(paintTool==='eraser'){ctx.globalCompositeOperation='destination-out';}
+  else{ctx.globalCompositeOperation='source-over';ctx.fillStyle=paintColor;}
+  ctx.globalAlpha=0.8;
+  ctx.beginPath();ctx.arc(x,y,size,0,Math.PI*2);ctx.fill();
+  ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';
+}
+
+function savePaintState(){var c=document.getElementById('colorCanvas');paintHistory.push(c.toDataURL());if(paintHistory.length>15)paintHistory.shift();}
+function clearPaint(){var c=document.getElementById('colorCanvas');var ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);drawLionOnCanvas(ctx,c.width,c.height);paintHistory=[];savePaintState();}
+function setTool(t,btn){paintTool=t;document.querySelectorAll('.tool-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');}
+function downloadPainting(){var c=document.getElementById('colorCanvas');var a=document.createElement('a');a.download='Lion_Coloring.png';a.href=c.toDataURL();a.click();}
+
+function checkWin(){
+  var c=document.getElementById('colorCanvas');var ctx=c.getContext('2d');
+  var d=ctx.getImageData(0,0,c.width,c.height).data;
+  var colored=0,total=0;
+  for(var i=0;i<d.length;i+=4){if(d[i+3]>10){total++;if(d[i]!==255||d[i+1]!==255||d[i+2]!==255)colored++;}}
+  if(colored/total>0.35&&!document.getElementById('winOverlay').classList.contains('shown')){
+    document.getElementById('winOverlay').classList.add('show','shown');
+  }
+}
+
+buildSwatches();
+</script>
+</body>
+</html>

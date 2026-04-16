@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>DNA Trait Decoder · AP Bio · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--green:#4caf82;--gold:#c9a84c;--dark:#0a0f0a;--teal:#1B7A78;}
+body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-height:100vh;padding:0 0 60px;}
+.hdr{background:#0d150d;border-bottom:2px solid var(--green);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);}
+.hdr-sub{font-size:11px;color:#3a6a3a;margin-top:2px;}
+.back-btn{display:inline-flex;align-items:center;gap:6px;border:1.5px solid #2a4a2a;border-radius:50px;padding:7px 16px;font-family:'Fredoka One',cursive;font-size:11px;color:#3a6a3a;text-decoration:none;transition:all .2s;}
+.back-btn:hover{border-color:var(--green);color:var(--green);}
+.workspace{max-width:900px;margin:0 auto;padding:24px;}
+.intro-card{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:14px;padding:24px;margin-bottom:20px;}
+.intro-title{font-family:'Fredoka One',cursive;font-size:18px;color:var(--gold);margin-bottom:8px;}
+.intro-text{font-size:14px;color:#557055;line-height:1.7;}
+.code-strip{background:#111;border:1px solid #1a3a1a;border-radius:10px;padding:16px 20px;margin:16px 0;font-family:'Courier New',monospace;font-size:13px;color:var(--green);letter-spacing:.5px;line-height:2;}
+.pair{display:inline-block;margin-right:16px;cursor:default;}
+.pair-a{color:var(--gold);}
+.pair-b{color:#4caf82;}
+.decode-section{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:14px;padding:24px;margin-bottom:16px;}
+.section-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:12px;}
+.word-select-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-bottom:16px;}
+.word-btn{background:#111;border:1.5px solid #1a3a1a;border-radius:8px;padding:9px 6px;font-family:'Fredoka One',cursive;font-size:11px;color:#3a6a3a;cursor:pointer;text-align:center;transition:all .2s;letter-spacing:.5px;}
+.word-btn:hover{border-color:var(--green);color:var(--green);}
+.word-btn.active{background:#1a3a1a;border-color:var(--green);color:#fff;}
+.dna-display{display:flex;flex-direction:column;gap:8px;margin:16px 0;}
+.dna-pair-row{display:flex;align-items:center;gap:14px;background:#111;border:1px solid #1a3a1a;border-radius:10px;padding:12px 16px;}
+.pair-num{font-family:'Fredoka One',cursive;font-size:13px;color:#3a6a3a;width:24px;}
+.ingredient-a{flex:1;font-family:'Courier New',monospace;font-size:13px;color:var(--gold);}
+.dash{color:#3a6a3a;font-size:16px;}
+.ingredient-b{flex:1;font-family:'Courier New',monospace;font-size:13px;color:var(--green);}
+.arrow{color:#3a6a3a;font-size:18px;}
+.decoded-letter{font-family:'Fredoka One',cursive;font-size:18px;color:#fff;width:32px;text-align:center;}
+.decoded-letter.revealed{color:var(--gold);}
+.guess-section{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:20px;}
+.guess-input{background:#111;border:2px solid #1a3a1a;border-radius:10px;padding:12px 18px;font-family:'Fredoka One',cursive;font-size:20px;color:#fff;outline:none;letter-spacing:4px;text-transform:uppercase;width:200px;}
+.guess-input:focus{border-color:var(--gold);}
+.guess-input.correct{border-color:var(--green);color:var(--green);}
+.guess-input.wrong{border-color:#E53935;animation:shake .3s ease;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.btn{padding:12px 24px;border-radius:8px;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#E8C97A);color:#111;}
+.btn-gold:hover{transform:translateY(-2px);}
+.btn-gold:disabled{background:#1a3a1a;color:#333;cursor:not-allowed;transform:none;}
+.btn-outline{background:transparent;border:1.5px solid #1a3a1a;color:#3a6a3a;}
+.btn-outline:hover{border-color:var(--green);color:var(--green);}
+.hint-btn{background:transparent;border:1.5px solid rgba(201,168,76,.2);color:rgba(201,168,76,.6);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;padding:8px 14px;border-radius:8px;cursor:pointer;transition:all .2s;}
+.hint-btn:hover{border-color:var(--gold);color:var(--gold);}
+.trait-section{background:rgba(76,175,130,.06);border:1px solid #1a3a1a;border-radius:12px;padding:20px;margin-top:16px;display:none;}
+.trait-section.show{display:block;}
+.trait-title{font-family:'Fredoka One',cursive;font-size:14px;color:var(--green);margin-bottom:12px;}
+.trait-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.trait-item{background:#111;border-radius:10px;padding:12px;}
+.trait-name{font-family:'Fredoka One',cursive;font-size:12px;color:var(--gold);margin-bottom:4px;}
+.trait-variants{font-size:12px;color:#888;line-height:1.5;}
+.win-card{display:none;background:linear-gradient(135deg,#0d1a0d,#112211);border:2px solid var(--gold);border-radius:14px;padding:28px;text-align:center;margin-top:16px;}
+.win-card.show{display:block;}
+.win-title{font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);margin-bottom:8px;}
+.bio-fact{background:rgba(76,175,130,.08);border:1px solid var(--green);border-radius:10px;padding:14px;font-size:13px;color:rgba(255,255,255,.8);line-height:1.7;margin:12px 0;text-align:left;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div><div class="hdr-title">🧬 DNA Trait Decoder</div><div class="hdr-sub">AP Bio &amp; T.I.D.E. · Science &amp; Discovery · Smile Bags</div></div>
+  <a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">← Back to Kiosk</a>
+</div>
+
+<div class="workspace">
+  <div class="intro-card">
+    <div class="intro-title">🧬 DNA is the instruction manual for every living thing</div>
+    <div class="intro-text">Each ingredient pair below represents a DNA base pair — just like Adenine pairs with Thymine, and Guanine pairs with Cytosine. Use the decoder key to translate each pair into a letter and uncover the hidden OneWord. Then explore the science behind your own genetic traits!</div>
+    <div class="code-strip">
+      <span class="pair"><span class="pair-a">Apple</span>–<span class="pair-b">Honey</span> = <strong>A</strong></span>
+      <span class="pair"><span class="pair-a">Bread</span>–<span class="pair-b">Ice</span> = <strong>B</strong></span>
+      <span class="pair"><span class="pair-a">Carrot</span>–<span class="pair-b">Jam</span> = <strong>C</strong></span>
+      <span class="pair"><span class="pair-a">Date</span>–<span class="pair-b">Kale</span> = <strong>D</strong></span>
+      <span class="pair"><span class="pair-a">Egg</span>–<span class="pair-b">Lemon</span> = <strong>E</strong></span>
+      <span class="pair"><span class="pair-a">Fig</span>–<span class="pair-b">Mango</span> = <strong>F</strong></span>
+      <span class="pair"><span class="pair-a">Grape</span>–<span class="pair-b">Nutmeg</span> = <strong>G</strong></span>
+      <span class="pair"><span class="pair-a">Herb</span>–<span class="pair-b">Olive</span> = <strong>H</strong></span>
+      <span class="pair"><span class="pair-a">Iris</span>–<span class="pair-b">Pepper</span> = <strong>I</strong></span>
+      <span class="pair"><span class="pair-a">Juniper</span>–<span class="pair-b">Quince</span> = <strong>J</strong></span>
+      <span class="pair"><span class="pair-a">Kiwi</span>–<span class="pair-b">Rye</span> = <strong>K</strong></span>
+      <span class="pair"><span class="pair-a">Lime</span>–<span class="pair-b">Salt</span> = <strong>L</strong></span>
+      <span class="pair"><span class="pair-a">Mint</span>–<span class="pair-b">Thyme</span> = <strong>M</strong></span>
+      <span class="pair"><span class="pair-a">Nori</span>–<span class="pair-b">Umami</span> = <strong>N</strong></span>
+      <span class="pair"><span class="pair-a">Oat</span>–<span class="pair-b">Vanilla</span> = <strong>O</strong></span>
+      <span class="pair"><span class="pair-a">Plum</span>–<span class="pair-b">Walnut</span> = <strong>P</strong></span>
+      <span class="pair"><span class="pair-a">Quinoa</span>–<span class="pair-b">Xanthan</span> = <strong>Q</strong></span>
+      <span class="pair"><span class="pair-a">Rice</span>–<span class="pair-b">Yam</span> = <strong>R</strong></span>
+      <span class="pair"><span class="pair-a">Sage</span>–<span class="pair-b">Zest</span> = <strong>S</strong></span>
+      <span class="pair"><span class="pair-a">Tarragon</span>–<span class="pair-b">Anise</span> = <strong>T</strong></span>
+      <span class="pair"><span class="pair-a">Udon</span>–<span class="pair-b">Basil</span> = <strong>U</strong></span>
+      <span class="pair"><span class="pair-a">Vinegar</span>–<span class="pair-b">Clove</span> = <strong>V</strong></span>
+      <span class="pair"><span class="pair-a">Wasabi</span>–<span class="pair-b">Dill</span> = <strong>W</strong></span>
+    </div>
+  </div>
+
+  <div class="decode-section">
+    <div class="section-label">Step 1 · Choose a hidden OneWord to decode</div>
+    <div class="word-select-grid" id="wordGrid"></div>
+  </div>
+
+  <div class="decode-section" id="decoderSection" style="display:none;">
+    <div class="section-label">Step 2 · Decode the DNA sequence</div>
+    <div class="dna-display" id="dnaDisplay"></div>
+    <div class="guess-section">
+      <input type="text" class="guess-input" id="guessInput" placeholder="?????" maxlength="12" oninput="checkGuess()"/>
+      <button class="btn btn-gold" id="revealBtn" onclick="revealAll()">🔬 Reveal All</button>
+      <button class="hint-btn" onclick="showHint()">💡 Hint</button>
+      <button class="btn btn-outline" onclick="resetDecoder()">↩ New Word</button>
+    </div>
+    <div class="win-card" id="winCard">
+      <div class="win-title">🎉 Decoded!</div>
+      <p style="font-size:14px;color:#888;margin-bottom:4px;">The hidden word was <span id="winWord" style="color:var(--gold);"></span></p>
+      <div class="bio-fact" id="winFact"></div>
+      <button class="btn btn-gold" onclick="showTraits()" style="margin-top:8px;">🧬 Explore Your Traits</button>
+    </div>
+    <div class="trait-section" id="traitSection">
+      <div class="trait-title">🧬 Your Genetic Traits — Discover the Science of You</div>
+      <div class="trait-grid" id="traitGrid"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+var WORDS=['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT','CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST','RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
+
+var CIPHER = {
+  A:['Apple','Honey'],B:['Bread','Ice'],C:['Carrot','Jam'],D:['Date','Kale'],
+  E:['Egg','Lemon'],F:['Fig','Mango'],G:['Grape','Nutmeg'],H:['Herb','Olive'],
+  I:['Iris','Pepper'],J:['Juniper','Quince'],K:['Kiwi','Rye'],L:['Lime','Salt'],
+  M:['Mint','Thyme'],N:['Nori','Umami'],O:['Oat','Vanilla'],P:['Plum','Walnut'],
+  Q:['Quinoa','Xanthan'],R:['Rice','Yam'],S:['Sage','Zest'],T:['Tarragon','Anise'],
+  U:['Udon','Basil'],V:['Vinegar','Clove'],W:['Wasabi','Dill'],X:['Xanthan','Egg'],
+  Y:['Yam','Fig'],Z:['Zest','Grape']
+};
+
+var FACTS = {
+  ABSORB:'Cells absorb nutrients through osmosis and active transport — processes encoded in your DNA.',
+  ADAPT:'Your immune system adapts to new pathogens through genetic recombination — a process encoded in your DNA.',
+  ANCHOR:'Integrins are proteins encoded by your DNA that anchor cells to surrounding tissue.',
+  BALANCE:'Homeostasis — your body\'s ability to balance temperature, pH, and glucose — is regulated by genes.',
+  BLOOM:'Flowering in plants is triggered by photoperiodism — a trait encoded in plant DNA.',
+  BREATHE:'Hemoglobin, the protein that carries oxygen in your blood, is encoded by genes on chromosome 11.',
+  CLEAR:'Your liver uses enzyme-encoding genes to filter and clear toxins from your bloodstream.',
+  CONNECT:'Synapse formation — how neurons connect — is guided by gene expression in brain development.',
+  CYCLE:'The cell cycle is regulated by tumor suppressor genes. Mutations cause uncontrolled division.',
+  EMERGE:'Gene expression determines when certain traits emerge during development — not all genes are always active.',
+  FILTER:'Your kidneys use protein channels encoded by genes to filter 180 liters of blood daily.',
+  FLOW:'Blood flow is regulated by genes controlling vessel dilation, clotting factors, and heart rhythm.',
+  GROW:'Growth hormone is produced by the pituitary gland based on instructions from chromosome 17.',
+  HEAL:'Wound healing activates dozens of genes — including those for collagen, clotting, and immune response.',
+  MIGRATE:'Neural crest cells migrate across the embryo during development, guided by gene expression signals.',
+  PERSIST:'Telomeres — protective DNA caps — shorten with age. Telomerase enzyme can persist and rebuild them.',
+  RENEW:'Stem cells renew tissues using DNA replication — dividing to replace damaged or aging cells.',
+  RESTORE:'DNA repair enzymes constantly scan and restore your genetic code — fixing thousands of errors daily.',
+  RETURN:'Salmon use magnetite crystals — encoded by genes — to return to their birth rivers to spawn.',
+  RISE:'Blood pressure rises via renin-angiotensin system proteins — all encoded in your genome.',
+  ROOT:'Root hair cells in plants express specific genes to maximize surface area for nutrient absorption.',
+  SHINE:'Bioluminescence in deep sea creatures is produced by luciferase — a gene now used in medical research.',
+  SUSTAIN:'Mitochondrial DNA — inherited from your mother — sustains your cells\' energy production.',
+  THRIVE:'Organisms thrive in their niche due to thousands of years of genetic adaptation to local conditions.',
+  TRANSFORM:'Bacterial transformation — inserting foreign DNA — is the basis of modern genetic engineering.'
+};
+
+var TRAITS = [
+  {name:'Tongue Rolling',variants:'Roller (dominant R) or Non-roller (recessive rr). About 65% of people can roll their tongue.'},
+  {name:'Earlobe Shape',variants:'Free-hanging earlobes (dominant) or attached earlobes (recessive). Both are equally common.'},
+  {name:'Hitchhiker\'s Thumb',variants:'Straight thumb (dominant) or flexible/hitchhiker thumb (recessive).'},
+  {name:'Widow\'s Peak',variants:'Widow\'s peak hairline (dominant) or straight hairline (recessive).'},
+  {name:'Dimples',variants:'Dimples (dominant) or no dimples (recessive). Dimples are actually a muscle variation!'},
+  {name:'Eye Color',variants:'Brown/hazel (dominant alleles) or blue/green (recessive). Multiple genes actually control this.'},
+  {name:'Freckles',variants:'Freckles (dominant) or no freckles (recessive). Triggered by sun exposure in those with the gene.'},
+  {name:'Cleft Chin',variants:'Cleft chin (dominant) or smooth chin (recessive). It\'s a difference in chin bone shape.'}
+];
+
+var currentWord = '';
+
+function buildWordGrid(){
+  var g=document.getElementById('wordGrid');
+  WORDS.forEach(function(w){
+    var b=document.createElement('button');b.className='word-btn';b.textContent=w;
+    b.onclick=function(){
+      currentWord=w;
+      document.querySelectorAll('.word-btn').forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active');
+      buildDecoder(w);
+    };
+    g.appendChild(b);
+  });
+}
+
+function buildDecoder(word){
+  document.getElementById('decoderSection').style.display='block';
+  document.getElementById('winCard').classList.remove('show');
+  document.getElementById('traitSection').classList.remove('show');
+  document.getElementById('guessInput').value='';
+  document.getElementById('guessInput').className='guess-input';
+  var display=document.getElementById('dnaDisplay');
+  display.innerHTML='';
+  word.split('').forEach(function(letter,i){
+    var pair=CIPHER[letter];
+    if(!pair) return;
+    var row=document.createElement('div');
+    row.className='dna-pair-row';
+    row.innerHTML=
+      '<span class="pair-num">'+(i+1)+'</span>'+
+      '<span class="ingredient-a">'+pair[0]+'</span>'+
+      '<span class="dash">—</span>'+
+      '<span class="ingredient-b">'+pair[1]+'</span>'+
+      '<span class="arrow">→</span>'+
+      '<span class="decoded-letter" id="dl-'+i+'">?</span>';
+    display.appendChild(row);
+  });
+}
+
+function checkGuess(){
+  var val=document.getElementById('guessInput').value.toUpperCase().trim();
+  if(val===currentWord){
+    document.getElementById('guessInput').className='guess-input correct';
+    showWin();
+  } else if(val.length===currentWord.length){
+    document.getElementById('guessInput').className='guess-input wrong';
+    setTimeout(function(){document.getElementById('guessInput').className='guess-input';},500);
+  }
+}
+
+function revealAll(){
+  currentWord.split('').forEach(function(l,i){
+    var el=document.getElementById('dl-'+i);
+    if(el){el.textContent=l;el.classList.add('revealed');}
+  });
+  showWin();
+}
+
+function showHint(){
+  // Reveal first unrevealed letter
+  for(var i=0;i<currentWord.length;i++){
+    var el=document.getElementById('dl-'+i);
+    if(el&&!el.classList.contains('revealed')){
+      el.textContent=currentWord[i];el.classList.add('revealed');break;
+    }
+  }
+}
+
+function showWin(){
+  document.getElementById('winWord').textContent=currentWord;
+  document.getElementById('winFact').textContent=FACTS[currentWord]||'';
+  document.getElementById('winCard').classList.add('show');
+  document.getElementById('winCard').scrollIntoView({behavior:'smooth'});
+  // Reveal all letters
+  currentWord.split('').forEach(function(l,i){
+    var el=document.getElementById('dl-'+i);
+    if(el){el.textContent=l;el.classList.add('revealed');}
+  });
+}
+
+function showTraits(){
+  var section=document.getElementById('traitSection');
+  section.classList.add('show');
+  var grid=document.getElementById('traitGrid');
+  grid.innerHTML='';
+  TRAITS.forEach(function(t){
+    grid.innerHTML+='<div class="trait-item"><div class="trait-name">'+t.name+'</div><div class="trait-variants">'+t.variants+'</div></div>';
+  });
+  section.scrollIntoView({behavior:'smooth'});
+}
+
+function resetDecoder(){
+  document.getElementById('decoderSection').style.display='none';
+  document.getElementById('winCard').classList.remove('show');
+  document.getElementById('traitSection').classList.remove('show');
+  document.querySelectorAll('.word-btn').forEach(function(b){b.classList.remove('active');});
+  currentWord='';
+}
+
+buildWordGrid();
+</script>
+</body>
+</html>
