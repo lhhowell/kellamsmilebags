@@ -627,8 +627,10 @@ function initPaint(){
   var ctx=canvas.getContext('2d');
   paintImg.crossOrigin='anonymous';
   paintImg.onload=function(){
-    canvas.width=paintImg.naturalWidth||500;
-    canvas.height=paintImg.naturalHeight||500;
+    var maxW = Math.min(paintImg.naturalWidth, 520);
+    var scale = maxW / paintImg.naturalWidth;
+    canvas.width = maxW;
+    canvas.height = Math.round(paintImg.naturalHeight * scale);
     ctx.drawImage(paintImg,0,0,canvas.width,canvas.height);
     savePaintState();
   };
