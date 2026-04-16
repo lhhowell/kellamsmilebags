@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Color-by-Code Kiosk &mdash; Smile Bags</title>
+<title>Color-by-Code Kiosk — Smile Bags</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -15,8 +15,6 @@ body{font-family:'Nunito',sans-serif;background:#0a0a0f;color:#fff;min-height:10
 .hero-title span{color:#c9a84c;}
 .hero-sub{font-size:14px;color:#555;max-width:580px;margin:0 auto;line-height:1.7;}
 .back-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid #D4537E;color:#D4537E;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;margin:24px 24px 0;}
-
-/* Mode tabs */
 .mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:0;background:#111;border:1px solid #1a1a2e;border-radius:12px;overflow:hidden;max-width:900px;margin:28px auto 0;}
 .mode-tab{padding:18px 24px;text-align:center;cursor:pointer;border:none;background:transparent;color:#444;width:100%;transition:all .2s;}
 .mode-tab.active{background:#1a1a2e;color:#fff;}
@@ -26,49 +24,39 @@ body{font-family:'Nunito',sans-serif;background:#0a0a0f;color:#fff;min-height:10
 .mode-tab.active.play .mode-tab-title{color:#4caf82;}
 .mode-tab-desc{font-size:12px;color:#333;line-height:1.4;}
 .mode-tab.active .mode-tab-desc{color:#666;}
-
 .workspace{max-width:900px;margin:0 auto;padding:0 24px;}
 .mode-panel{display:none;padding-top:20px;}
 .mode-panel.active{display:block;}
-
-/* Step cards */
 .step-card{background:#111;border:1px solid #1a1a2e;border-radius:14px;padding:24px;margin-bottom:16px;}
+.play-card{background:#111;border:1px solid #1a1a2e;border-radius:14px;padding:24px;margin-bottom:16px;}
 .step-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#333;margin-bottom:8px;}
-.step-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:16px;}
-
-/* Animal/scene selector */
-.scene-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+.step-title,.play-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:16px;}
+.play-hint{font-size:13px;color:#555;margin-bottom:14px;}
+.scene-grid,.play-scene-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
 .scene-btn{background:#0a0a0f;border:1.5px solid #1a1a2e;border-radius:10px;padding:16px 12px;cursor:pointer;transition:all .2s;text-align:center;width:100%;}
 .scene-btn:hover{border-color:#D4537E;}
 .scene-btn.active{border-color:#D4537E;background:rgba(212,83,126,.08);}
 .scene-btn-icon{font-size:28px;display:block;margin-bottom:8px;}
 .scene-btn-name{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:1px;color:#D4537E;display:block;margin-bottom:4px;}
 .scene-btn-desc{font-size:11px;color:#444;line-height:1.4;}
-
-/* OneWord */
 .ow-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-bottom:12px;}
 .ow-btn{background:#0a0a0f;border:1px solid #1a1a2e;border-radius:8px;padding:8px 10px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#444;cursor:pointer;transition:all .2s;text-align:center;}
 .ow-btn:hover{border-color:#c9a84c;color:#c9a84c;}
 .ow-btn.active{border-color:#4caf82;color:#4caf82;background:rgba(76,175,130,.08);}
-
-/* Generate button */
 .gen-btn{width:100%;background:#D4537E;color:#fff;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:3px;text-transform:uppercase;padding:16px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;}
 .gen-btn:hover{background:#c3426d;}
 .gen-btn:disabled{background:#1a1a1a;color:#333;cursor:not-allowed;}
-
-/* Color key */
-.color-key{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
-.color-swatch{display:flex;align-items:center;gap:8px;background:#111;border:1px solid #1a1a2e;border-radius:8px;padding:8px 12px;}
-.swatch-box{width:24px;height:24px;border-radius:4px;flex-shrink:0;}
-.swatch-label{font-family:'Fredoka One',cursive;font-size:11px;color:#888;letter-spacing:1px;}
-
-/* Canvas area */
-.canvas-wrap{background:#fff;border-radius:12px;padding:16px;margin-bottom:14px;display:none;}
-.canvas-wrap.show{display:block;}
-canvas{display:block;width:100%;height:auto;border-radius:8px;}
-
-/* Print sheet */
-.print-section{background:#fff;color:#111;border-radius:12px;padding:28px;margin-bottom:4px;display:none;}
+/* Color palette for play mode */
+.color-palette{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;}
+.color-btn{width:44px;height:44px;border-radius:10px;cursor:pointer;border:3px solid transparent;transition:all .2s;display:block;}
+.color-btn.selected{border-color:#fff;transform:scale(1.15);box-shadow:0 0 0 2px #D4537E;}
+/* SVG animal containers */
+.animal-svg-wrap{background:#fff;border-radius:12px;padding:12px;margin-bottom:14px;}
+.animal-svg-wrap svg{display:block;width:100%;height:auto;}
+.animal-svg-wrap .zone{cursor:pointer;transition:filter .15s;}
+.animal-svg-wrap .zone:hover{filter:brightness(.88);}
+/* Print */
+.print-section{background:#fff;color:#111;border-radius:12px;padding:28px;margin-bottom:4px;display:none;position:relative;}
 .print-section.show{display:block;}
 .print-section::before{content:'PREVIEW';position:absolute;top:12px;right:16px;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;color:#eee;}
 .print-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:#111;text-align:center;margin-bottom:4px;}
@@ -76,73 +64,53 @@ canvas{display:block;width:100%;height:auto;border-radius:8px;}
 .print-instr{background:#f9f9f9;border-left:4px solid #D4537E;border-radius:4px;padding:10px 14px;font-size:13px;color:#333;margin-bottom:16px;line-height:1.6;}
 .print-key-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
 .print-key-item{display:flex;align-items:center;gap:6px;font-size:13px;color:#333;}
-.print-key-dot{width:20px;height:20px;border-radius:4px;border:1px solid #ddd;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:11px;color:#888;}
-.print-canvas-wrap{margin-bottom:16px;}
-.print-bio{background:#f0fff8;border:1px solid #c0e8d4;border-radius:8px;padding:14px;}
+.print-key-dot{width:22px;height:22px;border-radius:4px;border:1px solid #ddd;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:11px;color:#fff;font-weight:700;}
+.print-bio{background:#f0fff8;border:1px solid #c0e8d4;border-radius:8px;padding:14px;margin-top:14px;}
 .print-bio-title{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;margin-bottom:6px;}
 .print-bio-text{font-size:12px;color:#444;line-height:1.65;}
 .print-footer-sig{text-align:center;margin-top:16px;font-size:10px;color:#ccc;font-family:'Fredoka One',cursive;letter-spacing:1px;}
-
 .print-btn{width:100%;background:#0a0a0f;color:#D4537E;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:14px;border:1.5px solid #D4537E;border-radius:10px;cursor:pointer;transition:all .2s;margin-top:12px;}
 .print-btn:hover{background:#D4537E;color:#fff;}
-
-/* PLAY mode */
-.play-card{background:#111;border:1px solid #1a1a2e;border-radius:14px;padding:24px;margin-bottom:16px;}
-.play-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:16px;}
-.play-scene-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:16px;}
-.color-palette{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;}
-.color-btn{width:44px;height:44px;border-radius:8px;border:3px solid transparent;cursor:pointer;transition:all .2s;position:relative;}
-.color-btn.selected{border-color:#fff;transform:scale(1.15);}
-.color-btn-num{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-family:'Fredoka One',cursive;font-size:10px;color:#555;white-space:nowrap;}
-.play-canvas-wrap{background:#fff;border-radius:12px;padding:12px;margin-bottom:14px;}
-.play-canvas{display:block;width:100%;cursor:crosshair;}
-.play-hint{font-size:13px;color:#555;margin-bottom:10px;line-height:1.5;}
-.celebrate-play{display:none;background:rgba(76,175,130,.1);border:2px solid #4caf82;border-radius:14px;padding:24px;text-align:center;margin-top:14px;}
+/* Celebrate */
+.celebrate-play{background:linear-gradient(135deg,#0d1a18,#0a1510);border:2px solid #4caf82;border-radius:14px;padding:24px;text-align:center;display:none;margin-top:16px;}
 .celebrate-play.show{display:block;}
-.celebrate-play-emoji{font-size:48px;display:block;margin-bottom:12px;}
-.celebrate-play-title{font-family:'Playfair Display',serif;font-size:22px;color:#4caf82;margin-bottom:8px;}
-.celebrate-play-text{font-size:14px;color:#888;line-height:1.7;}
-
-.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #111;max-width:900px;margin:32px auto 0;}
-.footer-sig{font-family:'Fredoka One',cursive;font-size:12px;color:#222;letter-spacing:1px;}
-
+.celebrate-play-title{font-family:'Fredoka One',cursive;font-size:22px;color:#4caf82;margin:8px 0;}
+.celebrate-play-text{font-size:13px;color:#888;line-height:1.7;margin-top:8px;}
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #0f1a0f;max-width:900px;margin:32px auto 0;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:12px;color:#1a3a1a;letter-spacing:1px;}
 @media print{
   body{background:#fff;padding:0;}
-  .hero,.mode-tabs,.workspace>.mode-panel .step-card,.workspace>.mode-panel .gen-btn,.print-btn,.back-btn,.footer{display:none!important;}
-  .print-section{display:block!important;position:static;box-shadow:none;border:none;padding:0;border-radius:0;}
+  .hero,.mode-tabs,.workspace .step-card,.print-btn,.back-btn,.footer,.mode-panel:not(#panel-make){display:none!important;}
+  .mode-panel#panel-make{display:block!important;padding:0!important;}
+  .print-section{display:block!important;box-shadow:none;border:none;padding:0;border-radius:0;}
   .print-section::before{display:none;}
   @page{size:letter;margin:.5in;}
 }
 </style>
 </head>
 <body>
-
 <div class="hero">
-  <div class="hero-brand">Smile Bags &middot; AP Bio &amp; T.I.D.E. &middot; Creation Kiosk</div>
-  <h1 class="hero-title">Color-by-Code<br><span>Activity Builder</span></h1>
-  <p class="hero-sub">Generate a number-coded coloring sheet of a zoo animal or ecosystem. The elementary student decodes the color key and brings the scene to life!</p>
+  <div class="hero-brand">Smile Bags &middot; AP Bio &amp; T.I.D.E. &middot; Coding &amp; Decoding</div>
+  <h1 class="hero-title">Color-by-Code<br><span>Zoo Animals</span></h1>
+  <p class="hero-sub">Choose a zoo animal, pick your OneWord, and generate a numbered coloring sheet — or color it interactively right here!</p>
 </div>
-
 <a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to Kiosk Menu</a>
-
 <div class="mode-tabs">
   <button class="mode-tab make active" onclick="switchMode('make')">
-    <span class="mode-tab-icon">&#127912;</span>
+    <span class="mode-tab-icon">&#128438;</span>
     <span class="mode-tab-title">Make It</span>
-    <span class="mode-tab-desc">Generate a printable color-by-code sheet for your bag</span>
+    <span class="mode-tab-desc">Generate a printable numbered coloring sheet for the Smile Bag</span>
   </button>
   <button class="mode-tab play" onclick="switchMode('play')">
-    <span class="mode-tab-icon">&#127774;</span>
+    <span class="mode-tab-icon">&#127912;</span>
     <span class="mode-tab-title">Color It</span>
-    <span class="mode-tab-desc">Color the scene interactively online</span>
+    <span class="mode-tab-desc">Color the animal interactively — click a color, click a section!</span>
   </button>
 </div>
-
 <div class="workspace">
 
 <!-- MAKE IT -->
 <div class="mode-panel active" id="panel-make">
-
   <div class="step-card" style="margin-top:20px;">
     <div class="step-num">Step 1 of 3</div>
     <div class="step-title">Choose your scene</div>
@@ -150,12 +118,12 @@ canvas{display:block;width:100%;height:auto;border-radius:8px;}
       <button class="scene-btn" onclick="selectScene('lion')" id="sc-lion">
         <span class="scene-btn-icon">&#129409;</span>
         <span class="scene-btn-name">Lion</span>
-        <span class="scene-btn-desc">African Safari Trail &middot; predator, habitat, food web</span>
+        <span class="scene-btn-desc">African Safari Trail &middot; trophic cascade, food webs</span>
       </button>
       <button class="scene-btn" onclick="selectScene('turtle')" id="sc-turtle">
         <span class="scene-btn-icon">&#128034;</span>
         <span class="scene-btn-name">Sea Turtle</span>
-        <span class="scene-btn-desc">Turtle Oasis &middot; conservation, ocean ecosystem</span>
+        <span class="scene-btn-desc">Turtle Oasis &middot; keystone species, conservation</span>
       </button>
       <button class="scene-btn" onclick="selectScene('elephant')" id="sc-elephant">
         <span class="scene-btn-icon">&#128024;</span>
@@ -165,41 +133,36 @@ canvas{display:block;width:100%;height:auto;border-radius:8px;}
       <button class="scene-btn" onclick="selectScene('frog')" id="sc-frog">
         <span class="scene-btn-icon">&#128056;</span>
         <span class="scene-btn-name">Tree Frog</span>
-        <span class="scene-btn-desc">Reptiles &amp; Friends &middot; adaptation, camouflage, wetlands</span>
+        <span class="scene-btn-desc">Reptiles &amp; Friends &middot; bioindicator, adaptation</span>
       </button>
       <button class="scene-btn" onclick="selectScene('butterfly')" id="sc-butterfly">
         <span class="scene-btn-icon">&#129419;</span>
         <span class="scene-btn-name">Butterfly</span>
-        <span class="scene-btn-desc">Flora Point &middot; metamorphosis, pollination, life cycle</span>
+        <span class="scene-btn-desc">Flora Point &middot; metamorphosis, pollination</span>
       </button>
       <button class="scene-btn" onclick="selectScene('fish')" id="sc-fish">
         <span class="scene-btn-icon">&#128032;</span>
         <span class="scene-btn-name">Tropical Fish</span>
-        <span class="scene-btn-desc">World of Reptiles &middot; coral reefs, color, camouflage</span>
+        <span class="scene-btn-desc">World of Reptiles &middot; coral reefs, chromatophores</span>
       </button>
     </div>
   </div>
-
   <div class="step-card">
     <div class="step-num">Step 2 of 3</div>
     <div class="step-title">Choose your OneWord</div>
     <div class="ow-grid" id="owGridMake"></div>
   </div>
-
   <div class="step-card">
     <div class="step-num">Step 3 of 3</div>
     <div class="step-title">Generate your color-by-code sheet</div>
     <button class="gen-btn" id="genBtn" onclick="generateSheet()" disabled>&#127912; Generate Color-by-Code Sheet</button>
   </div>
-
-  <div class="print-section" id="printSection" style="position:relative;">
+  <div class="print-section" id="printSection">
     <div class="print-title">&#127912; Color-by-Code!</div>
-    <div class="print-subtitle" id="printSubtitle">A Smile Bags Coloring Activity &middot; Elementary Edition</div>
-    <div class="print-instr">Use the <strong>color key</strong> below to color each numbered section. Match the number in the shape to the number in the key. When you finish, a hidden animal will appear!</div>
+    <div class="print-subtitle" id="printSubtitle">A Smile Bags Coloring Activity</div>
+    <div class="print-instr">Use the <strong>color key</strong> below to color each numbered section. Match the number on the shape to the number in the key. When you finish, a hidden animal will appear!</div>
     <div class="print-key-row" id="printKeyRow"></div>
-    <div class="print-canvas-wrap">
-      <canvas id="printCanvas" width="520" height="380"></canvas>
-    </div>
+    <div class="animal-svg-wrap" id="printSvgWrap"></div>
     <div class="print-bio">
       <div class="print-bio-title">&#128300; Did You Know?</div>
       <div class="print-bio-text" id="printBioText"></div>
@@ -207,292 +170,280 @@ canvas{display:block;width:100%;height:auto;border-radius:8px;}
     <div class="print-footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>
   </div>
   <button class="print-btn" id="printBtn" onclick="window.print()" style="display:none;">&#128438; Print This Color-by-Code Sheet</button>
-
 </div>
 
-<!-- COLOR IT (Play mode) -->
+<!-- COLOR IT -->
 <div class="mode-panel" id="panel-play">
-
   <div class="play-card" style="margin-top:20px;">
     <div class="step-num">Step 1 of 2</div>
     <div class="play-title">Choose a scene to color</div>
     <div class="play-scene-grid">
-      <button class="scene-btn" onclick="selectPlayScene('lion')" id="psc-lion">
-        <span class="scene-btn-icon">&#129409;</span>
-        <span class="scene-btn-name">Lion</span>
-        <span class="scene-btn-desc">African Safari Trail</span>
-      </button>
-      <button class="scene-btn" onclick="selectPlayScene('turtle')" id="psc-turtle">
-        <span class="scene-btn-icon">&#128034;</span>
-        <span class="scene-btn-name">Sea Turtle</span>
-        <span class="scene-btn-desc">Turtle Oasis</span>
-      </button>
-      <button class="scene-btn" onclick="selectPlayScene('elephant')" id="psc-elephant">
-        <span class="scene-btn-icon">&#128024;</span>
-        <span class="scene-btn-name">Elephant</span>
-        <span class="scene-btn-desc">African Safari Trail</span>
-      </button>
-      <button class="scene-btn" onclick="selectPlayScene('frog')" id="psc-frog">
-        <span class="scene-btn-icon">&#128056;</span>
-        <span class="scene-btn-name">Tree Frog</span>
-        <span class="scene-btn-desc">Reptiles &amp; Friends</span>
-      </button>
-      <button class="scene-btn" onclick="selectPlayScene('butterfly')" id="psc-butterfly">
-        <span class="scene-btn-icon">&#129419;</span>
-        <span class="scene-btn-name">Butterfly</span>
-        <span class="scene-btn-desc">Flora Point</span>
-      </button>
-      <button class="scene-btn" onclick="selectPlayScene('fish')" id="psc-fish">
-        <span class="scene-btn-icon">&#128032;</span>
-        <span class="scene-btn-name">Tropical Fish</span>
-        <span class="scene-btn-desc">World of Reptiles</span>
-      </button>
+      <button class="scene-btn" onclick="selectPlayScene('lion')" id="psc-lion"><span class="scene-btn-icon">&#129409;</span><span class="scene-btn-name">Lion</span><span class="scene-btn-desc">African Safari Trail</span></button>
+      <button class="scene-btn" onclick="selectPlayScene('turtle')" id="psc-turtle"><span class="scene-btn-icon">&#128034;</span><span class="scene-btn-name">Sea Turtle</span><span class="scene-btn-desc">Turtle Oasis</span></button>
+      <button class="scene-btn" onclick="selectPlayScene('elephant')" id="psc-elephant"><span class="scene-btn-icon">&#128024;</span><span class="scene-btn-name">Elephant</span><span class="scene-btn-desc">African Safari Trail</span></button>
+      <button class="scene-btn" onclick="selectPlayScene('frog')" id="psc-frog"><span class="scene-btn-icon">&#128056;</span><span class="scene-btn-name">Tree Frog</span><span class="scene-btn-desc">Reptiles &amp; Friends</span></button>
+      <button class="scene-btn" onclick="selectPlayScene('butterfly')" id="psc-butterfly"><span class="scene-btn-icon">&#129419;</span><span class="scene-btn-name">Butterfly</span><span class="scene-btn-desc">Flora Point</span></button>
+      <button class="scene-btn" onclick="selectPlayScene('fish')" id="psc-fish"><span class="scene-btn-icon">&#128032;</span><span class="scene-btn-name">Tropical Fish</span><span class="scene-btn-desc">World of Reptiles</span></button>
     </div>
   </div>
-
   <div class="play-card" id="coloringArea" style="display:none;">
     <div class="step-num">Step 2 of 2</div>
-    <div class="play-title">Pick a color, then click a section!</div>
-    <div class="play-hint">Click a color from the palette, then click any numbered section on the drawing to fill it in.</div>
+    <div class="play-title">Pick a color &rarr; click a section!</div>
+    <div class="play-hint">Select a color from the palette below, then click any numbered section on the animal to fill it in.</div>
     <div class="color-palette" id="colorPalette"></div>
-    <div class="play-canvas-wrap">
-      <canvas id="playCanvas" width="520" height="380" class="play-canvas" onclick="handleCanvasClick(event)"></canvas>
-    </div>
+    <div class="animal-svg-wrap" id="playSvgWrap"></div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;">
       <button onclick="clearColoring()" style="background:transparent;border:1px solid #333;color:#555;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 18px;border-radius:8px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#D4537E';this.style.color='#D4537E'" onmouseout="this.style.borderColor='#333';this.style.color='#555'">&#10006; Clear</button>
     </div>
     <div class="celebrate-play" id="celebratePlay">
-      <span class="celebrate-play-emoji">&#127881;</span>
+      <span style="font-size:36px;">&#127881;</span>
       <div class="celebrate-play-title">Beautiful!</div>
       <div class="celebrate-play-text" id="celebPlayText"></div>
     </div>
   </div>
-
 </div>
 </div>
 
-<div class="footer">
-  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
-</div>
+<div class="footer"><div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div></div>
 
 <script>
-var oneWords = ['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT','CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST','RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
+var oneWords=['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT','CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST','RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
 
+// ── ANIMAL SVG DEFINITIONS ──
+// Each zone: {label, color, shape, attrs/d, numX, numY}
 var scenes = {
-  lion:{name:'Lion',icon:'&#129409;',bio:'Lions are apex predators — the top of their food web. Every ecosystem needs predators to keep prey populations balanced. Without lions, zebra and wildebeest populations would explode, overgrazing the savanna. This is called a trophic cascade, and it shows how every living thing is connected.',colors:['#F5C842','#D4854A','#8B6914','#E8E0C8','#5C8A3C','#87CEEB'],labels:['Mane','Body','Shadow','Sky','Grass','Background'],zones:[[80,60,200,160,'body'],[280,40,160,100,'mane'],[60,200,360,80,'grass'],[0,0,520,60,'sky'],[100,160,100,60,'shadow'],[300,180,180,60,'ground']]},
-  turtle:{name:'Sea Turtle',icon:'&#128034;',bio:'Sea turtles have existed for over 100 million years — they survived the asteroid that wiped out the dinosaurs! They are a keystone species in ocean ecosystems, grazing on sea grass that would otherwise choke coral reefs. Protecting sea turtles protects the whole ocean.',colors:['#2E8B57','#8FBC8F','#4682B4','#87CEEB','#F5E6A3','#1A5276'],labels:['Shell','Flippers','Deep Water','Ocean','Sand','Shadow'],zones:[[120,80,280,200,'shell'],[60,160,100,60,'flipper-l'],[360,160,100,60,'flipper-r'],[0,0,520,100,'sky'],[0,280,520,100,'sand'],[140,260,240,40,'shadow']]},
-  elephant:{name:'Elephant',icon:'&#128024;',bio:'Elephants have the largest brain of any land animal and demonstrate empathy, grief, and complex social bonds — behaviors scientists once thought were uniquely human. They are ecosystem engineers: their footprints create water holes used by dozens of other species, and their dung spreads seeds across the savanna.',colors:['#808080','#A0A0A0','#C8A96E','#87CEEB','#5C8A3C','#D2B48C'],labels:['Body','Highlights','Ground','Sky','Bush','Dust'],zones:[[100,80,320,220,'body'],[140,100,100,80,'highlight'],[0,300,520,80,'ground'],[0,0,520,80,'sky'],[360,200,120,120,'bush'],[80,280,180,40,'dust']]},
-  frog:{name:'Tree Frog',icon:'&#128056;',bio:'Tree frogs are bioindicators — scientists watch their health to measure ecosystem health. Because they absorb water directly through their skin, they are the first species harmed by water pollution. Healthy frog populations mean a healthy wetland. Their dramatic color patterns warn predators of toxic skin.',colors:['#32CD32','#228B22','#FFD700','#1A1A1A','#87CEEB','#8FBC8F'],labels:['Body','Markings','Belly','Eyes','Sky','Leaves'],zones:[[150,100,220,200,'body'],[160,120,60,40,'spot-l'],[320,120,60,40,'spot-r'],[180,200,160,80,'belly'],[165,105,30,25,'eye-l'],[325,105,30,25,'eye-r']]},
-  butterfly:{name:'Butterfly',icon:'&#129419;',bio:'Butterflies undergo complete metamorphosis — egg, larva, pupa, adult — one of biology\'s most dramatic transformations. They are essential pollinators. Scientists use butterfly migration patterns to track climate change: as temperatures rise, species are shifting their ranges northward at measurable rates.',colors:['#FF6B35','#FFD700','#1A1A1A','#FFFFFF','#5C8A3C','#87CEEB'],labels:['Wings','Pattern','Body','Spots','Flower','Sky'],zones:[[80,80,180,200,'wing-l'],[260,80,180,200,'wing-r'],[230,120,60,200,'body'],[100,100,60,60,'spot-1'],[280,260,80,80,'spot-2'],[0,320,520,60,'ground']]},
-  fish:{name:'Tropical Fish',icon:'&#128032;',bio:'The brilliant colors of tropical fish serve as communication, camouflage, and warning. Some fish can change color in seconds using specialized cells called chromatophores. Coral reef fish are among the most biodiverse communities on Earth — a single reef can house more species than an entire temperate forest.',colors:['#FF6B35','#FFD700','#1A5276','#FFFFFF','#E74C3C','#87CEEB'],labels:['Body','Stripes','Fins','Belly','Tail','Water'],zones:[[120,100,280,200,'body'],[130,120,260,30,'stripe-1'],[130,190,260,30,'stripe-2'],[120,150,260,50,'belly'],[60,100,80,200,'fin-l'],[380,100,80,200,'fin-r']]}
+
+lion:{
+  name:'Lion', icon:'🦁',
+  bio:'Lions are apex predators — the top of their food web. Without lions, herbivore populations would explode, overgrazing the savanna and collapsing the entire ecosystem. This trophic cascade effect shows how every living thing is connected. Lions also demonstrate complex social behavior: prides cooperate in hunting, care for cubs communally, and form lifelong bonds.',
+  colors:['#87CEEB','#4E8B3C','#C8760A','#F5C842','#F5A020','#FFB6C1'],
+  labels:['Sky','Grass','Mane','Head & Ears','Body','Nose'],
+  zones:[
+    {shape:'rect',attrs:{x:0,y:0,width:520,height:210},numX:460,numY:22},
+    {shape:'path',d:'M0 300 Q130 272 260 284 Q390 296 520 272 L520 380 L0 380Z',numX:450,numY:352},
+    {shape:'ellipse',attrs:{cx:260,cy:218,rx:112,ry:106},numX:162,numY:218},
+    {shape:'ellipse',attrs:{cx:260,cy:200,rx:74,ry:72},numX:260,numY:178},
+    {shape:'ellipse',attrs:{cx:260,cy:338,rx:92,ry:54},numX:260,numY:338},
+    {shape:'ellipse',attrs:{cx:260,cy:228,rx:18,ry:13},numX:260,numY:228}
+  ],
+  // Non-colorable outline details drawn on top
+  outline:'<ellipse cx="226" cy="192" rx="10" ry="11" fill="#5A3A00" opacity=".8"/><ellipse cx="294" cy="192" rx="10" ry="11" fill="#5A3A00" opacity=".8"/><ellipse cx="226" cy="191" rx="5" ry="6" fill="#111"/><ellipse cx="294" cy="191" rx="5" ry="6" fill="#111"/><circle cx="196" cy="130" r="18" fill="#F5C842" stroke="#C8760A" stroke-width="2"/><circle cx="324" cy="130" r="18" fill="#F5C842" stroke="#C8760A" stroke-width="2"/><path d="M248 220 Q260 230 272 220" stroke="#8B5E00" stroke-width="2" fill="none" stroke-linecap="round"/><line x1="220" y1="222" x2="195" y2="218" stroke="#8B5E00" stroke-width="1.5"/><line x1="220" y1="226" x2="194" y2="225" stroke="#8B5E00" stroke-width="1.5"/><line x1="220" y1="230" x2="196" y2="233" stroke="#8B5E00" stroke-width="1.5"/><line x1="300" y1="222" x2="325" y2="218" stroke="#8B5E00" stroke-width="1.5"/><line x1="300" y1="226" x2="326" y2="225" stroke="#8B5E00" stroke-width="1.5"/><line x1="300" y1="230" x2="324" y2="233" stroke="#8B5E00" stroke-width="1.5"/>'
+},
+
+turtle:{
+  name:'Sea Turtle', icon:'🐢',
+  bio:'Sea turtles have existed for over 100 million years — surviving the asteroid that ended the dinosaurs! They are keystone species: their grazing on sea grass prevents it from choking coral reefs. Scientists also use satellite-tagged turtles to track ocean currents and climate patterns. Every sea turtle protected means a healthier ocean for thousands of other species.',
+  colors:['#1A5276','#8B7355','#2E8B57','#1A6B3E','#98C8A0','#F5E6A3'],
+  labels:['Ocean','Sandy Bottom','Shell','Head & Flippers','Shell Markings','Sand Highlights'],
+  zones:[
+    {shape:'rect',attrs:{x:0,y:0,width:520,height:380},numX:460,numY:22},
+    {shape:'path',d:'M0 316 Q260 298 520 314 L520 380 L0 380Z',numX:450,numY:352},
+    {shape:'ellipse',attrs:{cx:260,cy:210,rx:118,ry:96},numX:165,numY:210},
+    {shape:'path',d:'M222 120 Q260 100 298 120 Q310 148 298 168 Q260 185 222 168 Q210 148 222 120Z M130 185 Q68 148 42 195 Q62 242 135 225Z M390 185 Q452 148 478 195 Q458 242 385 225Z M180 292 Q138 328 148 360 Q182 342 205 300Z M340 292 Q382 328 372 360 Q338 342 315 300Z',numX:260,numY:142},
+    {shape:'path',d:'M234 138 Q260 125 286 138 Q300 155 286 168 Q260 177 234 168 Q220 155 234 138Z',numX:260,numY:152},
+    {shape:'path',d:'M198 215 Q228 200 260 208 Q292 200 322 215 Q310 235 260 240 Q210 235 198 215Z',numX:260,numY:222}
+  ],
+  outline:'<ellipse cx="249" cy="136" rx="6" ry="7" fill="#111" opacity=".8"/><ellipse cx="271" cy="136" rx="6" ry="7" fill="#111" opacity=".8"/><path d="M248 160 Q260 167 272 160" stroke="#1A3A20" stroke-width="2" fill="none" stroke-linecap="round"/><line x1="260" y1="385" x2="260" y2="380" stroke="#4E8B3C" stroke-width="0"/>'
+},
+
+elephant:{
+  name:'Elephant', icon:'🐘',
+  bio:'Elephants are ecosystem engineers with the largest brains of any land animal. Their footsteps create water holes used by dozens of other species. Their dung spreads seeds for miles. They demonstrate empathy, grief, and long-term memory — recognizing faces after decades apart. When an elephant is removed from an ecosystem, the habitat literally changes shape.',
+  colors:['#87CEEB','#A07850','#808080','#A0A0A0','#D4C8B0','#FFFFFF'],
+  labels:['Sky','Ground','Body','Head & Ear','Belly','Tusk'],
+  zones:[
+    {shape:'rect',attrs:{x:0,y:0,width:520,height:215},numX:460,numY:22},
+    {shape:'path',d:'M0 318 Q260 298 520 312 L520 380 L0 380Z',numX:450,numY:352},
+    {shape:'path',d:'M130 338 Q105 210 185 162 Q260 136 335 162 Q415 210 390 338Z',numX:260,numY:280},
+    {shape:'path',d:'M148 255 Q112 175 130 118 Q165 60 235 72 Q282 78 270 135 Q258 170 265 210Z',numX:188,numY:165},
+    {shape:'path',d:'M195 280 Q230 310 260 315 Q290 310 325 280 Q310 350 260 355 Q210 350 195 280Z',numX:260,numY:318},
+    {shape:'path',d:'M265 190 Q290 215 295 250 Q298 268 288 272 Q278 274 275 255 Q270 230 255 195Z',numX:282,numY:232}
+  ],
+  outline:'<ellipse cx="190" cy="128" rx="9" ry="10" fill="#555" opacity=".8"/><ellipse cx="190" cy="127" rx="4" ry="5" fill="#111"/><path d="M270 188 Q268 220 260 248 Q255 268 252 278 Q245 280 244 272 Q248 260 254 238 Q260 215 264 183" stroke="#666" stroke-width="14" fill="none" stroke-linecap="round"/><path d="M270 188 Q268 220 260 248 Q255 268 252 278 Q245 280 244 272 Q248 260 254 238 Q260 215 264 183" stroke="#909090" stroke-width="10" fill="none" stroke-linecap="round"/>'
+},
+
+frog:{
+  name:'Tree Frog', icon:'🐸',
+  bio:'Tree frogs are bioindicators — the first species scientists check to measure ecosystem health. Because they absorb water directly through their thin skin, they detect water pollution before any instruments can. Healthy frog populations signal a thriving wetland. Their vivid colors warn predators of toxic skin secretions — an adaptation called aposematic coloration.',
+  colors:['#2D6A2D','#32CD32','#F0F0A0','#FFD700','#1A1A1A','#A0522D'],
+  labels:['Leaves','Body','Belly','Eyes','Pupils & Spots','Branch'],
+  zones:[
+    {shape:'rect',attrs:{x:0,y:0,width:520,height:380},numX:460,numY:22},
+    {shape:'path',d:'M135 260 Q145 155 200 120 Q260 92 320 120 Q375 155 385 260 Q360 308 260 315 Q160 308 135 260Z',numX:260,numY:200},
+    {shape:'ellipse',attrs:{cx:260,cy:262,rx:82,ry:46},numX:260,numY:262},
+    {shape:'path',d:'M188 118 Q196 85 220 78 Q244 72 252 100 Q244 122 220 126Z M272 100 Q280 72 304 78 Q328 85 332 118 Q308 126 284 122Z',numX:220,numY:100},
+    {shape:'circle',attrs:{cx:220,cy:108,r:18},numX:220,numY:108},
+    {shape:'path',d:'M100 290 Q180 310 260 315 Q340 310 420 290 Q440 330 420 345 Q340 360 260 365 Q180 360 100 345 Q80 330 100 290Z',numX:260,numY:335}
+  ],
+  outline:'<circle cx="220" cy="108" r="10" fill="#111"/><circle cx="300" cy="108" r="18" fill="#FFD700"/><circle cx="300" cy="108" r="10" fill="#111"/><circle cx="215" cy="104" r="3" fill="#fff" opacity=".6"/><circle cx="295" cy="104" r="3" fill="#fff" opacity=".6"/><circle cx="238" cy="170" r="9" fill="#1A8A1A" opacity=".7"/><circle cx="282" cy="170" r="9" fill="#1A8A1A" opacity=".7"/><circle cx="260" cy="200" r="8" fill="#1A8A1A" opacity=".7"/><path d="M200 260 Q225 272 260 274 Q295 272 320 260" stroke="#B8E888" stroke-width="2" fill="none" stroke-linecap="round"/>'
+},
+
+butterfly:{
+  name:'Butterfly', icon:'🦋',
+  bio:'Butterflies undergo complete metamorphosis — one of biology\'s most dramatic transformations. From egg to caterpillar to chrysalis to adult, their DNA switches entirely different gene programs at each stage. As pollinators, butterflies transfer pollen between plants. Scientists use butterfly migration patterns as precise climate change indicators — as temperatures rise, species shift their ranges northward at measurable rates.',
+  colors:['#87CEEB','#E8602A','#F5A020','#1A1A1A','#FFFDE0','#FF9EC8'],
+  labels:['Sky','Upper Wings','Lower Wings','Body & Outlines','Wing Spots','Flower'],
+  zones:[
+    {shape:'rect',attrs:{x:0,y:0,width:520,height:380},numX:460,numY:22},
+    {shape:'path',d:'M260 140 Q200 80 120 75 Q55 72 42 130 Q35 180 85 215 Q145 250 240 220Z M260 140 Q320 80 400 75 Q465 72 478 130 Q485 180 435 215 Q375 250 280 220Z',numX:130,numY:155},
+    {shape:'path',d:'M250 222 Q185 230 152 275 Q132 312 158 342 Q195 368 245 345Z M270 222 Q335 230 368 275 Q388 312 362 342 Q325 368 275 345Z',numX:170,numY:295},
+    {shape:'ellipse',attrs:{cx:260,cy:230,rx:16,ry:105},numX:260,numY:230},
+    {shape:'path',d:'M130 140 Q160 120 185 140 Q165 165 130 155Z M370 155 Q345 120 380 115 Q400 140 390 165Z M185 270 Q210 255 228 278 Q210 298 185 285Z M335 270 Q310 255 292 278 Q310 298 335 285Z',numX:155,numY:135},
+    {shape:'path',d:'M228 355 Q244 335 260 330 Q276 335 292 355 Q284 370 260 375 Q236 370 228 355Z M245 342 Q252 330 260 328 Q268 330 275 342',numX:260,numY:355}
+  ],
+  outline:'<ellipse cx="248" cy="145" rx="6" ry="5" fill="#fff" opacity=".5"/><ellipse cx="272" cy="145" rx="6" ry="5" fill="#fff" opacity=".5"/><path d="M248 145 Q260 135 272 145" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M255 128 Q248 100 232 82" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M265 128 Q272 100 288 82" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="232" cy="80" r="4" fill="#333"/><circle cx="288" cy="80" r="4" fill="#333"/>'
+},
+
+fish:{
+  name:'Tropical Fish', icon:'🐠',
+  bio:'Tropical fish use specialized cells called chromatophores to change color in seconds — for communication, camouflage, and warning. Coral reef fish communities are among the most biodiverse on Earth: a single reef shelters more species than an entire temperate forest. The vivid orange-and-white pattern of clownfish is a warning signal — they are protected by their partnership with stinging sea anemones.',
+  colors:['#1565C0','#FF6B2B','#FFFFFF','#1A1A1A','#FFD700','#FF6B8A'],
+  labels:['Water','Body','White Stripes','Eye & Outlines','Fins','Coral'],
+  zones:[
+    {shape:'rect',attrs:{x:0,y:0,width:520,height:380},numX:460,numY:22},
+    {shape:'path',d:'M110 195 Q112 120 190 110 Q260 102 330 110 Q408 120 410 195 Q408 270 330 280 Q260 288 190 280 Q112 270 110 195Z',numX:260,numY:195},
+    {shape:'path',d:'M195 112 Q210 105 225 112 L222 278 Q207 284 192 278Z M295 112 Q310 105 325 112 L322 278 Q307 284 292 278Z',numX:210,numY:195},
+    {shape:'ellipse',attrs:{cx:325,cy:155,rx:24,ry:24},numX:325,numY:155},
+    {shape:'path',d:'M408 150 Q455 120 470 155 Q455 195 408 195Z M335 100 Q340 68 360 58 Q375 68 375 100Z M108 175 Q62 148 48 175 Q62 210 108 215Z',numX:445,numY:155},
+    {shape:'path',d:'M60 335 Q100 310 145 320 Q165 315 160 340 Q130 360 80 355Z M190 325 Q230 305 270 318 Q285 313 280 338 Q250 358 200 350Z M320 318 Q360 300 400 315 Q418 310 412 338 Q380 360 325 348Z',numX:160,numY:338}
+  ],
+  outline:'<ellipse cx="325" cy="155" r="10" fill="#111"/><ellipse cx="325" cy="152" rx="4" ry="4" fill="#fff" opacity=".5"/><path d="M110 195 Q80 178 60 195 Q80 212 110 195" stroke="#fff" stroke-width="1" fill="none"/>'
+}
+
 };
 
-var selectedScene = '';
-var selectedWord = '';
-var selectedPlayScene = '';
-var selectedColor = 0;
-var filledZones = {};
-var playFilledZones = {};
+var selectedScene='', selectedWord='', selectedPlayScene='', selectedPlayColor=0, playFills={};
 
-function switchMode(mode) {
-  document.getElementById('panel-make').classList.toggle('active', mode === 'make');
-  document.getElementById('panel-play').classList.toggle('active', mode === 'play');
-  var tabs = document.querySelectorAll('.mode-tab');
-  tabs[0].classList.toggle('active', mode === 'make');
-  tabs[1].classList.toggle('active', mode === 'play');
+function switchMode(mode){
+  ['make','play'].forEach(function(m){
+    document.getElementById('panel-'+m).classList.toggle('active',m===mode);
+    document.querySelectorAll('.mode-tab')[m==='make'?0:1].classList.toggle('active',m===mode);
+  });
 }
 
-function buildOWGrid() {
-  var html = '';
-  for (var i = 0; i < oneWords.length; i++) {
-    html += '<button class="ow-btn" onclick="selectWord(\'' + oneWords[i] + '\')" id="ow-' + i + '">' + oneWords[i] + '</button>';
-  }
-  document.getElementById('owGridMake').innerHTML = html;
+function buildOWGrid(){
+  document.getElementById('owGridMake').innerHTML=oneWords.map(function(w,i){
+    return '<button class="ow-btn" onclick="selectWord(\''+w+'\')" id="ow-'+i+'">'+w+'</button>';
+  }).join('');
 }
 
-function selectScene(s) {
-  selectedScene = s;
-  document.querySelectorAll('.scene-btn:not([id^="psc"])').forEach(function(b){ b.classList.remove('active'); });
-  document.getElementById('sc-' + s).classList.add('active');
+function selectScene(s){
+  selectedScene=s;
+  document.querySelectorAll('[id^="sc-"]').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('sc-'+s).classList.add('active');
   checkReady();
 }
 
-function selectWord(w) {
-  selectedWord = w;
-  document.querySelectorAll('.ow-btn').forEach(function(b){ b.classList.remove('active'); });
-  for (var i = 0; i < oneWords.length; i++) {
-    if (oneWords[i] === w) { document.getElementById('ow-' + i).classList.add('active'); break; }
-  }
+function selectWord(w){
+  selectedWord=w;
+  document.querySelectorAll('.ow-btn').forEach(function(b){b.classList.remove('active');});
+  oneWords.forEach(function(x,i){if(x===w)document.getElementById('ow-'+i).classList.add('active');});
   checkReady();
 }
 
-function checkReady() {
-  document.getElementById('genBtn').disabled = !(selectedScene && selectedWord);
+function checkReady(){
+  document.getElementById('genBtn').disabled=!(selectedScene&&selectedWord);
 }
 
-function generateSheet() {
-  var scene = scenes[selectedScene];
-  filledZones = {};
+// ── SVG RENDERER ──
+function buildSVG(sceneKey, mode, fills) {
+  // mode: 'print' (white fills + numbers) or 'play' (filled colors or white)
+  var sc = scenes[sceneKey];
+  var svg = '<svg viewBox="0 0 520 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;border-radius:8px;">';
 
-  // Print key
-  var keyHtml = '';
-  for (var i = 0; i < scene.colors.length; i++) {
-    keyHtml += '<div class="print-key-item"><div class="print-key-dot" style="background:' + scene.colors[i] + ';border-color:' + scene.colors[i] + ';color:#fff;">' + (i+1) + '</div><span>' + scene.labels[i] + '</span></div>';
-  }
+  sc.zones.forEach(function(zone, i) {
+    var fill = (mode==='print') ? '#f5f5f5' : (fills[i] || '#f5f5f5');
+    var attrs = '';
+    if (zone.attrs) {
+      Object.keys(zone.attrs).forEach(function(k){ attrs += ' '+k+'="'+zone.attrs[k]+'"'; });
+    }
+    if (zone.d) attrs += ' d="'+zone.d+'"';
+
+    var cursor = mode==='play' ? ' style="cursor:pointer;"' : '';
+    var zoneClass = mode==='play' ? ' class="zone"' : '';
+    var dataIdx = mode==='play' ? ' data-idx="'+i+'"' : '';
+
+    svg += '<'+zone.shape+attrs+' fill="'+fill+'" stroke="#ccc" stroke-width="1.5"'+zoneClass+dataIdx+cursor+'/>';
+
+    // Number label
+    var textFill = fill==='#f5f5f5' ? '#aaa' : 'rgba(0,0,0,0.45)';
+    svg += '<text x="'+zone.numX+'" y="'+zone.numY+'" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One,sans-serif" font-size="15" font-weight="bold" fill="'+textFill+'" pointer-events="none">'+(i+1)+'</text>';
+  });
+
+  // Animal outline details on top
+  if (sc.outline) svg += sc.outline;
+
+  svg += '</svg>';
+  return svg;
+}
+
+function generateSheet(){
+  var sc = scenes[selectedScene];
+  // Key
+  var keyHtml = sc.colors.map(function(c,i){
+    return '<div class="print-key-item"><div class="print-key-dot" style="background:'+c+';">'+(i+1)+'</div><span>'+sc.labels[i]+'</span></div>';
+  }).join('');
   document.getElementById('printKeyRow').innerHTML = keyHtml;
-  document.getElementById('printSubtitle').textContent = scene.name + ' &mdash; ' + selectedWord + ' &middot; A Smile Bags Coloring Activity';
-  document.getElementById('printBioText').innerHTML = scene.bio;
-
-  drawNumberedScene('printCanvas', selectedScene, true);
+  document.getElementById('printSubtitle').textContent = sc.name+' — '+selectedWord+' · A Smile Bags Coloring Activity';
+  document.getElementById('printBioText').innerHTML = sc.bio;
+  document.getElementById('printSvgWrap').innerHTML = buildSVG(selectedScene,'print',{});
   document.getElementById('printSection').classList.add('show');
-  document.getElementById('printBtn').style.display = 'block';
+  document.getElementById('printBtn').style.display='block';
   document.getElementById('printSection').scrollIntoView({behavior:'smooth'});
 }
 
-function drawScene(canvasId, sceneKey, colored, fills) {
-  var canvas = document.getElementById(canvasId);
-  var ctx = canvas.getContext('2d');
-  var scene = scenes[sceneKey];
-  var W = canvas.width, H = canvas.height;
-  ctx.clearRect(0,0,W,H);
-
-  for (var i = 0; i < scene.zones.length; i++) {
-    var z = scene.zones[i];
-    var fill = (fills && fills[i] !== undefined) ? fills[i] : (colored ? scene.colors[i] : '#f8f8f8');
-    var stroke = colored ? 'rgba(0,0,0,0.15)' : '#ccc';
-    ctx.fillStyle = fill;
-    ctx.strokeStyle = stroke;
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-
-    // Draw rounded rect zones
-    var rx = z[0], ry = z[1], rw = z[2], rh = z[3];
-    var radius = 12;
-    ctx.moveTo(rx+radius, ry);
-    ctx.lineTo(rx+rw-radius, ry);
-    ctx.quadraticCurveTo(rx+rw, ry, rx+rw, ry+radius);
-    ctx.lineTo(rx+rw, ry+rh-radius);
-    ctx.quadraticCurveTo(rx+rw, ry+rh, rx+rw-radius, ry+rh);
-    ctx.lineTo(rx+radius, ry+rh);
-    ctx.quadraticCurveTo(rx, ry+rh, rx, ry+rh-radius);
-    ctx.lineTo(rx, ry+radius);
-    ctx.quadraticCurveTo(rx, ry, rx+radius, ry);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-  }
-
-  // Draw numbers on uncolored zones
-  if (!colored) {
-    ctx.fillStyle = '#999';
-    ctx.font = 'bold 14px Fredoka One, cursive';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    for (var i = 0; i < scene.zones.length; i++) {
-      var z = scene.zones[i];
-      ctx.fillText(String(i+1), z[0]+z[2]/2, z[1]+z[3]/2);
-    }
-  }
-}
-
-function drawNumberedScene(canvasId, sceneKey, numbered) {
-  drawScene(canvasId, sceneKey, false, null);
-}
-
-// ── Play mode ──
-function selectPlayScene(s) {
-  selectedPlayScene = s;
-  document.querySelectorAll('[id^="psc-"]').forEach(function(b){ b.classList.remove('active'); });
-  document.getElementById('psc-' + s).classList.add('active');
-  playFilledZones = {};
+// ── PLAY MODE ──
+function selectPlayScene(s){
+  selectedPlayScene=s; playFills={};
+  document.querySelectorAll('[id^="psc-"]').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('psc-'+s).classList.add('active');
   buildColorPalette();
-  drawScene('playCanvas', s, false, playFilledZones);
-  document.getElementById('coloringArea').style.display = 'block';
+  renderPlaySVG();
+  document.getElementById('coloringArea').style.display='block';
   document.getElementById('celebratePlay').classList.remove('show');
   document.getElementById('coloringArea').scrollIntoView({behavior:'smooth'});
 }
 
-function buildColorPalette() {
-  var scene = scenes[selectedPlayScene];
-  var html = '';
-  for (var i = 0; i < scene.colors.length; i++) {
-    html += '<div style="text-align:center;">' +
-      '<button class="color-btn' + (i===0?' selected':'') + '" style="background:' + scene.colors[i] + ';" onclick="selectColor(' + i + ')" id="cbtn-' + i + '"></button>' +
-      '<div style="font-family:Fredoka One,cursive;font-size:10px;color:#555;margin-top:22px;">' + (i+1) + '</div>' +
-    '</div>';
-  }
-  document.getElementById('colorPalette').innerHTML = html;
-  selectedColor = 0;
+function buildColorPalette(){
+  var sc = scenes[selectedPlayScene];
+  document.getElementById('colorPalette').innerHTML = sc.colors.map(function(c,i){
+    return '<div style="text-align:center;"><button class="color-btn'+(i===0?' selected':'')+'" style="background:'+c+';" onclick="selectPlayColor('+i+')" id="cbtn-'+i+'"></button><div style="font-family:Fredoka One,cursive;font-size:10px;color:#555;margin-top:4px;">'+(i+1)+'</div></div>';
+  }).join('');
+  selectedPlayColor=0;
 }
 
-function selectColor(i) {
-  selectedColor = i;
-  document.querySelectorAll('.color-btn').forEach(function(b){ b.classList.remove('selected'); });
-  document.getElementById('cbtn-' + i).classList.add('selected');
+function selectPlayColor(i){
+  selectedPlayColor=i;
+  document.querySelectorAll('.color-btn').forEach(function(b){b.classList.remove('selected');});
+  document.getElementById('cbtn-'+i).classList.add('selected');
 }
 
-function handleCanvasClick(e) {
-  if (!selectedPlayScene) return;
-  var canvas = document.getElementById('playCanvas');
-  var rect = canvas.getBoundingClientRect();
-  var scaleX = canvas.width / rect.width;
-  var scaleY = canvas.height / rect.height;
-  var x = (e.clientX - rect.left) * scaleX;
-  var y = (e.clientY - rect.top) * scaleY;
-
-  var scene = scenes[selectedPlayScene];
-  for (var i = scene.zones.length - 1; i >= 0; i--) {
-    var z = scene.zones[i];
-    if (x >= z[0] && x <= z[0]+z[2] && y >= z[1] && y <= z[1]+z[3]) {
-      playFilledZones[i] = scene.colors[selectedColor];
-      redrawPlay();
+function renderPlaySVG(){
+  var wrap = document.getElementById('playSvgWrap');
+  wrap.innerHTML = buildSVG(selectedPlayScene,'play',playFills);
+  // Attach click handlers
+  wrap.querySelectorAll('.zone').forEach(function(el){
+    el.addEventListener('click', function(){
+      var idx = parseInt(el.getAttribute('data-idx'));
+      playFills[idx] = scenes[selectedPlayScene].colors[selectedPlayColor];
+      renderPlaySVG();
       checkPlayComplete();
-      return;
-    }
-  }
+    });
+  });
 }
 
-function redrawPlay() {
-  var scene = scenes[selectedPlayScene];
-  var canvas = document.getElementById('playCanvas');
-  var ctx = canvas.getContext('2d');
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  for (var i = 0; i < scene.zones.length; i++) {
-    var z = scene.zones[i];
-    var fill = playFilledZones[i] !== undefined ? playFilledZones[i] : '#f8f8f8';
-    var stroke = playFilledZones[i] ? 'rgba(0,0,0,0.15)' : '#ccc';
-    ctx.fillStyle = fill;
-    ctx.strokeStyle = stroke;
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    var rx=z[0],ry=z[1],rw=z[2],rh=z[3],radius=12;
-    ctx.moveTo(rx+radius,ry);ctx.lineTo(rx+rw-radius,ry);ctx.quadraticCurveTo(rx+rw,ry,rx+rw,ry+radius);ctx.lineTo(rx+rw,ry+rh-radius);ctx.quadraticCurveTo(rx+rw,ry+rh,rx+rw-radius,ry+rh);ctx.lineTo(rx+radius,ry+rh);ctx.quadraticCurveTo(rx,ry+rh,rx,ry+rh-radius);ctx.lineTo(rx,ry+radius);ctx.quadraticCurveTo(rx,ry,rx+radius,ry);ctx.closePath();
-    ctx.fill();ctx.stroke();
-
-    if (!playFilledZones[i]) {
-      ctx.fillStyle='#bbb';
-      ctx.font='bold 14px sans-serif';
-      ctx.textAlign='center';
-      ctx.textBaseline='middle';
-      ctx.fillText(String(i+1),z[0]+z[2]/2,z[1]+z[3]/2);
-    }
-  }
-}
-
-function checkPlayComplete() {
-  var scene = scenes[selectedPlayScene];
-  var filled = Object.keys(playFilledZones).length;
-  if (filled >= scene.zones.length) {
-    document.getElementById('celebPlayText').innerHTML = scene.bio;
+function checkPlayComplete(){
+  var total = scenes[selectedPlayScene].zones.length;
+  if(Object.keys(playFills).length >= total){
+    document.getElementById('celebPlayText').innerHTML = scenes[selectedPlayScene].bio;
     document.getElementById('celebratePlay').classList.add('show');
     document.getElementById('celebratePlay').scrollIntoView({behavior:'smooth'});
   }
 }
 
-function clearColoring() {
-  playFilledZones = {};
-  drawScene('playCanvas', selectedPlayScene, false, null);
+function clearColoring(){
+  playFills={};
+  renderPlaySVG();
   document.getElementById('celebratePlay').classList.remove('show');
 }
 
