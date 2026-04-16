@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Color Tile Flip · Digital Arts · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--forest:#1B4332;--forest2:#2D6A4F;--forest3:#40916C;--gold:#C9A84C;--gold2:#E8C97A;--dark:#0a140a;}
+body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-height:100vh;}
+.hdr{background:#0d1a0d;border-bottom:2px solid var(--forest2);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold2);}
+.hdr-sub{font-size:11px;color:#557055;margin-top:2px;}
+.stat-bar{background:#111;border-bottom:2px solid #1a3a1a;padding:10px 24px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
+.stat{text-align:center;}
+.stat-val{font-family:'Fredoka One',cursive;font-size:22px;color:var(--gold);}
+.stat-label{font-size:10px;color:#444;letter-spacing:1px;text-transform:uppercase;}
+.workspace{max-width:900px;margin:0 auto;padding:24px;}
+.setup-card{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:14px;padding:24px;margin-bottom:16px;}
+.setup-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--forest3);margin-bottom:8px;}
+.word-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-bottom:16px;}
+.word-btn{background:#111;border:1.5px solid #1a3a1a;border-radius:8px;padding:9px 6px;font-family:'Fredoka One',cursive;font-size:11px;color:#557055;cursor:pointer;text-align:center;transition:all .2s;}
+.word-btn:hover{border-color:var(--forest3);color:var(--forest3);}
+.word-btn.active{background:var(--forest2);border-color:var(--forest3);color:#fff;}
+.set-row{display:flex;gap:10px;margin-bottom:16px;}
+.set-btn{flex:1;background:#111;border:2px solid #1a3a1a;border-radius:10px;padding:12px;cursor:pointer;text-align:center;transition:all .2s;font-family:'Fredoka One',cursive;font-size:12px;color:#557055;}
+.set-btn:hover{border-color:var(--forest3);}
+.set-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.08);}
+.speed-row{display:flex;gap:10px;margin-bottom:16px;}
+.speed-btn{flex:1;background:#111;border:2px solid #1a3a1a;border-radius:10px;padding:12px;cursor:pointer;text-align:center;transition:all .2s;font-family:'Fredoka One',cursive;font-size:12px;color:#557055;}
+.speed-btn:hover{border-color:var(--forest3);}
+.speed-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.08);}
+.btn{padding:12px 24px;border-radius:8px;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111;}
+.btn-gold:hover{transform:translateY(-2px);}
+.btn-gold:disabled{background:#1a3a1a;color:#333;cursor:not-allowed;transform:none;}
+.btn-outline{background:transparent;border:1.5px solid #1a3a1a;color:#557055;}
+.btn-outline:hover{border-color:var(--forest3);color:var(--forest3);}
+/* GAME */
+.game-layout{display:flex;gap:20px;flex-wrap:wrap;}
+.canvas-side{flex:1;min-width:280px;}
+#tileCanvas{border-radius:12px;border:1px solid #1a3a1a;display:block;max-width:100%;}
+.guess-side{min-width:240px;display:flex;flex-direction:column;gap:12px;}
+.guess-card{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:12px;padding:16px;}
+.guess-title{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--forest3);margin-bottom:12px;}
+.guess-input{width:100%;background:#111;border:1.5px solid #1a3a1a;border-radius:8px;padding:10px 14px;font-family:'Fredoka One',cursive;font-size:18px;color:#fff;outline:none;letter-spacing:2px;text-transform:uppercase;}
+.guess-input:focus{border-color:var(--gold);}
+.guess-input.correct{border-color:#66BB6A;color:#66BB6A;}
+.guess-input.wrong{border-color:#E53935;animation:shake .3s ease;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.word-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.word-opt{background:#111;border:1.5px solid #1a3a1a;border-radius:8px;padding:10px;font-family:'Fredoka One',cursive;font-size:12px;color:#888;cursor:pointer;text-align:center;transition:all .2s;letter-spacing:.5px;}
+.word-opt:hover{border-color:var(--forest3);color:var(--forest3);}
+.word-opt.correct-ans{background:rgba(102,187,106,.15);border-color:#66BB6A;color:#66BB6A;}
+.word-opt.wrong-ans{background:rgba(229,57,53,.1);border-color:#E53935;color:#E53935;}
+.score-badge{font-family:'Fredoka One',cursive;font-size:36px;color:var(--gold);text-align:center;padding:16px;}
+.tiles-left{font-family:'Fredoka One',cursive;font-size:13px;color:#557055;text-align:center;}
+.win-banner{display:none;background:linear-gradient(135deg,var(--forest),var(--forest2));border:2px solid var(--gold);border-radius:14px;padding:24px;text-align:center;margin-top:16px;}
+.win-banner.show{display:block;}
+.win-title{font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold2);margin-bottom:8px;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div><div class="hdr-title">🎭 Color Tile Flip</div><div class="hdr-sub">Digital Arts · Smile Bags · Kara Gau</div></div>
+</div>
+<div class="stat-bar" id="statBar" style="display:none;">
+  <div class="stat"><div class="stat-val" id="tilesLeftVal">25</div><div class="stat-label">Tiles Left</div></div>
+  <div class="stat"><div class="stat-val" id="scoreVal">0</div><div class="stat-label">Score</div></div>
+  <div class="stat"><div class="stat-val" id="roundVal">1</div><div class="stat-label">Round</div></div>
+</div>
+<div class="workspace">
+  <div id="setupArea">
+    <div class="setup-card">
+      <div class="setup-label">Step 1 · Choose your OneWord</div>
+      <div class="word-grid" id="wordGrid"></div>
+      <div class="setup-label" style="margin-top:16px;">Step 2 · Choose illustration set</div>
+      <div class="set-row">
+        <button class="set-btn" id="setI" onclick="selSet('I')">Set I · Science Journal (ChatGPT)</button>
+        <button class="set-btn" id="setJ" onclick="selSet('J')">Set J · Science Sketch (CoPilot)</button>
+      </div>
+      <div class="setup-label" style="margin-top:16px;">Step 3 · Choose flip speed</div>
+      <div class="speed-row">
+        <button class="speed-btn active" id="sp1" onclick="selSpeed(2000,this)">🐢 Slow<br><span style="font-size:10px;">1 tile / 2s</span></button>
+        <button class="speed-btn" id="sp2" onclick="selSpeed(1200,this)">🚶 Normal<br><span style="font-size:10px;">1 tile / 1.2s</span></button>
+        <button class="speed-btn" id="sp3" onclick="selSpeed(600,this)">🏃 Fast<br><span style="font-size:10px;">1 tile / 0.6s</span></button>
+      </div>
+      <button class="btn btn-gold" id="startBtn" onclick="startGame()" style="margin-top:16px;" disabled>🎭 Start Flip!</button>
+    </div>
+  </div>
+  <div id="gameArea" style="display:none;">
+    <div class="game-layout">
+      <div class="canvas-side">
+        <canvas id="tileCanvas" width="500" height="500"></canvas>
+      </div>
+      <div class="guess-side">
+        <div class="guess-card">
+          <div class="guess-title">What's the OneWord?</div>
+          <div class="word-options" id="wordOptions"></div>
+          <div style="margin-top:12px;font-size:11px;color:#557055;text-align:center;">Guess early for bonus points!</div>
+        </div>
+        <div class="guess-card" style="text-align:center;">
+          <div class="guess-title">Score</div>
+          <div class="score-badge" id="scoreBadge">0</div>
+          <div class="tiles-left" id="tilesLeftText">25 tiles remaining</div>
+        </div>
+        <button class="btn btn-outline" onclick="resetGame()">↩ New Game</button>
+      </div>
+    </div>
+    <div class="win-banner" id="winBanner">
+      <div class="win-title" id="winTitle">🎉 Correct!</div>
+      <p style="color:rgba(255,255,255,.8);font-size:14px;margin:8px 0;" id="winMsg"></p>
+      <button class="btn btn-gold" onclick="nextRound()" style="margin-top:16px;" id="nextBtn">Next Word →</button>
+    </div>
+  </div>
+</div>
+<script>
+var WORDS=['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT','CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST','RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
+var BASE='https://lhhowell.github.io/kellamsmilebags/';
+var selWord='',selSetV='',flipSpeed=2000,totalScore=0,roundScore=0,round=1;
+var tileInterval=null,tilesRemaining=0,guessed=false;
+var ROWS=5,COLS=5,tiles=[];
+
+function buildWordGrid(){
+  var g=document.getElementById('wordGrid');
+  WORDS.forEach(function(w){
+    var b=document.createElement('button');b.className='word-btn';b.textContent=w;
+    b.onclick=function(){selWord=w;document.querySelectorAll('.word-btn').forEach(function(x){x.classList.remove('active');});b.classList.add('active');checkReady();};
+    g.appendChild(b);
+  });
+}
+function selSet(s){selSetV=s;document.getElementById('setI').classList.toggle('active',s==='I');document.getElementById('setJ').classList.toggle('active',s==='J');checkReady();}
+function selSpeed(s,btn){flipSpeed=s;document.querySelectorAll('.speed-btn').forEach(function(x){x.classList.remove('active');});btn.classList.add('active');}
+function checkReady(){document.getElementById('startBtn').disabled=!(selWord&&selSetV);}
+
+function getImg(){
+  var w=selWord.charAt(0)+selWord.slice(1).toLowerCase();
+  return BASE+(selSetV==='I'?'SetI_':'SetJ_')+w+'.png';
+}
+
+function startGame(){
+  document.getElementById('setupArea').style.display='none';
+  document.getElementById('gameArea').style.display='block';
+  document.getElementById('statBar').style.display='flex';
+  loadRound();
+}
+
+function loadRound(){
+  guessed=false;tilesRemaining=ROWS*COLS;roundScore=ROWS*COLS*10;
+  document.getElementById('winBanner').classList.remove('show');
+  buildOptions();
+  drawTiles();
+  startFlipping();
+}
+
+function buildOptions(){
+  var opts=document.getElementById('wordOptions');opts.innerHTML='';
+  var choices=[selWord];
+  var others=WORDS.filter(function(w){return w!==selWord;}).sort(function(){return Math.random()-.5;}).slice(0,3);
+  choices=choices.concat(others).sort(function(){return Math.random()-.5;});
+  choices.forEach(function(w){
+    var btn=document.createElement('button');btn.className='word-opt';btn.textContent=w;
+    btn.onclick=function(){if(!guessed)makeGuess(w,btn);};
+    opts.appendChild(btn);
+  });
+}
+
+function drawTiles(){
+  var canvas=document.getElementById('tileCanvas');
+  var ctx=canvas.getContext('2d');
+  tiles=[];
+  var img=new Image();img.crossOrigin='anonymous';
+  img.onload=function(){
+    var W=Math.min(img.naturalWidth,500), scale=W/img.naturalWidth;
+    var H=Math.round(img.naturalHeight*scale);
+    canvas.width=W;canvas.height=H;
+    ctx.drawImage(img,0,0,W,H);
+    var tw=Math.floor(W/COLS), th=Math.floor(H/ROWS);
+    for(var r=0;r<ROWS;r++)for(var c=0;c<COLS;c++){
+      tiles.push({r:r,c:c,x:c*tw,y:r*th,w:tw,h:th,visible:true});
+      ctx.fillStyle='#1B4332';ctx.fillRect(c*tw,r*th,tw,th);
+      ctx.strokeStyle='rgba(64,145,108,.3)';ctx.lineWidth=2;ctx.strokeRect(c*tw,r*th,tw,th);
+    }
+    updateStats();
+  };
+  img.src=getImg();
+}
+
+function startFlipping(){
+  var order=tiles.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
+  var idx=0;
+  tileInterval=setInterval(function(){
+    if(idx>=order.length||guessed){clearInterval(tileInterval);return;}
+    var canvas=document.getElementById('tileCanvas');
+    var ctx=canvas.getContext('2d');
+    var t=tiles[order[idx]];
+    t.visible=false;
+    // Redraw that cell from image
+    var img=new Image();img.crossOrigin='anonymous';
+    img.onload=function(){
+      var W=canvas.width, H=canvas.height;
+      var tw=Math.floor(W/COLS), th=Math.floor(H/ROWS);
+      ctx.drawImage(img,t.c*(img.naturalWidth/COLS),t.r*(img.naturalHeight/ROWS),img.naturalWidth/COLS,img.naturalHeight/ROWS,t.x,t.y,t.w,t.h);
+    };
+    img.src=getImg();
+    idx++;tilesRemaining=ROWS*COLS-idx;roundScore=Math.max(0,tilesRemaining*10);
+    updateStats();
+    if(tilesRemaining===0&&!guessed){clearInterval(tileInterval);endRound(false);}
+  },flipSpeed);
+}
+
+function makeGuess(word, btn){
+  clearInterval(tileInterval);guessed=true;
+  if(word===selWord){
+    btn.classList.add('correct-ans');
+    totalScore+=roundScore;
+    document.getElementById('winTitle').textContent='🎉 Correct!';
+    document.getElementById('winMsg').textContent='The word was '+selWord+'! You scored '+roundScore+' points. Total: '+totalScore;
+    document.getElementById('nextBtn').style.display='inline-block';
+  } else {
+    btn.classList.add('wrong-ans');
+    document.querySelectorAll('.word-opt').forEach(function(b){if(b.textContent===selWord)b.classList.add('correct-ans');});
+    document.getElementById('winTitle').textContent='❌ Not quite!';
+    document.getElementById('winMsg').textContent='The word was '+selWord+'. Better luck next time!';
+    document.getElementById('nextBtn').style.display='inline-block';
+  }
+  document.getElementById('winBanner').classList.add('show');
+  document.getElementById('scoreBadge').textContent=totalScore;
+}
+
+function endRound(won){
+  document.getElementById('winTitle').textContent='⏰ All tiles revealed!';
+  document.getElementById('winMsg').textContent='The word was '+selWord+'. Guess faster next time!';
+  document.getElementById('nextBtn').style.display='inline-block';
+  document.getElementById('winBanner').classList.add('show');
+}
+
+function updateStats(){
+  document.getElementById('tilesLeftVal').textContent=tilesRemaining;
+  document.getElementById('scoreVal').textContent=roundScore;
+  document.getElementById('roundVal').textContent=round;
+  document.getElementById('scoreBadge').textContent=totalScore;
+  document.getElementById('tilesLeftText').textContent=tilesRemaining+' tiles remaining';
+}
+
+function nextRound(){
+  round++;
+  var newWord=WORDS.filter(function(w){return w!==selWord;});
+  selWord=newWord[Math.floor(Math.random()*newWord.length)];
+  loadRound();
+}
+
+function resetGame(){
+  clearInterval(tileInterval);
+  document.getElementById('setupArea').style.display='block';
+  document.getElementById('gameArea').style.display='none';
+  document.getElementById('statBar').style.display='none';
+  document.getElementById('winBanner').classList.remove('show');
+  document.querySelectorAll('.word-btn,.set-btn').forEach(function(b){b.classList.remove('active');});
+  selWord='';selSetV='';totalScore=0;round=1;document.getElementById('startBtn').disabled=true;
+}
+
+buildWordGrid();
+</script>
+</body>
+</html>

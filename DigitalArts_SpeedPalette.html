@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Speed Palette · Digital Arts · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--forest:#1B4332;--forest2:#2D6A4F;--forest3:#40916C;--gold:#C9A84C;--gold2:#E8C97A;--dark:#0a140a;}
+body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-height:100vh;}
+.hdr{background:#0d1a0d;border-bottom:2px solid var(--forest2);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold2);}
+.hdr-sub{font-size:11px;color:#557055;margin-top:2px;}
+.stat-bar{background:#111;border-bottom:2px solid #1a3a1a;padding:10px 24px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
+.stat{text-align:center;}
+.stat-val{font-family:'Fredoka One',cursive;font-size:22px;color:var(--gold);}
+.stat-label{font-size:10px;color:#444;letter-spacing:1px;text-transform:uppercase;}
+.workspace{max-width:900px;margin:0 auto;padding:24px;}
+.setup-card{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:14px;padding:24px;margin-bottom:16px;}
+.setup-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--forest3);margin-bottom:8px;}
+.word-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-bottom:16px;}
+.word-btn{background:#111;border:1.5px solid #1a3a1a;border-radius:8px;padding:9px 6px;font-family:'Fredoka One',cursive;font-size:11px;color:#557055;cursor:pointer;text-align:center;transition:all .2s;}
+.word-btn:hover{border-color:var(--forest3);color:var(--forest3);}
+.word-btn.active{background:var(--forest2);border-color:var(--forest3);color:#fff;}
+.set-row{display:flex;gap:10px;margin-bottom:16px;}
+.set-btn{flex:1;background:#111;border:2px solid #1a3a1a;border-radius:10px;padding:12px;cursor:pointer;text-align:center;transition:all .2s;font-family:'Fredoka One',cursive;font-size:12px;color:#557055;}
+.set-btn:hover{border-color:var(--forest3);}
+.set-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.08);}
+.btn{padding:12px 24px;border-radius:8px;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111;}
+.btn-gold:hover{transform:translateY(-2px);}
+.btn-gold:disabled{background:#1a3a1a;color:#333;cursor:not-allowed;transform:none;}
+.btn-outline{background:transparent;border:1.5px solid #1a3a1a;color:#557055;}
+.btn-outline:hover{border-color:var(--forest3);color:var(--forest3);}
+/* FLASH PHASE */
+.flash-card{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:14px;padding:24px;text-align:center;margin-bottom:16px;}
+.flash-title{font-family:'Fredoka One',cursive;font-size:22px;color:var(--gold2);margin-bottom:6px;}
+.flash-sub{font-size:13px;color:#557055;margin-bottom:16px;}
+.countdown-big{font-family:'Fredoka One',cursive;font-size:80px;color:var(--gold);line-height:1;margin:8px 0;}
+.img-display{border-radius:12px;overflow:hidden;border:2px solid var(--forest2);display:inline-block;margin-bottom:16px;}
+#flashImg{display:block;max-width:400px;max-height:400px;}
+/* GUESS PHASE */
+.palette-area{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:14px;padding:24px;margin-bottom:16px;}
+.palette-title{font-family:'Fredoka One',cursive;font-size:16px;color:var(--gold);margin-bottom:6px;}
+.palette-sub{font-size:13px;color:#557055;margin-bottom:16px;}
+.palette-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:8px;margin-bottom:16px;}
+.palette-swatch{height:56px;border-radius:10px;cursor:pointer;border:3px solid transparent;transition:all .2s;position:relative;}
+.palette-swatch.selected{border-color:#fff;transform:scale(1.1);}
+.palette-swatch.selected::after{content:'✓';position:absolute;bottom:3px;right:5px;font-size:12px;font-weight:900;color:rgba(255,255,255,.9);}
+.result-row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;}
+.result-section{flex:1;min-width:200px;}
+.result-label{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#557055;margin-bottom:8px;}
+.result-swatches{display:flex;gap:6px;flex-wrap:wrap;}
+.result-swatch{width:48px;height:48px;border-radius:8px;border:2px solid transparent;position:relative;}
+.result-swatch.match{border-color:#66BB6A;}
+.result-swatch.no-match{border-color:#E53935;opacity:.5;}
+.score-card{background:#111;border:1px solid #1a3a1a;border-radius:12px;padding:16px;text-align:center;}
+.big-score{font-family:'Fredoka One',cursive;font-size:48px;color:var(--gold);}
+.total-score{font-family:'Fredoka One',cursive;font-size:18px;color:var(--forest3);margin-top:4px;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div><div class="hdr-title">⏱ Speed Palette</div><div class="hdr-sub">Digital Arts · Smile Bags · Kara Gau</div></div>
+</div>
+<div class="stat-bar" id="statBar" style="display:none;">
+  <div class="stat"><div class="stat-val" id="roundVal">1</div><div class="stat-label">Round</div></div>
+  <div class="stat"><div class="stat-val" id="totalVal">0</div><div class="stat-label">Total Score</div></div>
+  <div class="stat"><div class="stat-val" id="bestVal">0</div><div class="stat-label">Best Round</div></div>
+</div>
+<div class="workspace">
+  <div id="setupArea">
+    <div class="setup-card">
+      <div class="setup-label">Step 1 · Choose your OneWord</div>
+      <div class="word-grid" id="wordGrid"></div>
+      <div class="setup-label" style="margin-top:16px;">Step 2 · Choose illustration set</div>
+      <div class="set-row">
+        <button class="set-btn" id="setI" onclick="selSet('I')">Set I · Science Journal (ChatGPT)</button>
+        <button class="set-btn" id="setJ" onclick="selSet('J')">Set J · Science Sketch (CoPilot)</button>
+      </div>
+      <button class="btn btn-gold" id="startBtn" onclick="startGame()" style="margin-top:4px;" disabled>⚡ Start Speed Palette!</button>
+    </div>
+  </div>
+
+  <!-- FLASH PHASE -->
+  <div id="flashPhase" style="display:none;">
+    <div class="flash-card">
+      <div class="flash-title" id="flashTitle">Get Ready!</div>
+      <div class="flash-sub" id="flashSub">The image will flash for 3 seconds. Memorize its colors!</div>
+      <div class="countdown-big" id="countdownBig" style="display:none;"></div>
+      <div class="img-display" id="imgDisplay" style="display:none;">
+        <img id="flashImg" src="" alt=""/>
+      </div>
+    </div>
+  </div>
+
+  <!-- GUESS PHASE -->
+  <div id="guessPhase" style="display:none;">
+    <div class="palette-area">
+      <div class="palette-title">🎨 Build the palette from memory!</div>
+      <div class="palette-sub">Select the <strong id="selectCount">5</strong> colors that best match what you saw. Click to select/deselect.</div>
+      <div class="palette-grid" id="paletteGrid"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#557055;">Selected: <span id="selectedCount">0</span>/5</div>
+        <button class="btn btn-gold" id="submitBtn" onclick="submitGuess()" disabled>Submit Palette →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS PHASE -->
+  <div id="resultsPhase" style="display:none;">
+    <div class="palette-area">
+      <div class="palette-title">Results</div>
+      <div class="result-row">
+        <div class="result-section">
+          <div class="result-label">Actual Colors</div>
+          <div class="result-swatches" id="actualSwatches"></div>
+        </div>
+        <div class="result-section">
+          <div class="result-label">Your Guess</div>
+          <div class="result-swatches" id="guessSwatches"></div>
+        </div>
+      </div>
+      <div class="score-card">
+        <div class="big-score" id="roundScore">0</div>
+        <div style="font-size:13px;color:#557055;margin-top:4px;" id="roundMsg"></div>
+        <div class="total-score">Total: <span id="totalScore2">0</span></div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:16px;">
+        <button class="btn btn-gold" onclick="nextRound()">Next Round →</button>
+        <button class="btn btn-outline" onclick="resetGame()">↩ New Game</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var WORDS=['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT','CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST','RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
+var BASE='https://lhhowell.github.io/kellamsmilebags/';
+var ALL_COLORS=['#E53935','#F06292','#FF7043','#FFA726','#FFEE58','#66BB6A','#26C6DA','#42A5F5','#7E57C2','#8D6E63','#fff','#111','#78909C','#26A69A','#EC407A','#FFCA28','#9CCC65','#29B6F6','#5C6BC0','#AB47BC'];
+var selWord='',selSetV='',totalScore=0,bestRound=0,round=1;
+var actualColors=[],selectedColors=[];
+
+function buildWordGrid(){
+  var g=document.getElementById('wordGrid');
+  WORDS.forEach(function(w){
+    var b=document.createElement('button');b.className='word-btn';b.textContent=w;
+    b.onclick=function(){selWord=w;document.querySelectorAll('.word-btn').forEach(function(x){x.classList.remove('active');});b.classList.add('active');checkReady();};
+    g.appendChild(b);
+  });
+}
+function selSet(s){selSetV=s;document.getElementById('setI').classList.toggle('active',s==='I');document.getElementById('setJ').classList.toggle('active',s==='J');checkReady();}
+function checkReady(){document.getElementById('startBtn').disabled=!(selWord&&selSetV);}
+
+function getImg(){
+  var w=selWord.charAt(0)+selWord.slice(1).toLowerCase();
+  return BASE+(selSetV==='I'?'SetI_':'SetJ_')+w+'.png';
+}
+
+function startGame(){
+  document.getElementById('setupArea').style.display='none';
+  document.getElementById('statBar').style.display='flex';
+  loadRound();
+}
+
+function loadRound(){
+  selectedColors=[];
+  document.getElementById('flashPhase').style.display='block';
+  document.getElementById('guessPhase').style.display='none';
+  document.getElementById('resultsPhase').style.display='none';
+  document.getElementById('flashTitle').textContent='Get Ready!';
+  document.getElementById('flashSub').textContent='The image will flash for 3 seconds. Memorize its colors!';
+  document.getElementById('countdownBig').style.display='none';
+  document.getElementById('imgDisplay').style.display='none';
+
+  // Sample actual colors from image
+  sampleColors(getImg(), function(colors){
+    actualColors=colors;
+    // Countdown 3-2-1
+    var c=3;
+    document.getElementById('countdownBig').style.display='block';
+    document.getElementById('countdownBig').textContent=c;
+    var cInt=setInterval(function(){
+      c--;
+      if(c>0){document.getElementById('countdownBig').textContent=c;}
+      else{
+        clearInterval(cInt);
+        document.getElementById('countdownBig').style.display='none';
+        document.getElementById('flashTitle').textContent='Memorize!';
+        document.getElementById('flashSub').textContent='You have 3 seconds!';
+        document.getElementById('flashImg').src=getImg();
+        document.getElementById('imgDisplay').style.display='block';
+        setTimeout(function(){
+          document.getElementById('imgDisplay').style.display='none';
+          document.getElementById('flashPhase').style.display='none';
+          showGuessPhase();
+        },3000);
+      }
+    },1000);
+  });
+}
+
+function sampleColors(src, cb){
+  var img=new Image();img.crossOrigin='anonymous';
+  img.onload=function(){
+    var c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;
+    c.getContext('2d').drawImage(img,0,0);
+    var ctx=c.getContext('2d');
+    var colors=[];
+    var points=[[0.25,0.25],[0.75,0.25],[0.5,0.5],[0.25,0.75],[0.75,0.75]];
+    points.forEach(function(p){
+      var d=ctx.getImageData(Math.floor(p[0]*c.width),Math.floor(p[1]*c.height),1,1).data;
+      var hex='#'+[d[0],d[1],d[2]].map(function(v){return v.toString(16).padStart(2,'0');}).join('').toUpperCase();
+      colors.push(hex);
+    });
+    cb(colors);
+  };
+  img.src=src;
+}
+
+function showGuessPhase(){
+  document.getElementById('guessPhase').style.display='block';
+  selectedColors=[];
+  document.getElementById('selectedCount').textContent='0';
+  document.getElementById('submitBtn').disabled=true;
+  var grid=document.getElementById('paletteGrid');grid.innerHTML='';
+  // Mix actual with distractors
+  var distractors=ALL_COLORS.filter(function(c){return !actualColors.includes(c);}).sort(function(){return Math.random()-.5;}).slice(0,15);
+  var palette=actualColors.concat(distractors).sort(function(){return Math.random()-.5;});
+  palette.forEach(function(c){
+    var s=document.createElement('div');s.className='palette-swatch';s.style.background=c;
+    if(c==='#fff')s.style.border='2px solid #555';
+    s.onclick=function(){toggleSwatch(c,s);};
+    grid.appendChild(s);
+  });
+}
+
+function toggleSwatch(c,el){
+  var idx=selectedColors.indexOf(c);
+  if(idx>-1){selectedColors.splice(idx,1);el.classList.remove('selected');}
+  else{if(selectedColors.length>=5)return;selectedColors.push(c);el.classList.add('selected');}
+  document.getElementById('selectedCount').textContent=selectedColors.length;
+  document.getElementById('submitBtn').disabled=selectedColors.length!==5;
+}
+
+function submitGuess(){
+  document.getElementById('guessPhase').style.display='none';
+  document.getElementById('resultsPhase').style.display='block';
+
+  // Score: 20 pts per match
+  var matches=0;
+  actualColors.forEach(function(c){if(selectedColors.includes(c))matches++;});
+  var rScore=matches*20;
+  if(matches===5)rScore=120; // bonus
+  totalScore+=rScore;
+  if(rScore>bestRound)bestRound=rScore;
+
+  // Display results
+  var aRow=document.getElementById('actualSwatches');aRow.innerHTML='';
+  actualColors.forEach(function(c){
+    var s=document.createElement('div');s.className='result-swatch'+(selectedColors.includes(c)?' match':' no-match');
+    s.style.background=c;if(c==='#fff')s.style.border='2px solid #999';aRow.appendChild(s);
+  });
+  var gRow=document.getElementById('guessSwatches');gRow.innerHTML='';
+  selectedColors.forEach(function(c){
+    var s=document.createElement('div');s.className='result-swatch'+(actualColors.includes(c)?' match':' no-match');
+    s.style.background=c;if(c==='#fff')s.style.border='2px solid #999';gRow.appendChild(s);
+  });
+
+  document.getElementById('roundScore').textContent=rScore+(matches===5?' 🌟':'');
+  document.getElementById('roundMsg').textContent=matches+' of 5 colors matched'+(matches===5?' — PERFECT!':'');
+  document.getElementById('totalScore2').textContent=totalScore;
+  document.getElementById('roundVal').textContent=round;
+  document.getElementById('totalVal').textContent=totalScore;
+  document.getElementById('bestVal').textContent=bestRound;
+}
+
+function nextRound(){
+  round++;
+  // Pick a random new word
+  var newWords=WORDS.filter(function(w){return w!==selWord;});
+  selWord=newWords[Math.floor(Math.random()*newWords.length)];
+  loadRound();
+}
+
+function resetGame(){
+  totalScore=0;bestRound=0;round=1;
+  document.getElementById('setupArea').style.display='block';
+  document.getElementById('statBar').style.display='none';
+  document.getElementById('flashPhase').style.display='none';
+  document.getElementById('guessPhase').style.display='none';
+  document.getElementById('resultsPhase').style.display='none';
+  document.querySelectorAll('.word-btn,.set-btn').forEach(function(b){b.classList.remove('active');});
+  selWord='';selSetV='';document.getElementById('startBtn').disabled=true;
+}
+
+buildWordGrid();
+</script>
+</body>
+</html>

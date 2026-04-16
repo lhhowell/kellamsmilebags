@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Jigsaw Puzzle Builder · Digital Arts · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--forest:#1B4332;--forest2:#2D6A4F;--forest3:#40916C;--gold:#C9A84C;--gold2:#E8C97A;--cream:#FDFAF3;--dark:#0D2818;--border:#D4E8D4;}
+body{font-family:'Nunito',sans-serif;background:#0a140a;color:#fff;min-height:100vh;padding:0 0 60px;}
+
+/* ── HEADER ── */
+.hdr{background:linear-gradient(135deg,#0a140a,#0d1f0d);border-bottom:2px solid var(--forest2);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.hdr-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--gold2);}
+.hdr-sub{font-size:11px;color:#557055;margin-top:2px;}
+
+/* ── STEPS ── */
+.steps{max-width:960px;margin:32px auto 0;padding:0 28px;}
+.step-block{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:14px;padding:24px;margin-bottom:16px;}
+.step-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--forest3);margin-bottom:8px;}
+.step-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:16px;}
+
+/* ── WORD GRID ── */
+.word-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;}
+.word-btn{background:#111;border:1.5px solid #1a3a1a;border-radius:8px;padding:9px 6px;font-family:'Fredoka One',cursive;font-size:11px;color:#557055;cursor:pointer;text-align:center;transition:all .2s;letter-spacing:.5px;}
+.word-btn:hover{border-color:var(--forest3);color:var(--forest3);}
+.word-btn.active{background:var(--forest2);border-color:var(--forest3);color:#fff;}
+
+/* ── SET SELECTOR ── */
+.set-row{display:flex;gap:12px;flex-wrap:wrap;}
+.set-btn{flex:1;min-width:200px;background:#111;border:2px solid #1a3a1a;border-radius:12px;padding:16px;cursor:pointer;text-align:center;transition:all .2s;}
+.set-btn:hover{border-color:var(--forest3);}
+.set-btn.active{border-color:var(--gold);background:rgba(201,168,76,.08);}
+.set-btn-icon{font-size:28px;margin-bottom:8px;}
+.set-btn-name{font-family:'Fredoka One',cursive;font-size:13px;color:var(--gold);letter-spacing:.5px;}
+.set-btn-desc{font-size:11px;color:#557055;margin-top:4px;}
+
+/* ── GRID SIZE ── */
+.grid-row{display:flex;gap:10px;flex-wrap:wrap;}
+.grid-btn{flex:1;min-width:120px;background:#111;border:2px solid #1a3a1a;border-radius:10px;padding:14px 10px;cursor:pointer;text-align:center;transition:all .2s;}
+.grid-btn:hover{border-color:var(--forest3);}
+.grid-btn.active{border-color:var(--gold);background:rgba(201,168,76,.08);}
+.grid-btn-size{font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);}
+.grid-btn-label{font-size:11px;color:#557055;margin-top:4px;}
+.grid-btn-age{font-size:10px;color:#3a5a3a;margin-top:2px;font-style:italic;}
+
+/* ── PREVIEW ── */
+.preview-wrap{max-width:960px;margin:0 auto;padding:0 28px;}
+.preview-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.preview-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--gold2);}
+.preview-info{font-size:12px;color:#557055;}
+
+/* ── PUZZLE CANVAS ── */
+.puzzle-outer{background:#111;border:1px solid #1a3a1a;border-radius:14px;padding:20px;margin-bottom:16px;}
+.puzzle-grid{display:grid;gap:3px;margin:0 auto;}
+.puzzle-cell{position:relative;overflow:hidden;cursor:crosshair;border:1px solid rgba(255,255,255,.15);}
+.puzzle-cell img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
+.puzzle-cell canvas{position:absolute;top:0;left:0;width:100%;height:100%;}
+.cut-overlay{position:absolute;inset:0;border:2px dashed rgba(255,255,255,.3);pointer-events:none;}
+
+/* ── COLOR TOOLS ── */
+.tools-bar{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:14px;}
+.tool-section{display:flex;align-items:center;gap:8px;}
+.tool-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#557055;}
+.color-swatch{width:28px;height:28px;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:all .2s;flex-shrink:0;}
+.color-swatch.active{border-color:#fff;transform:scale(1.15);}
+.tool-btn{background:#111;border:1.5px solid #1a3a1a;border-radius:6px;padding:6px 10px;font-size:14px;cursor:pointer;color:#aaa;transition:all .2s;}
+.tool-btn.active{border-color:var(--gold);color:var(--gold);}
+.tool-btn:hover{border-color:var(--forest3);}
+input[type=range]{accent-color:var(--gold);width:80px;}
+input[type=color]{width:28px;height:28px;border-radius:6px;border:none;cursor:pointer;padding:0;}
+
+/* ── BUTTONS ── */
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;}
+.btn{padding:12px 24px;border-radius:8px;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111;}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(201,168,76,.3);}
+.btn-outline{background:transparent;border:1.5px solid #1a3a1a;color:#557055;}
+.btn-outline:hover{border-color:var(--forest3);color:var(--forest3);}
+.btn-green{background:var(--forest2);color:#fff;}
+.btn-green:hover{background:var(--forest3);}
+
+/* ── HINT ── */
+.hint{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);border-radius:8px;padding:12px 16px;font-size:12px;color:#8a7040;line-height:1.6;margin-bottom:14px;}
+
+@media print{
+  body{background:#fff!important;color:#111!important;padding:0;}
+  .hdr,.steps,.tools-bar,.btn-row,.hint,.preview-header{display:none!important;}
+  .puzzle-outer{background:#fff!important;border:none!important;padding:0!important;}
+  .puzzle-cell{border:1px solid #ccc!important;}
+  .cut-overlay{border:2px dashed #999!important;}
+  @page{size:letter;margin:.4in;}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <div class="hdr-title">🧩 Jigsaw Puzzle Builder</div>
+    <div class="hdr-sub">Digital Arts · Smile Bags · A Word &amp; Wonder Experience · Kara Gau</div>
+  </div>
+</div>
+
+<!-- STEP 1: WORD -->
+<div class="steps">
+  <div class="step-block">
+    <div class="step-label">Step 1 of 3</div>
+    <div class="step-title">Choose your OneWord</div>
+    <div class="word-grid" id="wordGrid"></div>
+  </div>
+
+  <!-- STEP 2: SET + GRID SIZE -->
+  <div class="step-block" id="step2" style="display:none;">
+    <div class="step-label">Step 2 of 3</div>
+    <div class="step-title">Choose your illustration set &amp; puzzle size</div>
+
+    <div style="font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#557055;margin-bottom:10px;">Illustration Set</div>
+    <div class="set-row" style="margin-bottom:20px;">
+      <button class="set-btn" id="setG" onclick="selectSet('G')">
+        <div class="set-btn-icon">🌲</div>
+        <div class="set-btn-name">Set G · Nature Poster</div>
+        <div class="set-btn-desc">Bold nature poster style · CoPilot</div>
+      </button>
+      <button class="set-btn" id="setH" onclick="selectSet('H')">
+        <div class="set-btn-icon">🌸</div>
+        <div class="set-btn-name">Set H · Fine Line Botanical</div>
+        <div class="set-btn-desc">Intricate botanical style · Gemini/ChatGPT</div>
+      </button>
+    </div>
+
+    <div style="font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#557055;margin-bottom:10px;">Puzzle Size</div>
+    <div class="grid-row">
+      <button class="grid-btn" onclick="selectGrid(2,4)" id="grid-2x4">
+        <div class="grid-btn-size">8</div>
+        <div class="grid-btn-label">2 × 4 pieces</div>
+        <div class="grid-btn-age">Ages 4–6</div>
+      </button>
+      <button class="grid-btn" onclick="selectGrid(3,4)" id="grid-3x4">
+        <div class="grid-btn-size">12</div>
+        <div class="grid-btn-label">3 × 4 pieces</div>
+        <div class="grid-btn-age">Ages 6–8</div>
+      </button>
+      <button class="grid-btn" onclick="selectGrid(4,4)" id="grid-4x4">
+        <div class="grid-btn-size">16</div>
+        <div class="grid-btn-label">4 × 4 pieces</div>
+        <div class="grid-btn-age">Ages 8–10</div>
+      </button>
+      <button class="grid-btn" onclick="selectGrid(4,5)" id="grid-4x5">
+        <div class="grid-btn-size">20</div>
+        <div class="grid-btn-label">4 × 5 pieces</div>
+        <div class="grid-btn-age">Ages 10–12</div>
+      </button>
+    </div>
+
+    <div class="btn-row" style="margin-top:20px;">
+      <button class="btn btn-gold" id="buildBtn" onclick="buildPuzzle()" disabled>🧩 Build My Puzzle →</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3: PUZZLE + COLOR -->
+<div class="preview-wrap" id="step3" style="display:none;">
+  <div class="step-block" style="background:#0d1a0d;border:1px solid #1a3a1a;border-radius:14px;padding:24px;margin-bottom:16px;">
+    <div class="step-label">Step 3 of 3</div>
+    <div class="step-title" id="puzzleTitle">Color your puzzle pieces &amp; print</div>
+  </div>
+
+  <div class="hint">
+    🎨 <strong>Color each piece</strong> using the tools below — click to paint, choose colors, change brush size.<br>
+    ✂️ <strong>The dashed lines</strong> show where to cut after printing. Print, laminate, then cut along the lines.<br>
+    📐 <strong>Piece count</strong> should match your recipient's age — a 20-piece puzzle for a 5-year-old is a design failure.
+  </div>
+
+  <div class="tools-bar">
+    <div class="tool-section">
+      <span class="tool-label">Colors</span>
+      <div id="swatchRow"></div>
+      <input type="color" id="customColor" title="Custom color" onchange="setColor(this.value,null)"/>
+    </div>
+    <div class="tool-section">
+      <span class="tool-label">Tool</span>
+      <button class="tool-btn active" id="tbBrush" onclick="setTool('brush',this)" title="Brush">🖌️</button>
+      <button class="tool-btn" id="tbFill" onclick="setTool('fill',this)" title="Fill piece">🪣</button>
+      <button class="tool-btn" id="tbEraser" onclick="setTool('eraser',this)" title="Eraser">✕</button>
+    </div>
+    <div class="tool-section">
+      <span class="tool-label">Size</span>
+      <input type="range" id="brushSize" min="2" max="30" value="10"/>
+    </div>
+    <div class="tool-section" style="margin-left:auto;">
+      <button class="tool-btn" onclick="undoPaint()" title="Undo">↩</button>
+      <button class="tool-btn" onclick="clearAllPaint()" title="Clear all">🗑</button>
+    </div>
+  </div>
+
+  <div class="puzzle-outer">
+    <div class="puzzle-grid" id="puzzleGrid"></div>
+  </div>
+
+  <div class="btn-row" style="margin-bottom:40px;">
+    <button class="btn btn-gold" onclick="printPuzzle()">🖨️ Print Puzzle Sheet</button>
+    <button class="btn btn-outline" onclick="resetAll()">↩ Start Over</button>
+  </div>
+</div>
+
+<script>
+var WORDS = ['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT',
+             'CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST',
+             'RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
+
+var BASE = 'https://lhhowell.github.io/kellamsmilebags/';
+
+function getImgUrl(word, set) {
+  var w = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  if (set === 'G') return BASE + 'SetG_' + w + '.png';
+  // Set H uses lowercase seth_ prefix
+  return BASE + 'seth_' + word.toLowerCase() + '.png';
+}
+
+var selectedWord = '', selectedSet = '', gridCols = 0, gridRows = 0;
+var paintColor = '#E87B5B', paintTool = 'brush';
+var cellCanvases = [], cellHistories = [];
+
+// ── COLORS ──
+var COLORS = ['#E87B5B','#F5A07B','#FFEE58','#66BB6A','#26C6DA','#42A5F5',
+              '#7E57C2','#F06292','#8D6E63','#fff','#111'];
+
+function buildSwatches() {
+  var row = document.getElementById('swatchRow');
+  row.style.display = 'flex'; row.style.gap = '5px';
+  COLORS.forEach(function(c) {
+    var s = document.createElement('div');
+    s.className = 'color-swatch' + (c === paintColor ? ' active' : '');
+    s.style.background = c;
+    if (c === '#fff') s.style.border = '2px solid #555';
+    s.onclick = function() { setColor(c, s); };
+    row.appendChild(s);
+  });
+}
+
+function setColor(c, el) {
+  paintColor = c;
+  document.querySelectorAll('.color-swatch').forEach(function(s){s.classList.remove('active');});
+  if (el) el.classList.add('active');
+  if (paintTool === 'eraser') setTool('brush', document.getElementById('tbBrush'));
+}
+
+function setTool(t, btn) {
+  paintTool = t;
+  document.querySelectorAll('.tool-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+}
+
+// ── WORD GRID ──
+function buildWordGrid() {
+  var g = document.getElementById('wordGrid');
+  WORDS.forEach(function(w) {
+    var btn = document.createElement('button');
+    btn.className = 'word-btn';
+    btn.textContent = w;
+    btn.onclick = function() {
+      selectedWord = w;
+      document.querySelectorAll('.word-btn').forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      document.getElementById('step2').style.display = 'block';
+      document.getElementById('step2').scrollIntoView({behavior:'smooth'});
+    };
+    g.appendChild(btn);
+  });
+}
+
+function selectSet(s) {
+  selectedSet = s;
+  document.getElementById('setG').classList.toggle('active', s==='G');
+  document.getElementById('setH').classList.toggle('active', s==='H');
+  checkBuildReady();
+}
+
+function selectGrid(cols, rows) {
+  gridCols = cols; gridRows = rows;
+  document.querySelectorAll('.grid-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('grid-'+cols+'x'+rows).classList.add('active');
+  checkBuildReady();
+}
+
+function checkBuildReady() {
+  document.getElementById('buildBtn').disabled = !(selectedSet && gridCols);
+}
+
+// ── BUILD PUZZLE ──
+function buildPuzzle() {
+  var grid = document.getElementById('puzzleGrid');
+  grid.innerHTML = '';
+  cellCanvases = [];
+  cellHistories = [];
+
+  var totalPieces = gridCols * gridRows;
+  document.getElementById('puzzleTitle').textContent =
+    selectedWord + ' · Set ' + selectedSet + ' · ' + totalPieces + ' pieces · Color each piece, then print & cut';
+
+  // Grid sizing — target ~540px wide
+  var cellW = Math.floor(540 / gridCols);
+  var cellH = Math.floor((cellW * 1.35));  // portrait ratio
+
+  grid.style.gridTemplateColumns = 'repeat(' + gridCols + ', ' + cellW + 'px)';
+  grid.style.width = (gridCols * cellW + (gridCols-1) * 3) + 'px';
+
+  var imgSrc = getImgUrl(selectedWord, selectedSet);
+
+  for (var i = 0; i < totalPieces; i++) {
+    var col = i % gridCols;
+    var row = Math.floor(i / gridCols);
+
+    var cell = document.createElement('div');
+    cell.className = 'puzzle-cell';
+    cell.style.width = cellW + 'px';
+    cell.style.height = cellH + 'px';
+
+    // Background image clipped to this piece
+    var img = document.createElement('div');
+    img.style.cssText = 'position:absolute;inset:0;background-image:url('+imgSrc+');' +
+      'background-size:' + (gridCols * 100) + '% ' + (gridRows * 100) + '%;' +
+      'background-position:' + (col/(gridCols-1||1)*100) + '% ' + (row/(gridRows-1||1)*100) + '%;';
+    cell.appendChild(img);
+
+    // Paint canvas
+    var cv = document.createElement('canvas');
+    cv.width = cellW; cv.height = cellH;
+    cv.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;';
+    cell.appendChild(cv);
+
+    // Cut overlay
+    var overlay = document.createElement('div');
+    overlay.className = 'cut-overlay';
+    cell.appendChild(overlay);
+
+    // Piece number
+    var num = document.createElement('div');
+    num.style.cssText = 'position:absolute;top:3px;left:5px;font-family:Fredoka One,cursive;font-size:10px;color:rgba(255,255,255,.5);pointer-events:none;z-index:10;';
+    num.textContent = (i+1);
+    cell.appendChild(num);
+
+    // Paint events
+    var painting = false;
+    (function(canvas, cellIdx) {
+      cellCanvases.push(canvas);
+      cellHistories.push([canvas.toDataURL()]);
+
+      canvas.addEventListener('mousedown', function(e){ painting=true; doPaint(e, canvas); });
+      canvas.addEventListener('mousemove', function(e){ if(painting) doPaint(e, canvas); });
+      canvas.addEventListener('mouseup', function(){ painting=false; saveState(canvas, cellIdx); });
+      canvas.addEventListener('mouseleave', function(){ if(painting){ painting=false; saveState(canvas, cellIdx); }});
+    })(cv, i);
+
+    grid.appendChild(cell);
+  }
+
+  document.getElementById('step3').style.display = 'block';
+  document.getElementById('step3').scrollIntoView({behavior:'smooth'});
+}
+
+function doPaint(e, canvas) {
+  var ctx = canvas.getContext('2d');
+  var r = canvas.getBoundingClientRect();
+  var scaleX = canvas.width / r.width;
+  var scaleY = canvas.height / r.height;
+  var x = (e.clientX - r.left) * scaleX;
+  var y = (e.clientY - r.top) * scaleY;
+  var size = parseInt(document.getElementById('brushSize').value);
+
+  if (paintTool === 'fill') {
+    ctx.fillStyle = paintColor;
+    ctx.globalAlpha = 0.6;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.globalAlpha = 1;
+  } else if (paintTool === 'eraser') {
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath(); ctx.arc(x,y,size,0,Math.PI*2); ctx.fill();
+    ctx.globalCompositeOperation = 'source-over';
+  } else {
+    ctx.fillStyle = paintColor;
+    ctx.globalAlpha = 0.75;
+    ctx.beginPath(); ctx.arc(x,y,size,0,Math.PI*2); ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+}
+
+function saveState(canvas, idx) {
+  if (!cellHistories[idx]) cellHistories[idx] = [];
+  cellHistories[idx].push(canvas.toDataURL());
+  if (cellHistories[idx].length > 10) cellHistories[idx].shift();
+}
+
+function undoPaint() {
+  cellCanvases.forEach(function(cv, idx) {
+    var hist = cellHistories[idx];
+    if (hist && hist.length > 1) {
+      hist.pop();
+      var img = new Image();
+      img.onload = function() {
+        var ctx = cv.getContext('2d');
+        ctx.clearRect(0,0,cv.width,cv.height);
+        ctx.drawImage(img,0,0);
+      };
+      img.src = hist[hist.length-1];
+    }
+  });
+}
+
+function clearAllPaint() {
+  cellCanvases.forEach(function(cv) {
+    cv.getContext('2d').clearRect(0,0,cv.width,cv.height);
+  });
+}
+
+function printPuzzle() {
+  window.print();
+}
+
+function resetAll() {
+  selectedWord=''; selectedSet=''; gridCols=0; gridRows=0;
+  document.querySelectorAll('.word-btn').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.set-btn,.grid-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('step2').style.display='none';
+  document.getElementById('step3').style.display='none';
+  document.getElementById('buildBtn').disabled=true;
+  document.getElementById('puzzleGrid').innerHTML='';
+  window.scrollTo(0,0);
+}
+
+buildWordGrid();
+buildSwatches();
+</script>
+</body>
+</html>
