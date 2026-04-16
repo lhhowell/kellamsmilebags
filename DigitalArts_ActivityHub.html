@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Digital Arts · Color Studio | Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --forest:#2D5016;
+  --forest-mid:#3D6B20;
+  --forest-light:#5A8F35;
+  --gold:#C8A84B;
+  --gold-light:#E8C96A;
+  --gold-pale:#F5E8C0;
+  --cream:#FAF6EE;
+  --dark:#0E1A0A;
+  --ink:#1A2E12;
+  --muted:#6B7F5E;
+  --border:#2A3D1E;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:#fff;min-height:100vh;overflow-x:hidden;}
+
+/* ── HEADER ── */
+.hdr{background:linear-gradient(135deg,var(--dark) 0%,#0A1506 100%);border-bottom:2px solid var(--forest);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;}
+.hdr::after{content:'';position:absolute;top:0;right:0;width:300px;height:100%;background:radial-gradient(ellipse at 100% 50%,rgba(200,168,75,.08) 0%,transparent 70%);}
+.hdr-left h1{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--gold-light);letter-spacing:.5px;}
+.hdr-left p{font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:.5px;}
+.back-btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--border);border-radius:50px;padding:8px 18px;font-family:'Fredoka One',cursive;font-size:11px;color:var(--muted);text-decoration:none;transition:all .2s;letter-spacing:.5px;}
+.back-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ── TAB BAR ── */
+.tab-bar{display:grid;grid-template-columns:repeat(5,1fr);background:var(--ink);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;}
+.tab-btn{padding:14px 6px;background:transparent;border:none;border-bottom:3px solid transparent;font-family:'Fredoka One',cursive;font-size:12px;color:var(--muted);cursor:pointer;transition:all .2s;letter-spacing:.3px;margin-bottom:-1px;text-align:center;}
+.tab-btn:hover{color:#aaa;}
+.tab-btn.active{color:var(--gold-light);border-bottom-color:var(--gold);}
+
+/* ── PANELS ── */
+.tab-panel{display:none;padding:32px 28px;max-width:960px;margin:0 auto;}
+.tab-panel.active{display:block;animation:fadeIn .25s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.panel-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--gold-light);margin-bottom:6px;display:flex;align-items:center;gap:10px;}
+.panel-sub{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:24px;max-width:600px;}
+
+/* ── WORD SELECTOR ── */
+.word-row{display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap;}
+.word-label{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.word-select{background:var(--ink);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold-light);cursor:pointer;outline:none;transition:border-color .2s;}
+.word-select:focus{border-color:var(--gold);}
+.word-select option{background:var(--ink);}
+
+/* ── SHARED CARD ── */
+.art-card{background:var(--ink);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px;}
+.art-card-title{font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;color:var(--gold);margin-bottom:14px;text-transform:uppercase;}
+
+/* ── BUTTONS ── */
+.btn{padding:11px 22px;border-radius:8px;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--dark);}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(200,168,75,.3);}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+
+/* ══════════════════════════════════════
+   TAB 1: COLOR WHEEL MIXER
+══════════════════════════════════════ */
+.wheel-wrap{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start;}
+.wheel-canvas-wrap{position:relative;flex-shrink:0;}
+#wheelCanvas{border-radius:50%;cursor:crosshair;display:block;}
+.wheel-cursor{position:absolute;width:16px;height:16px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #000;transform:translate(-50%,-50%);pointer-events:none;transition:background .1s;}
+.mixer-panel{flex:1;min-width:260px;}
+.mixed-preview{width:100%;height:100px;border-radius:12px;border:2px solid var(--border);margin-bottom:12px;transition:background .3s;display:flex;align-items:center;justify-content:center;}
+.mixed-hex{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:rgba(255,255,255,.9);text-shadow:0 1px 4px rgba(0,0,0,.5);letter-spacing:2px;}
+.palette-slots{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:12px;}
+.palette-slot{height:44px;border-radius:8px;border:2px dashed var(--border);cursor:pointer;transition:all .2s;position:relative;}
+.palette-slot.filled{border-style:solid;}
+.palette-slot:hover{transform:scale(1.05);}
+.palette-slot .slot-x{position:absolute;top:-6px;right:-6px;width:16px;height:16px;border-radius:50%;background:#D4537E;color:#fff;font-size:9px;display:none;align-items:center;justify-content:center;cursor:pointer;}
+.palette-slot.filled:hover .slot-x{display:flex;}
+.swatch-name-input{width:100%;background:var(--ink);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:13px;color:#fff;outline:none;margin-bottom:8px;}
+.swatch-name-input:focus{border-color:var(--gold);}
+.color-values{display:flex;gap:8px;margin-bottom:12px;}
+.color-val{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-family:'DM Sans',sans-serif;font-size:11px;color:var(--muted);text-align:center;flex:1;}
+.color-val span{display:block;font-size:13px;color:#fff;font-weight:500;}
+
+/* ══════════════════════════════════════
+   TAB 2: COLOR EMOTION MAP
+══════════════════════════════════════ */
+.emotion-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.emotion-word-display{background:linear-gradient(135deg,var(--forest) 0%,var(--ink) 100%);border:1px solid var(--forest-light);border-radius:16px;padding:28px;text-align:center;}
+.emotion-word{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;color:var(--gold-light);margin-bottom:6px;}
+.emotion-meaning{font-size:13px;color:var(--muted);font-style:italic;}
+.emotion-palette-result{width:100%;height:60px;border-radius:10px;margin:16px 0;display:flex;overflow:hidden;}
+.emotion-swatch{flex:1;transition:all .3s;}
+.emotion-panel{display:flex;flex-direction:column;gap:10px;}
+.emotion-btn{background:var(--ink);border:1.5px solid var(--border);border-radius:10px;padding:12px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .2s;text-align:left;}
+.emotion-btn:hover{border-color:var(--forest-light);}
+.emotion-btn.active{border-color:var(--gold);background:rgba(200,168,75,.08);}
+.emotion-dot{width:28px;height:28px;border-radius:50%;flex-shrink:0;}
+.emotion-btn-text{flex:1;}
+.emotion-btn-name{font-family:'Fredoka One',cursive;font-size:12px;color:#fff;letter-spacing:.5px;}
+.emotion-btn-desc{font-size:11px;color:var(--muted);margin-top:2px;}
+.emotion-selected-strip{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.emotion-chip{display:flex;align-items:center;gap:6px;background:var(--ink);border:1px solid var(--border);border-radius:50px;padding:4px 10px 4px 6px;font-size:11px;color:#ccc;cursor:pointer;}
+.emotion-chip-dot{width:14px;height:14px;border-radius:50%;}
+.emotion-chip:hover{border-color:#D4537E;}
+
+/* ══════════════════════════════════════
+   TAB 3: COLOR STORY (ABSTRACT PAINT)
+══════════════════════════════════════ */
+.story-layout{display:flex;gap:20px;flex-wrap:wrap;}
+.story-tools{min-width:180px;display:flex;flex-direction:column;gap:10px;}
+.story-word-palette{background:var(--ink);border:1px solid var(--border);border-radius:12px;padding:14px;}
+.story-palette-title{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.story-swatches{display:flex;flex-direction:column;gap:6px;}
+.story-swatch{width:100%;height:36px;border-radius:8px;cursor:pointer;border:3px solid transparent;transition:all .2s;display:flex;align-items:center;padding:0 10px;}
+.story-swatch:hover{transform:scale(1.03);}
+.story-swatch.active{border-color:#fff;box-shadow:0 0 0 2px var(--gold);}
+.story-swatch-name{font-size:10px;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.7);}
+.brush-controls{background:var(--ink);border:1px solid var(--border);border-radius:12px;padding:14px;}
+.brush-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.brush-btns{display:flex;gap:6px;margin-bottom:10px;}
+.brush-btn{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;padding:8px;font-size:16px;cursor:pointer;transition:all .2s;color:var(--muted);}
+.brush-btn.active{border-color:var(--gold);color:var(--gold);}
+.opacity-row{display:flex;align-items:center;gap:8px;margin-top:8px;}
+.opacity-label{font-size:10px;color:var(--muted);}
+#storyOpacity{flex:1;accent-color:var(--gold);}
+#storySize{width:100%;accent-color:var(--gold);margin-top:6px;}
+.story-canvas-wrap{flex:1;min-width:300px;}
+#storyCanvas{border-radius:12px;border:1px solid var(--border);cursor:crosshair;display:block;width:100%;}
+
+/* ══════════════════════════════════════
+   TAB 4: COLOR HARMONY
+══════════════════════════════════════ */
+.harmony-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.harmony-type-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+.harmony-type-btn{background:var(--ink);border:1.5px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;text-align:center;transition:all .2s;}
+.harmony-type-btn:hover{border-color:var(--forest-light);}
+.harmony-type-btn.active{border-color:var(--gold);background:rgba(200,168,75,.08);}
+.harmony-type-name{font-family:'Fredoka One',cursive;font-size:12px;color:var(--gold);letter-spacing:.5px;}
+.harmony-type-desc{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4;}
+.harmony-wheel-wrap{position:relative;display:flex;align-items:center;justify-content:center;}
+#harmonyCanvas{border-radius:50%;cursor:pointer;display:block;}
+.harmony-result{display:flex;flex-direction:column;gap:10px;}
+.harmony-swatch-row{display:flex;gap:8px;}
+.harmony-swatch-card{flex:1;border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+.harmony-swatch-color{height:70px;}
+.harmony-swatch-info{background:var(--ink);padding:8px;text-align:center;}
+.harmony-swatch-hex{font-family:'Cormorant Garamond',serif;font-size:14px;color:#fff;letter-spacing:1px;}
+.harmony-swatch-name{font-size:10px;color:var(--muted);margin-top:2px;}
+.harmony-explain{background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.15);border-radius:10px;padding:14px;}
+.harmony-explain-title{font-family:'Fredoka One',cursive;font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:6px;}
+.harmony-explain-text{font-size:12px;color:var(--muted);line-height:1.7;}
+
+/* ══════════════════════════════════════
+   TAB 5: MOOD PALETTE BUILDER
+══════════════════════════════════════ */
+.mood-layout{display:flex;gap:20px;flex-wrap:wrap;}
+.mood-library{min-width:200px;}
+.mood-lib-title{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.mood-color-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:12px;}
+.mood-color-dot{width:100%;aspect-ratio:1;border-radius:6px;cursor:grab;border:2px solid transparent;transition:all .15s;position:relative;}
+.mood-color-dot:hover{transform:scale(1.1);border-color:rgba(255,255,255,.3);}
+.mood-color-dot:active{cursor:grabbing;}
+.mood-board{flex:1;min-width:300px;}
+.mood-board-title{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+.mood-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);gap:6px;aspect-ratio:1;max-width:420px;background:var(--ink);border:1px solid var(--border);border-radius:12px;padding:12px;}
+.mood-cell{border-radius:8px;background:rgba(255,255,255,.04);border:2px dashed var(--border);transition:all .2s;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--border);}
+.mood-cell.filled{border:none;cursor:pointer;}
+.mood-cell.drag-over{border-color:var(--gold);background:rgba(200,168,75,.1);}
+.mood-cell:hover{border-color:var(--forest-light);}
+.mood-word-badge{background:rgba(200,168,75,.1);border:1px solid rgba(200,168,75,.2);border-radius:50px;padding:4px 12px;font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold-light);font-style:italic;}
+
+/* ── PRINT PREVIEW ── */
+.print-preview{background:#fff;color:#111;border-radius:12px;padding:28px;margin-top:16px;display:none;}
+.print-preview.show{display:block;}
+.pp-header{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#888;margin-bottom:16px;text-align:center;}
+.pp-word{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:#1A2E12;text-align:center;margin-bottom:20px;}
+.pp-swatches{display:flex;gap:10px;margin-bottom:16px;}
+.pp-swatch{flex:1;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.1);}
+.pp-swatch-color{height:80px;}
+.pp-swatch-label{padding:6px;text-align:center;font-size:10px;color:#666;font-family:'DM Sans',sans-serif;letter-spacing:.5px;}
+.pp-footer{font-size:10px;color:#ccc;text-align:center;font-family:'DM Sans',sans-serif;letter-spacing:1px;}
+
+.footer{text-align:center;font-size:11px;color:var(--border);padding:40px 20px;letter-spacing:1px;font-family:'Fredoka One',cursive;}
+@media(max-width:700px){
+  .tab-btn{font-size:10px;padding:10px 4px;}
+  .harmony-layout,.emotion-layout{grid-template-columns:1fr;}
+  .wheel-wrap{flex-direction:column;}
+}
+@media print{
+  body{background:#fff;padding:0;}
+  .hdr,.tab-bar,.tab-panel:not(.active),.btn-row,.back-btn,.footer{display:none!important;}
+  .print-preview{display:block!important;box-shadow:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-left">
+    <h1>🎨 Digital Arts · Color Studio</h1>
+    <p>Kara Gau · Digital Arts &nbsp;·&nbsp; Smile Bags · A Word &amp; Wonder Experience</p>
+  </div>
+  <a href="index.html" class="back-btn">← Back to Smile Bags</a>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('wheel',this)">🎨 Color Mixer</button>
+  <button class="tab-btn" onclick="showTab('emotion',this)">🌈 Emotion Map</button>
+  <button class="tab-btn" onclick="showTab('story',this)">🖌️ Color Story</button>
+  <button class="tab-btn" onclick="showTab('harmony',this)">🎭 Harmony</button>
+  <button class="tab-btn" onclick="showTab('mood',this)">🌟 Mood Palette</button>
+</div>
+
+<!-- ══ TAB 1: COLOR WHEEL MIXER ══ -->
+<div class="tab-panel active" id="tab-wheel" data-tab="wheel">
+  <div class="panel-title">🎨 Color Wheel Mixer</div>
+  <p class="panel-sub">Spin the wheel to find the color of your OneWord. Build a personal palette, name each swatch, then download your color card for the Smile Bag.</p>
+  <div class="word-row">
+    <span class="word-label">Your Word:</span>
+    <select class="word-select" id="wheelWord" onchange="updateWheelWord()">
+      <option value="">— Choose a word —</option>
+    </select>
+    <span id="wheelWordMeaning" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--muted);"></span>
+  </div>
+  <div class="wheel-wrap">
+    <div class="wheel-canvas-wrap">
+      <canvas id="wheelCanvas" width="260" height="260"></canvas>
+      <div class="wheel-cursor" id="wheelCursor" style="display:none;"></div>
+    </div>
+    <div class="mixer-panel">
+      <div class="art-card">
+        <div class="art-card-title">Current Color</div>
+        <div class="mixed-preview" id="mixedPreview">
+          <span class="mixed-hex" id="mixedHex">#——</span>
+        </div>
+        <div class="color-values">
+          <div class="color-val">HEX<span id="cvHex">—</span></div>
+          <div class="color-val">R<span id="cvR">—</span></div>
+          <div class="color-val">G<span id="cvG">—</span></div>
+          <div class="color-val">B<span id="cvB">—</span></div>
+        </div>
+        <button class="btn btn-gold" onclick="addToPalette()" style="width:100%;">+ Add to Palette</button>
+        <button class="btn btn-outline" onclick="clearPalette()" style="width:100%;margin-top:8px;">Clear Palette</button>
+      </div>
+      <div class="art-card">
+        <div class="art-card-title">My Palette (click to name)</div>
+        <div class="palette-slots" id="paletteSlots"></div>
+        <input type="text" class="swatch-name-input" id="swatchNameInput" placeholder="Name this color... (e.g. 'Forest Dawn')" maxlength="30" style="display:none;"/>
+  
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ TAB 2: COLOR EMOTION MAP ══ -->
+<div class="tab-panel" id="tab-emotion" data-tab="emotion">
+  <div class="panel-title">🌈 Color Emotion Map</div>
+  <p class="panel-sub">Colors carry feelings. Choose your OneWord and build its emotional color palette — what colors feel like that word to you? There are no wrong answers.</p>
+  <div class="word-row">
+    <span class="word-label">Your Word:</span>
+    <select class="word-select" id="emotionWord" onchange="updateEmotionWord()">
+      <option value="">— Choose a word —</option>
+    </select>
+  </div>
+  <div class="emotion-layout">
+    <div>
+      <div class="emotion-word-display">
+        <div class="emotion-word" id="emotionWordDisplay">—</div>
+        <div class="emotion-meaning" id="emotionMeaning">Choose your OneWord above</div>
+        <div class="emotion-palette-result" id="emotionPaletteResult"></div>
+        <div style="font-size:11px;color:var(--muted);text-align:center;">Your emotion palette builds here</div>
+      </div>
+      <div class="emotion-selected-strip" id="emotionChips" style="margin-top:12px;"></div>
+
+    </div>
+    <div class="emotion-panel" id="emotionPanel"></div>
+  </div>
+
+</div>
+
+<!-- ══ TAB 3: COLOR STORY ══ -->
+<div class="tab-panel" id="tab-story" data-tab="story">
+  <div class="panel-title">🖌️ Color Story</div>
+  <p class="panel-sub">Paint an abstract artwork using only the colors of your OneWord. No rules — just color, emotion, and expression. Download your finished piece for the Smile Bag.</p>
+  <div class="word-row">
+    <span class="word-label">Your Word:</span>
+    <select class="word-select" id="storyWord" onchange="updateStoryWord()">
+      <option value="">— Choose a word —</option>
+    </select>
+  </div>
+  <div class="story-layout">
+    <div class="story-tools">
+      <div class="story-word-palette">
+        <div class="story-palette-title">Word Colors</div>
+        <div class="story-swatches" id="storySwatches">
+          <div style="font-size:12px;color:var(--muted);padding:8px;">Choose your word to reveal its color palette.</div>
+        </div>
+      </div>
+      <div class="brush-controls">
+        <div class="brush-label">Brush</div>
+        <div class="brush-btns">
+          <button class="brush-btn active" id="sbBrush" onclick="setStoryTool('brush',this)" title="Brush">🖌️</button>
+          <button class="brush-btn" id="sbSpray" onclick="setStoryTool('spray',this)" title="Spray">✨</button>
+          <button class="brush-btn" id="sbEraser" onclick="setStoryTool('eraser',this)" title="Eraser">✕</button>
+        </div>
+        <div class="brush-label">Size</div>
+        <input type="range" id="storySize" min="4" max="60" value="18" style="width:100%;accent-color:var(--gold);margin-top:6px;"/>
+        <div class="opacity-row" style="margin-top:10px;">
+          <span class="opacity-label">Opacity</span>
+          <input type="range" id="storyOpacity" min="10" max="100" value="85" style="flex:1;accent-color:var(--gold);"/>
+        </div>
+        <div class="btn-row" style="margin-top:10px;">
+          <button class="btn btn-outline" onclick="undoStory()" style="flex:1;padding:8px;">↩ Undo</button>
+          <button class="btn btn-outline" onclick="clearStory()" style="flex:1;padding:8px;">🗑 Clear</button>
+        </div>
+      </div>
+    </div>
+    <div class="story-canvas-wrap">
+      <canvas id="storyCanvas" width="580" height="480"></canvas>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ TAB 4: COLOR HARMONY ══ -->
+<div class="tab-panel" id="tab-harmony" data-tab="harmony">
+  <div class="panel-title">🎭 Color Harmony</div>
+  <p class="panel-sub">Learn real color theory. Pick a base color for your OneWord, choose a harmony type, and discover the colors that belong together. Download your harmony card for the Smile Bag.</p>
+  <div class="word-row">
+    <span class="word-label">Your Word:</span>
+    <select class="word-select" id="harmonyWord" onchange="updateHarmonyWord()">
+      <option value="">— Choose a word —</option>
+    </select>
+  </div>
+  <div class="harmony-type-grid">
+    <button class="harmony-type-btn active" onclick="setHarmonyType('complementary',this)" id="ht-complementary">
+      <div class="harmony-type-name">Complementary</div>
+      <div class="harmony-type-desc">Opposite colors — bold contrast, high energy</div>
+    </button>
+    <button class="harmony-type-btn" onclick="setHarmonyType('analogous',this)" id="ht-analogous">
+      <div class="harmony-type-name">Analogous</div>
+      <div class="harmony-type-desc">Neighbors on the wheel — harmonious, calm</div>
+    </button>
+    <button class="harmony-type-btn" onclick="setHarmonyType('triadic',this)" id="ht-triadic">
+      <div class="harmony-type-name">Triadic</div>
+      <div class="harmony-type-desc">Three equally spaced — vibrant, balanced</div>
+    </button>
+    <button class="harmony-type-btn" onclick="setHarmonyType('splitcomp',this)" id="ht-splitcomp">
+      <div class="harmony-type-name">Split Complementary</div>
+      <div class="harmony-type-desc">Softer contrast — rich without tension</div>
+    </button>
+  </div>
+  <div class="harmony-layout">
+    <div>
+      <div class="harmony-wheel-wrap">
+        <canvas id="harmonyCanvas" width="280" height="280"></canvas>
+      </div>
+    </div>
+    <div class="harmony-result">
+      <div class="harmony-swatch-row" id="harmonySwatchRow"></div>
+      <div class="harmony-explain" id="harmonyExplain">
+        <div class="harmony-explain-title">Color Theory Note</div>
+        <div class="harmony-explain-text" id="harmonyExplainText">Click on the color wheel to choose your base color and see your harmony scheme.</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ TAB 5: MOOD PALETTE BUILDER ══ -->
+<div class="tab-panel" id="tab-mood" data-tab="mood">
+  <div class="panel-title">🌟 Mood Palette Builder</div>
+  <p class="panel-sub">Drag colors onto the mood board to build the visual feeling of your OneWord. Arrange, replace, and compose until it feels right. Download your mood tile for the Smile Bag.</p>
+  <div class="word-row">
+    <span class="word-label">Your Word:</span>
+    <select class="word-select" id="moodWord" onchange="updateMoodWord()">
+      <option value="">— Choose a word —</option>
+    </select>
+    <span class="mood-word-badge" id="moodBadge" style="display:none;"></span>
+  </div>
+  <div class="mood-layout">
+    <div class="mood-library">
+      <div class="mood-lib-title">Color Library</div>
+      <div class="mood-color-grid" id="moodColorGrid"></div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.6;">Drag any color onto the mood board. Click a filled cell to remove it.</div>
+    </div>
+    <div class="mood-board">
+      <div class="mood-board-title">
+        <span>Mood Board</span>
+        <button class="btn btn-outline" onclick="clearMoodBoard()" style="padding:4px 12px;font-size:10px;">Clear</button>
+      </div>
+      <div class="mood-grid" id="moodGrid"></div>
+
+    </div>
+  </div>
+</div>
+
+<div class="footer">Digital Arts · Color Studio · Smile Bags: A Word &amp; Wonder Experience · Kara Gau · Spring 2026</div>
+
+<script>
+// ══════════════════════ DATA ══════════════════════
+var WORDS = [
+  {w:'ABSORB',m:'Taking in everything around you',colors:['#5B8C5A','#A8C5A0','#7FB3E8','#B8D4F0','#8B6B4A']},
+  {w:'ADAPT',m:'Adjusting to what comes your way',colors:['#E8A84B','#C8733A','#8B9E6B','#D4C178','#6B8E6B']},
+  {w:'ANCHOR',m:'Holding steady through the storm',colors:['#1B3A6B','#2E5FA3','#8BA3C8','#4A5E6B','#C8A84B']},
+  {w:'BALANCE',m:'Finding your steady place',colors:['#4A7C59','#C8A84B','#8B9E8B','#D4C8A0','#6B8E9E']},
+  {w:'BLOOM',m:'Growing into your best self',colors:['#E87B8B','#F5C0C8','#98D48E','#F5E87B','#C87BA8']},
+  {w:'BREATHE',m:'Finding calm in the middle of chaos',colors:['#A8C8D8','#C8E0F0','#8BB8C8','#D8EEF8','#7BA8B8']},
+  {w:'CLEAR',m:'Seeing things as they really are',colors:['#A8D8E8','#E8F8FF','#78B8D8','#C8E8F8','#58A0C0']},
+  {w:'CONNECT',m:'Building bridges between hearts',colors:['#E87B5B','#F5A07B','#F5D07B','#8BD4A0','#7BB8D4']},
+  {w:'CYCLE',m:'Endings make way for new beginnings',colors:['#8B6BA8','#C8A0D8','#5B8C8B','#A0C8C8','#D4A04A']},
+  {w:'EMERGE',m:'Becoming who you were meant to be',colors:['#78C878','#A8E8A8','#F5E878','#E8C848','#98D8B8']},
+  {w:'FILTER',m:'Choosing what gets your energy',colors:['#58A0B8','#A0D0E8','#C8E8F8','#78B8D8','#3880A0']},
+  {w:'FLOW',m:'Moving forward without forcing',colors:['#5888C8','#88B8E8','#A8D0F8','#C8E0FF','#3868A8']},
+  {w:'GROW',m:'Becoming more than you were',colors:['#5A8C3A','#88BC58','#C8E880','#A0C868','#3A6820']},
+  {w:'HEAL',m:'Finding your way back to whole',colors:['#88C8A8','#B8E8C8','#D8F8E8','#68A888','#A8D8C0']},
+  {w:'MIGRATE',m:'Moving toward what calls you',colors:['#E87830','#F5B060','#F5D890','#A8B880','#6888A8']},
+  {w:'PERSIST',m:'Refusing to be stopped',colors:['#C83838','#E86858','#F5A878','#C88840','#8B5830']},
+  {w:'RENEW',m:'Starting fresh with what you have learned',colors:['#78C8B8','#A8E8D8','#D8F8F0','#58A8A0','#C8E8E0']},
+  {w:'RESTORE',m:'Bringing back what was lost',colors:['#8B7BA8','#B8A8D8','#D8C8F0','#6858A0','#A898C8']},
+  {w:'RETURN',m:'Coming back to what is true',colors:['#C8A848','#E8C868','#F8E8A8','#A88828','#D8B848']},
+  {w:'RISE',m:'Lifting yourself to meet the moment',colors:['#E8B830','#F8D860','#FFF0A0','#E89020','#C87000']},
+  {w:'ROOT',m:'Staying grounded in who you are',colors:['#6B4820','#8B6838','#A88858','#C8A870','#4A3010']},
+  {w:'SHINE',m:'Letting your light be seen',colors:['#F8E030','#F8C020','#F8A800','#FFF8A0','#FFD040']},
+  {w:'SUSTAIN',m:'Keeping what is good alive',colors:['#388838','#58A858','#88C888','#B8E8B8','#285828']},
+  {w:'THRIVE',m:'Living at your fullest',colors:['#E8601A','#F89048','#F8C068','#48A838','#88D058']},
+  {w:'TRANSFORM',m:'Becoming something beautifully new',colors:['#8830C8','#B860E8','#D898F8','#E8A830','#F8D860']}
+];
+
+var EMOTION_COLORS = [
+  {name:'Joy',color:'#F8E030',desc:'Bright, radiant, full of life'},
+  {name:'Calm',color:'#A8C8D8',desc:'Peaceful, still, balanced'},
+  {name:'Energy',color:'#F87830',desc:'Bold, active, powerful'},
+  {name:'Growth',color:'#5A8C3A',desc:'Natural, thriving, expanding'},
+  {name:'Trust',color:'#2E5FA3',desc:'Steady, reliable, deep'},
+  {name:'Wonder',color:'#8830C8',desc:'Mysterious, magical, vast'},
+  {name:'Warmth',color:'#E8A84B',desc:'Nurturing, safe, golden'},
+  {name:'Strength',color:'#C83838',desc:'Bold, fierce, determined'},
+  {name:'Hope',color:'#88C8A8',desc:'Fresh, healing, rising'},
+  {name:'Depth',color:'#1B3A6B',desc:'Profound, rich, anchored'},
+  {name:'Purity',color:'#E8F8FF',desc:'Clear, honest, open'},
+  {name:'Earth',color:'#8B6838',desc:'Grounded, ancient, real'}
+];
+
+var HARMONY_EXPLAINS = {
+  complementary:'Complementary colors sit directly opposite each other on the color wheel. They create maximum contrast and vibrant visual tension — perfect for designs that need to grab attention.',
+  analogous:'Analogous colors sit next to each other on the wheel. They appear in nature constantly and feel harmonious, serene, and unified — like a sunset or a forest.',
+  triadic:'Triadic harmony uses three colors equally spaced around the wheel. This creates a vibrant yet balanced scheme — playful, dynamic, and visually rich.',
+  splitcomp:'Split-complementary uses one base color and the two colors adjacent to its complement. It has strong visual contrast like complementary harmony, but softer and less intense.'
+};
+
+// ══════════════════════ SETUP ══════════════════════
+function buildWordSelects() {
+  var selects = ['wheelWord','emotionWord','storyWord','harmonyWord','moodWord'];
+  selects.forEach(function(id) {
+    var sel = document.getElementById(id);
+    WORDS.forEach(function(w) {
+      var opt = document.createElement('option');
+      opt.value = w.w;
+      opt.textContent = w.w + ' — ' + w.m;
+      sel.appendChild(opt);
+    });
+  });
+}
+
+function getWord(id) {
+  var val = document.getElementById(id).value;
+  return WORDS.find(function(w){return w.w===val;}) || null;
+}
+
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  if(name==='wheel' && !wheelReady) initWheel();
+  if(name==='harmony' && !harmonyReady) initHarmony();
+  if(name==='story' && !storyReady) initStory();
+  if(name==='mood' && !moodReady) initMood();
+}
+
+// ══════════════════════ TAB 1: WHEEL MIXER ══════════════════════
+var wheelReady=false, paletteColors=[], selectedSlot=-1;
+var currentWheelColor = {r:200,g:168,b:75};
+
+function initWheel() {
+  wheelReady=true;
+  drawColorWheel();
+  buildPaletteSlots();
+  var canvas = document.getElementById('wheelCanvas');
+  canvas.addEventListener('click', function(e){
+    var r=canvas.getBoundingClientRect();
+    var x=e.clientX-r.left, y=e.clientY-r.top;
+    var cx=canvas.width/2, cy=canvas.height/2;
+    var dx=x-cx, dy=y-cy, dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist>cx) return;
+    var col = getWheelColor(x,y,canvas);
+    currentWheelColor = col;
+    var hex = rgbToHex(col.r,col.g,col.b);
+    document.getElementById('mixedPreview').style.background = hex;
+    document.getElementById('mixedHex').textContent = hex;
+    document.getElementById('cvHex').textContent = hex;
+    document.getElementById('cvR').textContent = col.r;
+    document.getElementById('cvG').textContent = col.g;
+    document.getElementById('cvB').textContent = col.b;
+    var cursor=document.getElementById('wheelCursor');
+    cursor.style.display='block';
+    cursor.style.left=x+'px'; cursor.style.top=y+'px';
+    cursor.style.background=hex;
+  });
+}
+
+function drawColorWheel() {
+  var canvas=document.getElementById('wheelCanvas');
+  var ctx=canvas.getContext('2d');
+  var cx=canvas.width/2, cy=canvas.height/2, r=cx-4;
+  for(var angle=0;angle<360;angle+=0.5) {
+    var rad=angle*Math.PI/180;
+    var grad=ctx.createRadialGradient(cx,cy,0,cx,cy,r);
+    grad.addColorStop(0,'hsl('+angle+',0%,100%)');
+    grad.addColorStop(0.5,'hsl('+angle+',100%,50%)');
+    grad.addColorStop(1,'hsl('+angle+',100%,10%)');
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,rad,rad+0.02);
+    ctx.closePath();
+    ctx.fillStyle=grad;
+    ctx.fill();
+  }
+  // Outer ring
+  ctx.beginPath();
+  ctx.arc(cx,cy,r,0,Math.PI*2);
+  ctx.strokeStyle='rgba(200,168,75,.4)';
+  ctx.lineWidth=2;
+  ctx.stroke();
+}
+
+function getWheelColor(x,y,canvas) {
+  var ctx=canvas.getContext('2d');
+  var d=ctx.getImageData(x,y,1,1).data;
+  return {r:d[0],g:d[1],b:d[2]};
+}
+
+function rgbToHex(r,g,b) {
+  return '#'+[r,g,b].map(function(v){return v.toString(16).padStart(2,'0');}).join('').toUpperCase();
+}
+
+function buildPaletteSlots() {
+  var cont=document.getElementById('paletteSlots');
+  cont.innerHTML='';
+  for(var i=0;i<5;i++) {
+    var slot=document.createElement('div');
+    slot.className='palette-slot'+(paletteColors[i]?' filled':'');
+    if(paletteColors[i]) slot.style.background=paletteColors[i].hex;
+    slot.dataset.idx=i;
+    slot.title=paletteColors[i]?paletteColors[i].name:'Empty';
+    slot.onclick=(function(idx){return function(){selectPaletteSlot(idx);};})(i);
+    var x=document.createElement('div');
+    x.className='slot-x';x.textContent='×';
+    x.onclick=(function(idx){return function(e){e.stopPropagation();removeSlot(idx);};})(i);
+    slot.appendChild(x);
+    cont.appendChild(slot);
+  }
+}
+
+function selectPaletteSlot(idx) {
+  if(!paletteColors[idx]) return;
+  selectedSlot=idx;
+  var inp=document.getElementById('swatchNameInput');
+  inp.style.display='block';
+  inp.value=paletteColors[idx].name||'';
+  inp.placeholder='Name this color...';
+  inp.focus();
+  inp.onchange=function(){paletteColors[idx].name=inp.value;buildPaletteSlots();};
+}
+
+function removeSlot(idx) {
+  paletteColors.splice(idx,1);
+  buildPaletteSlots();
+}
+
+function addToPalette() {
+  if(paletteColors.length>=5) {showWin('Palette full! Remove a color first.');return;}
+  var hex=rgbToHex(currentWheelColor.r,currentWheelColor.g,currentWheelColor.b);
+  paletteColors.push({hex:hex,name:'Color '+(paletteColors.length+1)});
+  buildPaletteSlots();
+  var inp=document.getElementById('swatchNameInput');
+  inp.style.display='block';
+  inp.value='';
+  inp.placeholder='Name this color...';
+  inp.focus();
+  inp.onchange=function(){if(paletteColors.length>0)paletteColors[paletteColors.length-1].name=inp.value;};
+}
+
+function clearPalette() {paletteColors=[];buildPaletteSlots();document.getElementById('swatchNameInput').style.display='none';}
+
+function updateWheelWord() {
+  var w=getWord('wheelWord');
+  document.getElementById('wheelWordMeaning').textContent=w?('— '+w.m):'';
+  if(w&&paletteColors.length===0){
+    w.colors.slice(0,3).forEach(function(c,i){
+      paletteColors.push({hex:c.toUpperCase(),name:w.w+' '+(i+1)});
+    });
+    buildPaletteSlots();
+  }
+}
+
+function generateWheelPrint() {
+  if(paletteColors.length===0){showWin('Add at least one color to your palette first!');return;}
+  var w=getWord('wheelWord');
+  var pp=document.getElementById('wheelPrint');
+  document.getElementById('wpWord').textContent=(w?w.w+' — ':'')+' MY COLOR PALETTE';
+  var swatches=document.getElementById('wpSwatches');
+  swatches.innerHTML='';
+  paletteColors.forEach(function(c){
+    swatches.innerHTML+='<div class="pp-swatch"><div class="pp-swatch-color" style="background:'+c.hex+'"></div><div class="pp-swatch-label">'+c.hex+'<br><strong>'+c.name+'</strong></div></div>';
+  });
+  pp.classList.add('show');
+  pp.scrollIntoView({behavior:'smooth'});
+  setTimeout(function(){downloadDiv('wheelPrint', (w?w.w:'PALETTE')+'_ColorPalette.png');},300);
+}
+
+// ══════════════════════ TAB 2: EMOTION MAP ══════════════════════
+var selectedEmotions=[];
+
+function buildEmotionPanel() {
+  var panel=document.getElementById('emotionPanel');
+  panel.innerHTML='';
+  EMOTION_COLORS.forEach(function(ec){
+    var btn=document.createElement('button');
+    btn.className='emotion-btn'+(selectedEmotions.some(function(e){return e.name===ec.name;})?' active':'');
+    btn.id='eb-'+ec.name;
+    btn.innerHTML='<div class="emotion-dot" style="background:'+ec.color+'"></div><div class="emotion-btn-text"><div class="emotion-btn-name">'+ec.name+'</div><div class="emotion-btn-desc">'+ec.desc+'</div></div>';
+    btn.onclick=function(){toggleEmotion(ec);};
+    panel.appendChild(btn);
+  });
+}
+
+function toggleEmotion(ec) {
+  var idx=selectedEmotions.findIndex(function(e){return e.name===ec.name;});
+  if(idx>-1){selectedEmotions.splice(idx,1);}
+  else{if(selectedEmotions.length>=6){showWin('Max 6 emotions! Remove one first.');return;}selectedEmotions.push(ec);}
+  document.getElementById('eb-'+ec.name).classList.toggle('active',idx===-1);
+  updateEmotionPalette();
+  buildEmotionChips();
+}
+
+function updateEmotionPalette() {
+  var result=document.getElementById('emotionPaletteResult');
+  result.innerHTML='';
+  selectedEmotions.forEach(function(ec){
+    var div=document.createElement('div');
+    div.className='emotion-swatch';
+    div.style.background=ec.color;
+    result.appendChild(div);
+  });
+}
+
+function buildEmotionChips() {
+  var strip=document.getElementById('emotionChips');
+  strip.innerHTML='';
+  selectedEmotions.forEach(function(ec){
+    var chip=document.createElement('div');
+    chip.className='emotion-chip';
+    chip.innerHTML='<div class="emotion-chip-dot" style="background:'+ec.color+'"></div>'+ec.name;
+    chip.onclick=function(){toggleEmotion(ec);};
+    strip.appendChild(chip);
+  });
+}
+
+function updateEmotionWord() {
+  var w=getWord('emotionWord');
+  document.getElementById('emotionWordDisplay').textContent=w?w.w:'—';
+  document.getElementById('emotionMeaning').textContent=w?w.m:'Choose your OneWord above';
+}
+
+function clearEmotions() {
+  selectedEmotions=[];
+  document.querySelectorAll('.emotion-btn').forEach(function(b){b.classList.remove('active');});
+  updateEmotionPalette();
+  buildEmotionChips();
+}
+
+function generateEmotionPrint() {
+  if(selectedEmotions.length===0){showWin('Choose at least one emotion color first!');return;}
+  var w=getWord('emotionWord');
+  document.getElementById('epWord').textContent=(w?w.w+' — ':'')+' COLOR EMOTION MAP';
+  var swatches=document.getElementById('epSwatches');
+  swatches.innerHTML='';
+  selectedEmotions.forEach(function(ec){
+    swatches.innerHTML+='<div class="pp-swatch"><div class="pp-swatch-color" style="background:'+ec.color+'"></div><div class="pp-swatch-label">'+ec.name+'<br><span style="color:#aaa;font-size:9px;">'+ec.desc+'</span></div></div>';
+  });
+  var pp=document.getElementById('emotionPrint');
+  pp.classList.add('show');
+  pp.scrollIntoView({behavior:'smooth'});
+  setTimeout(function(){downloadDiv('emotionPrint',(w?w.w:'EMOTION')+'_EmotionMap.png');},300);
+}
+
+// ══════════════════════ TAB 3: COLOR STORY ══════════════════════
+var storyReady=false, storyTool='brush', storyColor='#5A8C3A', storyHistory=[];
+
+function initStory() {
+  storyReady=true;
+  var canvas=document.getElementById('storyCanvas');
+  var ctx=canvas.getContext('2d');
+  ctx.fillStyle='#0E1A0A';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  saveStoryState();
+  var painting=false;
+  canvas.addEventListener('mousedown',function(e){painting=true;storyPaint(e);});
+  canvas.addEventListener('mousemove',function(e){if(painting)storyPaint(e);});
+  canvas.addEventListener('mouseup',function(){painting=false;saveStoryState();});
+  canvas.addEventListener('touchstart',function(e){e.preventDefault();painting=true;storyPaint(e.touches[0]);},{passive:false});
+  canvas.addEventListener('touchmove',function(e){e.preventDefault();if(painting)storyPaint(e.touches[0]);},{passive:false});
+  canvas.addEventListener('touchend',function(){painting=false;saveStoryState();});
+}
+
+function storyPaint(e) {
+  var canvas=document.getElementById('storyCanvas');
+  var ctx=canvas.getContext('2d');
+  var r=canvas.getBoundingClientRect();
+  var x=(e.clientX-r.left)*(canvas.width/r.width);
+  var y=(e.clientY-r.top)*(canvas.height/r.height);
+  var size=parseInt(document.getElementById('storySize').value);
+  var opacity=parseInt(document.getElementById('storyOpacity').value)/100;
+  ctx.globalAlpha=opacity;
+  if(storyTool==='eraser'){
+    ctx.globalCompositeOperation='destination-out';
+    ctx.fillStyle='rgba(0,0,0,1)';
+    ctx.beginPath();ctx.arc(x,y,size,0,Math.PI*2);ctx.fill();
+  } else if(storyTool==='spray') {
+    ctx.globalCompositeOperation='source-over';
+    ctx.fillStyle=storyColor;
+    for(var i=0;i<20;i++){
+      var rx=(Math.random()-.5)*size*2, ry=(Math.random()-.5)*size*2;
+      if(rx*rx+ry*ry<size*size){ctx.beginPath();ctx.arc(x+rx,y+ry,1.5,0,Math.PI*2);ctx.fill();}
+    }
+  } else {
+    ctx.globalCompositeOperation='source-over';
+    ctx.fillStyle=storyColor;
+    ctx.beginPath();ctx.arc(x,y,size,0,Math.PI*2);ctx.fill();
+  }
+  ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';
+}
+
+function saveStoryState(){var c=document.getElementById('storyCanvas');storyHistory.push(c.toDataURL());if(storyHistory.length>15)storyHistory.shift();}
+function undoStory(){if(storyHistory.length<=1)return;storyHistory.pop();var c=document.getElementById('storyCanvas');var ctx=c.getContext('2d');var img=new Image();img.onload=function(){ctx.clearRect(0,0,c.width,c.height);ctx.drawImage(img,0,0);};img.src=storyHistory[storyHistory.length-1];}
+function clearStory(){var c=document.getElementById('storyCanvas');var ctx=c.getContext('2d');ctx.fillStyle='#0E1A0A';ctx.fillRect(0,0,c.width,c.height);storyHistory=[];saveStoryState();}
+function setStoryTool(t,btn){storyTool=t;document.querySelectorAll('#tab-story .brush-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');}
+function downloadStory(){var c=document.getElementById('storyCanvas');var a=document.createElement('a');var w=getWord('storyWord');a.download=(w?w.w:'STORY')+'_ColorStory.png';a.href=c.toDataURL();a.click();}
+function printStory(){var c=document.getElementById('storyCanvas');var win=window.open('');win.document.write('<img src="'+c.toDataURL()+'" style="max-width:100%;"/>');win.document.close();win.print();}
+
+function updateStoryWord() {
+  var w=getWord('storyWord');
+  var container=document.getElementById('storySwatches');
+  container.innerHTML='';
+  if(!w){container.innerHTML='<div style="font-size:12px;color:var(--muted);padding:8px;">Choose your word to reveal its color palette.</div>';return;}
+  w.colors.forEach(function(c,i){
+    var s=document.createElement('button');
+    s.className='story-swatch'+(i===0?' active':'');
+    s.style.background=c;
+    s.innerHTML='<span class="story-swatch-name" style="color:'+(isLight(c)?'#111':'#fff')+'">'+c+'</span>';
+    s.onclick=function(){
+      storyColor=c;
+      document.querySelectorAll('.story-swatch').forEach(function(x){x.classList.remove('active');});
+      s.classList.add('active');
+    };
+    container.appendChild(s);
+  });
+  storyColor=w.colors[0];
+}
+
+function isLight(hex){var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return(0.299*r+0.587*g+0.114*b)>140;}
+
+// ══════════════════════ TAB 4: HARMONY ══════════════════════
+var harmonyReady=false, harmonyType='complementary', harmonyBase={h:120,s:0.7,l:0.4};
+
+function initHarmony() {
+  harmonyReady=true;
+  drawHarmonyWheel();
+  buildHarmonySwatches();
+  var canvas=document.getElementById('harmonyCanvas');
+  canvas.addEventListener('click',function(e){
+    var r=canvas.getBoundingClientRect();
+    var x=e.clientX-r.left, y=e.clientY-r.top;
+    var cx=canvas.width/2, cy=canvas.height/2;
+    var dx=x-cx, dy=y-cy;
+    var dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist>cx-4) return;
+    var angle=(Math.atan2(dy,dx)*180/Math.PI+360)%360;
+    var sat=Math.min(dist/(cx-4),1);
+    harmonyBase={h:angle,s:sat,l:0.5};
+    buildHarmonySwatches();
+    drawHarmonyWheel();
+  });
+}
+
+function drawHarmonyWheel() {
+  var canvas=document.getElementById('harmonyCanvas');
+  var ctx=canvas.getContext('2d');
+  var cx=canvas.width/2, cy=canvas.height/2, r=cx-4;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(var angle=0;angle<360;angle+=0.5){
+    var rad=angle*Math.PI/180;
+    var grad=ctx.createRadialGradient(cx,cy,0,cx,cy,r);
+    grad.addColorStop(0,'hsl('+angle+',0%,100%)');
+    grad.addColorStop(0.5,'hsl('+angle+',100%,50%)');
+    grad.addColorStop(1,'hsl('+angle+',100%,15%)');
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,rad,rad+0.015);ctx.closePath();
+    ctx.fillStyle=grad;ctx.fill();
+  }
+  // Draw harmony markers
+  var angles=getHarmonyAngles();
+  angles.forEach(function(a,i){
+    var rad=a*Math.PI/180;
+    var dist=(cx-4)*harmonyBase.s;
+    var mx=cx+dist*Math.cos(rad), my=cy+dist*Math.sin(rad);
+    ctx.beginPath();ctx.arc(mx,my,10,0,Math.PI*2);
+    ctx.fillStyle=i===0?'#fff':'rgba(255,255,255,.7)';ctx.fill();
+    ctx.strokeStyle=i===0?var_gold:'rgba(200,168,75,.5)';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#111';ctx.font='bold 9px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(i+1,mx,my);
+  });
+}
+var var_gold='#C8A84B';
+
+function getHarmonyAngles() {
+  var h=harmonyBase.h;
+  if(harmonyType==='complementary') return[h,(h+180)%360];
+  if(harmonyType==='analogous') return[h,(h+30)%360,(h-30+360)%360];
+  if(harmonyType==='triadic') return[h,(h+120)%360,(h+240)%360];
+  if(harmonyType==='splitcomp') return[h,(h+150)%360,(h+210)%360];
+  return[h];
+}
+
+function hslToHex(h,s,l){
+  var a=s*Math.min(l,1-l);
+  var f=function(n){var k=(n+h/30)%12;var col=l-a*Math.max(Math.min(k-3,9-k,1),-1);return Math.round(255*col).toString(16).padStart(2,'0');};
+  return('#'+f(0)+f(8)+f(4)).toUpperCase();
+}
+
+function buildHarmonySwatches() {
+  var angles=getHarmonyAngles();
+  var row=document.getElementById('harmonySwatchRow');
+  row.innerHTML='';
+  var names=['Base Color','Harmony 1','Harmony 2','Harmony 3'];
+  angles.forEach(function(a,i){
+    var hex=hslToHex(a,harmonyBase.s,harmonyBase.l);
+    row.innerHTML+='<div class="harmony-swatch-card"><div class="harmony-swatch-color" style="background:'+hex+'"></div><div class="harmony-swatch-info"><div class="harmony-swatch-hex">'+hex+'</div><div class="harmony-swatch-name">'+names[i]+'</div></div></div>';
+  });
+  document.getElementById('harmonyExplainText').textContent=HARMONY_EXPLAINS[harmonyType];
+  updateHarmonyWord();
+}
+
+function setHarmonyType(t,btn) {
+  harmonyType=t;
+  document.querySelectorAll('.harmony-type-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  buildHarmonySwatches();
+  drawHarmonyWheel();
+}
+
+function updateHarmonyWord() {
+  var w=getWord('harmonyWord');
+  if(w){
+    var hex=w.colors[0];
+    var h=hexToHsl(hex);
+    harmonyBase={h:h.h,s:h.s,l:h.l};
+    buildHarmonySwatches();
+    drawHarmonyWheel();
+  }
+}
+
+function hexToHsl(hex){
+  var r=parseInt(hex.slice(1,3),16)/255,g=parseInt(hex.slice(3,5),16)/255,b=parseInt(hex.slice(5,7),16)/255;
+  var max=Math.max(r,g,b),min=Math.min(r,g,b),l=(max+min)/2,s=0,h=0;
+  if(max!==min){s=l>0.5?(max-min)/(2-max-min):(max-min)/(max+min);
+    if(max===r)h=(g-b)/(max-min)+(g<b?6:0);
+    else if(max===g)h=(b-r)/(max-min)+2;
+    else h=(r-g)/(max-min)+4;h/=6;}
+  return{h:h*360,s:s,l:l};
+}
+
+function generateHarmonyPrint() {
+  var w=getWord('harmonyWord');
+  document.getElementById('hpWord').textContent=(w?w.w+' — ':'')+harmonyType.toUpperCase()+' HARMONY';
+  var angles=getHarmonyAngles();
+  var swatches=document.getElementById('hpSwatches');
+  swatches.innerHTML='';
+  var names=['Base','Harmony 1','Harmony 2','Harmony 3'];
+  angles.forEach(function(a,i){
+    var hex=hslToHex(a,harmonyBase.s,harmonyBase.l);
+    swatches.innerHTML+='<div class="pp-swatch"><div class="pp-swatch-color" style="background:'+hex+'"></div><div class="pp-swatch-label">'+hex+'<br><strong>'+names[i]+'</strong></div></div>';
+  });
+  document.getElementById('hpExplain').textContent=HARMONY_EXPLAINS[harmonyType];
+  var pp=document.getElementById('harmonyPrint');
+  pp.classList.add('show');
+  pp.scrollIntoView({behavior:'smooth'});
+  setTimeout(function(){downloadDiv('harmonyPrint',(w?w.w:'HARMONY')+'_ColorHarmony.png');},300);
+}
+
+// ══════════════════════ TAB 5: MOOD BOARD ══════════════════════
+var moodReady=false, moodCells=[], dragColor=null;
+
+var MOOD_COLORS = [
+  '#F8E030','#F87830','#C83838','#E87B8B','#8830C8',
+  '#2E5FA3','#58A0B8','#A8C8D8','#5A8C3A','#88C8A8',
+  '#C8A84B','#8B6838','#1B3A6B','#D8C8F0','#B8E8C8',
+  '#0E1A0A','#F8F8F8','#888888','#F5E87B','#E87B5B'
+];
+
+function initMood() {
+  moodReady=true;
+  buildMoodColorGrid();
+  buildMoodGrid();
+}
+
+function buildMoodColorGrid() {
+  var grid=document.getElementById('moodColorGrid');
+  grid.innerHTML='';
+  MOOD_COLORS.forEach(function(c){
+    var dot=document.createElement('div');
+    dot.className='mood-color-dot';
+    dot.style.background=c;
+    dot.draggable=true;
+    dot.title=c;
+    dot.addEventListener('dragstart',function(e){
+      dragColor=c;
+      e.dataTransfer.setData('text/plain',c);
+    });
+    dot.addEventListener('click',function(){
+      // Find first empty cell
+      for(var i=0;i<16;i++){
+        if(!moodCells[i]){moodCells[i]=c;buildMoodGrid();return;}
+      }
+      showWin('Board is full! Click a cell to remove it.');
+    });
+    grid.appendChild(dot);
+  });
+}
+
+function buildMoodGrid() {
+  var grid=document.getElementById('moodGrid');
+  grid.innerHTML='';
+  for(var i=0;i<16;i++){
+    var cell=document.createElement('div');
+    cell.className='mood-cell'+(moodCells[i]?' filled':'');
+    if(moodCells[i]) cell.style.background=moodCells[i];
+    else cell.textContent='+';
+    cell.dataset.idx=i;
+    cell.addEventListener('dragover',function(e){e.preventDefault();this.classList.add('drag-over');});
+    cell.addEventListener('dragleave',function(){this.classList.remove('drag-over');});
+    cell.addEventListener('drop',(function(idx){return function(e){
+      e.preventDefault();
+      this.classList.remove('drag-over');
+      moodCells[idx]=dragColor;
+      buildMoodGrid();
+    };})(i));
+    cell.addEventListener('click',(function(idx){return function(){
+      if(moodCells[idx]){moodCells[idx]=null;buildMoodGrid();}
+    };})(i));
+    grid.appendChild(cell);
+  }
+}
+
+function clearMoodBoard(){moodCells=[];buildMoodGrid();}
+
+function updateMoodWord() {
+  var w=getWord('moodWord');
+  var badge=document.getElementById('moodBadge');
+  if(w){
+    badge.textContent=w.w+' — '+w.m;
+    badge.style.display='inline-block';
+    if(moodCells.filter(Boolean).length===0){
+      moodCells=w.colors.slice(0,5).map(function(c){return c;});
+      while(moodCells.length<16)moodCells.push(null);
+      buildMoodGrid();
+    }
+  } else {badge.style.display='none';}
+}
+
+function downloadMoodBoard() {
+  var grid=document.getElementById('moodGrid');
+  var canvas=document.createElement('canvas');
+  canvas.width=420;canvas.height=420;
+  var ctx=canvas.getContext('2d');
+  var w=getWord('moodWord');
+  ctx.fillStyle='#0E1A0A';ctx.fillRect(0,0,420,420);
+  var cellW=(420-24-18)/4, cellH=(420-24-18)/4;
+  var colors=moodCells.filter(Boolean);
+  if(colors.length===0){showWin('Add some colors to your mood board first!');return;}
+  for(var i=0;i<16;i++){
+    var col=i%4, row2=Math.floor(i/4);
+    var x=12+col*(cellW+6), y=12+row2*(cellH+6);
+    ctx.fillStyle=moodCells[i]||'rgba(255,255,255,.04)';
+    ctx.beginPath();ctx.roundRect(x,y,cellW,cellH,8);ctx.fill();
+  }
+  var a=document.createElement('a');
+  a.download=(w?w.w:'MOOD')+'_MoodPalette.png';
+  a.href=canvas.toDataURL();a.click();
+}
+
+function printMoodBoard() {
+  var canvas=document.createElement('canvas');
+  canvas.width=420;canvas.height=420;
+  var ctx=canvas.getContext('2d');
+  ctx.fillStyle='#ffffff';ctx.fillRect(0,0,420,420);
+  var cellW=(420-24-18)/4, cellH=(420-24-18)/4;
+  for(var i=0;i<16;i++){
+    var col=i%4, row2=Math.floor(i/4);
+    var x=12+col*(cellW+6), y=12+row2*(cellH+6);
+    ctx.fillStyle=moodCells[i]||'#f0f0f0';
+    ctx.beginPath();ctx.roundRect(x,y,cellW,cellH,8);ctx.fill();
+  }
+  var win=window.open('');win.document.write('<img src="'+canvas.toDataURL()+'" style="max-width:100%;"/>');win.document.close();win.print();
+}
+
+// ══════════════════════ UTILS ══════════════════════
+function showWin(msg){
+  var t=document.createElement('div');
+  t.style.cssText='position:fixed;top:80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#2D5016,#5A8F35);color:#fff;padding:14px 28px;border-radius:50px;font-family:Fredoka One,cursive;font-size:16px;z-index:999;box-shadow:0 8px 32px rgba(0,0,0,.4);animation:fadeIn .3s ease;';
+  t.textContent=msg;document.body.appendChild(t);setTimeout(function(){t.remove();},3000);
+}
+
+function downloadDiv(id, filename) {
+  var el=document.getElementById(id);
+  if(!el||!el.classList.contains('show')){showWin('Generate your card first!');return;}
+  var canvas=document.createElement('canvas');
+  canvas.width=800;canvas.height=350;
+  var ctx=canvas.getContext('2d');
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,800,350);
+  // Simple text-based download for print previews
+  var a=document.createElement('a');
+  a.href=el.querySelector('canvas')?el.querySelector('canvas').toDataURL():'data:text/plain,download';
+  // Use html2canvas-style approach via print
+  window.print();
+}
+
+// Better download: use print window for print previews
+function downloadDiv(id, filename) {
+  var el=document.getElementById(id);
+  if(!el||!el.classList.contains('show')){showWin('Generate your card first!');return;}
+  var w=window.open('');
+  w.document.write('<html><head><style>body{font-family:Georgia,serif;padding:20px;}</style></head><body>'+el.outerHTML+'</body></html>');
+  w.document.close();
+  w.print();
+}
+
+// ══════════════════════ INIT ══════════════════════
+buildWordSelects();
+buildEmotionPanel();
+initWheel();
+
+// Auto-open tab from URL hash
+(function(){
+  var hash = window.location.hash.replace('#','');
+  var tabs = {wheel:'wheel',emotion:'emotion',story:'story',harmony:'harmony',mood:'mood'};
+  if(hash && tabs[hash]){
+    var btn = document.querySelector('.tab-btn[onclick*="\'' + hash + '\'"]');
+    if(btn) showTab(hash, btn);
+  }
+})();
+
+</script>
+</body>
+</html>
