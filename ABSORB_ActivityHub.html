@@ -92,6 +92,43 @@ body{font-family:'Nunito',sans-serif;background:#0A0A0A;color:#fff;min-height:10
 .card-def-label{font-size:11px;color:#aaa;line-height:1.4;}
 .card-type{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#444;margin-bottom:4px;}
 
+
+/* ── GLOBAL TIMER BAR ── */
+.timer-bar{background:#111;border-bottom:2px solid #1a1a1a;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;position:sticky;top:0;z-index:60;}
+.timer-display{display:flex;align-items:center;gap:12px;}
+.timer-clock{font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);min-width:70px;transition:color .3s;}
+.timer-clock.warning{color:#FF7043;animation:pulse .5s ease infinite alternate;}
+.timer-clock.danger{color:#D4537E;animation:pulse .3s ease infinite alternate;}
+@keyframes pulse{from{opacity:1}to{opacity:.5}}
+.timer-label{font-size:11px;color:#444;letter-spacing:1px;text-transform:uppercase;}
+.timer-track{flex:1;min-width:120px;height:8px;background:#1a1a1a;border-radius:8px;overflow:hidden;}
+.timer-fill{height:100%;background:linear-gradient(90deg,var(--gold-dark),var(--gold));border-radius:8px;transition:width .5s linear,background .3s;}
+.timer-fill.warning{background:linear-gradient(90deg,#E64A19,#FF7043);}
+.timer-fill.danger{background:linear-gradient(90deg,#880E4F,#D4537E);}
+.star-section{display:flex;align-items:center;gap:10px;}
+.star-count{font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);}
+.star-label{font-size:11px;color:#444;letter-spacing:1px;text-transform:uppercase;}
+.star-btn{background:#1a1a1a;border:1.5px solid #333;border-radius:8px;padding:6px 12px;font-family:'Fredoka One',cursive;font-size:13px;cursor:pointer;transition:all .2s;color:#aaa;}
+.star-btn.up{border-color:#4caf82;color:#4caf82;}
+.star-btn.up:hover{background:#4caf82;color:#111;}
+.star-btn.down{border-color:#D4537E;color:#D4537E;}
+.star-btn.down:hover{background:#D4537E;color:#fff;}
+.star-btn:disabled{opacity:.3;cursor:not-allowed;}
+.completed-chips{display:flex;gap:6px;flex-wrap:wrap;}
+.chip{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:20px;padding:3px 10px;font-size:10px;color:#444;font-family:'Fredoka One',cursive;letter-spacing:.5px;transition:all .3s;}
+.chip.done{background:rgba(40,167,69,.15);border-color:#28A745;color:#28A745;}
+
+/* ── GAME OVER OVERLAY ── */
+.gameover-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:500;align-items:center;justify-content:center;}
+.gameover-overlay.show{display:flex;}
+.gameover-box{background:#111;border:2px solid #D4537E;border-radius:24px;padding:40px;text-align:center;max-width:420px;animation:popIn .4s cubic-bezier(.34,1.56,.64,1);}
+.gameover-icon{font-size:64px;margin-bottom:12px;}
+.gameover-title{font-family:'Fredoka One',cursive;font-size:32px;color:#D4537E;margin-bottom:8px;}
+.gameover-sub{font-size:14px;color:#666;margin-bottom:8px;line-height:1.6;}
+.gameover-completed{font-family:'Fredoka One',cursive;font-size:14px;color:var(--gold);margin-bottom:24px;}
+.gameover-restart{display:block;width:100%;padding:16px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;border-radius:12px;font-family:'Fredoka One',cursive;font-size:18px;color:#111;cursor:pointer;transition:all .2s;}
+.gameover-restart:hover{transform:translateY(-2px);}
+
 </style>
 </head>
 <body>
@@ -109,6 +146,47 @@ body{font-family:'Nunito',sans-serif;background:#0A0A0A;color:#fff;min-height:10
   <button class="tab-btn" onclick="showTab('brain',this)">&#129504; Brain Challenge</button>
   <button class="tab-btn" onclick="showTab('paint',this)">&#127912; Digital Paint</button>
   <button class="tab-btn" onclick="showTab('conc',this)">&#127183; Concentration</button>
+</div>
+
+<!-- GLOBAL TIMER BAR -->
+<div class="timer-bar" id="timerBar">
+  <div class="timer-display">
+    <div>
+      <div class="timer-label">Time Left</div>
+      <div class="timer-clock" id="timerClock">3:00</div>
+    </div>
+    <div style="flex:1;min-width:100px;">
+      <div class="timer-track"><div class="timer-fill" id="timerFill" style="width:100%;"></div></div>
+    </div>
+  </div>
+  <div class="completed-chips" id="completedChips">
+    <div class="chip" id="chip-puzzle">&#129513; Puzzle</div>
+    <div class="chip" id="chip-maze">&#128196; Maze</div>
+    <div class="chip" id="chip-brain">&#129504; Brain</div>
+    <div class="chip" id="chip-conc">&#127183; Match</div>
+    <div class="chip" id="chip-paint">&#127912; Paint</div>
+  </div>
+  <div class="star-section">
+    <div>
+      <div class="star-label">Stars</div>
+      <div class="star-count" id="starCount">&#11088; 0</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px;">
+      <button class="star-btn up" onclick="spendStar()" id="starUpBtn" title="+15 seconds · costs 1 star">&#11014; +15s</button>
+      <div style="font-size:10px;color:#333;text-align:center;">1&#11088; each</div>
+    </div>
+  </div>
+</div>
+
+<!-- GAME OVER -->
+<div class="gameover-overlay" id="gameoverOverlay">
+  <div class="gameover-box">
+    <div class="gameover-icon">&#9201;&#65039;</div>
+    <div class="gameover-title">Time's Up!</div>
+    <div class="gameover-sub">The clock ran out — but look how far you got!</div>
+    <div class="gameover-completed" id="gameoverCompleted"></div>
+    <button class="gameover-restart" onclick="restartHub()">&#128257; Try Again!</button>
+  </div>
 </div>
 
 <div class="win-toast" id="winToast"></div>
@@ -251,6 +329,7 @@ var WS_WORDS = ["ABSORB","GATHER","SOAK","INTAKE","LEARN","OPEN","STILL","BREATH
 
 // ═══════════════════════ TABS ═══════════════════════
 function showTab(name, btn) {
+  startGlobalTimer();
   document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
   document.getElementById('tab-'+name).classList.add('active');
@@ -456,7 +535,7 @@ function checkScramble() {
       inp.classList.add('correct'); inp.classList.remove('wrong');
     } else { inp.classList.add('wrong'); inp.classList.remove('correct'); allCorrect=false; }
   });
-  if(allCorrect) showWin('&#129504; All Words Unscrambled!');
+  if(allCorrect) earnStars(2,'brain');
 }
 
 function resetScramble() {
@@ -601,7 +680,7 @@ function setTool(tool,btn){
   btn.classList.add('active');
 }
 
-function downloadPainting(){
+function downloadPainting(){earnStars(1,'paint');
   var link=document.createElement('a');
   link.download=WORD+'_My_Painting.png';
   link.href=document.getElementById('paintCanvas').toDataURL();
@@ -702,7 +781,7 @@ function flipConcCard(idx){
         els[concFlipped[0]].classList.remove('revealed');els[concFlipped[1]].classList.remove('revealed');
         concMatched++;document.getElementById('concMatches').textContent=concMatched+'/6';
         concFlipped=[];concLocked=false;
-        if(concMatched===6){clearInterval(concTimerInt);showWin('&#127389; All Pairs Matched!');}
+        if(concMatched===6){clearInterval(concTimerInt);earnStars(2,'conc');}
       },400);
     } else {
       els[concFlipped[0]].classList.add('wrong');els[concFlipped[1]].classList.add('wrong');
@@ -718,6 +797,101 @@ function backToSetup(){
   clearInterval(concTimerInt);
   document.getElementById('concGame').style.display='none';
   document.getElementById('concSetup').style.display='block';
+}
+
+
+// ═══════════════════════ GLOBAL TIMER ═══════════════════════
+var TOTAL_SECS = 180;
+var timerSecsLeft = TOTAL_SECS;
+var timerRunning = false;
+var globalTimerInt = null;
+var stars = 0;
+var hubCompleted = {puzzle:false, maze:false, brain:false, conc:false, paint:false};
+
+function startGlobalTimer() {
+  if(timerRunning) return;
+  timerRunning = true;
+  globalTimerInt = setInterval(function() {
+    timerSecsLeft--;
+    updateTimerDisplay();
+    if(timerSecsLeft <= 0) {
+      clearInterval(globalTimerInt);
+      timerRunning = false;
+      showGameOver();
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  var m = Math.floor(timerSecsLeft / 60);
+  var s = timerSecsLeft % 60;
+  var clock = document.getElementById('timerClock');
+  var fill = document.getElementById('timerFill');
+  clock.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+  var pct = (timerSecsLeft / TOTAL_SECS) * 100;
+  fill.style.width = pct + '%';
+  // Color states
+  clock.classList.remove('warning','danger');
+  fill.classList.remove('warning','danger');
+  if(timerSecsLeft <= 30) { clock.classList.add('danger'); fill.classList.add('danger'); }
+  else if(timerSecsLeft <= 60) { clock.classList.add('warning'); fill.classList.add('warning'); }
+}
+
+function earnStars(n, game) {
+  stars += n;
+  document.getElementById('starCount').textContent = '\u2B50 ' + stars;
+  hubCompleted[game] = true;
+  var chip = document.getElementById('chip-' + game);
+  if(chip) chip.classList.add('done');
+  showWin('\u2B50 +' + n + ' star' + (n > 1 ? 's' : '') + '! Keep going!');
+}
+
+function spendStar() {
+  if(stars < 1) { showWin('\u274C No stars left! Complete a game to earn more.'); return; }
+  stars--;
+  timerSecsLeft = Math.min(timerSecsLeft + 15, TOTAL_SECS);
+  document.getElementById('starCount').textContent = '\u2B50 ' + stars;
+  updateTimerDisplay();
+  showWin('\u23F0 +15 seconds added!');
+}
+
+function showGameOver() {
+  var done = [];
+  if(hubCompleted.puzzle) done.push('\u2705 Puzzle');
+  if(hubCompleted.maze)   done.push('\u2705 Maze');
+  if(hubCompleted.brain)  done.push('\u2705 Brain Challenge');
+  if(hubCompleted.conc)   done.push('\u2705 Concentration');
+  if(hubCompleted.paint)  done.push('\u2705 Digital Paint');
+  var none = done.length === 0;
+  document.getElementById('gameoverCompleted').textContent = none ? 'Keep practicing — you\'ll beat it next time!' : 'Completed: ' + done.join(' · ');
+  document.getElementById('gameoverOverlay').classList.add('show');
+}
+
+function restartHub() {
+  document.getElementById('gameoverOverlay').classList.remove('show');
+  timerSecsLeft = TOTAL_SECS;
+  stars = 0;
+  timerRunning = false;
+  clearInterval(globalTimerInt);
+  hubCompleted = {puzzle:false,maze:false,brain:false,conc:false,paint:false};
+  document.getElementById('starCount').textContent = '\u2B50 0';
+  document.querySelectorAll('.chip').forEach(function(c){c.classList.remove('done');});
+  updateTimerDisplay();
+  // Reset all games
+  shufflePuzzle();
+  generateMaze();
+  buildScramble();
+  generateWordSearch();
+  buildConcGrid();
+  if(paintReady) clearPaint();
+  // Reset concentration
+  concSelected = [];
+  document.querySelectorAll('.conc-btn').forEach(function(b){b.classList.remove('sel');});
+  document.getElementById('concCount').textContent = 0;
+  document.getElementById('concStart').disabled = true;
+  document.getElementById('concGame').style.display = 'none';
+  document.getElementById('concSetup').style.display = 'block';
+  showTab('puzzle', document.querySelector('.tab-btn'));
 }
 
 window.onload=function(){
