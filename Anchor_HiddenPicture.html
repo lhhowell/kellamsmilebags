@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anchor – Hidden Picture | Smile Bags</title>
+<title>Bloom – Hidden Picture | Smile Bags</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root { --gold:#C8860A; --gold-light:#F5C842; --navy:#1B3A6B; --accent:#1565C0; --accent-light:#90CAF9; --bg:#F0F4FF; --found:#28A745; --radius:14px; }
+:root { --gold:#C8860A; --gold-light:#F5C842; --navy:#1B3A6B; --accent:#AD1457; --accent-light:#F48FB1; --bg:#FFF0F5; --found:#28A745; --radius:14px; }
 * { box-sizing:border-box; margin:0; padding:0; }
 body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; padding:0 0 48px; }
 .banner { display:flex; align-items:stretch; width:100%; height:64px; font-family:'Fredoka One',cursive; font-size:28px; letter-spacing:1px; box-shadow:0 3px 12px rgba(0,0,0,0.18); }
@@ -14,7 +14,7 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
 .banner-right { background:#C8200A; color:#fff; padding:0 28px; display:flex; align-items:center; text-shadow:1px 1px 3px rgba(0,0,0,0.25); min-width:200px; justify-content:center; }
 .tagline { text-align:center; font-size:18px; font-weight:700; color:#444; padding:14px 20px 10px; }
 .layout { display:flex; gap:20px; max-width:1100px; margin:0 auto; padding:16px 20px 0; align-items:flex-start; flex-wrap:wrap; }
-.img-wrap { position:relative; flex:1 1 520px; max-width:620px; border-radius:var(--radius); overflow:hidden; box-shadow:0 8px 32px rgba(21,101,192,0.18); background:#fff; user-select:none; cursor:crosshair; }
+.img-wrap { position:relative; flex:1 1 520px; max-width:620px; border-radius:var(--radius); overflow:hidden; box-shadow:0 8px 32px rgba(173,20,87,0.15); background:#fff; user-select:none; cursor:crosshair; }
 .img-wrap img { width:100%; height:auto; display:block; pointer-events:none; -webkit-user-drag:none; }
 .hotspot { position:absolute; width:44px; height:44px; border-radius:50%; background:transparent; border:none; cursor:pointer; transform:translate(-50%,-50%); transition:all 0.25s; display:flex; align-items:center; justify-content:center; font-size:20px; color:transparent; }
 .hotspot::after { display:none; }
@@ -33,7 +33,7 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
 .score-denom { font-size:18px; opacity:.8; margin-top:2px; }
 .progress-bar  { height:10px; background:rgba(255,255,255,0.2); border-radius:10px; margin-top:12px; overflow:hidden; }
 .progress-fill { height:100%; background:linear-gradient(90deg,var(--gold),var(--gold-light)); border-radius:10px; transition:width 0.5s ease; width:0%; }
-.checklist-card  { background:#fff; border-radius:var(--radius); padding:16px 18px; box-shadow:0 4px 16px rgba(21,101,192,0.1); }
+.checklist-card  { background:#fff; border-radius:var(--radius); padding:16px 18px; box-shadow:0 4px 16px rgba(173,20,87,0.08); }
 .checklist-title { font-family:'Fredoka One',cursive; font-size:17px; color:var(--accent); margin-bottom:12px; border-bottom:2px solid var(--bg); padding-bottom:8px; }
 .check-item      { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid #F0F4F8; font-size:14px; color:#444; transition:all 0.3s; }
 .check-item:last-child { border-bottom:none; }
@@ -49,7 +49,7 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
 .btn-accent { background:var(--accent); color:#fff; box-shadow:0 3px 10px rgba(0,0,0,0.2); }
 .toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--accent); color:#fff; padding:12px 26px; border-radius:50px; font-size:15px; font-weight:700; box-shadow:0 8px 24px rgba(0,0,0,0.25); z-index:100; transition:transform 0.35s cubic-bezier(.34,1.56,.64,1); pointer-events:none; white-space:nowrap; max-width:90vw; text-align:center; }
 .toast.show { transform:translateX(-50%) translateY(0); }
-.win-overlay { display:none; position:fixed; inset:0; background:rgba(21,101,192,0.88); z-index:200; align-items:center; justify-content:center; }
+.win-overlay { display:none; position:fixed; inset:0; background:rgba(173,20,87,0.88); z-index:200; align-items:center; justify-content:center; }
 .win-overlay.show { display:flex; }
 .win-box { background:#fff; border-radius:24px; padding:40px 50px; text-align:center; max-width:440px; animation:winPop 0.5s cubic-bezier(.34,1.56,.64,1); }
 @keyframes winPop { from{transform:scale(0.5);opacity:0} to{transform:scale(1);opacity:1} }
@@ -59,38 +59,49 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
 .win-actions { display:flex; flex-direction:column; gap:10px; }
 .credit { text-align:center; font-size:12px; color:#999; padding:24px 20px 0; max-width:1100px; margin:0 auto; }
 @media(max-width:700px) { .layout{flex-direction:column} .sidebar,.img-wrap{max-width:100%;flex-basis:100%} .banner{font-size:22px;height:54px} .banner-right{min-width:140px} }
+.calibrate-mode .hotspot { background:rgba(255,0,0,0.5)!important; border:3px solid red!important; opacity:1!important; }
+.calibrate-mode .hotspot::after { display:none; }
+.cal-btn { position:fixed; bottom:28px; right:20px; background:#333; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-size:13px; cursor:pointer; z-index:300; opacity:0.4; }
+.cal-btn:hover { opacity:1; }
+.report-btn { position:fixed; bottom:28px; left:20px; background:#C8860A; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-size:13px; font-family:'Fredoka One',cursive; cursor:pointer; z-index:300; opacity:0.7; text-decoration:none; display:inline-block; }
+.report-btn:hover { opacity:1; }
 </style>
 </head>
 <body>
 <div class="banner">
   <div class="banner-left">Hidden Picture</div>
-  <div class="banner-right">ANCHOR</div>
+  <div class="banner-right">BLOOM</div>
 </div>
-<div class="tagline">&mdash; Holding steady through the storm.</div>
+<div class="tagline">&mdash; Growing into your best self.</div>
 <div class="layout">
   <div class="img-wrap" id="imgWrap">
-    <img src="https://lhhowell.github.io/kellamsmilebags/Anchor_HiddenPicture.png" alt="Smile Bag – Anchor hidden picture scene" id="mainImg">
-    <div class="hotspot" id="hs-0"  style="left:47%;top:62%" data-id="0"  data-label="&#x2693; Large Anchor"              data-hint="A big iron anchor right at the bottom center of the scene">&#x2693;</div>
-    <div class="hotspot" id="hs-1"  style="left:18%;top:60%" data-id="1"  data-label="&#x2693; Smaller Anchor"            data-hint="A smaller anchor on the left side near the water and rope">&#x2693;</div>
-    <div class="hotspot" id="hs-2"  style="left:25%;top:68%" data-id="2"  data-label="&#x1FAA2; Coiled Rope"              data-hint="A thick rope coiled around the anchor and lying on the ground">&#x1FAA2;</div>
-    <div class="hotspot" id="hs-3"  style="left:74%;top:48%" data-id="3"  data-label="&#x1F6DE; Ship's Wheel"             data-hint="A wooden ship's wheel on the right side of the bag">&#x1F6DE;</div>
-    <div class="hotspot" id="hs-4"  style="left:80%;top:60%" data-id="4"  data-label="&#x1F6DF; Life Preserver"           data-hint="A life preserver ring buoy on the right side">&#x1F6DF;</div>
-    <div class="hotspot" id="hs-5"  style="left:62%;top:74%" data-id="5"  data-label="&#x1F514; Bell"                    data-hint="A ship's bell in the bottom right area of the scene">&#x1F514;</div>
-    <div class="hotspot" id="hs-6"  style="left:38%;top:58%" data-id="6"  data-label="&#x26D3;&#xFE0F; Chain Links"            data-hint="Chain links wound around the anchor and rope area">&#x26D3;&#xFE0F;</div>
-    <div class="hotspot" id="hs-7"  style="left:20%;top:72%" data-id="7"  data-label="&#x1FAA2; Nautical Knot"            data-hint="A rope tied in a nautical knot in the rope/anchor area">&#x1FAA2;</div>
-    <div class="hotspot" id="hs-8"  style="left:12%;top:22%" data-id="8"  data-label="&#x1F3E0; Lighthouse"               data-hint="A lighthouse in the background on the left side">&#x1F3E0;</div>
-    <div class="hotspot" id="hs-9"  style="left:84%;top:18%" data-id="9"  data-label="&#x1F54A;&#xFE0F; Seagull"                data-hint="A seagull perched at the top right">&#x1F54A;&#xFE0F;</div>
-    <div class="hotspot" id="hs-10" style="left:80%;top:28%" data-id="10" data-label="&#x1F6F3;&#xFE0F; Dock/Pier Structure"    data-hint="A wooden dock or pier structure in the right background">&#x1F6F3;&#xFE0F;</div>
-    <div class="hotspot" id="hs-11" style="left:76%;top:22%" data-id="11" data-label="&#x1FA7F; Wooden Sign/Marker"       data-hint="A wooden nautical sign or marker in the upper right area">&#x1FA7F;</div>
-    <div class="hotspot" id="hs-12" style="left:55%;top:45%" data-id="12" data-label="&#x1F9ED; Compass Symbol"           data-hint="A compass-like symbol embedded among the objects">&#x1F9ED;</div>
-    <div class="hotspot" id="hs-13" style="left:30%;top:32%" data-id="13" data-label="&#x2693; Anchor on Foliage"         data-hint="A small anchor symbol embedded in the foliage on the upper left">&#x2693;</div>
-    <div class="hotspot" id="hs-14" style="left:42%;top:72%" data-id="14" data-label="&#x1FA9D; Metal Hook/Clip"          data-hint="A small metal hook or clip near the rope and anchor base">&#x1FA9D;</div>
+    <img src="https://lhhowell.github.io/kellamsmilebags/Bloom_HiddenPicture.png" alt="Smile Bag – Bloom hidden picture scene" id="mainImg">
+    <div class="hotspot" id="hs-0"  style="left:37%;top:52%" data-id="0"  data-label="&#x1FA9A; Shovel (tall)"         data-hint="A tall garden shovel standing upright on the left side">&#x1FA9A;</div>
+    <div class="hotspot" id="hs-1"  style="left:27%;top:89%" data-id="1"  data-label="&#x1FA9A; Shovel (bottom)"       data-hint="A second shovel at the bottom left near the shoe">&#x1FA9A;</div>
+    <div class="hotspot" id="hs-2"  style="left:41%;top:77%" data-id="2"  data-label="&#x1FAD7; Watering Can"          data-hint="A small watering can in the lower center-left of the bag">&#x1FAD7;</div>
+    <div class="hotspot" id="hs-3"  style="left:65%;top:56%" data-id="3"  data-label="&#x1F331; Seed Packet"           data-hint="A packet labeled SEEDS tucked in the center-right">&#x1F331;</div>
+    <div class="hotspot" id="hs-4"  style="left:76%;top:40%" data-id="4"  data-label="&#x1F41D; Bee"                   data-hint="A buzzing bee near the flowers on the right side">&#x1F41D;</div>
+    <div class="hotspot" id="hs-5"  style="left:81%;top:32%" data-id="5"  data-label="&#x1FAB9; Bird's Nest with Eggs" data-hint="A cozy nest with eggs tucked in the upper right">&#x1FAB9;</div>
+    <div class="hotspot" id="hs-6"  style="left:87%;top:68%" data-id="6"  data-label="&#x1F430; Bunny/Rabbit"          data-hint="A little rabbit peeking out at the bottom right">&#x1F430;</div>
+    <div class="hotspot" id="hs-7"  style="left:45%;top:75%" data-id="7"  data-label="&#x1F41E; Ladybug"               data-hint="A tiny red ladybug among the leaves at the lower center">&#x1F41E;</div>
+    <div class="hotspot" id="hs-8"  style="left:16%;top:52%" data-id="8"  data-label="&#x1F98B; Butterfly Net"         data-hint="A butterfly net partially hidden on the left side">&#x1F98B;</div>
+    <div class="hotspot" id="hs-9"  style="left:41%;top:61%" data-id="9"  data-label="&#x1F344; Garden Mushroom"       data-hint="A mushroom growing in the center-left among the garden plants">&#x1F344;</div>
+    <div class="hotspot" id="hs-10" style="left:50%;top:60%" data-id="10" data-label="&#x1F33F; Tiny Seedling"         data-hint="A tiny sprouting plant in the center of the scene">&#x1F33F;</div>
+    <div class="hotspot" id="hs-11" style="left:72%;top:68%" data-id="11" data-label="&#x1FAB7; Flower Bulb"           data-hint="A flower bulb or root cluster near the bottom right plants">&#x1FAB7;</div>
+    <div class="hotspot" id="hs-12" style="left:57%;top:92%" data-id="12" data-label="&#x1F41B; Hidden Bug"            data-hint="A tan-faced bug with antennae hiding near the bottom center">&#x1F41B;</div>
+    <div class="hotspot" id="hs-13" style="left:27%;top:43%" data-id="13" data-label="&#x1FA94; Hanging Lantern"       data-hint="A decorative lantern hanging among the flowers on the left">&#x1FA94;</div>
+    <div class="hotspot" id="hs-14" style="left:42%;top:45%" data-id="14" data-label="&#x1F41B; Caterpillar"           data-hint="A small caterpillar blended into the foliage in the center">&#x1F41B;</div>
+    <div class="hotspot" id="hs-15" style="left:23%;top:12%" data-id="15" data-label="&#x1F33B; Sunflower"              data-hint="A bright sunflower blooming in the top left of the scene">&#x1F33B;</div>
+    <div class="hotspot" id="hs-16" style="left:86%;top:20%" data-id="16" data-label="&#x1F33A; Tulips"                data-hint="Colorful tulips blooming in the top right area">&#x1F33A;</div>
+    <div class="hotspot" id="hs-17" style="left:33%;top:30%" data-id="17" data-label="&#x1F337; Pink Tulip"            data-hint="A pink tulip on the left side of the bag">&#x1F337;</div>
+    <div class="hotspot" id="hs-18" style="left:86%;top:40%" data-id="18" data-label="&#x1F33B; Sunflower (right)"     data-hint="A sunflower on the right side of the bag">&#x1F33B;</div>
+    <div class="hotspot" id="hs-19" style="left:19%;top:72%" data-id="19" data-label="&#x1F339; Red Rose"              data-hint="A red rose blooming at the lower left">&#x1F339;</div>
   </div>
   <div class="sidebar">
     <div class="score-card">
       <div class="score-label">Objects Found</div>
       <div class="score-num" id="scoreNum">0</div>
-      <div class="score-denom">out of 15</div>
+      <div class="score-denom">out of 20</div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     </div>
     <div class="checklist-card">
@@ -104,10 +115,10 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
 </div>
 <div class="win-overlay" id="winOverlay">
   <div class="win-box">
-    <div class="win-emoji">&#x1F389;&#x2693;&#x1F389;</div>
-    <div class="win-title">Anchored It!</div>
-    <div class="win-sub">You found all 15 hidden objects in the Anchor scene!<br><br>
-      <em style="color:var(--gold);font-weight:800;">"Holding steady through the storm."</em>
+    <div class="win-emoji">&#x1F389;&#x1F338;&#x1F389;</div>
+    <div class="win-title">You're in Full Bloom!</div>
+    <div class="win-sub">You found all 20 hidden objects in the Bloom scene!<br><br>
+      <em style="color:var(--gold);font-weight:800;">"Growing into your best self."</em>
     </div>
     <div class="win-actions">
       <button class="btn btn-gold"   onclick="resetGame();document.getElementById('winOverlay').classList.remove('show')">&#x1F504; Play Again</button>
@@ -116,24 +127,29 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
   </div>
 </div>
 <div class="toast" id="toast"></div>
-<p class="credit">Kellam Smile Bags: A Word &amp; Wonder Experience &nbsp;&middot;&nbsp; Illustrated by Gemini / ChatGPT &nbsp;&middot;&nbsp; Activity by Claude</p>
+<p class="credit">Smile Bags: A Word &amp; Wonder Experience</p>
 <script>
 const OBJECTS = [
-  {id:0,  emoji:"&#x2693;",          label:"Large Anchor"},
-  {id:1,  emoji:"&#x2693;",          label:"Smaller Anchor"},
-  {id:2,  emoji:"&#x1FAA2;",         label:"Coiled Rope"},
-  {id:3,  emoji:"&#x1F6DE;",         label:"Ship's Wheel"},
-  {id:4,  emoji:"&#x1F6DF;",         label:"Life Preserver"},
-  {id:5,  emoji:"&#x1F514;",         label:"Bell"},
-  {id:6,  emoji:"&#x26D3;&#xFE0F;",  label:"Chain Links"},
-  {id:7,  emoji:"&#x1FAA2;",         label:"Nautical Knot"},
-  {id:8,  emoji:"&#x1F3E0;",         label:"Lighthouse"},
-  {id:9,  emoji:"&#x1F54A;&#xFE0F;", label:"Seagull"},
-  {id:10, emoji:"&#x1F6F3;&#xFE0F;", label:"Dock/Pier Structure"},
-  {id:11, emoji:"&#x1FA7F;",         label:"Wooden Sign/Marker"},
-  {id:12, emoji:"&#x1F9ED;",         label:"Compass Symbol"},
-  {id:13, emoji:"&#x2693;",          label:"Anchor on Foliage"},
-  {id:14, emoji:"&#x1FA9D;",         label:"Metal Hook/Clip"}
+  {id:0,  emoji:"&#x1FA9A;", label:"Shovel (tall)"},
+  {id:1,  emoji:"&#x1FA9A;", label:"Shovel (bottom)"},
+  {id:2,  emoji:"&#x1FAD7;", label:"Watering Can"},
+  {id:3,  emoji:"&#x1F331;", label:"Seed Packet"},
+  {id:4,  emoji:"&#x1F41D;", label:"Bee"},
+  {id:5,  emoji:"&#x1FAB9;", label:"Bird's Nest with Eggs"},
+  {id:6,  emoji:"&#x1F430;", label:"Bunny/Rabbit"},
+  {id:7,  emoji:"&#x1F41E;", label:"Ladybug"},
+  {id:8,  emoji:"&#x1F98B;", label:"Butterfly Net"},
+  {id:9,  emoji:"&#x1F344;", label:"Garden Mushroom"},
+  {id:10, emoji:"&#x1F33F;", label:"Tiny Seedling"},
+  {id:11, emoji:"&#x1FAB7;", label:"Flower Bulb"},
+  {id:12, emoji:"&#x1F41B;", label:"Hidden Bug"},
+  {id:13, emoji:"&#x1FA94;", label:"Hanging Lantern"},
+  {id:14, emoji:"&#x1F41B;", label:"Caterpillar"},
+  {id:15, emoji:"&#x1F33B;", label:"Sunflower"},
+  {id:16, emoji:"&#x1F33A;", label:"Tulips"},
+  {id:17, emoji:"&#x1F337;", label:"Pink Tulip"},
+  {id:18, emoji:"&#x1F33B;", label:"Sunflower (right)"},
+  {id:19, emoji:"&#x1F339;", label:"Red Rose"}
 ];
 const TOTAL=OBJECTS.length; let found=new Set(),hintUsed=[];
 const cl=document.getElementById('checklist');
@@ -143,7 +159,10 @@ function updateScore(){const n=found.size;document.getElementById('scoreNum').te
 function showToast(msg){const t=document.getElementById('toast');t.innerHTML=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
 function giveHint(){const unfound=OBJECTS.filter(o=>!found.has(o.id));if(!unfound.length){showToast('&#x1F389; You already found everything!');return;}const candidates=unfound.filter(o=>!hintUsed.includes(o.id));const pick=candidates.length?candidates[Math.floor(Math.random()*candidates.length)]:unfound[Math.floor(Math.random()*unfound.length)];hintUsed.push(pick.id);const hs=document.getElementById('hs-'+pick.id);document.querySelectorAll('.hotspot.hint-pulse').forEach(h=>h.classList.remove('hint-pulse'));hs.classList.add('hint-pulse');showToast('&#x1F4A1; Hint: '+hs.dataset.hint);setTimeout(()=>hs.classList.remove('hint-pulse'),3500);}
 function resetGame(){found.clear();hintUsed=[];document.querySelectorAll('.hotspot').forEach(h=>h.classList.remove('found','hint-pulse'));document.querySelectorAll('.check-item').forEach(c=>c.classList.remove('found-item'));document.querySelectorAll('.check-box').forEach(c=>c.classList.remove('checked'));updateScore();}
-function downloadActivity(){const blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Anchor_HiddenPicture_Activity.html';a.click();}
+function downloadActivity(){const blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Bloom_HiddenPicture_Activity.html';a.click();}
+function toggleCal(){document.body.classList.toggle('calibrate-mode');}
 </script>
+<button class="cal-btn" onclick="toggleCal()">&#x1F527; Cal</button>
+<a href="https://forms.gle/UazavVwKkYr4XQM16" target="_blank" class="report-btn">&#x26A0;&#xFE0F; Report an Issue</a>
 </body>
 </html>

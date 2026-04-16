@@ -63,6 +63,8 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
 .calibrate-mode .hotspot::after { display:none; }
 .cal-btn { position:fixed; bottom:28px; right:20px; background:#333; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-size:13px; cursor:pointer; z-index:300; opacity:0.4; }
 .cal-btn:hover { opacity:1; }
+.report-btn { position:fixed; bottom:28px; left:20px; background:#C8860A; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-size:13px; font-family:'Fredoka One',cursive; cursor:pointer; z-index:300; opacity:0.7; text-decoration:none; display:inline-block; }
+.report-btn:hover { opacity:1; }
 </style>
 </head>
 <body>
@@ -121,7 +123,7 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
   </div>
 </div>
 <div class="toast" id="toast"></div>
-<p class="credit">Kellam Smile Bags: A Word &amp; Wonder Experience &nbsp;&middot;&nbsp; Illustrated by Gemini / ChatGPT &nbsp;&middot;&nbsp; Activity by Claude</p>
+<p class="credit">Smile Bags: A Word &amp; Wonder Experience</p>
 <script>
 const OBJECTS = [
   {id:0,  emoji:"&#x1F41B;",         label:"Caterpillar (upper)"},
@@ -151,5 +153,6 @@ function downloadActivity(){const blob=new Blob([document.documentElement.outerH
 function toggleCal(){document.body.classList.toggle('calibrate-mode');}
 </script>
 <button class="cal-btn" onclick="toggleCal()">&#x1F527; Cal</button>
+<a href="https://forms.gle/UazavVwKkYr4XQM16" target="_blank" class="report-btn">&#x26A0;&#xFE0F; Report an Issue</a>
 </body>
 </html>

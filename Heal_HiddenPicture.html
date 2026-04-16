@@ -59,6 +59,12 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
 .win-actions { display:flex; flex-direction:column; gap:10px; }
 .credit { text-align:center; font-size:12px; color:#999; padding:24px 20px 0; max-width:1100px; margin:0 auto; }
 @media(max-width:700px) { .layout{flex-direction:column} .sidebar,.img-wrap{max-width:100%;flex-basis:100%} .banner{font-size:22px;height:54px} .banner-right{min-width:140px} }
+.report-btn { position:fixed; bottom:28px; left:20px; background:#C8860A; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-size:13px; font-family:'Fredoka One',cursive; cursor:pointer; z-index:300; opacity:0.7; text-decoration:none; display:inline-block; }
+.report-btn:hover { opacity:1; }
+.calibrate-mode .hotspot { background:rgba(255,0,0,0.5)!important; border:3px solid red!important; opacity:1!important; }
+.calibrate-mode .hotspot::after { display:none; }
+.cal-btn { position:fixed; bottom:28px; right:20px; background:#333; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-size:13px; cursor:pointer; z-index:300; opacity:0.4; }
+.cal-btn:hover { opacity:1; }
 </style>
 </head>
 <body>
@@ -126,7 +132,7 @@ body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; 
 </div>
 
 <div class="toast" id="toast"></div>
-<p class="credit">Kellam Smile Bags: A Word &amp; Wonder Experience &nbsp;&middot;&nbsp; Illustrated by Gemini / ChatGPT &nbsp;&middot;&nbsp; Activity by Claude</p>
+<p class="credit">Smile Bags: A Word &amp; Wonder Experience</p>
 
 <script>
 const OBJECTS = [
@@ -156,7 +162,10 @@ function updateScore(){const n=found.size;document.getElementById('scoreNum').te
 function showToast(msg){const t=document.getElementById('toast');t.innerHTML=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
 function giveHint(){const unfound=OBJECTS.filter(o=>!found.has(o.id));if(!unfound.length){showToast('&#x1F389; You already found everything!');return;}const candidates=unfound.filter(o=>!hintUsed.includes(o.id));const pick=candidates.length?candidates[Math.floor(Math.random()*candidates.length)]:unfound[Math.floor(Math.random()*unfound.length)];hintUsed.push(pick.id);const hs=document.getElementById('hs-'+pick.id);document.querySelectorAll('.hotspot.hint-pulse').forEach(h=>h.classList.remove('hint-pulse'));hs.classList.add('hint-pulse');showToast('&#x1F4A1; Hint: '+hs.dataset.hint);setTimeout(()=>hs.classList.remove('hint-pulse'),3500);}
 function resetGame(){found.clear();hintUsed=[];document.querySelectorAll('.hotspot').forEach(h=>h.classList.remove('found','hint-pulse'));document.querySelectorAll('.check-item').forEach(c=>c.classList.remove('found-item'));document.querySelectorAll('.check-box').forEach(c=>c.classList.remove('checked'));updateScore();}
+function toggleCal(){document.body.classList.toggle('calibrate-mode');}
 function downloadActivity(){const blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Heal_HiddenPicture_Activity.html';a.click();}
 </script>
+<button class="cal-btn" onclick="toggleCal()">&#x1F527; Cal</button>
+<a href="https://forms.gle/UazavVwKkYr4XQM16" target="_blank" class="report-btn">&#x26A0;&#xFE0F; Report an Issue</a>
 </body>
 </html>
