@@ -66,7 +66,7 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
 <div class="timer-bar" id="timerBar" style="display:none;">
   <div class="timer-display">
     <div><div style="font-size:11px;color:#444;letter-spacing:1px;text-transform:uppercase;">Time Left</div>
-    <div class="timer-clock" id="timerClock">2:00</div></div>
+    <div class="timer-clock" id="timerClock">5:00</div></div>
     <div style="flex:1;min-width:100px;"><div class="timer-track"><div class="timer-fill" id="timerFill" style="width:100%;"></div></div></div>
   </div>
   <div class="score-section">⭐ <span id="scoreVal">0</span> cells filled</div>
@@ -80,8 +80,8 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
       <div class="word-grid" id="wordGrid"></div>
       <div class="setup-label" style="margin-top:16px;">Step 2 · Choose illustration set</div>
       <div class="set-row">
-        <button class="set-btn" id="setI" onclick="selSet('I')">Set I · Science Journal (ChatGPT)</button>
-        <button class="set-btn" id="setJ" onclick="selSet('J')">Set J · Science Sketch (CoPilot)</button>
+        <button class="set-btn" id="setI" onclick="selSet('I')">Set I · Nature Journal (ChatGPT)</button>
+        <button class="set-btn" id="setJ" onclick="selSet('J')">Set J · Modern Line (CoPilot)</button>
       </div>
       <button class="btn btn-gold" id="startBtn" onclick="startGame()" disabled>🎨 Start Race!</button>
     </div>
@@ -91,8 +91,12 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
       <div class="key-panel">
         <div class="key-title">Color Key</div>
         <div id="colorKey"></div>
-        <div style="margin-top:16px;">
+        <div style="margin-top:14px;font-size:10px;color:#557055;line-height:1.5;padding:8px 4px;border-top:1px solid #1a3a1a;">
+          💡 <strong style="color:#40916C;">Tip:</strong> Numbers are just suggestions! Paint any cell any color you want. Drag to paint multiple cells at once.
+        </div>
+        <div style="margin-top:12px;">
           <button class="btn btn-outline" onclick="undoCBN()" style="width:100%;margin-bottom:8px;padding:8px;">↩ Undo</button>
+          <button class="btn btn-outline" onclick="clearBoard()" style="width:100%;margin-bottom:8px;padding:8px;">🧹 Clear Board</button>
           <button class="btn btn-outline" onclick="resetGame()" style="width:100%;padding:8px;">↩ New Game</button>
         </div>
       </div>
@@ -112,8 +116,8 @@ var WORDS=['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNEC
 var BASE='https://lhhowell.github.io/kellamsmilebags/';
 var COLORS=['#E87B5B','#F5D060','#66BB6A','#42A5F5','#CE93D8','#FF8A65','#80CBC4','#F48FB1','#A5D6A7','#90CAF9'];
 var COLOR_NAMES=['Coral','Yellow','Green','Blue','Purple','Orange','Teal','Pink','Mint','Sky'];
-var GRID=10, selWord='', selSetV='', activeColor=0, cells=[], history=[], score=0;
-var timerSecs=120, timerInt=null, timerRunning=false;
+var GRID=20, selWord='', selSetV='', activeColor=0, cells=[], history=[], score=0;
+var timerSecs=300, timerInt=null, timerRunning=false;
 
 function buildWordGrid(){
   var g=document.getElementById('wordGrid');
@@ -163,24 +167,32 @@ function drawGame(){
   cells=[];history=[];score=0;
   document.getElementById('scoreVal').textContent='0';
 
-  var img=new Image();img.crossOrigin='anonymous';
+  var img=new Image();
   img.onload=function(){
-    canvas.width=img.naturalWidth||500;
-    canvas.height=img.naturalHeight||500;
-    var cw=Math.floor(canvas.width/GRID), ch=Math.floor(canvas.height/GRID);
+    // Scale image to max 600px wide while preserving aspect ratio
+    var W=Math.min(img.naturalWidth,600);
+    var scale=W/img.naturalWidth;
+    var H=Math.round(img.naturalHeight*scale);
+    canvas.width=W;canvas.height=H;
+    var cw=W/GRID, ch=H/GRID;
 
-    // Sample color from image for each cell
+    // Sample color from image for each cell (using source image, not scaled)
     var tmpCanvas=document.createElement('canvas');
-    tmpCanvas.width=canvas.width;tmpCanvas.height=canvas.height;
+    tmpCanvas.width=img.naturalWidth;tmpCanvas.height=img.naturalHeight;
     var tctx=tmpCanvas.getContext('2d');
     tctx.drawImage(img,0,0);
 
-    ctx.drawImage(img,0,0);
+    // Draw the illustration onto the canvas (visible underneath)
+    ctx.drawImage(img,0,0,W,H);
 
     for(var row=0;row<GRID;row++){
       for(var col=0;col<GRID;col++){
-        var cx=col*cw+Math.floor(cw/2), cy=row*ch+Math.floor(ch/2);
-        var px=tctx.getImageData(cx,cy,1,1).data;
+        // Sample center pixel from SOURCE image (not scaled canvas)
+        var srcX=Math.floor((col+0.5)*(img.naturalWidth/GRID));
+        var srcY=Math.floor((row+0.5)*(img.naturalHeight/GRID));
+        var px;
+        try{px=tctx.getImageData(srcX,srcY,1,1).data;}
+        catch(e){px=[255,255,255,255];}
         // Map to nearest palette color
         var nearest=0, bestDist=999999;
         COLORS.forEach(function(c,i){
@@ -190,44 +202,79 @@ function drawGame(){
         });
         cells.push({row:row,col:col,colorIdx:nearest,filled:false,x:col*cw,y:row*ch,w:cw,h:ch});
 
-        // Draw number overlay
-        ctx.fillStyle='rgba(0,0,0,0.45)';
+        // Draw SUBTLE number hint (semi-transparent, image still visible)
+        ctx.fillStyle='rgba(255,255,255,0.55)';
         ctx.fillRect(col*cw,row*ch,cw,ch);
-        ctx.fillStyle='#fff';
-        ctx.font='bold '+(cw>30?13:10)+'px Fredoka One,sans-serif';
+        ctx.fillStyle='rgba(0,0,0,0.55)';
+        ctx.font='bold '+(cw>24?11:9)+'px Fredoka One,sans-serif';
         ctx.textAlign='center';ctx.textBaseline='middle';
         ctx.fillText(nearest+1,col*cw+cw/2,row*ch+ch/2);
-        ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=1;
+        ctx.strokeStyle='rgba(0,0,0,.12)';ctx.lineWidth=1;
         ctx.strokeRect(col*cw,row*ch,cw,ch);
       }
     }
     history.push(canvas.toDataURL());
   };
+  img.onerror=function(){
+    console.error('Failed to load image:',getImg());
+    ctx.fillStyle='#E53935';ctx.font='16px Nunito';
+    ctx.fillText('Image failed to load: '+getImg(),20,40);
+  };
   img.src=getImg();
 
   canvas.onclick=function(e){
-    var r=canvas.getBoundingClientRect();
-    var x=(e.clientX-r.left)*(canvas.width/r.width);
-    var y=(e.clientY-r.top)*(canvas.height/r.height);
-    var cw=Math.floor(canvas.width/GRID), ch=Math.floor(canvas.height/GRID);
-    var col=Math.floor(x/cw), row=Math.floor(y/ch);
-    var idx=row*GRID+col;
-    if(idx>=0&&idx<cells.length){
-      var cell=cells[idx];
-      if(cell.colorIdx===activeColor){
-        cell.filled=true;
-        var ctx2=canvas.getContext('2d');
-        ctx2.fillStyle=COLORS[activeColor];
-        ctx2.fillRect(cell.x,cell.y,cell.w,cell.h);
-        ctx2.strokeStyle='rgba(255,255,255,.15)';ctx2.lineWidth=1;
-        ctx2.strokeRect(cell.x,cell.y,cell.w,cell.h);
-        score++;
-        document.getElementById('scoreVal').textContent=score;
-        history.push(canvas.toDataURL());
-        checkWin();
-      }
-    }
+    paintAt(e, canvas);
   };
+  // Drag-to-paint support for natural coloring feel
+  var isDragging=false;
+  canvas.onmousedown=function(e){isDragging=true;paintAt(e,canvas);};
+  canvas.onmousemove=function(e){if(isDragging)paintAt(e,canvas);};
+  canvas.onmouseup=function(){isDragging=false;};
+  canvas.onmouseleave=function(){isDragging=false;};
+  // Touch support for tablets/Chromebook touchscreens
+  canvas.ontouchstart=function(e){e.preventDefault();isDragging=true;paintAtTouch(e,canvas);};
+  canvas.ontouchmove=function(e){e.preventDefault();if(isDragging)paintAtTouch(e,canvas);};
+  canvas.ontouchend=function(){isDragging=false;};
+}
+
+function paintAt(e, canvas){
+  var r=canvas.getBoundingClientRect();
+  var x=(e.clientX-r.left)*(canvas.width/r.width);
+  var y=(e.clientY-r.top)*(canvas.height/r.height);
+  paintCell(x,y,canvas);
+}
+
+function paintAtTouch(e, canvas){
+  if(!e.touches||!e.touches[0])return;
+  var r=canvas.getBoundingClientRect();
+  var x=(e.touches[0].clientX-r.left)*(canvas.width/r.width);
+  var y=(e.touches[0].clientY-r.top)*(canvas.height/r.height);
+  paintCell(x,y,canvas);
+}
+
+function paintCell(x,y,canvas){
+  var cw=canvas.width/GRID, ch=canvas.height/GRID;
+  var col=Math.floor(x/cw), row=Math.floor(y/ch);
+  var idx=row*GRID+col;
+  if(idx>=0&&idx<cells.length){
+    var cell=cells[idx];
+    // Skip if already painted with this exact color (avoid duplicate history entries during drag)
+    if(cell.filled&&cell.paintedWith===activeColor)return;
+    var wasFilled=cell.filled;
+    cell.filled=true;
+    cell.paintedWith=activeColor;
+    var ctx2=canvas.getContext('2d');
+    ctx2.fillStyle=COLORS[activeColor];
+    ctx2.fillRect(cell.x,cell.y,cell.w,cell.h);
+    ctx2.strokeStyle='rgba(0,0,0,.15)';ctx2.lineWidth=1;
+    ctx2.strokeRect(cell.x,cell.y,cell.w,cell.h);
+    if(!wasFilled){
+      score++;
+      document.getElementById('scoreVal').textContent=score;
+    }
+    history.push(canvas.toDataURL());
+    checkWin();
+  }
 }
 
 function checkWin(){
@@ -254,7 +301,7 @@ function undoCBN(){
 }
 
 function startTimer(){
-  timerSecs=120;timerRunning=true;
+  timerSecs=300;timerRunning=true;
   updateTimerDisplay();
   timerInt=setInterval(function(){
     timerSecs--;updateTimerDisplay();
@@ -267,9 +314,9 @@ function updateTimerDisplay(){
   var clock=document.getElementById('timerClock');
   var fill=document.getElementById('timerFill');
   clock.textContent=m+':'+(s<10?'0':'')+s;
-  fill.style.width=(timerSecs/120*100)+'%';
-  clock.className='timer-clock'+(timerSecs<=15?' danger':timerSecs<=30?' warning':'');
-  fill.className='timer-fill'+(timerSecs<=15?' danger':timerSecs<=30?' warning':'');
+  fill.style.width=(timerSecs/300*100)+'%';
+  clock.className='timer-clock'+(timerSecs<=20?' danger':timerSecs<=60?' warning':'');
+  fill.className='timer-fill'+(timerSecs<=20?' danger':timerSecs<=60?' warning':'');
 }
 
 function timeUp(){
@@ -280,6 +327,11 @@ function timeUp(){
   document.getElementById('winTitle')?null:null;
   document.getElementById('winBanner').querySelector('.win-title').textContent="⏰ Time's Up!";
   document.getElementById('winSub').textContent='You filled '+filled+' of '+cells.length+' cells. Try again!';
+}
+
+function clearBoard(){
+  // Redraw the game with fresh cells (keeps current word/set selection)
+  drawGame();
 }
 
 function resetGame(){
