@@ -151,9 +151,8 @@ body{
 
 .book-frame{
   position:relative;
-  width:min(560px, 90vw);
-  aspect-ratio:2/3;
-  max-height:88vh;
+  width:min(520px, 92vw);
+  height:min(780px, 84vh);
   margin:0 auto;
 }
 
@@ -226,48 +225,63 @@ body{
   padding:6px 14px;border-radius:20px;margin-top:6px;
 }
 
-/* Content page layout — image dominates */
+/* Content page — FULL BLEED: image fills the page, labels overlay on top */
 .page-content{
-  display:flex;flex-direction:column;height:100%;padding:12px 14px 10px;
+  position:absolute;inset:0;
+  background:#fff;
+  display:block;padding:0;
 }
-.page-header{
-  display:flex;justify-content:space-between;align-items:baseline;
-  margin-bottom:6px;padding-bottom:6px;
-  border-bottom:1px dashed rgba(201,168,76,.5);
-  flex:0 0 auto;
+.page-img-full{
+  position:absolute;inset:0;
+  display:block;
+}
+.page-img-full img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center;
+  display:block;
+}
+.page-overlay{
+  position:absolute;left:0;right:0;
+  padding:10px 16px;
+  background:linear-gradient(180deg,rgba(245,235,212,.96) 0%,rgba(245,235,212,.88) 60%,rgba(245,235,212,0) 100%);
+  pointer-events:none;
+  display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+}
+.page-overlay.top{
+  top:0;
+  padding-bottom:22px;
+}
+.page-overlay.bottom{
+  bottom:0;
+  padding-top:22px;
+  background:linear-gradient(0deg,rgba(245,235,212,.96) 0%,rgba(245,235,212,.88) 60%,rgba(245,235,212,0) 100%);
+  flex-direction:column;align-items:stretch;
 }
 .page-animal{
   font-family:'Playfair Display',serif;font-weight:900;
-  font-size:20px;color:var(--ink-deep);line-height:1;
+  font-size:22px;color:var(--ink-deep);line-height:1;
 }
 .page-num{
-  font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;
-  color:#8a7a4a;
+  font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;
+  color:#5a4a2a;
 }
-.page-img{
-  flex:1 1 auto;margin:4px 0;display:flex;align-items:center;justify-content:center;
-  background:#fff;border:1.5px solid rgba(201,168,76,.5);border-radius:4px;
-  overflow:hidden;min-height:0;padding:4px;
-}
-.page-img img{
-  width:100%;height:100%;object-fit:contain;display:block;
-}
-.page-footer{
-  display:flex;justify-content:space-between;align-items:center;gap:10px;
-  margin-top:6px;padding-top:6px;
-  border-top:1px dashed rgba(201,168,76,.5);
-  flex:0 0 auto;
+.page-caption-row{
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:10px;
 }
 .page-habitat{
-  font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:1.5px;
+  font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;
   text-transform:uppercase;color:var(--green-deep);
   display:inline-flex;align-items:center;gap:5px;white-space:nowrap;
 }
 .page-caption{
-  font-size:10.5px;color:#5a4a2a;font-style:italic;
-  text-align:right;line-height:1.3;
+  font-size:12px;color:#3a2a10;font-style:italic;
+  text-align:right;line-height:1.3;flex:1;
 }
-.page-caption strong{font-style:normal;color:var(--green-deep);letter-spacing:.5px;}
+.page-caption strong{
+  font-style:normal;color:var(--green-deep);
+  letter-spacing:1px;font-family:'Fredoka One',cursive;font-size:11px;
+}
 
 /* ── NAVIGATION ARROWS ── */
 .nav-btn{
@@ -399,17 +413,16 @@ body{
   .nav-prev{left:-54px;}
   .nav-next{right:-54px;}
   .nav-btn{width:40px;height:40px;font-size:18px;}
-  .book-frame{width:min(430px,calc(100vw - 130px));max-height:none;}
-  .page-animal{font-size:17px;}
-  .page-content{padding:10px 12px 8px;}
+  .book-frame{width:min(430px,calc(100vw - 130px));height:min(645px,calc((100vw - 130px) * 1.5));}
+  .page-animal{font-size:18px;}
   .page.cover{padding:36px 22px;}
   .cover-title{font-size:30px;}
-  .page-caption{font-size:10px;}
+  .page-caption{font-size:11px;}
 }
 @media (max-width:520px){
   .nav-prev{left:4px;}
   .nav-next{right:4px;}
-  .book-frame{width:calc(100vw - 32px);}
+  .book-frame{width:calc(100vw - 32px);height:calc((100vw - 32px) * 1.5);}
   .nav-btn{background:rgba(14,20,16,.78);color:var(--gold-soft);border-color:var(--gold);}
   .nav-btn:hover{background:var(--gold);color:var(--ink-deep);}
 }
@@ -537,16 +550,18 @@ function renderAnimalPage(i){
   el.className = 'page';
   el.innerHTML = `
     <div class="page-content">
-      <div class="page-header">
+      <div class="page-img-full">
+        <img src="${a.file}" alt="${escapeHtml(a.animal)} coloring page" loading="lazy"/>
+      </div>
+      <div class="page-overlay top">
         <div class="page-animal">${escapeHtml(a.animal)}</div>
         <div class="page-num">#${fmtNum(a.num)} / 25</div>
       </div>
-      <div class="page-img">
-        <img src="${a.file}" alt="${escapeHtml(a.animal)} coloring page" loading="lazy"/>
-      </div>
-      <div class="page-footer">
-        <div class="page-habitat">${h.emoji} ${h.label}</div>
-        <div class="page-caption"><strong>${escapeHtml(a.word)}</strong> &mdash; ${escapeHtml(a.def)}</div>
+      <div class="page-overlay bottom">
+        <div class="page-caption-row">
+          <div class="page-habitat">${h.emoji} ${h.label}</div>
+          <div class="page-caption"><strong>${escapeHtml(a.word)}</strong> &mdash; ${escapeHtml(a.def)}</div>
+        </div>
       </div>
     </div>
   `;
