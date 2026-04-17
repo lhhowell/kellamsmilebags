@@ -1002,7 +1002,7 @@ function buildResultCard(){
 
 /* ══ SUBMIT ═══════════════════════════════════════════════════ */
 async function submitCode(){
-  goTo(4);
+  goTo(4); // loading spinner
   const d=BAKE_DATA[S.word];
   const payload={
     studentName:S.name, word:S.word,
@@ -1014,7 +1014,7 @@ async function submitCode(){
     timestamp:new Date().toLocaleString('en-US',{timeZone:'America/New_York'})
   };
   try{await fetch(SUBMIT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});}catch(e){console.warn(e);}
-  goTo(5);
+  goTo(5); // success screen
 }
 
 /* ══ RESTART ══════════════════════════════════════════════════ */
