@@ -151,9 +151,9 @@ body{
 
 .book-frame{
   position:relative;
-  width:100%;
+  width:min(560px, 90vw);
   aspect-ratio:2/3;
-  max-height:78vh;
+  max-height:88vh;
   margin:0 auto;
 }
 
@@ -226,45 +226,48 @@ body{
   padding:6px 14px;border-radius:20px;margin-top:6px;
 }
 
-/* Content page layout */
+/* Content page layout — image dominates */
 .page-content{
-  display:flex;flex-direction:column;height:100%;padding:22px 26px 16px;
+  display:flex;flex-direction:column;height:100%;padding:12px 14px 10px;
 }
 .page-header{
   display:flex;justify-content:space-between;align-items:baseline;
-  margin-bottom:8px;padding-bottom:10px;
+  margin-bottom:6px;padding-bottom:6px;
   border-bottom:1px dashed rgba(201,168,76,.5);
+  flex:0 0 auto;
 }
 .page-animal{
   font-family:'Playfair Display',serif;font-weight:900;
-  font-size:22px;color:var(--ink-deep);line-height:1;
+  font-size:20px;color:var(--ink-deep);line-height:1;
 }
 .page-num{
   font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;
   color:#8a7a4a;
 }
 .page-img{
-  flex:1;margin:10px 0;display:flex;align-items:center;justify-content:center;
+  flex:1 1 auto;margin:4px 0;display:flex;align-items:center;justify-content:center;
   background:#fff;border:1.5px solid rgba(201,168,76,.5);border-radius:4px;
-  overflow:hidden;min-height:0;
+  overflow:hidden;min-height:0;padding:4px;
 }
 .page-img img{
-  max-width:100%;max-height:100%;object-fit:contain;display:block;
+  width:100%;height:100%;object-fit:contain;display:block;
 }
 .page-footer{
-  display:flex;justify-content:space-between;align-items:center;
-  margin-top:8px;padding-top:10px;
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  margin-top:6px;padding-top:6px;
   border-top:1px dashed rgba(201,168,76,.5);
+  flex:0 0 auto;
 }
 .page-habitat{
   font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:1.5px;
   text-transform:uppercase;color:var(--green-deep);
-  display:inline-flex;align-items:center;gap:5px;
+  display:inline-flex;align-items:center;gap:5px;white-space:nowrap;
 }
 .page-caption{
-  font-size:11px;color:#5a4a2a;font-style:italic;
-  text-align:right;max-width:56%;line-height:1.35;
+  font-size:10.5px;color:#5a4a2a;font-style:italic;
+  text-align:right;line-height:1.3;
 }
+.page-caption strong{font-style:normal;color:var(--green-deep);letter-spacing:.5px;}
 
 /* ── NAVIGATION ARROWS ── */
 .nav-btn{
@@ -280,6 +283,15 @@ body{
 .nav-btn:disabled:hover{background:rgba(76,175,130,.12);color:var(--green);transform:translateY(-50%);}
 .nav-prev{left:-70px;}
 .nav-next{right:-70px;}
+
+/* Position nav relative to the book-frame, not the stage */
+.book-stage{
+  display:flex;flex-direction:column;align-items:center;
+}
+.book-wrap{
+  position:relative;
+  display:inline-block;
+}
 
 /* ── THUMBNAIL STRIP ── */
 .thumb-section{
@@ -384,14 +396,22 @@ body{
 
 /* ── RESPONSIVE ── */
 @media (max-width:780px){
-  .nav-prev{left:-10px;}
-  .nav-next{right:-10px;}
+  .nav-prev{left:-54px;}
+  .nav-next{right:-54px;}
   .nav-btn{width:40px;height:40px;font-size:18px;}
-  .book-frame{max-height:none;}
-  .page-animal{font-size:18px;}
-  .page-content{padding:16px 18px 12px;}
+  .book-frame{width:min(430px,calc(100vw - 130px));max-height:none;}
+  .page-animal{font-size:17px;}
+  .page-content{padding:10px 12px 8px;}
   .page.cover{padding:36px 22px;}
-  .cover-title{font-size:32px;}
+  .cover-title{font-size:30px;}
+  .page-caption{font-size:10px;}
+}
+@media (max-width:520px){
+  .nav-prev{left:4px;}
+  .nav-next{right:4px;}
+  .book-frame{width:calc(100vw - 32px);}
+  .nav-btn{background:rgba(14,20,16,.78);color:var(--gold-soft);border-color:var(--gold);}
+  .nav-btn:hover{background:var(--gold);color:var(--ink-deep);}
 }
 </style>
 </head>
@@ -418,13 +438,15 @@ body{
 
 <div class="book-stage">
   <div class="page-counter">Page <span id="counterCurrent">1</span> of <span id="counterTotal">26</span></div>
-  <div class="book-frame" id="bookFrame">
-    <div class="page cover" id="pageEl">
-      <!-- rendered by JS -->
+  <div class="book-wrap">
+    <div class="book-frame" id="bookFrame">
+      <div class="page cover" id="pageEl">
+        <!-- rendered by JS -->
+      </div>
     </div>
+    <button class="nav-btn nav-prev" id="prevBtn" onclick="navigate(-1)">&#8592;</button>
+    <button class="nav-btn nav-next" id="nextBtn" onclick="navigate(1)">&#8594;</button>
   </div>
-  <button class="nav-btn nav-prev" id="prevBtn" onclick="navigate(-1)">&#8592;</button>
-  <button class="nav-btn nav-next" id="nextBtn" onclick="navigate(1)">&#8594;</button>
 </div>
 
 <div class="thumb-section">
