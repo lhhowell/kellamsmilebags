@@ -98,7 +98,7 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
   <div style="display:flex;align-items:center;gap:12px;flex:1;">
     <div>
       <div style="font-size:10px;color:#444;letter-spacing:1px;text-transform:uppercase;">Time Left</div>
-      <div class="timer-clock" id="timerClock" style="font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);min-width:60px;">1:00</div>
+      <div class="timer-clock" id="timerClock" style="font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);min-width:60px;">0:30</div>
     </div>
     <div style="flex:1;min-width:100px;height:8px;background:#1a1a1a;border-radius:8px;overflow:hidden;">
       <div id="timerFill" style="height:100%;background:linear-gradient(90deg,var(--forest2),var(--forest3));border-radius:8px;width:100%;transition:width .5s linear;"></div>
@@ -427,10 +427,10 @@ function resetGame(){
 }
 
 // ── TIMER ──
-var timerSecs = 60, timerInt = null;
+var timerSecs = 30, timerInt = null;
 
 function startTimer(){
-  timerSecs = 60; updateTimerDisplay();
+  timerSecs = 30; updateTimerDisplay();
   timerInt = setInterval(function(){
     timerSecs--;updateTimerDisplay();
     if(timerSecs<=0){clearInterval(timerInt);timeUp();}
@@ -442,9 +442,9 @@ function updateTimerDisplay(){
   var clock=document.getElementById('timerClock');
   var fill=document.getElementById('timerFill');
   clock.textContent=m+':'+(s<10?'0':'')+s;
-  fill.style.width=(timerSecs/60*100)+'%';
-  if(timerSecs<=10){clock.style.color='#E53935';fill.style.background='linear-gradient(90deg,#880E4F,#E53935)';}
-  else if(timerSecs<=20){clock.style.color='#FF7043';fill.style.background='linear-gradient(90deg,#E64A19,#FF7043)';}
+  fill.style.width=(timerSecs/30*100)+'%';
+  if(timerSecs<=5){clock.style.color='#E53935';fill.style.background='linear-gradient(90deg,#880E4F,#E53935)';}
+  else if(timerSecs<=10){clock.style.color='#FF7043';fill.style.background='linear-gradient(90deg,#E64A19,#FF7043)';}
   else{clock.style.color='var(--gold)';fill.style.background='linear-gradient(90deg,var(--forest2),var(--forest3))';}
 }
 
