@@ -46,16 +46,16 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 .reset-btn{background:transparent;border:1px solid #333;color:#666;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;border-radius:8px;cursor:pointer;margin-left:auto;}
 .reset-btn:hover{border-color:#D4537E;color:#D4537E;}
 
-.img-reveal{background:#0d0d0d;border:1px solid #1a2a3a;border-radius:12px;padding:16px;margin-bottom:14px;}
-.img-lbl{font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#c8c4bc;margin-bottom:10px;}
-.img-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;}
-.img-tile{aspect-ratio:1;border-radius:3px;background:#1a2a3a;transition:background .5s;}
+.img-reveal{background:#0d0d0d;border:1px solid #1a2a3a;border-radius:12px;padding:12px 16px;margin-bottom:14px;}
+.img-lbl{font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#c8c4bc;margin-bottom:8px;}
+.img-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:2px;max-width:480px;margin:0 auto;}
+.img-tile{aspect-ratio:1;border-radius:2px;background:#1a2a3a;transition:background .5s;}
 
-.card-grid{display:grid;gap:10px;}
-.card{background:#0d0d0d;border:2px solid #1a2a3a;border-radius:12px;min-height:80px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;padding:10px;text-align:center;position:relative;}
-.card:hover{border-color:#c9a84c;}
+.card-grid{display:grid;gap:12px;}
+.card{background:#0d0d0d;border:2px solid #1a2a3a;border-radius:12px;min-height:120px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;padding:12px;text-align:center;position:relative;}
+.card:hover{border-color:#c9a84c;transform:translateY(-2px);}
 .card .front{display:none;}
-.card .back{color:#1a2a3a;font-size:22px;font-family:'Fredoka One',cursive;}
+.card .back{color:#4caf82;font-size:32px;font-family:'Fredoka One',cursive;}
 .card.flip .front{display:flex;align-items:center;justify-content:center;width:100%;}
 .card.flip .back{display:none;}
 .card.match{border-color:#4caf82;background:rgba(76,175,130,.1);cursor:default;}
@@ -123,11 +123,11 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
       <div class="stat"><span class="stat-n" id="sScore">0</span><span class="stat-l">Points</span></div>
       <button class="reset-btn" id="resetBtn" onclick="startGame()">&#8635; Reset</button>
     </div>
+    <div class="card-grid" id="cardGrid"></div>
     <div class="img-reveal">
       <div class="img-lbl">&#127774; Reveal the hidden image &mdash; each match uncovers a tile!</div>
       <div class="img-grid" id="imgGrid"></div>
     </div>
-    <div class="card-grid" id="cardGrid"></div>
   </div>
 
   <div class="win" id="winDiv">
@@ -215,7 +215,15 @@ function handleWordClick() {
 }
 
 function updateCounter() {
-  document.getElementById('counter').innerHTML = '<span>' + chosen.length + '</span> of 6 selected';
+  var remaining = 6 - chosen.length;
+  var counterEl = document.getElementById('counter');
+  if (chosen.length === 6) {
+    counterEl.innerHTML = '<span style="color:#4caf82;">✓ 6 of 6 selected</span> &mdash; ready to play!';
+  } else if (chosen.length === 0) {
+    counterEl.innerHTML = '<span>0</span> of 6 selected &mdash; pick 6 words to begin';
+  } else {
+    counterEl.innerHTML = '<span>' + chosen.length + '</span> of 6 selected &mdash; pick ' + remaining + ' more';
+  }
 }
 
 function startGame() {
@@ -255,8 +263,8 @@ function startGame() {
 function renderCards() {
   var grid = document.getElementById('cardGrid');
   grid.innerHTML = '';
-  var cols = Math.ceil(Math.sqrt(cards.length * 1.5));
-  grid.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
+  // Use 4 columns for 12 cards = clean 3x4 layout
+  grid.style.gridTemplateColumns = 'repeat(4, 1fr)';
 
   for (var i = 0; i < cards.length; i++) {
     var c = cards[i];
