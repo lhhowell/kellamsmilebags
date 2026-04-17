@@ -275,7 +275,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
       01. Pick your OneWord 🌟<br>
       10. Decode the binary message using the reference chart 🔐<br>
       11. Watch your cookie decorate itself letter by letter 🍪<br>
-      100. Print your Bake the Code card! 🖨️
+      100. Submit your cookie &mdash; Ms. Sayers prints in D210! 🍪
     </div>
   </div>
   <div class="nav-row">
@@ -360,20 +360,19 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
   <div class="scr-hd">
     <div class="step-pill">Step 3 of 3 · Code Cracked!</div>
     <h2>Cookie Unlocked! 🍪🎉</h2>
-    <p>Print your decoded card on the left · Color a cookie for fun on the right!</p>
+    <p>Submit your decoded cookie on the left &middot; Color a cookie for fun on the right!</p>
   </div>
 
   <div class="split-grid">
 
-    <!-- LEFT: Result card (unchanged, printable) -->
+    <!-- LEFT: Decoded cookie card (submission-only, teacher prints from form) -->
     <div class="split-col">
-      <div class="split-col-label">🖨️ Your Printable Card</div>
-      <div id="printArea">
-        <div class="result-card" id="resultCard"></div>
-      </div>
+      <div class="split-col-label">✅ Your Decoded Cookie</div>
+      <div class="result-card" id="resultCard"></div>
+      <div class="paint-hint" style="margin-top:-4px;">Ms. Sayers will print your cookie in D210 — 12 per Cricut sheet.</div>
     </div>
 
-    <!-- RIGHT: Paint canvas (no printing) -->
+    <!-- RIGHT: Paint canvas (fun only — no printing, no submission) -->
     <div class="split-col">
       <div class="split-col-label">🎨 Color-For-Fun Cookie</div>
       <div class="paint-stage-wrap">
@@ -403,7 +402,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
           <button class="paint-action-btn clear" id="paintClear">🗑️ Clear</button>
         </div>
 
-        <div class="paint-hint">Tip: Pick a color, then brush or fill to decorate!</div>
+        <div class="paint-hint">For fun only &mdash; your painting won't be saved or printed.</div>
       </div>
     </div>
 
@@ -411,8 +410,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
 
   <div class="nav-row">
     <button class="btn-back" onclick="goTo(2)">← Decode Again</button>
-    <button class="btn-print" onclick="window.print()">🖨️ Print Card</button>
-    <button class="btn-submit" onclick="submitCode()">✅ Submit!</button>
+    <button class="btn-submit" onclick="submitCode()">✅ Submit for Printing</button>
   </div>
 </div>
 
@@ -429,7 +427,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
   <div class="success-wrap">
     <span class="success-icon">💻</span>
     <div class="success-title">Code Baked!</div>
-    <div class="success-msg">Your Bake the Code card has been logged!<br>Print it and show off your binary skills! 🍪🔐</div>
+    <div class="success-msg">Your Bake the Code cookie has been logged!<br>Ms. Sayers will print it in D210 &mdash; 12 per Cricut sheet. 🍪🔐</div>
     <button class="btn-restart" onclick="restart()">← Decode Another Word</button>
     <a href="Culinary_Menu.html" style="display:inline-block;margin-top:10px;padding:13px 28px;border-radius:50px;border:2.5px solid var(--navy);background:transparent;color:var(--navy);font-family:'Nunito',sans-serif;font-weight:900;font-size:.9rem;text-decoration:none;transition:all .2s;">🏠 Return to Main Menu</a>
   </div>
@@ -658,9 +656,10 @@ function buildRefChart(){
 }
 
 /* ══ COOKIE SVG DRAWER ════════════════════════════════════════ */
-function drawCookie(step){
+function drawCookie(step, targetId){
   const d=BAKE_DATA[S.word]||{frost:'#D7CCC8',accent:'#A1887F',pattern:'blank'};
-  const svg=document.getElementById('cookieSVG');
+  const svg=document.getElementById(targetId||'cookieSVG');
+  if(!svg) return;
   const cx=100,cy=100,r=88;
 
   let content='';
@@ -976,26 +975,29 @@ function sparkle(cx,cy,r){
 /* ══ RESULT CARD ══════════════════════════════════════════════ */
 function buildResultCard(){
   const d=BAKE_DATA[S.word];
-  const bin=d.code.split('').map(l=>ASCII_BIN[l]).join(' ');
   const headerClr=d.frost;
   const isLight=(hex)=>{if(!hex||hex.length<7)return false;return (parseInt(hex.slice(1,3),16)*0.299+parseInt(hex.slice(3,5),16)*0.587+parseInt(hex.slice(5,7),16)*0.114)>155;};
   const txtClr=isLight(headerClr)?'#1A2744':'white';
+  const dimClr=isLight(headerClr)?'rgba(0,0,0,0.55)':'rgba(255,255,255,0.75)';
 
   document.getElementById('resultCard').innerHTML=`
     <div class="rc-header" style="background:${headerClr};">
-      <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:${isLight(headerClr)?'rgba(0,0,0,0.5)':'rgba(255,255,255,0.6)'};margin-bottom:6px;">Bake the Code · ${S.name}</div>
+      <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:${dimClr};margin-bottom:6px;">Bake the Code &middot; ${S.name}</div>
       <div class="rc-word" style="color:${txtClr};">${S.word.toUpperCase()}</div>
-      <div class="rc-code" style="color:${isLight(headerClr)?'rgba(0,0,0,0.65)':'rgba(255,255,255,0.8)'};">Decoded: ${d.code} ${S.revealed?'(revealed)':'✓'}</div>
+      <div class="rc-code" style="color:${dimClr};">Decoded: ${d.code} ${S.revealed?'(revealed)':'&check;'}</div>
     </div>
-    <div class="rc-body">
-      <div class="rc-section">The Binary Code</div>
-      <div class="rc-binary-box">${bin}</div>
-      <div class="rc-section">Your Decoration Scheme</div>
-      <div class="rc-desc">"${d.desc}"</div>
-      <div class="rc-section">Decoration Instructions</div>
-      <div class="rc-steps">${d.steps.replace(/\n/g,'<br>')}</div>
-      <div class="rc-footer">💻 Bake the Code · Smile Bags · Culinary Arts with Ms. Sayers · Spring 2026</div>
+    <div class="rc-body" style="text-align:center;padding:18px 18px 14px;">
+      <div style="background:#FFF8EE;border-radius:14px;padding:12px;display:inline-block;">
+        <svg id="cookieSVG3" width="260" height="260" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div style="font-size:.72rem;color:var(--mid);font-style:italic;font-weight:600;margin-top:10px;line-height:1.5;max-width:320px;margin-left:auto;margin-right:auto;">
+        "${d.desc}"
+      </div>
+      <div class="rc-footer" style="color:#aaa;margin-top:14px;">&#128187; Bake the Code &middot; Smile Bags &middot; Culinary Arts with Ms. Sayers &middot; Spring 2026</div>
     </div>`;
+
+  // Draw the completed cookie into the new SVG on S3
+  drawCookie(4, 'cookieSVG3');
 }
 
 /* ══ SUBMIT ═══════════════════════════════════════════════════ */
@@ -1005,6 +1007,10 @@ async function submitCode(){
   const payload={
     studentName:S.name, word:S.word,
     code:d.code, revealed:S.revealed,
+    decoration:d.desc,
+    pattern:d.pattern,
+    frost:d.frost,
+    accent:d.accent,
     timestamp:new Date().toLocaleString('en-US',{timeZone:'America/New_York'})
   };
   try{await fetch(SUBMIT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});}catch(e){console.warn(e);}
