@@ -78,8 +78,8 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
       <div class="word-grid" id="wordGrid"></div>
       <div class="setup-label" style="margin-top:16px;">Step 2 · Choose illustration set</div>
       <div class="set-row">
-        <button class="set-btn" id="setI" onclick="selSet('I')">Set I · Science Journal (ChatGPT)</button>
-        <button class="set-btn" id="setJ" onclick="selSet('J')">Set J · Science Sketch (CoPilot)</button>
+        <button class="set-btn" id="setI" onclick="selSet('I')">Set I · Nature Journal (ChatGPT)</button>
+        <button class="set-btn" id="setJ" onclick="selSet('J')">Set J · Modern Line (CoPilot)</button>
       </div>
       <div class="setup-label" style="margin-top:16px;">Step 3 · Choose flip speed</div>
       <div class="speed-row">
@@ -149,6 +149,7 @@ function startGame(){
 
 function loadRound(){
   guessed=false;tilesRemaining=ROWS*COLS;roundScore=ROWS*COLS*10;
+  cachedImg=null;
   document.getElementById('winBanner').classList.remove('show');
   buildOptions();
   drawTiles();
@@ -167,48 +168,77 @@ function buildOptions(){
   });
 }
 
+var cachedImg=null;
+
 function drawTiles(){
   var canvas=document.getElementById('tileCanvas');
   var ctx=canvas.getContext('2d');
   tiles=[];
-  var img=new Image();img.crossOrigin='anonymous';
+  var img=new Image();
   img.onload=function(){
-    var W=Math.min(img.naturalWidth,500), scale=W/img.naturalWidth;
+    cachedImg=img;
+    // Scale image to fit 500px max width while preserving aspect ratio
+    var W=Math.min(img.naturalWidth,500);
+    var scale=W/img.naturalWidth;
     var H=Math.round(img.naturalHeight*scale);
     canvas.width=W;canvas.height=H;
+    // Draw the full image onto the canvas first (hidden layer)
     ctx.drawImage(img,0,0,W,H);
-    var tw=Math.floor(W/COLS), th=Math.floor(H/ROWS);
-    for(var r=0;r<ROWS;r++)for(var c=0;c<COLS;c++){
-      tiles.push({r:r,c:c,x:c*tw,y:r*th,w:tw,h:th,visible:true});
-      ctx.fillStyle='#1B4332';ctx.fillRect(c*tw,r*th,tw,th);
-      ctx.strokeStyle='rgba(64,145,108,.3)';ctx.lineWidth=2;ctx.strokeRect(c*tw,r*th,tw,th);
+    // Now store tile coordinates using canvas dimensions (not image dimensions)
+    var tw=W/COLS, th=H/ROWS;
+    for(var r=0;r<ROWS;r++){
+      for(var c=0;c<COLS;c++){
+        tiles.push({r:r,c:c,x:c*tw,y:r*th,w:tw,h:th,visible:true});
+        // Cover each tile with forest green
+        ctx.fillStyle='#1B4332';
+        ctx.fillRect(c*tw,r*th,tw,th);
+        ctx.strokeStyle='rgba(64,145,108,.3)';
+        ctx.lineWidth=2;
+        ctx.strokeRect(c*tw,r*th,tw,th);
+      }
     }
     updateStats();
+  };
+  img.onerror=function(){
+    console.error('Failed to load image:',getImg());
+    ctx.fillStyle='#E53935';ctx.font='16px Nunito';
+    ctx.fillText('Image failed to load',20,40);
   };
   img.src=getImg();
 }
 
 function startFlipping(){
-  var order=tiles.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
-  var idx=0;
-  tileInterval=setInterval(function(){
-    if(idx>=order.length||guessed){clearInterval(tileInterval);return;}
-    var canvas=document.getElementById('tileCanvas');
-    var ctx=canvas.getContext('2d');
-    var t=tiles[order[idx]];
-    t.visible=false;
-    // Redraw that cell from image
-    var img=new Image();img.crossOrigin='anonymous';
-    img.onload=function(){
-      var W=canvas.width, H=canvas.height;
-      var tw=Math.floor(W/COLS), th=Math.floor(H/ROWS);
-      ctx.drawImage(img,t.c*(img.naturalWidth/COLS),t.r*(img.naturalHeight/ROWS),img.naturalWidth/COLS,img.naturalHeight/ROWS,t.x,t.y,t.w,t.h);
-    };
-    img.src=getImg();
-    idx++;tilesRemaining=ROWS*COLS-idx;roundScore=Math.max(0,tilesRemaining*10);
-    updateStats();
-    if(tilesRemaining===0&&!guessed){clearInterval(tileInterval);endRound(false);}
-  },flipSpeed);
+  // Wait a bit to ensure image has loaded from drawTiles()
+  setTimeout(function(){
+    if(!cachedImg){
+      // Image hasn't loaded yet, try again shortly
+      setTimeout(startFlipping,300);
+      return;
+    }
+    var order=tiles.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
+    var idx=0;
+    tileInterval=setInterval(function(){
+      if(idx>=order.length||guessed){clearInterval(tileInterval);return;}
+      var canvas=document.getElementById('tileCanvas');
+      var ctx=canvas.getContext('2d');
+      var t=tiles[order[idx]];
+      t.visible=false;
+      // Re-draw the image region for this tile using CANVAS dimensions
+      // The canvas has the full scaled image already drawn on it conceptually;
+      // we compute the source region from the original image using the same
+      // proportion as our tile occupies on the canvas.
+      var srcX=(t.x/canvas.width)*cachedImg.naturalWidth;
+      var srcY=(t.y/canvas.height)*cachedImg.naturalHeight;
+      var srcW=(t.w/canvas.width)*cachedImg.naturalWidth;
+      var srcH=(t.h/canvas.height)*cachedImg.naturalHeight;
+      ctx.drawImage(cachedImg,srcX,srcY,srcW,srcH,t.x,t.y,t.w,t.h);
+      idx++;
+      tilesRemaining=ROWS*COLS-idx;
+      roundScore=Math.max(0,tilesRemaining*10);
+      updateStats();
+      if(tilesRemaining===0&&!guessed){clearInterval(tileInterval);endRound(false);}
+    },flipSpeed);
+  },100);
 }
 
 function makeGuess(word, btn){

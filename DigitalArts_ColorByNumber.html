@@ -69,7 +69,7 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
     <div class="timer-clock" id="timerClock">5:00</div></div>
     <div style="flex:1;min-width:100px;"><div class="timer-track"><div class="timer-fill" id="timerFill" style="width:100%;"></div></div></div>
   </div>
-  <div class="score-section">⭐ <span id="scoreVal">0</span> cells filled</div>
+  <div class="score-section">🎨 <span id="scoreVal">0</span> brush strokes</div>
 </div>
 
 <a href="DigitalArts_Menu.html" style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid #2D6A4F;border-radius:50px;padding:7px 16px;font-family:'Fredoka One',cursive;font-size:11px;color:#40916C;text-decoration:none;margin:16px 0 0 24px;">&#8592; Back to Digital Arts Kiosk</a>
@@ -89,14 +89,21 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
   <div id="gameArea" style="display:none;">
     <div class="game-area">
       <div class="key-panel">
-        <div class="key-title">Color Key</div>
+        <div class="key-title">Choose a Color</div>
         <div id="colorKey"></div>
+        <div class="key-title" style="margin-top:16px;">Brush Size</div>
+        <div style="display:flex;gap:6px;margin-top:6px;">
+          <button class="brush-btn" id="brush-s" onclick="setBrush(12)" style="flex:1;padding:8px;font-size:11px;background:#111;border:1.5px solid #1a3a1a;border-radius:6px;color:#888;cursor:pointer;font-family:'Fredoka One',cursive;">Small</button>
+          <button class="brush-btn active" id="brush-m" onclick="setBrush(24)" style="flex:1;padding:8px;font-size:11px;background:rgba(201,168,76,.1);border:1.5px solid #C9A84C;border-radius:6px;color:#C9A84C;cursor:pointer;font-family:'Fredoka One',cursive;">Medium</button>
+          <button class="brush-btn" id="brush-l" onclick="setBrush(40)" style="flex:1;padding:8px;font-size:11px;background:#111;border:1.5px solid #1a3a1a;border-radius:6px;color:#888;cursor:pointer;font-family:'Fredoka One',cursive;">Large</button>
+        </div>
         <div style="margin-top:14px;font-size:10px;color:#557055;line-height:1.5;padding:8px 4px;border-top:1px solid #1a3a1a;">
-          💡 <strong style="color:#40916C;">Tip:</strong> Numbers are just suggestions! Paint any cell any color you want. Drag to paint multiple cells at once.
+          💡 <strong style="color:#40916C;">Tip:</strong> Pick a color, then drag across the illustration to paint it. Use small brush for details, large brush for big areas.
         </div>
         <div style="margin-top:12px;">
           <button class="btn btn-outline" onclick="undoCBN()" style="width:100%;margin-bottom:8px;padding:8px;">↩ Undo</button>
           <button class="btn btn-outline" onclick="clearBoard()" style="width:100%;margin-bottom:8px;padding:8px;">🧹 Clear Board</button>
+          <button class="btn btn-outline" onclick="printColored()" style="width:100%;margin-bottom:8px;padding:8px;background:#2D6A4F;color:#fff;border-color:#40916C;">🖨️ Print My Sheet</button>
           <button class="btn btn-outline" onclick="resetGame()" style="width:100%;padding:8px;">↩ New Game</button>
         </div>
       </div>
@@ -116,8 +123,18 @@ var WORDS=['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNEC
 var BASE='https://lhhowell.github.io/kellamsmilebags/';
 var COLORS=['#E87B5B','#F5D060','#66BB6A','#42A5F5','#CE93D8','#FF8A65','#80CBC4','#F48FB1','#A5D6A7','#90CAF9'];
 var COLOR_NAMES=['Coral','Yellow','Green','Blue','Purple','Orange','Teal','Pink','Mint','Sky'];
-var GRID=20, selWord='', selSetV='', activeColor=0, cells=[], history=[], score=0;
+var selWord='', selSetV='', activeColor=0, brushSize=24, cachedImg=null, history=[];
 var timerSecs=300, timerInt=null, timerRunning=false;
+var isDrawing=false, lastX=0, lastY=0;
+
+function setBrush(size){
+  brushSize=size;
+  document.querySelectorAll('.brush-btn').forEach(function(b){
+    b.style.background='#111';b.style.borderColor='#1a3a1a';b.style.color='#888';
+  });
+  var btn = size===12?document.getElementById('brush-s'):size===24?document.getElementById('brush-m'):document.getElementById('brush-l');
+  btn.style.background='rgba(201,168,76,.1)';btn.style.borderColor='#C9A84C';btn.style.color='#C9A84C';
+}
 
 function buildWordGrid(){
   var g=document.getElementById('wordGrid');
@@ -164,55 +181,22 @@ function setActiveColor(i){
 function drawGame(){
   var canvas=document.getElementById('cbnCanvas');
   var ctx=canvas.getContext('2d');
-  cells=[];history=[];score=0;
+  history=[];
   document.getElementById('scoreVal').textContent='0';
 
   var img=new Image();
   img.onload=function(){
+    cachedImg=img;
     // Scale image to max 600px wide while preserving aspect ratio
     var W=Math.min(img.naturalWidth,600);
     var scale=W/img.naturalWidth;
     var H=Math.round(img.naturalHeight*scale);
     canvas.width=W;canvas.height=H;
-    var cw=W/GRID, ch=H/GRID;
-
-    // Sample color from image for each cell (using source image, not scaled)
-    var tmpCanvas=document.createElement('canvas');
-    tmpCanvas.width=img.naturalWidth;tmpCanvas.height=img.naturalHeight;
-    var tctx=tmpCanvas.getContext('2d');
-    tctx.drawImage(img,0,0);
-
-    // Draw the illustration onto the canvas (visible underneath)
+    // Start with white background so paint shows up cleanly
+    ctx.fillStyle='#ffffff';
+    ctx.fillRect(0,0,W,H);
+    // Draw the line-art image on top (the lines will remain visible as students paint underneath)
     ctx.drawImage(img,0,0,W,H);
-
-    for(var row=0;row<GRID;row++){
-      for(var col=0;col<GRID;col++){
-        // Sample center pixel from SOURCE image (not scaled canvas)
-        var srcX=Math.floor((col+0.5)*(img.naturalWidth/GRID));
-        var srcY=Math.floor((row+0.5)*(img.naturalHeight/GRID));
-        var px;
-        try{px=tctx.getImageData(srcX,srcY,1,1).data;}
-        catch(e){px=[255,255,255,255];}
-        // Map to nearest palette color
-        var nearest=0, bestDist=999999;
-        COLORS.forEach(function(c,i){
-          var r=parseInt(c.slice(1,3),16),g=parseInt(c.slice(3,5),16),b=parseInt(c.slice(5,7),16);
-          var d=Math.pow(px[0]-r,2)+Math.pow(px[1]-g,2)+Math.pow(px[2]-b,2);
-          if(d<bestDist){bestDist=d;nearest=i;}
-        });
-        cells.push({row:row,col:col,colorIdx:nearest,filled:false,x:col*cw,y:row*ch,w:cw,h:ch});
-
-        // Draw SUBTLE number hint (semi-transparent, image still visible)
-        ctx.fillStyle='rgba(255,255,255,0.55)';
-        ctx.fillRect(col*cw,row*ch,cw,ch);
-        ctx.fillStyle='rgba(0,0,0,0.55)';
-        ctx.font='bold '+(cw>24?11:9)+'px Fredoka One,sans-serif';
-        ctx.textAlign='center';ctx.textBaseline='middle';
-        ctx.fillText(nearest+1,col*cw+cw/2,row*ch+ch/2);
-        ctx.strokeStyle='rgba(0,0,0,.12)';ctx.lineWidth=1;
-        ctx.strokeRect(col*cw,row*ch,cw,ch);
-      }
-    }
     history.push(canvas.toDataURL());
   };
   img.onerror=function(){
@@ -222,68 +206,112 @@ function drawGame(){
   };
   img.src=getImg();
 
-  canvas.onclick=function(e){
-    paintAt(e, canvas);
+  // Mouse events for brush painting
+  canvas.onmousedown=function(e){
+    isDrawing=true;
+    var pos=getCanvasPos(e,canvas);
+    lastX=pos.x;lastY=pos.y;
+    paintDot(pos.x,pos.y,canvas);
   };
-  // Drag-to-paint support for natural coloring feel
-  var isDragging=false;
-  canvas.onmousedown=function(e){isDragging=true;paintAt(e,canvas);};
-  canvas.onmousemove=function(e){if(isDragging)paintAt(e,canvas);};
-  canvas.onmouseup=function(){isDragging=false;};
-  canvas.onmouseleave=function(){isDragging=false;};
-  // Touch support for tablets/Chromebook touchscreens
-  canvas.ontouchstart=function(e){e.preventDefault();isDragging=true;paintAtTouch(e,canvas);};
-  canvas.ontouchmove=function(e){e.preventDefault();if(isDragging)paintAtTouch(e,canvas);};
-  canvas.ontouchend=function(){isDragging=false;};
-}
-
-function paintAt(e, canvas){
-  var r=canvas.getBoundingClientRect();
-  var x=(e.clientX-r.left)*(canvas.width/r.width);
-  var y=(e.clientY-r.top)*(canvas.height/r.height);
-  paintCell(x,y,canvas);
-}
-
-function paintAtTouch(e, canvas){
-  if(!e.touches||!e.touches[0])return;
-  var r=canvas.getBoundingClientRect();
-  var x=(e.touches[0].clientX-r.left)*(canvas.width/r.width);
-  var y=(e.touches[0].clientY-r.top)*(canvas.height/r.height);
-  paintCell(x,y,canvas);
-}
-
-function paintCell(x,y,canvas){
-  var cw=canvas.width/GRID, ch=canvas.height/GRID;
-  var col=Math.floor(x/cw), row=Math.floor(y/ch);
-  var idx=row*GRID+col;
-  if(idx>=0&&idx<cells.length){
-    var cell=cells[idx];
-    // Skip if already painted with this exact color (avoid duplicate history entries during drag)
-    if(cell.filled&&cell.paintedWith===activeColor)return;
-    var wasFilled=cell.filled;
-    cell.filled=true;
-    cell.paintedWith=activeColor;
-    var ctx2=canvas.getContext('2d');
-    ctx2.fillStyle=COLORS[activeColor];
-    ctx2.fillRect(cell.x,cell.y,cell.w,cell.h);
-    ctx2.strokeStyle='rgba(0,0,0,.15)';ctx2.lineWidth=1;
-    ctx2.strokeRect(cell.x,cell.y,cell.w,cell.h);
-    if(!wasFilled){
-      score++;
-      document.getElementById('scoreVal').textContent=score;
+  canvas.onmousemove=function(e){
+    if(!isDrawing)return;
+    var pos=getCanvasPos(e,canvas);
+    paintLine(lastX,lastY,pos.x,pos.y,canvas);
+    lastX=pos.x;lastY=pos.y;
+  };
+  canvas.onmouseup=function(){
+    if(isDrawing){
+      isDrawing=false;
+      // Redraw line art on top & save history
+      redrawLineArt(canvas);
+      history.push(canvas.toDataURL());
+      updateScoreFromCoverage(canvas);
     }
-    history.push(canvas.toDataURL());
-    checkWin();
-  }
+  };
+  canvas.onmouseleave=function(){
+    if(isDrawing){
+      isDrawing=false;
+      redrawLineArt(canvas);
+      history.push(canvas.toDataURL());
+      updateScoreFromCoverage(canvas);
+    }
+  };
+  // Touch support for tablets/Chromebook touchscreens
+  canvas.ontouchstart=function(e){
+    e.preventDefault();
+    isDrawing=true;
+    var pos=getTouchPos(e,canvas);
+    lastX=pos.x;lastY=pos.y;
+    paintDot(pos.x,pos.y,canvas);
+  };
+  canvas.ontouchmove=function(e){
+    e.preventDefault();
+    if(!isDrawing)return;
+    var pos=getTouchPos(e,canvas);
+    paintLine(lastX,lastY,pos.x,pos.y,canvas);
+    lastX=pos.x;lastY=pos.y;
+  };
+  canvas.ontouchend=function(e){
+    e.preventDefault();
+    if(isDrawing){
+      isDrawing=false;
+      redrawLineArt(canvas);
+      history.push(canvas.toDataURL());
+      updateScoreFromCoverage(canvas);
+    }
+  };
+}
+
+function getCanvasPos(e, canvas){
+  var r=canvas.getBoundingClientRect();
+  return {x:(e.clientX-r.left)*(canvas.width/r.width), y:(e.clientY-r.top)*(canvas.height/r.height)};
+}
+function getTouchPos(e, canvas){
+  if(!e.touches||!e.touches[0])return {x:0,y:0};
+  var r=canvas.getBoundingClientRect();
+  return {x:(e.touches[0].clientX-r.left)*(canvas.width/r.width), y:(e.touches[0].clientY-r.top)*(canvas.height/r.height)};
+}
+
+function paintDot(x,y,canvas){
+  var ctx=canvas.getContext('2d');
+  ctx.fillStyle=COLORS[activeColor];
+  ctx.beginPath();
+  ctx.arc(x,y,brushSize/2,0,Math.PI*2);
+  ctx.fill();
+}
+
+function paintLine(x1,y1,x2,y2,canvas){
+  var ctx=canvas.getContext('2d');
+  ctx.strokeStyle=COLORS[activeColor];
+  ctx.lineWidth=brushSize;
+  ctx.lineCap='round';
+  ctx.lineJoin='round';
+  ctx.beginPath();
+  ctx.moveTo(x1,y1);
+  ctx.lineTo(x2,y2);
+  ctx.stroke();
+}
+
+// After painting, redraw the line art on top so lines stay visible
+function redrawLineArt(canvas){
+  if(!cachedImg)return;
+  var ctx=canvas.getContext('2d');
+  // Use multiply blend so only dark lines show through (keeps paint visible)
+  ctx.save();
+  ctx.globalCompositeOperation='multiply';
+  ctx.drawImage(cachedImg,0,0,canvas.width,canvas.height);
+  ctx.restore();
+}
+
+// Count painted pixels as a rough progress/score metric
+function updateScoreFromCoverage(canvas){
+  // Approximate: use history length as simple stroke counter
+  var strokes = Math.max(0, history.length - 1);
+  document.getElementById('scoreVal').textContent = strokes;
 }
 
 function checkWin(){
-  var total=cells.length, filled=cells.filter(function(c){return c.filled;}).length;
-  if(filled===total){
-    clearInterval(timerInt);
-    document.getElementById('winBanner').classList.add('show');
-    document.getElementById('winSub').textContent='You colored all '+total+' cells with '+document.getElementById('timerClock').textContent+' remaining!';
-  }
+  // No automatic win - student decides when done (clicks Print)
 }
 
 function undoCBN(){
@@ -292,12 +320,12 @@ function undoCBN(){
   var canvas=document.getElementById('cbnCanvas');
   var ctx=canvas.getContext('2d');
   var img=new Image();
-  img.onload=function(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(img,0,0);};
+  img.onload=function(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.drawImage(img,0,0);
+  };
   img.src=history[history.length-1];
-  // Unmark last filled cell
-  var lastFilled=null;
-  for(var i=cells.length-1;i>=0;i--){if(cells[i].filled){lastFilled=i;break;}}
-  if(lastFilled!==null){cells[lastFilled].filled=false;score=Math.max(0,score-1);document.getElementById('scoreVal').textContent=score;}
+  document.getElementById('scoreVal').textContent=Math.max(0,history.length-1);
 }
 
 function startTimer(){
@@ -320,18 +348,39 @@ function updateTimerDisplay(){
 }
 
 function timeUp(){
-  var filled=cells.filter(function(c){return c.filled;}).length;
+  var strokes=Math.max(0, history.length - 1);
   document.getElementById('winBanner').classList.add('show');
   document.getElementById('winBanner').style.background='linear-gradient(135deg,#1a0a0a,#2a1a1a)';
   document.getElementById('winBanner').style.borderColor='#E53935';
-  document.getElementById('winTitle')?null:null;
   document.getElementById('winBanner').querySelector('.win-title').textContent="⏰ Time's Up!";
-  document.getElementById('winSub').textContent='You filled '+filled+' of '+cells.length+' cells. Try again!';
+  document.getElementById('winSub').textContent='Beautiful work! You made '+strokes+' brush strokes. Click Print to save your artwork.';
 }
 
 function clearBoard(){
   // Redraw the game with fresh cells (keeps current word/set selection)
   drawGame();
+}
+
+function printColored(){
+  var canvas=document.getElementById('cbnCanvas');
+  var dataURL=canvas.toDataURL('image/png');
+  var html='<!DOCTYPE html><html><head><title>My Coloring &mdash; '+selWord+'</title>'+
+    '<style>@page{size:letter;margin:.5in;}'+
+    'body{font-family:Georgia,serif;color:#111;text-align:center;margin:0;padding:20px;}'+
+    'h1{font-size:24px;margin:0 0 4px;}'+
+    '.sub{font-size:12px;color:#666;text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;}'+
+    'img{max-width:100%;height:auto;border:1px solid #ddd;}'+
+    '.footer{margin-top:18px;font-size:10px;color:#888;letter-spacing:1px;text-transform:uppercase;}'+
+    '</style></head><body>'+
+    '<h1>'+selWord+' &mdash; My Coloring</h1>'+
+    '<div class="sub">Smile Bags &middot; A Word &amp; Wonder Experience</div>'+
+    '<img src="'+dataURL+'" alt="My colored artwork"/>'+
+    '<div class="footer">Made just for you by a Kellam High School student</div>'+
+    '<script>window.onload=function(){setTimeout(function(){window.print();},300);};<\/script>'+
+    '</body></html>';
+  var w=window.open('','_blank');
+  w.document.write(html);
+  w.document.close();
 }
 
 function resetGame(){
