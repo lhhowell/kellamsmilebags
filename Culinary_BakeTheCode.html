@@ -351,25 +351,25 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
 
   <div class="nav-row">
     <button class="btn-back" onclick="goTo(1)">← Change Word</button>
-    <button class="btn-next" id="btnDecode" onclick="goTo(3)" disabled>See My Decorated Cookie! →</button>
+    <button class="btn-next" id="btnDecode" onclick="submitCode()" disabled>✅ Submit My Cookie for Printing!</button>
   </div>
 </div>
 
-<!-- S3: RESULT + PAINT CANVAS (side by side) -->
+<!-- S3: SUCCESS + PAINT-FOR-FUN (side by side, post-submission) -->
 <div class="screen wide" id="scr3">
   <div class="scr-hd">
-    <div class="step-pill">Step 3 of 3 · Code Cracked!</div>
-    <h2>Cookie Unlocked! 🍪🎉</h2>
-    <p>Submit your decoded cookie on the left &middot; Color a cookie for fun on the right!</p>
+    <div class="step-pill" style="background:var(--success);">✅ Submitted!</div>
+    <h2>Cookie Submitted! 🍪🎉</h2>
+    <p>Your decoded cookie is on its way to Ms. Sayers &middot; D210 &middot; now color one for fun!</p>
   </div>
 
   <div class="split-grid">
 
-    <!-- LEFT: Decoded cookie card (submission-only, teacher prints from form) -->
+    <!-- LEFT: Decoded cookie (already submitted — just for viewing) -->
     <div class="split-col">
-      <div class="split-col-label">✅ Your Decoded Cookie</div>
+      <div class="split-col-label" style="color:var(--success);">✅ Your Submitted Cookie</div>
       <div class="result-card" id="resultCard"></div>
-      <div class="paint-hint" style="margin-top:-4px;">Ms. Sayers will print your cookie in D210 — 12 per Cricut sheet.</div>
+      <div class="paint-hint" style="margin-top:-4px;color:var(--success);font-weight:700;font-style:normal;">Logged! Ms. Sayers will print 12 per Cricut sheet in D210.</div>
     </div>
 
     <!-- RIGHT: Paint canvas (fun only — no printing, no submission) -->
@@ -409,8 +409,8 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
   </div>
 
   <div class="nav-row">
-    <button class="btn-back" onclick="goTo(2)">← Decode Again</button>
-    <button class="btn-submit" onclick="submitCode()">✅ Submit for Printing</button>
+    <button class="btn-back" onclick="restart()">&larr; Decode Another Word</button>
+    <a href="Culinary_Menu.html" style="flex:1;padding:13px 18px;border-radius:10px;border:2.5px solid var(--navy);background:transparent;color:var(--navy);font-family:'Nunito',sans-serif;font-weight:900;font-size:.9rem;text-decoration:none;text-align:center;transition:all .2s;">🏠 Return to Main Menu</a>
   </div>
 </div>
 
@@ -1014,7 +1014,7 @@ async function submitCode(){
     timestamp:new Date().toLocaleString('en-US',{timeZone:'America/New_York'})
   };
   try{await fetch(SUBMIT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});}catch(e){console.warn(e);}
-  goTo(5); // success screen
+  goTo(3); // success + paint-for-fun screen
 }
 
 /* ══ RESTART ══════════════════════════════════════════════════ */
