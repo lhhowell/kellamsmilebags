@@ -188,46 +188,49 @@ body{
   background:
     radial-gradient(ellipse at 50% 20%,rgba(76,175,130,.12) 0%,transparent 60%),
     linear-gradient(180deg,#EFE2BD 0%,#E2D0A4 100%);
-  align-items:center;justify-content:center;
-  padding:48px 36px;text-align:center;
+  display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+  padding:36px 30px 22px;text-align:center;
+  overflow:hidden;
 }
+.cover-top{display:flex;flex-direction:column;align-items:center;flex:0 0 auto;}
+.cover-mid{display:flex;flex-direction:column;align-items:center;flex:0 0 auto;gap:14px;}
+.cover-bot{display:flex;flex-direction:column;align-items:center;flex:0 0 auto;gap:10px;}
 .cover-eyebrow{
-  font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:4px;
-  color:var(--green-deep);text-transform:uppercase;margin-bottom:18px;
+  font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:4px;
+  color:var(--green-deep);text-transform:uppercase;margin-bottom:14px;
 }
 .cover-title{
   font-family:'Playfair Display',serif;font-weight:900;
-  font-size:clamp(32px,5vw,54px);color:var(--ink-deep);line-height:1;
-  margin-bottom:12px;
+  font-size:clamp(26px,4.4vw,44px);color:var(--ink-deep);line-height:1.05;
+  margin-bottom:0;
 }
 .cover-title em{font-style:italic;color:var(--green-deep);}
 .cover-sub{
-  font-size:15px;color:#3a4a40;max-width:440px;line-height:1.55;
-  margin-bottom:28px;font-style:italic;
+  font-size:13px;color:#3a4a40;max-width:340px;line-height:1.45;
+  font-style:italic;margin:0;
 }
 .cover-divider{
-  width:80px;height:2px;background:var(--gold);margin:0 auto 24px;
+  width:70px;height:2px;background:var(--gold);margin:16px auto;
   position:relative;
 }
 .cover-divider::before,.cover-divider::after{
-  content:'';position:absolute;top:50%;width:8px;height:8px;
+  content:'';position:absolute;top:50%;width:7px;height:7px;
   background:var(--gold);border-radius:50%;transform:translateY(-50%);
 }
-.cover-divider::before{left:-18px;}
-.cover-divider::after{right:-18px;}
+.cover-divider::before{left:-16px;}
+.cover-divider::after{right:-16px;}
 .cover-meta{
-  font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;
-  color:#5a4a2a;text-transform:uppercase;line-height:1.9;
+  font-family:'Fredoka One',cursive;font-size:9.5px;letter-spacing:1.8px;
+  color:#5a4a2a;text-transform:uppercase;line-height:1.75;
 }
 .cover-credit{
-  position:absolute;bottom:30px;left:0;right:0;
-  font-size:11px;color:#5a4a2a;letter-spacing:.5px;
-  font-style:italic;
+  font-size:10px;color:#6a5a3a;letter-spacing:.3px;
+  font-style:italic;line-height:1.35;max-width:300px;
 }
 .cover-badge{
   display:inline-block;background:var(--ink-deep);color:var(--gold);
   font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;
-  padding:6px 14px;border-radius:20px;margin-top:6px;
+  padding:6px 14px;border-radius:20px;
 }
 
 /* Content page — FULL BLEED: image fills the page, labels overlay on top */
@@ -533,18 +536,22 @@ function renderCover(){
   const el = document.getElementById('pageEl');
   el.className = 'page cover';
   el.innerHTML = `
-    <div class="cover-eyebrow">A Word &amp; Wonder Experience</div>
-    <div class="cover-divider"></div>
-    <h2 class="cover-title">Zoo Field Trip<br><em>Coloring Book</em></h2>
-    <div class="cover-divider"></div>
-    <p class="cover-sub">A naturalist's journal through the Norfolk Zoo &mdash; 25 animals, 25 OneWords, 25 chances to wonder.</p>
-    <div class="cover-meta">
-      AP Biology &amp; T.I.D.E. Coalition<br>
-      Spring 2026<br>
-      Sponsor: Elena O'Brien
+    <div class="cover-top">
+      <div class="cover-eyebrow">A Word &amp; Wonder Experience</div>
+      <div class="cover-divider"></div>
     </div>
-    <div class="cover-badge">Open the book &rarr;</div>
-    <div class="cover-credit">Illustrated by ChatGPT &middot; Curated by Laura Howell, ITS</div>
+    <div class="cover-mid">
+      <h2 class="cover-title">Zoo Field Trip<br><em>Coloring Book</em></h2>
+      <p class="cover-sub">A naturalist's journal through the Norfolk Zoo &mdash; 25 animals, 25 OneWords, 25 chances to wonder.</p>
+      <div class="cover-badge">Open the book &rarr;</div>
+    </div>
+    <div class="cover-bot">
+      <div class="cover-meta">
+        AP Biology &amp; T.I.D.E. Coalition<br>
+        Spring 2026 &middot; Sponsor: Elena O'Brien
+      </div>
+      <div class="cover-credit">Illustrated by ChatGPT &middot; Curated by Laura Howell, ITS</div>
+    </div>
   `;
 }
 
