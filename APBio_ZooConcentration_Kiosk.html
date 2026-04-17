@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Zoo Concentration · Memory Match — Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#0e1410;
+  --paper:#F5EBD4;
+  --paper-soft:#EBE0C4;
+  --forest:#1B4332;
+  --forest-deep:#0A2217;
+  --moss:#40916C;
+  --gold:#C9A84C;
+  --gold-soft:#E8C97A;
+  --coral:#D4537E;
+}
+html,body{min-height:100vh;}
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--forest-deep);
+  color:var(--paper);
+  padding:0 0 60px;
+  background-image:
+    radial-gradient(ellipse at 15% 10%,rgba(201,168,76,.08) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 90%,rgba(64,145,108,.08) 0%,transparent 55%);
+}
+
+/* ── HEADER ── */
+.hero{
+  background:linear-gradient(135deg,var(--forest-deep) 0%,var(--forest) 100%);
+  border-bottom:3px solid var(--gold);
+  padding:36px 32px 32px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,.16) 0%,transparent 60%);
+  pointer-events:none;
+}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4.5vw,48px);font-weight:900;line-height:1.05;margin-bottom:10px;}
+.hero-title span{color:var(--gold);font-style:italic;}
+.hero-sub{font-size:14px;color:rgba(245,235,212,.7);max-width:580px;margin:0 auto 18px;line-height:1.65;}
+.hero-teacher{font-family:'Fredoka One',cursive;font-size:12px;color:var(--gold-soft);letter-spacing:1px;}
+
+.back-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(201,168,76,.08);border:1px solid var(--gold);color:var(--gold);
+  font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  padding:8px 16px;border-radius:6px;text-decoration:none;margin:22px 0 0 24px;
+  transition:all .2s;
+}
+.back-btn:hover{background:var(--gold);color:var(--forest-deep);}
+
+.wrap{max-width:1100px;margin:0 auto;padding:22px 24px;}
+
+/* ── DIFFICULTY PANEL ── */
+.diff-panel{
+  background:rgba(245,235,212,.04);
+  border:1px solid rgba(201,168,76,.2);
+  border-radius:16px;
+  padding:28px 26px;
+  margin-top:18px;
+}
+.diff-label{
+  font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;
+  color:var(--gold);text-transform:uppercase;margin-bottom:14px;text-align:center;
+}
+.diff-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:640px){.diff-grid{grid-template-columns:1fr;}}
+.diff-btn{
+  background:var(--forest-deep);
+  border:1.5px solid rgba(201,168,76,.3);
+  border-radius:12px;
+  padding:20px 18px;
+  color:var(--paper);
+  cursor:pointer;
+  transition:all .22s;
+  text-align:center;
+  font-family:'Nunito',sans-serif;
+}
+.diff-btn:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 8px 22px rgba(201,168,76,.18);}
+.diff-btn.active{background:var(--forest);border-color:var(--gold);}
+.diff-btn-icon{font-size:26px;margin-bottom:6px;}
+.diff-btn-name{font-family:'Fredoka One',cursive;font-size:15px;color:var(--gold);margin-bottom:4px;letter-spacing:.5px;}
+.diff-btn-sub{font-size:12px;color:rgba(245,235,212,.55);}
+
+.start-btn{
+  display:block;margin:22px auto 0;
+  background:var(--gold);
+  color:var(--forest-deep);
+  font-family:'Fredoka One',cursive;font-size:14px;letter-spacing:2px;text-transform:uppercase;
+  padding:14px 38px;border:none;border-radius:8px;
+  cursor:pointer;transition:all .2s;
+}
+.start-btn:hover:not(:disabled){background:var(--gold-soft);transform:translateY(-2px);box-shadow:0 8px 22px rgba(201,168,76,.35);}
+.start-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+/* ── GAME SCREEN ── */
+.game{display:none;}
+.game.active{display:block;}
+
+.hud{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  background:rgba(245,235,212,.04);
+  border:1px solid rgba(201,168,76,.2);
+  border-radius:14px;
+  padding:14px 22px;margin-bottom:22px;
+}
+.hud-stats{display:flex;gap:30px;flex-wrap:wrap;}
+.hud-stat{text-align:center;}
+.hud-stat-num{
+  font-family:'Fredoka One',cursive;font-size:26px;color:var(--gold);line-height:1;
+}
+.hud-stat-label{
+  font-size:10px;letter-spacing:1.5px;color:rgba(245,235,212,.55);
+  text-transform:uppercase;margin-top:4px;
+}
+.hud-reset{
+  background:transparent;border:1.5px solid rgba(201,168,76,.35);color:var(--gold);
+  font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+  padding:8px 14px;border-radius:6px;cursor:pointer;transition:all .2s;
+}
+.hud-reset:hover{background:var(--gold);color:var(--forest-deep);}
+
+/* ── CARD GRID ── */
+.grid{display:grid;gap:14px;}
+.grid.cols-4{grid-template-columns:repeat(4,1fr);}
+.grid.cols-5{grid-template-columns:repeat(5,1fr);}
+@media(max-width:720px){
+  .grid.cols-4,.grid.cols-5{grid-template-columns:repeat(3,1fr);gap:10px;}
+}
+@media(max-width:460px){
+  .grid.cols-4,.grid.cols-5{grid-template-columns:repeat(2,1fr);}
+}
+
+.card{
+  aspect-ratio:1/1;
+  perspective:900px;
+  cursor:pointer;
+  position:relative;
+}
+.card.locked{cursor:default;}
+.card-inner{
+  position:absolute;inset:0;
+  transition:transform .55s cubic-bezier(.6,.05,.25,1);
+  transform-style:preserve-3d;
+  border-radius:12px;
+}
+.card.flipped .card-inner{transform:rotateY(180deg);}
+.card-face{
+  position:absolute;inset:0;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  border-radius:12px;
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* back = default visible */
+.card-back{
+  background:
+    linear-gradient(135deg,var(--forest) 0%,var(--forest-deep) 100%);
+  border:2px solid var(--gold);
+  color:var(--gold);
+  position:relative;
+}
+.card-back::before{
+  content:'';position:absolute;inset:8px;
+  border:1.5px dashed rgba(201,168,76,.4);
+  border-radius:8px;
+}
+.card-back-mark{
+  font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,44px);font-weight:900;
+  color:var(--gold);font-style:italic;
+}
+
+/* front faces */
+.card-front{transform:rotateY(180deg);}
+.card-front.animal{background:#FFFFFF;padding:0;border:2px solid var(--gold-soft);}
+.card-front.animal img{
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:top center;
+  display:block;
+}
+.card-front.word{
+  background:linear-gradient(160deg,#FBF4DF 0%,var(--paper) 100%);
+  border:2px solid var(--gold);
+  color:var(--forest-deep);
+  padding:8px;
+}
+.card-front.word .w-inner{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border:1.5px solid rgba(201,168,76,.4);
+  border-radius:8px;
+  padding:6px;
+  text-align:center;
+}
+.card-front.word .w-eyebrow{
+  font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:2px;
+  color:var(--moss);text-transform:uppercase;margin-bottom:6px;
+}
+.card-front.word .w-text{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(15px,2.6vw,26px);
+  color:var(--forest-deep);
+  letter-spacing:1px;
+  line-height:1;
+}
+
+/* match + wrong states */
+.card.matched .card-inner{
+  box-shadow:0 0 0 3px var(--moss),0 0 24px rgba(64,145,108,.4);
+  animation:pop .38s ease-out;
+}
+.card.wrong .card-inner{
+  box-shadow:0 0 0 3px var(--coral),0 0 18px rgba(212,83,126,.4);
+  animation:shake .42s ease-in-out;
+}
+@keyframes pop{
+  0%{transform:scale(1);}
+  45%{transform:scale(1.08);}
+  100%{transform:scale(1);}
+}
+@keyframes shake{
+  0%,100%{transform:translateX(0);}
+  20%{transform:translateX(-6px);}
+  40%{transform:translateX(6px);}
+  60%{transform:translateX(-4px);}
+  80%{transform:translateX(4px);}
+}
+
+/* ── WIN OVERLAY ── */
+.win{
+  position:fixed;inset:0;
+  background:rgba(10,34,23,.92);
+  display:none;align-items:center;justify-content:center;
+  padding:24px;z-index:100;
+  animation:fadeIn .35s ease-out;
+}
+.win.active{display:flex;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+.win-card{
+  background:linear-gradient(150deg,var(--paper) 0%,var(--paper-soft) 100%);
+  color:var(--forest-deep);
+  border:3px solid var(--gold);
+  border-radius:18px;
+  padding:40px 36px 32px;
+  max-width:440px;width:100%;
+  text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+  animation:riseIn .45s cubic-bezier(.2,.8,.3,1.2);
+}
+@keyframes riseIn{from{transform:translateY(40px) scale(.92);opacity:0;}to{transform:translateY(0) scale(1);opacity:1;}}
+.win-eyebrow{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;color:var(--moss);text-transform:uppercase;margin-bottom:8px;}
+.win-title{font-family:'Playfair Display',serif;font-size:34px;font-weight:900;line-height:1.1;margin-bottom:8px;}
+.win-title span{color:var(--gold);font-style:italic;}
+.win-sub{font-size:14px;color:#3a4a40;line-height:1.6;margin-bottom:22px;}
+.win-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;}
+.win-stat{
+  background:#FFFFFF;
+  border:1.5px solid rgba(201,168,76,.3);
+  border-radius:10px;
+  padding:12px 6px;
+}
+.win-stat-num{font-family:'Fredoka One',cursive;font-size:22px;color:var(--forest);line-height:1;}
+.win-stat-label{font-size:10px;letter-spacing:1.5px;color:#5a6a60;text-transform:uppercase;margin-top:4px;}
+.win-score{
+  background:var(--forest);color:var(--paper);
+  border-radius:10px;padding:14px;margin-bottom:22px;
+}
+.win-score-num{font-family:'Fredoka One',cursive;font-size:32px;color:var(--gold);line-height:1;}
+.win-score-label{font-size:10px;letter-spacing:2px;color:rgba(245,235,212,.7);text-transform:uppercase;margin-top:4px;}
+.win-perfect{
+  display:inline-block;background:var(--gold);color:var(--forest-deep);
+  font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:2px;text-transform:uppercase;
+  padding:6px 14px;border-radius:20px;margin-bottom:14px;
+}
+.win-btn{
+  display:block;width:100%;
+  background:var(--forest);color:var(--gold);
+  font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:2px;text-transform:uppercase;
+  padding:14px;border:none;border-radius:10px;cursor:pointer;
+  transition:all .2s;
+}
+.win-btn:hover{background:var(--forest-deep);color:var(--gold-soft);}
+.win-btn.secondary{background:transparent;color:var(--forest);border:1.5px solid var(--forest);margin-top:10px;}
+.win-btn.secondary:hover{background:var(--forest);color:var(--paper);}
+
+/* ── FOOTER ── */
+.footer{
+  text-align:center;font-size:11px;color:rgba(245,235,212,.35);
+  font-family:'Fredoka One',cursive;letter-spacing:1.5px;
+  padding:36px 20px 0;max-width:900px;margin:0 auto;
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">Smile Bags · A Word &amp; Wonder Experience</div>
+  <h1 class="hero-title">Zoo <span>Concentration</span></h1>
+  <p class="hero-sub">Flip cards to pair each zoo animal with its OneWord. Faster matches earn more points — can you score a perfect round?</p>
+  <div class="hero-teacher">Elena O'Brien · AP Biology + T.I.D.E. · Spring 2026</div>
+</div>
+
+<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to AP Bio + T.I.D.E.</a>
+
+<div class="wrap">
+
+  <!-- SETUP -->
+  <section class="setup" id="setupScreen">
+    <div class="diff-panel">
+      <div class="diff-label">Choose your difficulty</div>
+      <div class="diff-grid">
+        <button class="diff-btn" data-pairs="6">
+          <div class="diff-btn-icon">🌿</div>
+          <div class="diff-btn-name">Easy</div>
+          <div class="diff-btn-sub">6 pairs · 12 cards</div>
+        </button>
+        <button class="diff-btn active" data-pairs="8">
+          <div class="diff-btn-icon">🌳</div>
+          <div class="diff-btn-name">Medium</div>
+          <div class="diff-btn-sub">8 pairs · 16 cards</div>
+        </button>
+        <button class="diff-btn" data-pairs="10">
+          <div class="diff-btn-icon">🦁</div>
+          <div class="diff-btn-name">Hard</div>
+          <div class="diff-btn-sub">10 pairs · 20 cards</div>
+        </button>
+      </div>
+      <button class="start-btn" id="startBtn">🎮 Start Game</button>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section class="game" id="gameScreen">
+    <div class="hud">
+      <div class="hud-stats">
+        <div class="hud-stat"><div class="hud-stat-num" id="hudTime">0:00</div><div class="hud-stat-label">Time</div></div>
+        <div class="hud-stat"><div class="hud-stat-num" id="hudMoves">0</div><div class="hud-stat-label">Moves</div></div>
+        <div class="hud-stat"><div class="hud-stat-num" id="hudMatches">0 / 8</div><div class="hud-stat-label">Matches</div></div>
+      </div>
+      <button class="hud-reset" id="resetBtn">↻ New Game</button>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+</div>
+
+<!-- WIN OVERLAY -->
+<div class="win" id="winOverlay">
+  <div class="win-card">
+    <div class="win-eyebrow">🌟 Round Complete</div>
+    <h2 class="win-title">You <span>did it!</span></h2>
+    <p class="win-sub" id="winMsg">You paired every animal with its OneWord.</p>
+    <div id="winPerfect" class="win-perfect" style="display:none;">⭐ Perfect Round ⭐</div>
+    <div class="win-stats">
+      <div class="win-stat"><div class="win-stat-num" id="winTime">0:00</div><div class="win-stat-label">Time</div></div>
+      <div class="win-stat"><div class="win-stat-num" id="winMoves">0</div><div class="win-stat-label">Moves</div></div>
+      <div class="win-stat"><div class="win-stat-num" id="winPairs">0</div><div class="win-stat-label">Pairs</div></div>
+    </div>
+    <div class="win-score">
+      <div class="win-score-num" id="winScore">0</div>
+      <div class="win-score-label">Final Score</div>
+    </div>
+    <button class="win-btn" id="playAgainBtn">🎮 Play Again</button>
+    <button class="win-btn secondary" id="changeDiffBtn">↻ Change Difficulty</button>
+  </div>
+</div>
+
+<div class="footer">Smile Bags: A Word &amp; Wonder Experience · AP Biology + T.I.D.E. · Spring 2026</div>
+
+<script>
+/* ========= PAIRING DATA ========= */
+/* All 25 Zoo Field Trip animal ↔ OneWord pairings (matches SetK_*.png). */
+const PAIRS = [
+  { animal:'Panda',      word:'BALANCE',   file:'SetK_Panda.png' },
+  { animal:'Zebra',      word:'CONNECT',   file:'SetK_Zebra.png' },
+  { animal:'Koala',      word:'RETURN',    file:'SetK_Koala.png' },
+  { animal:'Monkey',     word:'THRIVE',    file:'SetK_Monkey.png' },
+  { animal:'Sloth',      word:'PERSIST',   file:'SetK_Sloth.png' },
+  { animal:'Hippo',      word:'SUSTAIN',   file:'SetK_Hippo.png' },
+  { animal:'Kangaroo',   word:'GROW',      file:'SetK_Kangaroo.png' },
+  { animal:'Flamingo',   word:'TRANSFORM', file:'SetK_Flamingo.png' },
+  { animal:'Polar Bear', word:'ADAPT',     file:'SetK_PolarBear.png' },
+  { animal:'Whale',      word:'BREATHE',   file:'SetK_Whale.png' },
+  { animal:'Otter',      word:'FLOW',      file:'SetK_Otter.png' },
+  { animal:'Eagle',      word:'RISE',      file:'SetK_Eagle.png' },
+  { animal:'Chameleon',  word:'SHINE',     file:'SetK_Chameleon.png' },
+  { animal:'Peacock',    word:'BLOOM',     file:'SetK_Peacock.png' },
+  { animal:'Penguin',    word:'ROOT',      file:'SetK_Penguin.png' },
+  { animal:'Lion',       word:'ANCHOR',    file:'SetK_Lion.png' },
+  { animal:'Turtle',     word:'MIGRATE',   file:'SetK_Turtle.png' },
+  { animal:'Crocodile',  word:'EMERGE',    file:'SetK_Crocodile.png' },
+  { animal:'Cheetah',    word:'RENEW',     file:'SetK_Cheetah.png' },
+  { animal:'Owl',        word:'CLEAR',     file:'SetK_Owl.png' },
+  { animal:'Giraffe',    word:'RESTORE',   file:'SetK_Giraffe.png' },
+  { animal:'Clownfish',  word:'FILTER',    file:'SetK_Clownfish.png' },
+  { animal:'Butterfly',  word:'CYCLE',     file:'SetK_Butterfly.png' },
+  { animal:'Frog',       word:'ABSORB',    file:'SetK_Frog.png' },
+  { animal:'Elephant',   word:'HEAL',      file:'SetK_Elephant.png' }
+];
+
+/* ========= STATE ========= */
+let pairCount = 8;
+let cards = [];           // array of card objects in grid order
+let firstPick = null;     // index of first flipped card (awaiting second)
+let locked = false;       // true while a pair is being resolved
+let moves = 0;
+let matches = 0;
+let startMs = 0;
+let timerId = null;
+
+/* ========= HELPERS ========= */
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function fmtTime(sec){
+  const m = Math.floor(sec/60);
+  const s = sec%60;
+  return m + ':' + (s<10 ? '0'+s : s);
+}
+
+/* ========= SETUP ========= */
+document.querySelectorAll('.diff-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    pairCount = parseInt(btn.dataset.pairs, 10);
+  });
+});
+document.getElementById('startBtn').addEventListener('click', startGame);
+document.getElementById('resetBtn').addEventListener('click', () => { showSetup(); });
+document.getElementById('playAgainBtn').addEventListener('click', () => {
+  document.getElementById('winOverlay').classList.remove('active');
+  startGame();
+});
+document.getElementById('changeDiffBtn').addEventListener('click', () => {
+  document.getElementById('winOverlay').classList.remove('active');
+  showSetup();
+});
+
+function showSetup(){
+  stopTimer();
+  document.getElementById('gameScreen').classList.remove('active');
+  document.getElementById('setupScreen').style.display = 'block';
+}
+
+/* ========= GAME FLOW ========= */
+function startGame(){
+  // Pick N random pairs
+  const picked = shuffle(PAIRS).slice(0, pairCount);
+  // Build 2N cards — one animal + one word per pair
+  const deck = [];
+  picked.forEach((p, idx) => {
+    deck.push({ kind:'animal', pairId:idx, animal:p.animal, word:p.word, file:p.file });
+    deck.push({ kind:'word',   pairId:idx, animal:p.animal, word:p.word, file:p.file });
+  });
+  cards = shuffle(deck);
+  firstPick = null;
+  locked = false;
+  moves = 0;
+  matches = 0;
+  renderGrid();
+  updateHud();
+  // transition screens
+  document.getElementById('setupScreen').style.display = 'none';
+  document.getElementById('gameScreen').classList.add('active');
+  startTimer();
+}
+
+function renderGrid(){
+  const grid = document.getElementById('grid');
+  grid.className = 'grid ' + (pairCount >= 10 ? 'cols-5' : 'cols-4');
+  grid.innerHTML = '';
+  cards.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.idx = i;
+    card.innerHTML =
+      '<div class="card-inner">' +
+        '<div class="card-face card-back"><div class="card-back-mark">?</div></div>' +
+        '<div class="card-face card-front ' + c.kind + '">' +
+          (c.kind === 'animal'
+            ? '<img src="' + c.file + '" alt="' + c.animal + '" loading="lazy"/>'
+            : '<div class="w-inner"><div class="w-eyebrow">OneWord</div><div class="w-text">' + c.word + '</div></div>'
+          ) +
+        '</div>' +
+      '</div>';
+    card.addEventListener('click', () => onCardClick(i));
+    grid.appendChild(card);
+  });
+}
+
+function onCardClick(i){
+  if(locked) return;
+  const card = cards[i];
+  if(card.matched || card.flipped) return;
+
+  // flip it
+  const el = document.querySelector('.card[data-idx="' + i + '"]');
+  el.classList.add('flipped');
+  card.flipped = true;
+
+  if(firstPick === null){
+    firstPick = i;
+    return;
+  }
+
+  // second pick
+  moves++;
+  updateHud();
+  const a = cards[firstPick];
+  const b = cards[i];
+  if(a.pairId === b.pairId && firstPick !== i){
+    // match
+    const elA = document.querySelector('.card[data-idx="' + firstPick + '"]');
+    elA.classList.add('matched','locked');
+    el.classList.add('matched','locked');
+    a.matched = true;
+    b.matched = true;
+    matches++;
+    firstPick = null;
+    updateHud();
+    if(matches === pairCount) setTimeout(finishGame, 620);
+  } else {
+    // wrong
+    locked = true;
+    const elA = document.querySelector('.card[data-idx="' + firstPick + '"]');
+    elA.classList.add('wrong');
+    el.classList.add('wrong');
+    setTimeout(() => {
+      elA.classList.remove('flipped','wrong');
+      el.classList.remove('flipped','wrong');
+      a.flipped = false;
+      b.flipped = false;
+      firstPick = null;
+      locked = false;
+    }, 850);
+  }
+}
+
+function updateHud(){
+  document.getElementById('hudMoves').textContent = moves;
+  document.getElementById('hudMatches').textContent = matches + ' / ' + pairCount;
+}
+
+/* ========= TIMER ========= */
+function startTimer(){
+  startMs = Date.now();
+  stopTimer();
+  timerId = setInterval(() => {
+    const sec = Math.floor((Date.now() - startMs) / 1000);
+    document.getElementById('hudTime').textContent = fmtTime(sec);
+  }, 500);
+}
+function stopTimer(){
+  if(timerId){ clearInterval(timerId); timerId = null; }
+}
+function elapsedSec(){
+  return Math.max(0, Math.floor((Date.now() - startMs) / 1000));
+}
+
+/* ========= FINISH ========= */
+function finishGame(){
+  stopTimer();
+  const sec = elapsedSec();
+  const perfect = (moves === pairCount);
+  // Scoring: start 1000, -50 per wrong match, -2 per second, +250 perfect bonus
+  const wrongMatches = moves - pairCount; // moves over the minimum
+  let score = 1000 - (wrongMatches * 50) - (sec * 2);
+  if(perfect) score += 250;
+  score = Math.max(0, score);
+
+  document.getElementById('winTime').textContent = fmtTime(sec);
+  document.getElementById('winMoves').textContent = moves;
+  document.getElementById('winPairs').textContent = pairCount;
+  document.getElementById('winScore').textContent = score;
+  document.getElementById('winPerfect').style.display = perfect ? 'inline-block' : 'none';
+
+  let msg;
+  if(perfect){
+    msg = 'Perfect — you paired every animal with its OneWord on the first try. A naturalist\u2019s memory!';
+  } else if(wrongMatches <= 2){
+    msg = 'Excellent focus — only a couple of second-guesses along the way.';
+  } else if(wrongMatches <= 5){
+    msg = 'Nice work — you paired every animal with its OneWord. Try for fewer moves next round!';
+  } else {
+    msg = 'You finished the round. Each play helps you remember which animal carries which word.';
+  }
+  document.getElementById('winMsg').textContent = msg;
+  document.getElementById('winOverlay').classList.add('active');
+}
+</script>
+
+</body>
+</html>
