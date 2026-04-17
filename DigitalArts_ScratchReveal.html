@@ -19,6 +19,9 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
 .prog-track{flex:1;height:8px;background:#1a1a1a;border-radius:8px;overflow:hidden;}
 .prog-fill{height:100%;background:linear-gradient(90deg,var(--forest2),var(--forest3));border-radius:8px;transition:width .3s;}
 .prog-pct{font-family:'Fredoka One',cursive;font-size:14px;color:var(--forest3);min-width:50px;text-align:right;}
+.timer-pill{display:flex;align-items:center;gap:6px;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);border-radius:50px;padding:5px 14px;font-family:'Fredoka One',cursive;font-size:13px;color:var(--gold);min-width:88px;justify-content:center;}
+.timer-pill.warn{color:#E8B95A;border-color:rgba(232,185,90,.45);background:rgba(232,185,90,.08);}
+.timer-pill.danger{color:#E5615A;border-color:rgba(229,97,90,.45);background:rgba(229,97,90,.08);}
 .workspace{max-width:900px;margin:0 auto;padding:24px;}
 .setup-card{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:14px;padding:24px;margin-bottom:16px;}
 .setup-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--forest3);margin-bottom:8px;}
@@ -73,6 +76,7 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
   <span style="font-family:'Fredoka One',cursive;font-size:13px;color:var(--gold);">Revealed:</span>
   <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
   <div class="prog-pct" id="progPct">0%</div>
+  <div class="timer-pill" id="timerPill">⏱ 0:00</div>
 </div>
 
 <div class="workspace">
@@ -81,8 +85,8 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
     <div class="setup-card">
       <div class="setup-label">Step 1 · Choose illustration set</div>
       <div class="set-row">
-        <button class="set-btn" id="setI" onclick="pickSet('I')">Set I · Science Journal (ChatGPT)</button>
-        <button class="set-btn" id="setJ" onclick="pickSet('J')">Set J · Science Sketch (CoPilot)</button>
+        <button class="set-btn" id="setI" onclick="pickSet('I')">Set I · Nature Journal (ChatGPT)</button>
+        <button class="set-btn" id="setJ" onclick="pickSet('J')">Set J · Modern Line (CoPilot)</button>
       </div>
       <div class="setup-label">Step 2 · Choose brush size</div>
       <div class="brush-row" style="margin-bottom:16px;">
@@ -91,7 +95,7 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
         <button class="brush-btn" onclick="setBrush(60,this)">Large</button>
       </div>
       <div class="one-chance" style="margin-bottom:16px;">
-        🎯 <strong>One chance to guess!</strong> Scratch away the cover to reveal the hidden illustration — but choose wisely. You only get <strong>one guess</strong> at the OneWord. The less you scratch before guessing, the higher your score!
+        🎯 <strong>One chance to guess!</strong> Scratch away the cover to reveal the hidden illustration — but choose wisely. You only get <strong>one guess</strong> at the OneWord. The less you scratch — and the faster you guess — the higher your score!
       </div>
       <button class="btn btn-gold" id="startBtn" onclick="startGame()" disabled>✨ Start Scratching!</button>
     </div>
@@ -125,7 +129,7 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
         <div class="score-card">
           <div class="score-val" id="scoreVal">—</div>
           <div class="score-lbl">Score</div>
-          <div style="font-size:12px;color:#3a5a3a;margin-top:6px;" id="scoreHint">Guess early for more points!</div>
+          <div style="font-size:12px;color:#3a5a3a;margin-top:6px;" id="scoreHint">Faster + less scratch = more points!</div>
         </div>
       </div>
     </div>
@@ -146,6 +150,9 @@ var BASE='https://lhhowell.github.io/kellamsmilebags/';
 var selSet='', brushSize=18, totalScore=0, currentWord='', guessLocked=false;
 var scratching=false, revealedPct=0;
 
+// Timer state
+var timerInt=null, elapsedSecs=0;
+
 function pickSet(s){
   selSet=s;
   document.getElementById('setI').classList.toggle('active',s==='I');
@@ -163,6 +170,30 @@ function getImg(word,set){
   return BASE+(set==='I'?'SetI_':'SetJ_')+w+'.png';
 }
 
+// ── Timer ──
+function startTimer(){
+  stopTimer();
+  elapsedSecs=0;
+  updateTimerDisplay();
+  timerInt=setInterval(function(){
+    elapsedSecs++;
+    updateTimerDisplay();
+  },1000);
+}
+function stopTimer(){
+  if(timerInt){clearInterval(timerInt);timerInt=null;}
+}
+function updateTimerDisplay(){
+  var pill=document.getElementById('timerPill');
+  if(!pill) return;
+  var m=Math.floor(elapsedSecs/60), s=elapsedSecs%60;
+  pill.textContent='⏱ '+m+':'+(s<10?'0':'')+s;
+  // Color shifts: gold under 30s, amber 30-60s, red over 60s
+  pill.classList.remove('warn','danger');
+  if(elapsedSecs>=60) pill.classList.add('danger');
+  else if(elapsedSecs>=30) pill.classList.add('warn');
+}
+
 function startGame(){
   // Pick random word
   currentWord=WORDS[Math.floor(Math.random()*WORDS.length)];
@@ -172,9 +203,10 @@ function startGame(){
   document.getElementById('progBar').classList.add('show');
   document.getElementById('resultBanner').classList.remove('show');
   document.getElementById('scoreVal').textContent='—';
-  document.getElementById('scoreHint').textContent='Guess early for more points!';
+  document.getElementById('scoreHint').textContent='Faster + less scratch = more points!';
   buildChoices();
   loadImage();
+  startTimer();
 }
 
 function buildChoices(){
@@ -191,7 +223,7 @@ function loadImage(){
   var base=document.getElementById('baseCanvas');
   var scratch=document.getElementById('scratchCanvas');
   var bctx=base.getContext('2d');
-  var img=new Image(); img.crossOrigin='anonymous';
+  var img=new Image();
   img.onload=function(){
     var maxW=520;
     var scale=Math.min(maxW/img.naturalWidth, maxW/img.naturalHeight, 1);
@@ -257,6 +289,7 @@ function updateProgress(canvas){
 function makeGuess(word,btn){
   if(guessLocked) return;
   guessLocked=true;
+  stopTimer();
   // Lock all buttons
   document.querySelectorAll('.choice-btn').forEach(function(b){b.disabled=true;});
   // Fully reveal the image
@@ -266,7 +299,6 @@ function makeGuess(word,btn){
   document.getElementById('progPct').textContent='100%';
 
   var correct=(word===currentWord);
-  btn.classList.add(correct?'correct-ans':'wrong-ans');
   btn.classList.add(correct?'correct':'wrong');
   if(!correct){
     document.querySelectorAll('.choice-btn').forEach(function(b){
@@ -274,17 +306,31 @@ function makeGuess(word,btn){
     });
   }
 
-  // Score: more revealed = lower score. Max 100 if guessed at <10% revealed
-  var score = correct ? Math.max(10, Math.round(100 - revealedPct * 0.9)) : 0;
+  // Score formula:
+  //   base = 100 - (revealedPct * 0.7)   → less scratched = higher base (max 100)
+  //   timeBonus = max(0, 30 - elapsedSecs)  → up to +30 points for guessing in <30s
+  //   penalty after 60s = -(elapsedSecs - 60) * 0.5  → loses 0.5pt/sec after 60s
+  // Final clamped to [10..130]
+  var score = 0;
+  if(correct){
+    var base = 100 - (revealedPct * 0.7);
+    var timeBonus = Math.max(0, 30 - elapsedSecs);
+    var latePenalty = elapsedSecs > 60 ? (elapsedSecs - 60) * 0.5 : 0;
+    score = Math.round(base + timeBonus - latePenalty);
+    score = Math.max(10, Math.min(130, score));
+  }
   totalScore+=score;
   document.getElementById('scoreVal').textContent=score;
   document.getElementById('scoreHint').textContent='Total: '+totalScore+' pts';
 
+  var mins=Math.floor(elapsedSecs/60), secs=elapsedSecs%60;
+  var timeStr=mins+':'+(secs<10?'0':'')+secs;
+
   var banner=document.getElementById('resultBanner');
   document.getElementById('resultTitle').textContent=correct?'🎉 Correct!':'❌ Not quite!';
   document.getElementById('resultMsg').textContent=correct
-    ? 'You identified '+currentWord+' with '+revealedPct+'% revealed! +'+score+' points.'
-    : 'The hidden word was '+currentWord+'. Better luck next time!';
+    ? 'You identified '+currentWord+' with '+revealedPct+'% revealed in '+timeStr+'! +'+score+' points.'
+    : 'The hidden word was '+currentWord+'. You took '+timeStr+'. Better luck next time!';
   banner.classList.add('show');
   banner.scrollIntoView({behavior:'smooth'});
 }
@@ -296,12 +342,14 @@ function nextRound(){
   guessLocked=false; revealedPct=0;
   document.getElementById('resultBanner').classList.remove('show');
   document.getElementById('scoreVal').textContent='—';
-  document.getElementById('scoreHint').textContent='Guess early for more points!';
+  document.getElementById('scoreHint').textContent='Faster + less scratch = more points!';
   buildChoices();
   loadImage();
+  startTimer();
 }
 
 function resetGame(){
+  stopTimer();
   document.getElementById('setupArea').style.display='block';
   document.getElementById('gameArea').style.display='none';
   document.getElementById('progBar').classList.remove('show');
