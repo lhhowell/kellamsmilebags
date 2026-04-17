@@ -263,7 +263,7 @@ body{
   bottom:0;
   padding-top:22px;
   background:linear-gradient(0deg,rgba(245,235,212,.96) 0%,rgba(245,235,212,.88) 60%,rgba(245,235,212,0) 100%);
-  flex-direction:column;align-items:stretch;
+  justify-content:center;
 }
 .page-animal{
   font-family:'Playfair Display',serif;font-weight:900;
@@ -278,9 +278,9 @@ body{
   gap:10px;
 }
 .page-habitat{
-  font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;
+  font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;
   text-transform:uppercase;color:var(--green-deep);
-  display:inline-flex;align-items:center;gap:5px;white-space:nowrap;
+  display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
 }
 .page-caption{
   font-size:12px;color:#3a2a10;font-style:italic;
@@ -570,10 +570,7 @@ function renderAnimalPage(i){
         <div class="page-num">#${fmtNum(a.num)} / 25</div>
       </div>
       <div class="page-overlay bottom">
-        <div class="page-caption-row">
-          <div class="page-habitat">${h.emoji} ${h.label}</div>
-          <div class="page-caption"><strong>${escapeHtml(a.word)}</strong> &mdash; ${escapeHtml(a.def)}</div>
-        </div>
+        <div class="page-habitat">${h.emoji} ${h.label}</div>
       </div>
     </div>
   `;
