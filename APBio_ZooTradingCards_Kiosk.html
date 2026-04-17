@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Zoo Museum Trading Cards — AP Bio + T.I.D.E. | Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0a0f14;
+  --panel:#0d1a0d;
+  --panel-line:#1a3a1a;
+  --ink:#fff;
+  --muted:rgba(255,255,255,.55);
+  --muted-2:rgba(255,255,255,.35);
+  --green:#4caf82;
+  --green-deep:#2d7a57;
+  --gold:#c9a84c;
+  --gold-soft:#e8c97a;
+  --paper:#F5EBD4;
+  --paper-soft:#EBE0C4;
+  --ink-deep:#0e1410;
+  --coral:#d4537e;
+}
+html,body{min-height:100vh;}
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  padding:0 0 60px;
+  background-image:
+    radial-gradient(ellipse at 15% 8%,rgba(76,175,130,.09) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 92%,rgba(201,168,76,.07) 0%,transparent 55%);
+}
+
+/* HEADER */
+.hero{background:var(--bg);border-bottom:1px solid var(--panel-line);padding:40px 32px 34px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(76,175,130,.14) 0%,transparent 65%);pointer-events:none;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:4px;color:var(--green);text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,44px);font-weight:900;color:var(--ink);line-height:1.1;margin-bottom:10px;}
+.hero-title span{color:var(--green);}
+.hero-sub{font-size:14px;color:var(--muted);max-width:620px;margin:0 auto 16px;line-height:1.65;}
+.hero-teacher{font-family:'Fredoka One',cursive;font-size:12px;color:var(--gold-soft);letter-spacing:1px;}
+
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(76,175,130,.06);border:1px solid var(--green);color:var(--green);font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;margin:22px 0 0 24px;transition:all .2s;}
+.back-btn:hover{background:var(--green);color:var(--ink-deep);}
+
+.wrap{max-width:1080px;margin:0 auto;padding:18px 24px;}
+
+/* TRACKER */
+.tracker{background:var(--panel);border:1px solid var(--panel-line);border-radius:14px;padding:18px 22px;margin:14px 0 20px;display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
+.tracker-stat{display:flex;align-items:baseline;gap:8px;}
+.tracker-num{font-family:'Fredoka One',cursive;font-size:32px;color:var(--green);line-height:1;}
+.tracker-total{font-family:'Fredoka One',cursive;font-size:18px;color:var(--muted);}
+.tracker-label{font-size:11px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-left:4px;}
+.tracker-bar{flex:1;min-width:180px;height:10px;background:rgba(76,175,130,.12);border-radius:6px;overflow:hidden;position:relative;}
+.tracker-bar-fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--green) 0%,var(--gold) 100%);width:0%;transition:width .55s cubic-bezier(.2,.7,.3,1);border-radius:6px;}
+.tracker-reset{background:transparent;border:1px solid rgba(76,175,130,.35);color:var(--green);font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:7px 12px;border-radius:6px;cursor:pointer;transition:all .2s;}
+.tracker-reset:hover{background:var(--green);color:var(--ink-deep);}
+
+/* FILTER BAR */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.filter-btn{background:transparent;border:1.5px solid rgba(76,175,130,.28);color:var(--muted);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:9px 14px;border-radius:20px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+.filter-btn:hover{border-color:var(--green);color:var(--green);}
+.filter-btn.active{background:var(--green);color:var(--ink-deep);border-color:var(--green);}
+.filter-btn .count{font-size:10px;opacity:.7;}
+
+/* CARD GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px;}
+@media(max-width:640px){.grid{grid-template-columns:repeat(2,1fr);gap:12px;}}
+
+.card{aspect-ratio:5/7;perspective:1200px;cursor:pointer;position:relative;}
+.card.hidden{display:none;}
+.card-inner{position:absolute;inset:0;transition:transform .65s cubic-bezier(.55,.06,.35,1.05);transform-style:preserve-3d;}
+.card.flipped .card-inner{transform:rotateY(180deg);}
+.card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:10px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.35);}
+
+/* FRONT */
+.card-front{background:#fff;border:1.5px solid var(--gold-soft);display:flex;flex-direction:column;}
+.card-img{flex:0 0 70%;overflow:hidden;background:#fff;position:relative;}
+.card-img img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;}
+.card-label{flex:1;background:linear-gradient(180deg,var(--paper) 0%,var(--paper-soft) 100%);border-top:1.5px solid var(--gold);padding:6px 8px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;}
+.card-label-name{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(13px,1.9vw,16px);color:var(--ink-deep);line-height:1.05;letter-spacing:.2px;}
+.card-label-word{font-family:'Fredoka One',cursive;font-size:clamp(9px,1.25vw,11px);color:var(--green-deep);letter-spacing:2px;margin-top:2px;}
+.card-num{position:absolute;top:6px;right:8px;font-family:'Fredoka One',cursive;font-size:9px;color:rgba(14,20,16,.45);letter-spacing:.5px;z-index:2;background:rgba(255,255,255,.75);padding:2px 5px;border-radius:4px;}
+.card-seen-badge{position:absolute;top:6px;left:6px;background:var(--green);color:var(--ink-deep);font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:1px;padding:3px 7px;border-radius:12px;display:none;box-shadow:0 2px 6px rgba(0,0,0,.3);z-index:2;}
+.card.seen .card-seen-badge{display:block;}
+
+/* BACK */
+.card-back{transform:rotateY(180deg);background:linear-gradient(160deg,var(--paper) 0%,var(--paper-soft) 100%);border:1.5px solid var(--gold);color:var(--ink-deep);padding:12px 10px 10px;display:flex;flex-direction:column;position:relative;}
+.card-back::before{content:'';position:absolute;inset:6px;border:1px dashed rgba(201,168,76,.4);border-radius:6px;pointer-events:none;}
+.back-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;position:relative;z-index:1;}
+.back-name{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(14px,1.8vw,17px);color:var(--ink-deep);line-height:1;}
+.back-num{font-family:'Fredoka One',cursive;font-size:9px;color:rgba(14,20,16,.55);}
+.back-word-box{background:#fff;border:1.5px solid var(--gold);border-radius:6px;padding:5px 6px;text-align:center;margin-bottom:6px;position:relative;z-index:1;}
+.back-word{font-family:'Fredoka One',cursive;font-size:clamp(14px,2.2vw,18px);color:var(--green-deep);letter-spacing:1.5px;line-height:1;}
+.back-def{font-size:10px;color:#3a4a40;line-height:1.35;font-style:italic;text-align:center;margin-bottom:8px;position:relative;z-index:1;}
+.back-fact-row{background:rgba(76,175,130,.12);border-left:2px solid var(--green-deep);padding:6px 8px;border-radius:4px;margin-bottom:8px;flex:1;position:relative;z-index:1;}
+.back-fact-label{font-family:'Fredoka One',cursive;font-size:8px;letter-spacing:1.5px;color:var(--green-deep);text-transform:uppercase;margin-bottom:3px;}
+.back-fact{font-size:10px;color:var(--ink-deep);line-height:1.35;}
+.back-habitat{font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:1px;background:var(--ink-deep);color:var(--gold);padding:5px 8px;border-radius:4px;text-align:center;text-transform:uppercase;position:relative;z-index:1;}
+
+/* CELEBRATION */
+.celebrate{position:fixed;inset:0;background:rgba(10,15,20,.94);display:none;align-items:center;justify-content:center;padding:24px;z-index:100;animation:fadeIn .35s ease-out;}
+.celebrate.active{display:flex;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.celebrate-card{background:linear-gradient(150deg,var(--paper) 0%,var(--paper-soft) 100%);color:var(--ink-deep);border:3px solid var(--gold);border-radius:18px;padding:40px 36px 32px;max-width:460px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5);animation:riseIn .55s cubic-bezier(.2,.8,.3,1.25);}
+@keyframes riseIn{from{transform:translateY(40px) scale(.9);opacity:0;}to{transform:translateY(0) scale(1);opacity:1;}}
+.celebrate-badge{display:inline-block;background:var(--green);color:var(--ink-deep);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;padding:6px 16px;border-radius:20px;margin-bottom:14px;}
+.celebrate-title{font-family:'Playfair Display',serif;font-size:34px;font-weight:900;line-height:1.1;margin-bottom:10px;}
+.celebrate-title span{color:var(--green-deep);font-style:italic;}
+.celebrate-sub{font-size:14px;color:#3a4a40;line-height:1.6;margin-bottom:22px;}
+.celebrate-btn{display:block;width:100%;background:var(--green);color:var(--ink-deep);font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:14px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;}
+.celebrate-btn:hover{background:var(--green-deep);color:#fff;}
+
+.footer{text-align:center;font-size:11px;color:var(--muted-2);font-family:'Fredoka One',cursive;letter-spacing:1.5px;padding:36px 20px 0;max-width:900px;margin:0 auto;}
+
+@media print{
+  body{background:#fff;color:#000;}
+  .hero,.back-btn,.tracker,.filters,.footer{display:none !important;}
+  .grid{grid-template-columns:repeat(3,1fr);gap:10px;}
+  .card{aspect-ratio:5/7;page-break-inside:avoid;break-inside:avoid;}
+  .card-inner{transform:none !important;}
+  .card-face{box-shadow:none !important;}
+  .card-back{display:none;}
+  .card-seen-badge{display:none !important;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">Smile Bags · AP Bio + T.I.D.E.</div>
+  <h1 class="hero-title">Zoo Museum <span>Trading Cards</span></h1>
+  <p class="hero-sub">A 25-card natural history collection. Each card pairs a zoo animal with its OneWord, a kid-friendly meaning, and a real biology fact. Flip to discover — collect all 25!</p>
+  <div class="hero-teacher">Elena O'Brien · AP Biology + T.I.D.E. · Spring 2026</div>
+</div>
+
+<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to AP Bio + T.I.D.E.</a>
+
+<div class="wrap">
+
+  <div class="tracker">
+    <div class="tracker-stat">
+      <span class="tracker-num" id="seenCount">0</span>
+      <span class="tracker-total">/ 25</span>
+      <span class="tracker-label">Discovered</span>
+    </div>
+    <div class="tracker-bar"><div class="tracker-bar-fill" id="barFill"></div></div>
+    <button class="tracker-reset" id="resetBtn">↻ Reset</button>
+  </div>
+
+  <div class="filters" id="filters"></div>
+
+  <div class="grid" id="grid"></div>
+
+</div>
+
+<div class="celebrate" id="celebrate">
+  <div class="celebrate-card">
+    <div class="celebrate-badge">🏅 Collection Complete</div>
+    <h2 class="celebrate-title">Word World <span>Explorer!</span></h2>
+    <p class="celebrate-sub">You've discovered all 25 animals and their OneWords. You now know which word every animal carries — and why. A naturalist's achievement!</p>
+    <button class="celebrate-btn" id="celebrateClose">Keep Exploring</button>
+  </div>
+</div>
+
+<div class="footer">Smile Bags: A Word &amp; Wonder Experience · AP Biology + T.I.D.E. · Spring 2026</div>
+
+<script>
+const HABITATS = {
+  all:        { label:'All',                 emoji:'🌎' },
+  africa:     { label:'African Savanna',     emoji:'🌍' },
+  asia:       { label:'Asia & Australia',    emoji:'🐯' },
+  rainforest: { label:'Rainforest',          emoji:'🌳' },
+  aquatic:    { label:'Aquatic & Wetlands',  emoji:'🌊' },
+  polar:      { label:'Polar & Sky',         emoji:'❄️' }
+};
+
+const CARDS = [
+  { num: 1, animal:'Panda',      word:'BALANCE',   def:'Keeping steady so nothing tips over.',           fact:'Eats up to 40 pounds of bamboo every single day.',                habitat:'asia',       file:'SetK_Panda.png' },
+  { num: 2, animal:'Zebra',      word:'CONNECT',   def:'To join together with others.',                  fact:'Stripes blur together in a running herd to confuse predators.',   habitat:'africa',     file:'SetK_Zebra.png' },
+  { num: 3, animal:'Koala',      word:'RETURN',    def:'To come back to where you started.',             fact:'Sleeps 20 hours a day and always returns to its favorite tree.',  habitat:'asia',       file:'SetK_Koala.png' },
+  { num: 4, animal:'Monkey',     word:'THRIVE',    def:'To grow strong and live your best life.',        fact:'Prehensile tail works like a fifth hand for climbing.',           habitat:'rainforest', file:'SetK_Monkey.png' },
+  { num: 5, animal:'Sloth',      word:'PERSIST',   def:"To keep going, even when it's hard.",            fact:'Moves so slowly that algae actually grows in its fur!',           habitat:'rainforest', file:'SetK_Sloth.png' },
+  { num: 6, animal:'Hippo',      word:'SUSTAIN',   def:'To keep something alive and going strong.',      fact:'Spends up to 16 hours a day submerged to stay cool.',             habitat:'aquatic',    file:'SetK_Hippo.png' },
+  { num: 7, animal:'Kangaroo',   word:'GROW',      def:'To get bigger and stronger over time.',          fact:"Joey lives in mom's pouch for 8\u201310 months before hopping out.",habitat:'asia',       file:'SetK_Kangaroo.png' },
+  { num: 8, animal:'Flamingo',   word:'TRANSFORM', def:'To change completely into something new.',       fact:'Pink color comes from the shrimp and algae it eats.',             habitat:'aquatic',    file:'SetK_Flamingo.png' },
+  { num: 9, animal:'Polar Bear', word:'ADAPT',     def:'To change so you fit where you live.',           fact:'Its fur is actually transparent \u2014 it just looks white in snow.', habitat:'polar',  file:'SetK_PolarBear.png' },
+  { num:10, animal:'Whale',      word:'BREATHE',   def:'To take air in, then let it out.',               fact:'Can hold its breath underwater for up to 90 minutes.',            habitat:'aquatic',    file:'SetK_Whale.png' },
+  { num:11, animal:'Otter',      word:'FLOW',      def:'To move smoothly, like water in a stream.',      fact:"Holds hands while sleeping so it won't drift away from family.",  habitat:'aquatic',    file:'SetK_Otter.png' },
+  { num:12, animal:'Eagle',      word:'RISE',      def:'To lift up and go higher.',                      fact:'Rides thermals to soar over a mile high without flapping.',       habitat:'polar',      file:'SetK_Eagle.png' },
+  { num:13, animal:'Chameleon',  word:'SHINE',     def:'To let your light show for others to see.',      fact:'Changes color with mood, temperature, AND camouflage.',           habitat:'rainforest', file:'SetK_Chameleon.png' },
+  { num:14, animal:'Peacock',    word:'BLOOM',     def:'To open up and show your beauty.',               fact:"A male's showy tail can be 5 feet long and covered in eye-spots.",habitat:'asia',       file:'SetK_Peacock.png' },
+  { num:15, animal:'Penguin',    word:'ROOT',      def:'To stay strong in one place, holding on.',       fact:'Emperor dads balance the egg on their feet for 65 days straight.',habitat:'polar',      file:'SetK_Penguin.png' },
+  { num:16, animal:'Lion',       word:'ANCHOR',    def:'Something steady that helps hold you in place.', fact:'The only big cat that hunts as a team in a pride.',               habitat:'africa',     file:'SetK_Lion.png' },
+  { num:17, animal:'Turtle',     word:'MIGRATE',   def:'To travel far to find a new home.',              fact:'Returns to the same beach where it was born to lay eggs.',        habitat:'aquatic',    file:'SetK_Turtle.png' },
+  { num:18, animal:'Crocodile',  word:'EMERGE',    def:'To come out and be seen.',                       fact:'Has the strongest bite force of any animal alive today.',         habitat:'aquatic',    file:'SetK_Crocodile.png' },
+  { num:19, animal:'Cheetah',    word:'RENEW',     def:'To make something feel fresh and new again.',    fact:'Fastest land animal \u2014 0 to 70 mph in just 3 seconds.',       habitat:'africa',     file:'SetK_Cheetah.png' },
+  { num:20, animal:'Owl',        word:'CLEAR',     def:'Easy to see through, with nothing in the way.',  fact:'Can turn its head 270 degrees without moving its body.',          habitat:'polar',      file:'SetK_Owl.png' },
+  { num:21, animal:'Giraffe',    word:'RESTORE',   def:'To bring something back to how it should be.',   fact:'Tongue is 18 inches long and bluish-black to avoid sunburn.',     habitat:'africa',     file:'SetK_Giraffe.png' },
+  { num:22, animal:'Clownfish',  word:'FILTER',    def:'To keep the good and let the rest go.',          fact:'Lives unharmed inside anemone stingers that hurt other fish.',    habitat:'aquatic',    file:'SetK_Clownfish.png' },
+  { num:23, animal:'Butterfly',  word:'CYCLE',     def:'Something that happens over and over again.',    fact:'Transforms: egg \u2192 caterpillar \u2192 chrysalis \u2192 butterfly.', habitat:'rainforest', file:'SetK_Butterfly.png' },
+  { num:24, animal:'Frog',       word:'ABSORB',    def:'To soak something in, like a sponge.',           fact:'Drinks water through its skin, not by swallowing.',               habitat:'rainforest', file:'SetK_Frog.png' },
+  { num:25, animal:'Elephant',   word:'HEAL',      def:'To get better after being hurt or sad.',         fact:'Mourns its dead and can recognize itself in a mirror.',           habitat:'africa',     file:'SetK_Elephant.png' }
+];
+
+const seen = new Set();
+let currentFilter = 'all';
+let celebrationShown = false;
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+function fmtNum(n){ return n < 10 ? '0'+n : ''+n; }
+
+function buildFilters(){
+  const bar = document.getElementById('filters');
+  const keys = Object.keys(HABITATS);
+  bar.innerHTML = keys.map(function(k){
+    const h = HABITATS[k];
+    const count = k === 'all' ? CARDS.length : CARDS.filter(function(c){return c.habitat === k;}).length;
+    return '<button class="filter-btn' + (k===currentFilter?' active':'') + '" data-filter="'+k+'">' +
+           '<span>'+h.emoji+'</span>' +
+           '<span>'+h.label+'</span>' +
+           '<span class="count">('+count+')</span>' +
+           '</button>';
+  }).join('');
+  bar.querySelectorAll('.filter-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      currentFilter = btn.dataset.filter;
+      buildFilters();
+      applyFilter();
+    });
+  });
+}
+
+function applyFilter(){
+  document.querySelectorAll('.card').forEach(function(el){
+    const idx = parseInt(el.dataset.idx,10);
+    const card = CARDS[idx];
+    const match = (currentFilter === 'all') || (card.habitat === currentFilter);
+    el.classList.toggle('hidden', !match);
+  });
+}
+
+function buildGrid(){
+  const grid = document.getElementById('grid');
+  grid.innerHTML = CARDS.map(function(c, i){
+    const habitat = HABITATS[c.habitat];
+    return (
+      '<div class="card" data-idx="'+i+'">' +
+        '<div class="card-inner">' +
+          '<div class="card-face card-front">' +
+            '<div class="card-num">#'+fmtNum(c.num)+' / 25</div>' +
+            '<div class="card-seen-badge">\u2713 Discovered</div>' +
+            '<div class="card-img"><img src="'+c.file+'" alt="'+escapeHtml(c.animal)+'" loading="lazy"/></div>' +
+            '<div class="card-label">' +
+              '<div class="card-label-name">'+escapeHtml(c.animal)+'</div>' +
+              '<div class="card-label-word">'+escapeHtml(c.word)+'</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="card-face card-back">' +
+            '<div class="back-header">' +
+              '<div class="back-name">'+escapeHtml(c.animal)+'</div>' +
+              '<div class="back-num">#'+fmtNum(c.num)+' / 25</div>' +
+            '</div>' +
+            '<div class="back-word-box"><div class="back-word">'+escapeHtml(c.word)+'</div></div>' +
+            '<div class="back-def">"'+escapeHtml(c.def)+'"</div>' +
+            '<div class="back-fact-row">' +
+              '<div class="back-fact-label">Did you know?</div>' +
+              '<div class="back-fact">'+escapeHtml(c.fact)+'</div>' +
+            '</div>' +
+            '<div class="back-habitat">'+habitat.emoji+' '+escapeHtml(habitat.label)+'</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }).join('');
+  grid.querySelectorAll('.card').forEach(function(el){
+    el.addEventListener('click', function(){ onCardClick(el); });
+  });
+}
+
+function onCardClick(el){
+  const idx = parseInt(el.dataset.idx,10);
+  const wasFlipped = el.classList.contains('flipped');
+  el.classList.toggle('flipped');
+  if(!wasFlipped){
+    const n = CARDS[idx].num;
+    if(!seen.has(n)){
+      seen.add(n);
+      el.classList.add('seen');
+      updateTracker();
+    }
+  }
+}
+
+function updateTracker(){
+  const n = seen.size;
+  document.getElementById('seenCount').textContent = n;
+  document.getElementById('barFill').style.width = (n / CARDS.length * 100) + '%';
+  if(n === CARDS.length && !celebrationShown){
+    celebrationShown = true;
+    setTimeout(function(){
+      document.getElementById('celebrate').classList.add('active');
+    }, 520);
+  }
+}
+
+function resetAll(){
+  seen.clear();
+  celebrationShown = false;
+  document.querySelectorAll('.card').forEach(function(el){
+    el.classList.remove('flipped','seen');
+  });
+  updateTracker();
+}
+
+buildFilters();
+buildGrid();
+updateTracker();
+document.getElementById('resetBtn').addEventListener('click', resetAll);
+document.getElementById('celebrateClose').addEventListener('click', function(){
+  document.getElementById('celebrate').classList.remove('active');
+});
+</script>
+
+</body>
+</html>
