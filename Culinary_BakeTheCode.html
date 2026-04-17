@@ -68,12 +68,12 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
 
 /* REFERENCE CHART */
 .ref-toggle{font-size:.72rem;font-weight:800;color:var(--dna1,#1565C0);cursor:pointer;text-decoration:underline;text-align:center;display:block;margin-bottom:8px;}
-.ref-chart{display:none;background:#F8F9FA;border-radius:10px;padding:16px;border:1.5px solid #e8ddd0;}
+.ref-chart{display:none;background:#F8F9FA;border-radius:10px;padding:12px;border:1.5px solid #e8ddd0;}
 .ref-chart.open{display:block;}
-.ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;}
-.ref-row{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:6px;background:#f8f6f2;}
-.ref-letter{font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--navy);width:22px;}
-.ref-binary{font-family:'Share Tech Mono',monospace;font-size:.85rem;color:#333;font-weight:700;}
+.ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:4px;}
+.ref-row{display:flex;align-items:center;gap:6px;padding:2px 4px;border-radius:4px;}
+.ref-letter{font-family:'Fredoka One',cursive;font-size:.8rem;color:var(--navy);width:16px;}
+.ref-binary{font-family:'Share Tech Mono',monospace;font-size:.62rem;color:#555;}
 
 /* COOKIE PREVIEW */
 .cookie-stage{display:flex;flex-direction:column;align-items:center;gap:12px;padding:14px 0;}
@@ -132,52 +132,115 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
 @media(max-width:500px){.word-grid{grid-template-columns:repeat(4,1fr);}
 .binary-groups{gap:7px;}.bit{width:15px;height:19px;font-size:.65rem;}}
 
-@media print{
-  @page{size:letter portrait;margin:.4in;}
-  body *{visibility:hidden !important;}
-  .print-target,
-  .print-target *{visibility:visible !important;}
-  .print-target{
-    position:fixed!important;
-    top:0!important;left:0!important;
-    width:100%!important;
-    background:white!important;
-  }
+/* ── S3 WIDE: side-by-side Result + Paint Canvas ────────── */
+.screen.wide{max-width:1160px;}
+.split-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:18px;
+  align-items:start;margin-bottom:14px;
+}
+.split-col{min-width:0;}
+.split-col-label{
+  font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--light);margin-bottom:8px;padding-left:4px;
+}
+@media(max-width:820px){
+  .split-grid{grid-template-columns:1fr;}
 }
 
-/* ── SIDE BY SIDE RESULT ── */
-.result-split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:14px;}
-.split-panel{display:flex;flex-direction:column;gap:0;}
-.split-panel-lbl{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--light);margin-bottom:8px;text-align:center;}
+/* ── PAINT STAGE ────────────────────────────────────────── */
+.paint-stage-wrap{
+  background:white;border-radius:var(--radius);padding:16px;
+  box-shadow:var(--shadow);border:1.5px solid #f0e8dc;
+}
+.paint-stage{
+  position:relative;width:100%;aspect-ratio:1/1;max-width:420px;
+  margin:0 auto 12px;background:#FFF8EE;border-radius:12px;
+  border:2px dashed #e8ddd0;overflow:hidden;
+  touch-action:none;
+}
+.paint-stage canvas,
+.paint-stage svg{
+  position:absolute;inset:0;width:100%;height:100%;
+}
+.paint-stage svg{pointer-events:none;}
+.paint-stage canvas{cursor:crosshair;}
 
-/* SHAPE TOGGLE */
-.shape-toggle{display:flex;gap:6px;justify-content:center;margin-bottom:12px;}
-.shape-btn{padding:5px 14px;border-radius:20px;border:2px solid #e8ddd0;background:#fdfaf6;font-family:'Nunito',sans-serif;font-weight:800;font-size:.68rem;color:var(--navy);cursor:pointer;transition:all .15s;}
-.shape-btn.active{background:var(--navy);color:var(--gold);border-color:var(--navy);}
+/* Tool row */
+.paint-tools{
+  display:flex;gap:6px;flex-wrap:wrap;justify-content:center;
+  margin-bottom:10px;
+}
+.paint-tool-btn{
+  flex:0 0 auto;width:42px;height:42px;border-radius:10px;
+  border:2px solid #e8ddd0;background:#fdfaf6;cursor:pointer;
+  font-size:1.15rem;transition:all .15s;display:flex;
+  align-items:center;justify-content:center;
+}
+.paint-tool-btn:hover{border-color:var(--gold);}
+.paint-tool-btn.active{background:var(--navy);border-color:var(--navy);color:var(--gold);}
 
-/* COLORING PALETTE */
-.color-palette{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;padding:8px 0;}
-.pal-swatch{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:all .14s;box-shadow:0 1px 4px rgba(0,0,0,.2);}
-.pal-swatch:hover{transform:scale(1.15);}
-.pal-swatch.picked{border-color:var(--navy);transform:scale(1.2);box-shadow:0 0 0 2px rgba(255,255,255,.5),0 2px 8px rgba(0,0,0,.3);}
+/* Brush size row */
+.paint-size-row{
+  display:flex;gap:6px;justify-content:center;margin-bottom:10px;
+  align-items:center;
+}
+.paint-size-row .size-lbl{
+  font-size:.62rem;font-weight:800;color:var(--mid);
+  text-transform:uppercase;letter-spacing:.08em;margin-right:4px;
+}
+.size-btn{
+  width:34px;height:34px;border-radius:50%;border:2px solid #e8ddd0;
+  background:#fdfaf6;cursor:pointer;transition:all .15s;
+  display:flex;align-items:center;justify-content:center;
+}
+.size-btn:hover{border-color:var(--gold);}
+.size-btn.active{border-color:var(--navy);background:#fff;}
+.size-btn .dot{background:var(--navy);border-radius:50%;}
 
-/* COLORING COOKIE WRAPPER */
-.coloring-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;background:white;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);border:1.5px solid #f0e8dc;}
-#coloringCanvas{border-radius:10px;cursor:crosshair;display:block;max-width:100%;box-shadow:0 4px 16px rgba(0,0,0,.12);}
+/* Color palette */
+.paint-colors{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-bottom:10px;
+}
+.color-swatch{
+  aspect-ratio:1/1;border-radius:8px;border:2px solid rgba(0,0,0,.08);
+  cursor:pointer;transition:all .15s;position:relative;
+}
+.color-swatch:hover{transform:scale(1.08);}
+.color-swatch.active{
+  border-color:var(--navy);border-width:3px;
+  box-shadow:0 0 0 2px rgba(26,39,68,.25);
+}
+.color-swatch.active::after{
+  content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:white;font-weight:900;text-shadow:0 1px 2px rgba(0,0,0,.5);font-size:.9rem;
+}
 
-/* COLORING ACTIONS */
-.color-actions{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;}
-.btn-color-action{padding:6px 12px;border-radius:20px;border:1.5px solid #e8ddd0;background:white;color:var(--mid);font-family:'Nunito',sans-serif;font-weight:800;font-size:.65rem;cursor:pointer;transition:all .14s;}
-.btn-color-action:hover{border-color:var(--light);color:var(--navy);}
-.btn-print-color{padding:6px 14px;border-radius:20px;border:none;background:var(--navy);color:var(--gold);font-family:'Nunito',sans-serif;font-weight:900;font-size:.65rem;cursor:pointer;transition:all .14s;}
-.btn-print-color:hover{background:var(--navy2);}
+/* Action row (Clear / Undo) */
+.paint-actions{
+  display:flex;gap:8px;justify-content:center;
+}
+.paint-action-btn{
+  padding:9px 16px;border-radius:10px;border:2px solid #e8ddd0;
+  background:white;color:var(--navy);font-family:'Nunito',sans-serif;
+  font-weight:800;font-size:.76rem;cursor:pointer;transition:all .15s;
+  display:inline-flex;align-items:center;gap:5px;
+}
+.paint-action-btn:hover{border-color:var(--navy);}
+.paint-action-btn:disabled{opacity:.4;cursor:not-allowed;}
+.paint-action-btn.clear{color:#c0392b;border-color:#f0c8c0;}
+.paint-action-btn.clear:hover{background:#fdf0ee;border-color:#c0392b;}
 
-/* Print coloring sheet */
-/* print handled above */
-#colorPrintArea{display:none;}
+/* Hint line in paint column */
+.paint-hint{
+  text-align:center;font-size:.72rem;color:var(--mid);font-style:italic;
+  font-weight:600;margin-top:6px;line-height:1.4;
+}
 
-@media(max-width:600px){
-  .result-split{grid-template-columns:1fr;}
+@media print{
+  @page{size:6in 4in;margin:.25in;}
+  body *{visibility:hidden;}
+  #printArea,#printArea *{visibility:visible;}
+  #printArea{position:fixed;top:0;left:0;width:100%;}
 }
 </style>
 </head>
@@ -292,56 +355,63 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
   </div>
 </div>
 
-<!-- S3: RESULT -->
-<div class="screen" id="scr3" style="max-width:960px;">
+<!-- S3: RESULT + PAINT CANVAS (side by side) -->
+<div class="screen wide" id="scr3">
   <div class="scr-hd">
     <div class="step-pill">Step 3 of 3 · Code Cracked!</div>
     <h2>Cookie Unlocked! 🍪🎉</h2>
-    <p>Your binary code is cracked — now color your cookie!</p>
+    <p>Print your decoded card on the left · Color a cookie for fun on the right!</p>
   </div>
 
-  <div class="result-split">
-    <!-- LEFT: Result card -->
-    <div class="split-panel">
-      <div class="split-panel-lbl">📋 Your Result Card</div>
+  <div class="split-grid">
+
+    <!-- LEFT: Result card (unchanged, printable) -->
+    <div class="split-col">
+      <div class="split-col-label">🖨️ Your Printable Card</div>
       <div id="printArea">
         <div class="result-card" id="resultCard"></div>
       </div>
-      <div style="margin-top:10px;">
-        <button class="btn-print no-print" onclick="printResultCard()" style="width:100%;padding:10px;border-radius:10px;border:2px solid var(--navy);background:white;color:var(--navy);font-family:'Nunito',sans-serif;font-weight:900;font-size:.82rem;cursor:pointer;">🖨️ Print Result Card</button>
+    </div>
+
+    <!-- RIGHT: Paint canvas (no printing) -->
+    <div class="split-col">
+      <div class="split-col-label">🎨 Color-For-Fun Cookie</div>
+      <div class="paint-stage-wrap">
+        <div class="paint-stage" id="paintStage">
+          <canvas id="paintCanvas" width="420" height="420"></canvas>
+          <svg id="paintOverlay" viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+
+        <div class="paint-tools" id="paintTools">
+          <button class="paint-tool-btn active" data-tool="brush" title="Brush">🖌️</button>
+          <button class="paint-tool-btn" data-tool="fill"  title="Fill">🪣</button>
+          <button class="paint-tool-btn" data-tool="eraser" title="Eraser">🧽</button>
+        </div>
+
+        <div class="paint-size-row">
+          <span class="size-lbl">Size</span>
+          <button class="size-btn active" data-size="6"><span class="dot" style="width:6px;height:6px;"></span></button>
+          <button class="size-btn" data-size="12"><span class="dot" style="width:10px;height:10px;"></span></button>
+          <button class="size-btn" data-size="22"><span class="dot" style="width:16px;height:16px;"></span></button>
+          <button class="size-btn" data-size="38"><span class="dot" style="width:22px;height:22px;"></span></button>
+        </div>
+
+        <div class="paint-colors" id="paintColors"></div>
+
+        <div class="paint-actions">
+          <button class="paint-action-btn" id="paintUndo" disabled>↶ Undo</button>
+          <button class="paint-action-btn clear" id="paintClear">🗑️ Clear</button>
+        </div>
+
+        <div class="paint-hint">Tip: Pick a color, then brush or fill to decorate!</div>
       </div>
     </div>
 
-    <!-- RIGHT: Interactive coloring -->
-    <div class="split-panel">
-      <div class="split-panel-lbl">🎨 Color Your Cookie!</div>
-      <div class="coloring-wrap">
-        <!-- Shape toggle -->
-        <div class="shape-toggle no-print">
-          <button class="shape-btn active" id="shapeRound" onclick="switchShape('round')">🔵 Round</button>
-          <button class="shape-btn" id="shapeWord" onclick="switchShape('word')">🔤 Word Shape</button>
-        </div>
-        <!-- Canvas -->
-        <canvas id="coloringCanvas" width="260" height="260"></canvas>
-        <!-- Palette -->
-        <div class="color-palette no-print" id="colorPalette"></div>
-        <!-- Actions -->
-        <div class="color-actions no-print">
-          <button class="btn-color-action" onclick="undoColoring()">↩️ Undo</button>
-          <button class="btn-color-action" onclick="resetColoring()">🔄 Reset</button>
-          <button class="btn-print-color" onclick="printColorSheet()">🖨️ Print Sheet</button>
-        </div>
-      </div>
-    </div>
   </div>
 
-  <!-- Hidden print area for coloring sheet -->
-  <div id="colorPrintArea" style="display:none;">
-    <canvas id="printCanvas" width="520" height="580"></canvas>
-  </div>
-
-  <div class="nav-row no-print">
+  <div class="nav-row">
     <button class="btn-back" onclick="goTo(2)">← Decode Again</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Print Card</button>
     <button class="btn-submit" onclick="submitCode()">✅ Submit!</button>
   </div>
 </div>
@@ -361,6 +431,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
     <div class="success-title">Code Baked!</div>
     <div class="success-msg">Your Bake the Code card has been logged!<br>Print it and show off your binary skills! 🍪🔐</div>
     <button class="btn-restart" onclick="restart()">← Decode Another Word</button>
+    <a href="Culinary_Menu.html" style="display:inline-block;margin-top:10px;padding:13px 28px;border-radius:50px;border:2.5px solid var(--navy);background:transparent;color:var(--navy);font-family:'Nunito',sans-serif;font-weight:900;font-size:.9rem;text-decoration:none;transition:all .2s;">🏠 Return to Main Menu</a>
   </div>
 </div>
 
@@ -418,6 +489,7 @@ function goTo(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('scr'+id).classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
+  if(id===3){ initPaintCanvas(); }
 }
 
 /* ══ STEP 0 ═══════════════════════════════════════════════════ */
@@ -942,295 +1014,273 @@ async function submitCode(){
 /* ══ RESTART ══════════════════════════════════════════════════ */
 function restart(){
   S.word=''; S.decoded=[]; S.revealed=false;
+  // Reset paint canvas so next student starts fresh
+  PAINT.initialized = false;
+  PAINT.history = [];
   buildWordGrid();
   goTo(1);
 }
 
 function show(id){document.getElementById(id).classList.add('show');}
 function hide(id){document.getElementById(id).classList.remove('show');}
-
-
-/* ══ COLORING SHEET SYSTEM — FREE PAINT ═══════════════════════ */
-let coloringShape = 'round';
-let selectedPalColor = '#FF8F00';
-let brushSize = 16;
-let isPainting = false;
-let coloringHistory = [];
-const MAX_HISTORY = 25;
-
-const COLORING_PALETTE = [
-  '#FF8F00','#F9A825','#FFF9C4','#FFFFFF',
-  '#1565C0','#90CAF9','#E3F2FD','#2D7A4F',
-  '#A5D6A7','#E91E63','#FCE4EC','#6A1B9A',
-  '#CE93D8','#B71C1C','#FFCDD2','#3E2723',
-  '#D7CCC8','#00796B','#B2DFDB','#37474F',
+/* ══ PAINT CANVAS (S3 right side · color-for-fun, not logged) ═════ */
+const PAINT_COLORS = [
+  '#FFFFFF', // white frosting
+  '#F5CC70', // gold
+  '#E8A820', // amber
+  '#D14B3A', // red
+  '#E07A52', // coral
+  '#F2B3C8', // pink
+  '#B85FA3', // purple
+  '#4C78C4', // blue
+  '#5AB7C9', // teal
+  '#6AB87A', // green
+  '#8B5A2B', // chocolate
+  '#1A2744', // navy
 ];
 
-function buildColorPalette() {
-  const pal = document.getElementById('colorPalette');
-  if (!pal) return;
-  pal.innerHTML = '';
-
-  // Brush size row
-  const brushRow = document.createElement('div');
-  brushRow.style.cssText = 'display:flex;align-items:center;gap:8px;width:100%;justify-content:center;margin-bottom:4px;';
-  brushRow.innerHTML = `
-    <span style="font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--light);">Brush</span>
-    <button onclick="setBrush(8)"  style="width:16px;height:16px;border-radius:50%;background:#888;border:2px solid #e8ddd0;cursor:pointer;" title="Small"></button>
-    <button onclick="setBrush(16)" style="width:22px;height:22px;border-radius:50%;background:#888;border:2px solid #e8ddd0;cursor:pointer;" title="Medium"></button>
-    <button onclick="setBrush(28)" style="width:30px;height:30px;border-radius:50%;background:#888;border:2px solid #e8ddd0;cursor:pointer;" title="Large"></button>
-    <button onclick="setBrush(6)"  style="width:12px;height:12px;border-radius:50%;background:#888;border:2px solid #e8ddd0;cursor:pointer;" title="Detail"></button>
-  `;
-  pal.appendChild(brushRow);
-
-  // Color swatches
-  const swatchRow = document.createElement('div');
-  swatchRow.style.cssText = 'display:flex;flex-wrap:wrap;gap:5px;justify-content:center;';
-  COLORING_PALETTE.forEach(c => {
-    const sw = document.createElement('button');
-    sw.className = 'pal-swatch' + (c === selectedPalColor ? ' picked' : '');
-    sw.style.background = c;
-    sw.style.outline = c === '#FFFFFF' ? '1.5px solid #ccc' : '';
-    sw.title = c;
-    sw.onclick = () => {
-      selectedPalColor = c;
-      document.querySelectorAll('.pal-swatch').forEach(s => s.classList.remove('picked'));
-      sw.classList.add('picked');
-    };
-    swatchRow.appendChild(sw);
-  });
-  pal.appendChild(swatchRow);
-}
-
-function setBrush(size) { brushSize = size; }
-
-function switchShape(shape) {
-  coloringShape = shape;
-  document.getElementById('shapeRound').classList.toggle('active', shape === 'round');
-  document.getElementById('shapeWord').classList.toggle('active', shape === 'word');
-  initColoringCanvas();
-}
-
-function initColoringCanvas() {
-  const canvas = document.getElementById('coloringCanvas');
-  const ctx = canvas.getContext('2d');
-  ctx.fillStyle = 'white';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  drawCookieOutline(ctx);
-  coloringHistory = [];
-  saveColoringHistory();
-}
-
-function drawCookieOutline(ctx) {
-  const d = BAKE_DATA[S.word];
-  if (!d) return;
-  const W = 260, H = 260;
-  const STROKE = '#111';
-  const SW = 3;
-  ctx.strokeStyle = STROKE;
-  ctx.lineWidth = SW;
-
-  if (coloringShape === 'round') {
-    const cx = W/2, cy = H/2, r = 112;
-    // Outer circle
-    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2);
-    ctx.fillStyle='white'; ctx.fill(); ctx.stroke();
-    // Inner ring
-    ctx.beginPath(); ctx.arc(cx, cy, r-10, 0, Math.PI*2);
-    ctx.strokeStyle='#ddd'; ctx.lineWidth=1.5; ctx.stroke();
-    ctx.strokeStyle=STROKE; ctx.lineWidth=SW;
-    // Word label inside cookie bottom
-    ctx.font = 'bold 11px Nunito, sans-serif';
-    ctx.fillStyle = '#ccc';
-    ctx.textAlign = 'center';
-    ctx.fillText(S.word.toUpperCase() + ' · ' + d.code, cx, cy + r - 14);
-  } else {
-    // Word shape
-    const word = S.word.toUpperCase();
-    const len = word.length;
-    const W2 = 260, pad = 10;
-    const rr = 16;
-    // Outer rounded rect
-    roundRect(ctx, pad, 60, W2-pad*2, 140, rr);
-    ctx.fillStyle='white'; ctx.fill();
-    ctx.strokeStyle=STROKE; ctx.lineWidth=SW; ctx.stroke();
-    // Inner line
-    roundRect(ctx, pad+8, 68, W2-pad*2-16, 124, rr-5);
-    ctx.strokeStyle='#ddd'; ctx.lineWidth=1.5; ctx.stroke();
-    ctx.strokeStyle=STROKE; ctx.lineWidth=SW;
-    // Word outline only (not filled — student colors it!)
-    const fs = len<=5?46:len<=7?38:len<=9?30:24;
-    ctx.font = `bold ${fs}px "Fredoka One", cursive`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = '#111';
-    ctx.strokeText(word, W2/2, 132);
-    // Label
-    ctx.font = '10px Nunito, sans-serif';
-    ctx.fillStyle = '#bbb';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'alphabetic';
-    ctx.fillText(S.word + ' · Code: ' + d.code, W2/2, 52);
-  }
-}
-
-function roundRect(ctx, x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y);
-  ctx.quadraticCurveTo(x+w,y,x+w,y+r);
-  ctx.lineTo(x+w,y+h-r);
-  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
-  ctx.lineTo(x+r,y+h);
-  ctx.quadraticCurveTo(x,y+h,x,y+h-r);
-  ctx.lineTo(x,y+r);
-  ctx.quadraticCurveTo(x,y,x+r,y);
-  ctx.closePath();
-}
-
-/* ── FREE PAINT HANDLERS ── */
-function initPaintHandlers() {
-  const canvas = document.getElementById('coloringCanvas');
-  if (!canvas) return;
-
-  function getPos(e) {
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    const src = e.touches ? e.touches[0] : e;
-    return {
-      x: (src.clientX - rect.left) * scaleX,
-      y: (src.clientY - rect.top)  * scaleY
-    };
-  }
-
-  function paint(e) {
-    if (!isPainting) return;
-    e.preventDefault();
-    const {x, y} = getPos(e);
-    const ctx = canvas.getContext('2d');
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.fillStyle = selectedPalColor;
-    ctx.beginPath();
-    ctx.arc(x, y, brushSize/2, 0, Math.PI*2);
-    ctx.fill();
-  }
-
-  function startPaint(e) {
-    isPainting = true;
-    saveColoringHistory();
-    paint(e);
-  }
-
-  function stopPaint() { isPainting = false; }
-
-  canvas.addEventListener('mousedown',  startPaint);
-  canvas.addEventListener('mousemove',  paint);
-  canvas.addEventListener('mouseup',    stopPaint);
-  canvas.addEventListener('mouseleave', stopPaint);
-  canvas.addEventListener('touchstart', startPaint, {passive:false});
-  canvas.addEventListener('touchmove',  paint,      {passive:false});
-  canvas.addEventListener('touchend',   stopPaint);
-}
-
-/* ── HISTORY ── */
-function saveColoringHistory() {
-  const canvas = document.getElementById('coloringCanvas');
-  if (!canvas) return;
-  const snap = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
-  coloringHistory.push(snap);
-  if (coloringHistory.length > MAX_HISTORY) coloringHistory.shift();
-}
-
-function undoColoring() {
-  if (coloringHistory.length <= 1) return;
-  coloringHistory.pop();
-  const canvas = document.getElementById('coloringCanvas');
-  canvas.getContext('2d').putImageData(coloringHistory[coloringHistory.length-1], 0, 0);
-}
-
-function resetColoring() {
-  coloringHistory = [];
-  initColoringCanvas();
-}
-
-/* ── PRINT COLORING SHEET ── */
-function printResultCard() {
-  // Convert result card to printable window
-  const card = document.getElementById('resultCard');
-  const d = BAKE_DATA[S.word];
-  const win = window.open('','_blank','width=700,height=600');
-  win.document.write(`<!DOCTYPE html><html><head>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
-    <style>
-      *{box-sizing:border-box;margin:0;padding:0;}
-      body{font-family:'Nunito',sans-serif;background:white;padding:24px;}
-      .rc-header{padding:20px;text-align:center;border-radius:12px 12px 0 0;}
-      .rc-word{font-family:'Fredoka One',cursive;font-size:2.2rem;letter-spacing:.08em;}
-      .rc-code{font-family:monospace;font-size:.9rem;margin-top:4px;opacity:.85;}
-      .rc-body{background:white;padding:16px;border:1px solid #eee;border-radius:0 0 12px 12px;}
-      .rc-section{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#C87A2F;margin-bottom:6px;margin-top:12px;}
-      .rc-binary-box{background:#0D1117;border-radius:8px;padding:10px;font-family:monospace;font-size:.7rem;color:#58A6FF;word-break:break-all;}
-      .rc-desc{font-size:.82rem;font-weight:600;color:#1A2744;line-height:1.6;font-style:italic;}
-      .rc-steps{font-size:.8rem;color:#7A3E10;line-height:1.8;font-weight:600;}
-      .rc-footer{font-size:.58rem;text-align:center;color:#ccc;margin-top:14px;}
-    </style>
-  </head><body>${card.outerHTML}
-  <script>window.onload=function(){window.print();setTimeout(()=>window.close(),1000);}<\/script>
-  </body></html>`);
-  win.document.close();
-}
-
-function printColorSheet() {
-  const canvas = document.getElementById('coloringCanvas');
-  const d = BAKE_DATA[S.word];
-  if (!d) return;
-
-  // Capture canvas as image data URL
-  const imgDataUrl = canvas.toDataURL('image/png');
-
-  const win = window.open('','_blank','width=700,height=800');
-  win.document.write(`<!DOCTYPE html><html><head>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
-    <style>
-      *{box-sizing:border-box;margin:0;padding:0;}
-      body{font-family:'Nunito',sans-serif;background:white;padding:28px;max-width:680px;margin:0 auto;}
-      h1{font-family:'Fredoka One',cursive;font-size:1.8rem;color:#1A2744;text-align:center;margin-bottom:4px;}
-      .sub{font-size:.82rem;color:#7A3E10;text-align:center;margin-bottom:16px;font-weight:700;}
-      .cookie-img{display:block;margin:0 auto;max-width:320px;width:100%;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.12);}
-      .desc{font-style:italic;text-align:center;color:#555;font-size:.85rem;margin:16px 0 8px;line-height:1.5;}
-      .steps{font-size:.8rem;color:#333;line-height:1.9;margin-top:8px;}
-      .step{padding:4px 0;border-bottom:1px solid #f0e8dc;}
-      .footer{font-size:.6rem;color:#ccc;text-align:center;margin-top:20px;}
-      @media print{@page{size:letter portrait;margin:.4in;}}
-    </style>
-  </head><body>
-    <h1>${S.word} — ${d.code}</h1>
-    <div class="sub">Bake the Code · Cookie Decoration Plan · Made by ${S.name}</div>
-    <img class="cookie-img" src="${imgDataUrl}" alt="Cookie coloring design"/>
-    <div class="desc">"${d.desc}"</div>
-    <div class="steps">
-      ${d.steps.split('\n').map(s=>`<div class="step">${s}</div>`).join('')}
-    </div>
-    <div class="footer">Bake the Code · Smile Bags · Culinary Arts with Ms. Sayers · Spring 2026</div>
-    <script>window.onload=function(){window.print();setTimeout(()=>window.close(),1500);}<\/script>
-  </body></html>`);
-  win.document.close();
-}
-
-/* ── INIT when result screen loads ── */
-const _origBuildResultCard = buildResultCard;
-buildResultCard = function() {
-  _origBuildResultCard();
-  setTimeout(() => {
-    const d = BAKE_DATA[S.word];
-    if (d && d.frost) selectedPalColor = d.frost;
-    buildColorPalette();
-    initColoringCanvas();
-    initPaintHandlers();
-  }, 150);
+const PAINT = {
+  ctx: null,
+  canvas: null,
+  tool: 'brush',
+  color: '#D14B3A',
+  size: 6,
+  drawing: false,
+  lastX: 0,
+  lastY: 0,
+  history: [],   // array of ImageData snapshots
+  historyMax: 10,
+  initialized: false,
 };
 
+function initPaintCanvas(){
+  if (PAINT.initialized) return;
+  PAINT.initialized = true;
+
+  PAINT.canvas = document.getElementById('paintCanvas');
+  if (!PAINT.canvas) return;
+  PAINT.ctx = PAINT.canvas.getContext('2d', {willReadFrequently: true});
+
+  // Build SVG overlay (cookie outline + chocolate chips + OneWord in center)
+  buildCookieOverlay();
+
+  // Paint white "dough" fill as starting background
+  PAINT.ctx.fillStyle = '#FFF8EE';
+  PAINT.ctx.beginPath();
+  PAINT.ctx.arc(210, 210, 195, 0, Math.PI*2);
+  PAINT.ctx.fill();
+
+  // Build color palette
+  const pal = document.getElementById('paintColors');
+  pal.innerHTML = '';
+  PAINT_COLORS.forEach((hex, i) => {
+    const s = document.createElement('button');
+    s.className = 'color-swatch' + (hex === PAINT.color ? ' active' : '');
+    s.style.background = hex;
+    s.dataset.color = hex;
+    s.onclick = () => selectColor(hex);
+    pal.appendChild(s);
+  });
+
+  // Tool buttons
+  document.querySelectorAll('#paintTools .paint-tool-btn').forEach(b => {
+    b.onclick = () => selectTool(b.dataset.tool);
+  });
+
+  // Size buttons
+  document.querySelectorAll('.paint-size-row .size-btn').forEach(b => {
+    b.onclick = () => {
+      PAINT.size = parseInt(b.dataset.size, 10);
+      document.querySelectorAll('.paint-size-row .size-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+    };
+  });
+
+  // Clear / Undo
+  document.getElementById('paintClear').onclick = () => {
+    if (!confirm('Clear your cookie? This cannot be undone.')) return;
+    PAINT.ctx.clearRect(0,0,PAINT.canvas.width,PAINT.canvas.height);
+    PAINT.ctx.fillStyle = '#FFF8EE';
+    PAINT.ctx.beginPath();
+    PAINT.ctx.arc(210, 210, 195, 0, Math.PI*2);
+    PAINT.ctx.fill();
+    PAINT.history = [];
+    updateUndoBtn();
+  };
+  document.getElementById('paintUndo').onclick = undoPaint;
+
+  // Drawing events (mouse + touch)
+  const stage = document.getElementById('paintStage');
+  stage.addEventListener('mousedown', startDraw);
+  stage.addEventListener('mousemove', drawMove);
+  window.addEventListener('mouseup', endDraw);
+  stage.addEventListener('mouseleave', endDraw);
+  stage.addEventListener('touchstart', e => { e.preventDefault(); startDraw(e.touches[0]); }, {passive:false});
+  stage.addEventListener('touchmove',  e => { e.preventDefault(); drawMove(e.touches[0]); }, {passive:false});
+  stage.addEventListener('touchend',   e => { e.preventDefault(); endDraw(); }, {passive:false});
+}
+
+function buildCookieOverlay(){
+  const svg = document.getElementById('paintOverlay');
+  const word = (S.word || 'COOKIE').toUpperCase();
+  svg.innerHTML = `
+    <defs>
+      <pattern id="doughTex" patternUnits="userSpaceOnUse" width="6" height="6">
+        <circle cx="3" cy="3" r=".6" fill="rgba(139,90,43,.18)"/>
+      </pattern>
+    </defs>
+    <!-- Cookie outline -->
+    <circle cx="210" cy="210" r="195" fill="none" stroke="#3a2510" stroke-width="4.5"/>
+    <circle cx="210" cy="210" r="188" fill="url(#doughTex)" opacity=".55"/>
+    <!-- Chocolate chip outlines -->
+    <circle cx="120" cy="110" r="18" fill="none" stroke="#3a2510" stroke-width="2.8"/>
+    <circle cx="290" cy="130" r="15" fill="none" stroke="#3a2510" stroke-width="2.8"/>
+    <circle cx="95"  cy="260" r="16" fill="none" stroke="#3a2510" stroke-width="2.8"/>
+    <circle cx="310" cy="290" r="14" fill="none" stroke="#3a2510" stroke-width="2.8"/>
+    <circle cx="175" cy="320" r="13" fill="none" stroke="#3a2510" stroke-width="2.8"/>
+    <circle cx="280" cy="215" r="12" fill="none" stroke="#3a2510" stroke-width="2.8"/>
+    <!-- Word banner in center -->
+    <rect x="60" y="180" width="300" height="64" rx="8" fill="none" stroke="#3a2510" stroke-width="3"/>
+    <text x="210" y="223" text-anchor="middle" font-family="'Fredoka One', cursive" font-size="30" fill="#3a2510" letter-spacing="2">${escapeForSvg(word)}</text>
+  `;
+}
+
+function escapeForSvg(s){
+  return String(s).replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function selectColor(hex){
+  PAINT.color = hex;
+  document.querySelectorAll('#paintColors .color-swatch').forEach(s => {
+    s.classList.toggle('active', s.dataset.color === hex);
+  });
+  // Selecting a color switches tool to brush (unless fill is active)
+  if (PAINT.tool === 'eraser') selectTool('brush');
+}
+
+function selectTool(tool){
+  PAINT.tool = tool;
+  document.querySelectorAll('#paintTools .paint-tool-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.tool === tool);
+  });
+  // Cursor hint
+  PAINT.canvas.style.cursor = (tool === 'fill') ? 'cell' : 'crosshair';
+}
+
+function getPaintPos(evt){
+  const rect = PAINT.canvas.getBoundingClientRect();
+  const x = (evt.clientX - rect.left) * (PAINT.canvas.width  / rect.width);
+  const y = (evt.clientY - rect.top)  * (PAINT.canvas.height / rect.height);
+  return {x, y};
+}
+
+function pushHistory(){
+  try {
+    PAINT.history.push(PAINT.ctx.getImageData(0,0,PAINT.canvas.width,PAINT.canvas.height));
+    if (PAINT.history.length > PAINT.historyMax) PAINT.history.shift();
+    updateUndoBtn();
+  } catch(e) { /* ignore */ }
+}
+
+function updateUndoBtn(){
+  const btn = document.getElementById('paintUndo');
+  if (btn) btn.disabled = PAINT.history.length === 0;
+}
+
+function undoPaint(){
+  if (!PAINT.history.length) return;
+  const snap = PAINT.history.pop();
+  PAINT.ctx.putImageData(snap, 0, 0);
+  updateUndoBtn();
+}
+
+function startDraw(evt){
+  const {x,y} = getPaintPos(evt);
+  pushHistory();
+
+  if (PAINT.tool === 'fill') {
+    floodFill(Math.round(x), Math.round(y), PAINT.color);
+    return;
+  }
+
+  PAINT.drawing = true;
+  PAINT.lastX = x; PAINT.lastY = y;
+  // Dot for a single click
+  PAINT.ctx.beginPath();
+  PAINT.ctx.arc(x, y, PAINT.size/2, 0, Math.PI*2);
+  PAINT.ctx.fillStyle = (PAINT.tool === 'eraser') ? '#FFF8EE' : PAINT.color;
+  PAINT.ctx.fill();
+}
+
+function drawMove(evt){
+  if (!PAINT.drawing) return;
+  if (PAINT.tool === 'fill') return;
+  const {x,y} = getPaintPos(evt);
+  PAINT.ctx.beginPath();
+  PAINT.ctx.lineCap = 'round';
+  PAINT.ctx.lineJoin = 'round';
+  PAINT.ctx.lineWidth = PAINT.size;
+  PAINT.ctx.strokeStyle = (PAINT.tool === 'eraser') ? '#FFF8EE' : PAINT.color;
+  PAINT.ctx.moveTo(PAINT.lastX, PAINT.lastY);
+  PAINT.ctx.lineTo(x, y);
+  PAINT.ctx.stroke();
+  PAINT.lastX = x; PAINT.lastY = y;
+}
+
+function endDraw(){
+  PAINT.drawing = false;
+}
+
+/* Flood fill — iterative scanline for performance on 420x420 */
+function floodFill(sx, sy, fillHex){
+  const W = PAINT.canvas.width, H = PAINT.canvas.height;
+  if (sx < 0 || sy < 0 || sx >= W || sy >= H) return;
+  const img = PAINT.ctx.getImageData(0,0,W,H);
+  const d = img.data;
+  const targetIdx = (sy*W + sx)*4;
+  const tR = d[targetIdx], tG = d[targetIdx+1], tB = d[targetIdx+2], tA = d[targetIdx+3];
+
+  // Parse fill hex
+  const fR = parseInt(fillHex.substr(1,2),16);
+  const fG = parseInt(fillHex.substr(3,2),16);
+  const fB = parseInt(fillHex.substr(5,2),16);
+  const fA = 255;
+
+  if (tR===fR && tG===fG && tB===fB && tA===fA) return; // already filled
+
+  const tol = 8; // tolerance for near-matching colors
+  function match(i){
+    return Math.abs(d[i]  - tR) <= tol
+        && Math.abs(d[i+1]- tG) <= tol
+        && Math.abs(d[i+2]- tB) <= tol
+        && Math.abs(d[i+3]- tA) <= tol;
+  }
+  function paint(i){ d[i]=fR; d[i+1]=fG; d[i+2]=fB; d[i+3]=fA; }
+
+  const stack = [[sx, sy]];
+  while(stack.length){
+    const [x, y] = stack.pop();
+    let yy = y;
+    while (yy >= 0 && match((yy*W + x)*4)) yy--;
+    yy++;
+    let reachLeft = false, reachRight = false;
+    while (yy < H && match((yy*W + x)*4)) {
+      paint((yy*W + x)*4);
+      if (x > 0) {
+        if (match((yy*W + (x-1))*4)) {
+          if (!reachLeft) { stack.push([x-1, yy]); reachLeft = true; }
+        } else reachLeft = false;
+      }
+      if (x < W - 1) {
+        if (match((yy*W + (x+1))*4)) {
+          if (!reachRight) { stack.push([x+1, yy]); reachRight = true; }
+        } else reachRight = false;
+      }
+      yy++;
+    }
+  }
+  PAINT.ctx.putImageData(img, 0, 0);
+}
 </script>
 </body>
 </html>
