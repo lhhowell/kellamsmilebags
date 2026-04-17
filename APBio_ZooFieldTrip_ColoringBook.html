@@ -151,9 +151,14 @@ body{
 
 .book-frame{
   position:relative;
-  width:min(520px, 92vw);
-  height:min(780px, 84vh);
+  width:min(520px, 92vw, 55vh);
   margin:0 auto;
+}
+.book-frame::before{
+  /* Force 2:3 portrait via padding-bottom trick — works in every browser */
+  content:'';
+  display:block;
+  padding-bottom:150%;
 }
 
 /* The page itself — a book page with 3D flip */
@@ -413,7 +418,7 @@ body{
   .nav-prev{left:-54px;}
   .nav-next{right:-54px;}
   .nav-btn{width:40px;height:40px;font-size:18px;}
-  .book-frame{width:min(430px,calc(100vw - 130px));height:min(645px,calc((100vw - 130px) * 1.5));}
+  .book-frame{width:min(430px,calc(100vw - 130px),60vh);}
   .page-animal{font-size:18px;}
   .page.cover{padding:36px 22px;}
   .cover-title{font-size:30px;}
@@ -422,7 +427,7 @@ body{
 @media (max-width:520px){
   .nav-prev{left:4px;}
   .nav-next{right:4px;}
-  .book-frame{width:calc(100vw - 32px);height:calc((100vw - 32px) * 1.5);}
+  .book-frame{width:calc(100vw - 32px);}
   .nav-btn{background:rgba(14,20,16,.78);color:var(--gold-soft);border-color:var(--gold);}
   .nav-btn:hover{background:var(--gold);color:var(--ink-deep);}
 }
