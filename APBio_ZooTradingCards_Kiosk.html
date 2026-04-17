@@ -116,15 +116,177 @@ body{
 
 .footer{text-align:center;font-size:11px;color:var(--muted-2);font-family:'Fredoka One',cursive;letter-spacing:1.5px;padding:36px 20px 0;max-width:900px;margin:0 auto;}
 
+/* print-sheet lives in the DOM but is hidden normally; becomes the whole page in print */
+.print-sheet{display:none;}
+.print-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:5px;
+  background:var(--green-deep);color:var(--paper);
+  font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;
+  padding:5px 8px;margin-top:6px;border:none;border-radius:4px;cursor:pointer;
+  transition:all .18s;position:relative;z-index:2;
+}
+.print-btn:hover{background:var(--green);color:var(--ink-deep);}
+
 @media print{
-  body{background:#fff;color:#000;}
-  .hero,.back-btn,.tracker,.filters,.footer{display:none !important;}
-  .grid{grid-template-columns:repeat(3,1fr);gap:10px;}
-  .card{aspect-ratio:5/7;page-break-inside:avoid;break-inside:avoid;}
-  .card-inner{transform:none !important;}
-  .card-face{box-shadow:none !important;}
-  .card-back{display:none;}
-  .card-seen-badge{display:none !important;}
+  @page{ size: letter landscape; margin: 0.25in; }
+  html,body{background:#fff !important;color:#000 !important;padding:0 !important;margin:0 !important;}
+  body::before{content:none !important;}
+  /* hide the entire kiosk */
+  body > *{display:none !important;}
+  /* show only the print sheet */
+  .print-sheet{
+    display:flex !important;
+    width:100%; height:100vh;
+    align-items:stretch;
+    background:#fff !important;
+    color:#000 !important;
+    position:relative;
+    font-family:'Nunito',sans-serif;
+  }
+  .print-half{
+    flex:1 1 50%;
+    border:1px dashed #999;
+    padding:.35in;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    overflow:hidden;
+  }
+  .print-half.left{ transform: scaleX(-1); /* mirror so it reads correctly after tent-fold */ }
+  /* FOLD LINE */
+  .print-fold{
+    position:absolute;
+    top:0;bottom:0;left:50%;
+    width:0;
+    border-left:2px dashed #888;
+    pointer-events:none;
+  }
+  .print-fold-label{
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%) rotate(-90deg);
+    background:#fff;
+    padding:3px 10px;
+    font-family:'Fredoka One',cursive;
+    font-size:9px;
+    letter-spacing:2px;
+    color:#666;
+    border:1px solid #ccc;
+    border-radius:4px;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+  /* PRINT FRONT (right half) */
+  .print-front{
+    align-items:stretch;
+    background:linear-gradient(180deg,#FBF4DF 0%,#F5EBD4 100%);
+  }
+  .print-front .pf-img{
+    flex:0 0 68%;
+    overflow:hidden;
+    background:#fff;
+    border:2px solid #D9B857;
+    border-radius:6px;
+    margin-bottom:.14in;
+  }
+  .print-front .pf-img img{
+    width:100%;height:100%;
+    object-fit:cover;object-position:top center;
+    display:block;
+  }
+  .print-front .pf-label{
+    flex:1;
+    background:linear-gradient(180deg,#F5EBD4,#EBE0C4);
+    border:2px solid #C9A84C;
+    border-radius:6px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:.15in;
+  }
+  .print-front .pf-name{
+    font-family:'Playfair Display',serif;
+    font-weight:900;font-size:.42in;
+    color:#111;text-align:center;line-height:1;
+    letter-spacing:.01in;
+  }
+  .print-front .pf-word{
+    font-family:'Fredoka One',cursive;
+    font-size:.2in;color:#2d7a57;
+    letter-spacing:.06in;margin-top:.1in;
+  }
+  .print-front .pf-num{
+    font-family:'Fredoka One',cursive;
+    font-size:.14in;color:#888;margin-top:.1in;
+    letter-spacing:.04in;
+  }
+  /* PRINT BACK (left half, mirrored) */
+  .print-back{
+    background:linear-gradient(180deg,#F5EBD4 0%,#EBE0C4 100%);
+    border:2px solid #C9A84C;
+    border-radius:6px;
+  }
+  .print-back-inner{
+    flex:1;
+    display:flex;flex-direction:column;
+    padding:.05in;
+  }
+  .print-back-header{
+    display:flex;justify-content:space-between;align-items:baseline;
+    margin-bottom:.08in;
+  }
+  .print-back-name{
+    font-family:'Playfair Display',serif;font-weight:900;
+    font-size:.3in;color:#111;line-height:1;
+  }
+  .print-back-num{
+    font-family:'Fredoka One',cursive;
+    font-size:.14in;color:#888;letter-spacing:.03in;
+  }
+  .print-back-wordbox{
+    background:#fff;
+    border:2px solid #C9A84C;
+    border-radius:6px;
+    padding:.08in;text-align:center;
+    margin-bottom:.1in;
+  }
+  .print-back-word{
+    font-family:'Fredoka One',cursive;
+    font-size:.4in;color:#2d7a57;
+    letter-spacing:.05in;line-height:1;
+  }
+  .print-back-def{
+    font-size:.17in;color:#3a4a40;line-height:1.3;
+    font-style:italic;text-align:center;margin-bottom:.12in;
+  }
+  .print-back-fact-row{
+    background:rgba(76,175,130,.15);
+    border-left:3px solid #2d7a57;
+    padding:.1in .12in;
+    border-radius:4px;
+    margin-bottom:.1in;
+    flex:1;
+  }
+  .print-back-fact-label{
+    font-family:'Fredoka One',cursive;
+    font-size:.12in;letter-spacing:.04in;color:#2d7a57;
+    text-transform:uppercase;margin-bottom:.05in;
+  }
+  .print-back-fact{font-size:.17in;color:#111;line-height:1.3;}
+  .print-back-habitat{
+    font-family:'Fredoka One',cursive;
+    font-size:.13in;letter-spacing:.04in;
+    background:#111;color:#C9A84C;
+    padding:.08in;border-radius:4px;
+    text-align:center;text-transform:uppercase;
+  }
+  /* instructions footer inside the print sheet */
+  .print-instructions{
+    position:absolute;
+    bottom:2px; left:0; right:0;
+    text-align:center;
+    font-size:8px; color:#999;
+    font-style:italic;
+    letter-spacing:1px;
+  }
 }
 </style>
 </head>
@@ -167,6 +329,9 @@ body{
 </div>
 
 <div class="footer">Smile Bags: A Word &amp; Wonder Experience · AP Biology + T.I.D.E. · Spring 2026</div>
+
+<!-- Print sheet: hidden normally, fills the page in print mode -->
+<div class="print-sheet" id="printSheet"></div>
 
 <script>
 const HABITATS = {
@@ -275,6 +440,7 @@ function buildGrid(){
               '<div class="back-fact">'+escapeHtml(c.fact)+'</div>' +
             '</div>' +
             '<div class="back-habitat">'+habitat.emoji+' '+escapeHtml(habitat.label)+'</div>' +
+            '<button class="print-btn" onclick="event.stopPropagation(); printCard('+i+');">🖨️ Print Card</button>' +
           '</div>' +
         '</div>' +
       '</div>'
@@ -318,6 +484,47 @@ function resetAll(){
     el.classList.remove('flipped','seen');
   });
   updateTracker();
+}
+
+/* ========= SADDLE-FOLD PRINT ========= */
+/* Prints 1 card per letter-landscape sheet:
+   left half = card back (mirrored via CSS so it reads correctly after tent-fold)
+   right half = card front
+   student trims the outside, folds backward at center, glues blank faces together */
+function printCard(idx){
+  const c = CARDS[idx];
+  const habitat = HABITATS[c.habitat];
+  const sheet = document.getElementById('printSheet');
+  sheet.innerHTML = ''
+    + '<div class="print-half left">'
+    +   '<div class="print-back">'
+    +     '<div class="print-back-inner">'
+    +       '<div class="print-back-header">'
+    +         '<div class="print-back-name">'+escapeHtml(c.animal)+'</div>'
+    +         '<div class="print-back-num">#'+fmtNum(c.num)+' / 25</div>'
+    +       '</div>'
+    +       '<div class="print-back-wordbox"><div class="print-back-word">'+escapeHtml(c.word)+'</div></div>'
+    +       '<div class="print-back-def">"'+escapeHtml(c.def)+'"</div>'
+    +       '<div class="print-back-fact-row">'
+    +         '<div class="print-back-fact-label">Did you know?</div>'
+    +         '<div class="print-back-fact">'+escapeHtml(c.fact)+'</div>'
+    +       '</div>'
+    +       '<div class="print-back-habitat">'+habitat.emoji+' '+escapeHtml(habitat.label)+'</div>'
+    +     '</div>'
+    +   '</div>'
+    + '</div>'
+    + '<div class="print-half print-front">'
+    +   '<div class="pf-img"><img src="'+c.file+'" alt="'+escapeHtml(c.animal)+'"/></div>'
+    +   '<div class="pf-label">'
+    +     '<div class="pf-name">'+escapeHtml(c.animal)+'</div>'
+    +     '<div class="pf-word">'+escapeHtml(c.word)+'</div>'
+    +     '<div class="pf-num">#'+fmtNum(c.num)+' / 25</div>'
+    +   '</div>'
+    + '</div>'
+    + '<div class="print-fold"></div>'
+    + '<div class="print-fold-label">fold here · print side out</div>'
+    + '<div class="print-instructions">Cut along the dashed outer border · Fold backward along center so the printed side stays visible · Glue or laminate the blank inside faces together</div>';
+  window.print();
 }
 
 buildFilters();
