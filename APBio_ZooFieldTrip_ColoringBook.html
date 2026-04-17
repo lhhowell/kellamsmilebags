@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Zoo Field Trip Coloring Book — AP Bio + T.I.D.E. | Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0a0f14;
+  --panel:#0d1a0d;
+  --panel-line:#1a3a1a;
+  --ink:#fff;
+  --muted:rgba(255,255,255,.60);
+  --muted-2:rgba(255,255,255,.38);
+  --green:#4caf82;
+  --green-deep:#2d7a57;
+  --gold:#c9a84c;
+  --gold-soft:#e8c97a;
+  --paper:#F5EBD4;
+  --paper-soft:#EBE0C4;
+  --paper-deep:#DFD0AC;
+  --ink-deep:#0e1410;
+  --coral:#d4537e;
+  --shadow-heavy:0 22px 60px rgba(0,0,0,.55);
+  --shadow-soft:0 8px 24px rgba(0,0,0,.28);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{min-height:100vh;}
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  padding:0 0 40px;
+  background-image:
+    radial-gradient(ellipse at 15% 8%,rgba(76,175,130,.09) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 92%,rgba(201,168,76,.07) 0%,transparent 55%);
+  overflow-x:hidden;
+}
+
+/* ── HERO / HEADER ── */
+.hero{
+  background:var(--bg);
+  border-bottom:1px solid var(--panel-line);
+  padding:34px 32px 28px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(76,175,130,.14) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-brand{
+  font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:4px;
+  color:var(--green);text-transform:uppercase;margin-bottom:14px;
+  position:relative;z-index:1;
+}
+.hero-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(28px,4.2vw,46px);font-weight:900;
+  color:var(--ink);line-height:1.05;margin-bottom:10px;
+  position:relative;z-index:1;
+}
+.hero-title span{color:var(--green);}
+.hero-sub{
+  font-size:14px;color:var(--muted);max-width:640px;margin:0 auto 8px;
+  line-height:1.65;position:relative;z-index:1;
+}
+.hero-meta{
+  font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2.5px;
+  color:var(--gold);text-transform:uppercase;margin-top:14px;
+  position:relative;z-index:1;
+}
+
+/* ── BACK BUTTON ── */
+.back-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(76,175,130,.06);border:1px solid var(--green);
+  color:var(--green);font-family:'Fredoka One',cursive;
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  padding:8px 16px;border-radius:6px;text-decoration:none;
+  margin:22px 0 0 24px;transition:all .2s;
+}
+.back-btn:hover{background:var(--green);color:var(--ink-deep);}
+
+/* ── CONTROL BAR ── */
+.control-bar{
+  max-width:1200px;margin:26px auto 18px;padding:0 24px;
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+  justify-content:center;
+}
+.control-bar label{
+  font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;
+  color:var(--muted-2);text-transform:uppercase;margin-right:4px;
+}
+.jump-select{
+  font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;
+  background:rgba(255,255,255,.06);color:var(--paper);
+  border:1.5px solid rgba(201,168,76,.35);border-radius:8px;
+  padding:8px 14px;cursor:pointer;outline:none;min-width:180px;
+  transition:all .2s;
+}
+.jump-select:hover,.jump-select:focus{
+  background:rgba(255,255,255,.12);border-color:var(--gold);
+}
+.jump-select option{background:var(--ink-deep);color:var(--paper);}
+
+.filter-row{
+  display:flex;gap:6px;flex-wrap:wrap;justify-content:center;
+}
+.filter-btn{
+  background:transparent;border:1.5px solid rgba(76,175,130,.28);
+  color:var(--muted);font-family:'Fredoka One',cursive;
+  font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
+  padding:7px 12px;border-radius:18px;cursor:pointer;
+  transition:all .2s;display:inline-flex;align-items:center;gap:5px;
+}
+.filter-btn:hover{border-color:var(--green);color:var(--green);}
+.filter-btn.active{background:var(--green);color:var(--ink-deep);border-color:var(--green);}
+
+.action-btn{
+  font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;border-radius:8px;padding:8px 14px;cursor:pointer;
+  transition:all .2s;border:1.5px solid;
+}
+.action-btn.print{
+  background:var(--gold);color:var(--ink-deep);border-color:var(--gold);
+}
+.action-btn.print:hover{background:var(--gold-soft);border-color:var(--gold-soft);}
+.action-btn.download{
+  background:transparent;color:var(--gold);border-color:var(--gold);
+}
+.action-btn.download:hover{background:rgba(201,168,76,.1);}
+
+/* ── BOOK STAGE ── */
+.book-stage{
+  max-width:900px;margin:0 auto;padding:0 20px;
+  perspective:2200px;
+  position:relative;
+}
+.page-counter{
+  text-align:center;
+  font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;
+  color:var(--muted-2);text-transform:uppercase;
+  margin-bottom:14px;
+}
+.page-counter span{color:var(--gold);}
+
+.book-frame{
+  position:relative;
+  width:100%;
+  aspect-ratio:2/3;
+  max-height:78vh;
+  margin:0 auto;
+}
+
+/* The page itself — a book page with 3D flip */
+.page{
+  position:absolute;inset:0;
+  background:var(--paper);
+  border-radius:6px 10px 10px 6px;
+  box-shadow:var(--shadow-heavy),
+             inset 14px 0 24px -14px rgba(0,0,0,.22),
+             inset 1px 0 0 rgba(255,255,255,.35);
+  display:flex;flex-direction:column;
+  transform-style:preserve-3d;
+  transform-origin:left center;
+  transition:transform .75s cubic-bezier(.55,.06,.35,1.05), opacity .3s;
+  backface-visibility:hidden;
+  overflow:hidden;
+}
+.page::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:22px;
+  background:linear-gradient(90deg,rgba(0,0,0,.18) 0%,transparent 100%);
+  pointer-events:none;
+}
+.page.flipping{transform:rotateY(-175deg);}
+
+/* Cover page (special) */
+.page.cover{
+  background:
+    radial-gradient(ellipse at 50% 20%,rgba(76,175,130,.12) 0%,transparent 60%),
+    linear-gradient(180deg,#EFE2BD 0%,#E2D0A4 100%);
+  align-items:center;justify-content:center;
+  padding:48px 36px;text-align:center;
+}
+.cover-eyebrow{
+  font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:4px;
+  color:var(--green-deep);text-transform:uppercase;margin-bottom:18px;
+}
+.cover-title{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:clamp(32px,5vw,54px);color:var(--ink-deep);line-height:1;
+  margin-bottom:12px;
+}
+.cover-title em{font-style:italic;color:var(--green-deep);}
+.cover-sub{
+  font-size:15px;color:#3a4a40;max-width:440px;line-height:1.55;
+  margin-bottom:28px;font-style:italic;
+}
+.cover-divider{
+  width:80px;height:2px;background:var(--gold);margin:0 auto 24px;
+  position:relative;
+}
+.cover-divider::before,.cover-divider::after{
+  content:'';position:absolute;top:50%;width:8px;height:8px;
+  background:var(--gold);border-radius:50%;transform:translateY(-50%);
+}
+.cover-divider::before{left:-18px;}
+.cover-divider::after{right:-18px;}
+.cover-meta{
+  font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;
+  color:#5a4a2a;text-transform:uppercase;line-height:1.9;
+}
+.cover-credit{
+  position:absolute;bottom:30px;left:0;right:0;
+  font-size:11px;color:#5a4a2a;letter-spacing:.5px;
+  font-style:italic;
+}
+.cover-badge{
+  display:inline-block;background:var(--ink-deep);color:var(--gold);
+  font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;
+  padding:6px 14px;border-radius:20px;margin-top:6px;
+}
+
+/* Content page layout */
+.page-content{
+  display:flex;flex-direction:column;height:100%;padding:22px 26px 16px;
+}
+.page-header{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-bottom:8px;padding-bottom:10px;
+  border-bottom:1px dashed rgba(201,168,76,.5);
+}
+.page-animal{
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:22px;color:var(--ink-deep);line-height:1;
+}
+.page-num{
+  font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;
+  color:#8a7a4a;
+}
+.page-img{
+  flex:1;margin:10px 0;display:flex;align-items:center;justify-content:center;
+  background:#fff;border:1.5px solid rgba(201,168,76,.5);border-radius:4px;
+  overflow:hidden;min-height:0;
+}
+.page-img img{
+  max-width:100%;max-height:100%;object-fit:contain;display:block;
+}
+.page-footer{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:8px;padding-top:10px;
+  border-top:1px dashed rgba(201,168,76,.5);
+}
+.page-habitat{
+  font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--green-deep);
+  display:inline-flex;align-items:center;gap:5px;
+}
+.page-caption{
+  font-size:11px;color:#5a4a2a;font-style:italic;
+  text-align:right;max-width:56%;line-height:1.35;
+}
+
+/* ── NAVIGATION ARROWS ── */
+.nav-btn{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:52px;height:52px;border-radius:50%;
+  background:rgba(76,175,130,.12);border:1.5px solid var(--green);
+  color:var(--green);font-size:22px;cursor:pointer;
+  transition:all .2s;z-index:20;
+  display:flex;align-items:center;justify-content:center;
+}
+.nav-btn:hover{background:var(--green);color:var(--ink-deep);transform:translateY(-50%) scale(1.08);}
+.nav-btn:disabled{opacity:.25;cursor:not-allowed;}
+.nav-btn:disabled:hover{background:rgba(76,175,130,.12);color:var(--green);transform:translateY(-50%);}
+.nav-prev{left:-70px;}
+.nav-next{right:-70px;}
+
+/* ── THUMBNAIL STRIP ── */
+.thumb-section{
+  max-width:1200px;margin:40px auto 0;padding:0 24px;
+}
+.thumb-section-title{
+  font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;
+  color:var(--muted-2);text-transform:uppercase;text-align:center;
+  margin-bottom:18px;
+}
+.thumb-groups{
+  display:flex;flex-direction:column;gap:22px;
+}
+.thumb-group{
+  background:rgba(255,255,255,.02);border:1px solid var(--panel-line);
+  border-radius:10px;padding:14px 16px;
+}
+.thumb-group-label{
+  font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;
+  color:var(--green);text-transform:uppercase;margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.thumb-group-label .count{
+  background:rgba(76,175,130,.15);color:var(--green);
+  padding:2px 8px;border-radius:10px;font-size:9px;letter-spacing:1px;
+}
+.thumb-row{
+  display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;
+  scrollbar-width:thin;scrollbar-color:var(--green) transparent;
+}
+.thumb-row::-webkit-scrollbar{height:6px;}
+.thumb-row::-webkit-scrollbar-thumb{background:var(--green);border-radius:3px;}
+
+.thumb{
+  flex:0 0 90px;aspect-ratio:2/3;
+  background:var(--paper);border-radius:4px;
+  overflow:hidden;cursor:pointer;position:relative;
+  border:2px solid transparent;transition:all .2s;
+  display:flex;flex-direction:column;
+}
+.thumb:hover{transform:translateY(-2px);border-color:var(--gold);}
+.thumb.active{border-color:var(--green);box-shadow:0 0 0 2px rgba(76,175,130,.3);}
+.thumb img{
+  width:100%;flex:1;object-fit:cover;object-position:top;
+  background:#fff;
+}
+.thumb-label{
+  font-family:'Fredoka One',cursive;font-size:8px;letter-spacing:.5px;
+  color:var(--ink-deep);background:var(--paper-soft);
+  padding:3px 2px;text-align:center;line-height:1;
+}
+
+/* ── PRINT ── */
+@media print{
+  @page{ size:letter portrait; margin:.4in; }
+  html,body{background:#fff !important;color:#000 !important;padding:0 !important;}
+  body::before{content:none !important;}
+  body > *{display:none !important;}
+  .print-sheet{
+    display:block !important;width:100%;height:auto;
+    background:#fff !important;color:#000 !important;
+    font-family:'Nunito',sans-serif;
+  }
+  .print-sheet .ps-header{
+    display:flex;justify-content:space-between;align-items:baseline;
+    border-bottom:2px solid #333;padding-bottom:8px;margin-bottom:14px;
+  }
+  .print-sheet .ps-animal{
+    font-family:'Playfair Display',serif;font-weight:900;font-size:28px;color:#111;
+  }
+  .print-sheet .ps-word{
+    font-family:'Fredoka One',cursive;font-size:18px;color:#2d7a57;letter-spacing:3px;
+  }
+  .print-sheet .ps-num{
+    font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;color:#666;
+  }
+  .print-sheet .ps-img{
+    width:100%;text-align:center;margin:20px 0;
+    border:1.5px solid #999;padding:10px;border-radius:4px;
+  }
+  .print-sheet .ps-img img{max-width:100%;max-height:8.5in;}
+  .print-sheet .ps-footer{
+    border-top:1px dashed #aaa;padding-top:10px;margin-top:14px;
+    display:flex;justify-content:space-between;font-size:10px;color:#555;
+    font-style:italic;
+  }
+}
+.print-sheet{display:none;}
+
+/* ── FOOTER ── */
+.footer{
+  max-width:900px;margin:40px auto 0;padding:22px 24px 0;
+  border-top:1px solid var(--panel-line);text-align:center;
+}
+.footer-sig{
+  font-family:'Playfair Display',serif;font-style:italic;font-size:13px;
+  color:var(--muted);margin-bottom:6px;
+}
+.footer-meta{
+  font-size:10px;color:var(--muted-2);letter-spacing:.5px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width:780px){
+  .nav-prev{left:-10px;}
+  .nav-next{right:-10px;}
+  .nav-btn{width:40px;height:40px;font-size:18px;}
+  .book-frame{max-height:none;}
+  .page-animal{font-size:18px;}
+  .page-content{padding:16px 18px 12px;}
+  .page.cover{padding:36px 22px;}
+  .cover-title{font-size:32px;}
+}
+</style>
+</head>
+<body>
+
+<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to AP Bio + T.I.D.E.</a>
+
+<div class="hero">
+  <div class="hero-brand">Smile Bags &middot; A Word &amp; Wonder Experience</div>
+  <h1 class="hero-title">Zoo Field Trip <span>Coloring Book</span></h1>
+  <p class="hero-sub">A 25-animal naturalist's journal. Every page pairs a Norfolk Zoo animal with its OneWord — color as you learn. Flip the pages, print your favorites, and discover every creature on the journey.</p>
+  <div class="hero-meta">25 Animals &middot; 25 OneWords &middot; AP Bio + T.I.D.E.</div>
+</div>
+
+<div class="control-bar">
+  <label>Jump to:</label>
+  <select class="jump-select" id="jumpSelect">
+    <option value="0">&mdash; Cover &mdash;</option>
+  </select>
+  <div class="filter-row" id="habitatFilters"></div>
+  <button class="action-btn print" onclick="printCurrent()">&#128424; Print Page</button>
+  <button class="action-btn download" onclick="downloadCurrent()">&#11015; Download</button>
+</div>
+
+<div class="book-stage">
+  <div class="page-counter">Page <span id="counterCurrent">1</span> of <span id="counterTotal">26</span></div>
+  <div class="book-frame" id="bookFrame">
+    <div class="page cover" id="pageEl">
+      <!-- rendered by JS -->
+    </div>
+  </div>
+  <button class="nav-btn nav-prev" id="prevBtn" onclick="navigate(-1)">&#8592;</button>
+  <button class="nav-btn nav-next" id="nextBtn" onclick="navigate(1)">&#8594;</button>
+</div>
+
+<div class="thumb-section">
+  <div class="thumb-section-title">All Animals &middot; Grouped by Habitat</div>
+  <div class="thumb-groups" id="thumbGroups"></div>
+</div>
+
+<div class="footer">
+  <div class="footer-sig">Smile Bags: A Word &amp; Wonder Experience</div>
+  <div class="footer-meta">AP Bio + T.I.D.E. &middot; Elena O'Brien &middot; Spring 2026 &middot; Illustrated by ChatGPT &middot; Activity by Claude</div>
+</div>
+
+<!-- Hidden print sheet -->
+<div class="print-sheet" id="printSheet"></div>
+
+<script>
+const HABITATS = {
+  polar:     { label:'Polar Regions', emoji:'&#10052;' },   // ❄
+  africa:    { label:'Africa',        emoji:'&#127796;' },  // 🌴
+  asia:      { label:'Asia & Australia', emoji:'&#128059;' }, // 🐻
+  aquatic:   { label:'Aquatic',       emoji:'&#127754;' },  // 🌊
+  rainforest:{ label:'Rainforest',    emoji:'&#127795;' }   // 🌳
+};
+
+// 25 zoo animals — mirrors the Zoo Trading Cards kiosk for dual-use with SetK_*.png
+const ANIMALS = [
+  { num: 1, animal:'Panda',      word:'BALANCE',   def:'Keeping steady so nothing tips over.',           fact:'Eats up to 40 pounds of bamboo every single day.',                habitat:'asia',       file:'SetK_Panda.png' },
+  { num: 2, animal:'Zebra',      word:'CONNECT',   def:'To join together with others.',                  fact:'Stripes blur together in a running herd to confuse predators.',   habitat:'africa',     file:'SetK_Zebra.png' },
+  { num: 3, animal:'Koala',      word:'RETURN',    def:'To come back to where you started.',             fact:'Sleeps 20 hours a day and always returns to its favorite tree.',  habitat:'asia',       file:'SetK_Koala.png' },
+  { num: 4, animal:'Monkey',     word:'THRIVE',    def:'To grow strong and live your best life.',        fact:'Prehensile tail works like a fifth hand for climbing.',           habitat:'rainforest', file:'SetK_Monkey.png' },
+  { num: 5, animal:'Sloth',      word:'PERSIST',   def:"To keep going, even when it's hard.",            fact:'Moves so slowly that algae actually grows in its fur.',           habitat:'rainforest', file:'SetK_Sloth.png' },
+  { num: 6, animal:'Hippo',      word:'SUSTAIN',   def:'To keep something alive and going strong.',      fact:'Spends up to 16 hours a day submerged to stay cool.',             habitat:'aquatic',    file:'SetK_Hippo.png' },
+  { num: 7, animal:'Kangaroo',   word:'GROW',      def:'To get bigger and stronger over time.',          fact:"Joey lives in mom's pouch for 8\u201310 months before hopping out.", habitat:'asia',     file:'SetK_Kangaroo.png' },
+  { num: 8, animal:'Flamingo',   word:'TRANSFORM', def:'To change completely into something new.',       fact:'Pink color comes from the shrimp and algae it eats.',             habitat:'aquatic',    file:'SetK_Flamingo.png' },
+  { num: 9, animal:'Polar Bear', word:'ADAPT',     def:'To change so you fit where you live.',           fact:'Its fur is actually transparent \u2014 it just looks white in snow.', habitat:'polar', file:'SetK_PolarBear.png' },
+  { num:10, animal:'Whale',      word:'BREATHE',   def:'To take air in, then let it out.',               fact:'Can hold its breath underwater for up to 90 minutes.',            habitat:'aquatic',    file:'SetK_Whale.png' },
+  { num:11, animal:'Otter',      word:'FLOW',      def:'To move smoothly, like water in a stream.',      fact:"Holds hands while sleeping so it won't drift away from family.",  habitat:'aquatic',    file:'SetK_Otter.png' },
+  { num:12, animal:'Eagle',      word:'RISE',      def:'To lift up and go higher.',                      fact:'Rides thermals to soar over a mile high without flapping.',       habitat:'polar',      file:'SetK_Eagle.png' },
+  { num:13, animal:'Chameleon',  word:'SHINE',     def:'To let your light show for others to see.',      fact:'Changes color with mood, temperature, AND camouflage.',           habitat:'rainforest', file:'SetK_Chameleon.png' },
+  { num:14, animal:'Peacock',    word:'BLOOM',     def:'To open up and show your beauty.',               fact:"A male's showy tail can be 5 feet long and covered in eye-spots.", habitat:'asia',      file:'SetK_Peacock.png' },
+  { num:15, animal:'Penguin',    word:'ROOT',      def:'To stay strong in one place, holding on.',       fact:'Emperor dads balance the egg on their feet for 65 days straight.', habitat:'polar',     file:'SetK_Penguin.png' },
+  { num:16, animal:'Lion',       word:'ANCHOR',    def:'Something steady that helps hold you in place.', fact:'The only big cat that hunts as a team in a pride.',               habitat:'africa',     file:'SetK_Lion.png' },
+  { num:17, animal:'Turtle',     word:'MIGRATE',   def:'To travel far to find a new home.',              fact:'Returns to the same beach where it was born to lay eggs.',        habitat:'aquatic',    file:'SetK_Turtle.png' },
+  { num:18, animal:'Crocodile',  word:'EMERGE',    def:'To come out and be seen.',                       fact:'Has the strongest bite force of any animal alive today.',         habitat:'aquatic',    file:'SetK_Crocodile.png' },
+  { num:19, animal:'Cheetah',    word:'RENEW',     def:'To make something feel fresh and new again.',    fact:'Fastest land animal \u2014 0 to 70 mph in just 3 seconds.',       habitat:'africa',     file:'SetK_Cheetah.png' },
+  { num:20, animal:'Owl',        word:'CLEAR',     def:'Easy to see through, with nothing in the way.',  fact:'Can turn its head 270 degrees without moving its body.',          habitat:'polar',      file:'SetK_Owl.png' },
+  { num:21, animal:'Giraffe',    word:'RESTORE',   def:'To bring something back to how it should be.',   fact:'Tongue is 18 inches long and bluish-black to avoid sunburn.',     habitat:'africa',     file:'SetK_Giraffe.png' },
+  { num:22, animal:'Clownfish',  word:'FILTER',    def:'To keep the good and let the rest go.',          fact:'Lives unharmed inside anemone stingers that hurt other fish.',    habitat:'aquatic',    file:'SetK_Clownfish.png' },
+  { num:23, animal:'Butterfly',  word:'CYCLE',     def:'Something that happens over and over again.',    fact:'Transforms: egg \u2192 caterpillar \u2192 chrysalis \u2192 butterfly.', habitat:'rainforest', file:'SetK_Butterfly.png' },
+  { num:24, animal:'Frog',       word:'ABSORB',    def:'To soak something in, like a sponge.',           fact:'Drinks water through its skin, not by swallowing.',               habitat:'rainforest', file:'SetK_Frog.png' },
+  { num:25, animal:'Elephant',   word:'HEAL',      def:'To get better after being hurt or sad.',         fact:'Mourns its dead and can recognize itself in a mirror.',           habitat:'africa',     file:'SetK_Elephant.png' }
+];
+
+// Habitat order for thumbnail grouping
+const HABITAT_ORDER = ['polar','africa','asia','aquatic','rainforest'];
+
+let currentIndex = 0; // 0 = cover, 1..25 = animal pages
+let activeHabitatFilter = 'all';
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function fmtNum(n){ return String(n).padStart(2,'0'); }
+
+function renderCover(){
+  const el = document.getElementById('pageEl');
+  el.className = 'page cover';
+  el.innerHTML = `
+    <div class="cover-eyebrow">A Word &amp; Wonder Experience</div>
+    <div class="cover-divider"></div>
+    <h2 class="cover-title">Zoo Field Trip<br><em>Coloring Book</em></h2>
+    <div class="cover-divider"></div>
+    <p class="cover-sub">A naturalist's journal through the Norfolk Zoo &mdash; 25 animals, 25 OneWords, 25 chances to wonder.</p>
+    <div class="cover-meta">
+      AP Biology &amp; T.I.D.E. Coalition<br>
+      Kellam High School &middot; Spring 2026<br>
+      Sponsor: Elena O'Brien
+    </div>
+    <div class="cover-badge">Open the book &rarr;</div>
+    <div class="cover-credit">Illustrated by ChatGPT &middot; Curated by Laura Howell, ITS</div>
+  `;
+}
+
+function renderAnimalPage(i){
+  const a = ANIMALS[i-1];
+  const h = HABITATS[a.habitat];
+  const el = document.getElementById('pageEl');
+  el.className = 'page';
+  el.innerHTML = `
+    <div class="page-content">
+      <div class="page-header">
+        <div class="page-animal">${escapeHtml(a.animal)}</div>
+        <div class="page-num">#${fmtNum(a.num)} / 25</div>
+      </div>
+      <div class="page-img">
+        <img src="${a.file}" alt="${escapeHtml(a.animal)} coloring page" loading="lazy"/>
+      </div>
+      <div class="page-footer">
+        <div class="page-habitat">${h.emoji} ${h.label}</div>
+        <div class="page-caption"><strong>${escapeHtml(a.word)}</strong> &mdash; ${escapeHtml(a.def)}</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderPage(){
+  const el = document.getElementById('pageEl');
+  el.classList.add('flipping');
+  setTimeout(() => {
+    if (currentIndex === 0) renderCover();
+    else renderAnimalPage(currentIndex);
+    el.classList.remove('flipping');
+    updateCounter();
+    updateThumbActive();
+    updateNavButtons();
+  }, 380);
+}
+
+function updateCounter(){
+  document.getElementById('counterCurrent').textContent = currentIndex + 1;
+  document.getElementById('counterTotal').textContent = ANIMALS.length + 1;
+  document.getElementById('jumpSelect').value = currentIndex;
+}
+
+function updateNavButtons(){
+  document.getElementById('prevBtn').disabled = (currentIndex === 0);
+  document.getElementById('nextBtn').disabled = (currentIndex === ANIMALS.length);
+}
+
+function updateThumbActive(){
+  const thumbs = document.querySelectorAll('.thumb');
+  thumbs.forEach(t => {
+    if (parseInt(t.dataset.idx,10) === currentIndex) t.classList.add('active');
+    else t.classList.remove('active');
+  });
+}
+
+function navigate(dir){
+  const target = currentIndex + dir;
+  if (target < 0 || target > ANIMALS.length) return;
+  currentIndex = target;
+  renderPage();
+}
+
+function goToPage(idx){
+  if (idx < 0 || idx > ANIMALS.length) return;
+  currentIndex = idx;
+  renderPage();
+}
+
+function buildJumpSelect(){
+  const sel = document.getElementById('jumpSelect');
+  ANIMALS.forEach((a,i) => {
+    const opt = document.createElement('option');
+    opt.value = i + 1;
+    opt.textContent = `${fmtNum(a.num)} — ${a.animal} · ${a.word}`;
+    sel.appendChild(opt);
+  });
+  sel.addEventListener('change', e => goToPage(parseInt(e.target.value,10)));
+}
+
+function buildHabitatFilters(){
+  const wrap = document.getElementById('habitatFilters');
+  const all = document.createElement('button');
+  all.className = 'filter-btn active';
+  all.dataset.habitat = 'all';
+  all.textContent = 'All';
+  all.onclick = () => setHabitatFilter('all');
+  wrap.appendChild(all);
+  HABITAT_ORDER.forEach(h => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.dataset.habitat = h;
+    btn.innerHTML = `<span>${HABITATS[h].emoji}</span> ${HABITATS[h].label}`;
+    btn.onclick = () => setHabitatFilter(h);
+    wrap.appendChild(btn);
+  });
+}
+
+function setHabitatFilter(h){
+  activeHabitatFilter = h;
+  document.querySelectorAll('#habitatFilters .filter-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.habitat === h);
+  });
+  // Jump to first animal of that habitat (if filtering)
+  if (h !== 'all'){
+    const first = ANIMALS.findIndex(a => a.habitat === h);
+    if (first >= 0) goToPage(first + 1);
+  }
+  // Re-render thumbs
+  buildThumbs();
+}
+
+function buildThumbs(){
+  const groups = document.getElementById('thumbGroups');
+  groups.innerHTML = '';
+  HABITAT_ORDER.forEach(h => {
+    if (activeHabitatFilter !== 'all' && activeHabitatFilter !== h) return;
+    const list = ANIMALS.filter(a => a.habitat === h);
+    if (!list.length) return;
+    const group = document.createElement('div');
+    group.className = 'thumb-group';
+    group.innerHTML = `
+      <div class="thumb-group-label">
+        <span>${HABITATS[h].emoji}</span>
+        ${HABITATS[h].label}
+        <span class="count">${list.length}</span>
+      </div>
+      <div class="thumb-row"></div>
+    `;
+    const row = group.querySelector('.thumb-row');
+    list.forEach(a => {
+      const idx = a.num;
+      const thumb = document.createElement('div');
+      thumb.className = 'thumb' + (idx === currentIndex ? ' active' : '');
+      thumb.dataset.idx = idx;
+      thumb.innerHTML = `
+        <img src="${a.file}" alt="${escapeHtml(a.animal)}" loading="lazy"/>
+        <div class="thumb-label">${escapeHtml(a.animal)}</div>
+      `;
+      thumb.onclick = () => goToPage(idx);
+      row.appendChild(thumb);
+    });
+    groups.appendChild(group);
+  });
+}
+
+function printCurrent(){
+  if (currentIndex === 0){
+    alert('Flip to an animal page to print — the cover is just for browsing.');
+    return;
+  }
+  const a = ANIMALS[currentIndex - 1];
+  const h = HABITATS[a.habitat];
+  const sheet = document.getElementById('printSheet');
+  sheet.innerHTML = `
+    <div class="ps-header">
+      <div>
+        <div class="ps-animal">${escapeHtml(a.animal)}</div>
+        <div class="ps-word">${escapeHtml(a.word)}</div>
+      </div>
+      <div class="ps-num">#${fmtNum(a.num)} / 25</div>
+    </div>
+    <div class="ps-img"><img src="${a.file}" alt="${escapeHtml(a.animal)}"/></div>
+    <div class="ps-footer">
+      <div>${h.label} &middot; "${escapeHtml(a.def)}"</div>
+      <div>Zoo Field Trip Coloring Book &middot; Smile Bags</div>
+    </div>
+  `;
+  window.print();
+}
+
+function downloadCurrent(){
+  if (currentIndex === 0){
+    alert('Flip to an animal page to download the coloring sheet.');
+    return;
+  }
+  const a = ANIMALS[currentIndex - 1];
+  const link = document.createElement('a');
+  link.href = a.file;
+  link.download = a.file;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') return;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown'){ e.preventDefault(); navigate(1); }
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp'){ e.preventDefault(); navigate(-1); }
+});
+
+// Init
+buildJumpSelect();
+buildHabitatFilters();
+buildThumbs();
+renderCover();
+updateCounter();
+updateNavButtons();
+</script>
+</body>
+</html>
