@@ -101,7 +101,6 @@ input[type=color]{width:28px;height:28px;border-radius:6px;border:none;cursor:po
     <div class="hdr-title">🧩 Jigsaw Puzzle Builder</div>
     <div class="hdr-sub">Digital Arts · Smile Bags · A Word &amp; Wonder Experience · Kara Gau</div>
   </div>
-  <a href="DigitalArts_Menu.html" style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid #2D6A4F;border-radius:50px;padding:7px 16px;font-family:'Fredoka One',cursive;font-size:11px;color:#40916C;text-decoration:none;">&#8592; Back to Digital Arts Kiosk</a>
 </div>
 
 <!-- STEP 1: WORD -->
@@ -169,9 +168,10 @@ input[type=color]{width:28px;height:28px;border-radius:6px;border:none;cursor:po
   </div>
 
   <div class="hint">
-    🎨 <strong>Color each piece</strong> using the tools below — click to paint, choose colors, change brush size.<br>
-    ✂️ <strong>The dashed lines</strong> show where to cut after printing. Print, laminate, then cut along the lines.<br>
-    📐 <strong>Piece count</strong> should match your recipient's age — a 20-piece puzzle for a 5-year-old is a design failure.
+    🎨 <strong>Color each piece</strong> with the brush, fill, or eraser tools — choose colors and brush size to taste.<br>
+    ✂️ <strong>Design your own cut lines!</strong> Click the scissors tool, then draw curves, zig-zags, or jigsaw shapes wherever you want pieces to separate. Your cut lines are your puzzle's signature.<br>
+    📐 <strong>Piece count</strong> should match your recipient's age — a 20-piece puzzle for a 5-year-old is a design failure.<br>
+    🪚 <strong>After printing,</strong> laminate, then cut along your drawn lines.
   </div>
 
   <div class="tools-bar">
@@ -182,17 +182,19 @@ input[type=color]{width:28px;height:28px;border-radius:6px;border:none;cursor:po
     </div>
     <div class="tool-section">
       <span class="tool-label">Tool</span>
-      <button class="tool-btn active" id="tbBrush" onclick="setTool('brush',this)" title="Brush">🖌️</button>
-      <button class="tool-btn" id="tbFill" onclick="setTool('fill',this)" title="Fill piece">🪣</button>
-      <button class="tool-btn" id="tbEraser" onclick="setTool('eraser',this)" title="Eraser">✕</button>
+      <button class="tool-btn active" id="tbBrush" onclick="setTool('brush',this)" title="Brush — paint colors">🖌️</button>
+      <button class="tool-btn" id="tbFill" onclick="setTool('fill',this)" title="Fill piece with color">🪣</button>
+      <button class="tool-btn" id="tbEraser" onclick="setTool('eraser',this)" title="Eraser — remove paint">✕</button>
+      <button class="tool-btn" id="tbCut" onclick="setTool('cut',this)" title="Draw cut lines — make your own jigsaw shapes!">✂️</button>
     </div>
     <div class="tool-section">
       <span class="tool-label">Size</span>
       <input type="range" id="brushSize" min="2" max="30" value="10"/>
     </div>
     <div class="tool-section" style="margin-left:auto;">
-      <button class="tool-btn" onclick="undoPaint()" title="Undo">↩</button>
-      <button class="tool-btn" onclick="clearAllPaint()" title="Clear all">🗑</button>
+      <button class="tool-btn" onclick="undoPaint()" title="Undo last action">↩</button>
+      <button class="tool-btn" onclick="clearAllPaint()" title="Clear all paint">🗑</button>
+      <button class="tool-btn" onclick="clearAllCutLines()" title="Clear cut lines only" style="font-size:11px;padding:6px 8px;">🗑✂️</button>
     </div>
   </div>
 
@@ -200,13 +202,9 @@ input[type=color]{width:28px;height:28px;border-radius:6px;border:none;cursor:po
     <div class="puzzle-grid" id="puzzleGrid"></div>
   </div>
 
-  <div style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.12);border-radius:10px;padding:14px;margin-bottom:14px;font-size:13px;color:#8a7040;line-height:1.7;">
-    &#128161; <strong style="color:#E8C97A;">Two ways to use this puzzle:</strong> Color digitally then print the colored version — or download B&amp;W so the child receiving the bag can color the pieces themselves before connecting them!
-  </div>
-  <div class="btn-row" style="margin-bottom:40px;flex-wrap:wrap;">
-    <button class="btn btn-gold" onclick="printPuzzle()">&#128438; Print Colored Puzzle</button>
-    <button class="btn" style="background:linear-gradient(135deg,#1B4332,#2D6A4F);color:#fff;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;text-transform:uppercase;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;transition:all .2s;" onclick="downloadBW()">&#8595; Download B&amp;W Puzzle</button>
-    <button class="btn btn-outline" onclick="resetAll()">&#8617; Start Over</button>
+  <div class="btn-row" style="margin-bottom:40px;">
+    <button class="btn btn-gold" onclick="printPuzzle()">🖨️ Print Puzzle Sheet</button>
+    <button class="btn btn-outline" onclick="resetAll()">↩ Start Over</button>
   </div>
 </div>
 
@@ -227,6 +225,7 @@ function getImgUrl(word, set) {
 var selectedWord = '', selectedSet = '', gridCols = 0, gridRows = 0;
 var paintColor = '#E87B5B', paintTool = 'brush';
 var cellCanvases = [], cellHistories = [];
+var cutCanvases = [], cutHistories = [];
 
 // ── COLORS ──
 var COLORS = ['#E87B5B','#F5A07B','#FFEE58','#66BB6A','#26C6DA','#42A5F5',
@@ -256,6 +255,17 @@ function setTool(t, btn) {
   paintTool = t;
   document.querySelectorAll('.tool-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
+
+  // When cut tool is active, route clicks to cut canvases (top layer);
+  // for any paint tool, route clicks to paint canvases (below).
+  var cutMode = (t === 'cut');
+  cellCanvases.forEach(function(cv){
+    cv.style.pointerEvents = cutMode ? 'none' : 'auto';
+  });
+  cutCanvases.forEach(function(cv){
+    cv.style.pointerEvents = cutMode ? 'auto' : 'none';
+    cv.style.cursor = cutMode ? 'crosshair' : 'default';
+  });
 }
 
 // ── WORD GRID ──
@@ -300,6 +310,8 @@ function buildPuzzle() {
   grid.innerHTML = '';
   cellCanvases = [];
   cellHistories = [];
+  cutCanvases = [];
+  cutHistories = [];
 
   var totalPieces = gridCols * gridRows;
   document.getElementById('puzzleTitle').textContent =
@@ -330,13 +342,20 @@ function buildPuzzle() {
       'background-position:' + (col/(gridCols-1||1)*100) + '% ' + (row/(gridRows-1||1)*100) + '%;';
     cell.appendChild(img);
 
-    // Paint canvas
+    // Layer 1: Paint canvas (color)
     var cv = document.createElement('canvas');
     cv.width = cellW; cv.height = cellH;
-    cv.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;';
+    cv.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:auto;';
     cell.appendChild(cv);
 
-    // Cut overlay
+    // Layer 2: Cut-line canvas (drawn ABOVE paint, gets pointer events when cut tool active)
+    var cutCv = document.createElement('canvas');
+    cutCv.width = cellW; cutCv.height = cellH;
+    cutCv.className = 'cut-canvas';
+    cutCv.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;';
+    cell.appendChild(cutCv);
+
+    // Cut overlay (the original rectangle border — kept as a faint guide)
     var overlay = document.createElement('div');
     overlay.className = 'cut-overlay';
     cell.appendChild(overlay);
@@ -347,17 +366,53 @@ function buildPuzzle() {
     num.textContent = (i+1);
     cell.appendChild(num);
 
-    // Paint events
+    // Paint events on PAINT canvas (used when tool is brush/fill/eraser)
     var painting = false;
     (function(canvas, cellIdx) {
       cellCanvases.push(canvas);
       cellHistories.push([canvas.toDataURL()]);
 
-      canvas.addEventListener('mousedown', function(e){ painting=true; doPaint(e, canvas); });
-      canvas.addEventListener('mousemove', function(e){ if(painting) doPaint(e, canvas); });
-      canvas.addEventListener('mouseup', function(){ painting=false; saveState(canvas, cellIdx); });
-      canvas.addEventListener('mouseleave', function(){ if(painting){ painting=false; saveState(canvas, cellIdx); }});
+      canvas.addEventListener('mousedown', function(e){
+        if (paintTool === 'cut') return; // ignore - cut canvas handles it
+        painting=true; doPaint(e, canvas);
+      });
+      canvas.addEventListener('mousemove', function(e){
+        if (paintTool === 'cut') return;
+        if(painting) doPaint(e, canvas);
+      });
+      canvas.addEventListener('mouseup', function(){
+        if (paintTool === 'cut') return;
+        painting=false; saveState(canvas, cellIdx);
+      });
+      canvas.addEventListener('mouseleave', function(){
+        if (paintTool === 'cut') return;
+        if(painting){ painting=false; saveState(canvas, cellIdx); }
+      });
     })(cv, i);
+
+    // Cut events on CUT canvas (used when tool is cut)
+    var cutting = false;
+    (function(cutCanvas, cellIdx) {
+      cutCanvases.push(cutCanvas);
+      cutHistories.push([cutCanvas.toDataURL()]);
+
+      cutCanvas.addEventListener('mousedown', function(e){
+        if (paintTool !== 'cut') return;
+        cutting=true; doDrawCutLine(e, cutCanvas);
+      });
+      cutCanvas.addEventListener('mousemove', function(e){
+        if (paintTool !== 'cut') return;
+        if(cutting) doDrawCutLine(e, cutCanvas);
+      });
+      cutCanvas.addEventListener('mouseup', function(){
+        if (paintTool !== 'cut') return;
+        cutting=false; saveCutState(cutCanvas, cellIdx);
+      });
+      cutCanvas.addEventListener('mouseleave', function(){
+        if (paintTool !== 'cut') return;
+        if(cutting){ cutting=false; saveCutState(cutCanvas, cellIdx); }
+      });
+    })(cutCv, i);
 
     grid.appendChild(cell);
   }
@@ -392,6 +447,35 @@ function doPaint(e, canvas) {
   }
 }
 
+// ── CUT LINE DRAWING ──
+// Draws thick, opaque dark lines on the cut overlay so students see them clearly
+// AND so they print as obvious cut guides on the printed sheet
+function doDrawCutLine(e, canvas) {
+  var ctx = canvas.getContext('2d');
+  var r = canvas.getBoundingClientRect();
+  var scaleX = canvas.width / r.width;
+  var scaleY = canvas.height / r.height;
+  var x = (e.clientX - r.left) * scaleX;
+  var y = (e.clientY - r.top) * scaleY;
+  // Cut lines: deep charcoal, opaque, slightly larger than brush for visibility
+  ctx.fillStyle = '#1a1a1a';
+  ctx.globalAlpha = 1;
+  ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI*2); ctx.fill();
+}
+
+function saveCutState(canvas, idx) {
+  if (!cutHistories[idx]) cutHistories[idx] = [];
+  cutHistories[idx].push(canvas.toDataURL());
+  if (cutHistories[idx].length > 10) cutHistories[idx].shift();
+}
+
+function clearAllCutLines() {
+  cutCanvases.forEach(function(cv, idx) {
+    cv.getContext('2d').clearRect(0, 0, cv.width, cv.height);
+    cutHistories[idx] = [cv.toDataURL()];
+  });
+}
+
 function saveState(canvas, idx) {
   if (!cellHistories[idx]) cellHistories[idx] = [];
   cellHistories[idx].push(canvas.toDataURL());
@@ -399,8 +483,11 @@ function saveState(canvas, idx) {
 }
 
 function undoPaint() {
-  cellCanvases.forEach(function(cv, idx) {
-    var hist = cellHistories[idx];
+  // Choose which set to undo based on the active tool
+  var canvases = (paintTool === 'cut') ? cutCanvases : cellCanvases;
+  var histories = (paintTool === 'cut') ? cutHistories : cellHistories;
+  canvases.forEach(function(cv, idx) {
+    var hist = histories[idx];
     if (hist && hist.length > 1) {
       hist.pop();
       var img = new Image();
