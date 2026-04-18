@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Jigsaw Puzzle Builder · Digital Arts · Smile Bags</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;700&family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<!-- jsPDF for cut template PDF export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root{
   --dark:#0E1A0A; --forest:#1A2E12; --forest2:#2D5016; --forest3:#5A8F35;
@@ -106,26 +108,6 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
   .step-card{padding:18px;}
 }
 
-/* ── PRINT CSS (bulletproof visibility pattern — proven in SpeedPalette) ── */
-@media print{
-  body * { visibility: hidden !important; }
-  .print-sheet, .print-sheet * { visibility: visible !important; }
-  .print-sheet{
-    position: absolute !important;
-    left: 0 !important; top: 0 !important;
-    width: 100% !important;
-    display: block !important;
-    background: #fff !important;
-    color: #111 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-  }
-  body{ background:#fff !important; margin:0 !important; padding:0 !important; }
-  @page{ size:letter portrait; margin:.4in; }
-}
 </style>
 </head>
 <body>
@@ -175,7 +157,7 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
   <div class="step-card" id="previewCard" style="display:none;">
     <div class="step-label">Step 4 · Preview</div>
     <div class="step-title">Your jigsaw puzzle (black &amp; white)</div>
-    <div class="step-sub">This is exactly what will print. Soft-curve cut lines are drawn over the illustration — the recipient will cut along the dashed lines to make a real jigsaw puzzle they can color when they're ready.</div>
+    <div class="step-sub">This is exactly what your cut template will look like — classic interlocking jigsaw pieces drawn as a transparent overlay on the grayscale illustration. The PDF is ready for <strong>Cricut</strong>, <strong>Scan N Cut</strong>, or <strong>laser cutter</strong>. The recipient will receive a precut puzzle and can color it whenever they're ready.</div>
     <div class="preview-wrap">
       <div class="preview-canvas-wrap">
         <canvas class="preview-canvas" id="previewCanvas" width="600" height="600"></canvas>
@@ -195,42 +177,28 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
       </div>
     </div>
 
-    <!-- SUBMIT + PRINT (merged) -->
+    <!-- SUBMIT + PDF DOWNLOAD (merged) -->
     <div class="submit-area">
-      <div class="submit-title">🖨️ Print for Smile Bag</div>
-      <div class="submit-sub">Enter your name, then Print — this also logs your submission for the class tracker.</div>
+      <div class="submit-title">📄 Generate Cut Template (PDF)</div>
+      <div class="submit-sub">Enter your name, then Generate — downloads a print-ready PDF for Cricut, Scan N Cut, or laser cutter. This also logs your submission for the class tracker.</div>
       <input type="text" id="studentName" class="name-input" placeholder="First name and last initial (e.g. Jordan T)" maxlength="40" oninput="checkPrintReady()"/>
-      <button type="button" class="btn btn-gold" id="printSubmitBtn" onclick="printAndSubmit()" style="width:100%;background:linear-gradient(135deg,#1B4332,#40916C);color:#fff;" disabled>🖨️ Print for Smile Bag</button>
+      <button type="button" class="btn btn-gold" id="printSubmitBtn" onclick="generateAndSubmit()" style="width:100%;background:linear-gradient(135deg,#1B4332,#40916C);color:#fff;" disabled>📄 Generate Cut Template</button>
       <div class="submit-msg" id="submitMsg"></div>
     </div>
   </div>
 
-  <!-- PRINT SHEET -->
-  <div id="printSheet" class="print-sheet">
-    <div class="ps-header">
-      <div class="ps-eyebrow">Smile Bags · Digital Arts · Jigsaw Puzzle</div>
-      <div class="ps-word" id="psWord">WORD</div>
-      <div class="ps-meaning" id="psMeaning"></div>
-    </div>
-    <div class="ps-info-row">
-      <div class="ps-info">Set: <strong id="psSet">—</strong></div>
-      <div class="ps-info">Pieces: <strong id="psPieces">—</strong></div>
-    </div>
-    <div class="ps-hint">
-      ✂️ <strong>Cut along the dashed lines</strong> to create your jigsaw puzzle pieces. The recipient can color the pieces before OR after assembling the puzzle — their choice!
-    </div>
-    <div class="ps-canvas-wrap">
-      <canvas id="printCanvas" width="1000" height="1000"></canvas>
-    </div>
-    <div class="ps-cutline"><span class="ps-cutline-icon">✂️</span> <span>Dashed lines = cut here · Soft curves for easier cutting</span></div>
-    <div class="ps-footer">Smile Bags · A Word &amp; Wonder Experience · Kayla Gau · Digital Arts</div>
+  <!-- PRINT SHEET (hidden; used as offscreen high-res render source for PDF) -->
+  <div id="printSheet" class="print-sheet" aria-hidden="true" style="position:absolute;left:-99999px;top:-99999px;">
+    <canvas id="printCanvas" width="2550" height="3300"></canvas>
   </div>
 
   <!-- RETRY ROW -->
   <div class="retry-row" id="retryRow">
-    <button type="button" class="retry-btn retry-btn-print" onclick="window.print()">🖨️ Print This Sheet</button>
+    <button type="button" class="retry-btn retry-btn-print" onclick="generateAndSubmit(true)">📄 Download Again</button>
     <button type="button" class="retry-btn retry-btn-home" onclick="window.location.href='DigitalArts_Menu.html'">🏠 Return to Main Menu</button>
   </div>
+
+  <div style="text-align:center;font-size:11px;color:var(--border);padding:40px 20px 20px;letter-spacing:1px;font-family:'Fredoka One',cursive;">Digital Arts · Jigsaw Puzzle Builder · Smile Bags: A Word &amp; Wonder Experience · Kayla Gau · Spring 2026</div>
 
 </div>
 
@@ -310,47 +278,135 @@ function getGridDims(n){
   return { cols: 3, rows: 4 };
 }
 
-// ── SOFT-CURVE CUT LINE OVERLAY ─────────────────────────────
-// Draws dashed sinusoidal curves between pieces — child-safe, easy to cut.
-// No interlocking tabs (those require precision the recipient may not have).
-function drawCutLines(ctx, W, H, cols, rows){
+// ── INTERLOCKING JIGSAW CUT LINE OVERLAY ────────────────────
+// Draws classic jigsaw pieces with tabs and blanks using Bezier curves.
+// Each interior edge has one random tab direction (out or in).
+// Cutting is done by a Cricut / Scan N Cut / laser cutter, so precision
+// is assumed and pieces will interlock when cut mechanically.
+function drawCutLines(ctx, dx, dy, dw, dh, cols, rows){
   ctx.save();
-  ctx.strokeStyle = '#1a1a1a';
-  ctx.lineWidth = Math.max(2, W * 0.004);
-  ctx.setLineDash([12, 8]);
-  ctx.lineCap = 'round';
-
-  var cellW = W / cols;
-  var cellH = H / rows;
-
-  // Horizontal cut lines (between rows) — soft sine wave
-  for(var r = 1; r < rows; r++){
-    var y = r * cellH;
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    for(var x = 0; x <= W; x += 4){
-      var offset = Math.sin((x / W) * Math.PI * cols) * (cellH * 0.08);
-      ctx.lineTo(x, y + offset);
-    }
-    ctx.stroke();
-  }
-
-  // Vertical cut lines (between cols) — soft sine wave
-  for(var c = 1; c < cols; c++){
-    var xBase = c * cellW;
-    ctx.beginPath();
-    ctx.moveTo(xBase, 0);
-    for(var yy = 0; yy <= H; yy += 4){
-      var offsetX = Math.sin((yy / H) * Math.PI * rows) * (cellW * 0.08);
-      ctx.lineTo(xBase + offsetX, yy);
-    }
-    ctx.stroke();
-  }
-
-  // Solid outer border (cut around the whole puzzle)
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = Math.max(1.5, dw * 0.0025);
   ctx.setLineDash([]);
-  ctx.lineWidth = Math.max(3, W * 0.006);
-  ctx.strokeRect(1, 1, W - 2, H - 2);
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
+  var cellW = dw / cols;
+  var cellH = dh / rows;
+
+  // Tab dimensions — proportional to cell size
+  var tabW = Math.min(cellW, cellH) * 0.28;   // width of tab neck
+  var tabH = Math.min(cellW, cellH) * 0.22;   // height of tab bulge
+
+  // Deterministic pseudo-random so the same puzzle always generates
+  // the same tab directions (stable preview + reproducible cuts)
+  function rng(seed){
+    var s = seed;
+    return function(){
+      s = (s * 9301 + 49297) % 233280;
+      return s / 233280;
+    };
+  }
+  // Seed from piece count so each piece-count option looks consistent
+  var rand = rng(cols * 1000 + rows);
+  // Tab direction: +1 = tab sticks out toward next cell, -1 = socket goes in
+  function tabDir(){ return rand() < 0.5 ? 1 : -1; }
+
+  // Horizontal edges: for each row boundary r=1..rows-1, for each column c=0..cols-1
+  // Vertical edges:   for each col boundary c=1..cols-1, for each row r=0..rows-1
+  var hEdges = [];  // hEdges[r-1][c] = direction
+  var vEdges = [];  // vEdges[c-1][r] = direction
+  for(var r = 0; r < rows - 1; r++){
+    hEdges[r] = [];
+    for(var c = 0; c < cols; c++) hEdges[r][c] = tabDir();
+  }
+  for(var c = 0; c < cols - 1; c++){
+    vEdges[c] = [];
+    for(var r = 0; r < rows; r++) vEdges[c][r] = tabDir();
+  }
+
+  // Draw one horizontal edge segment from (x1,y) to (x2,y) with a tab in the middle.
+  // direction: +1 bulges downward, -1 bulges upward
+  function drawHEdge(x1, y, x2, direction){
+    var mid = (x1 + x2) / 2;
+    var tL = mid - tabW / 2;
+    var tR = mid + tabW / 2;
+    var bulge = tabH * direction;
+    ctx.moveTo(x1, y);
+    ctx.lineTo(tL, y);
+    // Tab neck in (small inward curve then bulge)
+    ctx.bezierCurveTo(
+      tL + tabW * 0.15, y - bulge * 0.25,
+      tL - tabW * 0.15, y + bulge * 0.9,
+      mid - tabW * 0.4, y + bulge * 1.05
+    );
+    ctx.bezierCurveTo(
+      mid - tabW * 0.15, y + bulge * 1.25,
+      mid + tabW * 0.15, y + bulge * 1.25,
+      mid + tabW * 0.4, y + bulge * 1.05
+    );
+    ctx.bezierCurveTo(
+      tR + tabW * 0.15, y + bulge * 0.9,
+      tR - tabW * 0.15, y - bulge * 0.25,
+      tR, y
+    );
+    ctx.lineTo(x2, y);
+  }
+
+  // Draw one vertical edge segment from (x,y1) to (x,y2) with a tab in the middle.
+  // direction: +1 bulges right, -1 bulges left
+  function drawVEdge(x, y1, y2, direction){
+    var mid = (y1 + y2) / 2;
+    var tT = mid - tabW / 2;
+    var tB = mid + tabW / 2;
+    var bulge = tabH * direction;
+    ctx.moveTo(x, y1);
+    ctx.lineTo(x, tT);
+    ctx.bezierCurveTo(
+      x - bulge * 0.25, tT + tabW * 0.15,
+      x + bulge * 0.9,  tT - tabW * 0.15,
+      x + bulge * 1.05, mid - tabW * 0.4
+    );
+    ctx.bezierCurveTo(
+      x + bulge * 1.25, mid - tabW * 0.15,
+      x + bulge * 1.25, mid + tabW * 0.15,
+      x + bulge * 1.05, mid + tabW * 0.4
+    );
+    ctx.bezierCurveTo(
+      x + bulge * 0.9,  tB + tabW * 0.15,
+      x - bulge * 0.25, tB - tabW * 0.15,
+      x, tB
+    );
+    ctx.lineTo(x, y2);
+  }
+
+  // Draw all horizontal interior edges
+  for(var rr = 1; rr < rows; rr++){
+    for(var cc = 0; cc < cols; cc++){
+      var y = dy + rr * cellH;
+      var x1 = dx + cc * cellW;
+      var x2 = dx + (cc + 1) * cellW;
+      ctx.beginPath();
+      drawHEdge(x1, y, x2, hEdges[rr - 1][cc]);
+      ctx.stroke();
+    }
+  }
+
+  // Draw all vertical interior edges
+  for(var cc2 = 1; cc2 < cols; cc2++){
+    for(var rr2 = 0; rr2 < rows; rr2++){
+      var x = dx + cc2 * cellW;
+      var y1 = dy + rr2 * cellH;
+      var y2 = dy + (rr2 + 1) * cellH;
+      ctx.beginPath();
+      drawVEdge(x, y1, y2, vEdges[cc2 - 1][rr2]);
+      ctx.stroke();
+    }
+  }
+
+  // Solid outer border — wraps the image only, NOT the full canvas
+  ctx.lineWidth = Math.max(2, dw * 0.005);
+  ctx.strokeRect(dx, dy, dw, dh);
   ctx.restore();
 }
 
@@ -389,9 +445,9 @@ function renderCanvas(canvasId, imgUrl, pieces, onReady){
       console.warn('Grayscale skipped (CORS):', e);
     }
 
-    // Overlay cut lines
+    // Overlay cut lines — bounded to image area only (no cuts in white margins)
     var dims = getGridDims(pieces);
-    drawCutLines(ctx, W, H, dims.cols, dims.rows);
+    drawCutLines(ctx, dx, dy, dw, dh, dims.cols, dims.rows);
 
     if(typeof onReady === 'function') onReady(true);
   };
@@ -403,8 +459,12 @@ function renderCanvas(canvasId, imgUrl, pieces, onReady){
     ctx.font = '20px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('Image could not load', W / 2, H / 2);
+    // Fallback: use a centered square region so there's still a valid puzzle area
     var dims = getGridDims(pieces);
-    drawCutLines(ctx, W, H, dims.cols, dims.rows);
+    var fbSize = Math.min(W, H) * 0.9;
+    var fbX = (W - fbSize) / 2;
+    var fbY = (H - fbSize) / 2;
+    drawCutLines(ctx, fbX, fbY, fbSize, fbSize, dims.cols, dims.rows);
     if(typeof onReady === 'function') onReady(false);
   };
   img.src = imgUrl;
@@ -439,23 +499,19 @@ function checkPrintReady(){
 // Standard #7: use structural check for placeholder URL, not literal string match
 var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyPk1fe0vattPkEHA8BV4hnX8mAeDdVywc3X7rWNXykj0X8tVcZzVzol_hYAd7dmcWXDQ/exec";
 
-function printAndSubmit(){
+// Generate a print-ready PDF containing the full cut template (illustration +
+// interlocking cut lines merged into one image). Works for Cricut / SnC / laser.
+// isRetry=true skips the POST (retry row uses same function to re-download).
+function generateAndSubmit(isRetry){
   var name = (document.getElementById('studentName').value || '').trim();
   if(!name){ alert('Please enter your name first!'); return; }
   if(!selWord || !selSet || !selPieces){ alert('Please complete Steps 1–3 first!'); return; }
 
   var btn = document.getElementById('printSubmitBtn');
-  btn.disabled = true;
-  btn.textContent = 'Preparing your print…';
-
-  // Populate print sheet content
-  document.getElementById('psWord').textContent = selWord;
-  document.getElementById('psMeaning').textContent = WORD_MEANINGS[selWord] || '';
-  document.getElementById('psSet').textContent = selSet;
-  document.getElementById('psPieces').textContent = selPieces;
-
-  var sheet = document.getElementById('printSheet');
-  sheet.style.display = 'block';
+  if(!isRetry){
+    btn.disabled = true;
+    btn.textContent = 'Generating PDF…';
+  }
 
   var retryRow = document.getElementById('retryRow');
   retryRow.style.display = 'flex';
@@ -472,6 +528,7 @@ function printAndSubmit(){
   };
 
   var postSubmission = function(){
+    if(isRetry) return; // don't double-count on re-download
     if(SCRIPT_URL && SCRIPT_URL.indexOf('https://') === 0){
       fetch(SCRIPT_URL, {
         method: 'POST',
@@ -482,24 +539,62 @@ function printAndSubmit(){
     }
   };
 
-  var firePrint = function(){
-    postSubmission();
-    setTimeout(function(){
-      sheet.scrollIntoView({behavior:'smooth', block:'start'});
-      window.print();
-      btn.textContent = '✅ Submitted · Code: ' + token;
+  var exportPDF = function(){
+    try {
+      // jsPDF comes from the UMD bundle as window.jspdf.jsPDF
+      var JSPDF = (window.jspdf && window.jspdf.jsPDF) ? window.jspdf.jsPDF : window.jsPDF;
+      if(!JSPDF){
+        alert('PDF library failed to load — please refresh the page and try again.');
+        btn.disabled = false;
+        btn.textContent = '📄 Generate Cut Template';
+        return;
+      }
+      var doc = new JSPDF({orientation: 'portrait', unit: 'in', format: 'letter'});
+      var canvas = document.getElementById('printCanvas');
+      var imgData = canvas.toDataURL('image/png');
+
+      // Page is 8.5 × 11 with 0.4" margins = 7.7 × 10.2 usable
+      // Canvas is 2550 × 3300 (300 dpi equivalent for letter page)
+      // We place the full image to fill usable area
+      var pageW = 8.5, pageH = 11;
+      var margin = 0.4;
+      var imgW = pageW - margin * 2;
+      var imgH = pageH - margin * 2;
+      doc.addImage(imgData, 'PNG', margin, margin, imgW, imgH);
+
+      // Small footer with metadata for teacher reference
+      doc.setFontSize(8);
+      doc.setTextColor(120);
+      var footer = 'Smile Bags · Digital Arts · ' + selWord + ' · Set ' + selSet +
+                   ' · ' + selPieces + ' pieces · ' + name + ' · ' + token;
+      doc.text(footer, pageW / 2, pageH - 0.18, {align: 'center'});
+
+      var filename = 'JigsawPuzzle_' + selWord + '_Set' + selSet + '_' + selPieces + 'pc_' + token + '.pdf';
+      doc.save(filename);
+
+      postSubmission();
+
+      btn.disabled = false;
+      btn.textContent = isRetry ? '📄 Generate Cut Template' : '✅ Submitted · Code: ' + token;
       var msg = document.getElementById('submitMsg');
       if(msg){
         msg.style.display = 'block';
-        msg.textContent = '🧩 Puzzle logged and sent to print! If you missed the print dialog, use the 🖨️ button below the sheet.';
+        msg.textContent = '🧩 PDF downloaded! Take it to a Cricut, Scan N Cut, or laser cutter. ' +
+                          (isRetry ? '' : 'Submission logged for the class tracker.');
       }
       setTimeout(fetchTracker, 700);
-    }, 250);
+    } catch(err){
+      console.error('PDF export failed:', err);
+      alert('Sorry — PDF generation failed. Please try again.');
+      btn.disabled = false;
+      btn.textContent = '📄 Generate Cut Template';
+    }
   };
 
-  // Render the print canvas at higher resolution, wait for image load, then print
+  // Render the print canvas at HIGH resolution (letter page at ~300dpi),
+  // wait for image load, then export PDF
   var imgUrl = getImgUrl(selWord, selSet);
-  renderCanvas('printCanvas', imgUrl, selPieces, firePrint);
+  renderCanvas('printCanvas', imgUrl, selPieces, exportPDF);
 }
 
 // ── LIVE TRACKER ────────────────────────────────────────────
