@@ -54,6 +54,18 @@ body{font-family:'Nunito',sans-serif;background:#0a140a;color:#fff;min-height:10
 .sol-badge{background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.25);color:#C9A84C;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;padding:4px 12px;border-radius:20px;}
 .footer{text-align:center;font-size:12px;color:#2a4a2a;padding:40px 20px 0;max-width:900px;margin:0 auto;font-family:'Fredoka One',cursive;letter-spacing:1px;}
 @media(max-width:600px){.kiosk-grid{grid-template-columns:1fr;}.hero{padding:28px 20px 24px;}}
+
+/* ── Live Trackers ── */
+.tracker-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;padding:18px 24px 0;max-width:1200px;margin:0 auto;}
+.tracker-card{background:#0a140a;border:1px solid #1a3a1a;border-radius:12px;padding:14px 16px;}
+.tracker-icon{font-size:24px;margin-bottom:6px;}
+.tracker-name{font-family:'Fredoka One',cursive;font-size:12px;color:#C9A84C;letter-spacing:.5px;margin-bottom:8px;text-transform:uppercase;}
+.tracker-bar{background:#05100a;height:8px;border-radius:5px;overflow:hidden;border:1px solid #1a3a1a;}
+.tracker-fill{background:linear-gradient(90deg,#40916C,#C9A84C);height:100%;border-radius:5px;transition:width .6s ease;}
+.tracker-meta{font-size:11px;color:#888;font-weight:700;text-align:right;margin-top:5px;}
+.tracker-meta strong{color:#C9A84C;}
+.tracker-sub{font-size:10px;color:#557055;text-align:right;margin-top:3px;font-style:italic;}
+
 </style>
 </head>
 <body>
@@ -66,7 +78,34 @@ body{font-family:'Nunito',sans-serif;background:#0a140a;color:#fff;min-height:10
   <div class="hero-rule">4 categories &middot; 12 activities &middot; All open in a new tab</div>
 </div>
 
-<a href="index.html" class="back-btn">&#8592; Back to Smile Bags Home</a>
+<!-- ── LIVE TRACKERS (counts pulled from Apps Script) ── -->
+<div class="tracker-row">
+  <div class="tracker-card">
+    <div class="tracker-icon">✨</div>
+    <div class="tracker-name">Smile Mirror Stickers</div>
+    <div class="tracker-bar"><div class="tracker-fill" id="smFill" style="width:0%;"></div></div>
+    <div class="tracker-meta"><span id="smCount">—</span> of <strong>45</strong></div>
+  </div>
+  <div class="tracker-card">
+    <div class="tracker-icon">🎨</div>
+    <div class="tracker-name">Color By Number</div>
+    <div class="tracker-bar"><div class="tracker-fill" id="cbnFill" style="width:0%;"></div></div>
+    <div class="tracker-meta"><span id="cbnCount">—</span> of <strong>45</strong></div>
+  </div>
+  <div class="tracker-card">
+    <div class="tracker-icon">🌈</div>
+    <div class="tracker-name">Speed Palette</div>
+    <div class="tracker-bar"><div class="tracker-fill" id="spFill" style="width:0%;"></div></div>
+    <div class="tracker-meta"><span id="spCount">—</span> of <strong>45</strong></div>
+  </div>
+  <div class="tracker-card">
+    <div class="tracker-icon">📖</div>
+    <div class="tracker-name">Coloring Sheets (G &amp; H)</div>
+    <div class="tracker-bar"><div class="tracker-fill" id="colFill" style="width:0%;"></div></div>
+    <div class="tracker-meta"><span id="colCount">—</span> of <strong>45</strong></div>
+    <div class="tracker-sub">Set G: <span id="colG">—</span> &middot; Set H: <span id="colH">—</span></div>
+  </div>
+</div>
 
 <div class="req-strip">
   <div class="req-item"><div class="req-num">2</div><div class="req-label">AI Art Sets</div></div>
@@ -249,5 +288,44 @@ body{font-family:'Nunito',sans-serif;background:#0a140a;color:#fff;min-height:10
 </div>
 
 <div class="footer">Digital Arts &middot; Creation Kiosk &middot; Smile Bags: A Word &amp; Wonder Experience &middot; Kayla Gau &middot; Spring 2026</div>
+<script>
+/* ── LIVE COUNTS — fetched from Apps Script doGet?action=counts ── */
+// ⚠️ Paste your Apps Script Web App URL here after deployment.
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyPk1fe0vattPkEHA8BV4hnX8mAeDdVywc3X7rWNXykj0X8tVcZzVzol_hYAd7dmcWXDQ/exec";
+
+function fetchDigitalArtsCounts(){
+  if(!SCRIPT_URL || SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbyPk1fe0vattPkEHA8BV4hnX8mAeDdVywc3X7rWNXykj0X8tVcZzVzol_hYAd7dmcWXDQ/exec') return;
+  fetch(SCRIPT_URL + '?action=counts')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(!d || !d.ok) return;
+
+      var sm = d.smileMirror || {total:0, goal:45};
+      document.getElementById('smCount').textContent = sm.total;
+      document.getElementById('smFill').style.width = Math.min(100, Math.round((sm.total / sm.goal) * 100)) + '%';
+
+      var cbn = d.colorByNumber || {total:0, goal:45};
+      document.getElementById('cbnCount').textContent = cbn.total;
+      document.getElementById('cbnFill').style.width = Math.min(100, Math.round((cbn.total / cbn.goal) * 100)) + '%';
+
+      var sp = d.speedPalette || {total:0, goal:45};
+      document.getElementById('spCount').textContent = sp.total;
+      document.getElementById('spFill').style.width = Math.min(100, Math.round((sp.total / sp.goal) * 100)) + '%';
+
+      var col = d.coloring || {total:0, setG:0, setH:0, goal:45};
+      document.getElementById('colCount').textContent = col.total;
+      document.getElementById('colFill').style.width = Math.min(100, Math.round((col.total / col.goal) * 100)) + '%';
+      document.getElementById('colG').textContent = col.setG;
+      document.getElementById('colH').textContent = col.setH;
+    })
+    .catch(function(e){ console.warn('Tracker fetch failed:', e); });
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', fetchDigitalArtsCounts);
+} else {
+  fetchDigitalArtsCounts();
+}
+</script>
 </body>
 </html>
