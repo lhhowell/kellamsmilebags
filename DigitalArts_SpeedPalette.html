@@ -81,11 +81,22 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
   @page{size:letter;margin:.4in;}
 }
 .score-explain{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);border-radius:10px;padding:14px;font-size:13px;color:#8a7040;line-height:1.7;}
+/* ── Live Tracker ── */
+.sp-tracker{background:rgba(0,0,0,.25);border:1px solid #1a3a1a;border-radius:10px;padding:12px 14px;margin:14px 0 0;}
+.sp-tracker-row{display:flex;align-items:center;gap:12px;text-align:left;}
+.sp-tracker-icon{font-size:24px;flex-shrink:0;}
+.sp-tracker-body{flex:1;}
+.sp-tracker-title{font-family:'Fredoka One',cursive;font-size:11px;color:#C9A84C;letter-spacing:.5px;margin-bottom:5px;text-transform:uppercase;}
+.sp-tracker-bar{background:#0a1a0a;height:8px;border-radius:5px;overflow:hidden;border:1px solid #1a3a1a;}
+.sp-tracker-fill{background:linear-gradient(90deg,#40916C,#C9A84C);height:100%;border-radius:5px;transition:width .6s ease;}
+.sp-tracker-meta{font-size:10px;color:#888;font-weight:700;text-align:right;margin-top:3px;}
+.sp-tracker-meta strong{color:#C9A84C;}
+
 </style>
 </head>
 <body>
 <div class="hdr">
-  <div><div class="hdr-title">🎨 Design the Palette</div><div class="hdr-sub">Digital Arts · Smile Bags · Kara Gau</div></div>
+  <div><div class="hdr-title">🎨 Design the Palette</div><div class="hdr-sub">Digital Arts · Smile Bags · Kayla Gau</div></div>
 <a href="DigitalArts_Menu.html" class="back-btn" style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--forest2);border-radius:50px;padding:7px 16px;font-family:'Fredoka One',cursive;font-size:11px;color:var(--forest3);text-decoration:none;margin:16px 0 0 24px;transition:all .2s;" onmouseover="this.style.borderColor='var(--forest3)';this.style.color='#fff'" onmouseout="this.style.borderColor='var(--forest2)';this.style.color='var(--forest3)'">&#8592; Back to Digital Arts Kiosk</a>
 </div>
 <div class="stat-bar" id="statBar" style="display:none;">
@@ -173,6 +184,26 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
         <button class="btn btn-gold" onclick="showPrint()" style="background:linear-gradient(135deg,#1B4332,#40916C);">🖨️ Print for Smile Bag</button>
         <button class="btn btn-outline" onclick="resetGame()">↩ Start Over</button>
       </div>
+
+      <!-- LIVE TRACKER -->
+      <div class="sp-tracker" id="spTracker">
+        <div class="sp-tracker-row">
+          <div class="sp-tracker-icon">🎨</div>
+          <div class="sp-tracker-body">
+            <div class="sp-tracker-title">Class Palette Submissions</div>
+            <div class="sp-tracker-bar"><div class="sp-tracker-fill" id="spTrackerFill" style="width:0%;"></div></div>
+            <div class="sp-tracker-meta"><span id="spTrackerCount">—</span> of <strong>45</strong> palettes</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBMIT AREA -->
+      <div id="spSubmitArea" style="margin-top:14px;padding:16px;background:rgba(64,145,108,.1);border:1.5px solid #40916C;border-radius:10px;">
+        <div style="font-family:'Fredoka One',cursive;font-size:13px;color:#40916C;margin-bottom:8px;">📝 Submit Your Palette</div>
+        <input type="text" id="spStudentName" placeholder="First name and last initial (e.g. Jordan T)" maxlength="40" style="width:100%;padding:10px 12px;border:1.5px solid #40916C;border-radius:6px;background:#0a1a0a;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;margin-bottom:10px;outline:none;"/>
+        <button class="btn btn-gold" id="spSubmitBtn" onclick="spSubmit()" style="width:100%;">✅ Submit My Palette</button>
+        <div id="spSubmitMsg" style="margin-top:8px;font-size:11px;color:#40916C;text-align:center;display:none;"></div>
+      </div>
     </div>
   </div>
 
@@ -195,7 +226,7 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
     <div style="text-align:center;border:1px solid #eee;border-radius:10px;overflow:hidden;margin-bottom:14px;">
       <img id="printImg" src="" style="display:block;width:100%;max-width:480px;margin:0 auto;" alt=""/>
     </div>
-    <div style="font-size:11px;color:#ccc;text-align:center;font-family:'Fredoka One',cursive;letter-spacing:1px;">Smile Bags · A Word &amp; Wonder Experience · Made just for you by a Kellam High School student</div>
+    <div style="font-size:11px;color:#ccc;text-align:center;font-family:'Fredoka One',cursive;letter-spacing:1px;">Smile Bags · A Word &amp; Wonder Experience</div>
   </div>
   <button id="printBtn" onclick="window.print()" style="display:none;width:100%;background:#1B4332;color:#40916C;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:14px;border:1.5px solid #40916C;border-radius:10px;cursor:pointer;margin-top:8px;">🖨️ Print Coloring Sheet</button>
 </div>
@@ -485,7 +516,60 @@ function showPrint(){
   sheet.scrollIntoView({behavior:'smooth'});
 }
 
+/* ── SUBMISSION + LIVE TRACKER ─────────────────────────────── */
+// ⚠️ Paste your Apps Script Web App URL here after deployment.
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyPk1fe0vattPkEHA8BV4hnX8mAeDdVywc3X7rWNXykj0X8tVcZzVzol_hYAd7dmcWXDQ/exec";
+
+function spSubmit(){
+  var name = (document.getElementById('spStudentName').value || '').trim();
+  if(!name){ alert('Please enter your name first!'); return; }
+  var btn = document.getElementById('spSubmitBtn');
+  btn.disabled = true; btn.textContent = 'Submitting...';
+  var token = 'KSB-SP-' + Math.random().toString(36).substr(2,4).toUpperCase();
+  var payload = {
+    activity: 'speedPalette',
+    studentName: name,
+    word: (typeof currentWord !== 'undefined' && currentWord) ? currentWord : '',
+    paletteName: '',
+    colorCount: (typeof studentColors !== 'undefined' && studentColors) ? studentColors.length : '',
+    mood: '',
+    token: token
+  };
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0){
+    spShowSubmitDone(token); return;
+  }
+  fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+    .then(function(){ spShowSubmitDone(token); })
+    .catch(function(){ spShowSubmitDone(token); });
+}
+
+function spShowSubmitDone(token){
+  var btn = document.getElementById('spSubmitBtn');
+  btn.textContent = '✅ Submitted! Code: ' + token;
+  document.getElementById('spSubmitMsg').style.display = 'block';
+  document.getElementById('spSubmitMsg').textContent = '🎨 Palette logged! Print your sheet using the button above.';
+  setTimeout(fetchSpTracker, 700);
+}
+
+function fetchSpTracker(){
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0) return;
+  fetch(SCRIPT_URL + '?action=counts')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(!d || !d.ok) return;
+      var n = (d.speedPalette && d.speedPalette.total) || 0;
+      var g = (d.speedPalette && d.speedPalette.goal) || 45;
+      var pct = Math.min(100, Math.round((n / g) * 100));
+      var cEl = document.getElementById('spTrackerCount');
+      var fEl = document.getElementById('spTrackerFill');
+      if(cEl) cEl.textContent = n;
+      if(fEl) fEl.style.width = pct + '%';
+    })
+    .catch(function(){});
+}
+
 buildWordGrid();
+fetchSpTracker();
 </script>
 </body>
 </html>

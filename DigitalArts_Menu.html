@@ -87,12 +87,6 @@ body{font-family:'Nunito',sans-serif;background:#0a140a;color:#fff;min-height:10
     <div class="tracker-meta"><span id="smCount">—</span> of <strong>45</strong></div>
   </div>
   <div class="tracker-card">
-    <div class="tracker-icon">🎨</div>
-    <div class="tracker-name">Color By Number</div>
-    <div class="tracker-bar"><div class="tracker-fill" id="cbnFill" style="width:0%;"></div></div>
-    <div class="tracker-meta"><span id="cbnCount">—</span> of <strong>45</strong></div>
-  </div>
-  <div class="tracker-card">
     <div class="tracker-icon">🌈</div>
     <div class="tracker-name">Speed Palette</div>
     <div class="tracker-bar"><div class="tracker-fill" id="spFill" style="width:0%;"></div></div>
@@ -294,7 +288,7 @@ body{font-family:'Nunito',sans-serif;background:#0a140a;color:#fff;min-height:10
 var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyPk1fe0vattPkEHA8BV4hnX8mAeDdVywc3X7rWNXykj0X8tVcZzVzol_hYAd7dmcWXDQ/exec";
 
 function fetchDigitalArtsCounts(){
-  if(!SCRIPT_URL || SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbyPk1fe0vattPkEHA8BV4hnX8mAeDdVywc3X7rWNXykj0X8tVcZzVzol_hYAd7dmcWXDQ/exec') return;
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0) return;
   fetch(SCRIPT_URL + '?action=counts')
     .then(function(r){ return r.json(); })
     .then(function(d){
@@ -303,10 +297,6 @@ function fetchDigitalArtsCounts(){
       var sm = d.smileMirror || {total:0, goal:45};
       document.getElementById('smCount').textContent = sm.total;
       document.getElementById('smFill').style.width = Math.min(100, Math.round((sm.total / sm.goal) * 100)) + '%';
-
-      var cbn = d.colorByNumber || {total:0, goal:45};
-      document.getElementById('cbnCount').textContent = cbn.total;
-      document.getElementById('cbnFill').style.width = Math.min(100, Math.round((cbn.total / cbn.goal) * 100)) + '%';
 
       var sp = d.speedPalette || {total:0, goal:45};
       document.getElementById('spCount').textContent = sp.total;

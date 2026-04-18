@@ -185,9 +185,9 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;pa
 
 <!-- S3: PRINT SHEET -->
 <div class="screen" id="scr3">
-  <div class="scr-hd"><h2 id="s3h">Your Smile Mirror Sticker! 🪞</h2><p>6 stickers per sheet · 2.8&Prime; circles · Cricut Print Then Cut.</p></div>
+  <div class="scr-hd"><h2 id="s3h">Your Smile Mirror Sticker! 🪞</h2><p>One sticker · Take a screenshot to submit.</p></div>
   <div class="print-note">
-    <strong>&#128203; For Cricut:</strong> Print on adhesive sticker paper, then load into Cricut and select <strong>Print Then Cut</strong>. Corner marks guide the blade to cut perfect 2.8&Prime; circles. Set margins to <strong>None</strong>, scale <strong>100%</strong>.
+    <strong>&#128203; Next:</strong> Take a screenshot of your sticker above, then submit. Ms. Howell will batch the submitted designs in Cricut software and produce the final printed sticker sheets.
   </div>
   <div class="white-card">
     <div class="sheet-preview"><svg id="sheetSVG" viewBox="0 0 612 792" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:360px;border:1px solid var(--border);border-radius:8px;background:#fff;"></svg></div>
@@ -324,21 +324,14 @@ function drawPreview(){
 
 function drawSheet(){
   var svg=document.getElementById("sheetSVG");
-  // 6 stickers: 2 cols × 3 rows, 2.8 inch = ~202px at 72dpi
-  var r=96,cols=2,rows=3,colSp=306,rowSp=264,startX=153,startY=132;
+  // Single large sticker, centered on letter-sized page
+  // Using ~3.5" circle (252px radius at 72dpi) centered in the 612x792 viewBox
+  var cx=306, cy=396, r=252;
   var word=selWord||"WORD",name=sName||"Student";
-  var stickers="";
-  for(var row=0;row<rows;row++){for(var col=0;col<cols;col++){
-    var cx=startX+col*colSp,cy=startY+row*rowSp;
-    stickers+='<defs><clipPath id="cp'+row+''+col+'"><circle cx="'+cx+'" cy="'+cy+'" r="'+r+'"/></clipPath></defs>'+
-      '<g clip-path="url(#cp'+row+''+col+')">'+drawStickerSVG(cx,cy,r,word,name,selStyle,selColor,selFont)+'</g>';
-  }}
-  var rm='<line x1="0" y1="0" x2="16" y2="0" stroke="#000" stroke-width="0.5"/><line x1="0" y1="0" x2="0" y2="16" stroke="#000" stroke-width="0.5"/>'+
-         '<line x1="612" y1="0" x2="596" y2="0" stroke="#000" stroke-width="0.5"/><line x1="612" y1="0" x2="612" y2="16" stroke="#000" stroke-width="0.5"/>'+
-         '<line x1="0" y1="792" x2="16" y2="792" stroke="#000" stroke-width="0.5"/><line x1="0" y1="792" x2="0" y2="776" stroke="#000" stroke-width="0.5"/>'+
-         '<line x1="612" y1="792" x2="596" y2="792" stroke="#000" stroke-width="0.5"/><line x1="612" y1="792" x2="612" y2="776" stroke="#000" stroke-width="0.5"/>';
-  svg.innerHTML='<rect width="612" height="792" fill="#fff"/>'+rm+stickers+
-    '<text x="306" y="784" text-anchor="middle" font-family="Fredoka One,cursive" font-size="9" fill="#ccc" letter-spacing="1">Smile Bags · Word &amp; Wonder · '+esc(name)+' · Digital Arts · Kayla Gau · Spring 2026</text>';
+  var sticker='<defs><clipPath id="cpSingle"><circle cx="'+cx+'" cy="'+cy+'" r="'+r+'"/></clipPath></defs>'+
+    '<g clip-path="url(#cpSingle)">'+drawStickerSVG(cx,cy,r,word,name,selStyle,selColor,selFont)+'</g>';
+  svg.innerHTML='<rect width="612" height="792" fill="#fff"/>'+sticker+
+    '<text x="306" y="760" text-anchor="middle" font-family="Fredoka One,cursive" font-size="11" fill="#aaa" letter-spacing="1">Smile Bags · Word &amp; Wonder · '+esc(name)+' · Digital Arts · Kayla Gau · Spring 2026</text>';
 }
 
 function toWord(){sName=document.getElementById("iName").value.trim();sPeriod=document.getElementById("iPeriod").value;if(!sName){alert("Please enter your name!");return;}drawPreview();nav(1);}
@@ -383,7 +376,7 @@ function doSubmit(){
     method: "Screenshot + Canvas",
     token: tok
   };
-  if(!SCRIPT_URL||SCRIPT_URL==="https://script.google.com/macros/s/AKfycbyPk1fe0vattPkEHA8BV4hnX8mAeDdVywc3X7rWNXykj0X8tVcZzVzol_hYAd7dmcWXDQ/exec"){showDone();return;}
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0){showDone();return;}
   fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
     .then(function(){showDone();})
     .catch(function(){showDone();});
@@ -395,7 +388,7 @@ function showDone(){
 }
 
 function fetchSmTracker(){
-  if(!SCRIPT_URL || SCRIPT_URL === "https://script.google.com/macros/s/AKfycbyPk1fe0vattPkEHA8BV4hnX8mAeDdVywc3X7rWNXykj0X8tVcZzVzol_hYAd7dmcWXDQ/exec") return;
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0) return;
   fetch(SCRIPT_URL + '?action=counts')
     .then(function(r){ return r.json(); })
     .then(function(d){

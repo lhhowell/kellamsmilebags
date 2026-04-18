@@ -436,6 +436,20 @@ header {
   .book { width:300px; height:410px; }
   .thumb-section { padding:0 12px; }
 }
+/* ── Live Tracker (Sets G + H combined) ── */
+.setg-tracker{background:#fff;border:1.5px solid #C8A951;border-radius:12px;padding:14px 16px;margin:0 24px 14px;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.setg-tracker-row{display:flex;align-items:center;gap:14px;}
+.setg-tracker-icon{font-size:28px;flex-shrink:0;}
+.setg-tracker-body{flex:1;}
+.setg-tracker-title{font-family:'Fredoka One',cursive;font-size:13px;color:#1B4332;letter-spacing:.5px;margin-bottom:6px;}
+.setg-tracker-bar{background:#F0E6D2;height:11px;border-radius:6px;overflow:hidden;}
+.setg-tracker-fill{background:linear-gradient(90deg,#1B4332,#C8A951);height:100%;border-radius:6px;transition:width .6s ease;}
+.setg-tracker-meta{font-size:11px;color:#666;font-weight:700;text-align:right;margin-top:5px;}
+.setg-tracker-meta strong{color:#1B4332;}
+.setg-tracker-note{font-size:11px;color:#5B4A1F;font-style:italic;margin-top:10px;padding-top:10px;border-top:1px dashed #E2D4A8;}
+
+/* ── Print: full 8.5x11 (existing print CSS lives in @media print further up) ── */
+
 </style>
 </head>
 <body>
@@ -450,9 +464,26 @@ header {
     <select class="word-select" id="wordJump" onchange="jumpToWord(this.value)">
       <option value="">— Jump to Word —</option>
     </select>
-    <button class="btn-print" onclick="printPage()">🖨️ Print This Page</button>
+    <button class="btn-print" onclick="printPage()">🖨️ Print Full Page</button>
+    <button class="btn-print" id="setgSubmitBtn" onclick="setgSubmit()" style="background:#2D7A4F;color:#fff;border-color:#1B5E20;">✅ Add to My Smile Bag</button>
   </div>
 </header>
+
+<!-- LIVE TRACKER (Sets G + H combined) -->
+<div class="setg-tracker" id="setgTracker">
+  <div class="setg-tracker-row">
+    <div class="setg-tracker-icon">📖</div>
+    <div class="setg-tracker-body">
+      <div class="setg-tracker-title">Coloring Sheet Selections (Sets G &amp; H combined)</div>
+      <div class="setg-tracker-bar"><div class="setg-tracker-fill" id="setgTrackerFill" style="width:0%;"></div></div>
+      <div class="setg-tracker-meta">
+        <span id="setgTrackerCount">—</span> of <strong>45</strong> selected
+        &middot; Set G: <span id="setgTrackerG">—</span> &middot; Set H: <span id="setgTrackerH">—</span>
+      </div>
+    </div>
+  </div>
+  <div class="setg-tracker-note">💛 Pick ONE coloring sheet for your Smile Bag &mdash; from EITHER Set G or Set H. Choose carefully!</div>
+</div>
 
 <!-- BOOK STAGE -->
 <div class="stage">
@@ -627,6 +658,77 @@ document.addEventListener('keydown', e => {
 
 buildUI();
 renderPage(0);
+
+/* ── SUBMISSION + LIVE TRACKER ─────────────────────────────── */
+// ⚠️ Paste your Apps Script Web App URL here after deployment.
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyPk1fe0vattPkEHA8BV4hnX8mAeDdVywc3X7rWNXykj0X8tVcZzVzol_hYAd7dmcWXDQ/exec";
+
+function setgSubmit(){
+  var page = PAGES[currentIndex];
+  if(!page || page.type !== 'coloring'){
+    alert('Please flip to a coloring page first, then tap "Add to My Smile Bag".');
+    return;
+  }
+  var name = prompt('Enter your name (first name and last initial, e.g. "Jordan T"):');
+  if(!name) return;
+  name = name.trim();
+  if(!name){ alert('Name is required.'); return; }
+
+  var btn = document.getElementById('setgSubmitBtn');
+  if(btn){ btn.disabled = true; btn.textContent = 'Submitting...'; }
+
+  var token = 'KSB-G-' + Math.random().toString(36).substr(2,4).toUpperCase();
+  var payload = {
+    activity: 'coloring',
+    studentName: name,
+    class: '',
+    word: page.word.toUpperCase(),
+    set: 'G',
+    style: 'Nature Poster',
+    token: token
+  };
+
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0){
+    setgShowDone(token); return;
+  }
+  fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+    .then(function(){ setgShowDone(token); })
+    .catch(function(){ setgShowDone(token); });
+}
+
+function setgShowDone(token){
+  var btn = document.getElementById('setgSubmitBtn');
+  if(btn){ btn.textContent = '✅ Added! Code: ' + token; }
+  setTimeout(function(){
+    alert('🎨 Your coloring selection has been logged!\n\nCode: ' + token + '\n\nPrint this page now (use the 🖨️ Print Full Page button) to take home for your Smile Bag.');
+    setTimeout(fetchSetgTracker, 500);
+  }, 200);
+}
+
+function fetchSetgTracker(){
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0) return;
+  fetch(SCRIPT_URL + '?action=counts')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(!d || !d.ok) return;
+      var total = (d.coloring && d.coloring.total) || 0;
+      var g = (d.coloring && d.coloring.goal) || 45;
+      var setG = (d.coloring && d.coloring.setG) || 0;
+      var setH = (d.coloring && d.coloring.setH) || 0;
+      var pct = Math.min(100, Math.round((total / g) * 100));
+      var cEl = document.getElementById('setgTrackerCount');
+      var fEl = document.getElementById('setgTrackerFill');
+      var gEl = document.getElementById('setgTrackerG');
+      var hEl = document.getElementById('setgTrackerH');
+      if(cEl) cEl.textContent = total;
+      if(fEl) fEl.style.width = pct + '%';
+      if(gEl) gEl.textContent = setG;
+      if(hEl) hEl.textContent = setH;
+    })
+    .catch(function(){});
+}
+
+fetchSetgTracker();
 </script>
 <div style="position:fixed;bottom:20px;right:20px;z-index:999;">
   <a href="https://lhhowell.github.io/kellamsmilebags/DigitalArts_Menu.html" style="display:inline-flex;align-items:center;gap:8px;background:#1B4332;color:#E8C97A;border:none;border-radius:50px;padding:11px 20px;font-family:'Fredoka One',cursive;font-size:14px;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.25);">

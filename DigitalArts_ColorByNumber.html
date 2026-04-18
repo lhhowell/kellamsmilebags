@@ -55,13 +55,17 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
 #cbnCanvas{border-radius:12px;border:1px solid #1a3a1a;cursor:crosshair;display:block;max-width:100%;}
 .win-banner{display:none;background:linear-gradient(135deg,var(--forest),var(--forest2));border:2px solid var(--gold);border-radius:14px;padding:24px;text-align:center;margin-top:16px;}
 .win-banner.show{display:block;}
+
+/* ── Live Tracker ── */
+/* (Tracker removed — ColorByNumber is a fun-only game, no submissions needed) */
+
 .win-title{font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold2);margin-bottom:8px;}
 .win-sub{font-size:14px;color:rgba(255,255,255,.8);}
 </style>
 </head>
 <body>
 <div class="hdr">
-  <div><div class="hdr-title">🎨 Color by Number Race</div><div class="hdr-sub">Digital Arts · Smile Bags · Kara Gau</div></div>
+  <div><div class="hdr-title">🎨 Color by Number Race</div><div class="hdr-sub">Digital Arts · Smile Bags · Kayla Gau</div></div>
 </div>
 <div class="timer-bar" id="timerBar" style="display:none;">
   <div class="timer-display">
@@ -103,7 +107,6 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
         <div style="margin-top:12px;">
           <button class="btn btn-outline" onclick="undoCBN()" style="width:100%;margin-bottom:8px;padding:8px;">↩ Undo</button>
           <button class="btn btn-outline" onclick="clearBoard()" style="width:100%;margin-bottom:8px;padding:8px;">🧹 Clear Board</button>
-          <button class="btn btn-outline" onclick="printColored()" style="width:100%;margin-bottom:8px;padding:8px;background:#2D6A4F;color:#fff;border-color:#40916C;">🖨️ Print My Sheet</button>
           <button class="btn btn-outline" onclick="resetGame()" style="width:100%;padding:8px;">↩ New Game</button>
         </div>
       </div>
@@ -114,7 +117,8 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
     <div class="win-banner" id="winBanner">
       <div class="win-title">🎉 Race Complete!</div>
       <div class="win-sub" id="winSub"></div>
-      <button class="btn btn-gold" onclick="resetGame()" style="margin-top:16px;">Play Again</button>
+      <p style="margin-top:12px;font-size:13px;color:#40916C;font-style:italic;">Nice work! Play again or pick a different word.</p>
+      <button class="btn btn-gold" onclick="resetGame()" style="margin-top:12px;width:100%;">Play Again</button>
     </div>
   </div>
 </div>
@@ -361,27 +365,6 @@ function clearBoard(){
   drawGame();
 }
 
-function printColored(){
-  var canvas=document.getElementById('cbnCanvas');
-  var dataURL=canvas.toDataURL('image/png');
-  var html='<!DOCTYPE html><html><head><title>My Coloring &mdash; '+selWord+'</title>'+
-    '<style>@page{size:letter;margin:.5in;}'+
-    'body{font-family:Georgia,serif;color:#111;text-align:center;margin:0;padding:20px;}'+
-    'h1{font-size:24px;margin:0 0 4px;}'+
-    '.sub{font-size:12px;color:#666;text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;}'+
-    'img{max-width:100%;height:auto;border:1px solid #ddd;}'+
-    '.footer{margin-top:18px;font-size:10px;color:#888;letter-spacing:1px;text-transform:uppercase;}'+
-    '</style></head><body>'+
-    '<h1>'+selWord+' &mdash; My Coloring</h1>'+
-    '<div class="sub">Smile Bags &middot; A Word &amp; Wonder Experience</div>'+
-    '<img src="'+dataURL+'" alt="My colored artwork"/>'+
-    '<div class="footer">Made just for you by a Kellam High School student</div>'+
-    '<script>window.onload=function(){setTimeout(function(){window.print();},300);};<\/script>'+
-    '</body></html>';
-  var w=window.open('','_blank');
-  w.document.write(html);
-  w.document.close();
-}
 
 function resetGame(){
   clearInterval(timerInt);
