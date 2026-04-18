@@ -91,6 +91,17 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;pa
   .studio{grid-template-columns:1fr;}
   .preview-col{position:static;}
 }
+/* ── Live Tracker ── */
+.sm-tracker{background:#fff;border:1.5px solid var(--gold);border-radius:12px;padding:12px 14px;margin:0 0 14px;box-shadow:0 2px 8px rgba(123,31,162,.06);}
+.sm-tracker-row{display:flex;align-items:center;gap:12px;}
+.sm-tracker-icon{font-size:26px;flex-shrink:0;}
+.sm-tracker-body{flex:1;}
+.sm-tracker-title{font-family:'Fredoka One',cursive;font-size:12px;color:var(--forest);letter-spacing:.5px;margin-bottom:6px;}
+.sm-tracker-bar{background:#F0E6D2;height:10px;border-radius:6px;overflow:hidden;}
+.sm-tracker-fill{background:linear-gradient(90deg,var(--forest),var(--gold));height:100%;border-radius:6px;transition:width .6s ease;}
+.sm-tracker-meta{font-size:11px;color:#666;font-weight:700;text-align:right;margin-top:4px;}
+.sm-tracker-meta strong{color:var(--forest);}
+
 </style>
 </head>
 <body>
@@ -98,6 +109,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;pa
 <div class="hdr">
   <h1>🪞 Smile Mirror Design</h1>
   <p>Digital Arts · Smile Bags · A Word &amp; Wonder Experience · Kayla Gau · Spring 2026</p>
+  <a href="DigitalArts_Menu.html" style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:6px 14px;background:rgba(255,255,255,.15);color:#fff;text-decoration:none;border-radius:20px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;text-transform:uppercase;">🏠 Back to Digital Arts Menu</a>
 </div>
 
 <div class="prog">
@@ -181,16 +193,54 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;pa
     <div class="sheet-preview"><svg id="sheetSVG" viewBox="0 0 612 792" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:360px;border:1px solid var(--border);border-radius:8px;background:#fff;"></svg></div>
   </div>
   <div id="notSub">
-    <button class="print-btn-main" onclick="printSheet()">🖨️ Print My Sticker Sheet</button>
-    <button class="print-btn-main" style="background:linear-gradient(135deg,#2D7A4F,#1B5E20);margin-top:8px;" onclick="doSubmit()">✅ Submit &amp; Print</button>
-    <p style="font-size:12px;color:#888;font-style:italic;text-align:center;margin-top:8px;">Submit logs your design to Ms. Gau.</p>
+
+    <!-- LIVE TRACKER -->
+    <div class="sm-tracker" id="smTracker">
+      <div class="sm-tracker-row">
+        <div class="sm-tracker-icon">✨</div>
+        <div class="sm-tracker-body">
+          <div class="sm-tracker-title">Class Sticker Submissions</div>
+          <div class="sm-tracker-bar"><div class="sm-tracker-fill" id="smTrackerFill" style="width:0%;"></div></div>
+          <div class="sm-tracker-meta"><span id="smTrackerCount">—</span> of <strong>45</strong> stickers</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREENSHOT INSTRUCTIONS -->
+    <div style="background:#FFF8EE;border:2px solid var(--gold);border-radius:12px;padding:16px;margin-bottom:14px;">
+      <div style="font-family:'Fredoka One',cursive;font-size:13px;color:var(--forest);letter-spacing:.5px;margin-bottom:10px;">📸 STEP 1: Take a Screenshot</div>
+      <div style="font-size:12px;color:#5a3000;line-height:1.7;">
+        Capture your sticker design above so you can upload it to <strong>Ms. Gau's Canvas assignment</strong>.<br>
+        <strong>Chromebook:</strong> Press <kbd style="background:#fff;border:1px solid #C8860A;padding:1px 5px;border-radius:3px;font-size:11px;">Ctrl</kbd> + <kbd style="background:#fff;border:1px solid #C8860A;padding:1px 5px;border-radius:3px;font-size:11px;">Show Windows</kbd> key, then drag a box around the sticker.<br>
+        <strong>Mac:</strong> Press <kbd style="background:#fff;border:1px solid #C8860A;padding:1px 5px;border-radius:3px;font-size:11px;">⌘</kbd> + <kbd style="background:#fff;border:1px solid #C8860A;padding:1px 5px;border-radius:3px;font-size:11px;">Shift</kbd> + <kbd style="background:#fff;border:1px solid #C8860A;padding:1px 5px;border-radius:3px;font-size:11px;">4</kbd>, then drag.<br>
+        <strong>Windows:</strong> Press <kbd style="background:#fff;border:1px solid #C8860A;padding:1px 5px;border-radius:3px;font-size:11px;">Win</kbd> + <kbd style="background:#fff;border:1px solid #C8860A;padding:1px 5px;border-radius:3px;font-size:11px;">Shift</kbd> + <kbd style="background:#fff;border:1px solid #C8860A;padding:1px 5px;border-radius:3px;font-size:11px;">S</kbd>, then drag.
+      </div>
+    </div>
+
+    <!-- NAME + SUBMIT -->
+    <div style="padding:16px;background:rgba(45,122,79,.08);border:1.5px solid var(--forest);border-radius:10px;">
+      <div style="font-family:'Fredoka One',cursive;font-size:13px;color:var(--forest);margin-bottom:8px;">📝 STEP 2: Confirm Submission</div>
+      <input type="text" id="smStudentName" placeholder="First name and last initial (e.g. Jordan T)" maxlength="40" style="width:100%;padding:10px 12px;border:1.5px solid var(--forest);border-radius:6px;background:#fff;color:#111;font-family:'Nunito',sans-serif;font-size:14px;margin-bottom:10px;outline:none;"/>
+      <button class="print-btn-main" id="smSubmitBtn" style="background:linear-gradient(135deg,#2D7A4F,#1B5E20);width:100%;" onclick="doSubmit()">✅ I've Saved My Screenshot — Submit</button>
+      <p style="font-size:11px;color:#666;font-style:italic;text-align:center;margin-top:8px;">Logs your sticker design to Ms. Gau.</p>
+    </div>
+
   </div>
   <div class="sub-box" id="subBox">
     <div style="font-size:52px;margin-bottom:12px;">🎉</div>
     <div style="font-family:'Fredoka One',cursive;font-size:22px;color:var(--forest);margin-bottom:6px;">Design Submitted!</div>
-    <p style="font-size:14px;color:#555;line-height:1.7;">Your Smile Mirror sticker design is saved. Don't forget to print your sheet!</p>
+    <p style="font-size:14px;color:#555;line-height:1.7;">Your Smile Mirror sticker design has been logged to Ms. Gau.</p>
+
+    <div style="background:#FFF8EE;border:2px solid var(--gold);border-radius:12px;padding:16px;margin:16px 0;text-align:left;">
+      <div style="font-family:'Fredoka One',cursive;font-size:13px;color:var(--forest);margin-bottom:8px;">📤 STEP 3: Upload to Canvas</div>
+      <p style="font-size:13px;color:#5a3000;line-height:1.7;margin:0;">
+        Open Ms. Gau's <strong>Canvas assignment</strong> and upload the screenshot you took. Your name will be attached automatically when you submit.
+      </p>
+    </div>
+
     <div class="token-box"><div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#C8860A;margin-bottom:4px;">Your code</div><div class="token-code" id="tokCode">KSB-0000</div></div>
-    <button class="print-btn-main" style="margin-top:16px;width:auto;padding:12px 28px;" onclick="printSheet()">🖨️ Print My Sheet</button>
+
+    <p style="font-size:12px;color:#999;font-style:italic;margin-top:14px;">Ms. Howell will print all the stickers on the Cricut and add them to the Smile Bags. ✨</p>
   </div>
   <div class="nav-row" style="justify-content:flex-start;margin-top:12px;">
     <button class="btn-back" onclick="nav(2)">← Change Design</button>
@@ -198,7 +248,8 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;pa
 </div>
 
 <script>
-var SCRIPT_URL="YOUR_APPS_SCRIPT_URL_HERE";
+// ⚠️ Paste your Apps Script Web App URL here after deployment.
+var SCRIPT_URL="https://script.google.com/macros/s/AKfycbyPk1fe0vattPkEHA8BV4hnX8mAeDdVywc3X7rWNXykj0X8tVcZzVzol_hYAd7dmcWXDQ/exec";
 
 var WORDS=["ABSORB","ADAPT","ANCHOR","BALANCE","BLOOM","BREATHE","CLEAR","CONNECT","CYCLE","EMERGE","FILTER","FLOW","GROW","HEAL","MIGRATE","PERSIST","RENEW","RESTORE","RETURN","RISE","ROOT","SHINE","SUSTAIN","THRIVE","TRANSFORM"];
 
@@ -309,13 +360,63 @@ function printSheet(){
 }
 
 function doSubmit(){
-  var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
+  // Pull name from the new input field (replaces sName from earlier flow)
+  var nameInput = document.getElementById('smStudentName');
+  var nameVal = (nameInput && nameInput.value || '').trim();
+  if(!nameVal){
+    if(nameInput) nameInput.focus();
+    alert('Please enter your name first!');
+    return;
+  }
+  var btn = document.getElementById('smSubmitBtn');
+  if(btn){ btn.disabled = true; btn.textContent = 'Submitting...'; }
+  var tok="KSB-SM-"+Math.random().toString(36).substring(2,6).toUpperCase();
   document.getElementById("tokCode").textContent=tok;
-  var payload={studentName:sName,period:sPeriod,teacher:"Kayla Gau",word:selWord,style:selStyle?selStyle.name:"",color:selColor?selColor.name:"",font:selFont?selFont.name:"",token:tok};
-  if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){showDone();return;}
-  fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)}).then(function(){showDone();}).catch(function(){showDone();});
+  var payload={
+    activity: 'smileMirror',
+    studentName: nameVal,
+    class: (typeof sPeriod !== 'undefined' && sPeriod) ? sPeriod : '',
+    teacher: "Kayla Gau",
+    word: selWord,
+    style: selStyle ? selStyle.name : "",
+    background: selColor ? selColor.name : "",
+    method: "Screenshot + Canvas",
+    token: tok
+  };
+  if(!SCRIPT_URL||SCRIPT_URL==="https://script.google.com/macros/s/AKfycbyPk1fe0vattPkEHA8BV4hnX8mAeDdVywc3X7rWNXykj0X8tVcZzVzol_hYAd7dmcWXDQ/exec"){showDone();return;}
+  fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+    .then(function(){showDone();})
+    .catch(function(){showDone();});
 }
-function showDone(){document.getElementById("notSub").style.display="none";document.getElementById("subBox").style.display="block";}
+function showDone(){
+  document.getElementById("notSub").style.display="none";
+  document.getElementById("subBox").style.display="block";
+  setTimeout(fetchSmTracker, 700);
+}
+
+function fetchSmTracker(){
+  if(!SCRIPT_URL || SCRIPT_URL === "https://script.google.com/macros/s/AKfycbyPk1fe0vattPkEHA8BV4hnX8mAeDdVywc3X7rWNXykj0X8tVcZzVzol_hYAd7dmcWXDQ/exec") return;
+  fetch(SCRIPT_URL + '?action=counts')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(!d || !d.ok) return;
+      var n = (d.smileMirror && d.smileMirror.total) || 0;
+      var g = (d.smileMirror && d.smileMirror.goal) || 45;
+      var pct = Math.min(100, Math.round((n / g) * 100));
+      var cEl = document.getElementById('smTrackerCount');
+      var fEl = document.getElementById('smTrackerFill');
+      if(cEl) cEl.textContent = n;
+      if(fEl) fEl.style.width = pct + '%';
+    })
+    .catch(function(){});
+}
+
+// Auto-fetch tracker on page load
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', fetchSmTracker);
+} else {
+  fetchSmTracker();
+}
 </script>
 </body>
 </html>
