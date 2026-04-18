@@ -172,27 +172,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--dark);color:#fff;min-heig
 .mood-cell:hover{border-color:var(--forest-light);}
 .mood-word-badge{background:rgba(200,168,75,.1);border:1px solid rgba(200,168,75,.2);border-radius:50px;padding:4px 12px;font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold-light);font-style:italic;}
 
-/* ── PRINT PREVIEW ── */
-.print-preview{background:#fff;color:#111;border-radius:12px;padding:28px;margin-top:16px;display:none;}
-.print-preview.show{display:block;}
-.pp-header{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#888;margin-bottom:16px;text-align:center;}
-.pp-word{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:#1A2E12;text-align:center;margin-bottom:20px;}
-.pp-swatches{display:flex;gap:10px;margin-bottom:16px;}
-.pp-swatch{flex:1;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.1);}
-.pp-swatch-color{height:80px;}
-.pp-swatch-label{padding:6px;text-align:center;font-size:10px;color:#666;font-family:'DM Sans',sans-serif;letter-spacing:.5px;}
-.pp-footer{font-size:10px;color:#ccc;text-align:center;font-family:'DM Sans',sans-serif;letter-spacing:1px;}
-
 .footer{text-align:center;font-size:11px;color:var(--border);padding:40px 20px;letter-spacing:1px;font-family:'Fredoka One',cursive;}
 @media(max-width:700px){
   .tab-btn{font-size:10px;padding:10px 4px;}
   .harmony-layout,.emotion-layout{grid-template-columns:1fr;}
   .wheel-wrap{flex-direction:column;}
-}
-@media print{
-  body{background:#fff;padding:0;}
-  .hdr,.tab-bar,.tab-panel:not(.active),.btn-row,.back-btn,.footer{display:none!important;}
-  .print-preview{display:block!important;box-shadow:none;}
 }
 </style>
 </head>
@@ -203,7 +187,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--dark);color:#fff;min-heig
     <h1>🎨 Digital Arts · Color Studio</h1>
     <p>Kayla Gau · Digital Arts &nbsp;·&nbsp; Smile Bags · A Word &amp; Wonder Experience</p>
   </div>
-  <a href="DigitalArts_Menu.html" class="back-btn">← Back to Digital Arts Kiosk</a>
+  <a href="DigitalArts_Menu.html" class="back-btn">🏠 Return to Main Menu</a>
 </div>
 
 <div class="tab-bar">
@@ -329,7 +313,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--dark);color:#fff;min-heig
 <!-- ══ TAB 4: COLOR HARMONY ══ -->
 <div class="tab-panel" id="tab-harmony" data-tab="harmony">
   <div class="panel-title">🎭 Color Harmony</div>
-  <p class="panel-sub">Learn real color theory. Pick a base color for your OneWord, choose a harmony type, and discover the colors that belong together. Download your harmony card for the Smile Bag.</p>
+  <p class="panel-sub">Learn real color theory. Pick a base color for your OneWord, choose a harmony type, and discover the colors that belong together.</p>
   <div class="word-row">
     <span class="word-label">Your Word:</span>
     <select class="word-select" id="harmonyWord" onchange="updateHarmonyWord()">
@@ -476,9 +460,8 @@ function getWord(id) {
 function showTab(name, btn) {
   document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
-  var panel = document.getElementById('tab-'+name);
-  if(panel) panel.classList.add('active');
-  if(btn && btn.classList) btn.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
   if(name==='wheel' && !wheelReady) initWheel();
   if(name==='harmony' && !harmonyReady) initHarmony();
   if(name==='story' && !storyReady) initStory();
@@ -611,20 +594,6 @@ function updateWheelWord() {
   }
 }
 
-function generateWheelPrint() {
-  if(paletteColors.length===0){showWin('Add at least one color to your palette first!');return;}
-  var w=getWord('wheelWord');
-  var pp=document.getElementById('wheelPrint');
-  document.getElementById('wpWord').textContent=(w?w.w+' — ':'')+' MY COLOR PALETTE';
-  var swatches=document.getElementById('wpSwatches');
-  swatches.innerHTML='';
-  paletteColors.forEach(function(c){
-    swatches.innerHTML+='<div class="pp-swatch"><div class="pp-swatch-color" style="background:'+c.hex+'"></div><div class="pp-swatch-label">'+c.hex+'<br><strong>'+c.name+'</strong></div></div>';
-  });
-  pp.classList.add('show');
-  pp.scrollIntoView({behavior:'smooth'});
-  setTimeout(function(){downloadDiv('wheelPrint', (w?w.w:'PALETTE')+'_ColorPalette.png');},300);
-}
 
 // ══════════════════════ TAB 2: EMOTION MAP ══════════════════════
 var selectedEmotions=[];
@@ -687,20 +656,6 @@ function clearEmotions() {
   buildEmotionChips();
 }
 
-function generateEmotionPrint() {
-  if(selectedEmotions.length===0){showWin('Choose at least one emotion color first!');return;}
-  var w=getWord('emotionWord');
-  document.getElementById('epWord').textContent=(w?w.w+' — ':'')+' COLOR EMOTION MAP';
-  var swatches=document.getElementById('epSwatches');
-  swatches.innerHTML='';
-  selectedEmotions.forEach(function(ec){
-    swatches.innerHTML+='<div class="pp-swatch"><div class="pp-swatch-color" style="background:'+ec.color+'"></div><div class="pp-swatch-label">'+ec.name+'<br><span style="color:#aaa;font-size:9px;">'+ec.desc+'</span></div></div>';
-  });
-  var pp=document.getElementById('emotionPrint');
-  pp.classList.add('show');
-  pp.scrollIntoView({behavior:'smooth'});
-  setTimeout(function(){downloadDiv('emotionPrint',(w?w.w:'EMOTION')+'_EmotionMap.png');},300);
-}
 
 // ══════════════════════ TAB 3: COLOR STORY ══════════════════════
 var storyReady=false, storyTool='brush', storyColor='#5A8C3A', storyHistory=[];
@@ -753,8 +708,6 @@ function saveStoryState(){var c=document.getElementById('storyCanvas');storyHist
 function undoStory(){if(storyHistory.length<=1)return;storyHistory.pop();var c=document.getElementById('storyCanvas');var ctx=c.getContext('2d');var img=new Image();img.onload=function(){ctx.clearRect(0,0,c.width,c.height);ctx.drawImage(img,0,0);};img.src=storyHistory[storyHistory.length-1];}
 function clearStory(){var c=document.getElementById('storyCanvas');var ctx=c.getContext('2d');ctx.fillStyle='#0E1A0A';ctx.fillRect(0,0,c.width,c.height);storyHistory=[];saveStoryState();}
 function setStoryTool(t,btn){storyTool=t;document.querySelectorAll('#tab-story .brush-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');}
-function downloadStory(){var c=document.getElementById('storyCanvas');var a=document.createElement('a');var w=getWord('storyWord');a.download=(w?w.w:'STORY')+'_ColorStory.png';a.href=c.toDataURL();a.click();}
-function printStory(){var c=document.getElementById('storyCanvas');var win=window.open('');win.document.write('<img src="'+c.toDataURL()+'" style="max-width:100%;"/>');win.document.close();win.print();}
 
 function updateStoryWord() {
   var w=getWord('storyWord');
@@ -887,23 +840,6 @@ function hexToHsl(hex){
   return{h:h*360,s:s,l:l};
 }
 
-function generateHarmonyPrint() {
-  var w=getWord('harmonyWord');
-  document.getElementById('hpWord').textContent=(w?w.w+' — ':'')+harmonyType.toUpperCase()+' HARMONY';
-  var angles=getHarmonyAngles();
-  var swatches=document.getElementById('hpSwatches');
-  swatches.innerHTML='';
-  var names=['Base','Harmony 1','Harmony 2','Harmony 3'];
-  angles.forEach(function(a,i){
-    var hex=hslToHex(a,harmonyBase.s,harmonyBase.l);
-    swatches.innerHTML+='<div class="pp-swatch"><div class="pp-swatch-color" style="background:'+hex+'"></div><div class="pp-swatch-label">'+hex+'<br><strong>'+names[i]+'</strong></div></div>';
-  });
-  document.getElementById('hpExplain').textContent=HARMONY_EXPLAINS[harmonyType];
-  var pp=document.getElementById('harmonyPrint');
-  pp.classList.add('show');
-  pp.scrollIntoView({behavior:'smooth'});
-  setTimeout(function(){downloadDiv('harmonyPrint',(w?w.w:'HARMONY')+'_ColorHarmony.png');},300);
-}
 
 // ══════════════════════ TAB 5: MOOD BOARD ══════════════════════
 var moodReady=false, moodCells=[], dragColor=null;
@@ -985,71 +921,11 @@ function updateMoodWord() {
   } else {badge.style.display='none';}
 }
 
-function downloadMoodBoard() {
-  var grid=document.getElementById('moodGrid');
-  var canvas=document.createElement('canvas');
-  canvas.width=420;canvas.height=420;
-  var ctx=canvas.getContext('2d');
-  var w=getWord('moodWord');
-  ctx.fillStyle='#0E1A0A';ctx.fillRect(0,0,420,420);
-  var cellW=(420-24-18)/4, cellH=(420-24-18)/4;
-  var colors=moodCells.filter(Boolean);
-  if(colors.length===0){showWin('Add some colors to your mood board first!');return;}
-  for(var i=0;i<16;i++){
-    var col=i%4, row2=Math.floor(i/4);
-    var x=12+col*(cellW+6), y=12+row2*(cellH+6);
-    ctx.fillStyle=moodCells[i]||'rgba(255,255,255,.04)';
-    ctx.beginPath();ctx.roundRect(x,y,cellW,cellH,8);ctx.fill();
-  }
-  var a=document.createElement('a');
-  a.download=(w?w.w:'MOOD')+'_MoodPalette.png';
-  a.href=canvas.toDataURL();a.click();
-}
-
-function printMoodBoard() {
-  var canvas=document.createElement('canvas');
-  canvas.width=420;canvas.height=420;
-  var ctx=canvas.getContext('2d');
-  ctx.fillStyle='#ffffff';ctx.fillRect(0,0,420,420);
-  var cellW=(420-24-18)/4, cellH=(420-24-18)/4;
-  for(var i=0;i<16;i++){
-    var col=i%4, row2=Math.floor(i/4);
-    var x=12+col*(cellW+6), y=12+row2*(cellH+6);
-    ctx.fillStyle=moodCells[i]||'#f0f0f0';
-    ctx.beginPath();ctx.roundRect(x,y,cellW,cellH,8);ctx.fill();
-  }
-  var win=window.open('');win.document.write('<img src="'+canvas.toDataURL()+'" style="max-width:100%;"/>');win.document.close();win.print();
-}
-
 // ══════════════════════ UTILS ══════════════════════
 function showWin(msg){
   var t=document.createElement('div');
   t.style.cssText='position:fixed;top:80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#2D5016,#5A8F35);color:#fff;padding:14px 28px;border-radius:50px;font-family:Fredoka One,cursive;font-size:16px;z-index:999;box-shadow:0 8px 32px rgba(0,0,0,.4);animation:fadeIn .3s ease;';
   t.textContent=msg;document.body.appendChild(t);setTimeout(function(){t.remove();},3000);
-}
-
-function downloadDiv(id, filename) {
-  var el=document.getElementById(id);
-  if(!el||!el.classList.contains('show')){showWin('Generate your card first!');return;}
-  var canvas=document.createElement('canvas');
-  canvas.width=800;canvas.height=350;
-  var ctx=canvas.getContext('2d');
-  ctx.fillStyle='#fff';ctx.fillRect(0,0,800,350);
-  // Simple text-based download for print previews
-  var a=document.createElement('a');
-  a.href=el.querySelector('canvas')?el.querySelector('canvas').toDataURL():'data:text/plain,download';
-  // Use html2canvas-style approach via print
-  window.print();
-}
-
-// Better download: use print window for print previews
-function downloadDiv(id, filename) {
-  var el=document.getElementById(id);
-  if(!el||!el.classList.contains('show')){showWin('Generate your card first!');return;}
-  var w=window.open('');
-  w.document.write('<html><head><style>body{font-family:Georgia,serif;padding:20px;}</style></head><body>'+el.outerHTML+'</body></html>');
-  w.document.close();
-  w.print();
 }
 
 // ══════════════════════ INIT ══════════════════════
@@ -1059,16 +935,11 @@ initWheel();
 
 // Auto-open tab from URL hash
 (function(){
-  try {
-    var hash = window.location.hash.replace('#','');
-    var tabs = {wheel:'wheel',emotion:'emotion',story:'story',harmony:'harmony',mood:'mood'};
-    if(hash && tabs[hash]){
-      var btn = document.querySelector('.tab-btn[onclick*="\'' + hash + '\'"]');
-      // showTab is hardened to handle null btn
-      showTab(hash, btn);
-    }
-  } catch(e) {
-    console.warn('Tab auto-open failed:', e);
+  var hash = window.location.hash.replace('#','');
+  var tabs = {wheel:'wheel',emotion:'emotion',story:'story',harmony:'harmony',mood:'mood'};
+  if(hash && tabs[hash]){
+    var btn = document.querySelector('.tab-btn[onclick*="\'' + hash + '\'"]');
+    if(btn) showTab(hash, btn);
   }
 })();
 
