@@ -4,526 +4,525 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Jigsaw Puzzle Builder · Digital Arts · Smile Bags</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;700&family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
+:root{
+  --dark:#0E1A0A; --forest:#1A2E12; --forest2:#2D5016; --forest3:#5A8F35;
+  --gold:#C9A84C; --gold-light:#E8D27C; --gold2:#D4B96B;
+  --muted:#8A9E7F; --border:#1a3a1a;
+}
 *{box-sizing:border-box;margin:0;padding:0;}
-:root{--forest:#1B4332;--forest2:#2D6A4F;--forest3:#40916C;--gold:#C9A84C;--gold2:#E8C97A;--cream:#FDFAF3;--dark:#0D2818;--border:#D4E8D4;}
-body{font-family:'Nunito',sans-serif;background:#0a140a;color:#fff;min-height:100vh;padding:0 0 60px;}
+body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-height:100vh;padding-bottom:60px;}
 
 /* ── HEADER ── */
-.hdr{background:linear-gradient(135deg,#0a140a,#0d1f0d);border-bottom:2px solid var(--forest2);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
-.hdr-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--gold2);}
-.hdr-sub{font-size:11px;color:#557055;margin-top:2px;}
+.hdr{background:linear-gradient(135deg,var(--dark) 0%,#0A1506 100%);border-bottom:2px solid var(--forest);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;flex-wrap:wrap;gap:16px;}
+/* Decorative glow — MUST have pointer-events:none (Standard #8) */
+.hdr::after{content:'';position:absolute;top:0;right:0;width:300px;height:100%;background:radial-gradient(ellipse at 100% 50%,rgba(200,168,75,.08) 0%,transparent 70%);pointer-events:none;}
+.hdr-left h1{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--gold-light);letter-spacing:.5px;}
+.hdr-left p{font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:.5px;}
+.back-btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--border);border-radius:50px;padding:8px 18px;font-family:'Fredoka One',cursive;font-size:11px;color:var(--muted);text-decoration:none;transition:all .2s;letter-spacing:.5px;background:transparent;cursor:pointer;position:relative;z-index:2;}
+.back-btn:hover{border-color:var(--gold);color:var(--gold);}
 
-/* ── STEPS ── */
-.steps{max-width:960px;margin:32px auto 0;padding:0 28px;}
-.step-block{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:14px;padding:24px;margin-bottom:16px;}
-.step-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--forest3);margin-bottom:8px;}
-.step-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:16px;}
+/* ── LAYOUT ── */
+.workspace{max-width:1200px;margin:0 auto;padding:24px;}
+.step-card{background:rgba(255,255,255,.02);border:1px solid var(--forest);border-radius:14px;padding:24px;margin-bottom:18px;}
+.step-label{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;color:var(--gold);margin-bottom:8px;text-transform:uppercase;}
+.step-title{font-family:'Cormorant Garamond',serif;font-size:22px;color:#fff;margin-bottom:6px;}
+.step-sub{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.7;}
+
+/* ── BUTTONS ── */
+.btn{padding:12px 24px;border-radius:8px;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111;}
+.btn-gold:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 4px 14px rgba(201,168,76,.3);}
+.btn-gold:disabled{background:#1a3a1a;color:#333;cursor:not-allowed;transform:none;}
+.btn-outline{background:transparent;border:1.5px solid var(--forest2);color:var(--muted);}
+.btn-outline:hover{border-color:var(--forest3);color:var(--forest3);}
 
 /* ── WORD GRID ── */
 .word-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;}
-.word-btn{background:#111;border:1.5px solid #1a3a1a;border-radius:8px;padding:9px 6px;font-family:'Fredoka One',cursive;font-size:11px;color:#557055;cursor:pointer;text-align:center;transition:all .2s;letter-spacing:.5px;}
-.word-btn:hover{border-color:var(--forest3);color:var(--forest3);}
-.word-btn.active{background:var(--forest2);border-color:var(--forest3);color:#fff;}
+.word-btn{padding:10px 12px;border:1.5px solid var(--forest2);border-radius:8px;background:transparent;color:var(--muted);font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;letter-spacing:.5px;cursor:pointer;transition:all .15s;text-transform:uppercase;}
+.word-btn:hover{border-color:var(--gold);color:var(--gold-light);}
+.word-btn.active{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111;border-color:var(--gold);}
 
-/* ── SET SELECTOR ── */
-.set-row{display:flex;gap:12px;flex-wrap:wrap;}
-.set-btn{flex:1;min-width:200px;background:#111;border:2px solid #1a3a1a;border-radius:12px;padding:16px;cursor:pointer;text-align:center;transition:all .2s;}
-.set-btn:hover{border-color:var(--forest3);}
-.set-btn.active{border-color:var(--gold);background:rgba(201,168,76,.08);}
-.set-btn-icon{font-size:28px;margin-bottom:8px;}
-.set-btn-name{font-family:'Fredoka One',cursive;font-size:13px;color:var(--gold);letter-spacing:.5px;}
-.set-btn-desc{font-size:11px;color:#557055;margin-top:4px;}
-
-/* ── GRID SIZE ── */
-.grid-row{display:flex;gap:10px;flex-wrap:wrap;}
-.grid-btn{flex:1;min-width:120px;background:#111;border:2px solid #1a3a1a;border-radius:10px;padding:14px 10px;cursor:pointer;text-align:center;transition:all .2s;}
-.grid-btn:hover{border-color:var(--forest3);}
-.grid-btn.active{border-color:var(--gold);background:rgba(201,168,76,.08);}
-.grid-btn-size{font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);}
-.grid-btn-label{font-size:11px;color:#557055;margin-top:4px;}
-.grid-btn-age{font-size:10px;color:#3a5a3a;margin-top:2px;font-style:italic;}
+/* ── SET + PIECE ROWS ── */
+.choice-row{display:flex;gap:10px;flex-wrap:wrap;}
+.choice-btn{flex:1;min-width:160px;padding:14px 20px;border:1.5px solid var(--forest2);border-radius:10px;background:transparent;color:var(--muted);font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:.5px;cursor:pointer;transition:all .15s;text-align:center;}
+.choice-btn:hover{border-color:var(--gold);color:var(--gold-light);}
+.choice-btn.active{background:linear-gradient(135deg,#1B4332,#2D7A4F);color:#fff;border-color:var(--forest3);}
+.choice-btn-sub{font-size:10px;color:var(--muted);margin-top:4px;font-family:'Nunito',sans-serif;font-weight:400;}
+.choice-btn.active .choice-btn-sub{color:rgba(255,255,255,.7);}
 
 /* ── PREVIEW ── */
-.preview-wrap{max-width:960px;margin:0 auto;padding:0 28px;}
-.preview-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
-.preview-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--gold2);}
-.preview-info{font-size:12px;color:#557055;}
+.preview-wrap{background:#fff;border-radius:12px;padding:20px;margin-top:8px;}
+.preview-canvas-wrap{position:relative;display:block;width:100%;max-width:500px;margin:0 auto;background:#f5f5f5;border-radius:8px;overflow:hidden;}
+.preview-canvas{display:block;width:100%;height:auto;}
+.preview-caption{text-align:center;margin-top:12px;font-family:'Fredoka One',cursive;font-size:12px;color:#555;letter-spacing:1px;}
 
-/* ── PUZZLE CANVAS ── */
-.puzzle-outer{background:#111;border:1px solid #1a3a1a;border-radius:14px;padding:20px;margin-bottom:16px;}
-.puzzle-grid{display:grid;gap:3px;margin:0 auto;}
-.puzzle-cell{position:relative;overflow:hidden;cursor:crosshair;border:1px solid rgba(255,255,255,.15);}
-.puzzle-cell img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
-.puzzle-cell canvas{position:absolute;top:0;left:0;width:100%;height:100%;}
-.cut-overlay{position:absolute;inset:0;border:2px dashed rgba(255,255,255,.3);pointer-events:none;}
+/* ── TRACKER ── */
+.jp-tracker{background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:16px;}
+.jp-tracker-row{display:flex;align-items:center;gap:12px;}
+.jp-tracker-icon{font-size:26px;flex-shrink:0;}
+.jp-tracker-body{flex:1;}
+.jp-tracker-title{font-family:'Fredoka One',cursive;font-size:11px;color:var(--gold);letter-spacing:.5px;margin-bottom:5px;text-transform:uppercase;}
+.jp-tracker-bar{background:#0a1a0a;height:8px;border-radius:5px;overflow:hidden;border:1px solid var(--border);}
+.jp-tracker-fill{background:linear-gradient(90deg,var(--forest3),var(--gold));height:100%;width:0%;transition:width .6s ease;}
+.jp-tracker-meta{font-size:11px;color:var(--muted);text-align:right;margin-top:4px;}
+.jp-tracker-meta strong{color:var(--gold);}
 
-/* ── COLOR TOOLS ── */
-.tools-bar{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:14px;}
-.tool-section{display:flex;align-items:center;gap:8px;}
-.tool-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#557055;}
-.color-swatch{width:28px;height:28px;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:all .2s;flex-shrink:0;}
-.color-swatch.active{border-color:#fff;transform:scale(1.15);}
-.tool-btn{background:#111;border:1.5px solid #1a3a1a;border-radius:6px;padding:6px 10px;font-size:14px;cursor:pointer;color:#aaa;transition:all .2s;}
-.tool-btn.active{border-color:var(--gold);color:var(--gold);}
-.tool-btn:hover{border-color:var(--forest3);}
-input[type=range]{accent-color:var(--gold);width:80px;}
-input[type=color]{width:28px;height:28px;border-radius:6px;border:none;cursor:pointer;padding:0;}
+/* ── PRINT + SUBMIT AREA ── */
+.submit-area{background:rgba(64,145,108,.1);border:1.5px solid #40916C;border-radius:10px;padding:18px;margin-top:14px;}
+.submit-title{font-family:'Fredoka One',cursive;font-size:13px;color:#40916C;margin-bottom:4px;}
+.submit-sub{font-size:11px;color:#b5d8c2;margin-bottom:12px;line-height:1.5;}
+.name-input{width:100%;padding:11px 14px;border:1.5px solid #40916C;border-radius:8px;background:#0a1a0a;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;margin-bottom:10px;outline:none;}
+.name-input:focus{border-color:var(--gold);}
+.submit-msg{margin-top:8px;font-size:11px;color:#40916C;text-align:center;display:none;}
 
-/* ── BUTTONS ── */
-.btn-row{display:flex;gap:10px;flex-wrap:wrap;}
-.btn{padding:12px 24px;border-radius:8px;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s;}
-.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111;}
-.btn-gold:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(201,168,76,.3);}
-.btn-outline{background:transparent;border:1.5px solid #1a3a1a;color:#557055;}
-.btn-outline:hover{border-color:var(--forest3);color:var(--forest3);}
-.btn-green{background:var(--forest2);color:#fff;}
-.btn-green:hover{background:var(--forest3);}
+/* ── PRINT SHEET ── */
+.print-sheet{background:#fff;color:#111;border-radius:14px;padding:28px;margin-top:16px;display:none;}
+.ps-header{text-align:center;margin-bottom:16px;}
+.ps-eyebrow{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;color:#888;text-transform:uppercase;}
+.ps-word{font-family:'Playfair Display','Cormorant Garamond',serif;font-size:28px;font-weight:900;color:#111;margin-top:8px;letter-spacing:2px;}
+.ps-meaning{font-size:12px;color:#999;font-style:italic;margin-top:4px;}
+.ps-info-row{display:flex;gap:12px;margin:16px 0 12px;justify-content:center;flex-wrap:wrap;}
+.ps-info{background:#f9f9f9;border:1px solid #eee;border-radius:8px;padding:8px 14px;font-size:11px;color:#555;}
+.ps-info strong{color:#111;}
+.ps-hint{background:#fff9e6;border:1px solid #f0e4b0;border-radius:10px;padding:12px 16px;font-size:12px;color:#6B5A2F;margin-bottom:14px;line-height:1.6;}
+.ps-canvas-wrap{text-align:center;border:1px solid #eee;border-radius:10px;overflow:hidden;margin-bottom:14px;background:#fff;}
+.ps-canvas-wrap canvas{display:block;width:100%;max-width:600px;margin:0 auto;}
+.ps-cutline{display:flex;align-items:center;gap:10px;font-size:11px;color:#888;margin-bottom:10px;}
+.ps-cutline-icon{font-size:16px;}
+.ps-footer{font-size:10px;color:#ccc;text-align:center;font-family:'Fredoka One',cursive;letter-spacing:1px;}
 
-/* ── HINT ── */
-.hint{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);border-radius:8px;padding:12px 16px;font-size:12px;color:#8a7040;line-height:1.6;margin-bottom:14px;}
+/* ── RETRY ROW ── */
+.retry-row{display:none;margin-top:16px;gap:10px;flex-wrap:wrap;}
+.retry-btn{flex:1;min-width:220px;padding:14px 24px;border-radius:10px;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
+.retry-btn-print{background:linear-gradient(135deg,#1B4332,#40916C);color:#fff;border:none;}
+.retry-btn-home{background:transparent;color:#40916C;border:2px solid #40916C;}
 
+/* ── RESPONSIVE ── */
+@media(max-width:700px){
+  .hdr{padding:14px 18px;}
+  .workspace{padding:16px;}
+  .step-card{padding:18px;}
+}
+
+/* ── PRINT CSS (bulletproof visibility pattern — proven in SpeedPalette) ── */
 @media print{
-  body{background:#fff!important;color:#111!important;padding:0;}
-  .hdr,.steps,.tools-bar,.btn-row,.hint,.preview-header{display:none!important;}
-  .puzzle-outer{background:#fff!important;border:none!important;padding:0!important;}
-  .puzzle-cell{border:1px solid #ccc!important;}
-  .cut-overlay{border:2px dashed #999!important;}
-  @page{size:letter;margin:.4in;}
+  body * { visibility: hidden !important; }
+  .print-sheet, .print-sheet * { visibility: visible !important; }
+  .print-sheet{
+    position: absolute !important;
+    left: 0 !important; top: 0 !important;
+    width: 100% !important;
+    display: block !important;
+    background: #fff !important;
+    color: #111 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+  body{ background:#fff !important; margin:0 !important; padding:0 !important; }
+  @page{ size:letter portrait; margin:.4in; }
 }
 </style>
 </head>
 <body>
 
 <div class="hdr">
-  <div>
-    <div class="hdr-title">🧩 Jigsaw Puzzle Builder</div>
-    <div class="hdr-sub">Digital Arts · Smile Bags · A Word &amp; Wonder Experience · Kara Gau</div>
+  <div class="hdr-left">
+    <h1>🧩 Jigsaw Puzzle Builder</h1>
+    <p>Kayla Gau · Digital Arts &nbsp;·&nbsp; Smile Bags · A Word &amp; Wonder Experience</p>
   </div>
+  <button type="button" onclick="window.location.href='DigitalArts_Menu.html'" class="back-btn">🏠 Return to Main Menu</button>
 </div>
 
-<!-- STEP 1: WORD -->
-<div class="steps">
-  <div class="step-block">
-    <div class="step-label">Step 1 of 3</div>
-    <div class="step-title">Choose your OneWord</div>
+<div class="workspace">
+
+  <!-- STEP 1 · WORD -->
+  <div class="step-card">
+    <div class="step-label">Step 1 · OneWord</div>
+    <div class="step-title">Choose a word for the recipient</div>
+    <div class="step-sub">Which OneWord feels right for the child who will open this Smile Bag? Choose with intention — the puzzle is for them.</div>
     <div class="word-grid" id="wordGrid"></div>
   </div>
 
-  <!-- STEP 2: SET + GRID SIZE -->
-  <div class="step-block" id="step2" style="display:none;">
-    <div class="step-label">Step 2 of 3</div>
-    <div class="step-title">Choose your illustration set &amp; puzzle size</div>
-
-    <div style="font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#557055;margin-bottom:10px;">Illustration Set</div>
-    <div class="set-row" style="margin-bottom:20px;">
-      <button class="set-btn" id="setG" onclick="selectSet('G')">
-        <div class="set-btn-icon">🌲</div>
-        <div class="set-btn-name">Set G · Nature Poster</div>
-        <div class="set-btn-desc">Bold nature poster style · CoPilot</div>
-      </button>
-      <button class="set-btn" id="setH" onclick="selectSet('H')">
-        <div class="set-btn-icon">🌸</div>
-        <div class="set-btn-name">Set H · Fine Line Botanical</div>
-        <div class="set-btn-desc">Intricate botanical style · Gemini/ChatGPT</div>
-      </button>
-    </div>
-
-    <div style="font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#557055;margin-bottom:10px;">Puzzle Size</div>
-    <div class="grid-row">
-      <button class="grid-btn" onclick="selectGrid(2,4)" id="grid-2x4">
-        <div class="grid-btn-size">8</div>
-        <div class="grid-btn-label">2 × 4 pieces</div>
-        <div class="grid-btn-age">Ages 4–6</div>
-      </button>
-      <button class="grid-btn" onclick="selectGrid(3,4)" id="grid-3x4">
-        <div class="grid-btn-size">12</div>
-        <div class="grid-btn-label">3 × 4 pieces</div>
-        <div class="grid-btn-age">Ages 6–8</div>
-      </button>
-      <button class="grid-btn" onclick="selectGrid(4,4)" id="grid-4x4">
-        <div class="grid-btn-size">16</div>
-        <div class="grid-btn-label">4 × 4 pieces</div>
-        <div class="grid-btn-age">Ages 8–10</div>
-      </button>
-      <button class="grid-btn" onclick="selectGrid(4,5)" id="grid-4x5">
-        <div class="grid-btn-size">20</div>
-        <div class="grid-btn-label">4 × 5 pieces</div>
-        <div class="grid-btn-age">Ages 10–12</div>
-      </button>
-    </div>
-
-    <div class="btn-row" style="margin-top:20px;">
-      <button class="btn btn-gold" id="buildBtn" onclick="buildPuzzle()" disabled>🧩 Build My Puzzle →</button>
-    </div>
-  </div>
-</div>
-
-<!-- STEP 3: PUZZLE + COLOR -->
-<div class="preview-wrap" id="step3" style="display:none;">
-  <div class="step-block" style="background:#0d1a0d;border:1px solid #1a3a1a;border-radius:14px;padding:24px;margin-bottom:16px;">
-    <div class="step-label">Step 3 of 3</div>
-    <div class="step-title" id="puzzleTitle">Color your puzzle pieces &amp; print</div>
-  </div>
-
-  <div class="hint">
-    🎨 <strong>Color each piece</strong> with the brush, fill, or eraser tools — choose colors and brush size to taste.<br>
-    ✂️ <strong>Design your own cut lines!</strong> Click the scissors tool, then draw curves, zig-zags, or jigsaw shapes wherever you want pieces to separate. Your cut lines are your puzzle's signature.<br>
-    📐 <strong>Piece count</strong> should match your recipient's age — a 20-piece puzzle for a 5-year-old is a design failure.<br>
-    🪚 <strong>After printing,</strong> laminate, then cut along your drawn lines.
-  </div>
-
-  <div class="tools-bar">
-    <div class="tool-section">
-      <span class="tool-label">Colors</span>
-      <div id="swatchRow"></div>
-      <input type="color" id="customColor" title="Custom color" onchange="setColor(this.value,null)"/>
-    </div>
-    <div class="tool-section">
-      <span class="tool-label">Tool</span>
-      <button class="tool-btn active" id="tbBrush" onclick="setTool('brush',this)" title="Brush — paint colors">🖌️</button>
-      <button class="tool-btn" id="tbFill" onclick="setTool('fill',this)" title="Fill piece with color">🪣</button>
-      <button class="tool-btn" id="tbEraser" onclick="setTool('eraser',this)" title="Eraser — remove paint">✕</button>
-      <button class="tool-btn" id="tbCut" onclick="setTool('cut',this)" title="Draw cut lines — make your own jigsaw shapes!">✂️</button>
-    </div>
-    <div class="tool-section">
-      <span class="tool-label">Size</span>
-      <input type="range" id="brushSize" min="2" max="30" value="10"/>
-    </div>
-    <div class="tool-section" style="margin-left:auto;">
-      <button class="tool-btn" onclick="undoPaint()" title="Undo last action">↩</button>
-      <button class="tool-btn" onclick="clearAllPaint()" title="Clear all paint">🗑</button>
-      <button class="tool-btn" onclick="clearAllCutLines()" title="Clear cut lines only" style="font-size:11px;padding:6px 8px;">🗑✂️</button>
+  <!-- STEP 2 · SET -->
+  <div class="step-card">
+    <div class="step-label">Step 2 · Illustration Style</div>
+    <div class="step-title">Pick your source image</div>
+    <div class="step-sub">Both sets are ready for jigsaw puzzles. Nature Poster has bolder shapes; Fine Line Botanical has delicate detail.</div>
+    <div class="choice-row">
+      <button type="button" class="choice-btn" data-set="G" onclick="pickSet('G')">🌿 Set G · Nature Poster<div class="choice-btn-sub">CoPilot · bolder shapes</div></button>
+      <button type="button" class="choice-btn" data-set="H" onclick="pickSet('H')">🌸 Set H · Fine Line Botanical<div class="choice-btn-sub">Gemini / ChatGPT · delicate detail</div></button>
     </div>
   </div>
 
-  <div class="puzzle-outer">
-    <div class="puzzle-grid" id="puzzleGrid"></div>
+  <!-- STEP 3 · PIECE COUNT -->
+  <div class="step-card">
+    <div class="step-label">Step 3 · Piece Count</div>
+    <div class="step-title">Match the puzzle to the child</div>
+    <div class="step-sub">📐 Piece count should match the recipient's age — a 24-piece puzzle for a 4-year-old is a design failure. Think about who will open this bag.</div>
+    <div class="choice-row">
+      <button type="button" class="choice-btn" data-pieces="12" onclick="pickPieces(12)">12 pieces<div class="choice-btn-sub">Ages 4–6 · easy</div></button>
+      <button type="button" class="choice-btn" data-pieces="18" onclick="pickPieces(18)">18 pieces<div class="choice-btn-sub">Ages 6–8 · medium</div></button>
+      <button type="button" class="choice-btn" data-pieces="24" onclick="pickPieces(24)">24 pieces<div class="choice-btn-sub">Ages 8+ · challenge</div></button>
+    </div>
   </div>
 
-  <div class="btn-row" style="margin-bottom:40px;">
-    <button class="btn btn-gold" onclick="printPuzzle()">🖨️ Print Puzzle Sheet</button>
-    <button class="btn btn-outline" onclick="resetAll()">↩ Start Over</button>
+  <!-- STEP 4 · PREVIEW -->
+  <div class="step-card" id="previewCard" style="display:none;">
+    <div class="step-label">Step 4 · Preview</div>
+    <div class="step-title">Your jigsaw puzzle (black &amp; white)</div>
+    <div class="step-sub">This is exactly what will print. Soft-curve cut lines are drawn over the illustration — the recipient will cut along the dashed lines to make a real jigsaw puzzle they can color when they're ready.</div>
+    <div class="preview-wrap">
+      <div class="preview-canvas-wrap">
+        <canvas class="preview-canvas" id="previewCanvas" width="600" height="600"></canvas>
+      </div>
+      <div class="preview-caption" id="previewCaption">—</div>
+    </div>
+
+    <!-- TRACKER -->
+    <div class="jp-tracker" id="jpTracker">
+      <div class="jp-tracker-row">
+        <div class="jp-tracker-icon">🧩</div>
+        <div class="jp-tracker-body">
+          <div class="jp-tracker-title">Class Puzzle Submissions</div>
+          <div class="jp-tracker-bar"><div class="jp-tracker-fill" id="jpTrackerFill"></div></div>
+          <div class="jp-tracker-meta"><span id="jpTrackerCount">—</span> of <strong>45</strong> puzzles</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBMIT + PRINT (merged) -->
+    <div class="submit-area">
+      <div class="submit-title">🖨️ Print for Smile Bag</div>
+      <div class="submit-sub">Enter your name, then Print — this also logs your submission for the class tracker.</div>
+      <input type="text" id="studentName" class="name-input" placeholder="First name and last initial (e.g. Jordan T)" maxlength="40" oninput="checkPrintReady()"/>
+      <button type="button" class="btn btn-gold" id="printSubmitBtn" onclick="printAndSubmit()" style="width:100%;background:linear-gradient(135deg,#1B4332,#40916C);color:#fff;" disabled>🖨️ Print for Smile Bag</button>
+      <div class="submit-msg" id="submitMsg"></div>
+    </div>
   </div>
+
+  <!-- PRINT SHEET -->
+  <div id="printSheet" class="print-sheet">
+    <div class="ps-header">
+      <div class="ps-eyebrow">Smile Bags · Digital Arts · Jigsaw Puzzle</div>
+      <div class="ps-word" id="psWord">WORD</div>
+      <div class="ps-meaning" id="psMeaning"></div>
+    </div>
+    <div class="ps-info-row">
+      <div class="ps-info">Set: <strong id="psSet">—</strong></div>
+      <div class="ps-info">Pieces: <strong id="psPieces">—</strong></div>
+    </div>
+    <div class="ps-hint">
+      ✂️ <strong>Cut along the dashed lines</strong> to create your jigsaw puzzle pieces. The recipient can color the pieces before OR after assembling the puzzle — their choice!
+    </div>
+    <div class="ps-canvas-wrap">
+      <canvas id="printCanvas" width="1000" height="1000"></canvas>
+    </div>
+    <div class="ps-cutline"><span class="ps-cutline-icon">✂️</span> <span>Dashed lines = cut here · Soft curves for easier cutting</span></div>
+    <div class="ps-footer">Smile Bags · A Word &amp; Wonder Experience · Kayla Gau · Digital Arts</div>
+  </div>
+
+  <!-- RETRY ROW -->
+  <div class="retry-row" id="retryRow">
+    <button type="button" class="retry-btn retry-btn-print" onclick="window.print()">🖨️ Print This Sheet</button>
+    <button type="button" class="retry-btn retry-btn-home" onclick="window.location.href='DigitalArts_Menu.html'">🏠 Return to Main Menu</button>
+  </div>
+
 </div>
 
 <script>
-var WORDS = ['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT',
-             'CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST',
-             'RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
+// ── CONFIG ──────────────────────────────────────────────────
+var WORDS = ['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT','CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST','RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
+
+var WORD_MEANINGS = {
+  ABSORB:'taking in everything around you', ADAPT:'adjusting to what comes',
+  ANCHOR:'holding steady', BALANCE:'finding your steady place',
+  BLOOM:'growing into your best self', BREATHE:'finding calm',
+  CLEAR:'seeing things clearly', CONNECT:'building bridges',
+  CYCLE:'endings into beginnings', EMERGE:'becoming who you were meant to be',
+  FILTER:'choosing what gets your energy', FLOW:'moving forward freely',
+  GROW:'becoming more than you were', HEAL:'finding your way back to whole',
+  MIGRATE:'moving toward what calls you', PERSIST:'refusing to be stopped',
+  RENEW:'starting fresh', RESTORE:'bringing back what was lost',
+  RETURN:'coming back to what is true', RISE:'lifting yourself to meet the moment',
+  ROOT:'staying grounded', SHINE:'letting your light be seen',
+  SUSTAIN:'keeping what is good alive', THRIVE:'living at your fullest',
+  TRANSFORM:'becoming something beautifully new'
+};
 
 var BASE = 'https://lhhowell.github.io/kellamsmilebags/';
 
-function getImgUrl(word, set) {
-  var w = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-  if (set === 'G') return BASE + 'SetG_' + w + '.png';
-  // Set H uses lowercase seth_ prefix
-  return BASE + 'seth_' + word.toLowerCase() + '.png';
+// File naming: Set G uses `SetG_Word.png` (Title case), Set H uses `seth_word.png` (all lowercase)
+function getImgUrl(word, setLetter){
+  var titled = word.charAt(0) + word.slice(1).toLowerCase();
+  if(setLetter === 'G') return BASE + 'SetG_' + titled + '.png';
+  if(setLetter === 'H') return BASE + 'seth_' + word.toLowerCase() + '.png';
+  return '';
 }
 
-var selectedWord = '', selectedSet = '', gridCols = 0, gridRows = 0;
-var paintColor = '#E87B5B', paintTool = 'brush';
-var cellCanvases = [], cellHistories = [];
-var cutCanvases = [], cutHistories = [];
+// ── STATE ──────────────────────────────────────────────────
+var selWord = '', selSet = '', selPieces = 0;
 
-// ── COLORS ──
-var COLORS = ['#E87B5B','#F5A07B','#FFEE58','#66BB6A','#26C6DA','#42A5F5',
-              '#7E57C2','#F06292','#8D6E63','#fff','#111'];
-
-function buildSwatches() {
-  var row = document.getElementById('swatchRow');
-  row.style.display = 'flex'; row.style.gap = '5px';
-  COLORS.forEach(function(c) {
-    var s = document.createElement('div');
-    s.className = 'color-swatch' + (c === paintColor ? ' active' : '');
-    s.style.background = c;
-    if (c === '#fff') s.style.border = '2px solid #555';
-    s.onclick = function() { setColor(c, s); };
-    row.appendChild(s);
-  });
-}
-
-function setColor(c, el) {
-  paintColor = c;
-  document.querySelectorAll('.color-swatch').forEach(function(s){s.classList.remove('active');});
-  if (el) el.classList.add('active');
-  if (paintTool === 'eraser') setTool('brush', document.getElementById('tbBrush'));
-}
-
-function setTool(t, btn) {
-  paintTool = t;
-  document.querySelectorAll('.tool-btn').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
-
-  // When cut tool is active, route clicks to cut canvases (top layer);
-  // for any paint tool, route clicks to paint canvases (below).
-  var cutMode = (t === 'cut');
-  cellCanvases.forEach(function(cv){
-    cv.style.pointerEvents = cutMode ? 'none' : 'auto';
-  });
-  cutCanvases.forEach(function(cv){
-    cv.style.pointerEvents = cutMode ? 'auto' : 'none';
-    cv.style.cursor = cutMode ? 'crosshair' : 'default';
-  });
-}
-
-// ── WORD GRID ──
-function buildWordGrid() {
-  var g = document.getElementById('wordGrid');
-  WORDS.forEach(function(w) {
-    var btn = document.createElement('button');
-    btn.className = 'word-btn';
-    btn.textContent = w;
-    btn.onclick = function() {
-      selectedWord = w;
-      document.querySelectorAll('.word-btn').forEach(function(b){b.classList.remove('active');});
-      btn.classList.add('active');
-      document.getElementById('step2').style.display = 'block';
-      document.getElementById('step2').scrollIntoView({behavior:'smooth'});
+// ── STEP 1 · WORD GRID ──────────────────────────────────────
+function buildWordGrid(){
+  var grid = document.getElementById('wordGrid');
+  WORDS.forEach(function(w){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'word-btn';
+    b.textContent = w;
+    b.onclick = function(){
+      selWord = w;
+      document.querySelectorAll('.word-btn').forEach(function(x){ x.classList.remove('active'); });
+      b.classList.add('active');
+      maybeShowPreview();
     };
-    g.appendChild(btn);
+    grid.appendChild(b);
   });
 }
 
-function selectSet(s) {
-  selectedSet = s;
-  document.getElementById('setG').classList.toggle('active', s==='G');
-  document.getElementById('setH').classList.toggle('active', s==='H');
-  checkBuildReady();
+// ── STEP 2 · SET ────────────────────────────────────────────
+function pickSet(letter){
+  selSet = letter;
+  document.querySelectorAll('[data-set]').forEach(function(b){ b.classList.remove('active'); });
+  document.querySelector('[data-set="' + letter + '"]').classList.add('active');
+  maybeShowPreview();
 }
 
-function selectGrid(cols, rows) {
-  gridCols = cols; gridRows = rows;
-  document.querySelectorAll('.grid-btn').forEach(function(b){b.classList.remove('active');});
-  document.getElementById('grid-'+cols+'x'+rows).classList.add('active');
-  checkBuildReady();
+// ── STEP 3 · PIECES ─────────────────────────────────────────
+function pickPieces(n){
+  selPieces = n;
+  document.querySelectorAll('[data-pieces]').forEach(function(b){ b.classList.remove('active'); });
+  document.querySelector('[data-pieces="' + n + '"]').classList.add('active');
+  maybeShowPreview();
 }
 
-function checkBuildReady() {
-  document.getElementById('buildBtn').disabled = !(selectedSet && gridCols);
+// ── GRID LAYOUT FOR PIECE COUNT ─────────────────────────────
+// 12 = 3 cols × 4 rows, 18 = 3 × 6, 24 = 4 × 6
+function getGridDims(n){
+  if(n === 12) return { cols: 3, rows: 4 };
+  if(n === 18) return { cols: 3, rows: 6 };
+  if(n === 24) return { cols: 4, rows: 6 };
+  return { cols: 3, rows: 4 };
 }
 
-// ── BUILD PUZZLE ──
-function buildPuzzle() {
-  var grid = document.getElementById('puzzleGrid');
-  grid.innerHTML = '';
-  cellCanvases = [];
-  cellHistories = [];
-  cutCanvases = [];
-  cutHistories = [];
+// ── SOFT-CURVE CUT LINE OVERLAY ─────────────────────────────
+// Draws dashed sinusoidal curves between pieces — child-safe, easy to cut.
+// No interlocking tabs (those require precision the recipient may not have).
+function drawCutLines(ctx, W, H, cols, rows){
+  ctx.save();
+  ctx.strokeStyle = '#1a1a1a';
+  ctx.lineWidth = Math.max(2, W * 0.004);
+  ctx.setLineDash([12, 8]);
+  ctx.lineCap = 'round';
 
-  var totalPieces = gridCols * gridRows;
-  document.getElementById('puzzleTitle').textContent =
-    selectedWord + ' · Set ' + selectedSet + ' · ' + totalPieces + ' pieces · Color each piece, then print & cut';
+  var cellW = W / cols;
+  var cellH = H / rows;
 
-  // Grid sizing — target ~540px wide
-  var cellW = Math.floor(540 / gridCols);
-  var cellH = Math.floor((cellW * 1.35));  // portrait ratio
-
-  grid.style.gridTemplateColumns = 'repeat(' + gridCols + ', ' + cellW + 'px)';
-  grid.style.width = (gridCols * cellW + (gridCols-1) * 3) + 'px';
-
-  var imgSrc = getImgUrl(selectedWord, selectedSet);
-
-  for (var i = 0; i < totalPieces; i++) {
-    var col = i % gridCols;
-    var row = Math.floor(i / gridCols);
-
-    var cell = document.createElement('div');
-    cell.className = 'puzzle-cell';
-    cell.style.width = cellW + 'px';
-    cell.style.height = cellH + 'px';
-
-    // Background image clipped to this piece
-    var img = document.createElement('div');
-    img.style.cssText = 'position:absolute;inset:0;background-image:url('+imgSrc+');' +
-      'background-size:' + (gridCols * 100) + '% ' + (gridRows * 100) + '%;' +
-      'background-position:' + (col/(gridCols-1||1)*100) + '% ' + (row/(gridRows-1||1)*100) + '%;';
-    cell.appendChild(img);
-
-    // Layer 1: Paint canvas (color)
-    var cv = document.createElement('canvas');
-    cv.width = cellW; cv.height = cellH;
-    cv.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:auto;';
-    cell.appendChild(cv);
-
-    // Layer 2: Cut-line canvas (drawn ABOVE paint, gets pointer events when cut tool active)
-    var cutCv = document.createElement('canvas');
-    cutCv.width = cellW; cutCv.height = cellH;
-    cutCv.className = 'cut-canvas';
-    cutCv.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;';
-    cell.appendChild(cutCv);
-
-    // Cut overlay (the original rectangle border — kept as a faint guide)
-    var overlay = document.createElement('div');
-    overlay.className = 'cut-overlay';
-    cell.appendChild(overlay);
-
-    // Piece number
-    var num = document.createElement('div');
-    num.style.cssText = 'position:absolute;top:3px;left:5px;font-family:Fredoka One,cursive;font-size:10px;color:rgba(255,255,255,.5);pointer-events:none;z-index:10;';
-    num.textContent = (i+1);
-    cell.appendChild(num);
-
-    // Paint events on PAINT canvas (used when tool is brush/fill/eraser)
-    var painting = false;
-    (function(canvas, cellIdx) {
-      cellCanvases.push(canvas);
-      cellHistories.push([canvas.toDataURL()]);
-
-      canvas.addEventListener('mousedown', function(e){
-        if (paintTool === 'cut') return; // ignore - cut canvas handles it
-        painting=true; doPaint(e, canvas);
-      });
-      canvas.addEventListener('mousemove', function(e){
-        if (paintTool === 'cut') return;
-        if(painting) doPaint(e, canvas);
-      });
-      canvas.addEventListener('mouseup', function(){
-        if (paintTool === 'cut') return;
-        painting=false; saveState(canvas, cellIdx);
-      });
-      canvas.addEventListener('mouseleave', function(){
-        if (paintTool === 'cut') return;
-        if(painting){ painting=false; saveState(canvas, cellIdx); }
-      });
-    })(cv, i);
-
-    // Cut events on CUT canvas (used when tool is cut)
-    var cutting = false;
-    (function(cutCanvas, cellIdx) {
-      cutCanvases.push(cutCanvas);
-      cutHistories.push([cutCanvas.toDataURL()]);
-
-      cutCanvas.addEventListener('mousedown', function(e){
-        if (paintTool !== 'cut') return;
-        cutting=true; doDrawCutLine(e, cutCanvas);
-      });
-      cutCanvas.addEventListener('mousemove', function(e){
-        if (paintTool !== 'cut') return;
-        if(cutting) doDrawCutLine(e, cutCanvas);
-      });
-      cutCanvas.addEventListener('mouseup', function(){
-        if (paintTool !== 'cut') return;
-        cutting=false; saveCutState(cutCanvas, cellIdx);
-      });
-      cutCanvas.addEventListener('mouseleave', function(){
-        if (paintTool !== 'cut') return;
-        if(cutting){ cutting=false; saveCutState(cutCanvas, cellIdx); }
-      });
-    })(cutCv, i);
-
-    grid.appendChild(cell);
-  }
-
-  document.getElementById('step3').style.display = 'block';
-  document.getElementById('step3').scrollIntoView({behavior:'smooth'});
-}
-
-function doPaint(e, canvas) {
-  var ctx = canvas.getContext('2d');
-  var r = canvas.getBoundingClientRect();
-  var scaleX = canvas.width / r.width;
-  var scaleY = canvas.height / r.height;
-  var x = (e.clientX - r.left) * scaleX;
-  var y = (e.clientY - r.top) * scaleY;
-  var size = parseInt(document.getElementById('brushSize').value);
-
-  if (paintTool === 'fill') {
-    ctx.fillStyle = paintColor;
-    ctx.globalAlpha = 0.6;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.globalAlpha = 1;
-  } else if (paintTool === 'eraser') {
-    ctx.globalCompositeOperation = 'destination-out';
-    ctx.beginPath(); ctx.arc(x,y,size,0,Math.PI*2); ctx.fill();
-    ctx.globalCompositeOperation = 'source-over';
-  } else {
-    ctx.fillStyle = paintColor;
-    ctx.globalAlpha = 0.75;
-    ctx.beginPath(); ctx.arc(x,y,size,0,Math.PI*2); ctx.fill();
-    ctx.globalAlpha = 1;
-  }
-}
-
-// ── CUT LINE DRAWING ──
-// Draws thick, opaque dark lines on the cut overlay so students see them clearly
-// AND so they print as obvious cut guides on the printed sheet
-function doDrawCutLine(e, canvas) {
-  var ctx = canvas.getContext('2d');
-  var r = canvas.getBoundingClientRect();
-  var scaleX = canvas.width / r.width;
-  var scaleY = canvas.height / r.height;
-  var x = (e.clientX - r.left) * scaleX;
-  var y = (e.clientY - r.top) * scaleY;
-  // Cut lines: deep charcoal, opaque, slightly larger than brush for visibility
-  ctx.fillStyle = '#1a1a1a';
-  ctx.globalAlpha = 1;
-  ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI*2); ctx.fill();
-}
-
-function saveCutState(canvas, idx) {
-  if (!cutHistories[idx]) cutHistories[idx] = [];
-  cutHistories[idx].push(canvas.toDataURL());
-  if (cutHistories[idx].length > 10) cutHistories[idx].shift();
-}
-
-function clearAllCutLines() {
-  cutCanvases.forEach(function(cv, idx) {
-    cv.getContext('2d').clearRect(0, 0, cv.width, cv.height);
-    cutHistories[idx] = [cv.toDataURL()];
-  });
-}
-
-function saveState(canvas, idx) {
-  if (!cellHistories[idx]) cellHistories[idx] = [];
-  cellHistories[idx].push(canvas.toDataURL());
-  if (cellHistories[idx].length > 10) cellHistories[idx].shift();
-}
-
-function undoPaint() {
-  // Choose which set to undo based on the active tool
-  var canvases = (paintTool === 'cut') ? cutCanvases : cellCanvases;
-  var histories = (paintTool === 'cut') ? cutHistories : cellHistories;
-  canvases.forEach(function(cv, idx) {
-    var hist = histories[idx];
-    if (hist && hist.length > 1) {
-      hist.pop();
-      var img = new Image();
-      img.onload = function() {
-        var ctx = cv.getContext('2d');
-        ctx.clearRect(0,0,cv.width,cv.height);
-        ctx.drawImage(img,0,0);
-      };
-      img.src = hist[hist.length-1];
+  // Horizontal cut lines (between rows) — soft sine wave
+  for(var r = 1; r < rows; r++){
+    var y = r * cellH;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    for(var x = 0; x <= W; x += 4){
+      var offset = Math.sin((x / W) * Math.PI * cols) * (cellH * 0.08);
+      ctx.lineTo(x, y + offset);
     }
-  });
+    ctx.stroke();
+  }
+
+  // Vertical cut lines (between cols) — soft sine wave
+  for(var c = 1; c < cols; c++){
+    var xBase = c * cellW;
+    ctx.beginPath();
+    ctx.moveTo(xBase, 0);
+    for(var yy = 0; yy <= H; yy += 4){
+      var offsetX = Math.sin((yy / H) * Math.PI * rows) * (cellW * 0.08);
+      ctx.lineTo(xBase + offsetX, yy);
+    }
+    ctx.stroke();
+  }
+
+  // Solid outer border (cut around the whole puzzle)
+  ctx.setLineDash([]);
+  ctx.lineWidth = Math.max(3, W * 0.006);
+  ctx.strokeRect(1, 1, W - 2, H - 2);
+  ctx.restore();
 }
 
-function clearAllPaint() {
-  cellCanvases.forEach(function(cv) {
-    cv.getContext('2d').clearRect(0,0,cv.width,cv.height);
-  });
+// ── RENDER (grayscale image + cut overlay) ──────────────────
+function renderCanvas(canvasId, imgUrl, pieces, onReady){
+  var canvas = document.getElementById(canvasId);
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+
+  // White background (so transparent areas print clean)
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, W, H);
+
+  var img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = function(){
+    // Draw the source illustration scaled to fit
+    // Fit image inside canvas preserving aspect ratio
+    var iw = img.naturalWidth, ih = img.naturalHeight;
+    var scale = Math.min(W / iw, H / ih);
+    var dw = iw * scale, dh = ih * scale;
+    var dx = (W - dw) / 2, dy = (H - dh) / 2;
+    ctx.drawImage(img, dx, dy, dw, dh);
+
+    // Convert to grayscale (B&W per spec)
+    try {
+      var imageData = ctx.getImageData(0, 0, W, H);
+      var d = imageData.data;
+      for(var i = 0; i < d.length; i += 4){
+        var gray = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+        d[i] = d[i + 1] = d[i + 2] = gray;
+      }
+      ctx.putImageData(imageData, 0, 0);
+    } catch(e){
+      // If cross-origin taints the canvas, skip grayscale — still usable
+      console.warn('Grayscale skipped (CORS):', e);
+    }
+
+    // Overlay cut lines
+    var dims = getGridDims(pieces);
+    drawCutLines(ctx, W, H, dims.cols, dims.rows);
+
+    if(typeof onReady === 'function') onReady(true);
+  };
+  img.onerror = function(){
+    // Image failed — draw a placeholder so student sees something
+    ctx.fillStyle = '#f5f5f5';
+    ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#999';
+    ctx.font = '20px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Image could not load', W / 2, H / 2);
+    var dims = getGridDims(pieces);
+    drawCutLines(ctx, W, H, dims.cols, dims.rows);
+    if(typeof onReady === 'function') onReady(false);
+  };
+  img.src = imgUrl;
 }
 
-function printPuzzle() {
-  window.print();
+// ── SHOW PREVIEW WHEN ALL 3 STEPS COMPLETE ──────────────────
+function maybeShowPreview(){
+  if(!selWord || !selSet || !selPieces) return;
+  var card = document.getElementById('previewCard');
+  card.style.display = 'block';
+  document.getElementById('previewCaption').textContent =
+    selWord + ' · Set ' + selSet + ' · ' + selPieces + ' pieces';
+
+  var imgUrl = getImgUrl(selWord, selSet);
+  renderCanvas('previewCanvas', imgUrl, selPieces);
+  checkPrintReady();
+
+  // Scroll into view smoothly
+  setTimeout(function(){ card.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);
 }
 
-function resetAll() {
-  selectedWord=''; selectedSet=''; gridCols=0; gridRows=0;
-  document.querySelectorAll('.word-btn').forEach(function(b){b.classList.remove('active');});
-  document.querySelectorAll('.set-btn,.grid-btn').forEach(function(b){b.classList.remove('active');});
-  document.getElementById('step2').style.display='none';
-  document.getElementById('step3').style.display='none';
-  document.getElementById('buildBtn').disabled=true;
-  document.getElementById('puzzleGrid').innerHTML='';
-  window.scrollTo(0,0);
+// ── BUTTON GATING ────────────────────────────────────────────
+function checkPrintReady(){
+  var nameEl = document.getElementById('studentName');
+  var btn = document.getElementById('printSubmitBtn');
+  if(!nameEl || !btn) return;
+  var name = (nameEl.value || '').trim();
+  btn.disabled = !(name && selWord && selSet && selPieces);
 }
 
+// ── SUBMISSION (Print = commit) ─────────────────────────────
+// Standard #7: use structural check for placeholder URL, not literal string match
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyPk1fe0vattPkEHA8BV4hnX8mAeDdVywc3X7rWNXykj0X8tVcZzVzol_hYAd7dmcWXDQ/exec";
+
+function printAndSubmit(){
+  var name = (document.getElementById('studentName').value || '').trim();
+  if(!name){ alert('Please enter your name first!'); return; }
+  if(!selWord || !selSet || !selPieces){ alert('Please complete Steps 1–3 first!'); return; }
+
+  var btn = document.getElementById('printSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Preparing your print…';
+
+  // Populate print sheet content
+  document.getElementById('psWord').textContent = selWord;
+  document.getElementById('psMeaning').textContent = WORD_MEANINGS[selWord] || '';
+  document.getElementById('psSet').textContent = selSet;
+  document.getElementById('psPieces').textContent = selPieces;
+
+  var sheet = document.getElementById('printSheet');
+  sheet.style.display = 'block';
+
+  var retryRow = document.getElementById('retryRow');
+  retryRow.style.display = 'flex';
+
+  var token = 'KSB-JP-' + Math.random().toString(36).substr(2, 4).toUpperCase();
+  var payload = {
+    activity: 'jigsaw',
+    studentName: name,
+    class: '',
+    word: selWord,
+    set: selSet,
+    pieceCount: selPieces,
+    token: token
+  };
+
+  var postSubmission = function(){
+    if(SCRIPT_URL && SCRIPT_URL.indexOf('https://') === 0){
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload)
+      }).then(function(){}).catch(function(){});
+    }
+  };
+
+  var firePrint = function(){
+    postSubmission();
+    setTimeout(function(){
+      sheet.scrollIntoView({behavior:'smooth', block:'start'});
+      window.print();
+      btn.textContent = '✅ Submitted · Code: ' + token;
+      var msg = document.getElementById('submitMsg');
+      if(msg){
+        msg.style.display = 'block';
+        msg.textContent = '🧩 Puzzle logged and sent to print! If you missed the print dialog, use the 🖨️ button below the sheet.';
+      }
+      setTimeout(fetchTracker, 700);
+    }, 250);
+  };
+
+  // Render the print canvas at higher resolution, wait for image load, then print
+  var imgUrl = getImgUrl(selWord, selSet);
+  renderCanvas('printCanvas', imgUrl, selPieces, firePrint);
+}
+
+// ── LIVE TRACKER ────────────────────────────────────────────
+function fetchTracker(){
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0) return;
+  fetch(SCRIPT_URL + '?action=counts')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(!d || !d.ok) return;
+      var n = (d.jigsaw && d.jigsaw.total) || 0;
+      var g = (d.jigsaw && d.jigsaw.goal) || 45;
+      var pct = Math.min(100, Math.round((n / g) * 100));
+      var cEl = document.getElementById('jpTrackerCount');
+      var fEl = document.getElementById('jpTrackerFill');
+      if(cEl) cEl.textContent = n;
+      if(fEl) fEl.style.width = pct + '%';
+    })
+    .catch(function(){});
+}
+
+// ── INIT ────────────────────────────────────────────────────
 buildWordGrid();
-buildSwatches();
+fetchTracker();
 </script>
 </body>
 </html>
