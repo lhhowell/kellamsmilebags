@@ -380,32 +380,50 @@ function drawCutLines(ctx, dx, dy, dw, dh, cols, rows){
     ctx.lineTo(x, y2);
   }
 
-  // Draw all horizontal interior edges
-  for(var rr = 1; rr < rows; rr++){
-    for(var cc = 0; cc < cols; cc++){
-      var y = dy + rr * cellH;
-      var x1 = dx + cc * cellW;
-      var x2 = dx + (cc + 1) * cellW;
-      ctx.beginPath();
-      drawHEdge(x1, y, x2, hEdges[rr - 1][cc]);
-      ctx.stroke();
+  // Stroke weights — halo pass is thicker white, cut pass is thicker black.
+  // This makes cut lines clearly visible over dark illustration areas AND
+  // easy for machine cutters to detect as a solid path.
+  var haloWidth = Math.max(4, dw * 0.008);   // white outline behind cut
+  var cutWidth  = Math.max(2.5, dw * 0.0045); // black cut line itself
+
+  // Draw all horizontal interior edges — halo pass FIRST, then black on top
+  for(var pass = 0; pass < 2; pass++){
+    ctx.strokeStyle = (pass === 0) ? '#fff' : '#000';
+    ctx.lineWidth = (pass === 0) ? haloWidth : cutWidth;
+    for(var rr = 1; rr < rows; rr++){
+      for(var cc = 0; cc < cols; cc++){
+        var y = dy + rr * cellH;
+        var x1 = dx + cc * cellW;
+        var x2 = dx + (cc + 1) * cellW;
+        ctx.beginPath();
+        drawHEdge(x1, y, x2, hEdges[rr - 1][cc]);
+        ctx.stroke();
+      }
     }
   }
 
-  // Draw all vertical interior edges
-  for(var cc2 = 1; cc2 < cols; cc2++){
-    for(var rr2 = 0; rr2 < rows; rr2++){
-      var x = dx + cc2 * cellW;
-      var y1 = dy + rr2 * cellH;
-      var y2 = dy + (rr2 + 1) * cellH;
-      ctx.beginPath();
-      drawVEdge(x, y1, y2, vEdges[cc2 - 1][rr2]);
-      ctx.stroke();
+  // Draw all vertical interior edges — halo pass FIRST, then black on top
+  for(var pass2 = 0; pass2 < 2; pass2++){
+    ctx.strokeStyle = (pass2 === 0) ? '#fff' : '#000';
+    ctx.lineWidth = (pass2 === 0) ? haloWidth : cutWidth;
+    for(var cc2 = 1; cc2 < cols; cc2++){
+      for(var rr2 = 0; rr2 < rows; rr2++){
+        var x = dx + cc2 * cellW;
+        var y1 = dy + rr2 * cellH;
+        var y2 = dy + (rr2 + 1) * cellH;
+        ctx.beginPath();
+        drawVEdge(x, y1, y2, vEdges[cc2 - 1][rr2]);
+        ctx.stroke();
+      }
     }
   }
 
-  // Solid outer border — wraps the image only, NOT the full canvas
-  ctx.lineWidth = Math.max(2, dw * 0.005);
+  // Solid outer border — halo + black, wraps the image only (NOT full canvas)
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = Math.max(5, dw * 0.009);
+  ctx.strokeRect(dx, dy, dw, dh);
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = Math.max(3, dw * 0.006);
   ctx.strokeRect(dx, dy, dw, dh);
   ctx.restore();
 }
