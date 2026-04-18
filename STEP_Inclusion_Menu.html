@@ -125,6 +125,14 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--dark);m
 .school-card.pending .school-badge{background:#f0ece8;color:#bbb;}
 .tracker-note{font-size:12px;color:#888;font-style:italic;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
 
+/* ── Inspirational Card progress bar ── */
+.ins-bar-wrap{margin-bottom:8px;}
+.ins-bar{background:#EEF2F7;height:14px;border-radius:8px;overflow:hidden;}
+.ins-fill{background:linear-gradient(90deg,var(--plum),var(--gold2));
+          height:100%;border-radius:8px;transition:width .6s ease;width:0%;}
+.ins-meta{font-size:13px;color:var(--plum);font-weight:800;text-align:right;
+          margin-top:6px;font-family:'Fredoka One',cursive;letter-spacing:.5px;}
+
 /* ── BACK ── */
 .back-btn{display:inline-flex;align-items:center;gap:8px;background:var(--plum);color:var(--gold2);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:11px 20px;border-radius:8px;text-decoration:none;transition:all .2s;}
 .back-btn:hover{background:var(--plum2);}
@@ -259,16 +267,40 @@ footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spac
     <div class="tracker-hd">
       <div>
         <div class="tracker-title">🔖 Bookmark Delivery Tracker</div>
-        <div class="tracker-sub">Updated as bookmarks are received · Goal: 10 bookmarks per school · 90 total</div>
+        <div class="tracker-sub">Live count from kiosk · Goal: 10 bookmarks per school · 90 total</div>
       </div>
       <div class="tracker-progress">
-        <span class="tracker-progress-num" id="deliveredCount">4</span>
+        <span class="tracker-progress-num" id="deliveredCount">—</span>
         <span class="tracker-progress-lbl">Delivered</span>
       </div>
     </div>
     <div class="tracker-body">
       <div class="school-grid" id="schoolGrid"></div>
-      <p class="tracker-note">💡 Update school names and counts as bookmarks are received. Princess Anne Middle received 4 bookmarks on April 14, 2026.</p>
+      <p class="tracker-note">💡 Counts auto-update as students submit bookmarks from the kiosk. School routing is determined by the color pair the student selects.</p>
+    </div>
+  </div>
+
+  <!-- INSPIRATIONAL CARD TRACKER -->
+  <div class="section-tag">Inspirational Cards</div>
+  <div class="section-title">Princess Anne Middle School</div>
+
+  <div class="tracker-wrap">
+    <div class="tracker-hd">
+      <div>
+        <div class="tracker-title">💌 Inspirational Card Tracker</div>
+        <div class="tracker-sub">Live count from kiosk · Goal: 20 cards for Princess Anne Middle</div>
+      </div>
+      <div class="tracker-progress">
+        <span class="tracker-progress-num" id="insCount">—</span>
+        <span class="tracker-progress-lbl">Submitted</span>
+      </div>
+    </div>
+    <div class="tracker-body">
+      <div class="ins-bar-wrap">
+        <div class="ins-bar"><div class="ins-fill" id="insFill" style="width:0%;"></div></div>
+        <div class="ins-meta"><span id="insMeta">— of 20</span></div>
+      </div>
+      <p class="tracker-note">💡 Counts auto-update as students submit Inspirational Cards from the Inclusion Quote Card kiosk.</p>
     </div>
   </div>
 
@@ -279,38 +311,75 @@ footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spac
 </footer>
 
 <script>
-/* ══ SCHOOLS — update names and counts as bookmarks arrive ══ */
-var SCHOOLS = [
-  { name:'Kellam High School',   count:0, goal:10 },
-  { name:'Princess Anne Middle', count:4, goal:10 },
-  { name:'Christopher Farms ES', count:0, goal:10 },
-  { name:'Creeds ES',            count:0, goal:10 },
-  { name:'North Landing ES',     count:0, goal:10 },
-  { name:'Princess Anne ES',     count:0, goal:10 },
-  { name:'Red Mill ES',          count:0, goal:10 },
-  { name:'Strawbridge ES',       count:0, goal:10 },
-  { name:'Three Oaks ES',        count:0, goal:10 },
-];
+/* ══ LIVE TRACKER — pulls counts from Apps Script ═══════════════
+   After deploying STEP_Inclusion_Code.gs as a Web App, paste the
+   deployment URL between the quotes below. */
+var SCRIPT_URL = "PASTE_YOUR_DEPLOYMENT_URL_HERE";
 
-function buildTracker(){
+/* All 9 schools, in tracker display order (counts come live from Apps Script) */
+var ALL_SCHOOLS = [
+  'Kellam High School',
+  'Princess Anne Middle',
+  'Christopher Farms ES',
+  'Creeds ES',
+  'North Landing ES',
+  'Princess Anne ES',
+  'Red Mill ES',
+  'Strawbridge ES',
+  'Three Oaks ES',
+];
+var GOAL_PER_SCHOOL = 10;
+var INSPIRATION_GOAL = 20;
+
+/* Renders the per-school grid using the live counts (or zeros while loading) */
+function buildTracker(perSchool, total){
   var g=document.getElementById('schoolGrid');
-  var total=0;
   var h='';
-  SCHOOLS.forEach(function(s){
-    var done=s.count>=s.goal;
-    var cls=s.count>0?'delivered':'pending';
-    total+=s.count;
-    h+='<div class="school-card '+cls+'">' +
-      '<div class="school-status-dot"></div>' +
-      '<div class="school-info">' +
-        '<div class="school-name">'+s.name+'</div>' +
-        '<div class="school-count">'+(s.count>0?s.count+' of '+s.goal+' received':'Pending')+'</div>' +
-      '</div>' +
-      '<div class="school-badge">'+(done?'✅ Complete':s.count>0?'In Progress':'Pending')+'</div>' +
-    '</div>';
+  ALL_SCHOOLS.forEach(function(name){
+    var count = (perSchool && perSchool[name]) || 0;
+    var done = count >= GOAL_PER_SCHOOL;
+    var cls = count > 0 ? 'delivered' : 'pending';
+    h += '<div class="school-card '+cls+'">' +
+         '<div class="school-status-dot"></div>' +
+         '<div class="school-info">' +
+           '<div class="school-name">'+name+'</div>' +
+           '<div class="school-count">'+(count>0 ? count+' of '+GOAL_PER_SCHOOL+' received' : 'Pending')+'</div>' +
+         '</div>' +
+         '<div class="school-badge">'+(done ? '✅ Complete' : count>0 ? 'In Progress' : 'Pending')+'</div>' +
+         '</div>';
   });
-  g.innerHTML=h;
-  document.getElementById('deliveredCount').textContent=total;
+  g.innerHTML = h;
+  document.getElementById('deliveredCount').textContent = total || 0;
+}
+
+function fetchLiveCounts(){
+  // Show zeros immediately so layout is built
+  buildTracker({}, 0);
+  document.getElementById('insCount').textContent = '0';
+  document.getElementById('insMeta').textContent = '0 of ' + INSPIRATION_GOAL;
+  document.getElementById('insFill').style.width = '0%';
+
+  if(!SCRIPT_URL || SCRIPT_URL === 'PASTE_YOUR_DEPLOYMENT_URL_HERE') return;
+
+  fetch(SCRIPT_URL + '?action=counts')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(!d || !d.ok) return;
+
+      // Bookmarks tracker
+      var perSchool = (d.bookmarks && d.bookmarks.perSchool) || {};
+      var bmTotal   = (d.bookmarks && d.bookmarks.total) || 0;
+      buildTracker(perSchool, bmTotal);
+
+      // Inspirational Cards tracker
+      var insCount = (d.inspirationalCards && d.inspirationalCards.princessAnneMiddle) || 0;
+      var insGoal  = (d.inspirationalCards && d.inspirationalCards.goal) || INSPIRATION_GOAL;
+      var insPct   = Math.min(100, Math.round((insCount / insGoal) * 100));
+      document.getElementById('insCount').textContent = insCount;
+      document.getElementById('insMeta').textContent  = insCount + ' of ' + insGoal;
+      document.getElementById('insFill').style.width  = insPct + '%';
+    })
+    .catch(function(e){ console.warn('Tracker fetch failed:', e); });
 }
 
 /* ══ ONEWORD DATA ══ */
@@ -378,7 +447,7 @@ function toggleOW(){
   document.getElementById('owBtnLabel').textContent=open?'Collapse — The 25 OneWords':'Explore the 25 OneWords';
 }
 
-buildTracker();
+fetchLiveCounts();
 buildOW();
 </script>
 </body>

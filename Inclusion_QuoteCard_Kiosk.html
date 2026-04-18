@@ -125,6 +125,37 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;pa
 .btn-home{width:100%;padding:16px;background:linear-gradient(135deg,var(--navy),#0F1B35);color:#fff;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;margin-top:10px;}
 .submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--blue),#0D47A1);color:#fff;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;margin-bottom:8px;}
 .submitted-box{background:#E3F2FD;border-radius:16px;padding:28px;text-align:center;display:none;}
+
+/* ── LIVE TRACKER (counts pull from spreadsheet) ─────────────── */
+.live-tracker{
+  background:#fff;border:1.5px solid #E0E7F0;border-radius:14px;
+  padding:14px 16px;margin-bottom:18px;box-shadow:0 2px 8px rgba(13,71,161,.06);
+}
+.live-tracker.qc-tracker{border-left:4px solid var(--blue);}
+.live-tracker.bm-tracker{border-left:4px solid var(--gold);}
+.lt-row{display:flex;align-items:center;gap:14px;}
+.lt-icon{font-size:28px;flex-shrink:0;line-height:1;}
+.lt-body{flex:1;min-width:0;}
+.lt-title{font-family:'Fredoka One',cursive;font-size:13px;color:var(--blue);
+          letter-spacing:.5px;margin-bottom:6px;}
+.lt-bar-wrap{margin-bottom:5px;}
+.lt-bar{background:#EEF2F7;height:10px;border-radius:6px;overflow:hidden;}
+.lt-fill{background:linear-gradient(90deg,var(--blue),var(--gold));
+         height:100%;border-radius:6px;transition:width .6s ease;width:0%;}
+.lt-meta{font-size:11px;color:#666;font-weight:700;text-align:right;}
+.lt-meta strong{color:var(--blue);}
+.lt-details{margin-top:12px;padding-top:10px;border-top:1px dashed #d8e0eb;}
+.lt-details summary{font-size:11px;color:var(--blue);cursor:pointer;font-weight:700;
+                    letter-spacing:.5px;text-transform:uppercase;}
+.lt-details summary:hover{color:var(--gold);}
+.lt-school-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+                gap:8px;margin-top:10px;}
+.lt-school-card{background:#F8FAFD;border:1px solid #E0E7F0;border-radius:8px;
+                padding:8px 10px;font-size:11px;}
+.lt-school-name{font-weight:800;color:var(--blue);margin-bottom:3px;font-size:11px;}
+.lt-school-count{color:#666;font-size:10px;}
+.lt-school-card.complete{background:#E8F5E9;border-color:#A5D6A7;}
+.lt-school-card.complete .lt-school-count{color:#2D7A4F;font-weight:700;}
 .token-box{background:#FFF3D6;border:2px solid var(--gold);border-radius:12px;padding:14px;display:inline-block;margin-top:14px;}
 .token-code{font-family:'Fredoka One',cursive;font-size:28px;letter-spacing:4px;color:#7A4F00;}
 
@@ -195,6 +226,25 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;pa
 <!-- BM-0: WORD -->
 <div class="screen" id="bmScr0">
   <div class="scr-hd"><h2 id="bmS0h">Choose Your OneWord 🌿</h2><p>Your word will be embossed on your 3D printed bookmark!</p></div>
+
+  <!-- LIVE TRACKER (total + per-school progress) -->
+  <div class="live-tracker bm-tracker" id="bmLiveTracker">
+    <div class="lt-row">
+      <div class="lt-icon">🔖</div>
+      <div class="lt-body">
+        <div class="lt-title">Bookmarks Submitted Across All Schools</div>
+        <div class="lt-bar-wrap">
+          <div class="lt-bar"><div class="lt-fill" id="bmLtFill" style="width:0%;"></div></div>
+        </div>
+        <div class="lt-meta"><span id="bmLtCount">—</span> of <strong>90</strong> bookmarks submitted</div>
+      </div>
+    </div>
+    <details class="lt-details">
+      <summary>See per-school breakdown</summary>
+      <div class="lt-school-grid" id="bmLtSchools"></div>
+    </details>
+  </div>
+
   <div class="white-card"><div class="word-grid" id="bmWordGrid"></div></div>
   <div class="nav-row">
     <button class="btn-back" onclick="goHub()">← Back to Menu</button>
@@ -279,6 +329,21 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;pa
 <!-- QC-0: SHAPE -->
 <div class="screen" id="qcScr0">
   <div class="scr-hd"><h2>Choose Your Card Shape 🎨</h2><p>Your inspirational quote card will be printed and cut to this shape for a student at Princess Anne Middle School.</p></div>
+
+  <!-- LIVE TRACKER (Princess Anne Middle / 20 goal) -->
+  <div class="live-tracker qc-tracker" id="qcLiveTracker">
+    <div class="lt-row">
+      <div class="lt-icon">💌</div>
+      <div class="lt-body">
+        <div class="lt-title">Inspirational Cards for Princess Anne Middle</div>
+        <div class="lt-bar-wrap">
+          <div class="lt-bar"><div class="lt-fill" id="qcLtFill" style="width:0%;"></div></div>
+        </div>
+        <div class="lt-meta"><span id="qcLtCount">—</span> of <strong>20</strong> cards submitted</div>
+      </div>
+    </div>
+  </div>
+
   <div class="path-grid">
     <div class="path-card" onclick="qcPickShape('square',this)"><div class="path-icon">&#9632;</div><div class="path-name">Square</div><div class="path-desc">4&Prime; &times; 4&Prime; square card printed on cardstock.</div><div class="path-check">&#10003; Selected!</div></div>
     <div class="path-card" onclick="qcPickShape('circle',this)"><div class="path-icon">&#9679;</div><div class="path-name">Circle</div><div class="path-desc">4&Prime; round card cut with the Cricut.</div><div class="path-check">&#10003; Selected!</div></div>
@@ -364,7 +429,9 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;pa
 </div>
 
 <script>
-var SCRIPT_URL="YOUR_APPS_SCRIPT_URL_HERE";
+// ⚠️ IMPORTANT: Paste your live Apps Script Web App URL here after deployment.
+// (Until you do, submissions will simulate success but won't be logged.)
+var SCRIPT_URL="PASTE_YOUR_DEPLOYMENT_URL_HERE";
 
 // Shared state
 var sName="",sClass="",sGrade="";
@@ -383,6 +450,7 @@ var BM_COLORS=[
   {name:"Purple", hex:"#5B2D9E"},{name:"Teal",   hex:"#1B7A78"},
   {name:"Orange", hex:"#E65100"},{name:"Black",  hex:"#1A1A1A"},
   {name:"White",  hex:"#F5F5F5"},{name:"Pink",   hex:"#C2185B"},
+  {name:"Yellow", hex:"#FFD700"},
 ];
 
 var EMOJIS={
@@ -438,7 +506,55 @@ document.addEventListener("DOMContentLoaded",function(){
   buildQcWordGrid(); buildQcColorGrid(); buildQcFontGrid();
   bmColor1=BM_COLORS[0]; bmColor2=BM_COLORS[1];
   qcFont=QC_FONTS[0];
+  fetchLiveCounts();
 });
+
+/* ── LIVE COUNTS — fetch from Apps Script doGet?action=counts ──── */
+function fetchLiveCounts(){
+  if(!SCRIPT_URL || SCRIPT_URL==="PASTE_YOUR_DEPLOYMENT_URL_HERE") return;
+  fetch(SCRIPT_URL + "?action=counts")
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(!d || !d.ok) return;
+
+      // ── Quote Card tracker (Princess Anne Middle / 20) ──
+      var qcCount = (d.inspirationalCards && d.inspirationalCards.princessAnneMiddle) || 0;
+      var qcGoal  = (d.inspirationalCards && d.inspirationalCards.goal) || 20;
+      var qcPct   = Math.min(100, Math.round((qcCount / qcGoal) * 100));
+      var qcCountEl = document.getElementById("qcLtCount");
+      var qcFillEl  = document.getElementById("qcLtFill");
+      if(qcCountEl) qcCountEl.textContent = qcCount;
+      if(qcFillEl)  qcFillEl.style.width = qcPct + "%";
+
+      // ── Bookmark tracker (total + per-school) ──
+      var bmTotal = (d.bookmarks && d.bookmarks.total) || 0;
+      var bmGoal  = (d.bookmarks && d.bookmarks.totalGoal) || 90;
+      var bmPct   = Math.min(100, Math.round((bmTotal / bmGoal) * 100));
+      var bmCountEl = document.getElementById("bmLtCount");
+      var bmFillEl  = document.getElementById("bmLtFill");
+      if(bmCountEl) bmCountEl.textContent = bmTotal;
+      if(bmFillEl)  bmFillEl.style.width = bmPct + "%";
+
+      // Per-school breakdown
+      var schoolGrid = document.getElementById("bmLtSchools");
+      var perSchool  = (d.bookmarks && d.bookmarks.perSchool) || {};
+      var perGoal    = (d.bookmarks && d.bookmarks.goalPerSchool) || 10;
+      if(schoolGrid){
+        var html = "";
+        Object.keys(perSchool).forEach(function(school){
+          var n = perSchool[school];
+          var done = n >= perGoal;
+          html += '<div class="lt-school-card' + (done ? ' complete' : '') + '">' +
+                    '<div class="lt-school-name">' + school + '</div>' +
+                    '<div class="lt-school-count">' + n + ' of ' + perGoal +
+                      (done ? ' ✅' : '') + '</div>' +
+                  '</div>';
+        });
+        schoolGrid.innerHTML = html;
+      }
+    })
+    .catch(function(e){ console.warn("Tracker fetch failed:", e); });
+}
 
 /* ── HUB ── */
 function goHub(){
@@ -602,7 +718,7 @@ function bmSubmit(){
   if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){bmShowDone();return;}
   fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)}).then(function(){bmShowDone();}).catch(function(){bmShowDone();});
 }
-function bmShowDone(){document.getElementById("bmNotSub").style.display="none";document.getElementById("bmSubBox").style.display="block";}
+function bmShowDone(){document.getElementById("bmNotSub").style.display="none";document.getElementById("bmSubBox").style.display="block"; setTimeout(fetchLiveCounts, 800);}
 
 /* ── QUOTE CARD BUILDERS ── */
 function buildQcWordGrid(){
@@ -684,7 +800,7 @@ function qcSubmit(){
   if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){qcShowDone();return;}
   fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)}).then(function(){qcShowDone();}).catch(function(){qcShowDone();});
 }
-function qcShowDone(){document.getElementById("qcNotSub").style.display="none";document.getElementById("qcSubBox").style.display="block";}
+function qcShowDone(){document.getElementById("qcNotSub").style.display="none";document.getElementById("qcSubBox").style.display="block"; setTimeout(fetchLiveCounts, 800);}
 
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 </script>
