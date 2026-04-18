@@ -119,13 +119,6 @@ textarea.field-inp { resize:vertical; min-height:70px; }
 .msg-option.sel .msg-radio::after {
   content:''; position:absolute; inset:3px; border-radius:50%; background:var(--gold);
 }
-.msg-option .msg-tag {
-  display:inline-block; font-size:.58rem; font-weight:800; letter-spacing:.08em;
-  text-transform:uppercase; padding:2px 8px; border-radius:10px; margin-bottom:6px;
-}
-.msg-option .msg-tag.elem   { background:#E8F5E9; color:#2D7A4F; }
-.msg-option .msg-tag.middle { background:#E3F2FD; color:#0D47A1; }
-.msg-option .msg-tag.high   { background:#F3E5F5; color:#6A1B9A; }
 .msg-option .msg-text {
   font-size:.82rem; font-style:italic; color:var(--navy);
   font-weight:600; line-height:1.5;
@@ -849,26 +842,17 @@ function buildMessagePicker(){
     <label class="msg-option" data-key="elem">
       <span class="msg-radio"></span>
       <input type="radio" name="msgChoice" value="elem">
-      <div>
-        <span class="msg-tag elem">🌱 Elementary Audience</span>
-        <div class="msg-text">${escapeHtml(set.elem)}</div>
-      </div>
+      <div class="msg-text">${escapeHtml(set.elem)}</div>
     </label>
     <label class="msg-option" data-key="middle">
       <span class="msg-radio"></span>
       <input type="radio" name="msgChoice" value="middle">
-      <div>
-        <span class="msg-tag middle">🌿 Middle School Audience</span>
-        <div class="msg-text">${escapeHtml(set.middle)}</div>
-      </div>
+      <div class="msg-text">${escapeHtml(set.middle)}</div>
     </label>
     <label class="msg-option" data-key="high">
       <span class="msg-radio"></span>
       <input type="radio" name="msgChoice" value="high">
-      <div>
-        <span class="msg-tag high">🌳 High School Audience</span>
-        <div class="msg-text">${escapeHtml(set.high)}</div>
-      </div>
+      <div class="msg-text">${escapeHtml(set.high)}</div>
     </label>
   `;
   wrap.querySelectorAll('.msg-option').forEach(opt => {
