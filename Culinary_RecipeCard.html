@@ -98,6 +98,40 @@ textarea.field-inp { resize:vertical; min-height:70px; }
 .rp-steps li { font-size:.8rem; font-weight:600; color:var(--navy); display:flex; gap:10px; align-items:flex-start; line-height:1.5; }
 .step-num { background:var(--navy); color:var(--gold); font-family:'Fredoka One',cursive; font-size:.7rem; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
 .rp-dedication { margin-top:14px; padding:10px 12px; border-radius:8px; background:#FFF8EE; border:1.5px solid #f0e8dc; font-size:.76rem; font-style:italic; color:var(--mid); font-weight:600; }
+
+/* ── MESSAGE PICKER (3 pre-selected, audience-tagged) ───────────── */
+.msg-picker { display:flex; flex-direction:column; gap:10px; margin-top:10px; }
+.msg-option {
+  position:relative; display:block; padding:14px 14px 14px 44px;
+  border-radius:12px; border:2px solid #e8ddd0; background:#fdfaf6;
+  cursor:pointer; transition:all .15s; font-family:'Nunito',sans-serif;
+}
+.msg-option:hover { border-color:var(--gold); background:#fff8ee; }
+.msg-option.sel  { border-color:var(--navy); background:#FFF8EE;
+                   box-shadow:0 0 0 3px rgba(26,39,68,.08); }
+.msg-option input[type=radio] { position:absolute; opacity:0; pointer-events:none; }
+.msg-option .msg-radio {
+  position:absolute; left:14px; top:50%; transform:translateY(-50%);
+  width:18px; height:18px; border-radius:50%; border:2px solid #d8c8b0;
+  background:#fff; transition:all .15s;
+}
+.msg-option.sel .msg-radio { border-color:var(--navy); background:var(--navy); }
+.msg-option.sel .msg-radio::after {
+  content:''; position:absolute; inset:3px; border-radius:50%; background:var(--gold);
+}
+.msg-option .msg-tag {
+  display:inline-block; font-size:.58rem; font-weight:800; letter-spacing:.08em;
+  text-transform:uppercase; padding:2px 8px; border-radius:10px; margin-bottom:6px;
+}
+.msg-option .msg-tag.elem   { background:#E8F5E9; color:#2D7A4F; }
+.msg-option .msg-tag.middle { background:#E3F2FD; color:#0D47A1; }
+.msg-option .msg-tag.high   { background:#F3E5F5; color:#6A1B9A; }
+.msg-option .msg-text {
+  font-size:.82rem; font-style:italic; color:var(--navy);
+  font-weight:600; line-height:1.5;
+}
+.msg-skip { font-size:.7rem; color:var(--mid); font-style:italic;
+            text-align:center; margin-top:6px; }
 .rp-footer { font-size:.6rem; text-align:center; margin-top:12px; color:#ccc; font-weight:600; letter-spacing:.06em; }
 
 /* NAV */
@@ -214,9 +248,10 @@ textarea.field-inp { resize:vertical; min-height:70px; }
     <div class="err-msg" id="recipeErr">Please choose a recipe!</div>
   </div>
   <div class="card">
-    <label class="field-lbl" for="iDedication">Personal Message (optional)</label>
-    <div class="hint">This will appear on the recipe card — write something warm for the child and their family! 💛</div>
-    <textarea class="field-inp" id="iDedication" placeholder='e.g. "Made with love for you — I hope this recipe brings your family joy!"' maxlength="140"></textarea>
+    <label class="field-lbl">Personal Message</label>
+    <div class="hint">Pick the message that best fits the family receiving your recipe card. 💛</div>
+    <div class="msg-picker" id="msgPicker"></div>
+    <div class="msg-skip">No message? Tap a tag again to deselect — sending a card is a kindness all on its own.</div>
   </div>
   <div class="nav-row">
     <button class="btn-back" onclick="goTo(2)">← Back</button>
@@ -685,7 +720,9 @@ function buildWordGrid(){
 
 function v2(){
   if(!S.word){show('wordErr');return;} hide('wordErr');
-  buildRecipeGrid(); goTo(3);
+  buildRecipeGrid();
+  buildMessagePicker();
+  goTo(3);
 }
 
 function buildRecipeGrid(){
@@ -716,8 +753,143 @@ function buildRecipeGrid(){
 
 function v3(){
   if(S.recipeIdx===null||!RECIPES[S.word]){show('recipeErr');return;} hide('recipeErr');
-  S.dedication=document.getElementById('iDedication').value.trim();
+  // Dedication now comes from the selected message option (may be empty if none picked)
+  S.dedication = (S.selectedMsg || '').trim();
   buildPreview(); goTo(4);
+}
+
+/* ── MESSAGE PICKER ─────────────────────────────────────────────
+   3 pre-selected messages per OneWord (Elementary / Middle / High School voices).
+   Recipe-themed: cooking, sharing food, families gathering.
+   Set per-OneWord in MESSAGES below. Uses the OneWord meaningfully. */
+const MESSAGES = {
+  Absorb:    { elem:'Soak up every yummy bite — this recipe is made just for your family!',
+               middle:'May this recipe help you ABSORB sweet moments around the table together.',
+               high:'Take a moment to ABSORB the warmth in this kitchen creation — small acts of nourishment matter.' },
+  Adapt:     { elem:'Make this recipe your own! ADAPT it however your family loves food best.',
+               middle:'Recipes are like life — feel free to ADAPT it to fit who you are.',
+               high:'ADAPT freely. Cooking is one of the kindest ways we shape something new from what we have.' },
+  Anchor:    { elem:'Family meals can be your ANCHOR — steady, warm, and always there.',
+               middle:'May this recipe help your family find an ANCHOR in the simple joy of cooking together.',
+               high:'Let shared meals be your ANCHOR. The table is one of the truest places we belong.' },
+  Balance:   { elem:'Cooking is fun! Add a little of this, a little of that — find your BALANCE!',
+               middle:'A great recipe is all about BALANCE — flavors, time, and people you love.',
+               high:'Find your BALANCE in the kitchen — sweet and savory, effort and ease, giving and receiving.' },
+  Bloom:     { elem:'Watch your kitchen BLOOM with smiles when you make this together!',
+               middle:'May this recipe help your family BLOOM with new flavors and fresh memories.',
+               high:'BLOOM where you are gathered. May this recipe bring color to ordinary days.' },
+  Breathe:   { elem:'Take a deep BREATHE, smell the goodness, and enjoy every bite!',
+               middle:'BREATHE in. Slow down. Cooking together is its own kind of magic.',
+               high:'BREATHE deeply as you cook — let the kitchen be a quiet space to gather yourself.' },
+  Clear:     { elem:'A CLEAR plate means happy tummies! Enjoy every yummy bite!',
+               middle:'May this recipe make space for CLEAR, happy moments around your table.',
+               high:'A CLEAR mind starts with a full heart and a shared meal. Be well.' },
+  Connect:   { elem:'Cooking together helps families CONNECT and have fun!',
+               middle:'May this recipe help your family CONNECT over something delicious.',
+               high:'Food is one of the oldest ways we CONNECT. May this gather the people you love.' },
+  Cycle:     { elem:'Recipes can become a special family CYCLE — make it again and again!',
+               middle:'Every shared meal is part of a CYCLE that holds families together.',
+               high:'Recipes carry a CYCLE of memory. May this become one your family returns to.' },
+  Emerge:    { elem:'Watch something yummy EMERGE from the oven — like magic!',
+               middle:'Beautiful flavors EMERGE when you cook with care. Enjoy!',
+               high:'EMERGE from the kitchen with more than food — emerge with stories, laughter, and pause.' },
+  Filter:    { elem:'FILTER out the busy day — kitchen time is family time!',
+               middle:'May this recipe help you FILTER out the noise and savor what matters.',
+               high:'FILTER the day down to this — warm food, quiet hands, the people right beside you.' },
+  Flow:      { elem:'Let the yummy smells FLOW through your kitchen!',
+               middle:'May your time in the kitchen FLOW gently into laughter and good memories.',
+               high:'Let conversation FLOW the way good food does — slowly, generously, and shared.' },
+  Grow:      { elem:'Good food helps you GROW big and strong — and so does family time!',
+               middle:'May this recipe help your family GROW closer over a shared table.',
+               high:'We GROW from what we share. May this meal nourish more than just bodies.' },
+  Heal:      { elem:'A warm meal can HEAL hearts and put smiles on faces!',
+               middle:'Cooking and sharing can HEAL us in ways nothing else can.',
+               high:'May this recipe HEAL the small wounds of busy days — sometimes a meal is the medicine.' },
+  Migrate:   { elem:'Recipes MIGRATE through families — share this with someone you love!',
+               middle:'May this recipe MIGRATE through your home and become a family favorite.',
+               high:'The best recipes MIGRATE across generations. May this become part of your family story.' },
+  Persist:   { elem:'Even tricky recipes get easier — PERSIST and have fun!',
+               middle:'PERSIST through the steps — the reward is sweeter when you stick with it.',
+               high:'PERSIST in the small kindnesses — like cooking for someone, even when you are tired.' },
+  Renew:     { elem:'A yummy meal can RENEW your whole day with smiles!',
+               middle:'May this recipe RENEW your family time with warmth and laughter.',
+               high:'RENEW your week with this recipe — a small ritual of care can change everything.' },
+  Restore:   { elem:'Good food helps RESTORE happy energy — enjoy every bite!',
+               middle:'May this recipe help RESTORE peace, fullness, and connection at your table.',
+               high:'Sometimes a meal is enough to RESTORE us. May this be one of those meals.' },
+  Return:    { elem:'RETURN to this recipe whenever you need a smile!',
+               middle:'May this recipe become one your family RETURNS to over and over.',
+               high:'May you RETURN to this recipe in moments when you need home — wherever home means to you.' },
+  Rise:      { elem:'Watch the dough RISE — and watch your family rise to the occasion!',
+               middle:'RISE together in the kitchen — laughter, mess, and love are part of the recipe.',
+               high:'May this recipe lift you. To RISE is to make space for joy, even in small ways.' },
+  Root:      { elem:'Family meals help us ROOT in love and warmth!',
+               middle:'May this recipe help your family ROOT in traditions worth keeping.',
+               high:'ROOT yourself in the simple acts — cooking, sharing, sitting together. They hold us.' },
+  Shine:     { elem:'You SHINE every time you share something you made!',
+               middle:'May this recipe help your family SHINE a little brighter together.',
+               high:'SHINE on. Cooking for others is one of the truest ways we offer light.' },
+  Sustain:   { elem:'Yummy food helps SUSTAIN our families — and makes us happy!',
+               middle:'May this recipe help SUSTAIN your family in small, daily ways.',
+               high:'Recipes SUSTAIN us in ways beyond hunger. They carry love forward.' },
+  Thrive:    { elem:'When families cook together, they THRIVE!',
+               middle:'May this recipe help your family THRIVE with warmth and shared moments.',
+               high:'THRIVE in the everyday — meals like this are how we grow into who we are.' },
+  Transform: { elem:'Watch ingredients TRANSFORM into something delicious!',
+               middle:'A simple recipe can TRANSFORM an ordinary day into something special.',
+               high:'Food TRANSFORMS more than ingredients — it can transform a moment, a mood, a memory.' },
+};
+
+function buildMessagePicker(){
+  const wrap = document.getElementById('msgPicker');
+  if (!wrap) return;
+  const set = MESSAGES[S.word] || { elem:'', middle:'', high:'' };
+  S.selectedMsg = '';
+  wrap.innerHTML = `
+    <label class="msg-option" data-key="elem">
+      <span class="msg-radio"></span>
+      <input type="radio" name="msgChoice" value="elem">
+      <div>
+        <span class="msg-tag elem">🌱 Elementary Audience</span>
+        <div class="msg-text">${escapeHtml(set.elem)}</div>
+      </div>
+    </label>
+    <label class="msg-option" data-key="middle">
+      <span class="msg-radio"></span>
+      <input type="radio" name="msgChoice" value="middle">
+      <div>
+        <span class="msg-tag middle">🌿 Middle School Audience</span>
+        <div class="msg-text">${escapeHtml(set.middle)}</div>
+      </div>
+    </label>
+    <label class="msg-option" data-key="high">
+      <span class="msg-radio"></span>
+      <input type="radio" name="msgChoice" value="high">
+      <div>
+        <span class="msg-tag high">🌳 High School Audience</span>
+        <div class="msg-text">${escapeHtml(set.high)}</div>
+      </div>
+    </label>
+  `;
+  wrap.querySelectorAll('.msg-option').forEach(opt => {
+    opt.addEventListener('click', e => {
+      e.preventDefault();
+      const key = opt.dataset.key;
+      const isSelected = opt.classList.contains('sel');
+      // Toggle: tap selected option to deselect (no message sent)
+      wrap.querySelectorAll('.msg-option').forEach(o => o.classList.remove('sel'));
+      if (isSelected) {
+        S.selectedMsg = '';
+      } else {
+        opt.classList.add('sel');
+        S.selectedMsg = (MESSAGES[S.word] && MESSAGES[S.word][key]) || '';
+      }
+    });
+  });
+}
+
+function escapeHtml(s){
+  return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
 function buildPreview(){
@@ -773,7 +945,7 @@ async function submitCard(){
 }
 
 function restart(){
-  S.name=''; S.teacher=''; S.word=''; S.recipeIdx=0; S.dedication='';
+  S.name=''; S.teacher=''; S.word=''; S.recipeIdx=0; S.dedication=''; S.selectedMsg='';
   document.getElementById('iFirst').value='';
   document.getElementById('iLast').value='';
   document.getElementById('iDedication').value=''; classSelected=''; setClass('');
