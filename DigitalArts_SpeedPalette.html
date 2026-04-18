@@ -228,6 +228,12 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
     </div>
     <div style="font-size:11px;color:#ccc;text-align:center;font-family:'Fredoka One',cursive;letter-spacing:1px;">Smile Bags · A Word &amp; Wonder Experience</div>
   </div>
+
+  <!-- Retry path: only visible on screen, hidden during print via @media print -->
+  <div id="spRetryRow" style="display:none;margin-top:14px;gap:10px;flex-wrap:wrap;">
+    <button class="btn btn-gold" onclick="window.print()" style="flex:1;min-width:200px;background:linear-gradient(135deg,#1B4332,#40916C);color:#fff;">🖨️ Print This Sheet</button>
+    <a href="DigitalArts_Menu.html" class="btn btn-outline" style="flex:1;min-width:200px;text-decoration:none;text-align:center;display:inline-flex;align-items:center;justify-content:center;">🏠 Return to Main Menu</a>
+  </div>
   <button id="printBtn" style="display:none;" aria-hidden="true"></button>
 </div>
 
@@ -326,6 +332,7 @@ function loadRound(word, set){
   startTimer();
   document.getElementById('printSheet').style.display='none';
   document.getElementById('printBtn').style.display='none';
+  var rr=document.getElementById('spRetryRow');if(rr) rr.style.display='none';
 }
 
 function getWordMeaning(w){
@@ -454,7 +461,7 @@ function resetGame(){
   document.getElementById('statBar').style.display='none';
   document.getElementById('resultsWrap').classList.remove('show');
   document.querySelectorAll('.word-btn,.set-btn').forEach(function(b){b.classList.remove('active');});
-  selWord='';selSet='';document.getElementById('startBtn').disabled=true;  clearInterval(timerInt);document.getElementById('timerBar').style.display='none';document.getElementById('printSheet').style.display='none';document.getElementById('printBtn').style.display='none';
+  selWord='';selSet='';document.getElementById('startBtn').disabled=true;  clearInterval(timerInt);document.getElementById('timerBar').style.display='none';document.getElementById('printSheet').style.display='none';document.getElementById('printBtn').style.display='none';var rr=document.getElementById('spRetryRow');if(rr) rr.style.display='none';
 }
 
 // ── TIMER ──
@@ -535,6 +542,10 @@ function printAndSubmit(){
   document.getElementById('printPaletteSwatches').innerHTML = swatchHtml;
   sheet.style.display = 'block';
 
+  // Show retry row (Print This Sheet + Return to Main Menu) at bottom of print sheet
+  var retryRow = document.getElementById('spRetryRow');
+  if(retryRow) retryRow.style.display = 'flex';
+
   var token = 'KSB-SP-' + Math.random().toString(36).substr(2,4).toUpperCase();
   var payload = {
     activity: 'speedPalette',
@@ -562,12 +573,14 @@ function printAndSubmit(){
     postSubmission();
     // Tiny delay so POST and layout settle before browser print dialog
     setTimeout(function(){
+      // Scroll the print sheet into view so student sees the rendered output + retry buttons
+      sheet.scrollIntoView({behavior:'smooth', block:'start'});
       window.print();
       btn.textContent = '✅ Submitted · Code: ' + token;
       var msg = document.getElementById('spSubmitMsg');
       if(msg){
         msg.style.display = 'block';
-        msg.textContent = '🎨 Palette logged and sent to print!';
+        msg.textContent = '🎨 Palette logged and sent to print! If you missed the print dialog, use the 🖨️ button below the sheet.';
       }
       setTimeout(fetchSpTracker, 700);
     }, 200);
