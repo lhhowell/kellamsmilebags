@@ -20,6 +20,8 @@ body { font-family:'Nunito',sans-serif; background:var(--cream); min-height:100v
 .hdr-brand { font-family:'Fredoka One',cursive; font-size:1.05rem; color:var(--gold); }
 .hdr-sub   { font-size:.58rem; color:rgba(255,255,255,.4); text-transform:uppercase; letter-spacing:.1em; margin-top:1px; }
 .hdr-badge { background:var(--gold); color:var(--navy); font-weight:900; font-size:.58rem; padding:3px 10px; border-radius:20px; letter-spacing:.07em; text-transform:uppercase; }
+.hdr-home { background:transparent; color:var(--navy); border:2px solid var(--navy); padding:5px 12px; border-radius:20px; font-family:'Nunito',sans-serif; font-weight:800; font-size:.7rem; text-decoration:none; transition:all .15s; white-space:nowrap; }
+.hdr-home:hover { background:var(--navy); color:var(--gold); }
 
 /* SCREENS */
 .screen { display:none; max-width:700px; margin:0 auto; padding:22px 16px 60px; animation:fadeUp .25s ease; }
@@ -175,7 +177,10 @@ textarea.field-inp { resize:vertical; min-height:70px; }
     <div class="hdr-brand">📖 OneWord Recipe Card · Smile Bags</div>
     <div class="hdr-sub">Culinary Arts · Word &amp; Wonder · Spring 2026</div>
   </div>
-  <div class="hdr-badge">Ms. Sayers</div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <a href="Culinary_Menu.html" class="hdr-home" title="Return to Main Menu">🏠 Menu</a>
+    <div class="hdr-badge">Ms. Sayers</div>
+  </div>
 </header>
 
 <!-- S1: NAME + TEACHER -->
@@ -280,8 +285,7 @@ textarea.field-inp { resize:vertical; min-height:70px; }
   </div>
   <div class="nav-row" style="margin-top:16px;">
     <button class="btn-back" onclick="goTo(3)">← Change Something</button>
-    <button class="btn-print" onclick="window.print()">🖨️ Print Card</button>
-    <button class="btn-submit" onclick="submitCard()">✅ Submit!</button>
+    <button class="btn-submit" onclick="submitCard()">✅ Submit to Ms. Sayers</button>
   </div>
 </div>
 
@@ -298,7 +302,8 @@ textarea.field-inp { resize:vertical; min-height:70px; }
   <div class="success-wrap">
     <span class="success-icon">🎉</span>
     <div class="success-title">Card Submitted!</div>
-    <div class="success-msg">Your OneWord Recipe Card has been logged!<br>Print it and place it in the Smile Bag for a family to enjoy. 🍪💛</div>
+    <div class="success-msg">Your OneWord Recipe Card has been logged!<br><strong>Request an appointment to print or pickup in D210.</strong> 🍪💛</div>
+    <div style="background:#FFF8EE;border:1.5px solid var(--gold);border-radius:10px;padding:12px 16px;margin:16px 0;font-size:.85rem;color:var(--navy);text-align:center;">💡 Want a copy for yourself? Take a screenshot now &mdash; your card has been submitted!</div>
     <button class="btn-restart" onclick="restart()">← Make Another Card</button>
     <button class="btn-restart" onclick="window.location.href='Culinary_Menu.html'" style="background:var(--navy);color:var(--gold);border:none;margin-top:10px;">🏠 Back to Main Menu</button>
   </div>

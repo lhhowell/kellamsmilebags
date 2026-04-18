@@ -19,6 +19,8 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
 .hdr-brand{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--gold);}
 .hdr-sub{font-size:.58rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-top:1px;}
 .hdr-badge{background:var(--gold);color:var(--navy);font-weight:900;font-size:.58rem;padding:3px 10px;border-radius:20px;letter-spacing:.07em;text-transform:uppercase;}
+.hdr-home{background:transparent;color:var(--navy);border:2px solid var(--navy);padding:5px 12px;border-radius:20px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.7rem;text-decoration:none;transition:all .15s;white-space:nowrap;}
+.hdr-home:hover{background:var(--navy);color:var(--gold);}
 
 .screen{display:none;max-width:700px;margin:0 auto;padding:22px 16px 60px;animation:fadeUp .25s ease;}
 .screen.active{display:block;}
@@ -251,7 +253,10 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
     <div class="hdr-brand">💻 Bake the Code · Smile Bags</div>
     <div class="hdr-sub">Culinary Arts · Binary Cookie Decoder · Spring 2026</div>
   </div>
-  <div class="hdr-badge">Ms. Sayers</div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <a href="Culinary_Menu.html" class="hdr-home" title="Return to Main Menu">🏠 Menu</a>
+    <div class="hdr-badge">Ms. Sayers</div>
+  </div>
 </header>
 
 <!-- S0: NAME -->
@@ -275,7 +280,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
       01. Pick your OneWord 🌟<br>
       10. Decode the binary message using the reference chart 🔐<br>
       11. Watch your cookie decorate itself letter by letter 🍪<br>
-      100. Submit your cookie &mdash; Ms. Sayers prints in D210! 🍪
+      100. Submit your cookie &mdash; <strong>request an appointment to print or pickup in D210</strong>! 🍪
     </div>
   </div>
   <div class="nav-row">
@@ -360,7 +365,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
   <div class="scr-hd">
     <div class="step-pill" style="background:var(--success);">✅ Submitted!</div>
     <h2>Cookie Submitted! 🍪🎉</h2>
-    <p>Your decoded cookie is on its way to Ms. Sayers &middot; D210 &middot; now color one for fun!</p>
+    <p>Your decoded cookie is on its way &middot; <strong>request an appointment to print or pickup in D210</strong> &middot; now color one for fun!</p>
   </div>
 
   <div class="split-grid">
@@ -369,7 +374,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
     <div class="split-col">
       <div class="split-col-label" style="color:var(--success);">✅ Your Submitted Cookie</div>
       <div class="result-card" id="resultCard"></div>
-      <div class="paint-hint" style="margin-top:-4px;color:var(--success);font-weight:700;font-style:normal;">Logged! Ms. Sayers will print 12 per Cricut sheet in D210.</div>
+      <div class="paint-hint" style="margin-top:-4px;color:var(--success);font-weight:700;font-style:normal;">Logged! Request an appointment to print or pickup in D210.</div>
     </div>
 
     <!-- RIGHT: Paint canvas (fun only — no printing, no submission) -->
@@ -427,7 +432,8 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
   <div class="success-wrap">
     <span class="success-icon">💻</span>
     <div class="success-title">Code Baked!</div>
-    <div class="success-msg">Your Bake the Code cookie has been logged!<br>Ms. Sayers will print it in D210 &mdash; 12 per Cricut sheet. 🍪🔐</div>
+    <div class="success-msg">Your Bake the Code cookie has been logged!<br><strong>Request an appointment to print or pickup in D210.</strong> 🍪🔐</div>
+    <div style="background:#FFF8EE;border:1.5px solid var(--gold);border-radius:10px;padding:12px 16px;margin:16px 0;font-size:.85rem;color:var(--navy);text-align:center;max-width:480px;margin-left:auto;margin-right:auto;">💡 Want a copy for yourself? Take a screenshot now &mdash; your cookie has been submitted!</div>
     <button class="btn-restart" onclick="restart()">← Decode Another Word</button>
     <a href="Culinary_Menu.html" style="display:inline-block;margin-top:10px;padding:13px 28px;border-radius:50px;border:2.5px solid var(--navy);background:transparent;color:var(--navy);font-family:'Nunito',sans-serif;font-weight:900;font-size:.9rem;text-decoration:none;transition:all .2s;">🏠 Return to Main Menu</a>
   </div>

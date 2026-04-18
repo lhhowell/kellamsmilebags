@@ -19,6 +19,8 @@ body { font-family:'Nunito',sans-serif; background:var(--cream); min-height:100v
 .hdr-brand { font-family:'Fredoka One',cursive; font-size:1.1rem; color:var(--gold); }
 .hdr-sub   { font-size:.6rem; color:rgba(255,255,255,.4); text-transform:uppercase; letter-spacing:.12em; margin-top:1px; }
 .hdr-badge { background:var(--gold); color:var(--navy); font-weight:900; font-size:.6rem; padding:4px 11px; border-radius:20px; letter-spacing:.08em; text-transform:uppercase; }
+.hdr-home { background:transparent; color:var(--navy); border:2px solid var(--navy); padding:5px 12px; border-radius:20px; font-family:'Nunito',sans-serif; font-weight:800; font-size:.7rem; text-decoration:none; transition:all .15s; white-space:nowrap; }
+.hdr-home:hover { background:var(--navy); color:var(--gold); }
 
 /* SCREENS */
 .screen { display:none; max-width:680px; margin:0 auto; padding:24px 18px 60px; animation:fadeUp .25s ease; }
@@ -153,7 +155,10 @@ body { font-family:'Nunito',sans-serif; background:var(--cream); min-height:100v
     <div class="hdr-brand">🍪 Culinary Arts · Smile Bags</div>
     <div class="hdr-sub">Word &amp; Wonder Experience · Spring 2026</div>
   </div>
-  <div class="hdr-badge">Ms. Sayers</div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <a href="Culinary_Menu.html" class="hdr-home" title="Return to Main Menu">🏠 Menu</a>
+    <div class="hdr-badge">Ms. Sayers</div>
+  </div>
 </header>
 
 <!-- ══ SCREEN 0 — MENU ══ -->
@@ -354,7 +359,7 @@ body { font-family:'Nunito',sans-serif; background:var(--cream); min-height:100v
       </div>
     </div>
   </div>
-  <div class="hint" style="text-align:center;">Once submitted, Ms. Sayers will print your cookie cutter on the Bambu Lab 3D printer! 🖨️</div>
+  <div class="hint" style="text-align:center;">Once submitted, <strong>request an appointment to print or pickup in D210</strong>! Your cookie cutter will be 3D printed on the Bambu Lab. 🖨️</div>
   <div class="nav-row">
     <button class="btn-back" onclick="goTo(4)">← Change Something</button>
     <button class="btn-submit" onclick="submitOrder()">🍪 Submit My Order!</button>
@@ -374,7 +379,7 @@ body { font-family:'Nunito',sans-serif; background:var(--cream); min-height:100v
   <div class="success-wrap">
     <span class="success-icon">🎉</span>
     <div class="success-title">Order Submitted!</div>
-    <div class="success-msg">Your cookie cutter order is logged!<br>Ms. Sayers will print it on the Bambu Lab 3D printer.<br>Watch for your cutter in a Smile Bag! 🍪</div>
+    <div class="success-msg">Your cookie cutter order is logged!<br><strong>Request an appointment to print or pickup in D210.</strong><br>Watch for your cutter in a Smile Bag! 🍪</div>
     <div class="card" style="text-align:left;margin-bottom:20px;">
       <div class="card-lbl">Your Order</div>
       <div class="confirm-rows">
