@@ -64,8 +64,21 @@ body{font-family:'Nunito',sans-serif;background:#fff;color:#1a1a2e;padding:0;}
 .color-item .circle{width:16px;height:16px;border:2px solid #ccc;border-radius:50%;position:absolute;top:3px;right:3px;}
 
 /* ── TEACHER NOTE ── */
-.teacher-note{background:#FFF9E6;border:1.5px solid var(--gold);border-radius:8px;padding:12px 16px;margin-top:20px;font-size:12px;color:#5A3000;line-height:1.6;}
+.teacher-note{background:#FFF9E6;border:1.5px solid var(--gold);border-radius:8px;padding:12px 16px;margin-top:14px;font-size:12px;color:#5A3000;line-height:1.6;}
 .teacher-note strong{color:var(--navy);}
+
+/* ── SCHOOL ROUTING REFERENCE ── */
+.school-routing{background:#F0F7FF;border:2px solid var(--blue);border-radius:8px;padding:14px 16px;margin-top:24px;}
+.school-routing-hd{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.school-routing-icon{font-size:22px;line-height:1;flex-shrink:0;}
+.school-routing-title{font-family:'Fredoka One',cursive;font-size:14px;color:var(--navy);}
+.school-routing-sub{font-size:11px;color:#555;margin-top:2px;font-style:italic;line-height:1.5;}
+.school-routing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.sr-card{background:#fff;border:1px solid var(--border);border-radius:6px;padding:8px 10px;display:flex;align-items:center;gap:8px;}
+.sr-swatches{display:flex;gap:3px;flex-shrink:0;}
+.sr-swatch{width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(0,0,0,.15);}
+.sr-arrow{font-size:9px;color:#aaa;flex-shrink:0;}
+.sr-school{font-family:'Fredoka One',cursive;font-size:10px;color:var(--navy);line-height:1.2;}
 
 /* ── FOOTER ── */
 .page-footer{text-align:center;margin-top:20px;padding-top:12px;border-top:1px solid #ddd;font-family:'Fredoka One',cursive;font-size:10px;color:#aaa;letter-spacing:1px;}
@@ -164,12 +177,25 @@ body{font-family:'Nunito',sans-serif;background:#fff;color:#1a1a2e;padding:0;}
     </div>
   </div>
 
+  <!-- SCHOOL ROUTING REFERENCE (for TA when entering data) -->
+  <div class="school-routing">
+    <div class="school-routing-hd">
+      <span class="school-routing-icon">🎯</span>
+      <div>
+        <div class="school-routing-title">Color Pair → School Routing</div>
+        <div class="school-routing-sub">The student's color choices automatically determine which school the bookmark goes to. Reference for the TA when entering data.</div>
+      </div>
+    </div>
+    <div class="school-routing-grid" id="schoolRoutingGrid"></div>
+  </div>
+
   <!-- TEACHER NOTE -->
   <div class="teacher-note">
-    <strong>📋 Ms. Glover:</strong> Once the student has circled their choices, open the
+    <strong>📋 TA / Ms. Glover:</strong> Once the student has circled their choices, open the
     <strong>STEP + Inclusion Activity Kiosk</strong>, enter the student's name and class,
-    select <strong>Design My Bookmark</strong>, then enter their word, emoji, and two colors.
-    Submit on their behalf. The bookmark order will be logged automatically.
+    select <strong>Design My Bookmark</strong>, then enter their word, emoji, and two colors
+    in the order shown above (Color 1 first = body, Color 2 second = text).
+    Submit on their behalf — the bookmark order will be logged automatically and routed to the correct school.
   </div>
 
   <div class="page-footer">STEP + Inclusion · Sharon Glover · Smile Bags · Spring 2026</div>
@@ -222,6 +248,7 @@ var COLORS = [
   {n:"Black",  h:"#1A1A1A"},
   {n:"White",  h:"#F5F5F5"},
   {n:"Pink",   h:"#C2185B"},
+  {n:"Yellow", h:"#FFD700"},
 ];
 
 // Build word grid
@@ -257,6 +284,42 @@ function buildColorGrid(id){
 }
 buildColorGrid("color1Grid");
 buildColorGrid("color2Grid");
+
+// Build school routing reference for the TA
+var SCHOOL_ROUTES = [
+  {c1:"Black",  c2:"Gold",   school:"Kellam High School"},
+  {c1:"Blue",   c2:"Gold",   school:"Princess Anne Middle"},
+  {c1:"Green",  c2:"Blue",   school:"Christopher Farms ES"},
+  {c1:"Green",  c2:"Gold",   school:"Creeds ES"},
+  {c1:"Gold",   c2:"Blue",   school:"North Landing ES"},
+  {c1:"Blue",   c2:"White",  school:"Princess Anne ES"},
+  {c1:"Red",    c2:"Black",  school:"Red Mill ES"},
+  {c1:"Blue",   c2:"Yellow", school:"Strawbridge ES"},
+  {c1:"Gold",   c2:"Green",  school:"Three Oaks ES"},
+];
+
+function colorHex(name){
+  var found = COLORS.find(function(c){return c.n===name;});
+  return found ? found.h : "#ccc";
+}
+
+var srg = document.getElementById("schoolRoutingGrid");
+SCHOOL_ROUTES.forEach(function(r){
+  var h1 = colorHex(r.c1);
+  var h2 = colorHex(r.c2);
+  var b1 = h1==="#F5F5F5" ? "border:1.5px solid #999;" : "";
+  var b2 = h2==="#F5F5F5" ? "border:1.5px solid #999;" : "";
+  var d = document.createElement("div");
+  d.className = "sr-card";
+  d.innerHTML =
+    '<div class="sr-swatches">' +
+      '<div class="sr-swatch" style="background:'+h1+';'+b1+'"></div>' +
+      '<div class="sr-swatch" style="background:'+h2+';'+b2+'"></div>' +
+    '</div>' +
+    '<span class="sr-arrow">→</span>' +
+    '<div class="sr-school">'+r.school+'</div>';
+  srg.appendChild(d);
+});
 </script>
 </body>
 </html>
