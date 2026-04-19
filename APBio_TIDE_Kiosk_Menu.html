@@ -88,7 +88,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 <div class="master-tracker">
   <div class="master-stat">
     <span class="master-num" id="masterCount">0</span>
-    <span class="master-total">/ 150</span>
+    <span class="master-total">/ 180</span>
   </div>
   <div class="master-label">Class Total<br/>Smile Bag Submissions</div>
   <div class="master-bar"><div class="master-bar-fill" id="masterBarFill"></div></div>
@@ -154,6 +154,12 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
     <div class="tracker-name">Secret Cipher</div>
     <div class="tracker-bar"><div class="tracker-fill" id="secFill"></div></div>
     <div class="tracker-meta"><span id="secCount">—</span> of <strong>15</strong></div>
+  </div>
+  <div class="tracker-card">
+    <div class="tracker-icon">📖</div>
+    <div class="tracker-name">Story Sequence</div>
+    <div class="tracker-bar"><div class="tracker-fill" id="stsFill"></div></div>
+    <div class="tracker-meta"><span id="stsCount">—</span> of <strong>15</strong></div>
   </div>
 </div>
 
@@ -387,7 +393,8 @@ var TRACKER_MAP = {
   dnaRecipe:       'dnr',
   pixelArt:        'pxl',
   scienceRecipe:   'src',
-  secretCipher:    'sec'
+  secretCipher:    'sec',
+  storySequence:   'sts'
 };
 
 function fetchAPBioCounts(){
@@ -409,7 +416,7 @@ function fetchAPBioCounts(){
       });
 
       // Hydrate master tracker (class total)
-      var master = d.master || {total:0, goal:150};
+      var master = d.master || {total:0, goal:180};
       var mPct = Math.min(100, Math.round((master.total / master.goal) * 100));
       var masterCountEl = document.getElementById('masterCount');
       var masterFillEl = document.getElementById('masterBarFill');
