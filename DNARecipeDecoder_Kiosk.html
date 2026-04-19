@@ -14,7 +14,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 .hero-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4.5vw,50px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:10px;}
 .hero-title span{color:#c9a84c;}
 .hero-sub{font-size:14px;color:#c8c4bc;max-width:600px;margin:0 auto;line-height:1.7;}
-.back-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #D4537E;color:#D4537E;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;margin:24px 24px 0;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #D4537E;background:transparent;color:#D4537E;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;cursor:pointer;margin:24px 24px 0;}
 
 /* Mode tabs */
 .mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:0;background:#111;border:1px solid #1a1a2e;border-radius:12px;overflow:hidden;max-width:900px;margin:24px auto 0;}
@@ -148,12 +148,13 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 <body>
 
 <div class="hero">
-  <div class="hero-brand">Smile Bags &middot; AP Bio &amp; Culinary Arts &middot; Creation Kiosk</div>
+  <div class="hero-brand">AP Bio + T.I.D.E. &middot; Exploration Kiosk</div>
   <h1 class="hero-title">DNA<br><span>Recipe Decoder</span></h1>
-  <p class="hero-sub">Every recipe is a code. Every strand of DNA is a recipe. Encode your OneWord as a sequence of food ingredient pairs &mdash; and let an elementary student crack the code!</p>
+  <p class="hero-sub">Every recipe is a code. Every strand of DNA is a recipe. Encode your OneWord as a sequence of food ingredient pairs &mdash; then crack the code yourself!</p>
+  <div style="font-family:'Fredoka One',cursive;font-size:11px;color:#D4537E;letter-spacing:1px;margin-top:14px;">Elena O'Brien &middot; AP Biology + T.I.D.E. &middot; Spring 2026</div>
 </div>
 
-<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to Kiosk Menu</a>
+<button type="button" onclick="window.location.href='APBio_TIDE_Kiosk_Menu.html'" class="back-btn">&#8592; Back to Kiosk Menu</button>
 
 <div class="mode-tabs">
   <button class="mode-tab make active" onclick="switchMode('make')">
@@ -245,7 +246,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
     <div class="print-header">
       <div class="print-title">Crack the<br>Recipe Code!</div>
       <hr class="print-divider"/>
-      <div class="print-from">From a Kellam High School student &mdash; made just for you &#128149;</div>
+      <div class="print-from"></div>
       <div class="print-clue" id="printClue"></div>
     </div>
 
@@ -270,9 +271,9 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
       <div class="print-culinary-title">&#127859; The Culinary Connection</div>
       <div class="print-culinary-text" id="printCulinary"></div>
     </div>
-    <div class="print-footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>
+    <div class="print-footer-sig"></div>
   </div>
-  <button class="print-btn" id="printBtn" onclick="window.print()" style="display:none;">&#128438; Print This DNA Recipe Decoder Sheet</button>
+  <button class="print-btn" id="printBtn" onclick="window.print()" style="display:none !important;" hidden>&#128438; Print This DNA Recipe Decoder Sheet</button>
 
 </div>
 
@@ -517,7 +518,7 @@ function generateSheet() {
   document.getElementById('printCulinary').textContent = culinaryFacts[makeWord] || '';
 
   document.getElementById('printSection').classList.add('show');
-  document.getElementById('printBtn').style.display='block';
+  // Tier 2: print button intentionally suppressed — exploration only
   document.getElementById('printSection').scrollIntoView({behavior:'smooth'});
 }
 

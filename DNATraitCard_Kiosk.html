@@ -14,7 +14,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 .hero-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4.5vw,50px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:10px;}
 .hero-title span{color:#c9a84c;}
 .hero-sub{font-size:14px;color:#c8c4bc;max-width:620px;margin:0 auto;line-height:1.7;}
-.back-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #4caf82;color:#4caf82;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;margin:24px 24px 0;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #4caf82;background:transparent;color:#4caf82;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;cursor:pointer;margin:24px 24px 0;}
 
 .mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:0;background:#111;border:1px solid #1a2a1a;border-radius:12px;overflow:hidden;max-width:900px;margin:24px auto 0;}
 .mode-tab{padding:18px 24px;text-align:center;cursor:pointer;border:none;background:transparent;color:#444;width:100%;transition:all .2s;}
@@ -156,12 +156,13 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 <body>
 
 <div class="hero">
-  <div class="hero-brand">Smile Bags &middot; SNHS &middot; Middle School Edition</div>
+  <div class="hero-brand">AP Bio + T.I.D.E. &middot; Exploration Kiosk</div>
   <h1 class="hero-title">DNA<br><span>Trait Card</span></h1>
   <p class="hero-sub">Every trait you have &mdash; eye color, tongue rolling, earlobe shape &mdash; is determined by dominant and recessive alleles inherited from your parents. Use a Punnett square to predict the probability of traits and decode the science of inheritance!</p>
+  <div style="font-family:'Fredoka One',cursive;font-size:11px;color:#4caf82;letter-spacing:1px;margin-top:14px;">Elena O'Brien &middot; AP Biology + T.I.D.E. &middot; Spring 2026</div>
 </div>
 
-<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to SNHS Kiosk Menu</a>
+<button type="button" onclick="window.location.href='APBio_TIDE_Kiosk_Menu.html'" class="back-btn">&#8592; Back to Kiosk Menu</button>
 
 <div class="mode-tabs">
   <button class="mode-tab active" onclick="switchMode('make')">
@@ -271,9 +272,9 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
       <div class="card-genetics-title">&#129516; Genetics Fact</div>
       <div class="card-genetics-text" id="cardGeneticsText"></div>
     </div>
-    <div class="card-footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>
+    <div class="card-footer-sig"></div>
   </div>
-  <button class="print-btn" id="printBtn" onclick="window.print()" style="display:none;">&#128438; Print This DNA Trait Card</button>
+  <button class="print-btn" id="printBtn" onclick="window.print()" style="display:none !important;" hidden>&#128438; Print This DNA Trait Card</button>
 </div>
 
 <!-- SOLVE IT -->
@@ -419,7 +420,7 @@ function generateCard() {
   document.getElementById('cardGeneticsText').textContent = t.genetics;
 
   document.getElementById('printSection').classList.add('show');
-  document.getElementById('printBtn').style.display='block';
+  // Tier 2: print button intentionally suppressed — exploration only
   document.getElementById('printSection').scrollIntoView({behavior:'smooth'});
 }
 
