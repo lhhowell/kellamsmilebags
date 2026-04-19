@@ -321,8 +321,8 @@ function submitToSheet(){
     activity: 'colorByCode',
     studentName: name,
     class: 'AP Bio + T.I.D.E.',
-    word: (typeof currentWord !== 'undefined' && currentWord) ? currentWord : '',
-    set: (typeof currentSet !== 'undefined' && currentSet) ? currentSet : '',
+    word: (typeof selectedWord !== 'undefined' && selectedWord) ? selectedWord : '',
+    set: (typeof selectedScene !== 'undefined' && selectedScene) ? selectedScene : '',
     token: token
   };
   fetch(SCRIPT_URL, {

@@ -209,8 +209,8 @@ function submitToSheet(){
     activity: 'pixelArt',
     studentName: name,
     class: 'AP Bio + T.I.D.E.',
-    word: (typeof currentWord !== 'undefined' && currentWord) ? currentWord : '',
-    pattern: (typeof currentPattern !== 'undefined' && currentPattern) ? currentPattern : '',
+    word: (typeof selectedWord !== 'undefined' && selectedWord) ? selectedWord : '',
+    pattern: (typeof selectedColor !== 'undefined' && selectedColor) ? selectedColor : '',
     token: token
   };
   fetch(SCRIPT_URL, {
@@ -356,7 +356,8 @@ function generate() {
   for (var r = 0; r < grid.length; r++) {
     printHtml += '<div style="display:flex;gap:2px;">';
     for (var c = 0; c < grid[r].length; c++) {
-      printHtml += '<div style="width:14px;height:14px;border-radius:2px;background:' + (grid[r][c] ? '#111' : '#efefef') + ';border:' + (grid[r][c] ? 'none' : '1px solid #ddd') + ';"></div>';
+      // Print as empty cells with 1/0 label — recipient colors in the 1s to reveal the word
+      printHtml += '<div style="width:16px;height:16px;border:1px solid #888;border-radius:2px;background:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-family:monospace;color:#999;font-weight:bold;">' + (grid[r][c] ? '1' : '0') + '</div>';
     }
     printHtml += '</div>';
   }
