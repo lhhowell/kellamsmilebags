@@ -642,12 +642,13 @@ function openPrintWindow(canvasId, title, subtitle, includeKey, scene){
     keyHtml += '</div>';
   }
   var html = '<!DOCTYPE html><html><head><title>'+title+'</title>'+
-    '<style>@page{size:letter;margin:.5in;}'+
-    'body{font-family:Georgia,serif;color:#111;text-align:center;margin:0;padding:20px;}'+
-    'h1{font-size:24px;margin:0 0 4px;}'+
-    '.sub{font-size:12px;color:#666;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;}'+
-    'img{max-width:100%;height:auto;border:none;}'+
-    '.footer{margin-top:18px;font-size:10px;color:#888;letter-spacing:1px;text-transform:uppercase;}'+
+    '<style>@page{size:letter;margin:.4in;}'+
+    '*{box-sizing:border-box;}'+
+    'body{font-family:Georgia,serif;color:#111;text-align:center;margin:0;padding:0;}'+
+    'h1{font-size:26px;margin:0 0 4px;}'+
+    '.sub{font-size:12px;color:#666;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;}'+
+    'img{display:block;width:100%;max-width:100%;height:auto;border:none;margin:0 auto;}'+
+    '.footer{margin-top:14px;font-size:10px;color:#888;letter-spacing:1px;text-transform:uppercase;}'+
     '</style></head><body>'+
     '<h1>'+title+'</h1>'+
     '<div class="sub">'+subtitle+'</div>'+
