@@ -46,6 +46,23 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 .kiosk-btn.pink{background:#d4537e;color:#fff;}.kiosk-btn.pink:hover{background:#c3426d;}
 .footer{text-align:center;font-size:12px;color:#333;padding:40px 20px 0;max-width:900px;margin:0 auto;}
 @media(max-width:600px){.kiosk-grid{grid-template-columns:1fr;}.hero{padding:28px 20px 24px;}}
+/* ── LIVE TRACKERS DASHBOARD ─────────────────────────────────── */
+.master-tracker{background:linear-gradient(135deg,#1a2e1a,#0d1d0d);border:2px solid #c9a84c;border-radius:16px;padding:24px 28px;margin:0 auto 16px;max-width:1100px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;box-shadow:0 0 32px rgba(201,168,76,.1);}
+.master-stat{display:flex;align-items:baseline;gap:10px;flex-shrink:0;}
+.master-num{font-family:'Fredoka One',cursive;font-size:48px;color:#c9a84c;line-height:1;}
+.master-total{font-family:'Fredoka One',cursive;font-size:22px;color:#888;}
+.master-label{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;color:#888;text-transform:uppercase;line-height:1.4;}
+.master-bar{flex:1;min-width:240px;height:14px;background:rgba(201,168,76,.1);border-radius:7px;overflow:hidden;position:relative;}
+.master-bar-fill{height:100%;background:linear-gradient(90deg,#4caf82,#c9a84c);width:0%;transition:width .8s ease;border-radius:7px;}
+.tracker-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;max-width:1100px;margin:0 auto 24px;padding:0 12px;}
+.tracker-card{background:#0a140a;border:1px solid #1a3a1a;border-radius:10px;padding:12px 14px;}
+.tracker-icon{font-size:18px;margin-bottom:4px;}
+.tracker-name{font-family:'Fredoka One',cursive;font-size:11px;color:#c9a84c;letter-spacing:.5px;margin-bottom:6px;text-transform:uppercase;line-height:1.2;}
+.tracker-bar{background:#05100a;height:6px;border-radius:4px;overflow:hidden;border:1px solid #1a3a1a;}
+.tracker-fill{background:linear-gradient(90deg,#4caf82,#c9a84c);height:100%;border-radius:4px;transition:width .6s ease;width:0%;}
+.tracker-meta{font-size:10px;color:#888;font-weight:700;text-align:right;margin-top:4px;}
+.tracker-meta strong{color:#c9a84c;}
+.tracker-section-label{text-align:center;font-family:'Fredoka One',cursive;font-size:11px;color:#666;letter-spacing:2px;text-transform:uppercase;margin:24px 0 14px;}
 </style>
 </head>
 <body>
@@ -57,7 +74,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
   <div class="hero-rule">20 activities &middot; Four categories &middot; All open in a new tab</div>
 </div>
 
-<a href="APBio_TIDE_Preview.html" class="back-btn">&#8592; Back to Overview</a>
+<button type="button" onclick="window.location.href='APBio_TIDE_Preview.html'" class="back-btn">&#8592; Back to Overview</button>
 
 <div class="req-strip">
   <div class="req-item"><div class="req-num">10</div><div class="req-label">Items per bag</div></div>
@@ -65,6 +82,81 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
   <div class="req-item"><div class="req-num">5</div><div class="req-label">From this menu</div></div>
   <div class="req-item"><div class="req-num">3</div><div class="req-label">Categories min.</div></div>
   <div class="req-item"><div class="req-num">20</div><div class="req-label">Total activities</div></div>
+</div>
+
+<!-- ── LIVE TRACKERS DASHBOARD (counts pulled from Apps Script) ── -->
+<div class="tracker-section-label">Live Class Submissions · Smile Bag Progress</div>
+
+<div class="master-tracker">
+  <div class="master-stat">
+    <span class="master-num" id="masterCount">0</span>
+    <span class="master-total">/ 150</span>
+  </div>
+  <div class="master-label">Class Total<br/>Smile Bag Submissions</div>
+  <div class="master-bar"><div class="master-bar-fill" id="masterBarFill"></div></div>
+</div>
+
+<div class="tracker-grid">
+  <div class="tracker-card">
+    <div class="tracker-icon">🐯</div>
+    <div class="tracker-name">Zoo Trading Cards</div>
+    <div class="tracker-bar"><div class="tracker-fill" id="ztcFill"></div></div>
+    <div class="tracker-meta"><span id="ztcCount">—</span> of <strong>15</strong></div>
+  </div>
+  <div class="tracker-card">
+    <div class="tracker-icon">📖</div>
+    <div class="tracker-name">Coloring Set I</div>
+    <div class="tracker-bar"><div class="tracker-fill" id="csiFill"></div></div>
+    <div class="tracker-meta"><span id="csiCount">—</span> of <strong>15</strong></div>
+  </div>
+  <div class="tracker-card">
+    <div class="tracker-icon">📘</div>
+    <div class="tracker-name">Coloring Set J</div>
+    <div class="tracker-bar"><div class="tracker-fill" id="csjFill"></div></div>
+    <div class="tracker-meta"><span id="csjCount">—</span> of <strong>15</strong></div>
+  </div>
+  <div class="tracker-card">
+    <div class="tracker-icon">💗</div>
+    <div class="tracker-name">Belonging</div>
+    <div class="tracker-bar"><div class="tracker-fill" id="blgFill"></div></div>
+    <div class="tracker-meta"><span id="blgCount">—</span> of <strong>15</strong></div>
+  </div>
+  <div class="tracker-card">
+    <div class="tracker-icon">🔢</div>
+    <div class="tracker-name">Binary Coding</div>
+    <div class="tracker-bar"><div class="tracker-fill" id="binFill"></div></div>
+    <div class="tracker-meta"><span id="binCount">—</span> of <strong>15</strong></div>
+  </div>
+  <div class="tracker-card">
+    <div class="tracker-icon">🎨</div>
+    <div class="tracker-name">Color By Code</div>
+    <div class="tracker-bar"><div class="tracker-fill" id="cbcFill"></div></div>
+    <div class="tracker-meta"><span id="cbcCount">—</span> of <strong>15</strong></div>
+  </div>
+  <div class="tracker-card">
+    <div class="tracker-icon">🧬</div>
+    <div class="tracker-name">DNA Recipe</div>
+    <div class="tracker-bar"><div class="tracker-fill" id="dnrFill"></div></div>
+    <div class="tracker-meta"><span id="dnrCount">—</span> of <strong>15</strong></div>
+  </div>
+  <div class="tracker-card">
+    <div class="tracker-icon">🟩</div>
+    <div class="tracker-name">Pixel Art</div>
+    <div class="tracker-bar"><div class="tracker-fill" id="pxlFill"></div></div>
+    <div class="tracker-meta"><span id="pxlCount">—</span> of <strong>15</strong></div>
+  </div>
+  <div class="tracker-card">
+    <div class="tracker-icon">🥣</div>
+    <div class="tracker-name">Science Recipe</div>
+    <div class="tracker-bar"><div class="tracker-fill" id="srcFill"></div></div>
+    <div class="tracker-meta"><span id="srcCount">—</span> of <strong>15</strong></div>
+  </div>
+  <div class="tracker-card">
+    <div class="tracker-icon">🔐</div>
+    <div class="tracker-name">Secret Cipher</div>
+    <div class="tracker-bar"><div class="tracker-fill" id="secFill"></div></div>
+    <div class="tracker-meta"><span id="secCount">—</span> of <strong>15</strong></div>
+  </div>
 </div>
 
 <div class="wrap">
@@ -191,14 +283,6 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
     <div class="kiosk-grid">
 
       <div class="kiosk-card">
-        <div class="kiosk-card-icon">&#9878;&#65039;</div>
-        <div class="kiosk-card-name">Science Supply Bar</div>
-        <div class="kiosk-card-tag tag-design">Design &amp; Print</div>
-        <div class="kiosk-card-desc">Interactive display of 9 science supplies with OneWord connections. Choose your word and 1–2 supplies, then create a Science Recipe Card or Bookmark for the bag.</div>
-        <a href="ScienceSupplyBar.html" target="_blank" class="kiosk-btn blue">Open Kiosk &#8599;</a>
-      </div>
-
-      <div class="kiosk-card">
         <div class="kiosk-card-icon">&#128203;</div>
         <div class="kiosk-card-name">Science Recipe Card</div>
         <div class="kiosk-card-tag tag-design">Design &amp; Print</div>
@@ -290,5 +374,58 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 <div class="footer">
   Smile Bags: A Word &amp; Wonder Experience &nbsp;&middot;&nbsp; AP Bio &amp; T.I.D.E. &nbsp;&middot;&nbsp; Spring 2026
 </div>
+<script>
+// ── LIVE COUNTS — fetched from Apps Script doGet?action=counts ──
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzEmRvijoOk21PK_EvB_zT_Dy5GwgFiNdAqv-PYgk23RB929cFs6y1ZkP1YNkiCXQ3-/exec";
+
+// Map activity key → DOM element ID prefix used in tracker cards
+var TRACKER_MAP = {
+  zooTradingCard:  'ztc',
+  coloringSetI:    'csi',
+  coloringSetJ:    'csj',
+  belonging:       'blg',
+  binaryCoding:    'bin',
+  colorByCode:     'cbc',
+  dnaRecipe:       'dnr',
+  pixelArt:        'pxl',
+  scienceRecipe:   'src',
+  secretCipher:    'sec'
+};
+
+function fetchAPBioCounts(){
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0) return;
+  fetch(SCRIPT_URL + '?action=counts')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(!d || !d.ok) return;
+
+      // Hydrate each kiosk tracker
+      Object.keys(TRACKER_MAP).forEach(function(activityKey){
+        var domPrefix = TRACKER_MAP[activityKey];
+        var data = d[activityKey] || {total:0, goal:15};
+        var pct = Math.min(100, Math.round((data.total / data.goal) * 100));
+        var countEl = document.getElementById(domPrefix + 'Count');
+        var fillEl = document.getElementById(domPrefix + 'Fill');
+        if(countEl) countEl.textContent = data.total;
+        if(fillEl) fillEl.style.width = pct + '%';
+      });
+
+      // Hydrate master tracker (class total)
+      var master = d.master || {total:0, goal:150};
+      var mPct = Math.min(100, Math.round((master.total / master.goal) * 100));
+      var masterCountEl = document.getElementById('masterCount');
+      var masterFillEl = document.getElementById('masterBarFill');
+      if(masterCountEl) masterCountEl.textContent = master.total;
+      if(masterFillEl) masterFillEl.style.width = mPct + '%';
+    })
+    .catch(function(e){ console.warn('Tracker fetch failed:', e); });
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', fetchAPBioCounts);
+} else {
+  fetchAPBioCounts();
+}
+</script>
 </body>
 </html>
