@@ -212,13 +212,19 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 <!-- CARD 2 PROGRESS BAR (hidden until Card 2 begins) -->
 <div class="prog" id="prog2" style="display:none;">
   <span class="prog-badge badge-c2">Card 2</span>
-  <div class="prog-item"><div class="prog-dot active" id="c2pd0">1</div><div class="prog-lbl active" id="c2pl0">Choose Quote</div></div>
+  <div class="prog-item"><div class="prog-dot active" id="c2pd0">1</div><div class="prog-lbl active" id="c2pl0">My Name</div></div>
   <div class="prog-arr">&rsaquo;</div>
-  <div class="prog-item"><div class="prog-dot" id="c2pd1">2</div><div class="prog-lbl" id="c2pl1">Colors</div></div>
+  <div class="prog-item"><div class="prog-dot" id="c2pd1">2</div><div class="prog-lbl" id="c2pl1">My Word</div></div>
   <div class="prog-arr">&rsaquo;</div>
-  <div class="prog-item"><div class="prog-dot" id="c2pd2">3</div><div class="prog-lbl" id="c2pl2">Font</div></div>
+  <div class="prog-item"><div class="prog-dot" id="c2pd2">3</div><div class="prog-lbl" id="c2pl2">Shape</div></div>
   <div class="prog-arr">&rsaquo;</div>
-  <div class="prog-item"><div class="prog-dot" id="c2pd3">4</div><div class="prog-lbl" id="c2pl3">Preview!</div></div>
+  <div class="prog-item"><div class="prog-dot" id="c2pd3">4</div><div class="prog-lbl" id="c2pl3">Choose Quote</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="c2pd4">5</div><div class="prog-lbl" id="c2pl4">Colors</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="c2pd5">6</div><div class="prog-lbl" id="c2pl5">Font</div></div>
+  <div class="prog-arr">&rsaquo;</div>
+  <div class="prog-item"><div class="prog-dot" id="c2pd6">7</div><div class="prog-lbl" id="c2pl6">Preview!</div></div>
 </div>
 
 <!-- ══ CARD 1 SCREENS ══ -->
@@ -364,13 +370,13 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   <div class="submitted-box" id="subBox1">
     <div class="submitted-icon">&#10003;</div>
     <div class="submitted-title">Card 1 saved.</div>
-    <p class="submitted-msg">Your original quote card has been sent to Ms. Vinson. Now create Card 2 &mdash; a curated quote for your word.</p>
+    <p class="submitted-msg">Your original quote card has been sent to Ms. Vinson and will be placed in a Smile Bag for a child in the community.</p>
     <div class="token-box">
       <div class="token-lbl">Card 1 Code</div>
       <div class="token-code" id="tok1Code">KSB-0000</div>
       <div class="token-hint">Write this down</div>
     </div>
-    <button class="btn-card2" onclick="startCard2()">Start Card 2 &rarr;</button>
+    <button type="button" class="btn-card2" onclick="window.location.href='AVID_Preview.html'">&#8592; Back to AVID Menu</button>
   </div>
   <div class="nav-row" style="justify-content:flex-start;margin-top:12px;">
     <button class="btn-back" onclick="nav(6)">&#8592; Change Something</button>
@@ -379,8 +385,61 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
 <!-- ══ CARD 2 SCREENS ══ -->
 
-<!-- C2-0: CHOOSE CURATED QUOTE -->
+<!-- C2-0: NAME + GRADE -->
 <div class="screen" id="c2scr0">
+  <div class="scr-hd"><h2>Card 2 &mdash; What is your name?</h2><p>Tell us your name and grade to get started with Card 2.</p></div>
+  <div class="white-card">
+    <label class="field-label">Your first name</label>
+    <input class="field-inp" id="c2iName" type="text" maxlength="30" placeholder="Type your name here..."/>
+    <label class="field-label">Your grade</label>
+    <select class="field-inp" id="c2iGrade" style="cursor:pointer;">
+      <option value="">-- Select your grade --</option>
+      <option>9th grade</option><option>10th grade</option><option>11th grade</option><option>12th grade</option>
+    </select>
+  </div>
+  <div class="nav-row">
+    <button class="btn-next" onclick="c2toWord()">Next &rarr;</button>
+  </div>
+</div>
+
+<!-- C2-1: WORD -->
+<div class="screen" id="c2scr1">
+  <div class="scr-hd"><h2>Card 2 &mdash; Choose Your OneWord</h2><p>Choose the OneWord for your Card 2. You'll see curated quotes for this word next.</p></div>
+  <div class="white-card">
+    <div class="section-lbl">Your OneWord</div>
+    <div class="word-grid" id="c2wordGrid"></div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="c2nav(0)">&#8592; Back</button>
+    <button class="btn-next" onclick="c2toShape()">Next &rarr;</button>
+  </div>
+</div>
+
+<!-- C2-2: SHAPE -->
+<div class="screen" id="c2scr2">
+  <div class="scr-hd"><h2>Card 2 &mdash; Choose Your Shape</h2><p>Your Card 2 will be printed and cut to this shape for the child receiving the Smile Bag.</p></div>
+  <div class="path-grid">
+    <div class="path-card" onclick="c2pickShape('square',this)">
+      <div class="path-icon">&#9632;</div>
+      <div class="path-name">Square</div>
+      <div class="path-desc">4&Prime; &times; 4&Prime; square card printed on cardstock. Clean, bold, and easy to display.</div>
+      <div class="path-check">&#10003; Selected!</div>
+    </div>
+    <div class="path-card" onclick="c2pickShape('circle',this)">
+      <div class="path-icon">&#9679;</div>
+      <div class="path-name">Circle</div>
+      <div class="path-desc">4&Prime; round circle card cut with the Cricut. Soft, friendly, and great for hanging.</div>
+      <div class="path-check">&#10003; Selected!</div>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-back" onclick="c2nav(1)">&#8592; Back</button>
+    <button class="btn-next" onclick="c2toQuote()">Next &rarr;</button>
+  </div>
+</div>
+
+<!-- C2-3: CHOOSE CURATED QUOTE -->
+<div class="screen" id="c2scr3">
   <div class="divider-banner">
     <h3>&#127775; Now Creating Card 2</h3>
     <p id="c2intro">Choose a curated quote written for your OneWord.</p>
@@ -395,59 +454,61 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="q2-grid" id="q2Grid"></div>
   </div>
   <div class="nav-row">
+    <button class="btn-back" onclick="c2nav(2)">&#8592; Back</button>
     <button class="btn-next" onclick="c2toColors()">Next &mdash; Choose Colors &rarr;</button>
   </div>
 </div>
 
-<!-- C2-1: COLORS -->
-<div class="screen" id="c2scr1">
-  <div class="scr-hd"><h2>Card 2 &mdash; Colors</h2><p>Your Card 1 color is pre-selected below &mdash; keep it or choose something different for Card 2.</p></div>
+<!-- C2-4: COLORS -->
+<div class="screen" id="c2scr4">
+  <div class="scr-hd"><h2>Card 2 &mdash; Colors</h2><p>Choose the color pair for your Card 2 design.</p></div>
   <div class="white-card">
     <div class="section-lbl">Your Color Pair</div>
     <div class="pair-grid" id="c2pairGrid"></div>
   </div>
   <div class="nav-row">
-    <button class="btn-back" onclick="c2nav(0)">&#8592; Back</button>
+    <button class="btn-back" onclick="c2nav(3)">&#8592; Back</button>
     <button class="btn-next" onclick="c2toFont()">Next &mdash; Choose Font &rarr;</button>
   </div>
 </div>
 
-<!-- C2-2: FONT -->
-<div class="screen" id="c2scr2">
-  <div class="scr-hd"><h2>Card 2 &mdash; Font</h2><p>Your Card 1 font is pre-selected below &mdash; keep it or try something different.</p></div>
+<!-- C2-5: FONT -->
+<div class="screen" id="c2scr5">
+  <div class="scr-hd"><h2>Card 2 &mdash; Font</h2><p>Choose the font style for your Card 2 design.</p></div>
   <div class="white-card">
     <div class="font-grid" id="c2fontGrid"></div>
   </div>
   <div class="nav-row">
-    <button class="btn-back" onclick="c2nav(1)">&#8592; Back</button>
+    <button class="btn-back" onclick="c2nav(4)">&#8592; Back</button>
     <button class="btn-next" onclick="c2toPreview()">See My Card 2 Preview! &rarr;</button>
   </div>
 </div>
 
-<!-- C2-3: CARD 2 PREVIEW & SUBMIT -->
-<div class="screen" id="c2scr3">
-  <div class="scr-hd"><h2 id="c2s3h">Card 2 Preview!</h2><p>Submit Card 2 and both cards will be ready for Ms. Vinson to print and cut.</p></div>
+<!-- C2-6: CARD 2 PREVIEW & SUBMIT -->
+<div class="screen" id="c2scr6">
+  <div class="scr-hd"><h2 id="c2s3h">Card 2 Preview!</h2><p>Submit Card 2 and it will be ready for Ms. Vinson to print and cut.</p></div>
   <div class="white-card">
     <div class="section-lbl">Card 2 &mdash; Curated Quote</div>
     <div class="preview-wrap"><svg id="cardSVG2" width="300" height="300" viewBox="0 0 300 300"></svg></div>
-    <div style="background:#E8F5E9;border-radius:10px;padding:12px 16px;margin-top:8px;font-family:'Playfair Display',serif;font-size:14px;font-style:italic;color:#0F4F4E;line-height:1.6;text-align:center;" id="q2PreviewText"></div>
+    <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-top:12px;font-family:'Playfair Display',serif;font-size:14px;font-style:italic;color:var(--gold2);line-height:1.6;text-align:center;" id="q2PreviewText"></div>
   </div>
   <div id="notSub2">
     <button class="submit-btn" onclick="doSubmit2()">Submit Card 2!</button>
-    <p style="font-size:12px;color:var(--muted);font-style:italic;text-align:center;margin-top:6px;">Ms. Vinson will print and cut both your cards for a child in the community.</p>
+    <p style="font-size:12px;color:var(--muted);font-style:italic;text-align:center;margin-top:6px;">Ms. Vinson will print and cut your card for a child in the community.</p>
   </div>
   <div class="submitted-box" id="subBox2">
     <div class="submitted-icon">&#10003;</div>
-    <div class="submitted-title">Both cards saved.</div>
-    <p class="submitted-msg">Your two quote cards have been sent to Ms. Vinson and will be placed in Smile Bags for children in the community.</p>
+    <div class="submitted-title">Card 2 saved.</div>
+    <p class="submitted-msg">Your curated quote card has been sent to Ms. Vinson and will be placed in a Smile Bag for a child in the community.</p>
     <div class="token-box">
       <div class="token-lbl">Card 2 Code</div>
       <div class="token-code" id="tok2Code">KSB-0000</div>
       <div class="token-hint">Write this down</div>
     </div>
+    <button type="button" class="btn-card2" onclick="window.location.href='AVID_Preview.html'">&#8592; Back to AVID Menu</button>
   </div>
   <div class="nav-row" style="justify-content:flex-start;margin-top:12px;">
-    <button class="btn-back" onclick="c2nav(2)">&#8592; Change Something</button>
+    <button class="btn-back" onclick="c2nav(5)">&#8592; Change Something</button>
   </div>
 </div>
 
@@ -527,17 +588,22 @@ var FONTS=[
   {name:"Bold",     label:"Oswald",            css:"'Oswald', sans-serif",       sample:"Words that inspire"},
 ];
 
-/* State */
-var selShape=null,selWord=null,selPair=null,selFont=FONTS[0],selQuote2=null;
-var selPair2=null,selFont2=FONTS[0];
+/* State — Card 1 */
+var selShape=null,selWord=null,selPair=null,selFont=FONTS[0];
 var sReflect="",sName="",sGrade="",sQuote="";
+/* State — Card 2 (independent session) */
+var selWord2=null,selShape2=null,selPair2=null,selFont2=FONTS[0],selQuote2=null;
+var c2Name="",c2Grade="";
 
 document.addEventListener("DOMContentLoaded",function(){
   buildWordGrid(); buildPairGrid(); buildFontGrid();
+  // URL routing: ?card=2 opens Card 2 flow; default (or ?card=1) opens Card 1
+  var params=new URLSearchParams(window.location.search);
+  if(params.get("card")==="2"){initCard2();}
 });
 
-/* ── BUILDERS ── */
-function pickShape(s,el){document.querySelectorAll(".path-card").forEach(function(c){c.classList.remove("sel");});el.classList.add("sel");selShape=s;}
+/* Card 1 pickShape — constrained to Card 1 screen to avoid cross-contamination with Card 2 */
+function pickShape(s,el){document.querySelectorAll("#scr0 .path-card").forEach(function(c){c.classList.remove("sel");});el.classList.add("sel");selShape=s;}
 
 function buildWordGrid(){
   var g=document.getElementById("wordGrid");
@@ -569,13 +635,21 @@ function buildFontGrid(){
   });
 }
 
-/* ── CARD 2 GRIDS (built when Card 2 starts, pre-fills from Card 1) ── */
+/* ── CARD 2 GRIDS (independent session — no pre-fill from Card 1) ── */
+function buildC2WordGrid(){
+  var g=document.getElementById("c2wordGrid");g.innerHTML='';
+  WORDS.forEach(function(w){
+    var c=document.createElement("div");c.className="word-card";
+    c.innerHTML='<div class="word-card-word">'+w.word+'</div><div class="word-card-meaning">'+w.meaning+'</div>';
+    c.onclick=(function(wd,el){return function(){document.querySelectorAll("#c2wordGrid .word-card").forEach(function(x){x.classList.remove("sel");});el.classList.add("sel");selWord2=wd;};})(w,c);
+    g.appendChild(c);
+  });
+}
+
 function buildC2PairGrid(){
   var g=document.getElementById("c2pairGrid");g.innerHTML='';
-  selPair2=selPair; // pre-fill
   PAIRS.forEach(function(p){
-    var isSel=selPair&&p.name===selPair.name;
-    var c=document.createElement("div");c.className="pair-card"+(isSel?" sel":"");
+    var c=document.createElement("div");c.className="pair-card";
     c.innerHTML='<div class="pair-swatches"><div class="pair-swatch" style="background:'+p.c1.h+'"></div><div class="pair-swatch" style="background:'+p.c2.h+'"></div></div><div class="pair-name">'+p.name+'</div><div class="pair-check">&#10003;</div>';
     c.onclick=(function(pr,el){return function(){document.querySelectorAll("#c2pairGrid .pair-card").forEach(function(x){x.classList.remove("sel");});el.classList.add("sel");selPair2=pr;};})(p,c);
     g.appendChild(c);
@@ -584,10 +658,8 @@ function buildC2PairGrid(){
 
 function buildC2FontGrid(){
   var g=document.getElementById("c2fontGrid");g.innerHTML='';
-  selFont2=selFont; // pre-fill
   FONTS.forEach(function(f){
-    var isSel=selFont&&f.name===selFont.name;
-    var c=document.createElement("div");c.className="font-card"+(isSel?" sel":"");
+    var c=document.createElement("div");c.className="font-card";
     c.innerHTML='<div class="font-preview" style="font-family:'+f.css+'">'+f.sample+'</div><div class="font-name">'+f.name+' &mdash; '+f.label+'</div>';
     c.onclick=(function(fn,el){return function(){document.querySelectorAll("#c2fontGrid .font-card").forEach(function(x){x.classList.remove("sel");});el.classList.add("sel");selFont2=fn;};})(f,c);
     g.appendChild(c);
@@ -595,10 +667,10 @@ function buildC2FontGrid(){
 }
 
 function buildQ2Grid(){
-  if(!selWord) return;
-  var key=selWord.word.charAt(0)+selWord.word.slice(1).toLowerCase();
+  if(!selWord2) return;
+  var key=selWord2.word.charAt(0)+selWord2.word.slice(1).toLowerCase();
   var quotes=QUOTES_CURATED[key]||[];
-  document.getElementById("q2WordLabel").textContent="Choose a quote for "+selWord.word;
+  document.getElementById("q2WordLabel").textContent="Choose a quote for "+selWord2.word;
   var g=document.getElementById("q2Grid");g.innerHTML='';selQuote2=null;
   quotes.forEach(function(q,i){
     var c=document.createElement("div");c.className="q2-card";
@@ -630,31 +702,58 @@ function nav(n){
 }
 
 /* ── CARD 2 NAV ── */
-function startCard2(){
+// initCard2() is called at page load when ?card=2. Starts the Card 2 flow from step 0.
+function initCard2(){
   document.getElementById("prog1").style.display="none";
   document.getElementById("prog2").style.display="flex";
-  buildQ2Grid();
+  // Hide Card 1 screens and show Card 2 screen 0
+  document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});
+  // Reset Card 2 state to empty — independent session
+  selWord2=null; selShape2=null; selPair2=null; selFont2=FONTS[0]; selQuote2=null;
+  c2Name=""; c2Grade="";
+  // Build all Card 2 grids
+  buildC2WordGrid();
   buildC2PairGrid();
   buildC2FontGrid();
-  document.getElementById("c2s0h").textContent="Card 2 — Choose a Quote for "+selWord.word+", "+sName;
-  document.getElementById("c2intro").textContent="Welcome back, "+sName+"! Now choose a curated quote for "+selWord.word+".";
   c2nav(0);
 }
-function c2toColors(){if(!selQuote2){alert("Please choose a quote for Card 2!");return;}c2nav(1);}
-function c2toFont(){if(!selPair2){alert("Please choose a color pair!");return;}c2nav(2);}
-function c2toPreview(){buildFinalPreview2();c2nav(3);}
+
+function c2pickShape(s,el){
+  document.querySelectorAll("#c2scr2 .path-card").forEach(function(c){c.classList.remove("sel");});
+  el.classList.add("sel");
+  selShape2=s;
+}
+
+function c2toWord(){
+  c2Name=document.getElementById("c2iName").value.trim();
+  c2Grade=document.getElementById("c2iGrade").value||"";
+  if(!c2Name){alert("Please enter your name!");return;}
+  c2nav(1);
+}
+function c2toShape(){if(!selWord2){alert("Please choose a OneWord!");return;}c2nav(2);}
+function c2toQuote(){
+  if(!selShape2){alert("Please choose a shape!");return;}
+  // Build the Q2 grid now that we know the word
+  buildQ2Grid();
+  document.getElementById("c2s0h").textContent="Card 2 — Choose a Quote for "+selWord2.word+", "+c2Name;
+  document.getElementById("c2intro").textContent="Hi "+c2Name+"! Choose a curated quote for "+selWord2.word+".";
+  c2nav(3);
+}
+function c2toColors(){if(!selQuote2){alert("Please choose a quote for Card 2!");return;}c2nav(4);}
+function c2toFont(){if(!selPair2){alert("Please choose a color pair!");return;}c2nav(5);}
+function c2toPreview(){buildFinalPreview2();c2nav(6);}
 
 function c2nav(n){
   document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});
   document.getElementById("c2scr"+n).classList.add("active");
-  for(var i=0;i<=3;i++){var pd=document.getElementById("c2pd"+i),pl=document.getElementById("c2pl"+i);if(!pd)continue;pd.classList.remove("active","done");pl.classList.remove("active");if(i<n)pd.classList.add("done");else if(i===n){pd.classList.add("active");pl.classList.add("active");}}
+  for(var i=0;i<=6;i++){var pd=document.getElementById("c2pd"+i),pl=document.getElementById("c2pl"+i);if(!pd)continue;pd.classList.remove("active","done");pl.classList.remove("active");if(i<n)pd.classList.add("done");else if(i===n){pd.classList.add("active");pl.classList.add("active");}}
   window.scrollTo(0,0);
 }
 
 /* ── PREVIEWS ── */
 function buildFinalPreview1(){
   sQuote=document.getElementById("iQuote")?document.getElementById("iQuote").value.trim():"";
-  drawCard("cardSVG",sQuote,selPair,selFont);
+  drawCard("cardSVG",sQuote,selPair,selFont,selWord,selShape,sName);
   document.getElementById("s7h").textContent="Card 1 Preview — "+sName+"!";
   document.getElementById("dWord").textContent=selWord?selWord.word:"";
   document.getElementById("dShape").textContent=selShape==="circle"?"4\" Circle":"4\" Square";
@@ -662,19 +761,19 @@ function buildFinalPreview1(){
   document.getElementById("dFont").textContent=selFont?selFont.name:"";
 }
 function buildFinalPreview2(){
-  drawCard("cardSVG2",selQuote2||"",selPair2||selPair,selFont2||selFont);
+  drawCard("cardSVG2",selQuote2||"",selPair2,selFont2,selWord2,selShape2,c2Name);
   document.getElementById("q2PreviewText").textContent='"'+(selQuote2||"")+'"';
-  document.getElementById("c2s3h").textContent="Card 2 Preview — "+sName+"!";
+  document.getElementById("c2s3h").textContent="Card 2 Preview — "+c2Name+"!";
 }
 
-function drawCard(svgId,quoteText,pair,font){
+function drawCard(svgId,quoteText,pair,font,wordObj,shape,studentName){
   var svg=document.getElementById(svgId);if(!svg||!pair)return;
   var c1=pair.c1.h,c2=pair.c2.h;
-  var word=selWord?selWord.word:"WORD";
+  var word=wordObj?wordObj.word:"WORD";
   var quote=quoteText||"Your inspirational quote will appear here.";
   var fontCss=font?font.css:"'Playfair Display', serif";
-  var name=sName||"Student";
-  var isCircle=selShape==="circle";
+  var name=studentName||"Student";
+  var isCircle=shape==="circle";
   function wrapText(text,maxChars){var words=text.split(" "),lines=[],line="";words.forEach(function(w){if((line+" "+w).trim().length>maxChars){lines.push(line.trim());line=w;}else{line=(line+" "+w).trim();}});if(line)lines.push(line.trim());return lines;}
   var quoteLines=wrapText(quote,22);
   var quoteFontSize=quoteLines.length>5?15:quoteLines.length>4?17:quoteLines.length>3?19:22;
@@ -704,8 +803,7 @@ function showDone1(){document.getElementById("notSub1").style.display="none";doc
 function doSubmit2(){
   var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
   document.getElementById("tok2Code").textContent=tok;
-  var p2=selPair2||selPair,f2=selFont2||selFont;
-  var payload={studentName:sName,studentGrade:sGrade,teacher:"Deena Vinson",word:selWord?selWord.word:"",card2Quote:selQuote2||"",shape:selShape,colorPair:p2?p2.name:"",color1Name:p2?p2.c1.n:"",color1Hex:p2?p2.c1.h:"",color2Name:p2?p2.c2.n:"",color2Hex:p2?p2.c2.h:"",font:f2?f2.name:"",card:"2",token:tok};
+  var payload={studentName:c2Name,studentGrade:c2Grade,teacher:"Deena Vinson",word:selWord2?selWord2.word:"",wordMeaning:selWord2?selWord2.meaning:"",card2Quote:selQuote2||"",shape:selShape2,colorPair:selPair2?selPair2.name:"",color1Name:selPair2?selPair2.c1.n:"",color1Hex:selPair2?selPair2.c1.h:"",color2Name:selPair2?selPair2.c2.n:"",color2Hex:selPair2?selPair2.c2.h:"",font:selFont2?selFont2.name:"",card:"2",token:tok};
   var btn=document.querySelector("#notSub2 .submit-btn");btn.textContent="Submitting...";btn.disabled=true;
   if(!SCRIPT_URL||SCRIPT_URL.indexOf('https://')!==0){showDone2();return;}
   fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)}).then(function(){showDone2();}).catch(function(){showDone2();});
