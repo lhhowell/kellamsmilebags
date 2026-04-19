@@ -108,9 +108,22 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 .footer{text-align:center;padding:32px 24px 0;border-top:1px solid #0a151f;max-width:900px;margin:32px auto 0;}
 .footer-sig{font-family:'Fredoka One',cursive;font-size:12px;color:#1a2a1a;letter-spacing:1px;}
 
+/* Tier 1 lightweight submission — Add to Smile Bag */
+.bag-submit{display:none;background:#0d1a0d;border:2px solid #c9a84c;border-radius:14px;padding:24px;margin-bottom:14px;}
+.bag-submit.show{display:block;}
+.bag-submit-icon{text-align:center;font-size:32px;margin-bottom:6px;}
+.bag-submit-title{font-family:'Playfair Display',serif;font-size:20px;color:#c9a84c;text-align:center;margin-bottom:8px;}
+.bag-submit-text{font-size:13px;color:#c8c4bc;line-height:1.65;text-align:center;margin:0 auto 16px;max-width:480px;}
+.bag-submit-name{display:block;width:100%;max-width:300px;margin:0 auto 12px;padding:12px 14px;background:#0a0f14;border:2px solid #1a2a1a;border-radius:8px;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;text-align:center;transition:border-color .2s;}
+.bag-submit-name:focus{outline:none;border-color:#c9a84c;}
+.bag-submit-btn{display:block;width:100%;max-width:300px;margin:0 auto;background:#c9a84c;color:#111;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:14px;border:none;border-radius:10px;cursor:pointer;font-weight:700;transition:all .2s;}
+.bag-submit-btn:hover{background:#b89a3c;}
+.bag-submit-btn:disabled{cursor:default;opacity:.95;}
+.bag-submit-status{text-align:center;font-size:12px;color:#c8c4bc;margin-top:12px;display:none;line-height:1.6;}
+
 @media print{
   body{background:#fff;padding:0;}
-  .hero,.mode-tabs,.workspace .step-card,.workspace .seq-clue,.workspace .seq-panels,.workspace .seq-slots,.check-btn,.hint-btn,.celebrate,.print-btn,.back-btn,.footer{display:none!important;}
+  .hero,.mode-tabs,.workspace .step-card,.workspace .seq-clue,.workspace .seq-panels,.workspace .seq-slots,.check-btn,.hint-btn,.celebrate,.print-btn,.back-btn,.footer,.bag-submit{display:none!important;}
   .print-section{display:block!important;position:static;box-shadow:none;border:none;padding:0;border-radius:0;}
   .print-section::before{display:none;}
   @page{size:letter;margin:.5in;}
@@ -211,6 +224,16 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
     </div>
     <div class="print-footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>
   </div>
+
+  <!-- Tier 1 lightweight submission — appears with print preview, hidden on print -->
+  <div class="bag-submit" id="bagSubmit">
+    <div class="bag-submit-icon">&#9995;</div>
+    <div class="bag-submit-title">Adding this to a Smile Bag?</div>
+    <div class="bag-submit-text">Type your first name and tap the button to log this sheet to the bag tracker. Then print it and tuck it in the bag.</div>
+    <input type="text" id="bagStudentName" class="bag-submit-name" placeholder="Your first name" maxlength="30" autocomplete="off"/>
+    <button type="button" id="bagSubmitBtn" class="bag-submit-btn" onclick="submitToBag()">&#9995; Add to the Smile Bag</button>
+    <div class="bag-submit-status" id="bagSubmitStatus"></div>
+  </div>
 </div>
 
 <!-- SEQUENCE IT -->
@@ -307,6 +330,78 @@ var seqWord = '';
 var dragSrc = null;
 var slots = ['','','',''];
 
+// Tier 1 submission endpoint — AP Bio + T.I.D.E. Apps Script (shared with Elena's other kiosks)
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzEmRvijoOk21PK_EvB_zT_Dy5GwgFiNdAqv-PYgk23RB929cFs6y1ZkP1YNkiCXQ3-/exec';
+
+function submitToBag() {
+  // Standard #7 — safe placeholder check (works whether URL is baked in or template'd)
+  if (!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0) return;
+
+  var nameField = document.getElementById('bagStudentName');
+  var btn = document.getElementById('bagSubmitBtn');
+  var status = document.getElementById('bagSubmitStatus');
+  var name = nameField.value.trim();
+
+  if (!name) {
+    nameField.focus();
+    nameField.style.borderColor = '#D4537E';
+    status.textContent = 'Add your first name first.';
+    status.style.color = '#D4537E';
+    status.style.display = 'block';
+    return;
+  }
+  if (!makeWord) return;
+
+  nameField.style.borderColor = '';
+  btn.disabled = true;
+  btn.textContent = 'Adding...';
+  status.style.display = 'none';
+
+  var body = 'action=storySequence' +
+    '&student=' + encodeURIComponent(name) +
+    '&oneword=' + encodeURIComponent(makeWord) +
+    '&mode=' + encodeURIComponent('Make It');
+
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body
+  }).then(function() {
+    btn.textContent = '\u2713 Added to the Smile Bag!';
+    btn.style.background = '#4caf82';
+    btn.style.color = '#fff';
+    status.textContent = 'Logged. Now print this sheet and tuck it in the bag.';
+    status.style.color = '#c8c4bc';
+    status.style.display = 'block';
+  }).catch(function() {
+    btn.disabled = false;
+    btn.textContent = '\u270B Add to the Smile Bag';
+    status.textContent = 'Could not connect — please try again.';
+    status.style.color = '#D4537E';
+    status.style.display = 'block';
+  });
+}
+
+function resetBagSubmit() {
+  var btn = document.getElementById('bagSubmitBtn');
+  var status = document.getElementById('bagSubmitStatus');
+  var nameField = document.getElementById('bagStudentName');
+  if (btn) {
+    btn.disabled = false;
+    btn.textContent = '\u270B Add to the Smile Bag';
+    btn.style.background = '';
+    btn.style.color = '';
+  }
+  if (status) {
+    status.textContent = '';
+    status.style.display = 'none';
+    status.style.color = '';
+  }
+  if (nameField) nameField.style.borderColor = '';
+  // Note: name value is intentionally preserved so students can submit multiple words back-to-back
+}
+
 function switchMode(mode) {
   document.getElementById('panel-make').classList.toggle('active', mode==='make');
   document.getElementById('panel-seq').classList.toggle('active', mode==='seq');
@@ -361,6 +456,8 @@ function generateMake() {
   document.getElementById('makeReveal').textContent = d.reveal;
 
   document.getElementById('makePrint').classList.add('show');
+  document.getElementById('bagSubmit').classList.add('show');
+  resetBagSubmit();
   document.getElementById('makePrint').scrollIntoView({behavior:'smooth'});
 }
 
