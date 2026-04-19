@@ -95,13 +95,18 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .word-card-meaning{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4;}
 
 /* ── COLOR PAIRS ── */
-.pair-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
-.pair-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:16px 10px;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.pair-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.pair-card{position:relative;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:18px 12px;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:10px;}
 .pair-card:hover{border-color:var(--purple);transform:translateY(-2px);}
 .pair-card.sel{border-color:var(--gold);background:var(--surface-2);}
+.pair-card.full{cursor:not-allowed;opacity:.5;}
+.pair-card.full:hover{border-color:var(--border);transform:none;}
 .pair-swatches{display:flex;gap:4px;justify-content:center;}
 .pair-swatch{width:32px;height:32px;border-radius:50%;border:2px solid rgba(255,255,255,.08);}
-.pair-name{font-family:'Fredoka One',cursive;font-size:11px;color:var(--text);letter-spacing:.5px;}
+.pair-name{font-family:'Fredoka One',cursive;font-size:11px;color:var(--text);letter-spacing:.5px;line-height:1.3;min-height:2.6em;display:flex;align-items:center;}
+.pair-progress{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;color:var(--muted);}
+.pair-card.full .pair-progress{color:var(--red);}
+.pair-full-badge{position:absolute;top:8px;right:8px;background:var(--red);color:#fff;font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:1.5px;padding:3px 8px;border-radius:50px;}
 .pair-check{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;color:var(--gold);display:none;}
 .pair-card.sel .pair-check{display:block;}
 
@@ -114,7 +119,27 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .font-card.sel .font-preview{color:var(--gold);}
 .font-name{font-family:'Fredoka One',cursive;font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;}
 
-/* ── HINT BOX ── */
+/* ── SCHOOL TRACKER (Card 1) ── */
+.school-tracker{background:linear-gradient(135deg,var(--surface-2),var(--surface));border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:22px;}
+.school-tracker-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px;flex-wrap:wrap;gap:8px;}
+.school-tracker-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--gold);}
+.school-tracker-total{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.school-tracker-total strong{color:var(--text);font-size:15px;}
+.school-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.school-row{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px;}
+.school-row-hd{display:flex;justify-content:space-between;align-items:center;gap:8px;}
+.school-name{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:.5px;color:var(--text);line-height:1.25;flex:1;}
+.school-count{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--gold);white-space:nowrap;}
+.school-bar{height:10px;border-radius:6px;overflow:hidden;display:flex;background:var(--border);border:1px solid var(--border);}
+.school-bar-fill{height:100%;transition:width .4s ease;}
+
+/* ── SINGLE COUNTER (Card 2 uncapped) ── */
+.single-counter{background:linear-gradient(135deg,var(--surface-2),var(--surface));border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:22px;text-align:center;}
+.single-counter-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;color:var(--purple2);text-transform:uppercase;margin-bottom:6px;}
+.single-counter-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--gold);line-height:1;}
+.single-counter-sub{font-size:12px;color:var(--muted);margin-top:6px;font-style:italic;}
+
+
 .hint{background:rgba(107,79,160,.1);border-left:3px solid var(--purple);border-radius:0 8px 8px 0;padding:12px 16px;font-size:13px;color:var(--text-soft);line-height:1.7;margin-bottom:16px;}
 .hint strong{color:var(--purple2);}
 
@@ -231,6 +256,14 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
 <!-- S0: SHAPE -->
 <div class="screen active" id="scr0">
+  <!-- Card 1 school tracker -->
+  <div class="school-tracker" id="card1Tracker">
+    <div class="school-tracker-hd">
+      <div class="school-tracker-title">Smile Bag Progress</div>
+      <div class="school-tracker-total"><strong id="c1Total">—</strong> of <strong>90</strong> cards</div>
+    </div>
+    <div class="school-grid" id="c1SchoolGrid"></div>
+  </div>
   <div class="scr-hd"><h2>Choose Your Card Shape</h2><p>Your inspirational quote cards will be printed and cut to this shape for the child receiving the Smile Bag.</p></div>
   <div class="path-grid">
     <div class="path-card" onclick="pickShape('square',this)">
@@ -387,6 +420,12 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
 <!-- C2-0: NAME + GRADE -->
 <div class="screen" id="c2scr0">
+  <!-- Card 2 uncapped counter -->
+  <div class="single-counter">
+    <div class="single-counter-label">Card 2 Created by AVID</div>
+    <div class="single-counter-num" id="c2CounterNum">—</div>
+    <div class="single-counter-sub">Keep going — every card is a voice that matters.</div>
+  </div>
   <div class="scr-hd"><h2>Card 2 &mdash; What is your name?</h2><p>Tell us your name and grade to get started with Card 2.</p></div>
   <div class="white-card">
     <label class="field-label">Your first name</label>
@@ -513,7 +552,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 </div>
 
 <script>
-var SCRIPT_URL="YOUR_APPS_SCRIPT_URL_HERE";
+var SCRIPT_URL="https://script.google.com/macros/s/AKfycbzqP6Tzz4Q_1rtBDmAvyNhYoEo_gnQDw9_bYejrfj3skQPQFruztuf2QIAzmdaCy90e/exec";
 
 var WORDS=[
   {word:"ABSORB",  meaning:"Taking in everything around you"},
@@ -571,6 +610,21 @@ var QUOTES_CURATED={
   Transform:["You are not the same as you were. And that is something to be proud of.","A caterpillar doesn't fight becoming a butterfly. It trusts the process. So can you.","Transformation doesn't happen to you — it happens through you, one quiet change at a time."]
 };
 
+// Card 1: 9 school-routed color pairs — each maps to a Smile Bag destination school
+var SCHOOL_PAIRS=[
+  {school:"Kellam High School",   c1:{n:"Black", h:"#1A1A1A"}, c2:{n:"Gold",   h:"#C8860A"}},
+  {school:"Princess Anne Middle", c1:{n:"Blue",  h:"#1565C0"}, c2:{n:"Silver", h:"#A8A9AD"}},
+  {school:"Christopher Farms ES", c1:{n:"Green", h:"#2D6A2D"}, c2:{n:"Gold",   h:"#C8860A"}},
+  {school:"Creeds ES",            c1:{n:"Blue",  h:"#1565C0"}, c2:{n:"White",  h:"#F5F5F5"}},
+  {school:"North Landing ES",     c1:{n:"White", h:"#F5F5F5"}, c2:{n:"Blue",   h:"#1565C0"}},
+  {school:"Princess Anne ES",     c1:{n:"Yellow",h:"#E6B800"}, c2:{n:"Blue",   h:"#1565C0"}},
+  {school:"Red Mill ES",          c1:{n:"Red",   h:"#CC0000"}, c2:{n:"Blue",   h:"#1565C0"}},
+  {school:"Strawbridge ES",       c1:{n:"Blue",  h:"#1565C0"}, c2:{n:"Yellow", h:"#E6B800"}},
+  {school:"Three Oaks ES",        c1:{n:"Green", h:"#2D6A2D"}, c2:{n:"Brown",  h:"#6B3410"}}
+];
+var CARD1_PER_SCHOOL_GOAL=10;
+
+// Card 2: 7 generic color pairs — no school routing, student-kept
 var PAIRS=[
   {name:"Red & Grey",   c1:{n:"Red",   h:"#CC0000"}, c2:{n:"Grey",  h:"#808080"}},
   {name:"Green & Gold", c1:{n:"Green", h:"#2D6A2D"}, c2:{n:"Gold",  h:"#C8860A"}},
@@ -597,10 +651,71 @@ var c2Name="",c2Grade="";
 
 document.addEventListener("DOMContentLoaded",function(){
   buildWordGrid(); buildPairGrid(); buildFontGrid();
+  // Fetch live counts from Apps Script for trackers
+  fetchCounts();
   // URL routing: ?card=2 opens Card 2 flow; default (or ?card=1) opens Card 1
   var params=new URLSearchParams(window.location.search);
   if(params.get("card")==="2"){initCard2();}
 });
+
+/* ── LIVE COUNTS (Card 1 school tracker + Card 2 uncapped counter) ── */
+function fetchCounts(){
+  // Standard #7 — safe placeholder check
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://')!==0){
+    renderC1Tracker(null); // shows "—" placeholders
+    renderC2Counter(null);
+    return;
+  }
+  fetch(SCRIPT_URL + '?action=counts')
+    .then(function(r){return r.json();})
+    .then(function(data){
+      if(data && data.ok){
+        avidCountsCard1 = data.card1;
+        renderC1Tracker(data.card1);
+        renderC2Counter(data.card2);
+        // Rebuild pair grid now that we have counts (for Full badges)
+        buildPairGrid();
+      } else {
+        renderC1Tracker(null);
+        renderC2Counter(null);
+      }
+    })
+    .catch(function(){
+      renderC1Tracker(null);
+      renderC2Counter(null);
+    });
+}
+
+function renderC1Tracker(c1){
+  var grid = document.getElementById('c1SchoolGrid');
+  var total = document.getElementById('c1Total');
+  if(!grid || !total) return;
+  total.textContent = (c1 && typeof c1.total === 'number') ? c1.total : '—';
+  grid.innerHTML = '';
+  SCHOOL_PAIRS.forEach(function(p){
+    var count = (c1 && c1.bySchool && typeof c1.bySchool[p.school] === 'number') ? c1.bySchool[p.school] : 0;
+    var pct = Math.min(100, Math.round((count / CARD1_PER_SCHOOL_GOAL) * 100));
+    var row = document.createElement('div');
+    row.className = 'school-row';
+    // Bar fill uses school's primary color; border/accent uses secondary
+    var bg = p.c1.h, accent = p.c2.h;
+    row.innerHTML =
+      '<div class="school-row-hd">' +
+        '<div class="school-name">' + p.school + '</div>' +
+        '<div class="school-count">' + count + '/' + CARD1_PER_SCHOOL_GOAL + '</div>' +
+      '</div>' +
+      '<div class="school-bar" style="background:' + accent + '33;border-color:' + accent + ';">' +
+        '<div class="school-bar-fill" style="width:' + pct + '%;background:' + bg + ';border-right:' + (pct>0&&pct<100 ? '1px solid '+accent : 'none') + ';"></div>' +
+      '</div>';
+    grid.appendChild(row);
+  });
+}
+
+function renderC2Counter(c2){
+  var num = document.getElementById('c2CounterNum');
+  if(!num) return;
+  num.textContent = (c2 && typeof c2.total === 'number') ? c2.total : '—';
+}
 
 /* Card 1 pickShape — constrained to Card 1 screen to avoid cross-contamination with Card 2 */
 function pickShape(s,el){document.querySelectorAll("#scr0 .path-card").forEach(function(c){c.classList.remove("sel");});el.classList.add("sel");selShape=s;}
@@ -615,12 +730,30 @@ function buildWordGrid(){
   });
 }
 
+// Card 1 pair grid — 9 school-routed pairs, school name as label, "Full" disabled state
+var avidCountsCard1 = null; // populated by fetchCounts(); null until loaded
 function buildPairGrid(){
   var g=document.getElementById("pairGrid");
-  PAIRS.forEach(function(p){
-    var c=document.createElement("div");c.className="pair-card";
-    c.innerHTML='<div class="pair-swatches"><div class="pair-swatch" style="background:'+p.c1.h+'"></div><div class="pair-swatch" style="background:'+p.c2.h+'"></div></div><div class="pair-name">'+p.name+'</div><div class="pair-check">&#10003;</div>';
-    c.onclick=(function(pr,el){return function(){document.querySelectorAll("#pairGrid .pair-card").forEach(function(x){x.classList.remove("sel");});el.classList.add("sel");selPair=pr;};})(p,c);
+  g.innerHTML='';
+  SCHOOL_PAIRS.forEach(function(p){
+    var count = (avidCountsCard1 && avidCountsCard1.bySchool && typeof avidCountsCard1.bySchool[p.school] === 'number') ? avidCountsCard1.bySchool[p.school] : 0;
+    var isFull = count >= CARD1_PER_SCHOOL_GOAL;
+    var c=document.createElement("div");
+    c.className="pair-card" + (isFull ? " full" : "");
+    var fullBadge = isFull ? '<div class="pair-full-badge">FULL</div>' : '';
+    var progress = '<div class="pair-progress">' + count + ' / ' + CARD1_PER_SCHOOL_GOAL + '</div>';
+    c.innerHTML = fullBadge +
+      '<div class="pair-swatches"><div class="pair-swatch" style="background:'+p.c1.h+'"></div><div class="pair-swatch" style="background:'+p.c2.h+'"></div></div>' +
+      '<div class="pair-name">'+p.school+'</div>' +
+      progress +
+      '<div class="pair-check">&#10003;</div>';
+    if (!isFull) {
+      c.onclick=(function(pr,el){return function(){
+        document.querySelectorAll("#pairGrid .pair-card").forEach(function(x){x.classList.remove("sel");});
+        el.classList.add("sel");
+        selPair=pr;
+      };})(p,c);
+    }
     g.appendChild(c);
   });
 }
@@ -793,7 +926,7 @@ function escXml(str){return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;
 function doSubmit1(){
   var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
   document.getElementById("tok1Code").textContent=tok;
-  var payload={studentName:sName,studentGrade:sGrade,teacher:"Deena Vinson",word:selWord?selWord.word:"",wordMeaning:selWord?selWord.meaning:"",reflection:sReflect,card1Quote:sQuote,shape:selShape,colorPair:selPair?selPair.name:"",color1Name:selPair?selPair.c1.n:"",color1Hex:selPair?selPair.c1.h:"",color2Name:selPair?selPair.c2.n:"",color2Hex:selPair?selPair.c2.h:"",font:selFont?selFont.name:"",card:"1",token:tok};
+  var payload={activity:"avidCard1",studentName:sName,studentGrade:sGrade,teacher:"Deena Vinson",word:selWord?selWord.word:"",wordMeaning:selWord?selWord.meaning:"",reflection:sReflect,card1Quote:sQuote,shape:selShape,school:selPair?selPair.school:"",color1Name:selPair?selPair.c1.n:"",color1Hex:selPair?selPair.c1.h:"",color2Name:selPair?selPair.c2.n:"",color2Hex:selPair?selPair.c2.h:"",font:selFont?selFont.name:"",card:"1",token:tok};
   var btn=document.querySelector("#notSub1 .submit-btn");btn.textContent="Submitting...";btn.disabled=true;
   if(!SCRIPT_URL||SCRIPT_URL.indexOf('https://')!==0){showDone1();return;}
   fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)}).then(function(){showDone1();}).catch(function(){showDone1();});
@@ -803,7 +936,7 @@ function showDone1(){document.getElementById("notSub1").style.display="none";doc
 function doSubmit2(){
   var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
   document.getElementById("tok2Code").textContent=tok;
-  var payload={studentName:c2Name,studentGrade:c2Grade,teacher:"Deena Vinson",word:selWord2?selWord2.word:"",wordMeaning:selWord2?selWord2.meaning:"",card2Quote:selQuote2||"",shape:selShape2,colorPair:selPair2?selPair2.name:"",color1Name:selPair2?selPair2.c1.n:"",color1Hex:selPair2?selPair2.c1.h:"",color2Name:selPair2?selPair2.c2.n:"",color2Hex:selPair2?selPair2.c2.h:"",font:selFont2?selFont2.name:"",card:"2",token:tok};
+  var payload={activity:"avidCard2",studentName:c2Name,studentGrade:c2Grade,teacher:"Deena Vinson",word:selWord2?selWord2.word:"",wordMeaning:selWord2?selWord2.meaning:"",card2Quote:selQuote2||"",shape:selShape2,colorPair:selPair2?selPair2.name:"",color1Name:selPair2?selPair2.c1.n:"",color1Hex:selPair2?selPair2.c1.h:"",color2Name:selPair2?selPair2.c2.n:"",color2Hex:selPair2?selPair2.c2.h:"",font:selFont2?selFont2.name:"",card:"2",token:tok};
   var btn=document.querySelector("#notSub2 .submit-btn");btn.textContent="Submitting...";btn.disabled=true;
   if(!SCRIPT_URL||SCRIPT_URL.indexOf('https://')!==0){showDone2();return;}
   fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)}).then(function(){showDone2();}).catch(function(){showDone2();});
