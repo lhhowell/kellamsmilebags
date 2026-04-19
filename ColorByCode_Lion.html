@@ -12,7 +12,7 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
 .hdr{background:#0d150d;border-bottom:2px solid var(--green);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
 .hdr-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--gold);}
 .hdr-sub{font-size:11px;color:#3a6a3a;margin-top:2px;}
-.back-btn{display:inline-flex;align-items:center;gap:6px;border:1.5px solid #2a4a2a;border-radius:50px;padding:7px 16px;font-family:'Fredoka One',cursive;font-size:11px;color:#3a6a3a;text-decoration:none;transition:all .2s;}
+.back-btn{display:inline-flex;align-items:center;gap:6px;border:1.5px solid #2a4a2a;background:transparent;border-radius:50px;padding:7px 16px;font-family:'Fredoka One',cursive;font-size:11px;color:#3a6a3a;text-decoration:none;cursor:pointer;transition:all .2s;}
 .back-btn:hover{border-color:var(--green);color:var(--green);}
 .workspace{max-width:960px;margin:0 auto;padding:24px;}
 .mode-tabs{display:flex;gap:0;background:#111;border:1px solid #1a3a1a;border-radius:12px;overflow:hidden;margin-bottom:24px;}
@@ -52,13 +52,13 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
 </head>
 <body>
 <div class="hdr">
-  <div><div class="hdr-title">🦁 Color-by-Code: Lion</div><div class="hdr-sub">AP Bio &amp; T.I.D.E. · Coding &amp; Decoding · Smile Bags</div></div>
-  <a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">← Back to Kiosk</a>
+  <div><div class="hdr-title">🦁 Color-by-Code: Lion</div><div class="hdr-sub">AP Bio + T.I.D.E. · Exploration Kiosk · Elena O'Brien</div></div>
+  <button type="button" onclick="window.location.href='APBio_TIDE_Kiosk_Menu.html'" class="back-btn">← Back to Kiosk Menu</button>
 </div>
 
 <div class="workspace">
   <div class="mode-tabs">
-    <button class="mode-tab active" onclick="showMode('make',this)">📄 Make It — Printable Sheet</button>
+    <button class="mode-tab active" onclick="showMode('make',this)">📄 Color Key Reference</button>
     <button class="mode-tab" onclick="showMode('color',this)">🎨 Color It — Interactive</button>
   </div>
 
@@ -118,7 +118,7 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
           <ellipse cx="204" cy="308" rx="28" ry="16" fill="white" stroke="#333" stroke-width="2"/>
           <text x="204" y="313" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#333" font-weight="bold">1</text>
         </svg>
-        <button class="btn btn-gold" onclick="window.print()">🖨️ Print Coloring Sheet</button>
+        <button class="btn btn-gold" onclick="window.print()" style="display:none !important;" hidden>🖨️ Print Coloring Sheet</button>
       </div>
       <div class="key-wrap">
         <div class="key-title">🎨 Color Key</div>

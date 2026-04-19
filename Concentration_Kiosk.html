@@ -13,7 +13,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 .hero-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4.5vw,50px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:10px;}
 .hero-title span{color:#4caf82;}
 .hero-sub{font-size:14px;color:#c8c4bc;max-width:580px;margin:0 auto;line-height:1.7;}
-.back-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #c9a84c;color:#c9a84c;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;margin:20px 24px 0;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #c9a84c;background:transparent;color:#c9a84c;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;cursor:pointer;margin:20px 24px 0;}
 .workspace{max-width:960px;margin:0 auto;padding:0 24px;}
 
 .mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0 0;}
@@ -83,11 +83,12 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 </head>
 <body>
 <div class="hero">
-  <div class="hero-brand">Smile Bags &middot; AP Bio &amp; T.I.D.E. &middot; Creation Kiosk</div>
+  <div class="hero-brand">AP Bio + T.I.D.E. &middot; Exploration Kiosk</div>
   <h1 class="hero-title">Concentration<br><span>Memory Match</span></h1>
   <p class="hero-sub">Match OneWords to their meanings &mdash; race the clock, earn points, and reveal a hidden image when you win!</p>
+  <div style="font-family:'Fredoka One',cursive;font-size:11px;color:#c9a84c;letter-spacing:1px;margin-top:14px;">Elena O'Brien &middot; AP Biology + T.I.D.E. &middot; Spring 2026</div>
 </div>
-<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to Kiosk Menu</a>
+<button type="button" onclick="window.location.href='APBio_TIDE_Kiosk_Menu.html'" class="back-btn">&#8592; Back to Kiosk Menu</button>
 <div class="workspace">
 
   <div class="mode-grid">
