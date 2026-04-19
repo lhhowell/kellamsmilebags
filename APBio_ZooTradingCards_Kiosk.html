@@ -299,7 +299,7 @@ body{
   <div class="hero-teacher">Elena O'Brien · AP Biology + T.I.D.E. · Spring 2026</div>
 </div>
 
-<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to AP Bio + T.I.D.E.</a>
+<button type="button" onclick="window.location.href='APBio_TIDE_Kiosk_Menu.html'" class="back-btn">&#8592; Back to AP Bio + T.I.D.E.</button>
 
 <div class="wrap">
 
@@ -312,6 +312,18 @@ body{
     <div class="tracker-bar"><div class="tracker-bar-fill" id="barFill"></div></div>
     <button class="tracker-reset" id="resetBtn">↻ Reset</button>
   </div>
+
+  <!-- Smile Bag Submission Tracker + Name Gate (Standard #5 + #7) -->
+  <div class="tracker" style="background:rgba(201,168,76,.05);border-color:rgba(201,168,76,.3);">
+    <div class="tracker-stat">
+      <span class="tracker-num" id="bagCount" style="color:var(--gold);">0</span>
+      <span class="tracker-total">/ 15</span>
+      <span class="tracker-label">Smile Bag Submissions</span>
+    </div>
+    <div class="tracker-bar"><div class="tracker-bar-fill" id="bagBarFill" style="background:linear-gradient(90deg,var(--gold) 0%,#E8D27C 100%);"></div></div>
+    <input type="text" id="studentName" placeholder="Your first name + last initial" maxlength="40" style="flex:0 1 240px;padding:9px 14px;border-radius:8px;border:1.5px solid rgba(201,168,76,.4);background:rgba(0,0,0,.25);color:#fff;font-family:'Nunito',sans-serif;font-size:13px;outline:none;" oninput="onNameChange()"/>
+  </div>
+  <div id="nameMsg" style="font-size:11px;color:var(--muted);margin:-12px 0 16px 4px;font-style:italic;">📝 Enter your name above. Once you do, every "Print Card" click will print AND log a submission for the class tracker.</div>
 
   <div class="filters" id="filters"></div>
 
@@ -334,6 +346,70 @@ body{
 <div class="print-sheet" id="printSheet"></div>
 
 <script>
+// ── SUBMISSION WIRING (Standard #5 + #7) ────────────────────
+// Apps Script Web App URL — AP Bio + T.I.D.E. spreadsheet
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzEmRvijoOk21PK_EvB_zT_Dy5GwgFiNdAqv-PYgk23RB929cFs6y1ZkP1YNkiCXQ3-/exec";
+
+// Tracker fetch — populates Smile Bag count from spreadsheet
+function fetchBagTracker(){
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0) return;
+  fetch(SCRIPT_URL + '?action=counts')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(!d || !d.ok) return;
+      var z = d.zooTradingCard || {total:0, goal:15};
+      var pct = Math.min(100, Math.round((z.total / z.goal) * 100));
+      var c = document.getElementById('bagCount');
+      var f = document.getElementById('bagBarFill');
+      if(c) c.textContent = z.total;
+      if(f) f.style.width = pct + '%';
+    })
+    .catch(function(){});
+}
+
+// Submit a card to the spreadsheet (called by printCard after print fires)
+function submitCardToSheet(card){
+  var name = (document.getElementById('studentName').value || '').trim();
+  if(!name) return; // gated — no name, no submit
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0) return;
+
+  var habitat = HABITATS[card.habitat];
+  var token = 'KSB-ZTC-' + Math.random().toString(36).substr(2, 4).toUpperCase();
+  var payload = {
+    activity: 'zooTradingCard',
+    studentName: name,
+    class: 'AP Bio + T.I.D.E.',
+    word: card.word,
+    animal: card.animal,
+    habitat: habitat ? habitat.label : '',
+    token: token
+  };
+
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  }).then(function(){}).catch(function(){});
+
+  // Refresh the tracker after a brief delay (allow row to land)
+  setTimeout(fetchBagTracker, 700);
+}
+
+// Name input handler — updates UI hint
+function onNameChange(){
+  var name = (document.getElementById('studentName').value || '').trim();
+  var msg = document.getElementById('nameMsg');
+  if(!msg) return;
+  if(name.length >= 2){
+    msg.textContent = '✅ Hi ' + name + '! Each "Print Card" click will print AND log a submission.';
+    msg.style.color = 'var(--green)';
+  } else {
+    msg.textContent = '📝 Enter your name above. Once you do, every "Print Card" click will print AND log a submission for the class tracker.';
+    msg.style.color = 'var(--muted)';
+  }
+}
+
 const HABITATS = {
   all:        { label:'All',                 emoji:'🌎' },
   africa:     { label:'African Savanna',     emoji:'🌍' },
@@ -525,11 +601,14 @@ function printCard(idx){
     + '<div class="print-fold-label">fold here · print side out</div>'
     + '<div class="print-instructions">Cut along the dashed outer border · Fold backward along center so the printed side stays visible · Glue or laminate the blank inside faces together</div>';
   window.print();
+  // After print fires, log the submission (Standard #5: print = commit)
+  submitCardToSheet(c);
 }
 
 buildFilters();
 buildGrid();
 updateTracker();
+fetchBagTracker();
 document.getElementById('resetBtn').addEventListener('click', resetAll);
 document.getElementById('celebrateClose').addEventListener('click', function(){
   document.getElementById('celebrate').classList.remove('active');
