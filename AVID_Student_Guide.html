@@ -23,6 +23,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 .btn-print:hover{background:rgba(255,255,255,.22);}
 .btn-download{background:var(--gold);color:#fff;}
 .btn-download:hover{background:#a06800;}
+.btn-back{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);}
+.btn-back:hover{background:rgba(255,255,255,.22);}
 
 /* ── PAGE ── */
 .page{max-width:760px;margin:0 auto;padding:32px 40px 48px;}
@@ -113,6 +115,7 @@ strong{font-weight:600;color:var(--navy);}
     <p>Smile Bags · A Word &amp; Wonder Experience · Spring 2026</p>
   </div>
   <div class="toolbar-btns">
+    <button class="btn-tool btn-back" onclick="window.location.href='AVID_Preview.html'">&#8592; AVID Menu</button>
     <button class="btn-tool btn-print" onclick="window.print()">🖨️ Print</button>
     <button class="btn-tool btn-download" onclick="downloadFile()">⬇️ Download</button>
   </div>
