@@ -59,7 +59,7 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
 
 <div class="workspace">
   <div class="mode-tabs">
-    <button class="mode-tab active" onclick="showMode('make',this)">📄 Color Key Reference</button>
+    <button class="mode-tab active" onclick="showMode('make',this)">🔑 Color Key Reference</button>
     <button class="mode-tab" onclick="showMode('color',this)">🎨 Color It — Interactive</button>
   </div>
 
@@ -119,7 +119,6 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
           <ellipse cx="204" cy="308" rx="28" ry="16" fill="white" stroke="#333" stroke-width="2"/>
           <text x="204" y="313" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#333" font-weight="bold">1</text>
         </svg>
-        <button class="btn btn-gold" onclick="window.print()" style="display:none !important;" hidden>🖨️ Print Coloring Sheet</button>
       </div>
       <div class="key-wrap">
         <div class="key-title">🎨 Color Key</div>
@@ -151,8 +150,7 @@ body{font-family:'Nunito',sans-serif;background:var(--dark);color:#fff;min-heigh
         </div>
         <div style="font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:6px;">Size</div>
         <input type="range" id="brushSize" min="4" max="30" value="12" style="accent-color:var(--gold);width:100%;"/>
-        <button class="btn btn-gold" onclick="downloadPainting()" style="margin-top:16px;padding:10px;">⬇ Download</button>
-        <button class="btn" style="background:transparent;border:1.5px solid #1a3a1a;color:#557055;width:100%;margin-top:8px;padding:10px;" onclick="clearPaint()">🗑 Clear</button>
+        <button class="btn" style="background:transparent;border:1.5px solid #1a3a1a;color:#557055;width:100%;margin-top:16px;padding:10px;" onclick="clearPaint()">🗑 Clear</button>
       </div>
       <div class="canvas-col">
         <canvas id="colorCanvas" width="500" height="540"></canvas>
@@ -298,7 +296,7 @@ function paint(e) {
 function savePaintState(){var c=document.getElementById('colorCanvas');paintHistory.push(c.toDataURL());if(paintHistory.length>15)paintHistory.shift();}
 function clearPaint(){var c=document.getElementById('colorCanvas');var ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);drawLionOnCanvas(ctx,c.width,c.height);paintHistory=[];savePaintState();}
 function setTool(t,btn){paintTool=t;document.querySelectorAll('.tool-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');}
-function downloadPainting(){var c=document.getElementById('colorCanvas');var a=document.createElement('a');a.download='Lion_Coloring.png';a.href=c.toDataURL();a.click();}
+function downloadPainting(){/* removed — Tier 2 exploration only */}
 
 function checkWin(){
   var c=document.getElementById('colorCanvas');var ctx=c.getContext('2d');
