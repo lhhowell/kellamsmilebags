@@ -9,15 +9,32 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{--accent:#2E7D32;--dot:#81C784;--navy:#1B3A6B;--gold:#C8860A;--bg:#F4F8F0;}
 body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;padding:0 0 48px;}
-.hdr{background:linear-gradient(135deg,#0A1628,#1B3A6B);border-bottom:4px solid var(--accent);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
-.hdr-left{display:flex;align-items:center;gap:14px;}
+.hdr{background:linear-gradient(135deg,#0A1628,#1B3A6B);border-bottom:4px solid var(--accent);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:relative;}
+/* Standard #8: any decorative overlay must have pointer-events:none */
+.hdr::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 90% 50%,rgba(46,125,50,.12) 0%,transparent 60%);pointer-events:none;}
+.hdr-left{display:flex;align-items:center;gap:14px;position:relative;z-index:2;}
 .hdr-dot{width:14px;height:14px;border-radius:50%;background:var(--dot);flex-shrink:0;}
 .hdr-title{font-family:'Fredoka One',cursive;font-size:18px;color:#fff;letter-spacing:.5px;}
 .hdr-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:2px;}
+.hdr-teacher{font-size:10px;color:rgba(255,255,255,.6);margin-top:4px;font-family:'Fredoka One',cursive;letter-spacing:1px;}
+.hdr-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;position:relative;z-index:2;}
 .hdr-badge{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:50px;padding:6px 14px;font-family:'Fredoka One',cursive;font-size:11px;color:rgba(255,255,255,.6);}
-.back-btn{display:inline-flex;align-items:center;gap:6px;border:1.5px solid rgba(255,255,255,.2);border-radius:50px;padding:7px 16px;font-family:'Fredoka One',cursive;font-size:11px;color:rgba(255,255,255,.5);text-decoration:none;transition:all .2s;}
+.back-btn{display:inline-flex;align-items:center;gap:6px;border:1.5px solid rgba(255,255,255,.2);border-radius:50px;padding:7px 16px;font-family:'Fredoka One',cursive;font-size:11px;color:rgba(255,255,255,.5);background:transparent;cursor:pointer;transition:all .2s;}
 .back-btn:hover{border-color:var(--accent);color:var(--accent);}
 .viewer{max-width:960px;margin:0 auto;padding:24px 20px 0;}
+
+/* Smile Bag tracker + name gate */
+.bag-bar{background:#fff;border:1.5px solid rgba(46,125,50,.25);border-radius:14px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;box-shadow:0 3px 16px rgba(0,0,0,.04);}
+.bag-stat{display:flex;align-items:baseline;gap:8px;}
+.bag-num{font-family:'Fredoka One',cursive;font-size:28px;color:var(--gold);}
+.bag-total{font-family:'Fredoka One',cursive;font-size:16px;color:#999;}
+.bag-label{font-size:11px;letter-spacing:1.5px;color:#888;text-transform:uppercase;font-family:'Fredoka One',cursive;margin-left:4px;}
+.bag-bar-track{flex:1;min-width:160px;height:8px;background:rgba(46,125,50,.1);border-radius:6px;overflow:hidden;}
+.bag-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));width:0%;transition:width .55s ease;border-radius:6px;}
+.bag-name-input{flex:0 1 220px;padding:9px 14px;border-radius:8px;border:1.5px solid rgba(46,125,50,.4);background:#fafffa;font-family:'Nunito',sans-serif;font-size:13px;outline:none;}
+.bag-name-input:focus{border-color:var(--accent);}
+.bag-msg{font-size:11px;color:#888;margin:-12px 0 18px 4px;font-style:italic;padding-left:4px;}
+
 /* WORD GRID */
 .word-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:24px;}
 .word-btn{background:#fff;border:2px solid #dde8d8;border-radius:10px;padding:10px 6px;font-family:'Fredoka One',cursive;font-size:12px;color:#666;cursor:pointer;text-align:center;transition:all .2s;letter-spacing:.5px;}
@@ -36,6 +53,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;paddi
 .info-science-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#aaa;font-family:'Fredoka One',cursive;margin-bottom:6px;}
 .info-science{font-size:13px;color:#555;line-height:1.7;font-style:italic;}
 .info-page{font-size:12px;color:#aaa;margin-top:10px;font-family:'Fredoka One',cursive;letter-spacing:1px;}
+.progress-bar{height:6px;background:#e8f0e4;border-radius:6px;overflow:hidden;margin-top:10px;}
+.progress-fill{height:100%;background:var(--accent);border-radius:6px;transition:width .4s ease;}
 .dl-btn{display:block;width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),#E8A820);border:none;border-radius:10px;font-family:'Fredoka One',cursive;font-size:15px;color:#fff;cursor:pointer;text-align:center;text-decoration:none;transition:all .2s;}
 .dl-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(200,134,10,.3);}
 .print-btn{display:block;width:100%;padding:12px;background:#fff;border:2px solid var(--accent);border-radius:10px;font-family:'Fredoka One',cursive;font-size:14px;color:var(--accent);cursor:pointer;text-align:center;transition:all .2s;}
@@ -44,8 +63,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;paddi
 .nav-btn{flex:1;padding:10px;background:#fff;border:1.5px solid #dde8d8;border-radius:10px;font-family:'Fredoka One',cursive;font-size:13px;color:#888;cursor:pointer;transition:all .2s;text-align:center;}
 .nav-btn:hover{border-color:var(--accent);color:var(--accent);}
 .nav-btn:disabled{opacity:.3;cursor:not-allowed;}
-.progress-bar{height:6px;background:#e8f0e4;border-radius:6px;overflow:hidden;margin-top:10px;}
-.progress-fill{height:100%;background:var(--accent);border-radius:6px;transition:width .4s ease;}
 .footer{text-align:center;font-size:12px;color:#aaa;padding:32px 20px 0;max-width:960px;margin:0 auto;}
 @media(max-width:600px){.word-grid{grid-template-columns:repeat(4,1fr);}.page-wrap{flex-direction:column;}}
 </style>
@@ -57,16 +74,30 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;paddi
     <div class="hdr-dot"></div>
     <div>
       <div class="hdr-title">Set I &middot; Science Journal</div>
-      <div class="hdr-sub">ChatGPT · Detailed Nature Science Illustrations &middot; AP Bio &amp; T.I.D.E. &middot; Smile Bags</div>
+      <div class="hdr-sub">ChatGPT &middot; Detailed Nature Science Illustrations &middot; Smile Bags</div>
+      <div class="hdr-teacher">Elena O'Brien &middot; AP Biology + T.I.D.E. &middot; Spring 2026</div>
     </div>
   </div>
-  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+  <div class="hdr-right">
     <div class="hdr-badge">25 Pages &middot; Science Coloring</div>
-    <a href="APBio_TIDE_Preview.html" class="back-btn">&#8592; Back to Overview</a>
+    <button type="button" onclick="window.location.href='APBio_TIDE_Kiosk_Menu.html'" class="back-btn">&#8592; Back to AP Bio + T.I.D.E.</button>
   </div>
 </div>
 
 <div class="viewer">
+
+  <!-- Smile Bag Submission Tracker + Name Gate -->
+  <div class="bag-bar">
+    <div class="bag-stat">
+      <span class="bag-num" id="bagCount">0</span>
+      <span class="bag-total">/ 15</span>
+      <span class="bag-label">Smile Bag Submissions</span>
+    </div>
+    <div class="bag-bar-track"><div class="bag-bar-fill" id="bagBarFill"></div></div>
+    <input type="text" id="studentName" class="bag-name-input" placeholder="Your first name + last initial" maxlength="40" oninput="onNameChange()"/>
+  </div>
+  <div class="bag-msg" id="bagMsg">📝 Enter your name above. Once you do, every "Print This Page" click will print AND log a submission for the class tracker.</div>
+
   <div class="word-grid" id="wordGrid"></div>
   <div class="page-wrap">
     <div class="page-img-wrap">
@@ -95,36 +126,89 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;paddi
 </div>
 
 <div class="footer">
-  Set I &middot; Science Journal &middot; Illustrated by ChatGPT &middot; Smile Bags: A Word &amp; Wonder Experience &middot; AP Biology &amp; T.I.D.E. Coalition
+  Set I &middot; Science Journal &middot; Illustrated by ChatGPT &middot; Smile Bags: A Word &amp; Wonder Experience &middot; Elena O'Brien &middot; AP Biology + T.I.D.E.
 </div>
 
 <script>
+// ── SUBMISSION WIRING (Standard #5 + #7) ────────────────────
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzEmRvijoOk21PK_EvB_zT_Dy5GwgFiNdAqv-PYgk23RB929cFs6y1ZkP1YNkiCXQ3-/exec";
+
+function fetchBagTracker(){
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0) return;
+  fetch(SCRIPT_URL + '?action=counts')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(!d || !d.ok) return;
+      var s = d.coloringSetI || {total:0, goal:15};
+      var pct = Math.min(100, Math.round((s.total / s.goal) * 100));
+      var c = document.getElementById('bagCount');
+      var f = document.getElementById('bagBarFill');
+      if(c) c.textContent = s.total;
+      if(f) f.style.width = pct + '%';
+    })
+    .catch(function(){});
+}
+
+function submitPageToSheet(page){
+  var name = (document.getElementById('studentName').value || '').trim();
+  if(!name) return;
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0) return;
+  var token = 'KSB-CSI-' + Math.random().toString(36).substr(2, 4).toUpperCase();
+  var payload = {
+    activity: 'coloringSetI',
+    studentName: name,
+    class: 'AP Bio + T.I.D.E.',
+    word: page.word,
+    token: token
+  };
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  }).then(function(){}).catch(function(){});
+  setTimeout(fetchBagTracker, 700);
+}
+
+function onNameChange(){
+  var name = (document.getElementById('studentName').value || '').trim();
+  var msg = document.getElementById('bagMsg');
+  if(!msg) return;
+  if(name.length >= 2){
+    msg.textContent = '✅ Hi ' + name + '! Each "Print This Page" click will print AND log a submission.';
+    msg.style.color = 'var(--accent)';
+  } else {
+    msg.textContent = '📝 Enter your name above. Once you do, every "Print This Page" click will print AND log a submission for the class tracker.';
+    msg.style.color = '#888';
+  }
+}
+
 var PAGES = [
-    {word:"ABSORB",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Absorb.png",science:"A sponge cell soaking up water droplets under a magnifying glass"},
-    {word:"ADAPT",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Adapt.png",science:"A chameleon mid-color-change on a branch surrounded by different environments"},
-    {word:"ANCHOR",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Anchor.png",science:"A kelp forest with holdfasts gripping the ocean floor"},
-    {word:"BALANCE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Balance.png",science:"A food web mobile with predators and prey in perfect balance"},
-    {word:"BLOOM",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Bloom.png",science:"A cross-section of a flower showing pollen, petals, and a bee"},
-    {word:"BREATHE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Breathe.png",science:"Lung alveoli surrounded by oxygen and carbon dioxide molecules"},
-    {word:"CLEAR",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Clear.png",science:"A water filtration system flowing through layers of sand and rock"},
-    {word:"CONNECT",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Connect.png",science:"A mycorrhizal fungal network connecting tree roots underground"},
-    {word:"CYCLE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Cycle.png",science:"The water cycle — evaporation, clouds, rain, and river"},
-    {word:"EMERGE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Emerge.png",science:"A butterfly emerging from a chrysalis mid-transformation"},
-    {word:"FILTER",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Filter.png",science:"A whale with baleen plates filtering krill from ocean water"},
-    {word:"FLOW",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Flow.png",science:"A river cutting through a canyon showing erosion layers"},
-    {word:"GROW",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Grow.png",science:"A time-lapse sequence of a seed sprouting into a seedling"},
-    {word:"HEAL",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Heal.png",science:"A forest regenerating after a wildfire — new growth pushing through ash"},
-    {word:"MIGRATE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Migrate.png",science:"A monarch butterfly migration path over a map of North America"},
-    {word:"PERSIST",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Persist.png",science:"A dandelion pushing through a crack in concrete"},
-    {word:"RENEW",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Renew.png",science:"A coral reef being restored with new coral fragments being planted"},
-    {word:"RESTORE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Restore.png",science:"A wetland restoration scene — cattails, birds, and clean water returning"},
-    {word:"RETURN",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Return.png",science:"Salmon swimming upstream to spawn in the river where they were born"},
-    {word:"RISE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Rise.png",science:"A hot air balloon rising above a patchwork of ecosystems below"},
-    {word:"ROOT",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Root.png",science:"An underground cross-section showing deep root systems and soil layers"},
-    {word:"SHINE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Shine.png",science:"A sunflower turning toward the sun with light ray patterns"},
-    {word:"SUSTAIN",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Sustain.png",science:"A solar panel field beside a wind farm powering a small community"},
-    {word:"THRIVE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Thrive.png",science:"A tide pool teeming with starfish, anemones, crabs, and sea life"},
-    {word:"TRANSFORM",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Transform.png",science:"A caterpillar, chrysalis, and butterfly shown in three side-by-side panels"}
+  {word:"ABSORB",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Absorb.png",science:"A sponge cell soaking up water droplets under a magnifying glass"},
+  {word:"ADAPT",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Adapt.png",science:"A chameleon mid-color-change on a branch surrounded by different environments"},
+  {word:"ANCHOR",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Anchor.png",science:"A kelp forest with holdfasts gripping the ocean floor"},
+  {word:"BALANCE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Balance.png",science:"A food web mobile with predators and prey in perfect balance"},
+  {word:"BLOOM",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Bloom.png",science:"A cross-section of a flower showing pollen, petals, and a bee"},
+  {word:"BREATHE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Breathe.png",science:"Lung alveoli surrounded by oxygen and carbon dioxide molecules"},
+  {word:"CLEAR",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Clear.png",science:"A water filtration system flowing through layers of sand and rock"},
+  {word:"CONNECT",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Connect.png",science:"A mycorrhizal fungal network connecting tree roots underground"},
+  {word:"CYCLE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Cycle.png",science:"The water cycle — evaporation, clouds, rain, and river"},
+  {word:"EMERGE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Emerge.png",science:"A butterfly emerging from a chrysalis mid-transformation"},
+  {word:"FILTER",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Filter.png",science:"A whale with baleen plates filtering krill from ocean water"},
+  {word:"FLOW",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Flow.png",science:"A river cutting through a canyon showing erosion layers"},
+  {word:"GROW",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Grow.png",science:"A time-lapse sequence of a seed sprouting into a seedling"},
+  {word:"HEAL",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Heal.png",science:"A forest regenerating after a wildfire — new growth pushing through ash"},
+  {word:"MIGRATE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Migrate.png",science:"A monarch butterfly migration path over a map of North America"},
+  {word:"PERSIST",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Persist.png",science:"A dandelion pushing through a crack in concrete"},
+  {word:"RENEW",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Renew.png",science:"A coral reef being restored with new coral fragments being planted"},
+  {word:"RESTORE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Restore.png",science:"A wetland restoration scene — cattails, birds, and clean water returning"},
+  {word:"RETURN",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Return.png",science:"Salmon swimming upstream to spawn in the river where they were born"},
+  {word:"RISE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Rise.png",science:"A hot air balloon rising above a patchwork of ecosystems below"},
+  {word:"ROOT",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Root.png",science:"An underground cross-section showing deep root systems and soil layers"},
+  {word:"SHINE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Shine.png",science:"A sunflower turning toward the sun with light ray patterns"},
+  {word:"SUSTAIN",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Sustain.png",science:"A solar panel field beside a wind farm powering a small community"},
+  {word:"THRIVE",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Thrive.png",science:"A tide pool teeming with starfish, anemones, crabs, and sea life"},
+  {word:"TRANSFORM",img:"https://lhhowell.github.io/kellamsmilebags/SetI_Transform.png",science:"A caterpillar, chrysalis, and butterfly shown in three side-by-side panels"}
 ];
 var current = -1;
 
@@ -178,10 +262,13 @@ function printPage() {
   win.document.write('<img src="' + PAGES[current].img + '" style="max-width:100%;"/>');
   win.document.close();
   win.print();
+  // Standard #5: print = log submission
+  submitPageToSheet(PAGES[current]);
 }
 
 buildGrid();
 showPage(0);
+fetchBagTracker();
 </script>
 </body>
 </html>
