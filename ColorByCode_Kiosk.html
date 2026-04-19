@@ -451,7 +451,7 @@ function generateSheet() {
     keyHtml += '<div class="print-key-item"><div class="print-key-dot" style="background:' + scene.colors[i] + ';border-color:' + scene.colors[i] + ';color:#fff;">' + (i+1) + '</div><span>' + scene.labels[i] + '</span></div>';
   }
   document.getElementById('printKeyRow').innerHTML = keyHtml;
-  document.getElementById('printSubtitle').textContent = scene.name + ' &mdash; ' + selectedWord + ' &middot; A Smile Bags Coloring Activity';
+  document.getElementById('printSubtitle').textContent = scene.name + ' \u2014 ' + selectedWord + ' \u00b7 A Smile Bags Coloring Activity';
   document.getElementById('printBioText').innerHTML = scene.bio;
 
   drawNumberedScene('printCanvas', selectedScene, true);
