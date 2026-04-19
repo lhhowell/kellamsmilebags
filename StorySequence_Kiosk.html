@@ -357,16 +357,18 @@ function submitToBag() {
   btn.textContent = 'Adding...';
   status.style.display = 'none';
 
-  var body = 'action=storySequence' +
-    '&student=' + encodeURIComponent(name) +
-    '&oneword=' + encodeURIComponent(makeWord) +
-    '&mode=' + encodeURIComponent('Make It');
+  var payload = {
+    activity: 'storySequence',
+    studentName: name,
+    class: 'AP Bio + T.I.D.E.',
+    word: makeWord,
+    token: ''
+  };
 
   fetch(SCRIPT_URL, {
     method: 'POST',
     mode: 'no-cors',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: body
+    body: JSON.stringify(payload)
   }).then(function() {
     btn.textContent = '\u2713 Added to the Smile Bag!';
     btn.style.background = '#4caf82';
