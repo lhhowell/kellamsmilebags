@@ -86,9 +86,24 @@ body{font-family:'Nunito',sans-serif;background:#0a0a0a;color:#fff;min-height:10
   <div class="hero-brand">Smile Bags &middot; AP Bio &amp; T.I.D.E. &middot; Binary Coding</div>
   <h1 class="hero-title">Pixel Art<br><span>OneWord Generator</span></h1>
   <p class="hero-sub">Choose a OneWord and watch it come to life in pixel art &mdash; the same grid logic that powers DNA sequencing and computer displays.</p>
+  <div style="font-family:'Fredoka One',cursive;font-size:11px;color:#c9a84c;letter-spacing:1px;margin-top:14px;">Elena O'Brien · AP Biology + T.I.D.E. · Spring 2026</div>
 </div>
 
-<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to Binary Kiosk</a>
+<button type="button" onclick="window.location.href='APBio_TIDE_Kiosk_Menu.html'" class="back-btn">&#8592; Back to Binary Kiosk</button>
+
+<!-- Smile Bag Submission Tracker + Name Gate -->
+<div style="max-width:900px;margin:18px auto 0;padding:0 24px;">
+  <div style="background:rgba(201,168,76,.05);border:1.5px solid rgba(201,168,76,.3);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
+    <div style="display:flex;align-items:baseline;gap:8px;">
+      <span style="font-family:'Fredoka One',cursive;font-size:28px;color:#c9a84c;" id="bagCount">0</span>
+      <span style="font-family:'Fredoka One',cursive;font-size:16px;color:#888;">/ 15</span>
+      <span style="font-size:11px;letter-spacing:1.5px;color:#aaa;text-transform:uppercase;font-family:'Fredoka One',cursive;margin-left:4px;">Smile Bag Submissions</span>
+    </div>
+    <div style="flex:1;min-width:160px;height:8px;background:rgba(201,168,76,.1);border-radius:6px;overflow:hidden;"><div id="bagBarFill" style="height:100%;background:linear-gradient(90deg,#4caf82,#c9a84c);width:0%;transition:width .55s ease;border-radius:6px;"></div></div>
+    <input type="text" id="studentName" placeholder="Your first name + last initial" maxlength="40" style="flex:0 1 220px;padding:9px 14px;border-radius:8px;border:1.5px solid rgba(201,168,76,.4);background:rgba(0,0,0,.3);color:#fff;font-family:'Nunito',sans-serif;font-size:13px;outline:none;" oninput="onNameChange()"/>
+  </div>
+  <div id="bagMsg" style="font-size:11px;color:#888;margin:6px 0 0 4px;font-style:italic;">📝 Enter your name above. Once you do, every "Print" click will print AND log a submission for the class tracker.</div>
+</div>
 
 <div class="workspace">
 
@@ -135,12 +150,11 @@ body{font-family:'Nunito',sans-serif;background:#0a0a0a;color:#fff;min-height:10
     <button class="gen-btn" id="genBtn" onclick="generate()" disabled>&#128290; Generate Pixel Art</button>
   </div>
 
-  <!-- Live pixel display — hidden behind reveal toggle -->
+  <!-- Live pixel display -->
   <div class="pixel-output" id="pixelOutput">
     <div class="pixel-screen">
-      <div class="pixel-screen-label">&#9654; Pixel art output &nbsp;<button onclick="toggleReveal()" id="revealToggle" style="background:rgba(0,255,68,.1);border:1px solid #00cc44;color:#00cc44;font-family:Fredoka One,cursive;font-size:10px;letter-spacing:1px;padding:4px 10px;border-radius:6px;cursor:pointer;">👁 Show Answer</button></div>
-      <div id="revealWrap" style="display:none;"><div class="pixel-grid" id="pixelGrid"></div></div>
-      <div id="revealHint" style="font-family:Fredoka One,cursive;font-size:12px;color:#1a4a1a;padding:12px 0;letter-spacing:1px;">Answer hidden — print the sheet first, then reveal!</div>
+      <div class="pixel-screen-label">&#9654; Pixel art output</div>
+      <div class="pixel-grid" id="pixelGrid"></div>
     </div>
   </div>
 
@@ -149,7 +163,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0a0a;color:#fff;min-height:10
     <div class="print-title" id="printTitle">Pixel Art Code</div>
     <div class="print-subtitle">A Smile Bags Binary Activity &middot; Elementary Edition</div>
     <div class="print-instr">
-      <strong>Color the 1s!</strong> Find every cell that says <strong>1</strong> and color it in. Leave the 0s blank. When you're done, a secret word will appear! Can you read it?
+      <strong>Color the grid!</strong> Each filled square = 1. Each empty square = 0. When you color in all the 1s, a secret word appears! Can you read it?
     </div>
     <div class="print-grid-wrap" id="printGridWrap"></div>
     <div class="print-bio">
@@ -158,7 +172,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0a0a;color:#fff;min-height:10
     </div>
     <div class="print-footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>
   </div>
-  <button class="print-btn" id="printBtn" onclick="window.print()" style="display:none;">&#128438; Print This Pixel Art Sheet</button>
+  <button class="print-btn" id="printBtn" onclick="printAndSubmit()" style="display:none;">&#128438; Print This Pixel Art Sheet</button>
 
 </div>
 
@@ -167,6 +181,67 @@ body{font-family:'Nunito',sans-serif;background:#0a0a0a;color:#fff;min-height:10
 </div>
 
 <script>
+// ── SUBMISSION WIRING (Standard #5 + #7) ────────────────────
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzEmRvijoOk21PK_EvB_zT_Dy5GwgFiNdAqv-PYgk23RB929cFs6y1ZkP1YNkiCXQ3-/exec";
+
+function fetchBagTracker(){
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0) return;
+  fetch(SCRIPT_URL + '?action=counts')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(!d || !d.ok) return;
+      var s = d.pixelArt || {total:0, goal:15};
+      var pct = Math.min(100, Math.round((s.total / s.goal) * 100));
+      var c = document.getElementById('bagCount');
+      var f = document.getElementById('bagBarFill');
+      if(c) c.textContent = s.total;
+      if(f) f.style.width = pct + '%';
+    })
+    .catch(function(){});
+}
+
+function submitToSheet(){
+  var name = (document.getElementById('studentName').value || '').trim();
+  if(!name) return;
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0) return;
+  var token = 'KSB-PXL-' + Math.random().toString(36).substr(2, 4).toUpperCase();
+  var payload = {
+    activity: 'pixelArt',
+    studentName: name,
+    class: 'AP Bio + T.I.D.E.',
+    word: (typeof currentWord !== 'undefined' && currentWord) ? currentWord : '',
+    pattern: (typeof currentPattern !== 'undefined' && currentPattern) ? currentPattern : '',
+    token: token
+  };
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  }).then(function(){}).catch(function(){});
+  setTimeout(fetchBagTracker, 700);
+}
+
+function printAndSubmit(){
+  window.print();
+  submitToSheet();
+}
+
+function onNameChange(){
+  var name = (document.getElementById('studentName').value || '').trim();
+  var msg = document.getElementById('bagMsg');
+  if(!msg) return;
+  if(name.length >= 2){
+    msg.textContent = '✅ Hi ' + name + '! Each "Print" click will print AND log a submission.';
+    msg.style.color = '#4caf82';
+  } else {
+    msg.textContent = '📝 Enter your name above. Once you do, every "Print" click will print AND log a submission for the class tracker.';
+    msg.style.color = '#888';
+  }
+}
+
+window.addEventListener('DOMContentLoaded', fetchBagTracker);
+
 var oneWords = ['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT','CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST','RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
 var selectedWord = '';
 var selectedColor = 'terminal';
@@ -276,14 +351,12 @@ function generate() {
   document.getElementById('pixelGrid').innerHTML = html;
   document.getElementById('pixelOutput').classList.add('show');
 
-  // Print grid — numbered boxes only, student colors the 1s
-  var cellSize = Math.max(12, Math.min(18, Math.floor(480 / grid[0].length)));
-  var fontSize = Math.max(6, cellSize - 6);
+  // Print grid
   var printHtml = '<div style="display:inline-flex;flex-direction:column;gap:2px;">';
   for (var r = 0; r < grid.length; r++) {
     printHtml += '<div style="display:flex;gap:2px;">';
     for (var c = 0; c < grid[r].length; c++) {
-      printHtml += '<div style="width:' + cellSize + 'px;height:' + cellSize + 'px;border-radius:2px;background:#fff;border:1px solid #bbb;display:inline-flex;align-items:center;justify-content:center;font-family:monospace;font-size:' + fontSize + 'px;font-weight:bold;color:#999;">' + grid[r][c] + '</div>';
+      printHtml += '<div style="width:14px;height:14px;border-radius:2px;background:' + (grid[r][c] ? '#111' : '#efefef') + ';border:' + (grid[r][c] ? 'none' : '1px solid #ddd') + ';"></div>';
     }
     printHtml += '</div>';
   }
@@ -293,16 +366,6 @@ function generate() {
   document.getElementById('printSection').classList.add('show');
   document.getElementById('printBtn').style.display = 'block';
   document.getElementById('pixelOutput').scrollIntoView({behavior:'smooth'});
-}
-
-function toggleReveal() {
-  var wrap = document.getElementById('revealWrap');
-  var hint = document.getElementById('revealHint');
-  var btn = document.getElementById('revealToggle');
-  var showing = wrap.style.display !== 'none';
-  wrap.style.display = showing ? 'none' : 'block';
-  hint.style.display = showing ? 'block' : 'none';
-  btn.textContent = showing ? '👁 Show Answer' : '🙈 Hide Answer';
 }
 
 buildOWGrid();

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Coloring Kiosk &mdash; Smile Bags</title>
+<title>Color-by-Code Kiosk &mdash; Smile Bags</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -74,6 +74,9 @@ canvas{display:block;width:100%;height:auto;border-radius:8px;}
 .print-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:#111;text-align:center;margin-bottom:4px;}
 .print-subtitle{font-size:12px;color:#999;text-align:center;margin-bottom:16px;font-family:'Fredoka One',cursive;letter-spacing:1px;text-transform:uppercase;}
 .print-instr{background:#f9f9f9;border-left:4px solid #D4537E;border-radius:4px;padding:10px 14px;font-size:13px;color:#333;margin-bottom:16px;line-height:1.6;}
+.print-key-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+.print-key-item{display:flex;align-items:center;gap:6px;font-size:13px;color:#333;}
+.print-key-dot{width:20px;height:20px;border-radius:4px;border:1px solid #ddd;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:11px;color:#888;}
 .print-canvas-wrap{margin-bottom:16px;}
 .print-bio{background:#f0fff8;border:1px solid #c0e8d4;border-radius:8px;padding:14px;}
 .print-bio-title{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;margin-bottom:6px;}
@@ -116,17 +119,32 @@ canvas{display:block;width:100%;height:auto;border-radius:8px;}
 
 <div class="hero">
   <div class="hero-brand">Smile Bags &middot; AP Bio &amp; T.I.D.E. &middot; Creation Kiosk</div>
-  <h1 class="hero-title">Coloring Kiosk<br><span>Activity Builder</span></h1>
+  <h1 class="hero-title">Color-by-Code<br><span>Activity Builder</span></h1>
   <p class="hero-sub">Generate a number-coded coloring sheet of a zoo animal or ecosystem. The elementary student decodes the color key and brings the scene to life!</p>
+  <div style="font-family:'Fredoka One',cursive;font-size:11px;color:#c9a84c;letter-spacing:1px;margin-top:14px;">Elena O'Brien · AP Biology + T.I.D.E. · Spring 2026</div>
 </div>
 
-<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to Kiosk Menu</a>
+<button type="button" onclick="window.location.href='APBio_TIDE_Kiosk_Menu.html'" class="back-btn">&#8592; Back to Kiosk Menu</button>
+
+<!-- Smile Bag Submission Tracker + Name Gate -->
+<div style="max-width:900px;margin:18px auto 0;padding:0 24px;">
+  <div style="background:rgba(201,168,76,.05);border:1.5px solid rgba(201,168,76,.3);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
+    <div style="display:flex;align-items:baseline;gap:8px;">
+      <span style="font-family:'Fredoka One',cursive;font-size:28px;color:#c9a84c;" id="bagCount">0</span>
+      <span style="font-family:'Fredoka One',cursive;font-size:16px;color:#888;">/ 15</span>
+      <span style="font-size:11px;letter-spacing:1.5px;color:#aaa;text-transform:uppercase;font-family:'Fredoka One',cursive;margin-left:4px;">Smile Bag Submissions</span>
+    </div>
+    <div style="flex:1;min-width:160px;height:8px;background:rgba(201,168,76,.1);border-radius:6px;overflow:hidden;"><div id="bagBarFill" style="height:100%;background:linear-gradient(90deg,#4caf82,#c9a84c);width:0%;transition:width .55s ease;border-radius:6px;"></div></div>
+    <input type="text" id="studentName" placeholder="Your first name + last initial" maxlength="40" style="flex:0 1 220px;padding:9px 14px;border-radius:8px;border:1.5px solid rgba(201,168,76,.4);background:rgba(0,0,0,.3);color:#fff;font-family:'Nunito',sans-serif;font-size:13px;outline:none;" oninput="onNameChange()"/>
+  </div>
+  <div id="bagMsg" style="font-size:11px;color:#888;margin:6px 0 0 4px;font-style:italic;">📝 Enter your name above. Once you do, every "Print" click will print AND log a submission for the class tracker.</div>
+</div>
 
 <div class="mode-tabs">
   <button class="mode-tab make active" onclick="switchMode('make')">
     <span class="mode-tab-icon">&#127912;</span>
     <span class="mode-tab-title">Make It</span>
-    <span class="mode-tab-desc">Generate a printable coloring sheet for your bag</span>
+    <span class="mode-tab-desc">Generate a printable color-by-code sheet for your bag</span>
   </button>
   <button class="mode-tab play" onclick="switchMode('play')">
     <span class="mode-tab-icon">&#127774;</span>
@@ -185,14 +203,15 @@ canvas{display:block;width:100%;height:auto;border-radius:8px;}
 
   <div class="step-card">
     <div class="step-num">Step 3 of 3</div>
-    <div class="step-title">Generate your coloring sheet</div>
-    <button class="gen-btn" id="genBtn" onclick="generateSheet()" disabled>&#127912; Generate Coloring Sheet</button>
+    <div class="step-title">Generate your color-by-code sheet</div>
+    <button class="gen-btn" id="genBtn" onclick="generateSheet()" disabled>&#127912; Generate Color-by-Code Sheet</button>
   </div>
 
   <div class="print-section" id="printSection" style="position:relative;">
-    <div class="print-title">&#127912; Color It Your Way!</div>
-    <div class="print-subtitle" id="printSubtitle">A Smile Bags Coloring Activity</div>
-    <div class="print-instr">Print this sheet on regular paper, then color it any way you like with crayons, markers, or colored pencils.</div>
+    <div class="print-title">&#127912; Color-by-Code!</div>
+    <div class="print-subtitle" id="printSubtitle">A Smile Bags Coloring Activity &middot; Elementary Edition</div>
+    <div class="print-instr">Use the <strong>color key</strong> below to color each numbered section. Match the number on the sheet to the number in the key &mdash; or color it any way you like!</div>
+    <div class="print-key-row" id="printKeyRow"></div>
     <div class="print-canvas-wrap">
       <canvas id="printCanvas" width="520" height="380"></canvas>
     </div>
@@ -202,7 +221,7 @@ canvas{display:block;width:100%;height:auto;border-radius:8px;}
     </div>
     <div class="print-footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>
   </div>
-  <button class="print-btn" id="printBtn" onclick="printBlank()" style="display:none;">&#128438; Print Coloring Sheet</button>
+  <button class="print-btn" id="printBtn" onclick="printBlankAndSubmit()" style="display:none;">&#128438; Print Blank Coloring Sheet (Black &amp; White)</button>
 
 </div>
 
@@ -248,22 +267,16 @@ canvas{display:block;width:100%;height:auto;border-radius:8px;}
 
   <div class="play-card" id="coloringArea" style="display:none;">
     <div class="step-num">Step 2 of 2</div>
-    <div class="play-title">Pick a color and paint!</div>
-    <div class="play-hint">Choose a color from the palette below, pick a brush size, then click and drag to paint anywhere on the picture.</div>
+    <div class="play-title">Pick a color, then click a section!</div>
+    <div class="play-hint">Click a color from the palette, then click any numbered section on the drawing to fill it in.</div>
     <div class="color-palette" id="colorPalette"></div>
-    <div style="display:flex;align-items:center;gap:10px;margin:14px 0;flex-wrap:wrap;">
-      <span style="font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#888;">Brush Size:</span>
-      <button class="brush-btn" id="brush-s" onclick="setBrush(10)" style="padding:8px 14px;font-size:11px;background:#1a1a2e;border:1.5px solid #1a1a2e;border-radius:6px;color:#888;cursor:pointer;font-family:'Fredoka One',cursive;letter-spacing:1px;">Small</button>
-      <button class="brush-btn active" id="brush-m" onclick="setBrush(22)" style="padding:8px 14px;font-size:11px;background:rgba(76,175,130,.15);border:1.5px solid #4caf82;border-radius:6px;color:#4caf82;cursor:pointer;font-family:'Fredoka One',cursive;letter-spacing:1px;">Medium</button>
-      <button class="brush-btn" id="brush-l" onclick="setBrush(38)" style="padding:8px 14px;font-size:11px;background:#1a1a2e;border:1.5px solid #1a1a2e;border-radius:6px;color:#888;cursor:pointer;font-family:'Fredoka One',cursive;letter-spacing:1px;">Large</button>
-    </div>
     <div class="play-canvas-wrap">
-      <canvas id="playCanvas" width="700" height="540" class="play-canvas"></canvas>
+      <canvas id="playCanvas" width="520" height="380" class="play-canvas" onclick="handleCanvasClick(event)"></canvas>
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;">
       <button onclick="clearColoring()" style="background:transparent;border:1px solid #333;color:#555;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 18px;border-radius:8px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#D4537E';this.style.color='#D4537E'" onmouseout="this.style.borderColor='#333';this.style.color='#555'">&#10006; Clear</button>
-      <button onclick="printColored()" style="background:#4caf82;border:1px solid #4caf82;color:#fff;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 18px;border-radius:8px;cursor:pointer;transition:all .2s;">&#127912; Print My Colored Sheet</button>
-      <button onclick="printPlayBlank()" style="background:transparent;border:1px solid #D4537E;color:#D4537E;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 18px;border-radius:8px;cursor:pointer;transition:all .2s;">&#128438; Print Blank to Color by Hand</button>
+      <button onclick="printColoredAndSubmit()" style="background:#4caf82;border:1px solid #4caf82;color:#fff;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 18px;border-radius:8px;cursor:pointer;transition:all .2s;">&#127912; Print My Colored Sheet</button>
+      <button onclick="printPlayBlankAndSubmit()" style="background:transparent;border:1px solid #D4537E;color:#D4537E;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 18px;border-radius:8px;cursor:pointer;transition:all .2s;">&#128438; Print Blank to Color by Hand</button>
     </div>
     <div class="celebrate-play" id="celebratePlay">
       <span class="celebrate-play-emoji">&#127881;</span>
@@ -280,6 +293,71 @@ canvas{display:block;width:100%;height:auto;border-radius:8px;}
 </div>
 
 <script>
+// ── SUBMISSION WIRING (Standard #5 + #7) ────────────────────
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzEmRvijoOk21PK_EvB_zT_Dy5GwgFiNdAqv-PYgk23RB929cFs6y1ZkP1YNkiCXQ3-/exec";
+
+function fetchBagTracker(){
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0) return;
+  fetch(SCRIPT_URL + '?action=counts')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(!d || !d.ok) return;
+      var s = d.colorByCode || {total:0, goal:15};
+      var pct = Math.min(100, Math.round((s.total / s.goal) * 100));
+      var c = document.getElementById('bagCount');
+      var f = document.getElementById('bagBarFill');
+      if(c) c.textContent = s.total;
+      if(f) f.style.width = pct + '%';
+    })
+    .catch(function(){});
+}
+
+function submitToSheet(){
+  var name = (document.getElementById('studentName').value || '').trim();
+  if(!name) return;
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0) return;
+  var token = 'KSB-CBC-' + Math.random().toString(36).substr(2, 4).toUpperCase();
+  var payload = {
+    activity: 'colorByCode',
+    studentName: name,
+    class: 'AP Bio + T.I.D.E.',
+    word: (typeof currentWord !== 'undefined' && currentWord) ? currentWord : '',
+    set: (typeof currentSet !== 'undefined' && currentSet) ? currentSet : '',
+    token: token
+  };
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  }).then(function(){}).catch(function(){});
+  setTimeout(fetchBagTracker, 700);
+}
+
+function printAndSubmit(){
+  window.print();
+  submitToSheet();
+}
+
+function printBlankAndSubmit(){ printBlank(); submitToSheet(); }
+function printColoredAndSubmit(){ printColored(); submitToSheet(); }
+function printPlayBlankAndSubmit(){ printPlayBlank(); submitToSheet(); }
+
+function onNameChange(){
+  var name = (document.getElementById('studentName').value || '').trim();
+  var msg = document.getElementById('bagMsg');
+  if(!msg) return;
+  if(name.length >= 2){
+    msg.textContent = '✅ Hi ' + name + '! Each "Print" click will print AND log a submission.';
+    msg.style.color = '#4caf82';
+  } else {
+    msg.textContent = '📝 Enter your name above. Once you do, every "Print" click will print AND log a submission for the class tracker.';
+    msg.style.color = '#888';
+  }
+}
+
+window.addEventListener('DOMContentLoaded', fetchBagTracker);
+
 var oneWords = ['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT','CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST','RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
 
 var scenes = {
@@ -295,6 +373,8 @@ var selectedScene = '';
 var selectedWord = '';
 var selectedPlayScene = '';
 var selectedColor = 0;
+var filledZones = {};
+var playFilledZones = {};
 
 // Map scene keys to the actual CBC_*.webp filenames
 var imageMap = {
@@ -355,11 +435,18 @@ function checkReady() {
 
 function generateSheet() {
   var scene = scenes[selectedScene];
+  filledZones = {};
 
-  document.getElementById('printSubtitle').innerHTML = scene.name + ' &mdash; ' + selectedWord + ' &middot; A Smile Bags Coloring Activity';
+  // Print key
+  var keyHtml = '';
+  for (var i = 0; i < scene.colors.length; i++) {
+    keyHtml += '<div class="print-key-item"><div class="print-key-dot" style="background:' + scene.colors[i] + ';border-color:' + scene.colors[i] + ';color:#fff;">' + (i+1) + '</div><span>' + scene.labels[i] + '</span></div>';
+  }
+  document.getElementById('printKeyRow').innerHTML = keyHtml;
+  document.getElementById('printSubtitle').textContent = scene.name + ' &mdash; ' + selectedWord + ' &middot; A Smile Bags Coloring Activity';
   document.getElementById('printBioText').innerHTML = scene.bio;
 
-  drawScene('printCanvas', selectedScene, false, null);
+  drawNumberedScene('printCanvas', selectedScene, true);
   document.getElementById('printSection').classList.add('show');
   document.getElementById('printBtn').style.display = 'block';
   document.getElementById('printSection').scrollIntoView({behavior:'smooth'});
@@ -368,16 +455,17 @@ function generateSheet() {
 function drawScene(canvasId, sceneKey, colored, fills) {
   var canvas = document.getElementById(canvasId);
   var ctx = canvas.getContext('2d');
+  var scene = scenes[sceneKey];
   var W = canvas.width, H = canvas.height;
 
   loadSceneImage(sceneKey, function(img){
     ctx.clearRect(0,0,W,H);
-    // Fill white background so transparent PNG areas print white
+    // 1. Fill white background so transparent PNG areas print white
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0,0,W,H);
 
     if(img){
-      // Draw the animal line-art image, scaled to fit canvas preserving aspect
+      // 2. Draw the animal line-art image, scaled to fit canvas preserving aspect
       var scale = Math.min(W/img.naturalWidth, H/img.naturalHeight);
       var drawW = img.naturalWidth * scale;
       var drawH = img.naturalHeight * scale;
@@ -385,140 +473,100 @@ function drawScene(canvasId, sceneKey, colored, fills) {
       var offsetY = (H - drawH)/2;
       ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
     }
+
+    // 3. Paint colored fills with multiply blend mode so line art shows through
+    if(colored || (fills && Object.keys(fills).length > 0)){
+      ctx.save();
+      ctx.globalCompositeOperation = 'multiply';
+      for (var i = 0; i < scene.zones.length; i++) {
+        var z = scene.zones[i];
+        var fillColor = (fills && fills[i] !== undefined) ? fills[i] : (colored ? scene.colors[i] : null);
+        if(!fillColor) continue;
+        ctx.fillStyle = fillColor;
+        ctx.beginPath();
+        var rx = z[0], ry = z[1], rw = z[2], rh = z[3], radius = 12;
+        ctx.moveTo(rx+radius, ry);
+        ctx.lineTo(rx+rw-radius, ry);
+        ctx.quadraticCurveTo(rx+rw, ry, rx+rw, ry+radius);
+        ctx.lineTo(rx+rw, ry+rh-radius);
+        ctx.quadraticCurveTo(rx+rw, ry+rh, rx+rw-radius, ry+rh);
+        ctx.lineTo(rx+radius, ry+rh);
+        ctx.quadraticCurveTo(rx, ry+rh, rx, ry+rh-radius);
+        ctx.lineTo(rx, ry+radius);
+        ctx.quadraticCurveTo(rx, ry, rx+radius, ry);
+        ctx.closePath();
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    // 4. Draw numbered zone outlines (only on uncolored/blank zones)
+    if (!colored) {
+      for (var j = 0; j < scene.zones.length; j++) {
+        var z2 = scene.zones[j];
+        // Only draw the number + outline if this zone isn't filled in
+        if(fills && fills[j] !== undefined) continue;
+        ctx.strokeStyle = 'rgba(0,0,0,0.35)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4,3]);
+        ctx.beginPath();
+        var rx2=z2[0],ry2=z2[1],rw2=z2[2],rh2=z2[3],radius2=12;
+        ctx.moveTo(rx2+radius2,ry2);
+        ctx.lineTo(rx2+rw2-radius2,ry2);
+        ctx.quadraticCurveTo(rx2+rw2,ry2,rx2+rw2,ry2+radius2);
+        ctx.lineTo(rx2+rw2,ry2+rh2-radius2);
+        ctx.quadraticCurveTo(rx2+rw2,ry2+rh2,rx2+rw2-radius2,ry2+rh2);
+        ctx.lineTo(rx2+radius2,ry2+rh2);
+        ctx.quadraticCurveTo(rx2,ry2+rh2,rx2,ry2+rh2-radius2);
+        ctx.lineTo(rx2,ry2+radius2);
+        ctx.quadraticCurveTo(rx2,ry2,rx2+radius2,ry2);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.setLineDash([]);
+        // Number label with white background circle for readability
+        var cx = z2[0]+z2[2]/2, cy = z2[1]+z2[3]/2;
+        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        ctx.beginPath();
+        ctx.arc(cx, cy, 13, 0, Math.PI*2);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(0,0,0,0.4)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 14px Fredoka One, cursive';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(String(j+1), cx, cy);
+      }
+    }
   });
+}
+
+function drawNumberedScene(canvasId, sceneKey, numbered) {
+  drawScene(canvasId, sceneKey, false, null);
 }
 
 // ── Play mode ──
-var brushSize = 22;
-var isDrawing = false;
-var lastX = 0, lastY = 0;
-var playHandlersAttached = false;
-
-function setBrush(size){
-  brushSize = size;
-  ['brush-s','brush-m','brush-l'].forEach(function(id){
-    var el = document.getElementById(id);
-    if(!el) return;
-    el.style.background = '#fff';
-    el.style.borderColor = '#ddd';
-    el.style.color = '#888';
-  });
-  var activeId = size===10 ? 'brush-s' : size===22 ? 'brush-m' : 'brush-l';
-  var active = document.getElementById(activeId);
-  if(active){
-    active.style.background = 'rgba(76,175,130,.12)';
-    active.style.borderColor = '#4caf82';
-    active.style.color = '#4caf82';
-  }
-}
-
 function selectPlayScene(s) {
   selectedPlayScene = s;
   document.querySelectorAll('[id^="psc-"]').forEach(function(b){ b.classList.remove('active'); });
   document.getElementById('psc-' + s).classList.add('active');
+  playFilledZones = {};
   buildColorPalette();
-  drawScene('playCanvas', s, false, null);
-  attachBrushHandlers();
+  drawScene('playCanvas', s, false, playFilledZones);
   document.getElementById('coloringArea').style.display = 'block';
   document.getElementById('celebratePlay').classList.remove('show');
   document.getElementById('coloringArea').scrollIntoView({behavior:'smooth'});
-}
-
-function attachBrushHandlers(){
-  if(playHandlersAttached) return;
-  playHandlersAttached = true;
-  var canvas = document.getElementById('playCanvas');
-
-  canvas.addEventListener('mousedown', function(e){
-    isDrawing = true;
-    var pos = getCanvasPos(e, canvas);
-    lastX = pos.x; lastY = pos.y;
-    paintDot(pos.x, pos.y, canvas);
-  });
-  canvas.addEventListener('mousemove', function(e){
-    if(!isDrawing) return;
-    var pos = getCanvasPos(e, canvas);
-    paintLine(lastX, lastY, pos.x, pos.y, canvas);
-    lastX = pos.x; lastY = pos.y;
-  });
-  canvas.addEventListener('mouseup', function(){
-    if(isDrawing){ isDrawing = false; redrawLineArtOverlay(canvas); }
-  });
-  canvas.addEventListener('mouseleave', function(){
-    if(isDrawing){ isDrawing = false; redrawLineArtOverlay(canvas); }
-  });
-  // Touch support
-  canvas.addEventListener('touchstart', function(e){
-    e.preventDefault();
-    isDrawing = true;
-    var pos = getTouchPos(e, canvas);
-    lastX = pos.x; lastY = pos.y;
-    paintDot(pos.x, pos.y, canvas);
-  });
-  canvas.addEventListener('touchmove', function(e){
-    e.preventDefault();
-    if(!isDrawing) return;
-    var pos = getTouchPos(e, canvas);
-    paintLine(lastX, lastY, pos.x, pos.y, canvas);
-    lastX = pos.x; lastY = pos.y;
-  });
-  canvas.addEventListener('touchend', function(e){
-    e.preventDefault();
-    if(isDrawing){ isDrawing = false; redrawLineArtOverlay(canvas); }
-  });
-}
-
-function getCanvasPos(e, canvas){
-  var r = canvas.getBoundingClientRect();
-  return {x:(e.clientX-r.left)*(canvas.width/r.width), y:(e.clientY-r.top)*(canvas.height/r.height)};
-}
-function getTouchPos(e, canvas){
-  if(!e.touches || !e.touches[0]) return {x:0,y:0};
-  var r = canvas.getBoundingClientRect();
-  return {x:(e.touches[0].clientX-r.left)*(canvas.width/r.width), y:(e.touches[0].clientY-r.top)*(canvas.height/r.height)};
-}
-
-function paintDot(x, y, canvas){
-  var ctx = canvas.getContext('2d');
-  ctx.fillStyle = scenes[selectedPlayScene].colors[selectedColor];
-  ctx.beginPath();
-  ctx.arc(x, y, brushSize/2, 0, Math.PI*2);
-  ctx.fill();
-}
-function paintLine(x1, y1, x2, y2, canvas){
-  var ctx = canvas.getContext('2d');
-  ctx.strokeStyle = scenes[selectedPlayScene].colors[selectedColor];
-  ctx.lineWidth = brushSize;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  ctx.beginPath();
-  ctx.moveTo(x1, y1);
-  ctx.lineTo(x2, y2);
-  ctx.stroke();
-}
-
-// After painting, redraw the line art on top so outlines stay visible
-function redrawLineArtOverlay(canvas){
-  var img = imageCache[selectedPlayScene];
-  if(!img) return;
-  var ctx = canvas.getContext('2d');
-  var W = canvas.width, H = canvas.height;
-  ctx.save();
-  ctx.globalCompositeOperation = 'multiply';
-  var scale = Math.min(W/img.naturalWidth, H/img.naturalHeight);
-  var drawW = img.naturalWidth * scale;
-  var drawH = img.naturalHeight * scale;
-  var offsetX = (W - drawW)/2;
-  var offsetY = (H - drawH)/2;
-  ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
-  ctx.restore();
 }
 
 function buildColorPalette() {
   var scene = scenes[selectedPlayScene];
   var html = '';
   for (var i = 0; i < scene.colors.length; i++) {
-    html += '<button class="color-btn' + (i===0?' selected':'') + '" style="background:' + scene.colors[i] + ';" onclick="selectColor(' + i + ')" id="cbtn-' + i + '" title="' + scene.labels[i] + '"></button>';
+    html += '<div style="text-align:center;">' +
+      '<button class="color-btn' + (i===0?' selected':'') + '" style="background:' + scene.colors[i] + ';" onclick="selectColor(' + i + ')" id="cbtn-' + i + '"></button>' +
+      '<div style="font-family:Fredoka One,cursive;font-size:10px;color:#555;margin-top:22px;">' + (i+1) + '</div>' +
+    '</div>';
   }
   document.getElementById('colorPalette').innerHTML = html;
   selectedColor = 0;
@@ -530,8 +578,43 @@ function selectColor(i) {
   document.getElementById('cbtn-' + i).classList.add('selected');
 }
 
+function handleCanvasClick(e) {
+  if (!selectedPlayScene) return;
+  var canvas = document.getElementById('playCanvas');
+  var rect = canvas.getBoundingClientRect();
+  var scaleX = canvas.width / rect.width;
+  var scaleY = canvas.height / rect.height;
+  var x = (e.clientX - rect.left) * scaleX;
+  var y = (e.clientY - rect.top) * scaleY;
+
+  var scene = scenes[selectedPlayScene];
+  for (var i = scene.zones.length - 1; i >= 0; i--) {
+    var z = scene.zones[i];
+    if (x >= z[0] && x <= z[0]+z[2] && y >= z[1] && y <= z[1]+z[3]) {
+      playFilledZones[i] = scene.colors[selectedColor];
+      redrawPlay();
+      checkPlayComplete();
+      return;
+    }
+  }
+}
+
+function redrawPlay() {
+  drawScene('playCanvas', selectedPlayScene, false, playFilledZones);
+}
+
+function checkPlayComplete() {
+  var scene = scenes[selectedPlayScene];
+  var filled = Object.keys(playFilledZones).length;
+  if (filled >= scene.zones.length) {
+    document.getElementById('celebPlayText').innerHTML = scene.bio;
+    document.getElementById('celebratePlay').classList.add('show');
+    document.getElementById('celebratePlay').scrollIntoView({behavior:'smooth'});
+  }
+}
+
 function clearColoring() {
-  if(!selectedPlayScene) return;
+  playFilledZones = {};
   drawScene('playCanvas', selectedPlayScene, false, null);
   document.getElementById('celebratePlay').classList.remove('show');
 }
@@ -542,32 +625,26 @@ function openPrintWindow(canvasId, title, subtitle, includeKey, scene){
   var dataURL = canvas.toDataURL('image/png');
   var keyHtml = '';
   if(includeKey && scene){
-    keyHtml = '<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:8px 0 10px;">';
+    keyHtml = '<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:14px 0 18px;">';
     for(var i=0;i<scene.colors.length;i++){
-      keyHtml += '<div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#333;font-family:sans-serif;">'+
-        '<div style="width:18px;height:18px;border-radius:3px;background:'+scene.colors[i]+';border:1px solid #999;"></div>'+
+      keyHtml += '<div style="display:flex;align-items:center;gap:6px;font-size:13px;color:#333;font-family:sans-serif;">'+
+        '<div style="width:24px;height:24px;border-radius:4px;background:'+scene.colors[i]+';border:1px solid #999;display:flex;align-items:center;justify-content:center;font-weight:bold;color:#fff;font-size:12px;">'+(i+1)+'</div>'+
         '<span>'+scene.labels[i]+'</span></div>';
     }
     keyHtml += '</div>';
   }
-  // Use LANDSCAPE letter (11" wide x 8.5" tall) to match the natural canvas aspect ratio
-  // Total printable: ~10" wide x 7.5" tall with 0.5" margins
-  // Image fills nearly the entire page; minimal title/footer chrome
   var html = '<!DOCTYPE html><html><head><title>'+title+'</title>'+
-    '<style>'+
-    '@page{size:letter landscape;margin:.4in;}'+
-    'html,body{margin:0;padding:0;height:100%;}'+
-    'body{font-family:Georgia,serif;color:#111;display:flex;flex-direction:column;align-items:center;}'+
-    'h1{font-size:18px;margin:0;padding:0;line-height:1.1;}'+
-    '.sub{font-size:10px;color:#666;text-transform:uppercase;letter-spacing:1.5px;margin:2px 0 4px;}'+
-    '.img-wrap{flex:1;display:flex;align-items:center;justify-content:center;width:100%;min-height:0;}'+
-    'img{max-width:100%;max-height:100%;height:auto;width:auto;object-fit:contain;}'+
-    '.footer{font-size:9px;color:#888;letter-spacing:1px;text-transform:uppercase;margin-top:4px;}'+
+    '<style>@page{size:letter;margin:.5in;}'+
+    'body{font-family:Georgia,serif;color:#111;text-align:center;margin:0;padding:20px;}'+
+    'h1{font-size:24px;margin:0 0 4px;}'+
+    '.sub{font-size:12px;color:#666;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;}'+
+    'img{max-width:100%;height:auto;border:none;}'+
+    '.footer{margin-top:18px;font-size:10px;color:#888;letter-spacing:1px;text-transform:uppercase;}'+
     '</style></head><body>'+
     '<h1>'+title+'</h1>'+
     '<div class="sub">'+subtitle+'</div>'+
     keyHtml+
-    '<div class="img-wrap"><img src="'+dataURL+'" alt="Coloring sheet"/></div>'+
+    '<img src="'+dataURL+'" alt="Coloring sheet"/>'+
     '<div class="footer">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>'+
     '<script>window.onload=function(){setTimeout(function(){window.print();},300);};<\/script>'+
     '</body></html>';
@@ -576,61 +653,44 @@ function openPrintWindow(canvasId, title, subtitle, includeKey, scene){
   w.document.close();
 }
 
-// Make It mode: print blank coloring sheet (no zones, no numbers — just clean line art)
+// Make It mode: print blank B&W sheet with color key
 function printBlank(){
   var scene = scenes[selectedScene];
   if(!scene){alert('Please generate a sheet first.');return;}
+  // Re-render print canvas fresh and blank (no fills)
+  var savedFills = filledZones;
+  filledZones = {};
   drawScene('printCanvas', selectedScene, false, null);
+  // Wait briefly for image to finish rendering before capturing
   setTimeout(function(){
-    openPrintWindow('printCanvas', scene.name + ' Coloring Sheet', selectedWord + ' &middot; Smile Bags', false, null);
+    openPrintWindow('printCanvas', scene.name + ' Color-by-Code', selectedWord + ' &middot; Smile Bags', true, scene);
+    filledZones = savedFills;
   }, 400);
 }
 
-// Play mode: print student's colored version (full color on page)
+// Play mode: print student's colored version
 function printColored(){
   if(!selectedPlayScene){alert('Please choose a scene and color it first.');return;}
   var scene = scenes[selectedPlayScene];
+  var filled = Object.keys(playFilledZones).length;
+  if(filled === 0){alert('Color in some sections first, then print!');return;}
   openPrintWindow('playCanvas', scene.name + ' &middot; My Coloring', 'A Smile Bags Coloring', false, null);
 }
 
-// Play mode: print blank black-and-white version for hand coloring
+// Play mode: print blank B&W version with color key for hand coloring
 function printPlayBlank(){
   if(!selectedPlayScene){alert('Please choose a scene first.');return;}
   var scene = scenes[selectedPlayScene];
-  // Create a temporary clean canvas with just line art (no student paint)
-  var temp = document.createElement('canvas');
-  temp.width = 700; temp.height = 540;
-  var tctx = temp.getContext('2d');
-  tctx.fillStyle = '#ffffff';
-  tctx.fillRect(0,0,700,540);
-  var img = imageCache[selectedPlayScene];
-  if(img){
-    var scale = Math.min(700/img.naturalWidth, 540/img.naturalHeight);
-    var dw = img.naturalWidth*scale, dh = img.naturalHeight*scale;
-    tctx.drawImage(img, (700-dw)/2, (540-dh)/2, dw, dh);
-  }
-  // Use the temp canvas dataURL directly via a one-off print window
-  var dataURL = temp.toDataURL('image/png');
-  var html = '<!DOCTYPE html><html><head><title>'+scene.name+' Coloring Sheet</title>'+
-    '<style>'+
-    '@page{size:letter landscape;margin:.4in;}'+
-    'html,body{margin:0;padding:0;height:100%;}'+
-    'body{font-family:Georgia,serif;color:#111;display:flex;flex-direction:column;align-items:center;}'+
-    'h1{font-size:18px;margin:0;padding:0;line-height:1.1;}'+
-    '.sub{font-size:10px;color:#666;text-transform:uppercase;letter-spacing:1.5px;margin:2px 0 4px;}'+
-    '.img-wrap{flex:1;display:flex;align-items:center;justify-content:center;width:100%;min-height:0;}'+
-    'img{max-width:100%;max-height:100%;height:auto;width:auto;object-fit:contain;}'+
-    '.footer{font-size:9px;color:#888;letter-spacing:1px;text-transform:uppercase;margin-top:4px;}'+
-    '</style></head><body>'+
-    '<h1>'+scene.name+' Coloring Sheet</h1>'+
-    '<div class="sub">Smile Bags &middot; Color It Your Way</div>'+
-    '<div class="img-wrap"><img src="'+dataURL+'" alt="Coloring sheet"/></div>'+
-    '<div class="footer">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>'+
-    '<script>window.onload=function(){setTimeout(function(){window.print();},300);};<\/script>'+
-    '</body></html>';
-  var w = window.open('','_blank');
-  w.document.write(html);
-  w.document.close();
+  // Temporarily clear fills, redraw blank, capture, restore fills
+  var savedFills = playFilledZones;
+  playFilledZones = {};
+  drawScene('playCanvas', selectedPlayScene, false, null);
+  setTimeout(function(){
+    openPrintWindow('playCanvas', scene.name + ' Color-by-Code', 'Smile Bags &middot; Color by Hand', true, scene);
+    // Restore student's colors after a moment
+    playFilledZones = savedFills;
+    setTimeout(function(){drawScene('playCanvas', selectedPlayScene, false, playFilledZones);}, 500);
+  }, 400);
 }
 
 buildOWGrid();

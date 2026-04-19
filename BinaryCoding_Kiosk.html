@@ -137,9 +137,24 @@ body{font-family:'Nunito',sans-serif;background:#0a0a0f;color:#fff;min-height:10
   <div class="hero-brand">Smile Bags &middot; AP Bio &amp; T.I.D.E. &middot; Creation Kiosk</div>
   <h1 class="hero-title">Binary Coding<br><span>Activity Builder</span></h1>
   <p class="hero-sub">Encode a secret message in binary &mdash; or crack one yourself. Science disguised as play.</p>
+  <div style="font-family:'Fredoka One',cursive;font-size:11px;color:#c9a84c;letter-spacing:1px;margin-top:14px;">Elena O'Brien · AP Biology + T.I.D.E. · Spring 2026</div>
 </div>
 
-<a href="APBio_TIDE_Kiosk_Menu.html" class="back-btn">&#8592; Back to Kiosk Menu</a>
+<button type="button" onclick="window.location.href='APBio_TIDE_Kiosk_Menu.html'" class="back-btn">&#8592; Back to Kiosk Menu</button>
+
+<!-- Smile Bag Submission Tracker + Name Gate -->
+<div style="max-width:900px;margin:18px auto 0;padding:0 24px;">
+  <div style="background:rgba(201,168,76,.05);border:1.5px solid rgba(201,168,76,.3);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
+    <div style="display:flex;align-items:baseline;gap:8px;">
+      <span style="font-family:'Fredoka One',cursive;font-size:28px;color:#c9a84c;" id="bagCount">0</span>
+      <span style="font-family:'Fredoka One',cursive;font-size:16px;color:#888;">/ 15</span>
+      <span style="font-size:11px;letter-spacing:1.5px;color:#aaa;text-transform:uppercase;font-family:'Fredoka One',cursive;margin-left:4px;">Smile Bag Submissions</span>
+    </div>
+    <div style="flex:1;min-width:160px;height:8px;background:rgba(201,168,76,.1);border-radius:6px;overflow:hidden;"><div id="bagBarFill" style="height:100%;background:linear-gradient(90deg,#4caf82,#c9a84c);width:0%;transition:width .55s ease;border-radius:6px;"></div></div>
+    <input type="text" id="studentName" placeholder="Your first name + last initial" maxlength="40" style="flex:0 1 220px;padding:9px 14px;border-radius:8px;border:1.5px solid rgba(201,168,76,.4);background:rgba(0,0,0,.3);color:#fff;font-family:'Nunito',sans-serif;font-size:13px;outline:none;" oninput="onNameChange()"/>
+  </div>
+  <div id="bagMsg" style="font-size:11px;color:#888;margin:6px 0 0 4px;font-style:italic;">📝 Enter your name above. Once you do, every "Print" click will print AND log a submission for the class tracker.</div>
+</div>
 
 <div class="mode-wrap">
   <div class="mode-tabs">
@@ -203,7 +218,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0a0f;color:#fff;min-height:10
       <div class="pfooter">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>
     </div>
 
-    <button class="print-btn" id="printBtn" onclick="window.print()">&#128438; Print This Activity Sheet</button>
+    <button class="print-btn" id="printBtn" onclick="printAndSubmit()">&#128438; Print This Activity Sheet</button>
   </div>
 
   <!-- BREAK IT -->
@@ -244,6 +259,69 @@ body{font-family:'Nunito',sans-serif;background:#0a0a0f;color:#fff;min-height:10
 </div>
 
 <script>
+// ── SUBMISSION WIRING (Standard #5 + #7) ────────────────────
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzEmRvijoOk21PK_EvB_zT_Dy5GwgFiNdAqv-PYgk23RB929cFs6y1ZkP1YNkiCXQ3-/exec";
+
+function fetchBagTracker(){
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0) return;
+  fetch(SCRIPT_URL + '?action=counts')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(!d || !d.ok) return;
+      var s = d.binaryCoding || {total:0, goal:15};
+      var pct = Math.min(100, Math.round((s.total / s.goal) * 100));
+      var c = document.getElementById('bagCount');
+      var f = document.getElementById('bagBarFill');
+      if(c) c.textContent = s.total;
+      if(f) f.style.width = pct + '%';
+    })
+    .catch(function(){});
+}
+
+function submitToSheet(){
+  var name = (document.getElementById('studentName').value || '').trim();
+  if(!name) return;
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0) return;
+  var msgEl = document.getElementById('msgInput');
+  var message = (msgEl && msgEl.value) ? msgEl.value.trim() : '';
+  var token = 'KSB-BIN-' + Math.random().toString(36).substr(2, 4).toUpperCase();
+  var payload = {
+    activity: 'binaryCoding',
+    studentName: name,
+    class: 'AP Bio + T.I.D.E.',
+    word: message,
+    message: message,
+    token: token
+  };
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  }).then(function(){}).catch(function(){});
+  setTimeout(fetchBagTracker, 700);
+}
+
+function printAndSubmit(){
+  window.print();
+  submitToSheet();
+}
+
+function onNameChange(){
+  var name = (document.getElementById('studentName').value || '').trim();
+  var msg = document.getElementById('bagMsg');
+  if(!msg) return;
+  if(name.length >= 2){
+    msg.textContent = '✅ Hi ' + name + '! Each "Print" click will print AND log a submission.';
+    msg.style.color = '#4caf82';
+  } else {
+    msg.textContent = '📝 Enter your name above. Once you do, every "Print" click will print AND log a submission for the class tracker.';
+    msg.style.color = '#888';
+  }
+}
+
+window.addEventListener('DOMContentLoaded', fetchBagTracker);
+
 var OW = ['ABSORB','ADAPT','ANCHOR','BALANCE','BLOOM','BREATHE','CLEAR','CONNECT','CYCLE','EMERGE','FILTER','FLOW','GROW','HEAL','MIGRATE','PERSIST','RENEW','RESTORE','RETURN','RISE','ROOT','SHINE','SUSTAIN','THRIVE','TRANSFORM'];
 var makeMsg = '';
 var breakWord = '';
