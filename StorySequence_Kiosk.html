@@ -132,7 +132,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
   <button class="mode-tab active" onclick="switchMode('make')">
     <span class="mode-tab-icon">&#128196;</span>
     <span class="mode-tab-title">Make It</span>
-    <span class="mode-tab-desc">Generate a printable scrambled story sheet for the bag</span>
+    <span class="mode-tab-desc">Generate a scrambled story sheet to explore on screen</span>
   </button>
   <button class="mode-tab" onclick="switchMode('seq')">
     <span class="mode-tab-icon">&#127922;</span>
@@ -148,7 +148,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
   <div class="step-card" style="margin-top:20px;">
     <div class="step-num">How it works</div>
     <div class="step-title">Cut, scramble, and reassemble</div>
-    <div class="step-desc">Choose your OneWord. The kiosk generates a short 4-panel story connected to your word, printed in scrambled order. The student receiving the bag cuts the panels apart, reads each one, and puts the story back in the right sequence. Answer boxes at the bottom let them record the correct order. The story reveal and science connection are printed on the back of the sheet.</div>
+    <div class="step-desc">Choose your OneWord. The kiosk generates a short 4-panel story connected to your word, displayed in scrambled order. Read the panels and put the story back in the right sequence in your head &mdash; then scroll down to see the science connection and the answer key.</div>
   </div>
 
   <div class="step-card">
@@ -211,7 +211,6 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
     </div>
     <div class="print-footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>
   </div>
-  <button class="print-btn" id="makePrintBtn" onclick="window.print()" style="display:none;">&#128438; Print This Story Sequence Sheet</button>
 </div>
 
 <!-- SEQUENCE IT -->
@@ -362,7 +361,6 @@ function generateMake() {
   document.getElementById('makeReveal').textContent = d.reveal;
 
   document.getElementById('makePrint').classList.add('show');
-  document.getElementById('makePrintBtn').style.display='block';
   document.getElementById('makePrint').scrollIntoView({behavior:'smooth'});
 }
 
