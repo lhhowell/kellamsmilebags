@@ -95,7 +95,7 @@ body{font-family:'Nunito',sans-serif;background:#0f0a14;color:#fff;min-height:10
 .grid-card-msg{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;line-height:1.35;margin-bottom:6px;}
 .grid-card-tide{font-size:10px;opacity:.55;font-family:'Fredoka One',cursive;letter-spacing:.5px;line-height:1.5;}
 .grid-card-footer{font-size:9px;opacity:.4;font-family:'Fredoka One',cursive;letter-spacing:1px;margin-top:8px;}
-.print-toggle-row{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;}
+.print-toggle-row{display:none;}
 .toggle-btn{background:transparent;border:1.5px solid #D4537E;color:#D4537E;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 18px;border-radius:8px;cursor:pointer;transition:all .2s;}
 .toggle-btn.active{background:#D4537E;color:#fff;}
 .toggle-btn:hover{background:#D4537E;color:#fff;}
@@ -203,14 +203,6 @@ body{font-family:'Nunito',sans-serif;background:#0f0a14;color:#fff;min-height:10
       <div class="print-bio-text">T.I.D.E. &mdash; Togetherness through Inclusion, Diversity, and Equity &mdash; is a student-led initiative in Virginia Beach City Public Schools. T.I.D.E. students believe every person deserves to feel like they belong, exactly as they are. This card was made by a Kellam High School student who wanted you to know: you matter, you belong, and someone who has never met you made something just for you.</div>
     </div>
     <div class="print-footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
-  </div>
-  <div class="print-toggle-row" id="printToggleRow" style="display:none;">
-    <button class="toggle-btn active" id="btn1up" onclick="switchPrint('1up')">&#128196; Print 1 Card</button>
-    <button class="toggle-btn" id="btn4up" onclick="switchPrint('4up')">&#128208; Print 8-Up Grid</button>
-  </div>
-
-  <div class="print-4up" id="print4up">
-    <div class="grid-8up" id="grid4up"></div>
   </div>
 
   <button class="print-btn" id="printBtn" onclick="printAndSubmit()" style="display:none;">&#128438; Print</button>
@@ -497,39 +489,11 @@ function generateCard() {
   document.getElementById('printMsg').textContent = msg;
   document.getElementById('printActivity').style.color = col.text;
   document.getElementById('printActivity').style.opacity = '.8';
-  // Build 4-up grid
-  var cardHtml = '';
-  for (var i = 0; i < 12; i++) {
-    cardHtml += '<div class="grid-card" style="background:' + col.bg + ';color:' + col.text + ';">' +
-      '<div class="grid-card-word" style="color:' + col.accent + ';">' + selectedWord + ' &middot; ' + act.label + '</div>' +
-      '<div class="grid-card-msg">' + msg + '</div>' +
-      '<div class="grid-card-tide">T.I.D.E. Coalition &mdash; Togetherness, Inclusion, Diversity &amp; Equity</div>' +
-      '<div class="grid-card-footer">Smile Bags &middot; A Word &amp; Wonder Experience</div>' +
-    '</div>';
-  }
-  document.getElementById('grid4up').innerHTML = cardHtml;
 
   document.getElementById('printSection').classList.add('show');
-  document.getElementById('printToggleRow').style.display = 'flex';
   document.getElementById('printBtn').style.display = 'block';
   document.body.className = 'print-1up';
   document.getElementById('printSection').scrollIntoView({behavior:'smooth'});
-}
-
-function switchPrint(mode) {
-  if (mode === '1up') {
-    document.getElementById('print4up').classList.remove('show');
-    document.getElementById('printSection').classList.add('show');
-    document.getElementById('btn1up').classList.add('active');
-    document.getElementById('btn4up').classList.remove('active');
-    document.body.className = 'print-1up';
-  } else {
-    document.getElementById('printSection').classList.remove('show');
-    document.getElementById('print4up').classList.add('show');
-    document.getElementById('btn4up').classList.add('active');
-    document.getElementById('btn1up').classList.remove('active');
-    document.body.className = 'print-4up-mode';
-  }
 }
 
 buildOWGrid();
