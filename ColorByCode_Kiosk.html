@@ -641,20 +641,36 @@ function openPrintWindow(canvasId, title, subtitle, includeKey, scene){
     }
     keyHtml += '</div>';
   }
+  var panelHtml =
+    '<div class="panel">'+
+      '<h1>'+title+'</h1>'+
+      '<div class="sub">'+subtitle+'</div>'+
+      '<div class="key-row">'+keyHtml+'</div>'+
+      '<div class="img-wrap"><img src="'+dataURL+'" alt="Coloring sheet"/></div>'+
+      '<div class="footer">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>'+
+    '</div>';
+
   var html = '<!DOCTYPE html><html><head><title>'+title+'</title>'+
-    '<style>@page{size:letter;margin:.4in;}'+
+    '<style>@page{size:letter;margin:.3in;}'+
+    'html,body{height:100%;}'+
     '*{box-sizing:border-box;}'+
-    'body{font-family:Georgia,serif;color:#111;text-align:center;margin:0;padding:0;}'+
-    'h1{font-size:26px;margin:0 0 4px;}'+
-    '.sub{font-size:12px;color:#666;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;}'+
-    'img{display:block;width:100%;max-width:100%;height:auto;border:none;margin:0 auto;}'+
-    '.footer{margin-top:14px;font-size:10px;color:#888;letter-spacing:1px;text-transform:uppercase;}'+
+    'body{font-family:Georgia,serif;color:#111;text-align:center;margin:0;padding:0;display:flex;flex-direction:column;min-height:100vh;}'+
+    '.panel{flex:1;display:flex;flex-direction:column;min-height:0;padding:4px 0;}'+
+    '.cut-line{flex-shrink:0;border-top:1px dashed #bbb;margin:6px 0;position:relative;text-align:center;}'+
+    '.cut-line span{background:#fff;padding:0 10px;font-size:8px;color:#999;letter-spacing:2px;text-transform:uppercase;position:relative;top:-6px;font-family:Georgia,serif;}'+
+    'h1{font-size:18px;margin:0 0 2px;flex-shrink:0;}'+
+    '.sub{font-size:10px;color:#666;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;flex-shrink:0;}'+
+    '.key-row{flex-shrink:0;margin-bottom:4px;}'+
+    '.key-row > div{gap:6px!important;margin:4px 0 6px!important;}'+
+    '.key-row > div > div{font-size:10px!important;}'+
+    '.key-row > div > div > div{width:18px!important;height:18px!important;font-size:9px!important;}'+
+    '.img-wrap{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;margin:0;}'+
+    'img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border:none;}'+
+    '.footer{margin-top:4px;font-size:7px;color:#999;letter-spacing:1px;text-transform:uppercase;flex-shrink:0;}'+
     '</style></head><body>'+
-    '<h1>'+title+'</h1>'+
-    '<div class="sub">'+subtitle+'</div>'+
-    keyHtml+
-    '<img src="'+dataURL+'" alt="Coloring sheet"/>'+
-    '<div class="footer">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Made just for you by a Kellam High School student</div>'+
+    panelHtml +
+    '<div class="cut-line"><span>✂ cut here</span></div>' +
+    panelHtml +
     '<script>window.onload=function(){setTimeout(function(){window.print();},300);};<\/script>'+
     '</body></html>';
   var w = window.open('','_blank');
