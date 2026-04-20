@@ -63,6 +63,12 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .school-bar-preview{height:10px;border-radius:6px;overflow:hidden;display:flex;}
 .school-bar-fill-preview{height:100%;transition:width .4s ease;}
 
+/* ── CARD 2 FOOTER (subtle, inside Smile Bag Progress card) ── */
+.tracker-card2-footer{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:22px;padding-top:18px;border-top:1px solid var(--border);text-align:center;flex-wrap:wrap;}
+.tracker-card2-divider{color:var(--border);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;}
+.tracker-card2-text{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;}
+.tracker-card2-text strong{color:var(--gold);font-family:'Playfair Display',serif;font-size:15px;font-weight:700;letter-spacing:0;text-transform:none;margin-left:4px;}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
 /* ── LAYOUT ── */
@@ -227,6 +233,11 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
       <div class="tracker-total"><strong id="c1TotalPreview">—</strong> of <strong>90</strong> cards created</div>
     </div>
     <div class="school-grid-preview" id="c1SchoolGridPreview"></div>
+    <div class="tracker-card2-footer">
+      <span class="tracker-card2-divider">&mdash; &middot; &mdash;</span>
+      <span class="tracker-card2-text">Card 2 &mdash; Curated quotes created by AVID &middot; <strong id="c2TotalPreview">&mdash;</strong></span>
+      <span class="tracker-card2-divider">&mdash; &middot; &mdash;</span>
+    </div>
   </div>
 
   <!-- AT A GLANCE -->
@@ -408,11 +419,13 @@ var PREVIEW_SCHOOL_PAIRS=[
 ];
 var PREVIEW_PER_SCHOOL_GOAL = 10;
 
-function renderPreviewTracker(c1){
+function renderPreviewTracker(c1, c2){
   var grid = document.getElementById('c1SchoolGridPreview');
   var total = document.getElementById('c1TotalPreview');
+  var c2Total = document.getElementById('c2TotalPreview');
   if(!grid || !total) return;
   total.textContent = (c1 && typeof c1.total === 'number') ? c1.total : '—';
+  if(c2Total) c2Total.textContent = (c2 && typeof c2.total === 'number') ? c2.total : '—';
   grid.innerHTML = '';
   PREVIEW_SCHOOL_PAIRS.forEach(function(p){
     var count = (c1 && c1.bySchool && typeof c1.bySchool[p.school] === 'number') ? c1.bySchool[p.school] : 0;
@@ -433,16 +446,16 @@ function renderPreviewTracker(c1){
 
 function fetchPreviewCounts(){
   if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://')!==0){
-    renderPreviewTracker(null);
+    renderPreviewTracker(null, null);
     return;
   }
   fetch(SCRIPT_URL + '?action=counts')
     .then(function(r){return r.json();})
     .then(function(data){
-      if(data && data.ok){ renderPreviewTracker(data.card1); }
-      else { renderPreviewTracker(null); }
+      if(data && data.ok){ renderPreviewTracker(data.card1, data.card2); }
+      else { renderPreviewTracker(null, null); }
     })
-    .catch(function(){ renderPreviewTracker(null); });
+    .catch(function(){ renderPreviewTracker(null, null); });
 }
 fetchPreviewCounts();
 </script>
