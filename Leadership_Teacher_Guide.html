@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Leadership · Teacher Guide · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --green:#1A6B3A;--green2:#2D8A52;--green3:#40A865;
+  --gold:#C9A84C;--gold2:#E8C97A;
+  --cream:#F5FBF7;--dark:#0D2E1A;--mid:#2A5438;
+  --border:#C8E6D0;--radius:14px;
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;overflow-x:hidden;}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(160deg,var(--dark) 0%,var(--green) 55%,#164F2C 100%);padding:56px 48px 48px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%,rgba(201,168,76,.1) 0%,transparent 50%),radial-gradient(ellipse at 10% 70%,rgba(64,168,101,.12) 0%,transparent 45%);pointer-events:none;}
+.hero-deco{position:absolute;right:48px;top:50%;transform:translateY(-50%);font-size:7rem;opacity:.08;pointer-events:none;}
+.hero-tag{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;position:relative;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:10px;position:relative;}
+.hero h1 em{color:var(--gold2);font-style:italic;}
+.hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:620px;line-height:1.7;margin-bottom:22px;position:relative;}
+.hero-pills{display:flex;flex-wrap:wrap;gap:8px;position:relative;}
+.pill{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;padding:5px 14px;border-radius:20px;}
+.pill-gold{background:rgba(201,168,76,.18);color:var(--gold2);border:1px solid rgba(201,168,76,.3);}
+.pill-green{background:rgba(64,168,101,.2);color:#95D5B2;border:1px solid rgba(64,168,101,.3);}
+.pill-cream{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);}
+
+/* ── MISSION STRIP ── */
+.mission{background:var(--green2);padding:22px 48px;display:flex;align-items:flex-start;gap:20px;border-top:3px solid var(--gold);}
+.mission p{font-size:15px;color:rgba(255,255,255,.9);line-height:1.65;font-weight:300;}
+.mission strong{color:#fff;font-weight:700;}
+
+/* ── MAIN ── */
+.main{max-width:960px;margin:0 auto;padding:40px 48px 80px;}
+.section-tag{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--green2);margin-bottom:6px;margin-top:36px;}
+.section-tag.first{margin-top:0;}
+.section-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--green);margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid var(--border);}
+
+/* ── CHECKLIST ── */
+.checklist{display:grid;gap:10px;}
+.check-item{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:14px 18px;display:flex;gap:14px;align-items:flex-start;box-shadow:0 2px 6px rgba(26,107,58,.04);}
+.check-box{width:22px;height:22px;border:2.5px solid var(--green2);border-radius:5px;flex-shrink:0;margin-top:1px;background:#fff;}
+.check-text{font-size:14px;color:#333;line-height:1.6;}
+.check-text strong{color:var(--green);}
+.check-text code{background:rgba(201,168,76,.15);color:var(--mid);padding:2px 7px;border-radius:4px;font-family:'Courier New',monospace;font-size:12px;}
+
+/* ── TABS GRID (8 TABS REF) ── */
+.tabs-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.tab-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:0 2px 8px rgba(26,107,58,.05);}
+.tab-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--green2);margin-bottom:4px;}
+.tab-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--green);margin-bottom:6px;}
+.tab-desc{font-size:12px;color:#555;line-height:1.6;}
+.tab-special{background:#F0FBF4;border-color:var(--green2);}
+.tab-special .tab-num{color:var(--green);}
+
+/* ── NUMBERED STEP CARDS ── */
+.step-grid{display:grid;gap:12px;}
+.step-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 20px;display:flex;gap:18px;align-items:flex-start;box-shadow:0 2px 8px rgba(26,107,58,.05);}
+.step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--green);color:var(--gold2);font-family:'Fredoka One',cursive;font-size:16px;display:flex;align-items:center;justify-content:center;}
+.step-body{flex:1;}
+.step-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--green);margin-bottom:4px;}
+.step-desc{font-size:13px;color:#555;line-height:1.65;}
+.step-desc strong{color:var(--green);}
+.step-desc code{background:rgba(201,168,76,.15);color:var(--mid);padding:2px 6px;border-radius:4px;font-family:'Courier New',monospace;font-size:11.5px;}
+
+/* ── CALLOUT ── */
+.callout{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);border-left:4px solid var(--gold);border-radius:12px;padding:18px 22px;margin:18px 0;}
+.callout-tag{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:6px;}
+.callout p{font-size:14px;color:#333;line-height:1.65;}
+.callout strong{color:var(--green);}
+
+/* ── BULLET LIST ── */
+.bullet-list{display:grid;gap:10px;list-style:none;}
+.bullet-list li{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:12px 16px 12px 44px;position:relative;font-size:14px;color:#333;line-height:1.6;box-shadow:0 2px 6px rgba(26,107,58,.04);}
+.bullet-list li::before{content:'✓';position:absolute;left:16px;top:12px;font-family:'Fredoka One',cursive;color:var(--green2);font-size:14px;pointer-events:none;}
+.bullet-list li strong{color:var(--green);}
+.bullet-list li code{background:rgba(201,168,76,.15);color:var(--mid);padding:2px 6px;border-radius:4px;font-family:'Courier New',monospace;font-size:12px;}
+
+/* ── TABLE ── */
+.stbl{width:100%;border-collapse:collapse;background:#fff;border-radius:var(--radius);overflow:hidden;border:1.5px solid var(--border);box-shadow:0 2px 8px rgba(26,107,58,.04);}
+.stbl th{background:var(--green);color:var(--gold2);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:12px 16px;text-align:left;}
+.stbl td{padding:14px 16px;font-size:13px;color:#333;line-height:1.6;border-top:1px solid var(--border);vertical-align:top;}
+.stbl td:first-child{font-family:'Fredoka One',cursive;color:var(--green);font-size:12px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;}
+.stbl code{background:rgba(201,168,76,.15);color:var(--mid);padding:2px 6px;border-radius:4px;font-family:'Courier New',monospace;font-size:11.5px;white-space:normal;}
+
+/* ── BACK BUTTON ── */
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:var(--gold2);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:11px 20px;border-radius:8px;text-decoration:none;transition:all .2s;}
+.back-btn:hover{background:var(--green2);}
+
+/* ── PRINT BUTTON ── */
+.print-btn{position:fixed;top:20px;right:20px;z-index:100;background:var(--green);color:var(--gold2);border:2px solid var(--gold);border-radius:50px;padding:12px 22px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;box-shadow:0 6px 18px rgba(13,46,26,.25);transition:all .2s;}
+.print-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(13,46,26,.3);background:var(--green2);}
+
+/* ── FOOTER ── */
+footer{text-align:center;padding:28px;border-top:1px solid var(--border);margin-top:20px;}
+footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spacing:1px;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .hero,.mission,.main{padding-left:20px;padding-right:20px;}
+  .tabs-grid{grid-template-columns:1fr;}
+  .print-btn{top:14px;right:14px;padding:10px 16px;font-size:10px;}
+  .step-card{padding:14px 16px;gap:12px;}
+  .step-num{width:34px;height:34px;font-size:14px;}
+}
+
+/* ── PRINT ── */
+@media print{
+  .no-print{display:none !important;}
+  body{background:#fff;color:#000;}
+  .hero{padding:32px 36px 28px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .hero-deco{display:none;}
+  .mission{padding:16px 36px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .main{padding:24px 36px;max-width:none;}
+  .step-card,.tab-card,.check-item,.callout,.bullet-list li{break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .stbl{break-inside:avoid;page-break-inside:avoid;}
+  .stbl th,.stbl td{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .section-tag{margin-top:22px;}
+  footer{page-break-inside:avoid;}
+  a{color:inherit;text-decoration:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- PRINT BUTTON -->
+<button class="print-btn no-print" onclick="window.print()">🖨️ Print This Guide</button>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-deco">📋</div>
+  <div class="hero-tag">Smile Bags · A Word &amp; Wonder Experience · Spring 2026</div>
+  <h1>Teacher Guide<br><em>Activity Kiosk</em></h1>
+  <p class="hero-sub">A complete reference for deploying the Leadership Activity Kiosk, approving student letters, and printing the class sticker set.</p>
+  <div class="hero-pills">
+    <div class="pill pill-gold">🌟 Katelyn Marquand</div>
+    <div class="pill pill-green">Leadership Skills · Grades 9–12</div>
+    <div class="pill pill-cream">Spring 2026</div>
+  </div>
+</div>
+
+<!-- MISSION -->
+<div class="mission">
+  <span style="font-size:24px;flex-shrink:0;">📋</span>
+  <p><strong>What This Is.</strong> Leadership students use this kiosk to create an 8-part package for a child receiving a Smile Bag. Six activities build leadership skills for the recipient. <strong>Tab 7</strong> is a personal handwritten letter guided by a Gemini AI tutor and approved by you before printing. <strong>Tab 8</strong> is a OneWord sticker you print for the whole class at once.</p>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SETUP CHECKLIST -->
+  <div class="section-tag first">Before Class</div>
+  <div class="section-title">Complete Setup Checklist</div>
+  <div class="checklist">
+    <div class="check-item"><div class="check-box"></div><div class="check-text">Deploy <strong>Code_LeadershipLetterReview.gs</strong> as a Web App in Google Apps Script — <em>Execute as: Me · Who has access: Anyone.</em></div></div>
+    <div class="check-item"><div class="check-box"></div><div class="check-text">Add your email address on <strong>line 11</strong> of <code>Code.gs</code> before deploying.</div></div>
+    <div class="check-item"><div class="check-box"></div><div class="check-text">Copy the Web App URL and paste it into the kiosk HTML, replacing <code>YOUR_APPS_SCRIPT_URL_HERE</code>.</div></div>
+    <div class="check-item"><div class="check-box"></div><div class="check-text">Set up the Gemini Gem using <strong>Leadership_Gemini_Gem_Setup.docx</strong>. Copy the Gem link and paste it into the kiosk HTML, replacing <code>GEM_LINK_HERE</code>.</div></div>
+    <div class="check-item"><div class="check-box"></div><div class="check-text">Upload the updated kiosk HTML to <strong>GitHub Pages</strong>.</div></div>
+    <div class="check-item"><div class="check-box"></div><div class="check-text">Post the kiosk link and the Gemini Gem link on <strong>Canvas</strong> for students.</div></div>
+    <div class="check-item"><div class="check-box"></div><div class="check-text">Keep <strong>Leadership_Sticker_Print_Sheet.html</strong> handy — you will use this to print all stickers at once.</div></div>
+  </div>
+
+  <!-- 8 TABS REFERENCE -->
+  <div class="section-tag">Reference</div>
+  <div class="section-title">The Eight Tabs — What Each One Produces</div>
+  <div class="tabs-grid">
+    <div class="tab-card"><div class="tab-num">Tab 01</div><div class="tab-name">🤝 Friendship Cards</div><div class="tab-desc">Four age-appropriate challenges a child can do with a friend. Student customizes for Elementary, Middle, or High School recipient.</div></div>
+    <div class="tab-card"><div class="tab-num">Tab 02</div><div class="tab-name">🧩 Puzzle It Out</div><div class="tab-desc">A riddle connected to the student's OneWord, with an answer and a lesson. Student writes their own version.</div></div>
+    <div class="tab-card"><div class="tab-num">Tab 03</div><div class="tab-name">💛 Kindness Coupons</div><div class="tab-desc">Four coupons for genuine acts of service. Student writes the specific acts. Printed and cut.</div></div>
+    <div class="tab-card"><div class="tab-num">Tab 04</div><div class="tab-name">🌬️ Calm-Down Toolkit</div><div class="tab-desc">A breathing technique named after the student's word. The interactive breathing circle demonstrates the technique.</div></div>
+    <div class="tab-card"><div class="tab-num">Tab 05</div><div class="tab-name">✨ Dream Jar</div><div class="tab-desc">A fill-in activity guiding the child through a dream, a goal, and a message. Age-calibrated prompts.</div></div>
+    <div class="tab-card"><div class="tab-num">Tab 06</div><div class="tab-name">💡 Big Idea Planner</div><div class="tab-desc">A structured planning sheet with steps, resources, and purpose. 3–5 steps depending on age group.</div></div>
+    <div class="tab-card tab-special"><div class="tab-num">Tab 07 · Special</div><div class="tab-name">✉️ Letter</div><div class="tab-desc">Student-written personal letter. Guided by a Gemini tutor. Submitted for your approval. Written by hand on cardstock.</div></div>
+    <div class="tab-card tab-special"><div class="tab-num">Tab 08 · Special</div><div class="tab-name">🏷️ Sticker</div><div class="tab-desc">2-inch round OneWord sticker designed by the student. Submitted to Google Sheet. You print all stickers as a class set.</div></div>
+  </div>
+
+  <!-- LETTER APPROVAL WORKFLOW -->
+  <div class="section-tag">Tab 7 · Letter Workflow</div>
+  <div class="section-title">Letter Approval — How It Works</div>
+  <p style="font-size:14px;color:#555;line-height:1.7;margin-bottom:18px;">This is the most important teacher-facing process in the kiosk. Here is exactly how it works:</p>
+  <div class="step-grid">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Student uses the Letter Writing Tutor</div>
+        <div class="step-desc">The kiosk guides the student through 5 questions one at a time. Their answers are assembled into a draft letter using their own words.</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Student optionally uses Gemini</div>
+        <div class="step-desc">The <strong>Open in Gemini</strong> button opens the approved Gemini Gem in a new tab. Gemini asks the same 5 questions conversationally and helps the student shape their language. Student copies the result back into the kiosk editor.</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Student submits for review</div>
+        <div class="step-desc">Student clicks <strong>Submit for Teacher Review</strong>. The kiosk logs the letter to your Google Sheet and emails you the full letter with a one-click <strong>Approve</strong> link.</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">Student receives a token code</div>
+        <div class="step-desc">A short code (like <code>KSB-4F2A</code>) appears on screen. Students write this down. If they close the browser, they can re-enter the code to check approval status when they return — useful across two class periods.</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-title">You approve by email</div>
+        <div class="step-desc">Click the <strong>Approve</strong> link in the email. A confirmation page appears. The student's kiosk unlocks within 20 seconds automatically.</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <div class="step-title">Student prints the Writing Guide</div>
+        <div class="step-desc">The <strong>Print Writing Guide</strong> button opens a new window with the Gemini draft as a reference at the top and 14 blank handwriting lines below. Student writes their letter by hand on this cardstock sheet.</div>
+      </div>
+    </div>
+  </div>
+  <div class="callout">
+    <div class="callout-tag">⚡ Two Class Periods</div>
+    <p>Tokens never expire. A Period 1 student who doesn't get approved during class can return in Period 2 or the next day, enter their token code on the Letter tab, and check status. <strong>The kiosk polls for 15 minutes then stops</strong> — students use the token code to resume.</p>
+  </div>
+
+  <!-- STICKER PRINTING -->
+  <div class="section-tag">Tab 8 · Sticker Workflow</div>
+  <div class="section-title">Sticker Printing — Class Set</div>
+  <p style="font-size:14px;color:#555;line-height:1.7;margin-bottom:14px;">Students submit their sticker designs digitally — they do not print individually. <strong>You print all stickers as one class set.</strong></p>
+  <ul class="bullet-list">
+    <li>Open <strong>Leadership_Sticker_Print_Sheet.html</strong> in Chrome.</li>
+    <li>Paste your Apps Script Web App URL into the URL field.</li>
+    <li>Click <strong>Load Stickers</strong> — all submissions appear in a 3×4 grid, 12 per page.</li>
+    <li>Load sticker paper into your printer (<strong>Avery 22807</strong> or equivalent 2-inch round).</li>
+    <li>Click <strong>Print Sheet</strong> — one print job, entire class set.</li>
+    <li>Mark the <strong>Printed?</strong> column <em>Yes</em> in your Google Sheet for each student.</li>
+  </ul>
+
+  <!-- QUALITY INDICATORS -->
+  <div class="section-tag">Approval</div>
+  <div class="section-title">Quality Indicators — What to Look For</div>
+  <ul class="bullet-list">
+    <li>Does the letter <strong>mention the student's OneWord?</strong> If not, ask them to revise.</li>
+    <li>Does it sound like a real person wrote it — or like AI output? The Gemini Gem is configured to use the student's own words, but <strong>check anyway.</strong></li>
+    <li>Is it <strong>at least 30 words?</strong> The kiosk enforces this before submitting, but very short letters may need more.</li>
+    <li>Is the <strong>tone appropriate</strong> for a child receiving a Smile Bag?</li>
+    <li>If you need a student to revise — simply do not click Approve. <strong>Reply to the email with specific feedback.</strong> The student can edit in the kiosk and resubmit.</li>
+  </ul>
+
+  <!-- TIMELINE -->
+  <div class="section-tag">Pacing</div>
+  <div class="section-title">Suggested 4-Day Timeline</div>
+  <table class="stbl">
+    <thead><tr><th>Day</th><th>Activity</th></tr></thead>
+    <tbody>
+      <tr><td>Day 1</td><td>Introduce the project. Demo the kiosk. Assign OneWords and age groups. Walk through <strong>Tab 1 (Friendship Cards)</strong> together. Students complete <strong>Tabs 1–4</strong>.</td></tr>
+      <tr><td>Day 2</td><td>Students complete <strong>Tabs 5–6</strong> (Dream Jar, Big Idea Planner). Begin <strong>Tab 7</strong> — Letter tutor questions. Students who finish early begin Gemini draft.</td></tr>
+      <tr><td>Day 3</td><td>Students finalize letter, submit for review, receive token codes. You approve during class. Students write letter by hand on cardstock. Students complete <strong>Tab 8 (Sticker)</strong>.</td></tr>
+      <tr><td>Day 4</td><td>Print sticker sheet. Students assemble and submit complete packages.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- FILES REFERENCE -->
+  <div class="section-tag">Reference</div>
+  <div class="section-title">Project Files</div>
+  <table class="stbl">
+    <thead><tr><th>File</th><th>How to Use It</th></tr></thead>
+    <tbody>
+      <tr><td><code>LeadershipActivities_Kiosk_v2.html</code></td><td>Upload to GitHub Pages. Share link with students via Canvas.</td></tr>
+      <tr><td><code>Code_LeadershipLetterReview.gs</code></td><td>Deploy in Google Apps Script. Add your email on <strong>line 11</strong> before deploying.</td></tr>
+      <tr><td><code>Leadership_Gemini_Gem_Setup.docx</code></td><td>Follow setup instructions. Paste Gem link into kiosk HTML.</td></tr>
+      <tr><td><code>Leadership_Sticker_Print_Sheet.html</code></td><td>Keep locally. Open in Chrome when ready to print stickers.</td></tr>
+    </tbody>
+  </table>
+
+  <br/><br/>
+  <a class="back-btn no-print" href="Leadership_Menu.html">🌿 Back to Leadership Menu</a>
+
+</div>
+
+<footer><p>Smile Bags · A Word &amp; Wonder Experience · Leadership Skills · Katelyn Marquand · Spring 2026</p></footer>
+
+</body>
+</html>

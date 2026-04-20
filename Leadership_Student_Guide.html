@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Leadership · Student Guide · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --green:#1A6B3A;--green2:#2D8A52;--green3:#40A865;
+  --gold:#C9A84C;--gold2:#E8C97A;
+  --cream:#F5FBF7;--dark:#0D2E1A;--mid:#2A5438;
+  --border:#C8E6D0;--radius:14px;
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;overflow-x:hidden;}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(160deg,var(--dark) 0%,var(--green) 55%,#164F2C 100%);padding:56px 48px 48px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%,rgba(201,168,76,.1) 0%,transparent 50%),radial-gradient(ellipse at 10% 70%,rgba(64,168,101,.12) 0%,transparent 45%);pointer-events:none;}
+.hero-deco{position:absolute;right:48px;top:50%;transform:translateY(-50%);font-size:7rem;opacity:.08;pointer-events:none;}
+.hero-tag{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;position:relative;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:10px;position:relative;}
+.hero h1 em{color:var(--gold2);font-style:italic;}
+.hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:620px;line-height:1.7;margin-bottom:22px;position:relative;}
+.hero-pills{display:flex;flex-wrap:wrap;gap:8px;position:relative;}
+.pill{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;padding:5px 14px;border-radius:20px;}
+.pill-gold{background:rgba(201,168,76,.18);color:var(--gold2);border:1px solid rgba(201,168,76,.3);}
+.pill-green{background:rgba(64,168,101,.2);color:#95D5B2;border:1px solid rgba(64,168,101,.3);}
+.pill-cream{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);}
+
+/* ── MISSION STRIP ── */
+.mission{background:var(--green2);padding:22px 48px;display:flex;align-items:flex-start;gap:20px;border-top:3px solid var(--gold);}
+.mission p{font-size:15px;color:rgba(255,255,255,.9);line-height:1.65;font-weight:300;}
+.mission strong{color:#fff;font-weight:700;}
+
+/* ── MAIN ── */
+.main{max-width:960px;margin:0 auto;padding:40px 48px 80px;}
+.section-tag{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--green2);margin-bottom:6px;margin-top:36px;}
+.section-tag.first{margin-top:0;}
+.section-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--green);margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid var(--border);}
+.lead-text{font-size:14px;color:#555;line-height:1.7;margin-bottom:14px;}
+.lead-text strong{color:var(--green);}
+
+/* ── TABS GRID (8 ACTIVITIES REF) ── */
+.tabs-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.tab-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:0 2px 8px rgba(26,107,58,.05);}
+.tab-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--green2);margin-bottom:4px;}
+.tab-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--green);margin-bottom:6px;}
+.tab-desc{font-size:12px;color:#555;line-height:1.6;}
+.tab-special{background:#F0FBF4;border-color:var(--green2);}
+.tab-special .tab-num{color:var(--green);}
+
+/* ── NUMBERED STEP CARDS ── */
+.step-grid{display:grid;gap:12px;}
+.step-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 20px;display:flex;gap:18px;align-items:flex-start;box-shadow:0 2px 8px rgba(26,107,58,.05);}
+.step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--green);color:var(--gold2);font-family:'Fredoka One',cursive;font-size:16px;display:flex;align-items:center;justify-content:center;}
+.step-body{flex:1;}
+.step-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--green);margin-bottom:4px;}
+.step-desc{font-size:13px;color:#555;line-height:1.65;}
+.step-desc strong{color:var(--green);}
+.step-desc code{background:rgba(201,168,76,.15);color:var(--mid);padding:2px 6px;border-radius:4px;font-family:'Courier New',monospace;font-size:11.5px;}
+
+/* ── CALLOUT ── */
+.callout{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);border-left:4px solid var(--gold);border-radius:12px;padding:18px 22px;margin:18px 0;}
+.callout-tag{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:6px;}
+.callout p{font-size:14px;color:#333;line-height:1.65;}
+.callout strong{color:var(--green);}
+.callout.alert{background:rgba(232,130,58,.08);border-color:rgba(232,130,58,.25);border-left-color:#E8823A;}
+.callout.alert .callout-tag{color:#B54F1F;}
+.callout.alert strong{color:#B54F1F;}
+
+/* ── BULLET LIST ── */
+.bullet-list{display:grid;gap:10px;list-style:none;}
+.bullet-list li{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:12px 16px 12px 44px;position:relative;font-size:14px;color:#333;line-height:1.6;box-shadow:0 2px 6px rgba(26,107,58,.04);}
+.bullet-list li::before{content:'✓';position:absolute;left:16px;top:12px;font-family:'Fredoka One',cursive;color:var(--green2);font-size:14px;pointer-events:none;}
+.bullet-list li strong{color:var(--green);}
+.bullet-list li code{background:rgba(201,168,76,.15);color:var(--mid);padding:2px 6px;border-radius:4px;font-family:'Courier New',monospace;font-size:12px;}
+
+/* ── AGE GROUP TABLE ── */
+.stbl{width:100%;border-collapse:collapse;background:#fff;border-radius:var(--radius);overflow:hidden;border:1.5px solid var(--border);box-shadow:0 2px 8px rgba(26,107,58,.04);}
+.stbl th{background:var(--green);color:var(--gold2);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:12px 14px;text-align:left;vertical-align:bottom;}
+.stbl th.rowhead{background:var(--dark);}
+.stbl td{padding:12px 14px;font-size:13px;color:#333;line-height:1.55;border-top:1px solid var(--border);vertical-align:top;}
+.stbl td:first-child{font-family:'Fredoka One',cursive;color:var(--green);font-size:11px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;background:rgba(26,107,58,.04);}
+
+/* ── BACK BUTTON ── */
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:var(--gold2);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:11px 20px;border-radius:8px;text-decoration:none;transition:all .2s;}
+.back-btn:hover{background:var(--green2);}
+
+/* ── PRINT BUTTON ── */
+.print-btn{position:fixed;top:20px;right:20px;z-index:100;background:var(--green);color:var(--gold2);border:2px solid var(--gold);border-radius:50px;padding:12px 22px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;box-shadow:0 6px 18px rgba(13,46,26,.25);transition:all .2s;}
+.print-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(13,46,26,.3);background:var(--green2);}
+
+/* ── FOOTER ── */
+footer{text-align:center;padding:28px;border-top:1px solid var(--border);margin-top:20px;}
+footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spacing:1px;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .hero,.mission,.main{padding-left:20px;padding-right:20px;}
+  .tabs-grid{grid-template-columns:1fr;}
+  .print-btn{top:14px;right:14px;padding:10px 16px;font-size:10px;}
+  .step-card{padding:14px 16px;gap:12px;}
+  .step-num{width:34px;height:34px;font-size:14px;}
+  .stbl{font-size:12px;}
+  .stbl th,.stbl td{padding:10px 8px;}
+}
+
+/* ── PRINT ── */
+@media print{
+  .no-print{display:none !important;}
+  body{background:#fff;color:#000;}
+  .hero{padding:32px 36px 28px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .hero-deco{display:none;}
+  .mission{padding:16px 36px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .main{padding:24px 36px;max-width:none;}
+  .step-card,.tab-card,.callout,.bullet-list li{break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .stbl{break-inside:avoid;page-break-inside:avoid;}
+  .stbl th,.stbl td{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .section-tag{margin-top:22px;}
+  footer{page-break-inside:avoid;}
+  a{color:inherit;text-decoration:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- PRINT BUTTON -->
+<button class="print-btn no-print" onclick="window.print()">🖨️ Print This Guide</button>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-deco">📄</div>
+  <div class="hero-tag">Smile Bags · A Word &amp; Wonder Experience · Spring 2026</div>
+  <h1>Student Guide<br><em>Activity Kiosk</em></h1>
+  <p class="hero-sub">Your guide to building a complete 8-part Smile Bag package — six activities, a personal letter, and a custom sticker — all connected to your OneWord.</p>
+  <div class="hero-pills">
+    <div class="pill pill-gold">🌟 Leadership Skills</div>
+    <div class="pill pill-green">Ms. Marquand · Grades 9–12</div>
+    <div class="pill pill-cream">Spring 2026</div>
+  </div>
+</div>
+
+<!-- MISSION -->
+<div class="mission">
+  <span style="font-size:24px;flex-shrink:0;">🌟</span>
+  <p><strong>What You Are Doing.</strong> You are creating a <strong>personal package for a real child</strong> in your community who needs a smile. Using the Leadership Activity Kiosk, you will build <strong>six activities</strong>, write a <strong>personal letter by hand</strong>, and design a <strong>2-inch OneWord sticker</strong> — all connected to your word. Your package will be placed in a Smile Bag.</p>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- BEFORE YOU START -->
+  <div class="section-tag first">Getting Ready</div>
+  <div class="section-title">Before You Start</div>
+  <ul class="bullet-list">
+    <li>Know your <strong>OneWord</strong> — your teacher will assign it.</li>
+    <li>Know <strong>who you are designing for</strong> — Elementary 3–5, Middle 6–8, or High School 9–12.</li>
+    <li>Open the kiosk using the <strong>link your teacher posts on Canvas.</strong></li>
+    <li>Type your <strong>name</strong> in the name box before selecting your word.</li>
+  </ul>
+
+  <!-- 8 ACTIVITIES -->
+  <div class="section-tag">The Package</div>
+  <div class="section-title">Your Eight Activities</div>
+  <div class="tabs-grid">
+    <div class="tab-card"><div class="tab-num">Tab 01</div><div class="tab-name">🤝 Friendship Cards</div><div class="tab-desc">Four challenges a child can do with a friend. See the example first, then make your own.</div></div>
+    <div class="tab-card"><div class="tab-num">Tab 02</div><div class="tab-name">🧩 Puzzle It Out</div><div class="tab-desc">A riddle with a surprise answer that connects to your word. Write your own version.</div></div>
+    <div class="tab-card"><div class="tab-num">Tab 03</div><div class="tab-name">💛 Kindness Coupons</div><div class="tab-desc">Four coupons for real things you'd do for someone. Make them genuine.</div></div>
+    <div class="tab-card"><div class="tab-num">Tab 04</div><div class="tab-name">🌬️ Calm-Down Toolkit</div><div class="tab-desc">A breathing technique named after your word. Try the breathing circle — it actually works!</div></div>
+    <div class="tab-card"><div class="tab-num">Tab 05</div><div class="tab-name">✨ Dream Jar</div><div class="tab-desc">A fill-in activity about dreams and goals, written for the child who gets your bag.</div></div>
+    <div class="tab-card"><div class="tab-num">Tab 06</div><div class="tab-name">💡 Big Idea Planner</div><div class="tab-desc">A step-by-step plan inspired by your word. 3–5 steps depending on the age group.</div></div>
+    <div class="tab-card tab-special"><div class="tab-num">Tab 07 · Special</div><div class="tab-name">✉️ Letter</div><div class="tab-desc">A personal letter written by you, to the child. Guided by a tutor. Written by hand on cardstock.</div></div>
+    <div class="tab-card tab-special"><div class="tab-num">Tab 08 · Special</div><div class="tab-name">🏷️ Sticker</div><div class="tab-desc">A 2-inch round sticker with your word, emoji, and a short phrase. Your teacher prints these for the class.</div></div>
+  </div>
+
+  <!-- HOW TO USE TABS 1-6 -->
+  <div class="section-tag">Tabs 1–6</div>
+  <div class="section-title">How to Complete the Activities</div>
+  <div class="step-grid">
+    <div class="step-card"><div class="step-num">1</div><div class="step-body"><div class="step-title">Click the tab at the top.</div><div class="step-desc">Each tab is one of your eight activities. Start with Tab 01 and work across.</div></div></div>
+    <div class="step-card"><div class="step-num">2</div><div class="step-body"><div class="step-title">Click <strong>See the Example</strong> first.</div><div class="step-desc">Read it carefully. It shows what a good version looks like for your OneWord and age group.</div></div></div>
+    <div class="step-card"><div class="step-num">3</div><div class="step-body"><div class="step-title">Click <strong>Make Your Own.</strong></div><div class="step-desc">Fill in every field thoughtfully. Don't rush — a real child will use this.</div></div></div>
+    <div class="step-card"><div class="step-num">4</div><div class="step-body"><div class="step-title">Check your work.</div><div class="step-desc">Does it connect to your word? Is it right for the age group you chose?</div></div></div>
+    <div class="step-card"><div class="step-num">5</div><div class="step-body"><div class="step-title">Click the <strong>Print</strong> button for that tab.</div><div class="step-desc">Print it. Set it aside.</div></div></div>
+    <div class="step-card"><div class="step-num">6</div><div class="step-body"><div class="step-title">Repeat for all six tabs.</div><div class="step-desc">Tabs 01 through 06 follow the same pattern. Tabs 07 and 08 are different — see below.</div></div></div>
+  </div>
+
+  <!-- TAB 7 -->
+  <div class="section-tag">Tab 7</div>
+  <div class="section-title">Writing Your Letter</div>
+  <div class="callout alert">
+    <div class="callout-tag">⚠️ Important</div>
+    <p>Your letter must be <strong>approved by your teacher</strong> before you can print the writing guide. Do not skip any steps.</p>
+  </div>
+  <div class="step-grid">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Answer the 5 tutor questions</div>
+        <div class="step-desc">The kiosk will ask you 5 questions one at a time. Answer each one in your own words. <strong>Short answers will be sent back</strong> — aim for at least a full sentence each time.</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Use Gemini if you want help</div>
+        <div class="step-desc">Click <strong>Open in Gemini</strong> to open the Gemini writing tutor in a new tab. It will ask you the same 5 questions and help you shape your words into a letter. Copy your finished letter and paste it back into the kiosk.</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Review and edit your letter</div>
+        <div class="step-desc">Read your draft carefully. <strong>Does it sound like YOU?</strong> Make any changes you want in the editor.</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">Submit for teacher review</div>
+        <div class="step-desc">Click <strong>Submit for Teacher Review.</strong> Your teacher will receive an email with your letter and approve it.</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-title">Write down your token code!</div>
+        <div class="step-desc">A code like <code>KSB-4F2A</code> will appear on screen. <strong>WRITE IT DOWN.</strong> If you close this browser, you can enter the code when you come back to check whether your letter has been approved.</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <div class="step-title">Wait for approval</div>
+        <div class="step-desc">The kiosk checks for approval automatically every 20 seconds for 15 minutes. When approved, the <strong>Print Writing Guide</strong> button will unlock.</div>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">7</div>
+      <div class="step-body">
+        <div class="step-title">Print and write by hand</div>
+        <div class="step-desc">Click <strong>Print Writing Guide.</strong> A new window opens with your Gemini draft at the top (for reference) and blank handwriting lines below. Write your letter by hand on this cardstock sheet. <strong>This is what goes in the Smile Bag.</strong></div>
+      </div>
+    </div>
+  </div>
+  <div class="callout">
+    <div class="callout-tag">💡 If You Close the Browser</div>
+    <p>No problem. Open the kiosk again, go to <strong>Tab 7</strong>, and enter your token code in the <em>"Already Submitted? Resume Here"</em> box. The kiosk will check whether you have been approved.</p>
+  </div>
+
+  <!-- TAB 8 -->
+  <div class="section-tag">Tab 8</div>
+  <div class="section-title">Designing Your Sticker</div>
+  <p class="lead-text">The sticker tab is the final step. Your teacher will print all stickers together as one class set — <strong>you do NOT print your sticker yourself.</strong></p>
+  <ul class="bullet-list">
+    <li>Choose your <strong>sticker emoji</strong> from the grid.</li>
+    <li>Choose your <strong>sticker color.</strong></li>
+    <li>Type a <strong>short phrase</strong> (up to 30 characters). Ideas: <em>"Kellam Smile Bags · 2026"</em> or your word's meaning.</li>
+    <li>Watch the live <strong>2-inch circle preview</strong> update as you design.</li>
+    <li>Click <strong>Submit My Sticker Design</strong> when you are happy with it.</li>
+    <li>Done! Your teacher will print it with the rest of the class.</li>
+  </ul>
+
+  <!-- AGE GROUP TABLE -->
+  <div class="section-tag">Quick Reference</div>
+  <div class="section-title">Age Group Guide</div>
+  <p class="lead-text">Match your language, tone, and activity style to the age of your recipient.</p>
+  <table class="stbl">
+    <thead>
+      <tr>
+        <th class="rowhead"></th>
+        <th>🌱 Elementary 3–5</th>
+        <th>🌿 Middle 6–8</th>
+        <th>🌳 High 9–12</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Language</td>
+        <td>Simple, short sentences</td>
+        <td>Conversational, relatable</td>
+        <td>Thoughtful, reflective</td>
+      </tr>
+      <tr>
+        <td>Activities</td>
+        <td>Playful, hands-on</td>
+        <td>Social, discussion-based</td>
+        <td>Leadership, community-focused</td>
+      </tr>
+      <tr>
+        <td>Letter tone</td>
+        <td>Warm and encouraging</td>
+        <td>Genuine and empathetic</td>
+        <td>Purposeful and respectful</td>
+      </tr>
+      <tr>
+        <td>Planner</td>
+        <td>3 simple steps</td>
+        <td>4 steps with "why"</td>
+        <td>5 strategic steps</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <br/><br/>
+  <a class="back-btn no-print" href="Leadership_Menu.html">🌿 Back to Leadership Menu</a>
+
+</div>
+
+<footer><p>Smile Bags · A Word &amp; Wonder Experience · Leadership Skills · Katelyn Marquand · Spring 2026</p></footer>
+
+</body>
+</html>
