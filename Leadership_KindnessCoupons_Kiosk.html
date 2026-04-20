@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kindness Coupons · Smile Bags · A Word & Wonder Experience</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,500&family=Inter:wght@400;500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1e2838;
+    --ink-soft:#3d4a5e;
+    --muted:#6b7689;
+    --bg:#f4efe3;
+    --bg-deep:#ebe3d0;
+    --card:#ffffff;
+    --border:#d6cdb8;
+    --gold:#b89537;
+    --gold-soft:#d4b865;
+    --creative:#c4502e;
+    --creative-soft:#f5e4dc;
+    --active:#2f6b42;
+    --active-soft:#deead9;
+    --observational:#2f5a8a;
+    --observational-soft:#dce5f2;
+    --shadow:0 2px 8px rgba(30,40,56,.08);
+    --shadow-hover:0 6px 18px rgba(30,40,56,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    line-height:1.5;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ========== HEADER ========== */
+  header{
+    background:var(--ink);
+    color:#f8f3e5;
+    padding:18px 32px;
+    border-bottom:3px solid var(--gold);
+  }
+  .header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .brand{display:flex;flex-direction:column;gap:2px}
+  .brand-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;letter-spacing:.5px}
+  .brand-sub{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;opacity:.7;font-weight:500}
+  .drive-pill{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--gold);color:var(--ink);
+    padding:10px 18px;border-radius:999px;
+    text-decoration:none;font-size:13px;font-weight:600;letter-spacing:.3px;
+    transition:transform .15s ease, box-shadow .15s ease;
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+  }
+  .drive-pill:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(0,0,0,.25)}
+  .drive-pill svg{width:16px;height:16px}
+
+  /* ========== MAIN ========== */
+  main{flex:1;max-width:1400px;margin:0 auto;width:100%;padding:32px;position:relative}
+  .screen{display:none;animation:fadeIn .3s ease}
+  .screen.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ========== SCREEN INTROS ========== */
+  .intro{max-width:720px;margin:0 auto 32px;text-align:center}
+  .eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}
+  .intro h1{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;color:var(--ink);margin-bottom:10px;line-height:1.15}
+  .intro p{color:var(--ink-soft);font-size:15px;max-width:600px;margin:0 auto}
+
+  /* ========== BREADCRUMB/BACK ========== */
+  .nav-row{display:flex;align-items:center;gap:14px;margin-bottom:24px;max-width:1200px;margin-left:auto;margin-right:auto}
+  .back-btn{
+    background:transparent;border:1px solid var(--border);
+    padding:8px 14px;border-radius:999px;
+    font-family:inherit;font-size:13px;color:var(--ink);cursor:pointer;
+    display:inline-flex;align-items:center;gap:6px;
+    transition:background .15s ease, border-color .15s ease;
+  }
+  .back-btn:hover{background:#fff;border-color:var(--ink)}
+  .crumb{font-size:13px;color:var(--muted);letter-spacing:.3px}
+  .crumb strong{color:var(--ink);font-weight:600}
+  .crumb .sep{margin:0 8px;opacity:.5}
+
+  /* ========== WORD GRID ========== */
+  .word-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:14px;
+    max-width:1100px;
+    margin:0 auto;
+  }
+  @media (max-width:900px){.word-grid{grid-template-columns:repeat(4,1fr)}}
+  @media (max-width:640px){.word-grid{grid-template-columns:repeat(3,1fr);gap:10px}}
+  @media (max-width:400px){.word-grid{grid-template-columns:repeat(2,1fr)}}
+  .word-tile{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:24px 10px;
+    text-align:center;
+    cursor:pointer;
+    font-family:'Playfair Display',serif;
+    font-size:19px;
+    font-weight:800;
+    letter-spacing:2.5px;
+    color:var(--ink);
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    box-shadow:var(--shadow);
+  }
+  .word-tile:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:var(--gold)}
+
+  /* ========== SET CARDS ========== */
+  .chosen-word{
+    text-align:center;margin-bottom:28px;
+    font-family:'Playfair Display',serif;
+    font-size:54px;font-weight:800;letter-spacing:5px;
+    color:var(--ink);
+    position:relative;display:block;
+  }
+  .chosen-word::after{
+    content:"";display:block;width:60px;height:2px;background:var(--gold);
+    margin:12px auto 0;
+  }
+  .set-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+    max-width:1000px;margin:0 auto;
+  }
+  @media (max-width:780px){.set-grid{grid-template-columns:1fr}}
+  .set-card{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:32px 24px;text-align:center;cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+    box-shadow:var(--shadow);
+    position:relative;overflow:hidden;
+  }
+  .set-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover)}
+  .set-card::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:4px;
+  }
+  .set-card.creative::before{background:var(--creative)}
+  .set-card.active::before{background:var(--active)}
+  .set-card.observational::before{background:var(--observational)}
+  .set-icon{font-size:38px;margin-bottom:10px;line-height:1}
+  .set-name{
+    font-family:'Playfair Display',serif;font-size:22px;font-weight:700;
+    margin-bottom:6px;letter-spacing:.5px;
+  }
+  .set-card.creative .set-name{color:var(--creative)}
+  .set-card.active .set-name{color:var(--active)}
+  .set-card.observational .set-name{color:var(--observational)}
+  .set-desc{font-size:13px;color:var(--muted);line-height:1.5}
+
+  /* ========== OPTION CARDS ========== */
+  .option-list{
+    display:flex;flex-direction:column;gap:14px;
+    max-width:720px;margin:0 auto;
+  }
+  .option-card{
+    background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:22px 24px;cursor:pointer;display:flex;align-items:center;gap:18px;
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    box-shadow:var(--shadow);text-align:left;font-family:inherit;
+    width:100%;color:var(--ink);
+  }
+  .option-card:hover{transform:translateX(4px);box-shadow:var(--shadow-hover)}
+  .option-card.creative:hover{border-color:var(--creative)}
+  .option-card.active:hover{border-color:var(--active)}
+  .option-card.observational:hover{border-color:var(--observational)}
+  .option-num{
+    flex-shrink:0;width:40px;height:40px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Playfair Display',serif;font-size:19px;font-weight:700;
+    color:#fff;
+  }
+  .option-card.creative .option-num{background:var(--creative)}
+  .option-card.active .option-num{background:var(--active)}
+  .option-card.observational .option-num{background:var(--observational)}
+  .option-text{font-size:16px;line-height:1.5;flex:1}
+
+  /* ========== COUPON RENDER ========== */
+  .coupon-stage{
+    display:flex;flex-direction:column;align-items:center;gap:24px;
+    padding:20px 0;
+  }
+  .coupon{
+    background:#fffdf7;
+    width:100%;max-width:640px;
+    border:2px solid var(--ink);
+    border-radius:4px;
+    padding:32px 36px;
+    position:relative;
+    box-shadow:0 8px 24px rgba(30,40,56,.18);
+    font-family:'Playfair Display',serif;
+  }
+  .coupon::before,.coupon::after{
+    content:"";position:absolute;top:-10px;height:18px;
+    width:18px;background:var(--bg);border:2px solid var(--ink);border-radius:50%;
+  }
+  .coupon::before{left:30%}
+  .coupon::after{right:30%}
+  .coupon-perf{
+    position:absolute;left:50%;transform:translateX(-50%);
+    top:16px;font-size:10px;letter-spacing:3px;color:var(--muted);
+    font-family:'Inter',sans-serif;font-weight:700;text-transform:uppercase;
+  }
+  .coupon-inner{margin-top:18px;text-align:center}
+  .coupon-header{
+    font-family:'Inter',sans-serif;font-size:11px;letter-spacing:4px;
+    text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px;
+  }
+  .coupon-sub{
+    font-family:'Inter',sans-serif;font-size:12px;color:var(--muted);
+    letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;font-weight:500;
+  }
+  .coupon-word{
+    font-family:'Playfair Display',serif;font-size:58px;font-weight:800;
+    letter-spacing:6px;color:var(--ink);line-height:1;margin-bottom:4px;
+  }
+  .coupon-divider{
+    display:flex;align-items:center;gap:10px;
+    justify-content:center;margin:18px 0 16px;
+  }
+  .coupon-divider::before,.coupon-divider::after{
+    content:"";flex:1;max-width:80px;height:1px;background:var(--border);
+  }
+  .coupon-divider span{
+    font-family:'Inter',sans-serif;font-size:10px;letter-spacing:3px;
+    text-transform:uppercase;color:var(--muted);font-weight:600;
+  }
+  .coupon-goodfor{
+    font-family:'Inter',sans-serif;font-size:11px;letter-spacing:2.5px;
+    text-transform:uppercase;color:var(--ink-soft);font-weight:600;
+    margin-bottom:12px;
+  }
+  .coupon-action{
+    font-family:'Playfair Display',serif;
+    font-size:24px;font-style:italic;line-height:1.35;font-weight:500;
+    color:var(--ink);padding:0 10px;min-height:80px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .coupon-set-tag{
+    display:inline-flex;align-items:center;gap:6px;
+    margin-top:20px;padding:5px 14px;border-radius:999px;
+    font-family:'Inter',sans-serif;font-size:11px;font-weight:700;
+    letter-spacing:1.5px;text-transform:uppercase;
+  }
+  .coupon-set-tag.creative{background:var(--creative-soft);color:var(--creative)}
+  .coupon-set-tag.active{background:var(--active-soft);color:var(--active)}
+  .coupon-set-tag.observational{background:var(--observational-soft);color:var(--observational)}
+  .coupon-footer{
+    margin-top:24px;padding-top:16px;border-top:1px dashed var(--border);
+    font-family:'Inter',sans-serif;
+  }
+  .coupon-from{display:flex;justify-content:space-between;align-items:flex-end;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+  .coupon-from .line-label{font-weight:600}
+  .coupon-from .line{display:inline-block;border-bottom:1px solid var(--ink);min-width:120px;height:14px;margin-left:8px}
+
+  .micro-step{
+    background:var(--bg-deep);border:1px solid var(--border);border-radius:10px;
+    padding:16px 22px;max-width:640px;width:100%;
+    display:flex;align-items:center;gap:14px;
+    font-size:13px;color:var(--ink-soft);line-height:1.5;
+  }
+  .micro-step-icon{flex-shrink:0;width:36px;height:36px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--ink);font-weight:700;font-family:'Playfair Display',serif}
+  .micro-step strong{color:var(--ink)}
+
+  .coupon-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  .btn{
+    font-family:inherit;font-size:14px;font-weight:600;letter-spacing:.3px;
+    padding:12px 22px;border-radius:999px;cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+    border:none;display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+  }
+  .btn-primary{background:var(--ink);color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.25)}
+  .btn-secondary{background:#fff;color:var(--ink);border:1px solid var(--border)}
+  .btn-secondary:hover{border-color:var(--ink)}
+  .btn-gold{background:var(--gold);color:var(--ink);box-shadow:0 2px 6px rgba(0,0,0,.15)}
+  .btn-gold:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.25)}
+
+  /* ========== FOOTER ========== */
+  footer{
+    background:var(--ink);color:#d6cdb8;padding:20px 32px;margin-top:40px;
+    font-size:12px;letter-spacing:1.5px;text-transform:uppercase;text-align:center;
+    font-weight:500;
+  }
+  footer .dot{margin:0 10px;color:var(--gold)}
+
+  /* hide on coupon screen for clean screenshot */
+  .screen-coupon-active header,
+  .screen-coupon-active footer{display:flex;justify-content:center}
+
+  /* ========== PRINT / SCREENSHOT helpers ========== */
+  @media print{
+    header,footer,.nav-row,.coupon-actions,.micro-step,.drive-pill{display:none !important}
+    body{background:#fff}
+    .coupon{box-shadow:none;border:2px solid #000}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-title">Kindness Coupons</div>
+      <div class="brand-sub">Smile Bags · A Word &amp; Wonder Experience</div>
+    </div>
+    <a class="drive-pill" href="https://drive.google.com/drive/folders/1D1AqGr8icdUbziUg9_8Ww1XyYhUXPxs4?usp=sharing" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.71 3.52L1.15 15l3.42 5.92h13.69L21.85 15 14.29 3.52H7.71zm1.42 2h5.74l5.36 9.48H14.49L9.13 5.52zM7.71 6.48L12.71 15H2.57L7.71 6.48z"/></svg>
+      Upload to Drive
+    </a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ========== SCREEN 1: WORD PICKER ========== -->
+  <section id="screen-words" class="screen active">
+    <div class="intro">
+      <div class="eyebrow">Step 1 of 3</div>
+      <h1>Choose Your OneWord</h1>
+      <p>Each OneWord carries a different kind of kindness. Pick the one that speaks to the child who will open your Smile Bag.</p>
+    </div>
+    <div class="word-grid" id="wordGrid"></div>
+  </section>
+
+  <!-- ========== SCREEN 2: SET PICKER ========== -->
+  <section id="screen-sets" class="screen">
+    <div class="nav-row">
+      <button class="back-btn" onclick="goToScreen('words')">&larr; Back to OneWords</button>
+      <div class="crumb"><strong id="crumbWord1"></strong></div>
+    </div>
+    <div class="intro">
+      <div class="eyebrow">Step 2 of 3</div>
+      <h1>Choose a Kindness Style</h1>
+      <p>Three ways to express your OneWord. Pick the style that fits the child best.</p>
+    </div>
+    <div class="chosen-word" id="chosenWord"></div>
+    <div class="set-grid">
+      <button class="set-card creative" onclick="pickSet('creative')">
+        <div class="set-icon">🎨</div>
+        <div class="set-name">Creative</div>
+        <div class="set-desc">Make, draw, design, or imagine something new.</div>
+      </button>
+      <button class="set-card active" onclick="pickSet('active')">
+        <div class="set-icon">🏃</div>
+        <div class="set-name">Active</div>
+        <div class="set-desc">Move, try, practice, or do something with your body.</div>
+      </button>
+      <button class="set-card observational" onclick="pickSet('observational')">
+        <div class="set-icon">🔍</div>
+        <div class="set-name">Observational</div>
+        <div class="set-desc">Watch, notice, or find something in the world around you.</div>
+      </button>
+    </div>
+  </section>
+
+  <!-- ========== SCREEN 3: OPTION PICKER ========== -->
+  <section id="screen-options" class="screen">
+    <div class="nav-row">
+      <button class="back-btn" onclick="goToScreen('sets')">&larr; Change style</button>
+      <div class="crumb"><strong id="crumbWord2"></strong> <span class="sep">·</span> <span id="crumbSet"></span></div>
+    </div>
+    <div class="intro">
+      <div class="eyebrow">Step 3 of 3</div>
+      <h1>Choose the Coupon Action</h1>
+      <p>One kind thing the child can do. Pick the one that feels most giftable.</p>
+    </div>
+    <div class="option-list" id="optionList"></div>
+  </section>
+
+  <!-- ========== SCREEN 4: COUPON ========== -->
+  <section id="screen-coupon" class="screen">
+    <div class="nav-row">
+      <button class="back-btn" onclick="goToScreen('options')">&larr; Pick a different action</button>
+      <button class="back-btn" onclick="startOver()">↺ Start over</button>
+    </div>
+    <div class="coupon-stage">
+      <div class="coupon" id="coupon">
+        <div class="coupon-perf">· · ·  Kindness Coupon  · · ·</div>
+        <div class="coupon-inner">
+          <div class="coupon-header">A Smile Bag Kindness Coupon</div>
+          <div class="coupon-sub">One Word · One Action · One Smile</div>
+          <div class="coupon-word" id="cpnWord"></div>
+          <div class="coupon-divider"><span>This coupon is good for one</span></div>
+          <div class="coupon-action" id="cpnAction"></div>
+          <span class="coupon-set-tag" id="cpnSetTag"></span>
+          <div class="coupon-footer">
+            <div class="coupon-from">
+              <div><span class="line-label">From:</span><span class="line"></span></div>
+              <div><span class="line-label">Date:</span><span class="line"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="micro-step">
+        <div class="micro-step-icon">📸</div>
+        <div>
+          <strong>Next steps:</strong> Press <strong>Print Screen</strong> (or <strong>Ctrl + Shift + Show Windows</strong> on Chromebook) to capture the coupon → save to your Chromebook → upload to the shared Drive folder using the gold button above.
+        </div>
+      </div>
+      <div class="coupon-actions">
+        <button class="btn btn-primary" onclick="goToScreen('words')">Make another coupon</button>
+        <a class="btn btn-gold" href="https://drive.google.com/drive/folders/1D1AqGr8icdUbziUg9_8Ww1XyYhUXPxs4?usp=sharing" target="_blank" rel="noopener">Open Drive folder</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Smile Bags <span class="dot">·</span> A Word &amp; Wonder Experience <span class="dot">·</span> Leadership <span class="dot">·</span> Marquand <span class="dot">·</span> Spring 2026
+</footer>
+
+<script>
+/* ========== DATA: 25 OneWords × 3 sets × 3 options = 225 coupons ========== */
+const WORDS = ["ABSORB","ADAPT","ANCHOR","BALANCE","BLOOM","BREATHE","CLEAR","CONNECT","CYCLE","EMERGE","FILTER","FLOW","GROW","HEAL","MIGRATE","PERSIST","RENEW","RESTORE","RETURN","RISE","ROOT","SHINE","SUSTAIN","THRIVE","TRANSFORM"];
+
+const COUPONS = {
+  ABSORB:{
+    creative:[
+      "Draw everything your ears hear during one quiet minute",
+      "Start a word-collector notebook and write 5 new words from class",
+      "Paint a picture using only the colors you see out one window"
+    ],
+    active:[
+      "Close your eyes and count every sound you hear for 30 seconds",
+      "Read a whole page without looking up, then tell a friend one thing you learned",
+      "Listen to your teacher's story, then act out the main part"
+    ],
+    observational:[
+      "Watch a sponge soak up water at the sink and describe it in 3 words",
+      "Find 3 new things about your classroom you never saw before",
+      "Find one fact in your textbook you didn't know yesterday"
+    ]
+  },
+  ADAPT:{
+    creative:[
+      "Turn a rainy-day break into an indoor art project",
+      "Redesign your pencil case using only what you already have",
+      "Draw a creature that could live on the playground AND underwater"
+    ],
+    active:[
+      "Try your writing with the opposite hand for 30 seconds",
+      "Switch seats at lunch and say hi to 1 new person",
+      "Do \"the floor is lava\" from the classroom door to your desk"
+    ],
+    observational:[
+      "Watch how a classmate handles a tough problem and learn their trick",
+      "Notice how the playground changes when it's windy vs. sunny",
+      "Find a bug or squirrel and watch how it moves in its space"
+    ]
+  },
+  ANCHOR:{
+    creative:[
+      "Draw your \"anchor spot\" — your favorite place at school to sit and think",
+      "Make a paper chain with the names of 5 people who help you at school",
+      "Design a bookmark with your OneWord to anchor your reading"
+    ],
+    active:[
+      "Plant your feet wide and count to 10 before answering a tricky question",
+      "Walk heel-to-toe across the classroom without wobbling",
+      "Hold a plank for 20 seconds, then go back to your work"
+    ],
+    observational:[
+      "Watch a big tree on the playground and count branches that stay still in the wind",
+      "Notice which classmate stays calm when the room gets loud",
+      "Find something heavy in your classroom and guess if you could lift it"
+    ]
+  },
+  BALANCE:{
+    creative:[
+      "Build a tower where every block balances the next",
+      "Draw a scale with \"fun\" on one side and \"homework\" on the other, then fill it in",
+      "Make a paper mobile where every piece hangs even"
+    ],
+    active:[
+      "Stand on one foot while you count to 20 without falling",
+      "Carry a book on your head from your desk to the door",
+      "Do 5 jumping jacks, 5 deep breaths, 5 jumping jacks"
+    ],
+    observational:[
+      "Watch how a cafeteria tray stays level when you carry it",
+      "Notice who does both their reading AND their coloring well",
+      "Find something at recess that is perfectly balanced (see-saw, branch)"
+    ]
+  },
+  BLOOM:{
+    creative:[
+      "Draw a flower where each petal is something new you learned this week",
+      "Fold a paper origami flower and give it to a classmate",
+      "Paint a garden where each flower is a classmate's name"
+    ],
+    active:[
+      "Start curled small, then slowly stretch tall like a flower opening",
+      "Water the classroom plant and check it again after lunch",
+      "Hop from one \"flower\" (colored paper) to another across the carpet"
+    ],
+    observational:[
+      "Watch a flower on the playground and check it every day for a week",
+      "Notice which classmate blooms when it's their turn to share",
+      "Find 3 plants at school and see which one is tallest"
+    ]
+  },
+  BREATHE:{
+    creative:[
+      "Draw the shape of one deep breath (in, hold, out)",
+      "Make a pinwheel and blow it slow, medium, fast",
+      "Decorate a paper cup with calm words for the breathe corner"
+    ],
+    active:[
+      "Take 5 slow belly-breaths before you start your spelling test",
+      "Pretend to blow up a balloon and let it out slowly 3 times",
+      "Run one lap, take 5 deep breaths, run another lap"
+    ],
+    observational:[
+      "Watch your chest go up and down for 30 seconds",
+      "Notice how classmates sit differently when they're focused",
+      "Find a calm friend and count their breaths for 10 seconds"
+    ]
+  },
+  CLEAR:{
+    creative:[
+      "Draw your desk as it is now, then draw how it would look cleared",
+      "Make a \"clean space\" sign for your cubby",
+      "Fold paper into 4 labeled boxes: books, supplies, trash, treasures"
+    ],
+    active:[
+      "Clear your desk until only your current work is on it",
+      "Walk the classroom floor and pick up 3 pieces of trash",
+      "Put away 10 toys or supplies before lunch"
+    ],
+    observational:[
+      "Watch the sky through a window and describe it: cloudy, clear, rainy?",
+      "Notice which classmate's space is tidiest and see what makes it work",
+      "Find the clearest path from your desk to the door"
+    ]
+  },
+  CONNECT:{
+    creative:[
+      "Draw a web with your name in the middle and 5 friends' names connected",
+      "Make a friendship bracelet with 2 colors for 2 friends",
+      "Paint a picture with one long line that connects every corner"
+    ],
+    active:[
+      "Say hello to 5 people you don't usually talk to",
+      "Partner up for a job (reading, cleaning, lining up) with someone new",
+      "Play a chain-tag game where tagged friends hold hands"
+    ],
+    observational:[
+      "Watch who sits alone at recess and wave hi tomorrow",
+      "Notice how your teacher connects one subject to another",
+      "Find 2 things in your classroom that are physically connected"
+    ]
+  },
+  CYCLE:{
+    creative:[
+      "Draw a circle with 4 parts: morning, lunch, recess, home",
+      "Make a paper chain of the days of the week",
+      "Paint the water cycle with arrows"
+    ],
+    active:[
+      "Walk a loop around the playground and count your steps",
+      "Do 3 rounds of: 5 jumps, 5 squats, 5 stretches",
+      "Recycle 3 pieces of paper into the right bin"
+    ],
+    observational:[
+      "Watch the clock make one full minute go by",
+      "Notice how the lunch line cycles through every day",
+      "Find something at school that goes in a circle (wheel, clock, fan)"
+    ]
+  },
+  EMERGE:{
+    creative:[
+      "Draw a creature coming out of its shell or cocoon",
+      "Paint a sunrise with the sun just starting to peek up",
+      "Make a pop-up card where something emerges when you open it"
+    ],
+    active:[
+      "From your seat slowly stand up tall and stretch upward",
+      "Start small and curled, then grow into a jumping jack 3 times",
+      "Raise your hand to share an idea when the class is quiet"
+    ],
+    observational:[
+      "Watch a bug slowly come out from under a leaf",
+      "Notice when a shy classmate speaks up and smile at them",
+      "Find a plant pushing up through a crack in the sidewalk"
+    ]
+  },
+  FILTER:{
+    creative:[
+      "Draw a funnel with big words going in and small kind words coming out",
+      "Make a paper filter and pour water with a pinch of dirt through it",
+      "Design a \"kind words only\" sign for your cubby"
+    ],
+    active:[
+      "Sort the recycling bin: paper in one pile, plastic in another",
+      "Walk through the line and say only kind words to 3 people",
+      "Before you raise your hand, say your words in your head first"
+    ],
+    observational:[
+      "Watch how a coffee filter or tea bag works in the sink",
+      "Notice which classmate filters their words well and learn from them",
+      "Find a screen, strainer, or filter somewhere at school"
+    ]
+  },
+  FLOW:{
+    creative:[
+      "Draw a river with 5 bends and a fish at each one",
+      "Paint a picture where each color flows into the next",
+      "Make a paper boat and race it in the sink"
+    ],
+    active:[
+      "Walk heel-to-toe around the room without stopping for 30 seconds",
+      "Pass a ball around the circle without dropping it",
+      "Do a smooth dance move and teach it to a friend"
+    ],
+    observational:[
+      "Watch water flow from the sink and count to 10",
+      "Notice how the day flows from math to reading to lunch",
+      "Find something at school that flows (water fountain, hallway traffic)"
+    ]
+  },
+  GROW:{
+    creative:[
+      "Draw yourself in kindergarten next to yourself now",
+      "Plant a seed in a cup and sketch it every day for a week",
+      "Make a class height chart with your friends on long paper"
+    ],
+    active:[
+      "Stretch tall, then taller, then stand on tiptoes for 10 seconds",
+      "Read 1 more page than you did yesterday",
+      "Add 1 new word to your vocabulary list today"
+    ],
+    observational:[
+      "Watch the classroom plant and measure it with your pinky once a week",
+      "Notice a classmate who has grown taller this year",
+      "Find 3 things at school that grow (plants, lines, knowledge)"
+    ]
+  },
+  HEAL:{
+    creative:[
+      "Draw a get-well card for a sick classmate or family member",
+      "Decorate a Band-Aid box with kind words",
+      "Paint a rainbow over a gray cloud"
+    ],
+    active:[
+      "Walk slowly and gently when someone near you is upset",
+      "Help someone pick up dropped books or crayons",
+      "Refill a water bottle for a friend who lost their voice"
+    ],
+    observational:[
+      "Watch how a scrape heals on your skin over a few days",
+      "Notice which classmate always makes people feel better",
+      "Find something at school that was broken and got fixed"
+    ]
+  },
+  MIGRATE:{
+    creative:[
+      "Draw a map of a bird's journey from winter to summer",
+      "Make a paper airplane and migrate it across the classroom",
+      "Paint a flock of birds flying in a V"
+    ],
+    active:[
+      "Move between classroom corners 5 different ways (hop, skip, tiptoe)",
+      "Switch reading spots 3 times during DEAR time",
+      "Line up at a different position than usual"
+    ],
+    observational:[
+      "Watch birds at the window and count how many fly by in 2 minutes",
+      "Notice how your classroom rearranges for different activities",
+      "Find a sign or map at school that shows a path or route"
+    ]
+  },
+  PERSIST:{
+    creative:[
+      "Draw a PERSIST poster for your desk with 3 things you want to keep trying",
+      "Make a tally chart and mark every time you keep going",
+      "Design a PERSIST badge from paper and look at it when something feels hard"
+    ],
+    active:[
+      "Try tricky math 3 times before asking for help",
+      "Run one more lap after you think you're done",
+      "Practice writing your hardest word 5 times in a row"
+    ],
+    observational:[
+      "Watch a classmate who keeps trying and tell them \"nice PERSIST\"",
+      "Count how many times you erase during one assignment",
+      "Find a book character who never gives up and say the name out loud"
+    ]
+  },
+  RENEW:{
+    creative:[
+      "Draw your desk with fresh supplies lined up the way you'd like",
+      "Make a \"new day\" sign for Monday morning",
+      "Paint over a mistake page and start fresh"
+    ],
+    active:[
+      "Sharpen every dull pencil in your pencil box",
+      "Refill your water bottle at the fountain",
+      "Shake out your arms and legs before a hard worksheet"
+    ],
+    observational:[
+      "Watch how the classroom looks fresh after cleanup",
+      "Notice who starts each morning with a smile and say hi back",
+      "Find something at school that gets renewed daily (bulletin, lunch menu)"
+    ]
+  },
+  RESTORE:{
+    creative:[
+      "Draw a messy room, then draw it restored and clean",
+      "Make a \"fix-it\" kit with tape, stickers, and a kind note",
+      "Design a paper cover for a torn book you can repair"
+    ],
+    active:[
+      "Put every book back on the shelf in the right spot",
+      "Fix a crooked chair, picture, or bulletin-board piece",
+      "Tidy the crayon box by color"
+    ],
+    observational:[
+      "Watch how the custodian restores the lunchroom after lunch",
+      "Notice what in your classroom is brand new and what has been fixed",
+      "Find a taped book or repaired toy and thank whoever fixed it"
+    ]
+  },
+  RETURN:{
+    creative:[
+      "Draw a map from your desk to the library and back",
+      "Decorate a \"return box\" for lost items",
+      "Paint a boomerang with your OneWord on it"
+    ],
+    active:[
+      "Walk to the library, find one book, return to your seat",
+      "Return 3 things to their proper spot in the classroom",
+      "Return a borrowed pencil, eraser, or crayon to a friend"
+    ],
+    observational:[
+      "Watch how birds return to their nests after flying away",
+      "Notice which classmates always return borrowed things",
+      "Find something at school that always goes back to the same spot"
+    ]
+  },
+  RISE:{
+    creative:[
+      "Draw the sun rising over your school",
+      "Make a paper kite that rises when you run with it",
+      "Paint a tall tower with each floor a different color"
+    ],
+    active:[
+      "Stand up straight when you're called on and use a strong voice",
+      "Rise on your toes 10 times without wobbling",
+      "Lift your hand high when you know the answer"
+    ],
+    observational:[
+      "Watch the flag go up at morning line-up",
+      "Notice which classmates rise early to help",
+      "Find something at school that rises (elevator, stairs, flagpole)"
+    ]
+  },
+  ROOT:{
+    creative:[
+      "Draw a tree with family or friend names on the roots",
+      "Make a \"roots\" poster of things that keep you steady at school",
+      "Paint a class tree where each student adds one root"
+    ],
+    active:[
+      "Plant your feet like roots before you answer a hard question",
+      "Water a classroom or home plant and check the soil",
+      "Stand as still as a tree for 20 seconds while classmates \"wind\" by"
+    ],
+    observational:[
+      "Watch a tree on the playground and imagine its roots underground",
+      "Notice which classmates are always at your table each day",
+      "Find a plant with roots you can see (weed, sidewalk tree, houseplant)"
+    ]
+  },
+  SHINE:{
+    creative:[
+      "Draw a star and write 5 things you're good at on each point",
+      "Make a \"shine board\" with foil and kind words",
+      "Paint a sun with one ray for each classmate"
+    ],
+    active:[
+      "Smile big at 5 people in the hallway today",
+      "Raise your hand and share an idea, even a small one",
+      "Clean your desk so it shines before you leave"
+    ],
+    observational:[
+      "Watch how light shines through the window at different times of day",
+      "Notice which classmates shine in art, gym, or reading",
+      "Find something shiny at school (trophy, door handle, bell)"
+    ]
+  },
+  SUSTAIN:{
+    creative:[
+      "Draw a garden you could keep growing for a whole year",
+      "Design a reusable water bottle sticker with your OneWord",
+      "Make a \"keep it going\" chart for a class job"
+    ],
+    active:[
+      "Hold a plank or wall-sit for 10 more seconds than last time",
+      "Read for 5 more minutes than yesterday",
+      "Keep the classroom tidy by putting 3 things away every hour"
+    ],
+    observational:[
+      "Watch how a candle keeps burning or a plant keeps growing",
+      "Notice which classmates sustain good habits (always on time, always kind)",
+      "Find something at school that lasts all year (library books, bulletin signs)"
+    ]
+  },
+  THRIVE:{
+    creative:[
+      "Draw yourself doing your favorite activity and having fun",
+      "Make a \"thrive list\" of 5 things that make your school day great",
+      "Paint a plant with big leaves and a strong stem"
+    ],
+    active:[
+      "Do your favorite subject extra hard today",
+      "Help someone else succeed at a tricky task",
+      "Raise your hand and share your best idea"
+    ],
+    observational:[
+      "Watch a classroom plant that is thriving and note what helps it",
+      "Notice which classmates thrive in groups vs. alone",
+      "Find something at school that is thriving (busy hallway, full bulletin)"
+    ]
+  },
+  TRANSFORM:{
+    creative:[
+      "Draw yourself on the first day of school next to yourself today",
+      "Fold an origami shape that transforms into another",
+      "Paint a caterpillar on one side and a butterfly on the other"
+    ],
+    active:[
+      "Change your handwriting style for one whole assignment",
+      "Rearrange your desk supplies into a completely new setup",
+      "Try a new way to line up (backwards, by height, by first letter)"
+    ],
+    observational:[
+      "Watch ice melt in a cup over 10 minutes",
+      "Notice how your classroom transforms from math time to art time",
+      "Find something at school that has transformed this year"
+    ]
+  }
+};
+
+const SET_META = {
+  creative:{ icon:"🎨", name:"Creative" },
+  active:{ icon:"🏃", name:"Active" },
+  observational:{ icon:"🔍", name:"Observational" }
+};
+
+/* ========== STATE ========== */
+let state = { word:null, set:null, option:null };
+
+/* ========== RENDER: Word Grid ========== */
+function renderWords(){
+  const grid = document.getElementById('wordGrid');
+  grid.innerHTML = WORDS.map(w =>
+    `<button class="word-tile" onclick="pickWord('${w}')">${w}</button>`
+  ).join('');
+}
+
+/* ========== FLOW ========== */
+function pickWord(w){
+  state.word = w;
+  document.getElementById('chosenWord').textContent = w;
+  document.getElementById('crumbWord1').textContent = w;
+  goToScreen('sets');
+}
+
+function pickSet(s){
+  state.set = s;
+  document.getElementById('crumbWord2').textContent = state.word;
+  const setEl = document.getElementById('crumbSet');
+  setEl.textContent = `${SET_META[s].icon} ${SET_META[s].name}`;
+  renderOptions();
+  goToScreen('options');
+}
+
+function pickOption(i){
+  state.option = i;
+  renderCoupon();
+  goToScreen('coupon');
+}
+
+function renderOptions(){
+  const list = document.getElementById('optionList');
+  const options = COUPONS[state.word][state.set];
+  list.innerHTML = options.map((text, i) =>
+    `<button class="option-card ${state.set}" onclick="pickOption(${i})">
+       <div class="option-num">${i+1}</div>
+       <div class="option-text">${text}</div>
+     </button>`
+  ).join('');
+}
+
+function renderCoupon(){
+  const action = COUPONS[state.word][state.set][state.option];
+  document.getElementById('cpnWord').textContent = state.word;
+  document.getElementById('cpnAction').textContent = action;
+  const tag = document.getElementById('cpnSetTag');
+  tag.className = `coupon-set-tag ${state.set}`;
+  tag.textContent = `${SET_META[state.set].icon} ${SET_META[state.set].name} Kindness`;
+}
+
+function goToScreen(name){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(`screen-${name}`).classList.add('active');
+  document.body.classList.toggle('screen-coupon-active', name === 'coupon');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function startOver(){
+  state = { word:null, set:null, option:null };
+  goToScreen('words');
+}
+
+/* ========== INIT ========== */
+renderWords();
+</script>
+
+</body>
+</html>
