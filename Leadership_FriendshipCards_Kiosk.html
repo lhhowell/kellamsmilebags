@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Friendship Cards · Leadership · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --green:#1A6B3A;--green2:#2D8A52;--green3:#40A865;
+  --gold:#C9A84C;--gold2:#E8C97A;
+  --cream:#F5FBF7;--dark:#0D2E1A;--mid:#2A5438;
+  --border:#C8E6D0;--radius:14px;
+}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;overflow-x:hidden;}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(160deg,var(--dark) 0%,var(--green) 55%,#164F2C 100%);padding:56px 48px 48px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%,rgba(201,168,76,.1) 0%,transparent 50%),radial-gradient(ellipse at 10% 70%,rgba(64,168,101,.12) 0%,transparent 45%);pointer-events:none;}
+.hero-deco{position:absolute;right:48px;top:50%;transform:translateY(-50%);font-size:7rem;opacity:.08;pointer-events:none;}
+.hero-tag{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;position:relative;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:10px;position:relative;}
+.hero h1 em{color:var(--gold2);font-style:italic;}
+.hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:600px;line-height:1.7;margin-bottom:22px;position:relative;}
+.hero-pills{display:flex;flex-wrap:wrap;gap:8px;position:relative;}
+.pill{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;padding:5px 14px;border-radius:20px;}
+.pill-gold{background:rgba(201,168,76,.18);color:var(--gold2);border:1px solid rgba(201,168,76,.3);}
+.pill-green{background:rgba(64,168,101,.2);color:#95D5B2;border:1px solid rgba(64,168,101,.3);}
+.pill-cream{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);}
+
+/* ── MISSION STRIP ── */
+.mission{background:var(--green2);padding:22px 48px;display:flex;align-items:flex-start;gap:20px;border-top:3px solid var(--gold);}
+.mission p{font-size:15px;color:rgba(255,255,255,.9);line-height:1.65;font-weight:300;}
+.mission strong{color:#fff;font-weight:700;}
+
+/* ── SAMPLE SCOPE NOTICE ── */
+.sample-notice{background:#FFF8E1;border-top:2px dashed var(--gold);border-bottom:2px dashed var(--gold);padding:12px 48px;font-family:'Fredoka One',cursive;font-size:11px;color:#7A5A00;letter-spacing:.5px;text-align:center;}
+
+/* ── STATUS BAR ── */
+.status-bar{background:#fff;border-bottom:2px solid var(--border);padding:12px 48px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.status-pill{font-family:'Fredoka One',cursive;font-size:12px;color:#fff;padding:5px 14px;border-radius:20px;letter-spacing:1px;}
+.status-divider{color:#ccc;}
+.status-age{font-family:'Fredoka One',cursive;font-size:12px;color:var(--green);letter-spacing:1px;}
+.change-btn{margin-left:auto;background:transparent;border:1.5px solid var(--border);color:var(--green);font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;padding:6px 14px;border-radius:20px;cursor:pointer;text-transform:uppercase;transition:all .2s;}
+.change-btn:hover{background:var(--green);color:var(--gold2);border-color:var(--green);}
+
+/* ── MAIN ── */
+.main{max-width:960px;margin:0 auto;padding:36px 48px 80px;}
+.screen{display:none;}
+.screen.active{display:block;}
+.step-box{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:28px;box-shadow:0 2px 14px rgba(26,107,58,.05);}
+.step-box h2{font-family:'Playfair Display',serif;font-size:24px;color:var(--green);margin-bottom:8px;}
+.step-box .sub{font-size:14px;color:#666;line-height:1.6;margin-bottom:22px;}
+
+/* ── NAME INPUT ── */
+.name-inp{width:100%;padding:14px 18px;border:2px solid var(--border);border-radius:10px;font-family:'Nunito',sans-serif;font-size:15px;outline:none;margin-bottom:20px;transition:border-color .2s;}
+.name-inp:focus{border-color:var(--green);}
+
+/* ── WORD GRID ── */
+.word-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;}
+.wchip{background:#fff;border:2px solid var(--border);border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;gap:4px;}
+.wchip:hover{border-color:var(--green2);transform:translateY(-1px);}
+.wchip.active .wn,.wchip.active .wm{color:#fff !important;}
+.wn{font-family:'Fredoka One',cursive;font-size:13px;color:var(--green);letter-spacing:.5px;}
+.wm{font-size:10px;color:#888;line-height:1.3;}
+
+/* ── AGE GRID ── */
+.age-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px;}
+.age-card{background:#fff;border:2.5px solid var(--border);border-radius:var(--radius);padding:22px 18px;text-align:center;cursor:pointer;transition:all .2s;}
+.age-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(26,107,58,.08);}
+.age-card.active{border-color:var(--green);background:#F0FBF4;}
+.age-emoji{font-size:36px;margin-bottom:8px;}
+.age-label{font-family:'Fredoka One',cursive;font-size:15px;color:var(--green);margin-bottom:4px;}
+.age-desc{font-size:11px;color:#666;line-height:1.5;}
+
+/* ── STEP BUTTONS ── */
+.step-btn-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.step-btn{background:var(--green);color:var(--gold2);border:none;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:14px 26px;border-radius:10px;cursor:pointer;transition:all .2s;}
+.step-btn:hover:not(:disabled){background:var(--green2);transform:translateY(-1px);}
+.step-btn:disabled{opacity:.4;cursor:not-allowed;}
+.ghost-btn{background:transparent;color:var(--green);border:1.5px solid var(--border);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:13px 22px;border-radius:10px;cursor:pointer;transition:all .2s;}
+.ghost-btn:hover{background:var(--green);color:var(--gold2);border-color:var(--green);}
+
+/* ── ACTIVITY HEADER ── */
+.act-header{border-radius:14px;padding:22px 24px;margin-bottom:20px;position:relative;overflow:hidden;}
+.act-header h2{font-family:'Fredoka One',cursive;font-size:24px;color:#fff;}
+.act-header .ah-sub{font-size:13px;color:rgba(255,255,255,.9);margin-top:6px;line-height:1.6;}
+.act-header .wmark{position:absolute;right:-8px;top:-8px;font-family:'Fredoka One',cursive;font-size:80px;color:rgba(255,255,255,.1);pointer-events:none;letter-spacing:2px;}
+
+/* ── PICK INSTRUCTION ── */
+.pick-instruction{background:#F0FBF4;border:1.5px solid var(--border);border-left:4px solid var(--green2);border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:14px;color:#444;line-height:1.6;}
+.pick-instruction strong{color:var(--green);}
+
+/* ── SLOT ── */
+.slot{margin-bottom:22px;}
+.slot-hd{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.slot-num{font-family:'Fredoka One',cursive;font-size:11px;padding:4px 12px;border-radius:20px;letter-spacing:1.5px;color:#fff;}
+.slot-type{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;color:#333;}
+.slot-timer{font-family:'Fredoka One',cursive;font-size:10px;padding:3px 10px;border-radius:20px;margin-left:auto;letter-spacing:.5px;}
+.opts-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.opt-card{background:#fff;border:2px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;transition:all .15s;position:relative;}
+.opt-card:hover{border-color:#999;box-shadow:0 3px 10px rgba(0,0,0,.06);}
+.opt-label{font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#aaa;margin-bottom:6px;}
+.opt-text{font-size:12px;color:#555;line-height:1.55;}
+.opt-card.sel .opt-label{color:#fff;}
+.opt-card.sel .opt-text{color:#fff;}
+.opt-card.sel::after{content:'✓';position:absolute;top:8px;right:10px;font-family:'Fredoka One',cursive;font-size:14px;color:#fff;pointer-events:none;}
+
+/* ── PRINT BAR ── */
+.print-bar{margin:28px 0 14px;display:flex;justify-content:center;flex-direction:column;align-items:center;gap:10px;}
+.big-print-btn{background:var(--green);color:var(--gold2);border:2px solid var(--gold);font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:15px 32px;border-radius:50px;cursor:pointer;box-shadow:0 6px 18px rgba(13,46,26,.2);transition:all .2s;}
+.big-print-btn:hover:not(:disabled){background:var(--green2);transform:translateY(-1px);}
+.big-print-btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none;background:#999;border-color:#aaa;}
+.print-status{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#888;}
+.print-status.ready{color:var(--green);}
+
+/* ── BACK ── */
+.back-bar{margin-top:24px;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:var(--gold2);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:11px 20px;border-radius:8px;text-decoration:none;transition:all .2s;}
+.back-btn:hover{background:var(--green2);}
+
+/* ── FIXED PRINT BUTTON ── */
+.print-btn{position:fixed;top:20px;right:20px;z-index:100;background:var(--green);color:var(--gold2);border:2px solid var(--gold);border-radius:50px;padding:11px 20px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;box-shadow:0 6px 18px rgba(13,46,26,.25);transition:all .2s;}
+.print-btn:hover:not(:disabled){transform:translateY(-2px);background:var(--green2);}
+.print-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+/* ── FOOTER ── */
+footer{text-align:center;padding:28px;border-top:1px solid var(--border);margin-top:20px;}
+footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spacing:1px;}
+
+/* ── PRINT VIEW (hidden on screen, shown when printing) ── */
+.print-view{display:none;}
+.print-view .pv-header{border-radius:14px;padding:22px 24px;margin-bottom:18px;position:relative;overflow:hidden;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.print-view .pv-header h2{font-family:'Fredoka One',cursive;font-size:24px;color:#fff;}
+.print-view .pv-header .ah-sub{font-size:13px;color:rgba(255,255,255,.9);margin-top:6px;line-height:1.6;}
+.print-view .pv-wmark{position:absolute;right:-8px;top:-8px;font-family:'Fredoka One',cursive;font-size:80px;color:rgba(255,255,255,.1);pointer-events:none;letter-spacing:2px;}
+.print-view .pv-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.print-view .pv-card{padding:18px;border-radius:12px;border-left:5px solid;background:#FAFAFA;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.print-view .pv-card .pv-fn{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.print-view .pv-card .pv-title{font-size:15px;font-weight:800;color:#333;margin-bottom:6px;font-family:'Nunito',sans-serif;}
+.print-view .pv-card .pv-body{font-size:13px;color:#555;line-height:1.6;}
+.print-view .pv-card .pv-timer{display:inline-block;margin-top:9px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.print-view .pv-footer{margin-top:18px;text-align:center;font-family:'Fredoka One',cursive;font-size:10px;color:#aaa;letter-spacing:1px;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .opts-grid{grid-template-columns:1fr;}
+}
+@media(max-width:640px){
+  .hero,.mission,.main,.status-bar,.sample-notice{padding-left:20px;padding-right:20px;}
+  .word-grid{grid-template-columns:repeat(2,1fr);}
+  .age-grid{grid-template-columns:1fr;}
+  .print-btn{top:14px;right:14px;padding:9px 16px;font-size:10px;}
+}
+
+/* ── PRINT ── */
+@media print{
+  .no-print{display:none !important;}
+  body{background:#fff;color:#000;}
+  .hero,.mission,.status-bar,.sample-notice,footer{display:none;}
+  .main{padding:0;max-width:none;}
+  .step-box,.pick-instruction,.slot,.act-header{display:none !important;}
+  .print-view{display:block !important;}
+  .print-view .pv-card,.print-view .pv-header{break-inside:avoid;}
+  @page{size:letter;margin:.5in;}
+}
+</style>
+</head>
+<body>
+
+<!-- FIXED PRINT BUTTON -->
+<button class="print-btn no-print" id="fixedPrintBtn" style="display:none;" onclick="doPrint()" disabled>🖨️ Print</button>
+
+<!-- HERO -->
+<div class="hero no-print">
+  <div class="hero-deco">🤝</div>
+  <div class="hero-tag">Smile Bags · A Word &amp; Wonder Experience · Spring 2026</div>
+  <h1>Friendship Cards<br><em>Activity 01</em></h1>
+  <p class="hero-sub">Four age-appropriate challenges a child can do with a friend — built around your OneWord.</p>
+  <div class="hero-pills">
+    <div class="pill pill-gold">🌟 Leadership Skills</div>
+    <div class="pill pill-green">Ms. Marquand · Grades 9–12</div>
+    <div class="pill pill-cream">Spring 2026</div>
+  </div>
+</div>
+
+<!-- MISSION -->
+<div class="mission no-print">
+  <span style="font-size:24px;flex-shrink:0;">🤝</span>
+  <p><strong>What to do.</strong> Choose your OneWord, pick who your activity is for, then select one challenge option for each of the 4 slots. When all 4 are picked, print the card and place it in your Smile Bag package.</p>
+</div>
+
+<!-- SAMPLE SCOPE NOTICE -->
+<div class="sample-notice no-print">
+  ⚠ PATTERN 2 VALIDATOR — 3 sample words (BLOOM · ADAPT · PERSIST). Remaining 22 words queued for batch build.
+</div>
+
+<!-- STATUS BAR -->
+<div class="status-bar no-print" id="statusBar" style="display:none;">
+  <div class="status-pill" id="statusWord">—</div>
+  <div class="status-divider">·</div>
+  <div class="status-age" id="statusAge">—</div>
+  <button class="change-btn" onclick="goScreen(0)">Start Over</button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SCREEN 0: WORD -->
+  <div class="screen active" id="screen0">
+    <div class="step-box">
+      <h2>Step 1 — Choose Your OneWord</h2>
+      <p class="sub">This word is the anchor for your Friendship Cards. Pick the one your teacher assigned.</p>
+      <input class="name-inp" id="studentName" type="text" placeholder="Your name (optional)..."/>
+      <div class="word-grid" id="wordGrid"></div>
+      <div class="step-btn-row">
+        <button class="step-btn" id="nextToAge" onclick="goScreen(1)" disabled>Next — Choose Age Group →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 1: AGE -->
+  <div class="screen" id="screen1">
+    <div class="step-box">
+      <h2>Step 2 — Who is this for?</h2>
+      <p class="sub">Choose the age group of the child receiving your Smile Bag package.</p>
+      <div class="age-grid" id="ageGrid"></div>
+      <div class="step-btn-row">
+        <button class="ghost-btn" onclick="goScreen(0)">← Back</button>
+        <button class="step-btn" id="nextToAct" onclick="goScreen(2)" disabled>Pick My Challenges →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: ACTIVITY (PATTERN 2 PICKERS) -->
+  <div class="screen" id="screen2">
+
+    <div class="act-header" id="fc-hdr">
+      <div class="wmark" id="fc-wm"></div>
+      <h2 id="fc-title"></h2>
+      <div class="ah-sub" id="fc-sub"></div>
+    </div>
+
+    <div class="pick-instruction">
+      <strong>Pick one option</strong> for each of the 4 challenges below. Tap the card that feels right. When all 4 are selected, the print button unlocks.
+    </div>
+
+    <div class="slot" id="slot0"></div>
+    <div class="slot" id="slot1"></div>
+    <div class="slot" id="slot2"></div>
+    <div class="slot" id="slot3"></div>
+
+    <div class="print-bar no-print">
+      <button class="big-print-btn" id="mainPrintBtn" onclick="doPrint()" disabled>🖨️ Print Friendship Cards</button>
+      <div class="print-status" id="printStatus">0 of 4 challenges selected</div>
+    </div>
+
+    <div class="back-bar no-print">
+      <a class="back-btn" href="Leadership_Menu.html">🌿 Back to Leadership Menu</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- PRINT-ONLY VIEW -->
+<div class="print-view" id="printView">
+  <div class="pv-header" id="pv-header">
+    <div class="pv-wmark" id="pv-wmark"></div>
+    <h2 id="pv-title"></h2>
+    <div class="ah-sub" id="pv-sub"></div>
+  </div>
+  <div class="pv-grid" id="pv-grid"></div>
+  <div class="pv-footer">Smile Bags · A Word &amp; Wonder Experience · Leadership · Spring 2026</div>
+</div>
+
+<footer>
+  <p>Smile Bags · A Word &amp; Wonder Experience · Leadership Skills · Katelyn Marquand · Spring 2026</p>
+</footer>
+
+<script>
+/* ── DATA: 3 Sample OneWords (Pattern 2: 3 options per word-slot) ── */
+var WORDS=[
+{word:"BLOOM",meaning:"Opening up to something beautiful",accent:"#B5446E",light:"#FDE8EF",fc:{
+  title:"Bloom Challenge",
+  challenge1_opts:[
+    "Plant a seed or bean in a small cup of dirt. Put it by a sunny window. Draw what you see every 2 days for a week.",
+    "Walk around your school or classroom and count how many plants or flowers you can find. Write the number. Draw your favorite.",
+    "Pick one leaf from outside (with permission). Press it between two heavy books for 5 days. Tape the flat leaf to paper and label it."
+  ],
+  challenge2_opts:[
+    "Draw a picture of a garden. Include at least 3 types of flowers or plants. Label each one.",
+    "Make a list of 5 colors you see in nature. Draw a flower using only those colors.",
+    "Find a flower in a book, magazine, or outside. Draw it and label the parts: petals, stem, leaves."
+  ]
+}},
+{word:"ADAPT",meaning:"Changing to meet a new challenge",accent:"#2E7D32",light:"#E8F5E9",fc:{
+  title:"Adapt Challenge",
+  challenge1_opts:[
+    "Write your name 5 times with your non-dominant hand. See if it gets easier. Show your best one to a classmate.",
+    "Try brushing your teeth with your other hand tonight. In the morning, do it again. Which felt easier?",
+    "Play rock-paper-scissors with a friend. Then invent 3 new hand shapes and teach them. Play a round with the new rules."
+  ],
+  challenge2_opts:[
+    "Build a paper airplane. Fly it. Change one fold or add a paperclip. Fly it again. Which flew farther?",
+    "Set up your desk, locker, or backpack a new way today. Keep it that way for a full school day. Note what felt different.",
+    "If you usually walk to class the same way, try a different hallway or door. Look for 3 things you haven't noticed before."
+  ]
+}},
+{word:"PERSIST",meaning:"Keeping going when things are hard",accent:"#B71C1C",light:"#FFEBEE",fc:{
+  title:"Persist Challenge",
+  challenge1_opts:[
+    "Try a tricky math problem 3 times, even if you get it wrong. Show your work each time. Circle where you got closer.",
+    "Practice writing one hard word (or one cursive letter) 5 times. On the last try, time yourself. Did you get faster?",
+    "Read a page of a book that's hard for you. Circle every word you don't know. Pick 3 and look them up."
+  ],
+  challenge2_opts:[
+    "Pick a puzzle, coloring page, or drawing. Finish the whole thing today — no switching to something else partway.",
+    "Try jumping rope, doing a cartwheel, or a pull-up 5 times at recess or gym. Even if you don't get it, count your tries.",
+    "Read for 10 minutes straight without checking the clock. When time is up, tell someone one thing you read about."
+  ]
+}}
+];
+
+/* ── DATA: 3 Age Groups (Pattern 2: 3 templates per age-slot) ── */
+var AGES={
+  elem:{label:"Elementary",grades:"Grades 3–5",emoji:"🌱",color:"#E65100",light:"#FFF3E0",fc:{
+    intro:"Do these fun challenges with a friend or family member!",
+    types:["Fun Challenge","Partner Challenge","Word Challenge","Kindness Challenge"],
+    timer:["5 minutes","3 minutes","No limit!","Your choice!"],
+    c3_templates:[
+      "Draw a picture showing what {word} looks like. Show it to your teacher or a friend!",
+      "Write the word {word} in big bubble letters. Decorate it with drawings that remind you of the word.",
+      "Make up a silly movement or sound for {word}. Teach it to a classmate — can they guess the word?"
+    ],
+    c4_templates:[
+      "Do one kind thing at school today that shows {word}. High-five a friend after!",
+      "Make a little card with the word {word} on it. Give it to a teacher, classmate, or family member.",
+      "Help someone at school today without being asked — pick up a dropped pencil, hold a door, share a supply."
+    ]
+  }},
+  middle:{label:"Middle School",grades:"Grades 6–8",emoji:"🌿",color:"#1565C0",light:"#E3F2FD",fc:{
+    intro:"Try these challenges with a friend, classmate, or someone you trust.",
+    types:["Team Challenge","Reflection Challenge","Word Challenge","Empathy Challenge"],
+    timer:["10 minutes","7 minutes","No limit!","5 minutes"],
+    c3_templates:[
+      "Find one example of {word} in your school day — a class, a moment, a thing you saw. Write a short note about it.",
+      "Write down {word} and 3 synonyms. Compare your list with a classmate's. Which synonyms fit best?",
+      "Find the word {word} (or a related word) in a book, song, or article. Copy the sentence that uses it."
+    ],
+    c4_templates:[
+      "Notice someone at school who might need {word} today. Offer one specific help — not 'let me know if you need anything.'",
+      "Notice a classmate who shows {word} well. Thank them today — tell them exactly what you saw them do.",
+      "Sit with someone new at lunch this week. Ask them one question about their day. Really listen to the answer."
+    ]
+  }},
+  high:{label:"High School",grades:"Grades 9–12",emoji:"🌳",color:"#2D5016",light:"#F1F8E9",fc:{
+    intro:"Challenge yourself and someone else — these activities are designed to go deeper.",
+    types:["Leadership Challenge","Community Challenge","Word Challenge","Service Challenge"],
+    timer:["15 minutes","10 minutes","No limit!","Your choice"],
+    c3_templates:[
+      "Find one article or news story about a person who showed {word}. Summarize their actions in 2 sentences.",
+      "Identify one class, club, or school activity where {word} matters. Write 3 specific ways it shows up there.",
+      "Write {word} at the top of a paper. List 5 concrete actions (not feelings) that demonstrate this word at school."
+    ],
+    c4_templates:[
+      "Identify one thing at your school that needs {word}. Write one small action a student could take to address it.",
+      "Research one community organization focused on {word}. Write their name, what they do, and one way to help.",
+      "Help a younger student at your school this week — with homework, a sport skill, or a club project. Do it once."
+    ]
+  }}
+};
+var AGE_KEYS=['elem','middle','high'];
+var AGE_DESCS=[
+  'Fun, playful activities with simple language',
+  'Engaging challenges with deeper reflection',
+  'Leadership-focused with purposeful thinking'
+];
+
+/* ── SLOT COLORS ── */
+var SLOT_COLORS=['#FF6B6B','#10B981','#A855F7','#F7971E'];
+
+/* ── STATE ── */
+var selWord=null, selAge=null;
+var slotPicks=[null,null,null,null];
+
+/* ── BUILD WORD GRID ── */
+(function(){
+  var wg=document.getElementById('wordGrid');
+  WORDS.forEach(function(w,i){
+    var c=document.createElement('div');
+    c.className='wchip'; c.id='wc'+i;
+    c.innerHTML='<span class="wn">'+w.word+'</span><span class="wm">'+w.meaning+'</span>';
+    c.onclick=function(){
+      document.querySelectorAll('.wchip').forEach(function(x){x.classList.remove('active');x.style.background='';x.style.borderColor='';});
+      c.classList.add('active'); c.style.background=w.accent; c.style.borderColor=w.accent;
+      selWord=w;
+      document.getElementById('nextToAge').disabled=false;
+    };
+    wg.appendChild(c);
+  });
+})();
+
+/* ── BUILD AGE GRID ── */
+(function(){
+  var ag=document.getElementById('ageGrid');
+  AGE_KEYS.forEach(function(k,i){
+    var a=AGES[k];
+    var c=document.createElement('div');
+    c.className='age-card'; c.id='ac'+i;
+    c.innerHTML='<div class="age-emoji">'+a.emoji+'</div><div class="age-label">'+a.label+'</div><div class="age-desc">'+a.grades+' · '+AGE_DESCS[i]+'</div>';
+    c.onclick=function(){
+      document.querySelectorAll('.age-card').forEach(function(x){x.classList.remove('active');});
+      c.classList.add('active');
+      selAge=k;
+      document.getElementById('nextToAct').disabled=false;
+    };
+    ag.appendChild(c);
+  });
+})();
+
+/* ── SCREEN NAVIGATION ── */
+function goScreen(n){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('screen'+n).classList.add('active');
+  var sb=document.getElementById('statusBar');
+  var pb=document.getElementById('fixedPrintBtn');
+  if(n===2 && selWord && selAge){
+    slotPicks=[null,null,null,null];
+    renderActivity();
+    sb.style.display='flex';
+    document.getElementById('statusWord').textContent=selWord.word;
+    document.getElementById('statusWord').style.background=selWord.accent;
+    document.getElementById('statusAge').textContent=AGES[selAge].label+' · '+AGES[selAge].grades;
+    pb.style.display='block';
+    pb.disabled=true;
+    updatePrintState();
+  } else {
+    sb.style.display='none';
+    pb.style.display='none';
+  }
+  window.scrollTo(0,0);
+}
+
+/* ── RENDER ACTIVITY ── */
+function renderActivity(){
+  var w=selWord, a=AGES[selAge], acc=w.accent;
+
+  document.getElementById('fc-hdr').style.background='linear-gradient(135deg,'+acc+','+acc+'CC)';
+  document.getElementById('fc-wm').textContent=w.word;
+  document.getElementById('fc-title').textContent='🤝 '+w.fc.title;
+  document.getElementById('fc-sub').textContent=a.fc.intro+' — '+w.word+': '+w.meaning;
+
+  var slotOpts=[
+    w.fc.challenge1_opts,
+    w.fc.challenge2_opts,
+    a.fc.c3_templates.map(function(t){return t.replace(/\{word\}/g,w.word);}),
+    a.fc.c4_templates.map(function(t){return t.replace(/\{word\}/g,w.word);})
+  ];
+
+  for(var s=0;s<4;s++){
+    renderSlot(s, slotOpts[s], a.fc.types[s], a.fc.timer[s]);
+  }
+}
+
+function renderSlot(slotIdx, opts, typeLabel, timerLabel){
+  var color=SLOT_COLORS[slotIdx];
+  var lightBg=selWord.light;
+  var slotEl=document.getElementById('slot'+slotIdx);
+  var html='<div class="slot-hd">'+
+    '<span class="slot-num" style="background:'+color+'">Challenge 0'+(slotIdx+1)+'</span>'+
+    '<span class="slot-type">'+typeLabel+'</span>'+
+    '<span class="slot-timer" style="background:'+lightBg+';color:'+selWord.accent+'">⏱ '+timerLabel+'</span>'+
+  '</div>';
+  html+='<div class="opts-grid">';
+  opts.forEach(function(txt,i){
+    html+='<div class="opt-card" data-slot="'+slotIdx+'" data-opt="'+i+'" onclick="pickOpt('+slotIdx+','+i+',this)">'+
+      '<div class="opt-label">Option '+String.fromCharCode(65+i)+'</div>'+
+      '<div class="opt-text">'+txt+'</div>'+
+    '</div>';
+  });
+  html+='</div>';
+  slotEl.innerHTML=html;
+}
+
+/* ── PICK OPTION ── */
+function pickOpt(slotIdx, optIdx, card){
+  var color=SLOT_COLORS[slotIdx];
+  document.querySelectorAll('.opt-card[data-slot="'+slotIdx+'"]').forEach(function(c){
+    c.classList.remove('sel');
+    c.style.background='';
+    c.style.borderColor='';
+  });
+  card.classList.add('sel');
+  card.style.background=color;
+  card.style.borderColor=color;
+  slotPicks[slotIdx]=optIdx;
+  updatePrintState();
+}
+
+/* ── UPDATE PRINT STATE ── */
+function updatePrintState(){
+  var count=slotPicks.filter(function(p){return p!==null;}).length;
+  var status=document.getElementById('printStatus');
+  var mainBtn=document.getElementById('mainPrintBtn');
+  var fixedBtn=document.getElementById('fixedPrintBtn');
+  status.textContent=count+' of 4 challenges selected';
+  if(count===4){
+    mainBtn.disabled=false; fixedBtn.disabled=false;
+    status.classList.add('ready');
+    status.textContent='✓ All 4 selected — ready to print!';
+  } else {
+    mainBtn.disabled=true; fixedBtn.disabled=true;
+    status.classList.remove('ready');
+  }
+}
+
+/* ── PRINT ── */
+function doPrint(){
+  if(slotPicks.some(function(p){return p===null;}))return;
+  var w=selWord, a=AGES[selAge], acc=w.accent;
+
+  var ph=document.getElementById('pv-header');
+  ph.style.background='linear-gradient(135deg,'+acc+','+acc+'CC)';
+  document.getElementById('pv-wmark').textContent=w.word;
+  document.getElementById('pv-title').textContent='🤝 '+w.fc.title;
+  document.getElementById('pv-sub').textContent=a.fc.intro+' — '+w.word+': '+w.meaning;
+
+  var slotOpts=[
+    w.fc.challenge1_opts,
+    w.fc.challenge2_opts,
+    a.fc.c3_templates.map(function(t){return t.replace(/\{word\}/g,w.word);}),
+    a.fc.c4_templates.map(function(t){return t.replace(/\{word\}/g,w.word);})
+  ];
+
+  var grid=document.getElementById('pv-grid');
+  grid.innerHTML='';
+  for(var s=0;s<4;s++){
+    var color=SLOT_COLORS[s];
+    var txt=slotOpts[s][slotPicks[s]];
+    grid.innerHTML+='<div class="pv-card" style="border-left-color:'+color+'">'+
+      '<div class="pv-fn" style="color:'+color+'">Challenge 0'+(s+1)+'</div>'+
+      '<div class="pv-title">'+a.fc.types[s]+'</div>'+
+      '<div class="pv-body">'+txt+'</div>'+
+      '<span class="pv-timer" style="background:'+w.light+';color:'+acc+'">⏱ '+a.fc.timer[s]+'</span>'+
+    '</div>';
+  }
+
+  window.print();
+}
+</script>
+</body>
+</html>
