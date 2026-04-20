@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dream Jar · Smile Bags · A Word & Wonder Experience</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1e2838;
+    --ink-soft:#3d4a5e;
+    --muted:#6b7689;
+    --bg:#f4efe3;
+    --bg-deep:#ebe3d0;
+    --card:#ffffff;
+    --border:#d6cdb8;
+    --gold:#b89537;
+    --gold-soft:#d4b865;
+    --gratitude:#b89537;
+    --gratitude-soft:#f5ecd4;
+    --adventure:#2f7a8a;
+    --adventure-soft:#d4e6ea;
+    --memory:#6b4080;
+    --memory-soft:#e6dcec;
+    --shadow:0 2px 8px rgba(30,40,56,.08);
+    --shadow-hover:0 6px 18px rgba(30,40,56,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    line-height:1.5;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ========== HEADER ========== */
+  header{
+    background:var(--ink);
+    color:#f8f3e5;
+    padding:18px 32px;
+    border-bottom:3px solid var(--gold);
+  }
+  .header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .brand{display:flex;flex-direction:column;gap:2px}
+  .brand-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;letter-spacing:.5px}
+  .brand-sub{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;opacity:.7;font-weight:500}
+  .drive-pill{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--gold);color:var(--ink);
+    padding:10px 18px;border-radius:999px;
+    text-decoration:none;font-size:13px;font-weight:600;letter-spacing:.3px;
+    transition:transform .15s ease, box-shadow .15s ease;
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+  }
+  .drive-pill:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(0,0,0,.25)}
+  .drive-pill svg{width:16px;height:16px}
+
+  /* ========== MAIN ========== */
+  main{flex:1;max-width:1400px;margin:0 auto;width:100%;padding:32px;position:relative}
+  .screen{display:none;animation:fadeIn .3s ease}
+  .screen.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ========== SCREEN INTROS ========== */
+  .intro{max-width:720px;margin:0 auto 32px;text-align:center}
+  .eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}
+  .intro h1{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;color:var(--ink);margin-bottom:10px;line-height:1.15}
+  .intro p{color:var(--ink-soft);font-size:15px;max-width:600px;margin:0 auto}
+
+  /* ========== BREADCRUMB/BACK ========== */
+  .nav-row{display:flex;align-items:center;gap:14px;margin-bottom:24px;max-width:1200px;margin-left:auto;margin-right:auto}
+  .back-btn{
+    background:transparent;border:1px solid var(--border);
+    padding:8px 14px;border-radius:999px;
+    font-family:inherit;font-size:13px;color:var(--ink);cursor:pointer;
+    display:inline-flex;align-items:center;gap:6px;
+    transition:background .15s ease, border-color .15s ease;
+  }
+  .back-btn:hover{background:#fff;border-color:var(--ink)}
+  .crumb{font-size:13px;color:var(--muted);letter-spacing:.3px}
+  .crumb strong{color:var(--ink);font-weight:600}
+  .crumb .sep{margin:0 8px;opacity:.5}
+
+  /* ========== WORD GRID ========== */
+  .word-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:14px;
+    max-width:1100px;
+    margin:0 auto;
+  }
+  @media (max-width:900px){.word-grid{grid-template-columns:repeat(4,1fr)}}
+  @media (max-width:640px){.word-grid{grid-template-columns:repeat(3,1fr);gap:10px}}
+  @media (max-width:400px){.word-grid{grid-template-columns:repeat(2,1fr)}}
+  .word-tile{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:24px 10px;
+    text-align:center;
+    cursor:pointer;
+    font-family:'Playfair Display',serif;
+    font-size:19px;
+    font-weight:800;
+    letter-spacing:2.5px;
+    color:var(--ink);
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    box-shadow:var(--shadow);
+  }
+  .word-tile:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:var(--gold)}
+
+  /* ========== SET CARDS ========== */
+  .chosen-word{
+    text-align:center;margin-bottom:28px;
+    font-family:'Playfair Display',serif;
+    font-size:54px;font-weight:800;letter-spacing:5px;
+    color:var(--ink);
+    position:relative;display:block;
+  }
+  .chosen-word::after{
+    content:"";display:block;width:60px;height:2px;background:var(--gold);
+    margin:12px auto 0;
+  }
+  .set-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+    max-width:1000px;margin:0 auto;
+  }
+  @media (max-width:780px){.set-grid{grid-template-columns:1fr}}
+  .set-card{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:32px 24px;text-align:center;cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+    box-shadow:var(--shadow);
+    position:relative;overflow:hidden;
+  }
+  .set-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover)}
+  .set-card::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:4px;
+  }
+  .set-card.gratitude::before{background:var(--gratitude)}
+  .set-card.adventure::before{background:var(--adventure)}
+  .set-card.memory::before{background:var(--memory)}
+  .set-icon{font-size:38px;margin-bottom:10px;line-height:1}
+  .set-name{
+    font-family:'Playfair Display',serif;font-size:22px;font-weight:700;
+    margin-bottom:6px;letter-spacing:.5px;
+  }
+  .set-card.gratitude .set-name{color:var(--gratitude)}
+  .set-card.adventure .set-name{color:var(--adventure)}
+  .set-card.memory .set-name{color:var(--memory)}
+  .set-desc{font-size:13px;color:var(--muted);line-height:1.5}
+
+  /* ========== OPTION CARDS ========== */
+  .option-list{
+    display:flex;flex-direction:column;gap:14px;
+    max-width:720px;margin:0 auto;
+  }
+  .option-card{
+    background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:22px 24px;cursor:pointer;display:flex;align-items:center;gap:18px;
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    box-shadow:var(--shadow);text-align:left;font-family:inherit;
+    width:100%;color:var(--ink);
+  }
+  .option-card:hover{transform:translateX(4px);box-shadow:var(--shadow-hover)}
+  .option-card.gratitude:hover{border-color:var(--gratitude)}
+  .option-card.adventure:hover{border-color:var(--adventure)}
+  .option-card.memory:hover{border-color:var(--memory)}
+  .option-num{
+    flex-shrink:0;width:40px;height:40px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Playfair Display',serif;font-size:19px;font-weight:700;
+    color:#fff;
+  }
+  .option-card.gratitude .option-num{background:var(--gratitude)}
+  .option-card.adventure .option-num{background:var(--adventure)}
+  .option-card.memory .option-num{background:var(--memory)}
+  .option-text{font-size:16px;line-height:1.5;flex:1}
+
+  /* ========== DREAM SLIP (ticket variant) ========== */
+  .coupon-stage{
+    display:flex;flex-direction:column;align-items:center;gap:24px;
+    padding:20px 0;
+  }
+  .coupon{
+    background:#fffdf7;
+    width:100%;max-width:640px;
+    border:2px solid var(--ink);
+    border-radius:4px;
+    padding:32px 36px;
+    position:relative;
+    box-shadow:0 8px 24px rgba(30,40,56,.18);
+    font-family:'Playfair Display',serif;
+  }
+  .coupon::before,.coupon::after{
+    content:"";position:absolute;top:-10px;height:18px;
+    width:18px;background:var(--bg);border:2px solid var(--ink);border-radius:50%;
+  }
+  .coupon::before{left:30%}
+  .coupon::after{right:30%}
+  /* tiny stars on the dream slip — subtle */
+  .coupon-stars{
+    position:absolute;top:14px;left:14px;right:14px;
+    display:flex;justify-content:space-between;align-items:center;
+    pointer-events:none;opacity:.4;
+  }
+  .coupon-stars span{font-size:10px;letter-spacing:2px;color:var(--gold)}
+  .coupon-perf{
+    position:absolute;left:50%;transform:translateX(-50%);
+    top:16px;font-size:10px;letter-spacing:3px;color:var(--muted);
+    font-family:'Inter',sans-serif;font-weight:700;text-transform:uppercase;
+  }
+  .coupon-inner{margin-top:18px;text-align:center}
+  .coupon-header{
+    font-family:'Inter',sans-serif;font-size:11px;letter-spacing:4px;
+    text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px;
+  }
+  .coupon-sub{
+    font-family:'Inter',sans-serif;font-size:12px;color:var(--muted);
+    letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;font-weight:500;
+  }
+  .coupon-word{
+    font-family:'Playfair Display',serif;font-size:58px;font-weight:800;
+    letter-spacing:6px;color:var(--ink);line-height:1;margin-bottom:4px;
+  }
+  .coupon-divider{
+    display:flex;align-items:center;gap:10px;
+    justify-content:center;margin:18px 0 16px;
+  }
+  .coupon-divider::before,.coupon-divider::after{
+    content:"";flex:1;max-width:80px;height:1px;background:var(--border);
+  }
+  .coupon-divider span{
+    font-family:'Inter',sans-serif;font-size:10px;letter-spacing:3px;
+    text-transform:uppercase;color:var(--muted);font-weight:600;
+  }
+  .coupon-action{
+    font-family:'Playfair Display',serif;
+    font-size:24px;font-style:italic;line-height:1.35;font-weight:500;
+    color:var(--ink);padding:0 10px;min-height:80px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .coupon-set-tag{
+    display:inline-flex;align-items:center;gap:6px;
+    margin-top:20px;padding:5px 14px;border-radius:999px;
+    font-family:'Inter',sans-serif;font-size:11px;font-weight:700;
+    letter-spacing:1.5px;text-transform:uppercase;
+  }
+  .coupon-set-tag.gratitude{background:var(--gratitude-soft);color:var(--gratitude)}
+  .coupon-set-tag.adventure{background:var(--adventure-soft);color:var(--adventure)}
+  .coupon-set-tag.memory{background:var(--memory-soft);color:var(--memory)}
+  .coupon-footer{
+    margin-top:24px;padding-top:16px;border-top:1px dashed var(--border);
+    font-family:'Inter',sans-serif;
+  }
+  .coupon-from{display:flex;justify-content:space-between;align-items:flex-end;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+  .coupon-from .line-label{font-weight:600}
+  .coupon-from .line{display:inline-block;border-bottom:1px solid var(--ink);min-width:120px;height:14px;margin-left:8px}
+
+  .micro-step{
+    background:var(--bg-deep);border:1px solid var(--border);border-radius:10px;
+    padding:16px 22px;max-width:640px;width:100%;
+    display:flex;align-items:center;gap:14px;
+    font-size:13px;color:var(--ink-soft);line-height:1.5;
+  }
+  .micro-step-icon{flex-shrink:0;width:36px;height:36px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--ink);font-weight:700;font-family:'Playfair Display',serif}
+  .micro-step strong{color:var(--ink)}
+
+  .coupon-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  .btn{
+    font-family:inherit;font-size:14px;font-weight:600;letter-spacing:.3px;
+    padding:12px 22px;border-radius:999px;cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+    border:none;display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+  }
+  .btn-primary{background:var(--ink);color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.25)}
+  .btn-secondary{background:#fff;color:var(--ink);border:1px solid var(--border)}
+  .btn-secondary:hover{border-color:var(--ink)}
+  .btn-gold{background:var(--gold);color:var(--ink);box-shadow:0 2px 6px rgba(0,0,0,.15)}
+  .btn-gold:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.25)}
+
+  /* ========== FOOTER ========== */
+  footer{
+    background:var(--ink);color:#d6cdb8;padding:20px 32px;margin-top:40px;
+    font-size:12px;letter-spacing:1.5px;text-transform:uppercase;text-align:center;
+    font-weight:500;
+  }
+  footer .dot{margin:0 10px;color:var(--gold)}
+
+  .screen-coupon-active header,
+  .screen-coupon-active footer{display:flex;justify-content:center}
+
+  @media print{
+    header,footer,.nav-row,.coupon-actions,.micro-step,.drive-pill{display:none !important}
+    body{background:#fff}
+    .coupon{box-shadow:none;border:2px solid #000}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-title">Dream Jar</div>
+      <div class="brand-sub">Smile Bags · A Word &amp; Wonder Experience</div>
+    </div>
+    <a class="drive-pill" id="driveLink" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.71 3.52L1.15 15l3.42 5.92h13.69L21.85 15 14.29 3.52H7.71zm1.42 2h5.74l5.36 9.48H14.49L9.13 5.52zM7.71 6.48L12.71 15H2.57L7.71 6.48z"/></svg>
+      Upload to Drive
+    </a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ========== SCREEN 1: WORD PICKER ========== -->
+  <section id="screen-words" class="screen active">
+    <div class="intro">
+      <div class="eyebrow">Step 1 of 3</div>
+      <h1>Choose Your OneWord</h1>
+      <p>Each OneWord carries a different kind of dream. Pick the one that fits the child who will open your Smile Bag.</p>
+    </div>
+    <div class="word-grid" id="wordGrid"></div>
+  </section>
+
+  <!-- ========== SCREEN 2: SET PICKER ========== -->
+  <section id="screen-sets" class="screen">
+    <div class="nav-row">
+      <button class="back-btn" onclick="goToScreen('words')">&larr; Back to OneWords</button>
+      <div class="crumb"><strong id="crumbWord1"></strong></div>
+    </div>
+    <div class="intro">
+      <div class="eyebrow">Step 2 of 3</div>
+      <h1>Choose a Dream Style</h1>
+      <p>Three kinds of dreams to tuck into a Smile Bag. Pick the style that fits the child best.</p>
+    </div>
+    <div class="chosen-word" id="chosenWord"></div>
+    <div class="set-grid">
+      <button class="set-card gratitude" onclick="pickSet('gratitude')">
+        <div class="set-icon">🎁</div>
+        <div class="set-name">Gratitude</div>
+        <div class="set-desc">Thank the people and moments that make your days better.</div>
+      </button>
+      <button class="set-card adventure" onclick="pickSet('adventure')">
+        <div class="set-icon">🗺️</div>
+        <div class="set-name">Adventure</div>
+        <div class="set-desc">Explore, imagine, and travel to new places — real or imagined.</div>
+      </button>
+      <button class="set-card memory" onclick="pickSet('memory')">
+        <div class="set-icon">🌈</div>
+        <div class="set-name">Happiness &amp; Memory</div>
+        <div class="set-desc">Remember, draw, or hold onto the happy moments that matter most.</div>
+      </button>
+    </div>
+  </section>
+
+  <!-- ========== SCREEN 3: OPTION PICKER ========== -->
+  <section id="screen-options" class="screen">
+    <div class="nav-row">
+      <button class="back-btn" onclick="goToScreen('sets')">&larr; Change style</button>
+      <div class="crumb"><strong id="crumbWord2"></strong> <span class="sep">·</span> <span id="crumbSet"></span></div>
+    </div>
+    <div class="intro">
+      <div class="eyebrow">Step 3 of 3</div>
+      <h1>Choose the Dream Action</h1>
+      <p>One dream to share with the child. Pick the one that feels most giftable.</p>
+    </div>
+    <div class="option-list" id="optionList"></div>
+  </section>
+
+  <!-- ========== SCREEN 4: DREAM SLIP ========== -->
+  <section id="screen-coupon" class="screen">
+    <div class="nav-row">
+      <button class="back-btn" onclick="goToScreen('options')">&larr; Pick a different dream</button>
+      <button class="back-btn" onclick="startOver()">↺ Start over</button>
+    </div>
+    <div class="coupon-stage">
+      <div class="coupon" id="coupon">
+        <div class="coupon-stars"><span>✦</span><span>✦</span></div>
+        <div class="coupon-perf">· · ·  Dream Slip  · · ·</div>
+        <div class="coupon-inner">
+          <div class="coupon-header">A Smile Bag Dream Slip</div>
+          <div class="coupon-sub">One Word · One Dream · One Smile</div>
+          <div class="coupon-word" id="cpnWord"></div>
+          <div class="coupon-divider"><span>This dream is yours to keep</span></div>
+          <div class="coupon-action" id="cpnAction"></div>
+          <span class="coupon-set-tag" id="cpnSetTag"></span>
+          <div class="coupon-footer">
+            <div class="coupon-from">
+              <div><span class="line-label">From:</span><span class="line"></span></div>
+              <div><span class="line-label">Date:</span><span class="line"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="micro-step">
+        <div class="micro-step-icon">📸</div>
+        <div>
+          <strong>Next steps:</strong> Press <strong>Print Screen</strong> (or <strong>Ctrl + Shift + Show Windows</strong> on Chromebook) to capture the dream slip → save to your Chromebook → upload to the shared Drive folder using the gold button above.
+        </div>
+      </div>
+      <div class="coupon-actions">
+        <button class="btn btn-primary" onclick="goToScreen('words')">Make another dream slip</button>
+        <a class="btn btn-gold" id="driveLink2" href="#" target="_blank" rel="noopener">Open Drive folder</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Smile Bags <span class="dot">·</span> A Word &amp; Wonder Experience <span class="dot">·</span> Leadership <span class="dot">·</span> Marquand <span class="dot">·</span> Spring 2026
+</footer>
+
+<script>
+/* =========================================================================
+   DRIVE FOLDER LINK
+   Replace DRIVE_URL with the shared-link URL once you create the folder.
+   The kiosk loads fine without it (button just does nothing). Standard:
+   https://drive.google.com/drive/folders/XXXXXXXXXXXX?usp=sharing
+   ========================================================================= */
+const DRIVE_URL = "https://drive.google.com/drive/folders/1D1AqGr8icdUbziUg9_8Ww1XyYhUXPxs4?usp=sharing";
+
+if (DRIVE_URL && DRIVE_URL.indexOf('REPLACE') === -1) {
+  document.getElementById('driveLink').href = DRIVE_URL;
+  document.getElementById('driveLink2').href = DRIVE_URL;
+} else {
+  // Hide Drive buttons until folder exists so students aren't confused
+  document.getElementById('driveLink').style.display = 'none';
+  document.getElementById('driveLink2').style.display = 'none';
+}
+
+/* ========== DATA: 25 OneWords × 3 sets × 3 options = 225 dream slips ========== */
+const WORDS = ["ABSORB","ADAPT","ANCHOR","BALANCE","BLOOM","BREATHE","CLEAR","CONNECT","CYCLE","EMERGE","FILTER","FLOW","GROW","HEAL","MIGRATE","PERSIST","RENEW","RESTORE","RETURN","RISE","ROOT","SHINE","SUSTAIN","THRIVE","TRANSFORM"];
+
+const COUPONS = {
+  ABSORB:{
+    gratitude:[
+      "Write a thank-you note to a teacher who explained something hard so well it stuck",
+      "Tell the librarian what your favorite book taught you",
+      "Listen carefully to a friend's story, then tell them what you loved about it"
+    ],
+    adventure:[
+      "Visit the school library and pick a book about a place you've never been",
+      "Read about an animal that lives somewhere far away — share one fact with a friend",
+      "Watch a nature video and learn 3 brand-new facts"
+    ],
+    memory:[
+      "Draw the happiest moment from your school week",
+      "Write down one new word you learned today so you remember it forever",
+      "Tell a friend about a class you really enjoyed this week"
+    ]
+  },
+  ADAPT:{
+    gratitude:[
+      "Thank someone who helps you when plans change at school",
+      "Write a quick note to a teacher who tries new ways to teach",
+      "Tell a friend you appreciate how they roll with surprises"
+    ],
+    adventure:[
+      "Try walking a brand-new path from your classroom to the cafeteria",
+      "Read a book set in a different country and learn one custom",
+      "Imagine you live in a tree house — draw a whole day in your tree"
+    ],
+    memory:[
+      "Remember a time you tried something new at school and it went great — draw it",
+      "Write down a happy surprise that happened this week",
+      "Tell a friend about a time you made the best of a change"
+    ]
+  },
+  ANCHOR:{
+    gratitude:[
+      "Write a thank-you to a school helper who keeps you steady (counselor, teacher, custodian)",
+      "Tell a family member you appreciate them always being there",
+      "Make a card for the school helper who knows everyone's name"
+    ],
+    adventure:[
+      "Find the heaviest, sturdiest tree on the playground and sketch it",
+      "Read a story about a lighthouse or a ship and its anchor",
+      "Imagine your dream cozy reading nook — draw every detail"
+    ],
+    memory:[
+      "Draw your favorite spot at school that always feels safe and steady",
+      "Write about a day at school you felt totally settled and ready",
+      "List 3 places at school where you feel calm and ready to learn"
+    ]
+  },
+  BALANCE:{
+    gratitude:[
+      "Thank someone who helps you when school feels too busy",
+      "Tell a teacher you appreciate fun AND learning in their class",
+      "Make a card for a friend who balances school and play really well"
+    ],
+    adventure:[
+      "Walk like a tightrope walker across a gym line — see how far you get",
+      "Read a book about acrobats, dancers, or animals that balance amazingly",
+      "Imagine an island where everything is perfectly balanced — draw it"
+    ],
+    memory:[
+      "Remember a day when work and fun fit together perfectly — write about it",
+      "Draw a happy day you balanced learning and play",
+      "List 3 things that make a perfect school day for you"
+    ]
+  },
+  BLOOM:{
+    gratitude:[
+      "Pick a flower (real or paper) and give it to a teacher with a thank-you",
+      "Tell a classmate something they did this week that helped them shine",
+      "Write a thank-you to someone who helped you grow at school"
+    ],
+    adventure:[
+      "Plant a seed in a paper cup and watch it for a week",
+      "Find 5 different growing things on the playground and sketch each",
+      "Read a story about a magical garden and imagine your own version"
+    ],
+    memory:[
+      "Draw the most colorful flower you've ever seen",
+      "Remember a time at school you bloomed into something new — write it down",
+      "Make a happy memory page about your favorite spring day"
+    ]
+  },
+  BREATHE:{
+    gratitude:[
+      "Take 3 deep breaths and think about 3 people you appreciate at school",
+      "Thank a gym teacher or coach for showing you how to breathe better when running",
+      "Tell a friend you appreciate their calm energy"
+    ],
+    adventure:[
+      "Imagine a trip to the top of a mountain — what would the air feel like? Draw it",
+      "Read a story about a deep-sea diver or astronaut and how they breathe",
+      "Find the windiest spot on the playground and feel it on your face"
+    ],
+    memory:[
+      "Draw a picture of the most peaceful place you can imagine",
+      "Remember a time you laughed so hard you needed to catch your breath — write about it",
+      "Take 5 slow breaths and picture your happiest school day"
+    ]
+  },
+  CLEAR:{
+    gratitude:[
+      "Help clean up a shared school space, then thank the custodian",
+      "Write a thank-you to the librarian who keeps every book where it belongs",
+      "Tell a teacher you appreciate their organized classroom"
+    ],
+    adventure:[
+      "Look up at the clear sky and draw what you see",
+      "Read a book about glass blowers, ice sculptors, or crystal collectors",
+      "Imagine a clear-glass treehouse — sketch what you'd see from inside"
+    ],
+    memory:[
+      "Draw the clearest, sunniest day you remember",
+      "Write about a time at school when everything just clicked and made sense",
+      "Remember a moment you saw something beautiful in nature — sketch it"
+    ]
+  },
+  CONNECT:{
+    gratitude:[
+      "Write thank-you notes to 3 friends who connect with you at school",
+      "Tell a teacher you appreciate how they connect ideas across subjects",
+      "Send a kind message to a classmate who helped you feel included"
+    ],
+    adventure:[
+      "Map all the places you go in one school day and connect them with arrows",
+      "Read a book about explorers connecting to new lands",
+      "Imagine a bridge between school and your dream place — draw it"
+    ],
+    memory:[
+      "Draw a picture of you and 3 friends laughing together at school",
+      "Remember the day you made a new friend and write down how it felt",
+      "Make a memory map of your favorite school moments connected with paths"
+    ]
+  },
+  CYCLE:{
+    gratitude:[
+      "Thank the lunch staff who serve every day, like clockwork",
+      "Tell a teacher you appreciate the routines that help your day flow",
+      "Write a thank-you for someone who's there for you every single week"
+    ],
+    adventure:[
+      "Take an imaginary trip through the seasons — draw what each looks like at your school",
+      "Read about animal migrations or seasons in different countries",
+      "Imagine a day in the life of a butterfly's life cycle — sketch each stage"
+    ],
+    memory:[
+      "Draw your favorite part of the school-day routine",
+      "Remember a happy holiday or tradition that comes every year and write about it",
+      "List 3 weekly moments at school that always make you smile"
+    ]
+  },
+  EMERGE:{
+    gratitude:[
+      "Thank a teacher who helped you shine when you felt shy",
+      "Write a card to the librarian who helps quiet kids find their favorite book",
+      "Tell a friend you noticed them being brave"
+    ],
+    adventure:[
+      "Read about a butterfly emerging from a cocoon — draw the moment it appears",
+      "Imagine emerging from a magical door at school — where would you go?",
+      "Watch a sunrise (or a sunrise video) and describe how the sky changes"
+    ],
+    memory:[
+      "Draw the moment you felt proud at school this year",
+      "Remember a time you tried something new and it worked out — write about it",
+      "Make a happy memory of the first day you really felt at home in your class"
+    ]
+  },
+  FILTER:{
+    gratitude:[
+      "Thank a friend who always says kind words to you",
+      "Write a note to a teacher who picks the best stories to read aloud",
+      "Tell a classmate you love how they choose to be positive"
+    ],
+    adventure:[
+      "Watch how cafeteria foods get sorted and chosen — describe the process",
+      "Read a book about coffee, tea, or recycling — how things get filtered",
+      "Imagine a magical filter that turns trash into treasures — draw it"
+    ],
+    memory:[
+      "Make a list of your top 3 happiest school memories — only the best ones",
+      "Draw a sunset where the light filters through clouds beautifully",
+      "Pick the funniest thing that happened at school this week and write it down"
+    ]
+  },
+  FLOW:{
+    gratitude:[
+      "Thank someone who helps the school day flow smoothly (front office, counselor, custodian)",
+      "Tell a music or art teacher you love how their class flows",
+      "Write a thank-you for a teacher who helps everything run well"
+    ],
+    adventure:[
+      "Follow a trickle of water at recess and draw where it goes",
+      "Read a book about a river journey — like a salmon or a paper boat",
+      "Imagine floating down the perfect river — what do you see along the way?"
+    ],
+    memory:[
+      "Draw the most fun school day you remember — when everything just flowed",
+      "Write about a class where time flew by because it was so good",
+      "Remember a perfect school morning and sketch it"
+    ]
+  },
+  GROW:{
+    gratitude:[
+      "Thank someone who helped you grow this year (teacher, coach, family member)",
+      "Write a card to your kindergarten teacher (or earliest teacher you remember)",
+      "Tell a classmate you noticed how much they've grown this year"
+    ],
+    adventure:[
+      "Plant a seed and adventure into watching it grow into something bigger",
+      "Read a book about a giant tree or a tiny seed's journey",
+      "Imagine a magical place where everything keeps growing — sketch your version"
+    ],
+    memory:[
+      "Draw yourself in kindergarten and yourself now, side by side",
+      "Remember the first thing you learned to do well at school — write about it",
+      "List 3 things you can do this year that you couldn't do before"
+    ]
+  },
+  HEAL:{
+    gratitude:[
+      "Make a get-well card for a sick classmate or family member",
+      "Thank the school nurse for taking care of everyone",
+      "Write a card for someone who made you feel better when you were sad"
+    ],
+    adventure:[
+      "Read a book about veterinarians, doctors, or animal rescuers",
+      "Imagine a magical garden that heals everyone who visits — draw it",
+      "Watch a video about how starfish or lizards regrow parts of themselves"
+    ],
+    memory:[
+      "Draw a memory of a time someone made you feel better with a hug or a smile",
+      "Write about a day you felt extra cared for at school",
+      "Make a list of your top 3 \"feel-better\" people"
+    ]
+  },
+  MIGRATE:{
+    gratitude:[
+      "Thank someone who has welcomed you to a new place (school, classroom, lunch table)",
+      "Write a card for a friend who moved away or is moving",
+      "Tell a new student you're glad they joined your class"
+    ],
+    adventure:[
+      "Look up a bird's migration path in an atlas or library book and draw it",
+      "Read a book about animals that travel huge distances every year",
+      "Imagine you can fly with the birds — where would you go? Draw your route"
+    ],
+    memory:[
+      "Draw the happiest journey you've ever taken (real or imagined)",
+      "Write about a time you went somewhere new and loved it",
+      "Remember a time you welcomed a new friend and write down how it felt"
+    ]
+  },
+  PERSIST:{
+    gratitude:[
+      "Thank a coach, teacher, or family member who never gave up on you",
+      "Write a card for a classmate who keeps trying even when things are hard",
+      "Tell a friend you're grateful they stick with you"
+    ],
+    adventure:[
+      "Read a book about brave explorers who kept going through tough adventures",
+      "Imagine climbing a tall mountain — what would you carry in your pack? Draw it",
+      "Watch a video about a long-distance animal traveler (whale, monarch butterfly)"
+    ],
+    memory:[
+      "Draw a time you finished something hard and felt proud",
+      "Write about a school project you stuck with all the way to the end",
+      "Make a \"I did it!\" page for your top 3 finished things"
+    ]
+  },
+  RENEW:{
+    gratitude:[
+      "Thank someone who lets you have fresh starts when you need them",
+      "Write a note for the custodian who renews the school each night",
+      "Tell a friend you appreciate their forgiveness on hard days"
+    ],
+    adventure:[
+      "Imagine waking up in a brand-new place — what do you see? Draw it",
+      "Read a book about renewal — spring, dawn, or new beginnings",
+      "Visit the school garden (or imagine one) and notice anything new"
+    ],
+    memory:[
+      "Draw the happiest \"first day\" you remember — first day of a class, club, or year",
+      "Write about a Monday morning that started fresh and great",
+      "Make a list of 3 fresh starts you've had at school"
+    ]
+  },
+  RESTORE:{
+    gratitude:[
+      "Thank someone who fixed something for you (teacher, custodian, family member)",
+      "Write a card for the librarian who repairs torn books",
+      "Tell a friend you're grateful when they help you fix mistakes"
+    ],
+    adventure:[
+      "Read a book about people who restore old things (bridges, paintings, instruments)",
+      "Imagine being a restorer of magical items — what would you fix? Draw it",
+      "Find something at school that's been carefully restored and sketch it"
+    ],
+    memory:[
+      "Draw a time you helped fix something and felt proud",
+      "Write about a day at school that started rough and got fixed by something kind",
+      "Remember a time someone helped restore your good mood — describe it"
+    ]
+  },
+  RETURN:{
+    gratitude:[
+      "Thank a teacher you've had before and miss seeing every day",
+      "Write a card for a friend who returned after being absent",
+      "Tell a returning student you're glad they're back"
+    ],
+    adventure:[
+      "Read a book about animals that always return home (salmon, swallows, whales)",
+      "Imagine a magical compass that always points to your favorite place — draw it",
+      "Look at a map and trace a journey that goes far away and comes back"
+    ],
+    memory:[
+      "Draw your favorite spot at school you always return to",
+      "Write about a happy day you returned to school after a break",
+      "List 3 things you look forward to returning to each week"
+    ]
+  },
+  RISE:{
+    gratitude:[
+      "Thank someone who helps you rise to challenges at school (teacher, coach)",
+      "Write a card for a friend who lifts you up when you're down",
+      "Tell the cafeteria team you appreciate them rising early to make breakfast"
+    ],
+    adventure:[
+      "Read a book about climbing mountains, riding hot-air balloons, or astronauts",
+      "Imagine taking a hot-air balloon over your school — draw what you see below",
+      "Watch a sunrise (or a sunrise video) and describe the colors"
+    ],
+    memory:[
+      "Draw a moment you rose to the top — finished a tough thing, did your best",
+      "Write about a day at school you felt on top of the world",
+      "Remember a time you helped someone else rise up — sketch it"
+    ]
+  },
+  ROOT:{
+    gratitude:[
+      "Thank the people who feel like your roots at school (best teacher, best friend)",
+      "Write a card for a family member you can always count on",
+      "Tell a teacher you appreciate them being a steady part of your school year"
+    ],
+    adventure:[
+      "Read a book about huge trees and their underground root networks (redwoods, banyans)",
+      "Imagine the roots of a magical tree growing through your school — draw it",
+      "Find a tree at school and sketch its visible roots"
+    ],
+    memory:[
+      "Draw a tree where each root is a happy memory at school",
+      "Write about a place at school that always feels rooted and steady",
+      "List 3 traditions or routines that keep your school year happy"
+    ]
+  },
+  SHINE:{
+    gratitude:[
+      "Thank someone who makes your day shine brighter (a friend, a teacher)",
+      "Write a card for a classmate whose smile lights up the room",
+      "Tell a teacher you appreciate when they highlight your good work"
+    ],
+    adventure:[
+      "Read a book about lighthouses, fireflies, or the northern lights",
+      "Imagine a flashlight adventure exploring a dark cave — draw what you find",
+      "Watch a video about bioluminescent animals (jellyfish, mushrooms!)"
+    ],
+    memory:[
+      "Draw your favorite sunny day at school",
+      "Write about a time you helped someone else shine — sketch it",
+      "Remember the moment you felt proudest at school this year"
+    ]
+  },
+  SUSTAIN:{
+    gratitude:[
+      "Thank someone who does the same kind thing for you every day",
+      "Write a note to a teacher who's been there all year long",
+      "Tell a friend you appreciate their consistent kindness"
+    ],
+    adventure:[
+      "Read a book about long voyages — boats, expeditions, or sustained explorers",
+      "Imagine a self-sustaining treehouse with everything you need — draw it",
+      "Watch a video about turtles, trees, or whales that live for hundreds of years"
+    ],
+    memory:[
+      "Draw a happy school habit you want to keep all year",
+      "Write about a class that stays fun all year long — what makes it last?",
+      "Make a list of 3 \"every-week-favorites\" at school"
+    ]
+  },
+  THRIVE:{
+    gratitude:[
+      "Thank someone who helps you thrive at school (teacher, mentor, friend)",
+      "Write a card for a teacher whose class you love",
+      "Tell a friend you're glad they're thriving this year"
+    ],
+    adventure:[
+      "Read a book about life thriving in extreme places (deep sea, deserts, jungles)",
+      "Imagine a magical garden where every kid's dream-plant grows — sketch yours",
+      "Find the most thriving plant on the playground and draw it"
+    ],
+    memory:[
+      "Draw the happiest, busiest, best day at school you remember",
+      "Write about a time you felt fully thriving — at recess, in class, with friends",
+      "Make a list of 3 places at school where you do your best work"
+    ]
+  },
+  TRANSFORM:{
+    gratitude:[
+      "Thank someone who helped you become better at something (teacher, family, friend)",
+      "Write a card for a teacher who transformed how you think about a subject",
+      "Tell a friend you're grateful for how they've grown this year"
+    ],
+    adventure:[
+      "Read a book about caterpillars, tadpoles, or anything that transforms",
+      "Imagine waking up as a different animal for a day — draw your adventure",
+      "Watch a time-lapse video of a plant growing or a sunrise unfolding"
+    ],
+    memory:[
+      "Draw yourself at the start of school and yourself now — what's transformed?",
+      "Write about your favorite transformation moment this year (a project, a skill, a friendship)",
+      "Make a list of 3 ways your school year has transformed for the better"
+    ]
+  }
+};
+
+const SET_META = {
+  gratitude:{ icon:"🎁", name:"Gratitude" },
+  adventure:{ icon:"🗺️", name:"Adventure" },
+  memory:{ icon:"🌈", name:"Happiness & Memory" }
+};
+
+/* ========== STATE ========== */
+let state = { word:null, set:null, option:null };
+
+/* ========== RENDER: Word Grid ========== */
+function renderWords(){
+  const grid = document.getElementById('wordGrid');
+  grid.innerHTML = WORDS.map(w =>
+    `<button class="word-tile" onclick="pickWord('${w}')">${w}</button>`
+  ).join('');
+}
+
+/* ========== FLOW ========== */
+function pickWord(w){
+  state.word = w;
+  document.getElementById('chosenWord').textContent = w;
+  document.getElementById('crumbWord1').textContent = w;
+  goToScreen('sets');
+}
+
+function pickSet(s){
+  state.set = s;
+  document.getElementById('crumbWord2').textContent = state.word;
+  const setEl = document.getElementById('crumbSet');
+  setEl.textContent = `${SET_META[s].icon} ${SET_META[s].name}`;
+  renderOptions();
+  goToScreen('options');
+}
+
+function pickOption(i){
+  state.option = i;
+  renderCoupon();
+  goToScreen('coupon');
+}
+
+function renderOptions(){
+  const list = document.getElementById('optionList');
+  const options = COUPONS[state.word][state.set];
+  list.innerHTML = options.map((text, i) =>
+    `<button class="option-card ${state.set}" onclick="pickOption(${i})">
+       <div class="option-num">${i+1}</div>
+       <div class="option-text">${text}</div>
+     </button>`
+  ).join('');
+}
+
+function renderCoupon(){
+  const action = COUPONS[state.word][state.set][state.option];
+  document.getElementById('cpnWord').textContent = state.word;
+  document.getElementById('cpnAction').textContent = action;
+  const tag = document.getElementById('cpnSetTag');
+  tag.className = `coupon-set-tag ${state.set}`;
+  tag.textContent = `${SET_META[state.set].icon} ${SET_META[state.set].name}`;
+}
+
+function goToScreen(name){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(`screen-${name}`).classList.add('active');
+  document.body.classList.toggle('screen-coupon-active', name === 'coupon');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function startOver(){
+  state = { word:null, set:null, option:null };
+  goToScreen('words');
+}
+
+/* ========== INIT ========== */
+renderWords();
+</script>
+
+</body>
+</html>
