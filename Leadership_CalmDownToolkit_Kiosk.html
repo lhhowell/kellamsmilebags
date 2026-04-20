@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calm-Down Toolkit · Smile Bags · A Word & Wonder Experience</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1e2838;
+    --ink-soft:#3d4a5e;
+    --muted:#6b7689;
+    --bg:#f4efe3;
+    --bg-deep:#ebe3d0;
+    --card:#ffffff;
+    --border:#d6cdb8;
+    --gold:#b89537;
+    --gold-soft:#d4b865;
+    --breath:#4a7a9c;
+    --breath-soft:#dfe8f0;
+    --movement:#6b4080;
+    --movement-soft:#e6dcec;
+    --senses:#5e8c5a;
+    --senses-soft:#dfeadc;
+    --shadow:0 2px 8px rgba(30,40,56,.08);
+    --shadow-hover:0 6px 18px rgba(30,40,56,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    line-height:1.5;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ========== HEADER ========== */
+  header{
+    background:var(--ink);
+    color:#f8f3e5;
+    padding:18px 32px;
+    border-bottom:3px solid var(--gold);
+  }
+  .header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .brand{display:flex;flex-direction:column;gap:2px}
+  .brand-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;letter-spacing:.5px}
+  .brand-sub{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;opacity:.7;font-weight:500}
+  .drive-pill{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--gold);color:var(--ink);
+    padding:10px 18px;border-radius:999px;
+    text-decoration:none;font-size:13px;font-weight:600;letter-spacing:.3px;
+    transition:transform .15s ease, box-shadow .15s ease;
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+  }
+  .drive-pill:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(0,0,0,.25)}
+  .drive-pill svg{width:16px;height:16px}
+
+  /* ========== MAIN ========== */
+  main{flex:1;max-width:1400px;margin:0 auto;width:100%;padding:32px;position:relative}
+  .screen{display:none;animation:fadeIn .3s ease}
+  .screen.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ========== SCREEN INTROS ========== */
+  .intro{max-width:720px;margin:0 auto 32px;text-align:center}
+  .eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}
+  .intro h1{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;color:var(--ink);margin-bottom:10px;line-height:1.15}
+  .intro p{color:var(--ink-soft);font-size:15px;max-width:600px;margin:0 auto}
+
+  /* ========== BREADCRUMB/BACK ========== */
+  .nav-row{display:flex;align-items:center;gap:14px;margin-bottom:24px;max-width:1200px;margin-left:auto;margin-right:auto}
+  .back-btn{
+    background:transparent;border:1px solid var(--border);
+    padding:8px 14px;border-radius:999px;
+    font-family:inherit;font-size:13px;color:var(--ink);cursor:pointer;
+    display:inline-flex;align-items:center;gap:6px;
+    transition:background .15s ease, border-color .15s ease;
+  }
+  .back-btn:hover{background:#fff;border-color:var(--ink)}
+  .crumb{font-size:13px;color:var(--muted);letter-spacing:.3px}
+  .crumb strong{color:var(--ink);font-weight:600}
+  .crumb .sep{margin:0 8px;opacity:.5}
+
+  /* ========== WORD GRID ========== */
+  .word-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:14px;
+    max-width:1100px;
+    margin:0 auto;
+  }
+  @media (max-width:900px){.word-grid{grid-template-columns:repeat(4,1fr)}}
+  @media (max-width:640px){.word-grid{grid-template-columns:repeat(3,1fr);gap:10px}}
+  @media (max-width:400px){.word-grid{grid-template-columns:repeat(2,1fr)}}
+  .word-tile{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:24px 10px;
+    text-align:center;
+    cursor:pointer;
+    font-family:'Playfair Display',serif;
+    font-size:19px;
+    font-weight:800;
+    letter-spacing:2.5px;
+    color:var(--ink);
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    box-shadow:var(--shadow);
+  }
+  .word-tile:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:var(--gold)}
+
+  /* ========== SET CARDS ========== */
+  .chosen-word{
+    text-align:center;margin-bottom:28px;
+    font-family:'Playfair Display',serif;
+    font-size:54px;font-weight:800;letter-spacing:5px;
+    color:var(--ink);
+    position:relative;display:block;
+  }
+  .chosen-word::after{
+    content:"";display:block;width:60px;height:2px;background:var(--gold);
+    margin:12px auto 0;
+  }
+  .set-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+    max-width:1000px;margin:0 auto;
+  }
+  @media (max-width:780px){.set-grid{grid-template-columns:1fr}}
+  .set-card{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:32px 24px;text-align:center;cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+    box-shadow:var(--shadow);
+    position:relative;overflow:hidden;
+  }
+  .set-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover)}
+  .set-card::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:4px;
+  }
+  .set-card.breath::before{background:var(--breath)}
+  .set-card.movement::before{background:var(--movement)}
+  .set-card.senses::before{background:var(--senses)}
+  .set-icon{font-size:38px;margin-bottom:10px;line-height:1}
+  .set-name{
+    font-family:'Playfair Display',serif;font-size:22px;font-weight:700;
+    margin-bottom:6px;letter-spacing:.5px;
+  }
+  .set-card.breath .set-name{color:var(--breath)}
+  .set-card.movement .set-name{color:var(--movement)}
+  .set-card.senses .set-name{color:var(--senses)}
+  .set-desc{font-size:13px;color:var(--muted);line-height:1.5}
+
+  /* ========== OPTION CARDS ========== */
+  .option-list{
+    display:flex;flex-direction:column;gap:14px;
+    max-width:720px;margin:0 auto;
+  }
+  .option-card{
+    background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:22px 24px;cursor:pointer;display:flex;align-items:center;gap:18px;
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    box-shadow:var(--shadow);text-align:left;font-family:inherit;
+    width:100%;color:var(--ink);
+  }
+  .option-card:hover{transform:translateX(4px);box-shadow:var(--shadow-hover)}
+  .option-card.breath:hover{border-color:var(--breath)}
+  .option-card.movement:hover{border-color:var(--movement)}
+  .option-card.senses:hover{border-color:var(--senses)}
+  .option-num{
+    flex-shrink:0;width:40px;height:40px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Playfair Display',serif;font-size:19px;font-weight:700;
+    color:#fff;
+  }
+  .option-card.breath .option-num{background:var(--breath)}
+  .option-card.movement .option-num{background:var(--movement)}
+  .option-card.senses .option-num{background:var(--senses)}
+  .option-text{font-size:16px;line-height:1.5;flex:1}
+
+  /* ========== TOOLKIT CARD (ticket variant) ========== */
+  .coupon-stage{
+    display:flex;flex-direction:column;align-items:center;gap:24px;
+    padding:20px 0;
+  }
+  .coupon{
+    background:#fffdf7;
+    width:100%;max-width:640px;
+    border:2px solid var(--ink);
+    border-radius:4px;
+    padding:32px 36px;
+    position:relative;
+    box-shadow:0 8px 24px rgba(30,40,56,.18);
+    font-family:'Playfair Display',serif;
+  }
+  .coupon::before,.coupon::after{
+    content:"";position:absolute;top:-10px;height:18px;
+    width:18px;background:var(--bg);border:2px solid var(--ink);border-radius:50%;
+  }
+  .coupon::before{left:30%}
+  .coupon::after{right:30%}
+  /* gentle corner marks — leaf/sprig vibe instead of stars */
+  .coupon-stars{
+    position:absolute;top:14px;left:14px;right:14px;
+    display:flex;justify-content:space-between;align-items:center;
+    pointer-events:none;opacity:.35;
+  }
+  .coupon-stars span{font-size:11px;letter-spacing:2px;color:var(--senses)}
+  .coupon-perf{
+    position:absolute;left:50%;transform:translateX(-50%);
+    top:16px;font-size:10px;letter-spacing:3px;color:var(--muted);
+    font-family:'Inter',sans-serif;font-weight:700;text-transform:uppercase;
+  }
+  .coupon-inner{margin-top:18px;text-align:center}
+  .coupon-header{
+    font-family:'Inter',sans-serif;font-size:11px;letter-spacing:4px;
+    text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px;
+  }
+  .coupon-sub{
+    font-family:'Inter',sans-serif;font-size:12px;color:var(--muted);
+    letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;font-weight:500;
+  }
+  .coupon-word{
+    font-family:'Playfair Display',serif;font-size:58px;font-weight:800;
+    letter-spacing:6px;color:var(--ink);line-height:1;margin-bottom:4px;
+  }
+  .coupon-divider{
+    display:flex;align-items:center;gap:10px;
+    justify-content:center;margin:18px 0 16px;
+  }
+  .coupon-divider::before,.coupon-divider::after{
+    content:"";flex:1;max-width:80px;height:1px;background:var(--border);
+  }
+  .coupon-divider span{
+    font-family:'Inter',sans-serif;font-size:10px;letter-spacing:3px;
+    text-transform:uppercase;color:var(--muted);font-weight:600;
+  }
+  .coupon-action{
+    font-family:'Playfair Display',serif;
+    font-size:24px;font-style:italic;line-height:1.35;font-weight:500;
+    color:var(--ink);padding:0 10px;min-height:80px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .coupon-set-tag{
+    display:inline-flex;align-items:center;gap:6px;
+    margin-top:20px;padding:5px 14px;border-radius:999px;
+    font-family:'Inter',sans-serif;font-size:11px;font-weight:700;
+    letter-spacing:1.5px;text-transform:uppercase;
+  }
+  .coupon-set-tag.breath{background:var(--breath-soft);color:var(--breath)}
+  .coupon-set-tag.movement{background:var(--movement-soft);color:var(--movement)}
+  .coupon-set-tag.senses{background:var(--senses-soft);color:var(--senses)}
+  .coupon-footer{
+    margin-top:24px;padding-top:16px;border-top:1px dashed var(--border);
+    font-family:'Inter',sans-serif;
+  }
+  .coupon-from{display:flex;justify-content:space-between;align-items:flex-end;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+  .coupon-from .line-label{font-weight:600}
+  .coupon-from .line{display:inline-block;border-bottom:1px solid var(--ink);min-width:120px;height:14px;margin-left:8px}
+
+  .micro-step{
+    background:var(--bg-deep);border:1px solid var(--border);border-radius:10px;
+    padding:16px 22px;max-width:640px;width:100%;
+    display:flex;align-items:center;gap:14px;
+    font-size:13px;color:var(--ink-soft);line-height:1.5;
+  }
+  .micro-step-icon{flex-shrink:0;width:36px;height:36px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--ink);font-weight:700;font-family:'Playfair Display',serif}
+  .micro-step strong{color:var(--ink)}
+
+  .coupon-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  .btn{
+    font-family:inherit;font-size:14px;font-weight:600;letter-spacing:.3px;
+    padding:12px 22px;border-radius:999px;cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+    border:none;display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+  }
+  .btn-primary{background:var(--ink);color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.25)}
+  .btn-secondary{background:#fff;color:var(--ink);border:1px solid var(--border)}
+  .btn-secondary:hover{border-color:var(--ink)}
+  .btn-gold{background:var(--gold);color:var(--ink);box-shadow:0 2px 6px rgba(0,0,0,.15)}
+  .btn-gold:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.25)}
+
+  /* ========== FOOTER ========== */
+  footer{
+    background:var(--ink);color:#d6cdb8;padding:20px 32px;margin-top:40px;
+    font-size:12px;letter-spacing:1.5px;text-transform:uppercase;text-align:center;
+    font-weight:500;
+  }
+  footer .dot{margin:0 10px;color:var(--gold)}
+
+  .screen-coupon-active header,
+  .screen-coupon-active footer{display:flex;justify-content:center}
+
+  @media print{
+    header,footer,.nav-row,.coupon-actions,.micro-step,.drive-pill{display:none !important}
+    body{background:#fff}
+    .coupon{box-shadow:none;border:2px solid #000}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-title">Calm-Down Toolkit</div>
+      <div class="brand-sub">Smile Bags · A Word &amp; Wonder Experience</div>
+    </div>
+    <a class="drive-pill" id="driveLink" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.71 3.52L1.15 15l3.42 5.92h13.69L21.85 15 14.29 3.52H7.71zm1.42 2h5.74l5.36 9.48H14.49L9.13 5.52zM7.71 6.48L12.71 15H2.57L7.71 6.48z"/></svg>
+      Upload to Drive
+    </a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ========== SCREEN 1: WORD PICKER ========== -->
+  <section id="screen-words" class="screen active">
+    <div class="intro">
+      <div class="eyebrow">Step 1 of 3</div>
+      <h1>Choose Your OneWord</h1>
+      <p>Each OneWord opens a different kind of calm. Pick the one that fits the child who will open your Smile Bag.</p>
+    </div>
+    <div class="word-grid" id="wordGrid"></div>
+  </section>
+
+  <!-- ========== SCREEN 2: SET PICKER ========== -->
+  <section id="screen-sets" class="screen">
+    <div class="nav-row">
+      <button class="back-btn" onclick="goToScreen('words')">&larr; Back to OneWords</button>
+      <div class="crumb"><strong id="crumbWord1"></strong></div>
+    </div>
+    <div class="intro">
+      <div class="eyebrow">Step 2 of 3</div>
+      <h1>Choose a Calm-Down Style</h1>
+      <p>Three paths to calm. Pick the one that fits the child best.</p>
+    </div>
+    <div class="chosen-word" id="chosenWord"></div>
+    <div class="set-grid">
+      <button class="set-card breath" onclick="pickSet('breath')">
+        <div class="set-icon">🫁</div>
+        <div class="set-name">Breath</div>
+        <div class="set-desc">Slow the breath, slow the body. Simple breathing exercises.</div>
+      </button>
+      <button class="set-card movement" onclick="pickSet('movement')">
+        <div class="set-icon">🤸</div>
+        <div class="set-name">Movement</div>
+        <div class="set-desc">Gentle stretches, shakes, and squeezes — most work right at your desk.</div>
+      </button>
+      <button class="set-card senses" onclick="pickSet('senses')">
+        <div class="set-icon">✨</div>
+        <div class="set-name">Senses</div>
+        <div class="set-desc">Look, listen, or touch something in the world around you.</div>
+      </button>
+    </div>
+  </section>
+
+  <!-- ========== SCREEN 3: OPTION PICKER ========== -->
+  <section id="screen-options" class="screen">
+    <div class="nav-row">
+      <button class="back-btn" onclick="goToScreen('sets')">&larr; Change style</button>
+      <div class="crumb"><strong id="crumbWord2"></strong> <span class="sep">·</span> <span id="crumbSet"></span></div>
+    </div>
+    <div class="intro">
+      <div class="eyebrow">Step 3 of 3</div>
+      <h1>Choose the Calm-Down Tool</h1>
+      <p>One tool to share with the child. Pick the one that feels most giftable.</p>
+    </div>
+    <div class="option-list" id="optionList"></div>
+  </section>
+
+  <!-- ========== SCREEN 4: TOOLKIT CARD ========== -->
+  <section id="screen-coupon" class="screen">
+    <div class="nav-row">
+      <button class="back-btn" onclick="goToScreen('options')">&larr; Pick a different tool</button>
+      <button class="back-btn" onclick="startOver()">↺ Start over</button>
+    </div>
+    <div class="coupon-stage">
+      <div class="coupon" id="coupon">
+        <div class="coupon-stars"><span>❖</span><span>❖</span></div>
+        <div class="coupon-perf">· · ·  Calm-Down Tool  · · ·</div>
+        <div class="coupon-inner">
+          <div class="coupon-header">A Smile Bag Calm-Down Tool</div>
+          <div class="coupon-sub">One Word · One Tool · One Breath</div>
+          <div class="coupon-word" id="cpnWord"></div>
+          <div class="coupon-divider"><span>This calm-down tool is yours to use</span></div>
+          <div class="coupon-action" id="cpnAction"></div>
+          <span class="coupon-set-tag" id="cpnSetTag"></span>
+          <div class="coupon-footer">
+            <div class="coupon-from">
+              <div><span class="line-label">From:</span><span class="line"></span></div>
+              <div><span class="line-label">Date:</span><span class="line"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="micro-step">
+        <div class="micro-step-icon">📸</div>
+        <div>
+          <strong>Next steps:</strong> Press <strong>Print Screen</strong> (or <strong>Ctrl + Shift + Show Windows</strong> on Chromebook) to capture the tool → save to your Chromebook → upload to the shared Drive folder using the gold button above.
+        </div>
+      </div>
+      <div class="coupon-actions">
+        <button class="btn btn-primary" onclick="goToScreen('words')">Make another calm-down tool</button>
+        <a class="btn btn-gold" id="driveLink2" href="#" target="_blank" rel="noopener">Open Drive folder</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Smile Bags <span class="dot">·</span> A Word &amp; Wonder Experience <span class="dot">·</span> Leadership <span class="dot">·</span> Marquand <span class="dot">·</span> Spring 2026
+</footer>
+
+<script>
+/* =========================================================================
+   DRIVE FOLDER LINK
+   Shared Leadership parent folder — students navigate into "Calm-Down Toolkit"
+   child folder to upload. Same URL as other Leadership kiosks.
+   ========================================================================= */
+const DRIVE_URL = "https://drive.google.com/drive/folders/1D1AqGr8icdUbziUg9_8Ww1XyYhUXPxs4?usp=sharing";
+
+if (DRIVE_URL && DRIVE_URL.indexOf('REPLACE') === -1) {
+  document.getElementById('driveLink').href = DRIVE_URL;
+  document.getElementById('driveLink2').href = DRIVE_URL;
+} else {
+  document.getElementById('driveLink').style.display = 'none';
+  document.getElementById('driveLink2').style.display = 'none';
+}
+
+/* ========== DATA: 25 OneWords × 3 sets × 3 options = 225 calm-down tools ========== */
+const WORDS = ["ABSORB","ADAPT","ANCHOR","BALANCE","BLOOM","BREATHE","CLEAR","CONNECT","CYCLE","EMERGE","FILTER","FLOW","GROW","HEAL","MIGRATE","PERSIST","RENEW","RESTORE","RETURN","RISE","ROOT","SHINE","SUSTAIN","THRIVE","TRANSFORM"];
+
+const COUPONS = {
+  ABSORB:{
+    breath:[
+      "Take one slow breath and let it fill your whole chest",
+      "Breathe in for 4, then let the air out like a soft sigh",
+      "Take 5 slow breaths and pretend each one soaks up a big feeling"
+    ],
+    movement:[
+      "Press your palms together hard for 5 seconds, then release",
+      "Cross your arms and give yourself a gentle hug for 10 seconds",
+      "Sit tall and press your feet flat on the floor for 10 seconds"
+    ],
+    senses:[
+      "Name 5 things you can see right where you are",
+      "Find something soft to touch and say one word about it",
+      "Listen quietly and count 3 different sounds"
+    ]
+  },
+  ADAPT:{
+    breath:[
+      "Take 3 slow breaths and say \"I can try something new\" in your head",
+      "Breathe in through your nose, out through your mouth, 4 times",
+      "Take one deep breath before you start something that feels new"
+    ],
+    movement:[
+      "Switch which hand you use to hold your pencil for 10 seconds",
+      "Slowly shift in your chair to find a comfier position",
+      "Do 3 slow neck rolls — one way, then the other"
+    ],
+    senses:[
+      "Look around and find one thing that has changed today",
+      "Touch 3 different textures near you (smooth, rough, soft)",
+      "Notice one sound you didn't hear a minute ago"
+    ]
+  },
+  ANCHOR:{
+    breath:[
+      "Breathe in for 4, breathe out for 4, three times in a row",
+      "Take a slow breath and imagine your feet are rooted to the floor",
+      "Breathe out slowly like you're letting the weight settle"
+    ],
+    movement:[
+      "Plant your feet flat and press down for a count of 10",
+      "Sit tall, shoulders down, for a count of 10",
+      "Squeeze your toes inside your shoes for 5 seconds, then relax"
+    ],
+    senses:[
+      "Hold something heavy (book, water bottle) for a count of 10",
+      "Find 3 things in the room that don't move",
+      "Press your palm flat on your desk and feel how steady it is"
+    ]
+  },
+  BALANCE:{
+    breath:[
+      "Breathe in for 4 counts, breathe out for 4 counts (equal)",
+      "Take 3 breaths where you pause evenly at the top and bottom",
+      "Count \"in, 2, 3 — out, 2, 3\" five times"
+    ],
+    movement:[
+      "Stand on one foot for 10 seconds, then the other (or practice seated)",
+      "Lift both arms slowly up, then both slowly down, 3 times",
+      "Stretch to one side for 5 seconds, then the other side for 5"
+    ],
+    senses:[
+      "Find 2 things that match in the room (same color, same shape)",
+      "Press both hands together and notice how they feel the same",
+      "Listen for an even sound (ticking clock, tapping, steady hum)"
+    ]
+  },
+  BLOOM:{
+    breath:[
+      "Smell the flower (breathe in slowly) 5 times",
+      "Breathe in and pretend your chest opens like a flower",
+      "Take a deep breath in, then let it out slow like wind through petals"
+    ],
+    movement:[
+      "Make yourself small like a seed, then slowly open up tall",
+      "Stretch your arms out wide for 10 seconds",
+      "Spread your fingers wide, then curl them into soft fists, 5 times"
+    ],
+    senses:[
+      "Find something colorful and look at it for 10 seconds",
+      "Find 3 different colors in the room",
+      "Picture your favorite flower in your mind for 10 seconds"
+    ]
+  },
+  BREATHE:{
+    breath:[
+      "Breathe in for 4, hold for 4, breathe out for 4",
+      "Smell the flower (slow breath in), blow out the candle (slow out) 5 times",
+      "Put your hand on your belly and feel it rise and fall for 10 breaths"
+    ],
+    movement:[
+      "Squeeze your hands into fists, then stretch your fingers wide 3 times",
+      "Roll your shoulders back 5 times, then forward 5 times",
+      "Reach up high, then bend slowly down to touch your toes"
+    ],
+    senses:[
+      "Name 5 things you can see right where you are",
+      "Find something soft to touch and describe it with 3 words",
+      "Listen for 3 different sounds around you"
+    ]
+  },
+  CLEAR:{
+    breath:[
+      "Breathe out long and slow, like you're clearing fog off a window",
+      "Take 3 deep breaths and pretend each one makes the air clearer",
+      "Breathe in fresh and clean, breathe out slow, 5 times"
+    ],
+    movement:[
+      "Sweep your arms slowly through the air like you're clearing space",
+      "Shake out your hands and feet for 10 seconds",
+      "Stand up straight, stretch tall, and push gently back down to sit"
+    ],
+    senses:[
+      "Clear your desk of everything but one thing you need right now",
+      "Find the clearest view out the nearest window",
+      "Look at one simple thing (a pencil, a cup) for 10 seconds"
+    ]
+  },
+  CONNECT:{
+    breath:[
+      "Take 3 slow breaths with a friend or classmate (same pace)",
+      "Breathe in, then count to 3 in your head before breathing out",
+      "Take a deep breath and smile at someone when you breathe out"
+    ],
+    movement:[
+      "Tap your fingers together slowly, one pair at a time",
+      "Press your palms together and make a \"prayer\" shape for 10 seconds",
+      "Give yourself a slow, gentle high-five (hand to hand)"
+    ],
+    senses:[
+      "Find 3 things in the room that touch something else",
+      "Link your fingers together and notice how they fit",
+      "Look around and find one person smiling — even a small smile counts"
+    ]
+  },
+  CYCLE:{
+    breath:[
+      "Breathe in, breathe out, breathe in, breathe out — 5 full cycles",
+      "Count \"in 2, 3 — out 2, 3\" on repeat until you feel steady",
+      "Take 3 breaths, then 3 more, then 3 more (three rounds)"
+    ],
+    movement:[
+      "Roll your head slowly in a full circle, then reverse",
+      "Do 3 slow arm circles forward, then 3 backward",
+      "Tap your fingers in a pattern: thumb-pointer-middle-ring-pinky, repeat"
+    ],
+    senses:[
+      "Watch the second hand on a clock make one full loop",
+      "Find something in the room that goes in a circle",
+      "Tap your desk 4 times, then tap again, then again (3 rounds)"
+    ]
+  },
+  EMERGE:{
+    breath:[
+      "Take a slow breath in and feel your chest rise",
+      "Breathe in for 4, then let the breath come out on its own",
+      "Take 3 breaths and imagine something peaceful appearing"
+    ],
+    movement:[
+      "Start small and curled, slowly grow tall, stretch your arms up",
+      "Slowly raise your head up from looking down at your desk",
+      "Tuck your chin, then lift it slowly 3 times"
+    ],
+    senses:[
+      "Notice one thing you didn't see a minute ago",
+      "Find a small detail on something near you",
+      "Look up and find something high that you usually miss"
+    ]
+  },
+  FILTER:{
+    breath:[
+      "Breathe in clean, breathe out anything you don't need, 5 times",
+      "Take 3 slow breaths and pretend each one filters out the noise",
+      "Breathe in for 4, breathe out for 6 (longer out = more calm)"
+    ],
+    movement:[
+      "Cover your ears gently with your palms for 10 seconds",
+      "Put your hands in your lap and sit still for 15 seconds",
+      "Wiggle your fingers softly, then still them completely"
+    ],
+    senses:[
+      "Focus on just one sound and try to hear only it for 15 seconds",
+      "Look at just one object and notice 3 small details",
+      "Pick the quietest thing you can hear right now"
+    ]
+  },
+  FLOW:{
+    breath:[
+      "Let your breath come and go without counting — just flow",
+      "Breathe in slowly and imagine water moving smoothly",
+      "Take 5 breaths where each one flows into the next"
+    ],
+    movement:[
+      "Move your arms like seaweed swaying in slow water for 15 seconds",
+      "Trace a lazy figure-8 in the air with one finger",
+      "Rock gently from side to side in your chair for 10 seconds"
+    ],
+    senses:[
+      "Listen for a sound that comes and goes (traffic, talking, birds)",
+      "Find something smooth near you and trace it with your finger",
+      "Watch something moving — a clock, a fan, an outside tree"
+    ]
+  },
+  GROW:{
+    breath:[
+      "Take a slow breath and let your chest grow bigger with air",
+      "Breathe in for 4, then hold just a moment, then breathe out slow",
+      "Take 3 breaths, getting a tiny bit slower each time"
+    ],
+    movement:[
+      "Start sitting small, slowly stretch up as tall as you can",
+      "Lift your arms a little higher each of 3 breaths",
+      "Press your feet down and pretend you're getting rooted and taller"
+    ],
+    senses:[
+      "Find something in the room that's grown this year (a plant, a bulletin)",
+      "Compare the size of your hand to something small, then something big",
+      "Look at one thing and imagine it slightly bigger"
+    ]
+  },
+  HEAL:{
+    breath:[
+      "Put a hand on your belly, breathe slow and steady for 5 breaths",
+      "Take a long breath out — slower than your breath in",
+      "Breathe in calm, breathe out kindness, 5 times"
+    ],
+    movement:[
+      "Give yourself a gentle hug across your chest for 15 seconds",
+      "Rub your palms together until they feel a little warm",
+      "Press your hand softly on your cheek for 10 seconds"
+    ],
+    senses:[
+      "Find something warm near you and touch it for 10 seconds",
+      "Picture a calm, safe place in your mind for 15 seconds",
+      "Find the softest thing in reach and hold it for a moment"
+    ]
+  },
+  MIGRATE:{
+    breath:[
+      "Breathe in slow and imagine flying high like a bird",
+      "Take 3 deep breaths, one for each flap of long wings",
+      "Breathe in for 4, out for 4, and picture moving somewhere calm"
+    ],
+    movement:[
+      "Stretch your arms out like wings for 15 seconds",
+      "Stand up and walk (or move) to a different spot quietly",
+      "Roll your wrists in slow circles for 10 seconds"
+    ],
+    senses:[
+      "Look out a window and find something moving (cloud, bird, leaves)",
+      "Picture a faraway place in your mind for 15 seconds",
+      "Find 3 things that could travel (car, plane, paper airplane) nearby"
+    ]
+  },
+  PERSIST:{
+    breath:[
+      "Take one slow breath and say \"keep going\" in your head",
+      "Breathe in for 4, breathe out for 4, and keep going for 5 rounds",
+      "Count your breaths up to 10, then start over one more time"
+    ],
+    movement:[
+      "Push your palms together hard for 10 seconds, rest, then do it again",
+      "Tap your foot softly 20 times in a steady rhythm",
+      "Hold your arms straight out for 10 seconds, rest, then 10 more"
+    ],
+    senses:[
+      "Pick one thing nearby and look at it steadily for 15 seconds",
+      "Tap a steady beat on your desk for 20 taps",
+      "Count backward from 10 slowly — don't rush"
+    ]
+  },
+  RENEW:{
+    breath:[
+      "Take one big breath in, then let everything out like a fresh start",
+      "Breathe in new air, breathe out old air, 5 times",
+      "Take 3 slow breaths before starting something new"
+    ],
+    movement:[
+      "Shake out your hands and feet for 10 seconds",
+      "Stretch up tall, then drop your shoulders back down",
+      "Reset your posture: feet flat, back straight, shoulders relaxed"
+    ],
+    senses:[
+      "Clean your desk space for 30 seconds and notice the fresh feeling",
+      "Look around and find one thing that looks newly organized",
+      "Splash cool water on your face (or picture doing it)"
+    ]
+  },
+  RESTORE:{
+    breath:[
+      "Breathe in slow, breathe out slow — let your body get back to calm",
+      "Take 3 deep breaths and pretend each one puts you back together",
+      "Breathe in for 4, out for 6 — longer out helps you reset"
+    ],
+    movement:[
+      "Sit tall, then relax, then sit tall — 3 times",
+      "Straighten anything crooked near you (chair, paper, pencil)",
+      "Press your shoulders down away from your ears for 10 seconds"
+    ],
+    senses:[
+      "Put one thing back where it belongs near you",
+      "Hold something close that helps you feel calm",
+      "Look around for something that's exactly as it should be"
+    ]
+  },
+  RETURN:{
+    breath:[
+      "Take 3 breaths and come back to the present moment",
+      "Breathe in and say \"I'm here\" in your head",
+      "Breathe out slow and come back to what you were doing"
+    ],
+    movement:[
+      "Plant your feet flat on the floor and press gently down",
+      "Place your hands on your desk and feel it under your palms",
+      "Sit back in your chair and let it hold you for 10 seconds"
+    ],
+    senses:[
+      "Name 3 things you can see right now",
+      "Notice what your feet feel like (shoes, floor, socks)",
+      "Find something you recognize from this morning"
+    ]
+  },
+  RISE:{
+    breath:[
+      "Breathe in as you sit up tall, breathe out as you relax",
+      "Take a deep breath and lift your chin a little with it",
+      "Breathe in for 4, lifting slowly taller with each count"
+    ],
+    movement:[
+      "Rise up slowly from your chair, then sit back down slowly, 3 times",
+      "Reach your arms up high like a slow sunrise",
+      "Lift your shoulders to your ears, hold 3 seconds, let them drop"
+    ],
+    senses:[
+      "Look up and find something high up in the room",
+      "Notice how tall you are sitting right now",
+      "Find something rising in the room (steam from a drink, someone standing)"
+    ]
+  },
+  ROOT:{
+    breath:[
+      "Take 3 deep breaths with your feet flat on the ground",
+      "Breathe slowly and imagine roots going down from your feet",
+      "Breathe in for 4, breathe out for 4, feet pressed firmly down"
+    ],
+    movement:[
+      "Press your feet into the floor for 10 seconds, then relax",
+      "Push your hands into your knees for 10 seconds, then let go",
+      "Sit like a strong tree: back tall, shoulders down, feet planted"
+    ],
+    senses:[
+      "Feel the floor under your feet for 10 seconds",
+      "Find 3 things in the room that are steady and don't move",
+      "Press your palm flat to your desk — feel how solid it is"
+    ]
+  },
+  SHINE:{
+    breath:[
+      "Take a breath in and picture a little light in your chest",
+      "Breathe in bright, breathe out soft, 5 times",
+      "Take a slow breath and imagine sunshine on your face"
+    ],
+    movement:[
+      "Stretch your arms up high like sun rays for 10 seconds",
+      "Spread your fingers wide, then make gentle fists, 5 times",
+      "Smile on purpose and hold it for 10 seconds (even if it feels silly)"
+    ],
+    senses:[
+      "Find the brightest spot in the room and look at it softly",
+      "Look at something shiny for 10 seconds (metal, glass, screen)",
+      "Find a window and notice the light coming in"
+    ]
+  },
+  SUSTAIN:{
+    breath:[
+      "Take 10 slow, steady breaths — the same pace each time",
+      "Breathe in for 4, breathe out for 4, for 6 full breaths",
+      "Keep your breathing slow and steady for 30 seconds"
+    ],
+    movement:[
+      "Hold your arms straight out for 15 seconds without dropping them",
+      "Sit perfectly still for 20 seconds, then stretch",
+      "Tap a slow, steady beat on your desk for 30 taps"
+    ],
+    senses:[
+      "Listen to one steady sound (clock, fan, hum) for 20 seconds",
+      "Focus on one object without looking away for 15 seconds",
+      "Count slowly from 1 to 20 — don't speed up"
+    ]
+  },
+  THRIVE:{
+    breath:[
+      "Take 3 deep breaths and fill up with fresh energy",
+      "Breathe in for 4, then let it out like you're ready to try",
+      "Take a slow breath and picture your favorite thing at school"
+    ],
+    movement:[
+      "Stretch your arms wide, then bring them back to a hug",
+      "Do 5 gentle stretches: neck, shoulders, arms, back, legs",
+      "Stand up tall with both hands on your hips for 10 seconds"
+    ],
+    senses:[
+      "Find something green in the room (plants, marker, paper)",
+      "Picture your happiest school moment for 15 seconds",
+      "Find 3 things nearby that look bright or fresh"
+    ]
+  },
+  TRANSFORM:{
+    breath:[
+      "Breathe in and imagine turning calm, one breath at a time",
+      "Take 5 breaths and let each one be a little slower than the one before",
+      "Breathe in busy, breathe out calm, 5 times"
+    ],
+    movement:[
+      "Curl up small, then slowly open up like you're changing shape",
+      "Shift from sitting tense to sitting relaxed over 3 breaths",
+      "Make a fist, then slowly let each finger stretch out"
+    ],
+    senses:[
+      "Find something that changes color in light (glass, screen, shiny thing)",
+      "Look at your hand, then look at it from a different angle",
+      "Watch something slow change (a cloud, steam, a shadow)"
+    ]
+  }
+};
+
+const SET_META = {
+  breath:{   icon:"🫁", name:"Breath"   },
+  movement:{ icon:"🤸", name:"Movement" },
+  senses:{   icon:"✨", name:"Senses"   }
+};
+
+/* ========== STATE ========== */
+let state = { word:null, set:null, option:null };
+
+/* ========== RENDER: Word Grid ========== */
+function renderWords(){
+  const grid = document.getElementById('wordGrid');
+  grid.innerHTML = WORDS.map(w =>
+    `<button class="word-tile" onclick="pickWord('${w}')">${w}</button>`
+  ).join('');
+}
+
+/* ========== FLOW ========== */
+function pickWord(w){
+  state.word = w;
+  document.getElementById('chosenWord').textContent = w;
+  document.getElementById('crumbWord1').textContent = w;
+  goToScreen('sets');
+}
+
+function pickSet(s){
+  state.set = s;
+  document.getElementById('crumbWord2').textContent = state.word;
+  const setEl = document.getElementById('crumbSet');
+  setEl.textContent = `${SET_META[s].icon} ${SET_META[s].name}`;
+  renderOptions();
+  goToScreen('options');
+}
+
+function pickOption(i){
+  state.option = i;
+  renderCoupon();
+  goToScreen('coupon');
+}
+
+function renderOptions(){
+  const list = document.getElementById('optionList');
+  const options = COUPONS[state.word][state.set];
+  list.innerHTML = options.map((text, i) =>
+    `<button class="option-card ${state.set}" onclick="pickOption(${i})">
+       <div class="option-num">${i+1}</div>
+       <div class="option-text">${text}</div>
+     </button>`
+  ).join('');
+}
+
+function renderCoupon(){
+  const action = COUPONS[state.word][state.set][state.option];
+  document.getElementById('cpnWord').textContent = state.word;
+  document.getElementById('cpnAction').textContent = action;
+  const tag = document.getElementById('cpnSetTag');
+  tag.className = `coupon-set-tag ${state.set}`;
+  tag.textContent = `${SET_META[state.set].icon} ${SET_META[state.set].name}`;
+}
+
+function goToScreen(name){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(`screen-${name}`).classList.add('active');
+  document.body.classList.toggle('screen-coupon-active', name === 'coupon');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function startOver(){
+  state = { word:null, set:null, option:null };
+  goToScreen('words');
+}
+
+/* ========== INIT ========== */
+renderWords();
+</script>
+
+</body>
+</html>
