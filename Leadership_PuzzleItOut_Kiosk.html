@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Puzzle It Out · Smile Bags · A Word &amp; Wonder Experience</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1e2838;
+    --ink-soft:#3d4a5e;
+    --muted:#6b7689;
+    --bg:#f4efe3;
+    --bg-deep:#ebe3d0;
+    --card:#ffffff;
+    --border:#d6cdb8;
+    --gold:#b89537;
+    --gold-soft:#d4b865;
+    --riddle:#9c5e2e;
+    --riddle-soft:#f3e4d5;
+    --teaser:#4a6b8c;
+    --teaser-soft:#dde7f1;
+    --wordgame:#5e7a3a;
+    --wordgame-soft:#e1ecd5;
+    --shadow:0 2px 8px rgba(30,40,56,.08);
+    --shadow-hover:0 6px 18px rgba(30,40,56,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    line-height:1.5;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  header{
+    background:var(--ink);
+    color:#f8f3e5;
+    padding:18px 32px;
+    border-bottom:3px solid var(--gold);
+  }
+  .header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .brand{display:flex;flex-direction:column;gap:2px}
+  .brand-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;letter-spacing:.5px}
+  .brand-sub{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;opacity:.7;font-weight:500}
+  .drive-pill{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--ink);padding:10px 18px;border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;letter-spacing:.3px;transition:transform .15s ease, box-shadow .15s ease;box-shadow:0 2px 6px rgba(0,0,0,.15);}
+  .drive-pill:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(0,0,0,.25)}
+  .drive-pill svg{width:16px;height:16px}
+
+  main{flex:1;max-width:1400px;margin:0 auto;width:100%;padding:32px;position:relative}
+  .screen{display:none;animation:fadeIn .3s ease}
+  .screen.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+  .intro{max-width:720px;margin:0 auto 32px;text-align:center}
+  .eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}
+  .intro h1{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;color:var(--ink);margin-bottom:10px;line-height:1.15}
+  .intro p{color:var(--ink-soft);font-size:15px;max-width:600px;margin:0 auto}
+
+  .nav-row{display:flex;align-items:center;gap:14px;margin-bottom:24px;max-width:1200px;margin-left:auto;margin-right:auto}
+  .back-btn{background:transparent;border:1px solid var(--border);padding:8px 14px;border-radius:999px;font-family:inherit;font-size:13px;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .15s ease, border-color .15s ease;}
+  .back-btn:hover{background:#fff;border-color:var(--ink)}
+  .crumb{font-size:13px;color:var(--muted);letter-spacing:.3px}
+  .crumb strong{color:var(--ink);font-weight:600}
+  .crumb .sep{margin:0 8px;opacity:.5}
+
+  .word-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;max-width:1100px;margin:0 auto;}
+  @media (max-width:900px){.word-grid{grid-template-columns:repeat(4,1fr)}}
+  @media (max-width:640px){.word-grid{grid-template-columns:repeat(3,1fr);gap:10px}}
+  @media (max-width:400px){.word-grid{grid-template-columns:repeat(2,1fr)}}
+  .word-tile{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px 10px;text-align:center;cursor:pointer;font-family:'Playfair Display',serif;font-size:19px;font-weight:800;letter-spacing:2.5px;color:var(--ink);transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;box-shadow:var(--shadow);}
+  .word-tile:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:var(--gold)}
+
+  .chosen-word{text-align:center;margin-bottom:28px;font-family:'Playfair Display',serif;font-size:54px;font-weight:800;letter-spacing:5px;color:var(--ink);position:relative;display:block;}
+  .chosen-word::after{content:"";display:block;width:60px;height:2px;background:var(--gold);margin:12px auto 0;}
+  .set-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1000px;margin:0 auto;}
+  @media (max-width:780px){.set-grid{grid-template-columns:1fr}}
+  .set-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:32px 24px;text-align:center;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+  .set-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover)}
+  .set-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;}
+  .set-card.riddle::before{background:var(--riddle)}
+  .set-card.teaser::before{background:var(--teaser)}
+  .set-card.wordgame::before{background:var(--wordgame)}
+  .set-icon{font-size:38px;margin-bottom:10px;line-height:1}
+  .set-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:6px;letter-spacing:.5px;}
+  .set-card.riddle .set-name{color:var(--riddle)}
+  .set-card.teaser .set-name{color:var(--teaser)}
+  .set-card.wordgame .set-name{color:var(--wordgame)}
+  .set-desc{font-size:13px;color:var(--muted);line-height:1.5}
+
+  .option-list{display:flex;flex-direction:column;gap:14px;max-width:720px;margin:0 auto;}
+  .option-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px 24px;cursor:pointer;display:flex;align-items:center;gap:18px;transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;box-shadow:var(--shadow);text-align:left;font-family:inherit;width:100%;color:var(--ink);}
+  .option-card:hover{transform:translateX(4px);box-shadow:var(--shadow-hover)}
+  .option-card.riddle:hover{border-color:var(--riddle)}
+  .option-card.teaser:hover{border-color:var(--teaser)}
+  .option-card.wordgame:hover{border-color:var(--wordgame)}
+  .option-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#fff;}
+  .option-card.riddle .option-num{background:var(--riddle)}
+  .option-card.teaser .option-num{background:var(--teaser)}
+  .option-card.wordgame .option-num{background:var(--wordgame)}
+  .option-text{font-size:15px;line-height:1.5;flex:1}
+
+  /* ========== PUZZLE CARD (ticket variant with reveal toggle) ========== */
+  .coupon-stage{display:flex;flex-direction:column;align-items:center;gap:24px;padding:20px 0;}
+  .coupon{background:#fffdf7;width:100%;max-width:680px;border:2px solid var(--ink);border-radius:4px;padding:32px 36px;position:relative;box-shadow:0 8px 24px rgba(30,40,56,.18);font-family:'Playfair Display',serif;}
+  .coupon::before,.coupon::after{content:"";position:absolute;top:-10px;height:18px;width:18px;background:var(--bg);border:2px solid var(--ink);border-radius:50%;}
+  .coupon::before{left:30%}
+  .coupon::after{right:30%}
+  .coupon-marks{position:absolute;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;align-items:center;pointer-events:none;opacity:.4;}
+  .coupon-marks span{font-size:11px;letter-spacing:2px;color:var(--teaser)}
+  .coupon-perf{position:absolute;left:50%;transform:translateX(-50%);top:16px;font-size:10px;letter-spacing:3px;color:var(--muted);font-family:'Inter',sans-serif;font-weight:700;text-transform:uppercase;}
+  .coupon-inner{margin-top:18px;text-align:center}
+  .coupon-header{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px;}
+  .coupon-sub{font-family:'Inter',sans-serif;font-size:12px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;font-weight:500;}
+  .coupon-word{font-family:'Playfair Display',serif;font-size:58px;font-weight:800;letter-spacing:6px;color:var(--ink);line-height:1;margin-bottom:4px;}
+  .coupon-divider{display:flex;align-items:center;gap:10px;justify-content:center;margin:18px 0 16px;}
+  .coupon-divider::before,.coupon-divider::after{content:"";flex:1;max-width:80px;height:1px;background:var(--border);}
+  .coupon-divider span{font-family:'Inter',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  .coupon-action{font-family:'Playfair Display',serif;font-size:20px;font-style:italic;line-height:1.4;font-weight:500;color:var(--ink);padding:0 10px;}
+
+  .reveal-btn{
+    display:inline-flex;align-items:center;gap:8px;
+    background:#fff;border:1px dashed var(--ink);
+    color:var(--ink);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;
+    letter-spacing:1.5px;text-transform:uppercase;
+    padding:10px 20px;border-radius:999px;margin-top:20px;
+    cursor:pointer;transition:all .15s ease;
+  }
+  .reveal-btn:hover{background:var(--ink);color:#fff;border-style:solid}
+  .answer-reveal{
+    display:none;margin-top:18px;padding:14px 18px;
+    background:var(--bg-deep);border-radius:8px;
+    font-family:'Inter',sans-serif;font-size:14px;line-height:1.5;
+    color:var(--ink);text-align:left;font-style:normal;font-weight:400;
+    border-left:3px solid var(--gold);
+  }
+  .answer-reveal.shown{display:block;animation:fadeIn .3s ease}
+  .answer-reveal-label{
+    font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+    color:var(--gold);margin-bottom:4px;display:block;
+  }
+
+  .coupon-set-tag{display:inline-flex;align-items:center;gap:6px;margin-top:20px;padding:5px 14px;border-radius:999px;font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
+  .coupon-set-tag.riddle{background:var(--riddle-soft);color:var(--riddle)}
+  .coupon-set-tag.teaser{background:var(--teaser-soft);color:var(--teaser)}
+  .coupon-set-tag.wordgame{background:var(--wordgame-soft);color:var(--wordgame)}
+  .coupon-footer{margin-top:24px;padding-top:16px;border-top:1px dashed var(--border);font-family:'Inter',sans-serif;}
+  .coupon-from{display:flex;justify-content:space-between;align-items:flex-end;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+  .coupon-from .line-label{font-weight:600}
+  .coupon-from .line{display:inline-block;border-bottom:1px solid var(--ink);min-width:120px;height:14px;margin-left:8px}
+
+  .micro-step{background:var(--bg-deep);border:1px solid var(--border);border-radius:10px;padding:16px 22px;max-width:680px;width:100%;display:flex;align-items:center;gap:14px;font-size:13px;color:var(--ink-soft);line-height:1.5;}
+  .micro-step-icon{flex-shrink:0;width:36px;height:36px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--ink);font-weight:700;font-family:'Playfair Display',serif}
+  .micro-step strong{color:var(--ink)}
+
+  .coupon-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  .btn{font-family:inherit;font-size:14px;font-weight:600;letter-spacing:.3px;padding:12px 22px;border-radius:999px;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease;border:none;display:inline-flex;align-items:center;gap:8px;text-decoration:none;}
+  .btn-primary{background:var(--ink);color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.25)}
+  .btn-gold{background:var(--gold);color:var(--ink);box-shadow:0 2px 6px rgba(0,0,0,.15)}
+  .btn-gold:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.25)}
+
+  footer{background:var(--ink);color:#d6cdb8;padding:20px 32px;margin-top:40px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;text-align:center;font-weight:500;}
+  footer .dot{margin:0 10px;color:var(--gold)}
+
+  .screen-coupon-active header,
+  .screen-coupon-active footer{display:flex;justify-content:center}
+
+  @media print{
+    header,footer,.nav-row,.coupon-actions,.micro-step,.drive-pill,.reveal-btn{display:none !important}
+    body{background:#fff}
+    .coupon{box-shadow:none;border:2px solid #000}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-title">Puzzle It Out</div>
+      <div class="brand-sub">Smile Bags &middot; A Word &amp; Wonder Experience</div>
+    </div>
+    <a class="drive-pill" id="driveLink" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.71 3.52L1.15 15l3.42 5.92h13.69L21.85 15 14.29 3.52H7.71zm1.42 2h5.74l5.36 9.48H14.49L9.13 5.52zM7.71 6.48L12.71 15H2.57L7.71 6.48z"/></svg>
+      Upload to Drive
+    </a>
+  </div>
+</header>
+
+<main>
+  <section id="screen-words" class="screen active">
+    <div class="intro">
+      <div class="eyebrow">Step 1 of 3</div>
+      <h1>Choose Your OneWord</h1>
+      <p>Each OneWord unlocks three kinds of puzzles. Pick the one that fits the child who will open your Smile Bag.</p>
+    </div>
+    <div class="word-grid" id="wordGrid"></div>
+  </section>
+
+  <section id="screen-sets" class="screen">
+    <div class="nav-row">
+      <button class="back-btn" onclick="goToScreen('words')">&larr; Back to OneWords</button>
+      <div class="crumb"><strong id="crumbWord1"></strong></div>
+    </div>
+    <div class="intro">
+      <div class="eyebrow">Step 2 of 3</div>
+      <h1>Choose a Puzzle Type</h1>
+      <p>Three kinds of puzzles. Pick the one that fits the child best.</p>
+    </div>
+    <div class="chosen-word" id="chosenWord"></div>
+    <div class="set-grid">
+      <button class="set-card riddle" onclick="pickSet('riddle')">
+        <div class="set-icon">&#129513;</div>
+        <div class="set-name">Riddle</div>
+        <div class="set-desc">A classic "What am I?" or "Who am I?" puzzle to solve.</div>
+      </button>
+      <button class="set-card teaser" onclick="pickSet('teaser')">
+        <div class="set-icon">&#129504;</div>
+        <div class="set-name">Brain Teaser</div>
+        <div class="set-desc">A thinking challenge that stretches curiosity and logic.</div>
+      </button>
+      <button class="set-card wordgame" onclick="pickSet('wordgame')">
+        <div class="set-icon">&#128292;</div>
+        <div class="set-name">Word Game</div>
+        <div class="set-desc">A fun challenge about letters, rhymes, and language.</div>
+      </button>
+    </div>
+  </section>
+
+  <section id="screen-options" class="screen">
+    <div class="nav-row">
+      <button class="back-btn" onclick="goToScreen('sets')">&larr; Change type</button>
+      <div class="crumb"><strong id="crumbWord2"></strong> <span class="sep">&middot;</span> <span id="crumbSet"></span></div>
+    </div>
+    <div class="intro">
+      <div class="eyebrow">Step 3 of 3</div>
+      <h1>Choose the Puzzle</h1>
+      <p>One puzzle to share with the child. Pick the one that feels most giftable.</p>
+    </div>
+    <div class="option-list" id="optionList"></div>
+  </section>
+
+  <section id="screen-coupon" class="screen">
+    <div class="nav-row">
+      <button class="back-btn" onclick="goToScreen('options')">&larr; Pick a different puzzle</button>
+      <button class="back-btn" onclick="startOver()">&#8634; Start over</button>
+    </div>
+    <div class="coupon-stage">
+      <div class="coupon" id="coupon">
+        <div class="coupon-marks"><span>&#10070;</span><span>&#10070;</span></div>
+        <div class="coupon-perf">&middot; &middot; &middot;  Puzzle Card  &middot; &middot; &middot;</div>
+        <div class="coupon-inner">
+          <div class="coupon-header">A Smile Bag Puzzle Card</div>
+          <div class="coupon-sub">One Word &middot; One Puzzle &middot; Can You Solve It?</div>
+          <div class="coupon-word" id="cpnWord"></div>
+          <div class="coupon-divider"><span>Puzzle</span></div>
+          <div class="coupon-action" id="cpnAction"></div>
+          <button class="reveal-btn" id="revealBtn" onclick="toggleAnswer()">
+            <span id="revealLabel">Reveal Answer</span>
+          </button>
+          <div class="answer-reveal" id="answerReveal">
+            <span class="answer-reveal-label">Answer</span>
+            <span id="cpnAnswer"></span>
+          </div>
+          <span class="coupon-set-tag" id="cpnSetTag"></span>
+          <div class="coupon-footer">
+            <div class="coupon-from">
+              <div><span class="line-label">From:</span><span class="line"></span></div>
+              <div><span class="line-label">Date:</span><span class="line"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="micro-step">
+        <div class="micro-step-icon">&#128248;</div>
+        <div>
+          <strong>Next steps:</strong> Press <strong>Print Screen</strong> (or <strong>Ctrl + Shift + Show Windows</strong> on Chromebook) to capture the card &mdash; with or without the answer revealed &mdash; then save to your Chromebook and upload to the shared Drive folder.
+        </div>
+      </div>
+      <div class="coupon-actions">
+        <button class="btn btn-primary" onclick="goToScreen('words')">Make another puzzle card</button>
+        <a class="btn btn-gold" id="driveLink2" href="#" target="_blank" rel="noopener">Open Drive folder</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Smile Bags <span class="dot">&middot;</span> A Word &amp; Wonder Experience <span class="dot">&middot;</span> Leadership <span class="dot">&middot;</span> Marquand <span class="dot">&middot;</span> Spring 2026
+</footer>
+
+<script>
+const DRIVE_URL = "https://drive.google.com/drive/folders/1D1AqGr8icdUbziUg9_8Ww1XyYhUXPxs4?usp=sharing";
+
+if (DRIVE_URL && DRIVE_URL.indexOf('REPLACE') === -1) {
+  document.getElementById('driveLink').href = DRIVE_URL;
+  document.getElementById('driveLink2').href = DRIVE_URL;
+} else {
+  document.getElementById('driveLink').style.display = 'none';
+  document.getElementById('driveLink2').style.display = 'none';
+}
+
+const WORDS = ["ABSORB","ADAPT","ANCHOR","BALANCE","BLOOM","BREATHE","CLEAR","CONNECT","CYCLE","EMERGE","FILTER","FLOW","GROW","HEAL","MIGRATE","PERSIST","RENEW","RESTORE","RETURN","RISE","ROOT","SHINE","SUSTAIN","THRIVE","TRANSFORM"];
+
+const COUPONS = {
+  ABSORB:{
+    riddle:[
+      {q:"I have no mouth but I drink spills. I hold more than my weight and never spills. What am I?", a:"a sponge"},
+      {q:"Scientists say I pull in sunlight to make food. I'm not an animal and I don't move much. What am I?", a:"a plant (through photosynthesis)"},
+      {q:"I soak up sound so music doesn't echo. You'll find me on studio walls. What am I?", a:"acoustic foam (or soundproofing)"},
+    ],
+    teaser:[
+      {q:"Wetlands absorb flood water before it reaches towns. If a wetland holds 1 million gallons, and there are 4 wetlands in a region, how much flood protection do they offer?", a:"4 million gallons \u2014 and it explains why losing wetlands hurts communities"},
+      {q:"You absorb information best when you're well-rested. Name 2 reasons learning is harder when you're tired.", a:"the brain can't store new info as well; focus drops; memory weakens"},
+      {q:"Dark colors absorb more heat than light colors. Which T-shirt would be hotter on a sunny day: black or white?", a:"black \u2014 it absorbs more light energy as heat"},
+    ],
+    wordgame:[
+      {q:"ABSORB begins with AB-. This prefix often means \"away from\" or \"off.\" Which ABSORB-related word uses AB- to mean \"take in completely\"?", a:"ABSORB itself \u2014 AB- here blends with the Latin \"sorbere\" (to suck up) to mean drawn in fully"},
+      {q:"ABSORB and ADSORB are both real science words. What letter changes, and what's the difference?", a:"B \u2192 D \u00b7 ABSORB = soaks IN (like a sponge) \u00b7 ADSORB = sticks to the surface (like dust on a magnet)"},
+      {q:"Add a suffix to ABSORB to make a word meaning \"easily soaked up.\"", a:"ABSORBENT (or ABSORBABLE)"},
+    ],
+  },
+  ADAPT:{
+    riddle:[
+      {q:"I change my color to match my world. I keep still or move as needed. I'm a reptile known for this skill. What am I?", a:"a chameleon"},
+      {q:"Darwin's birds on the Gal\u00e1pagos had different beaks for different foods. What skill does each beak shape demonstrate?", a:"adaptation to available food sources"},
+      {q:"I'm a verb that means \"change to fit.\" Remove my last letter and I become a 4-letter word meaning \"take on as your own.\" What am I?", a:"ADAPT \u2192 ADAP? No. Answer: ADAPT \u2192 ADOPT (change letter A to O) \u2014 both mean taking something on"},
+    ],
+    teaser:[
+      {q:"A plant near a window grows sideways toward the light. What is this adaptation called?", a:"phototropism (growth toward light)"},
+      {q:"You planned to study outside but it starts raining. Name 3 ways you could adapt your plan.", a:"move inside, study later, take a covered spot, study a different subject that works indoors"},
+      {q:"Arctic foxes have white fur in winter and brown fur in summer. What's the advantage of this adaptation?", a:"camouflage against predators and prey year-round"},
+    ],
+    wordgame:[
+      {q:"ADAPT starts and ends with the same letter. What letter, and what's another 5-letter word that does this?", a:"A \u00b7 examples: AREA, AORTA, ARENA, ALPHA, ALOHA"},
+      {q:"Change ONE letter in ADAPT to make a word meaning \"to choose to raise as your own.\"", a:"ADOPT (change A to O)"},
+      {q:"ADAPTATION has 10 letters. How many times does the letter A appear?", a:"4 (A-d-A-p-t-A-t-i-o-n)"},
+    ],
+  },
+  ANCHOR:{
+    riddle:[
+      {q:"I weigh a ship down so it won't drift. Lift me and the boat can sail. Drop me and it holds. What am I?", a:"an anchor"},
+      {q:"I'm invisible but I steady a person through stormy days. I can be a friend, a family member, or a belief. What am I?", a:"an emotional anchor (something or someone that keeps you grounded)"},
+      {q:"I'm on every TV news show. I keep the story steady while reporters come and go. What am I?", a:"a news anchor"},
+    ],
+    teaser:[
+      {q:"Tree roots anchor soil so it doesn't wash away. If you cut down all the trees on a hillside, what happens during heavy rain?", a:"erosion, mudslides, or soil washes away because the anchor is gone"},
+      {q:"In a tug-of-war, the team's anchor is the strongest person at the END of the rope. Why?", a:"they hold the whole team in place and provide the last defense against being pulled over"},
+      {q:"Ships sometimes drop 2 anchors instead of 1. Why might that be safer?", a:"two anchors stop the ship from spinning in currents and add security in storms"},
+    ],
+    wordgame:[
+      {q:"What 5-letter word hides in ANCHOR in order? Hint: it means a blaring sound.", a:"Not in order \u2014 but rearrange and you get NACHO, or rearrange A-N-C-H-O-R \u2192 RANCH (5 letters, all present)"},
+      {q:"ANCHOR and RANCH share all the same letters except one. Which letter does each have that the other doesn't?", a:"ANCHOR has an O that RANCH doesn't \u00b7 RANCH has no extra letter \u2014 wait, RANCH=5 letters, ANCHOR=6, so ANCHOR has one extra: O"},
+      {q:"Name a word that rhymes with ANCHOR.", a:"BANKER, TANKER, HANKER (close rhymes; ANCHOR is actually hard to perfectly rhyme \u2014 that's the puzzle)"},
+    ],
+  },
+  BALANCE:{
+    riddle:[
+      {q:"I have two arms and a needle in the middle. Put objects on my sides and I'll tell you a secret about weight. What am I?", a:"a balance scale"},
+      {q:"I'm a skill gymnasts master. Close your eyes and I get harder. What am I?", a:"balance"},
+      {q:"Predators and prey, flowers and bees, producers and decomposers \u2014 ecosystems need me to stay healthy. What am I?", a:"balance (ecological balance)"},
+    ],
+    teaser:[
+      {q:"An ecosystem has 100 rabbits and 10 foxes. If all the foxes disappear, what might happen to the rabbit population? Why is that a problem?", a:"rabbits explode in number, eat all the plants, plants die, eventually rabbits starve \u2014 imbalance hurts everyone"},
+      {q:"On a balance scale, one side has 3 apples weighing 150g each. The other side has 2 oranges. What does each orange weigh to balance?", a:"225g each (450g \u00f7 2)"},
+      {q:"Why do tightrope walkers hold long poles?", a:"the pole lowers the center of gravity and increases moment of inertia, making balance easier"},
+    ],
+    wordgame:[
+      {q:"What 5-letter weapon hides inside BALANCE (in order)?", a:"LANCE (baLANCE)"},
+      {q:"BALANCE has how many A's, and how many total letters?", a:"3 A's, 7 total letters"},
+      {q:"UN + BALANCE = UNBALANCE. What does the prefix UN- do to the word's meaning?", a:"reverses it \u2014 UN- means \"not\" or \"opposite\""},
+    ],
+  },
+  BLOOM:{
+    riddle:[
+      {q:"I was closed tight yesterday. Today I'm open and colorful. Tomorrow I'll fade. What am I?", a:"a flower (in bloom)"},
+      {q:"Algae do me when water is warm and full of nutrients. Too much of me can harm fish. What am I?", a:"a bloom (specifically an algal bloom)"},
+      {q:"A person does me when they finally feel free to be themselves. What is this word?", a:"bloom (also: blossom, flourish)"},
+    ],
+    teaser:[
+      {q:"Cherry blossoms bloom in spring. Scientists have tracked them in Japan for 1,200 years. Why are bloom dates now arriving earlier than they used to?", a:"climate change \u2014 warmer spring temperatures trigger earlier blooming"},
+      {q:"A sunflower field has 12 rows with 15 flowers per row in full bloom. How many blooms total?", a:"180 blooms"},
+      {q:"Why do some flowers bloom only at night?", a:"they attract night-active pollinators like moths and bats; avoid daytime heat"},
+    ],
+    wordgame:[
+      {q:"Name 3 words that rhyme with BLOOM.", a:"room, broom, zoom, boom, groom, doom, loom, gloom"},
+      {q:"BLOOM has a double letter. What sound does that double letter make?", a:"OO \u2014 a long \"oo\" sound like in \"moon\""},
+      {q:"Remove ONE letter from BLOOM to make a word meaning \"loud explosion sound.\"", a:"BOOM (remove the L)"},
+    ],
+  },
+  BREATHE:{
+    riddle:[
+      {q:"You do me 20,000 times a day without thinking. Stop me for too long and you'll notice. What am I?", a:"breathing"},
+      {q:"Trees take in what we breathe out. We take in what trees breathe out. What are these two gases?", a:"CO\u2082 (we exhale, trees absorb) and O\u2082 (trees release, we inhale)"},
+      {q:"I'm a calming technique \u2014 inhale for 4, hold for 7, exhale for 8. What am I called?", a:"4-7-8 breathing"},
+    ],
+    teaser:[
+      {q:"Whales can hold their breath for up to 90 minutes. Humans average 30 seconds to 2 minutes. What adaptations help whales breathe so efficiently?", a:"larger lungs relative to body, more myoglobin in muscles, lower heart rate underwater"},
+      {q:"Deep breathing activates your body's \"rest and digest\" nervous system. What's this system called?", a:"parasympathetic nervous system"},
+      {q:"Rainforests are called \"the lungs of the Earth.\" Explain why.", a:"they produce huge amounts of oxygen and absorb massive amounts of CO\u2082 \u2014 like Earth's breathing"},
+    ],
+    wordgame:[
+      {q:"BREATHE is the verb. BREATH is the noun. What's the sound difference?", a:"BREATHE has a long E sound (like \"beeth\"); BREATH has a short E (like \"beth\")"},
+      {q:"What 4-letter word hides in BREATHE meaning \"to warm up.\"", a:"HEAT (brEATHe contains \"EATH\" \u2014 rearrange to HEAT, or look: b-r-e-a-t-h-e \u2192 try HEAT in order: b-r-e-a-t-h-e, no. Best: EAT appears in order. For HEAT: not in order. Accept EAT as the 3-letter word in order.)"},
+      {q:"How many syllables in BREATHE?", a:"1 syllable"},
+    ],
+  },
+  CLEAR:{
+    riddle:[
+      {q:"I let light through but I'm solid. Break me and I become dangerous edges. What am I?", a:"glass"},
+      {q:"I come after rain, when clouds move on. Pilots love when I arrive. What am I?", a:"clear skies"},
+      {q:"Lakes and rivers need me to be healthy. Pollution makes me disappear. What am I?", a:"clear water"},
+    ],
+    teaser:[
+      {q:"Clearing a forest for farmland has short-term benefits but long-term costs. Name 2 of each.", a:"Short: more crop space, income. Long: soil erosion, lost habitats, carbon released, biodiversity drops"},
+      {q:"When thoughts feel cluttered, people often say \"I need a clear head.\" What's one science-backed way to clear mental clutter?", a:"walking, meditation, sleep, journaling, or deep breathing (reduces cortisol, improves focus)"},
+      {q:"Ocean water is sometimes \"crystal clear\" and sometimes murky. What makes the difference?", a:"suspended particles \u2014 plankton, sediment, pollution, or sand stirred by waves"},
+    ],
+    wordgame:[
+      {q:"Name 3 words that rhyme with CLEAR.", a:"hear, near, dear, ear, year, fear, gear, peer, steer, deer"},
+      {q:"Change the last letter of CLEAR to make a word meaning \"tidy and spotless.\"", a:"CLEAN (swap R for N)"},
+      {q:"Add ER to CLEAR. What does CLEARER mean?", a:"more clear \u2014 the suffix -ER makes a comparative"},
+    ],
+  },
+  CONNECT:{
+    riddle:[
+      {q:"I'm made of bone and join two muscles. Without me you couldn't bend or straighten. What am I?", a:"a tendon (or a joint)"},
+      {q:"I link billions of computers and phones across the world. Without me this kiosk wouldn't work. What am I?", a:"the Internet"},
+      {q:"I'm the unseen network of roots and fungi that lets trees share nutrients in a forest. What am I called?", a:"the mycorrhizal network (the \"Wood Wide Web\")"},
+    ],
+    teaser:[
+      {q:"Every creature in a food web is connected. If bees go extinct, what happens to the plants bees pollinate?", a:"many plants can't reproduce, fruits and vegetables decline, whole food chain disrupted"},
+      {q:"Scientists say humans need social connections for health. Being lonely is as risky as smoking how many cigarettes a day?", a:"about 15 cigarettes a day, according to Harvard research"},
+      {q:"You have 5 friends and want to text each one. How many text conversations is that?", a:"5 conversations (one with each friend)"},
+    ],
+    wordgame:[
+      {q:"CONNECT has 7 letters. How many times does the letter N appear?", a:"2 (N\u00b7N)"},
+      {q:"Remove the prefix CON- from CONNECT. What's left?", a:"NECT \u2014 not a standalone word; CON- is a Latin prefix meaning \"together\""},
+      {q:"Name 3 other CON- words (prefix meaning \"together\" or \"with\").", a:"connect, contain, convince, conflict, congress, contract, convert, conclude, convene, console"},
+    ],
+  },
+  CYCLE:{
+    riddle:[
+      {q:"I have no start or end. Water and carbon both follow me. What am I?", a:"a cycle"},
+      {q:"I have 2 wheels and I help you travel without fuel. What am I?", a:"a bicycle"},
+      {q:"I happen every month for many years. I'm natural and I means a body is healthy. What am I?", a:"a menstrual cycle (or lunar cycle \u2014 both answers work)"},
+    ],
+    teaser:[
+      {q:"The water cycle has 4 main stages. Name them in order.", a:"evaporation \u2192 condensation \u2192 precipitation \u2192 collection (and back to evaporation)"},
+      {q:"A washing machine cycle takes 45 minutes. If you run 3 loads back-to-back, how long is that \u2014 and what's it cost if electricity is $0.15 per 15-minute block?", a:"135 minutes total \u00b7 9 blocks \u00d7 $0.15 = $1.35"},
+      {q:"Life cycles matter for wellbeing too \u2014 sleep, wake, rest, work. What happens when a teenager's sleep cycle is too short for too long?", a:"lower mood, weaker immunity, worse memory, harder to focus, more stress"},
+    ],
+    wordgame:[
+      {q:"CYCLE has only one vowel (ignoring Y). Which is it, and what does that make CYCLE's structure unusual for a 5-letter word?", a:"just E (the Y acts as a vowel sound here) \u2014 most 5-letter words have 2+ vowels"},
+      {q:"Add BI- to CYCLE. Add UNI- to CYCLE. Add TRI- to CYCLE. What do each of these prefixes mean?", a:"BI-=two (2 wheels), UNI-=one (1 wheel), TRI-=three (3 wheels)"},
+      {q:"CYCLE rhymes with which word: ICICLE, MICHAEL, or MICHAELA?", a:"MICHAEL (both pronounced \"MY-kull\" / \"SY-kull\")"},
+    ],
+  },
+  EMERGE:{
+    riddle:[
+      {q:"I was inside a cocoon for days. Then I pushed out on wet wings. What am I?", a:"a butterfly"},
+      {q:"In 17 years I finally come out of the ground, make loud noise for weeks, then disappear. What am I?", a:"a cicada (periodical cicada)"},
+      {q:"I was hidden in a seed for years. Given water, I finally come out. What am I?", a:"a sprout (seedling)"},
+    ],
+    teaser:[
+      {q:"New species emerge over long time periods. This process is called what?", a:"evolution (specifically speciation)"},
+      {q:"A quiet student starts speaking up more in class. Why might this emerging confidence matter \u2014 beyond just talking?", a:"leads to better learning, stronger friendships, more leadership chances, healthier self-image"},
+      {q:"After a wildfire, certain plants emerge first. Why are these \"first responders\" important?", a:"they stabilize soil, create shade, and pave the way for other species to return"},
+    ],
+    wordgame:[
+      {q:"EMERGE has 6 letters. How many E's?", a:"3 (E\u00b7m\u00b7E\u00b7r\u00b7g\u00b7E)"},
+      {q:"Add -NCY to EMERGE (replacing the final E). What new word do you get, and what does it mean?", a:"EMERGENCY \u2014 an urgent situation requiring immediate action"},
+      {q:"What's the difference between EMERGE and IMMERSE?", a:"EMERGE = come out of \u00b7 IMMERSE = go fully into \u00b7 opposite directions"},
+    ],
+  },
+  FILTER:{
+    riddle:[
+      {q:"I catch what you don't want so you get what you need. I'm in coffee makers, cars, and furnaces. What am I?", a:"a filter"},
+      {q:"Wetlands do me for water. Trees do me for air. What is this word?", a:"filter"},
+      {q:"I'm on social media \u2014 I can make your photo look like a painting or a puppy. What am I?", a:"a photo filter"},
+    ],
+    teaser:[
+      {q:"Oysters are natural water filters. One oyster can filter how many gallons of water per day?", a:"up to 50 gallons per day \u2014 this is why oyster reefs are being restored in many coastal areas"},
+      {q:"\"Filter bubbles\" happen online when apps only show you ideas you already agree with. Why might this be a problem?", a:"limits exposure to different views, strengthens biases, reduces critical thinking"},
+      {q:"Your kidneys filter your blood about 50 times per day. What do they remove?", a:"waste, excess water, and toxins \u2014 sending them out as urine"},
+    ],
+    wordgame:[
+      {q:"Name 3 words that rhyme with FILTER.", a:"shelter, welter, swelter, skelter, smelter (near rhymes \u2014 FILTER is actually hard to rhyme perfectly, which is why it sounds distinctive)"},
+      {q:"How many syllables are in FILTER, and which syllable gets the stress?", a:"2 syllables \u00b7 stress on FIL- (FIL-ter)"},
+      {q:"Change the I in FILTER to an A. What new word do you get, and what does it mean?", a:"FALTER \u2014 to stumble, hesitate, or lose strength"},
+    ],
+  },
+  FLOW:{
+    riddle:[
+      {q:"Rivers do me. Blood does me. Traffic does me. Ideas do me. What am I?", a:"flow"},
+      {q:"I'm a state of mind when time disappears because you're fully into what you're doing. What am I?", a:"flow state (or \"being in the zone\")"},
+      {q:"I follow the shape of the land and always end up at the sea. What am I?", a:"a river"},
+    ],
+    teaser:[
+      {q:"The Mississippi River flows at about 3 mph near the mouth. If you floated on a raft for 8 hours, about how far would you go?", a:"about 24 miles (3 mph \u00d7 8 hours)"},
+      {q:"Psychologists say \"flow\" is a state where you're fully absorbed in a task. What 2 conditions make flow more likely?", a:"clear goals + skill level matched to challenge (not too easy, not too hard)"},
+      {q:"Why do scientists say a river \"never stops\" \u2014 even though water in one spot is constantly replaced?", a:"the river is defined by the flow pattern, not by specific water molecules; same river, new water"},
+    ],
+    wordgame:[
+      {q:"Change the F in FLOW to a G. What word do you get, and what does it mean?", a:"GLOW \u2014 to give off a soft, warm light"},
+      {q:"FLOW backwards is WOLF. What's this kind of word-pair called?", a:"a semordnilap (or \"reverse pair\") \u2014 different words forward and backward"},
+      {q:"Name 3 words ending in -LOW.", a:"glow, slow, blow, low, mow, plow, crow, flow (8+ examples)"},
+    ],
+  },
+  GROW:{
+    riddle:[
+      {q:"I do it fast as a baby, slower as a kid, and stop when I'm grown. What am I?", a:"a human (or any living thing)"},
+      {q:"I do it through practice, mistakes, and time. I'm not just about getting bigger \u2014 I'm about getting better. What am I?", a:"learning (or personal growth)"},
+      {q:"With sun, water, and soil, I become a forest. Without them, I stay a seed. What am I?", a:"a plant (or tree)"},
+    ],
+    teaser:[
+      {q:"A redwood tree grows about 2 feet per year. How tall could a 100-year-old redwood be \u2014 and why is that still impressive?", a:"~200 feet tall \u00b7 impressive because it's basically a living skyscraper made from sunlight, water, and air"},
+      {q:"\"Growth mindset\" is a term from psychology. What does it mean?", a:"believing your abilities can be developed through effort, not fixed by birth"},
+      {q:"Bamboo grows up to 3 feet in ONE DAY. What adaptation makes this possible?", a:"pre-formed cells in the stem; it's really \"unfolding\" stored growth, not generating new tissue"},
+    ],
+    wordgame:[
+      {q:"GROW has 4 letters. Change one to get a word meaning \"a crow-like bird.\"", a:"CROW (change G to C)"},
+      {q:"Add -TH to GROW. What new word, and what does it mean?", a:"GROWTH \u2014 the result or process of growing"},
+      {q:"Name 3 words that rhyme with GROW.", a:"blow, crow, flow, glow, know, low, mow, row, show, slow, snow, throw, toe"},
+    ],
+  },
+  HEAL:{
+    riddle:[
+      {q:"You scraped me today. In 7 days I'll be almost gone. Who am I?", a:"a scab (healing wound)"},
+      {q:"A forest does me after a wildfire. Through time, new growth covers the char. What is this process?", a:"ecological healing (or succession)"},
+      {q:"I can be physical, but I can also be what happens after a broken friendship mends. What am I?", a:"healing"},
+    ],
+    teaser:[
+      {q:"Lizards can regrow their tails. Humans can't regrow limbs, but what body parts DO regenerate?", a:"skin, liver, bone, hair, nails, and blood cells"},
+      {q:"Scientists say laughter helps healing. Name 2 reasons why.", a:"reduces stress hormones, increases blood flow, releases endorphins, boosts immune function"},
+      {q:"A cut takes about 7 days to heal on the skin. Which of these heals faster: a cut, a broken bone, or a bruise?", a:"bruise (~2 weeks total, but visible change in days) \u00b7 cut (7-14 days) \u00b7 bone (6-8 weeks)"},
+    ],
+    wordgame:[
+      {q:"HEAL and HEEL sound the same but mean different things. What are these word-pairs called?", a:"homophones"},
+      {q:"Name 3 words that rhyme with HEAL.", a:"meal, deal, feel, peel, real, seal, steal, wheel, zeal"},
+      {q:"What does HEALTH contain that HEAL doesn't?", a:"the letters T and H at the end"},
+    ],
+  },
+  MIGRATE:{
+    riddle:[
+      {q:"We fly south in fall and north in spring. We travel in a V-shape in the sky. What are we?", a:"geese (or migrating birds)"},
+      {q:"We travel thousands of miles to lay eggs on the exact beach where we were born. What are we?", a:"sea turtles"},
+      {q:"I'm a human journey from one country to another, often for a better life. What am I?", a:"migration (immigration/emigration)"},
+    ],
+    teaser:[
+      {q:"Monarch butterflies migrate up to 3,000 miles. How do they find their way when no single butterfly has made the trip before?", a:"inherited instinct \u2014 using the sun, magnetic fields, and genetic memory"},
+      {q:"A bird migrates 6,000 miles round-trip each year. Over a 10-year lifespan, how far will it travel?", a:"60,000 miles \u2014 over twice around the Earth"},
+      {q:"When a family migrates to a new country, children often adapt faster than parents. Why might that be?", a:"young brains learn languages faster, school provides immersion, kids build new social networks quickly"},
+    ],
+    wordgame:[
+      {q:"MIGRATE and EMIGRATE are related. What does adding \"E-\" at the start do to the meaning?", a:"EMIGRATE = leave one country \u00b7 IMMIGRATE = arrive in another \u00b7 MIGRATE = move in general"},
+      {q:"Rearrange MIGRATE's letters to make a 7-letter word meaning \"an item.\"", a:"RAGTIME (a kind of music!) \u2014 MIGRATE anagrams include RAGTIME and MAIGRET (surname)"},
+      {q:"MIGRATE has 7 letters. How many are vowels?", a:"3 (I, A, E)"},
+    ],
+  },
+  PERSIST:{
+    riddle:[
+      {q:"I keep going when quitting would be easier. I built the pyramids and landed the first humans on the moon. What am I?", a:"persistence"},
+      {q:"I'm a trait of species that survive mass extinctions. Cockroaches have lots of me. What am I?", a:"persistence (or resilience)"},
+      {q:"I'm what Thomas Edison had when he \"failed\" 1,000 times before inventing the light bulb. What am I?", a:"persistence"},
+    ],
+    teaser:[
+      {q:"A daily 2% improvement compounds. How much better are you after 30 days of 2% daily gains?", a:"about 1.81\u00d7 better (1.02^30) \u2014 nearly double from small persistent gains"},
+      {q:"Some tree species persist through fires \u2014 their bark protects them. Name one famous example.", a:"giant sequoias, longleaf pines, ponderosa pines, cork oaks"},
+      {q:"Kids who persist through tough math problems score higher on tests \u2014 not because they're smarter, but because they don't give up. What's this research-based idea called?", a:"\"grit\" (Angela Duckworth's research)"},
+    ],
+    wordgame:[
+      {q:"PERSIST ends in -IST. What does the suffix -IST usually mean?", a:"a person who does something (artist, scientist, dentist) \u2014 though in PERSIST it's just a word ending, not a job"},
+      {q:"What 3-letter word is hidden in PERSIST \u2014 found by reading contiguous letters?", a:"PER (at start), SIS (in middle), IST (at end) \u2014 multiple answers"},
+      {q:"Add -ENCE to PERSIST to make the noun form. Write the new word.", a:"PERSISTENCE"},
+    ],
+  },
+  RENEW:{
+    riddle:[
+      {q:"The sun is one. The wind is another. Neither runs out when we use them for energy. What kind of energy am I?", a:"renewable energy"},
+      {q:"I'm what spring does to the bare trees every year. What am I?", a:"renew (bring new life)"},
+      {q:"I'm what you do to a library book when you're not done reading it. What am I?", a:"renew (the checkout)"},
+    ],
+    teaser:[
+      {q:"Solar panels keep making power as long as the sun shines. Coal runs out the more you burn. Which is renewable \u2014 and why does that matter for the planet's future?", a:"solar is renewable \u00b7 it doesn't run out or add CO\u2082 to the atmosphere"},
+      {q:"Rest renews your body and mind. How many hours of sleep do kids ages 11-14 need per night?", a:"9-11 hours per night"},
+      {q:"Forests can renew after fire through natural succession \u2014 but only if the seed bank and soil survive. What's one thing that can PREVENT forest renewal?", a:"fires too hot or too frequent, topsoil erosion, invasive species, or deforestation for development"},
+    ],
+    wordgame:[
+      {q:"RENEW starts with RE-, a prefix. What does RE- usually mean?", a:"\"again\" or \"back\" (redo, return, replay, renew)"},
+      {q:"Remove RE- from RENEW. What word remains?", a:"NEW \u2014 and RENEW literally means \"make new again\""},
+      {q:"Name 3 other RE- words meaning \"to do again.\"", a:"redo, rewrite, replay, restart, rebuild, review, repeat, reread"},
+    ],
+  },
+  RESTORE:{
+    riddle:[
+      {q:"I take broken things and make them whole again. I work on old paintings, classic cars, and trust between friends. What am I?", a:"restoration (or repair)"},
+      {q:"I'm a word computer people use when you need to bring a file back from backup. What am I?", a:"restore"},
+      {q:"I'm what sleep does to your tired body. What am I?", a:"restore (it)"},
+    ],
+    teaser:[
+      {q:"Scientists are restoring oyster reefs in Chesapeake Bay. Why is restoring oysters different from just cleaning the water?", a:"oysters filter water continuously, create habitat for other species, and strengthen shorelines \u2014 one solution with many benefits"},
+      {q:"To restore a rainforest takes about 100 years. But humans can cut one down in a day. What's the lesson about ecosystems?", a:"easy to destroy, hard to restore \u2014 prevention is more valuable than cure"},
+      {q:"After a bad conflict between friends, what are 3 steps to restore the friendship?", a:"acknowledge the hurt \u00b7 take responsibility \u00b7 apologize sincerely \u00b7 listen without defending \u00b7 follow up with action"},
+    ],
+    wordgame:[
+      {q:"RESTORE contains which smaller word in order \u2014 hint, it's a place that sells things.", a:"STORE (reSTORE)"},
+      {q:"What does RE- + STORE literally mean?", a:"\"store again\" \u2014 to put back in place, or return to original condition"},
+      {q:"Change RESTORE to a word meaning \"someone who works to bring art back to its original state.\"", a:"RESTORER (add -R)"},
+    ],
+  },
+  RETURN:{
+    riddle:[
+      {q:"I travel thousands of miles to lay eggs in the same stream where I was born. Scientists still study how I find my way home. What am I?", a:"a salmon"},
+      {q:"I come back every 76 years, streaking across the sky. What am I?", a:"Halley's Comet"},
+      {q:"I'm a key on your keyboard that starts a new line. What am I?", a:"the RETURN (or ENTER) key"},
+    ],
+    teaser:[
+      {q:"A library book has a 14-day return window. You borrowed it on the 1st. What date do you need to return it by?", a:"the 15th (14 days after day 1)"},
+      {q:"Salmon return to their birth stream using their sense of smell. Each stream has a unique chemical signature. Why is this amazing adaptation?", a:"they memorize the scent as babies, then navigate thousands of miles back years later using that memory"},
+      {q:"When someone returns to school after being out sick, they often feel behind. What's one strategy to catch up without overwhelming yourself?", a:"tackle one subject at a time, ask for help early, prioritize what's coming up soon vs. past work"},
+    ],
+    wordgame:[
+      {q:"RETURN starts with RE-. What does RETURN literally mean when broken down?", a:"RE- (back/again) + TURN = \"turn back\" \u2014 go back the way you came"},
+      {q:"What 4-letter word hides in RETURN in order?", a:"TURN (reTURN)"},
+      {q:"Name 3 other RE- words that mean doing something again.", a:"redo, replay, rewrite, refill, reheat, remake, rebuild, review, reuse, restart"},
+    ],
+  },
+  RISE:{
+    riddle:[
+      {q:"Every morning I start low, and by noon I'm at my highest. What am I?", a:"the sun"},
+      {q:"Bread dough does me when yeast makes bubbles inside. What am I?", a:"rise"},
+      {q:"I'm what sea levels are doing as the planet warms. Scientists measure me in inches per decade. What am I?", a:"sea level rise"},
+    ],
+    teaser:[
+      {q:"Hot air rises because it's less dense than cold air. Why does this make hot-air balloons work?", a:"heating air inside the balloon makes it lighter than outside air; the balloon floats up"},
+      {q:"Global sea levels are rising about 3.4mm per year. How many inches is that over 10 years?", a:"about 1.3 inches in 10 years (3.4mm \u00d7 10 = 34mm \u2248 1.3 inches)"},
+      {q:"\"Rising to the occasion\" means doing something great when it matters most. Name a famous athlete or leader known for this.", a:"many valid answers: Michael Jordan's clutch moments, Simone Biles' comebacks, Malala Yousafzai speaking out after being attacked"},
+    ],
+    wordgame:[
+      {q:"Add ONE letter to RISE to make a 5-letter word meaning \"someone who goes up.\"", a:"RISER (add R at the end)"},
+      {q:"RISE backwards is ESIR. Is that a word?", a:"no \u2014 RISE is not a palindrome or reversible word"},
+      {q:"Change the R in RISE to a W. What word do you get, and what does it mean?", a:"WISE \u2014 having good judgment or knowledge"},
+    ],
+  },
+  ROOT:{
+    riddle:[
+      {q:"I'm underground but I keep a tree standing tall. I search for water and nutrients. What am I?", a:"roots"},
+      {q:"In math, I'm a number that multiplied by itself gives you the number under my sign. What am I?", a:"a root (square root)"},
+      {q:"I'm what your identity, culture, and family are \u2014 the foundation of who you are. What am I?", a:"your roots"},
+    ],
+    teaser:[
+      {q:"The root system of a tree is often as big as the crown above ground. Why is that important for the tree's survival?", a:"more surface area to absorb water + nutrients, more anchoring against wind"},
+      {q:"What's the square root of 144?", a:"12 (12 \u00d7 12 = 144)"},
+      {q:"\"Getting to the root of a problem\" is an idiom. Why does it make sense to think about problems like trees?", a:"what you see (the issue) comes from something deeper underneath \u2014 solve the root cause, not just the symptom"},
+    ],
+    wordgame:[
+      {q:"ROOT has 4 letters with a double O. Name 3 other 4-letter words with double O.", a:"book, cool, food, good, hood, look, pool, tool, wood, zoom, moon, noon, soon"},
+      {q:"ROOT backwards is TOOR \u2014 not a word. But ROOT rhymes with TOOT, FRUIT, and...?", a:"boot, hoot, loot, scoot, shoot, flute, suit"},
+      {q:"Change one letter in ROOT to make a name for a building's top.", a:"ROOF (change T to F)"},
+    ],
+  },
+  SHINE:{
+    riddle:[
+      {q:"I'm what the sun does in the day and stars do at night. What am I?", a:"shine"},
+      {q:"I'm what polished shoes, clean windows, and a brand-new car all have in common. What am I?", a:"a shine"},
+      {q:"I'm when you do something so well that everyone notices. What am I?", a:"shine (as a verb \u2014 \"you really shine at this\")"},
+    ],
+    teaser:[
+      {q:"Why do diamonds shine more than regular glass?", a:"their crystal structure bends and reflects light at many angles \u2014 called \"refraction and dispersion\""},
+      {q:"Fireflies shine using a chemical reaction called bioluminescence. What energy source do they use \u2014 heat or chemicals?", a:"chemicals only \u2014 bioluminescence produces \"cold light,\" nearly 100% efficient"},
+      {q:"Psychologists say letting others shine makes you shine more too. Why might that be?", a:"sharing credit builds trust, teamwork multiplies success, leaders who lift others are respected and remembered"},
+    ],
+    wordgame:[
+      {q:"SHINE has 5 letters. Add -Y to make an adjective. What new word?", a:"SHINY (drop the E, add Y) \u2014 \"a shiny object\""},
+      {q:"What word rhymes with SHINE and means \"a place where minerals are dug up\"?", a:"MINE"},
+      {q:"Change the N in SHINE to a R. What 5-letter word do you get?", a:"SHIRE \u2014 a county or district in England (think \"The Shire\" in Lord of the Rings)"},
+    ],
+  },
+  SUSTAIN:{
+    riddle:[
+      {q:"I'm a long note in music, held without stopping. Singers and pianos both use me. What am I?", a:"a sustained note (or \"sustain\")"},
+      {q:"I'm an energy source that doesn't run out. I'm the opposite of \"temporary.\" What am I?", a:"sustainable (or renewable)"},
+      {q:"A good habit, a healthy body, a thriving planet \u2014 I'm what all three need to last. What am I?", a:"sustainability"},
+    ],
+    teaser:[
+      {q:"Sustainable farming leaves the soil healthier than it was found. What's one practice that does this?", a:"crop rotation, cover cropping, composting, no-till farming, organic fertilizers"},
+      {q:"Athletes say sustained effort beats occasional bursts. If you study 30 min every day vs. 4 hours once a week, which helps more \u2014 and why?", a:"daily study wins \u00b7 spaced repetition builds long-term memory better than cramming"},
+      {q:"A sustainable population of any species needs 3 things. Name them.", a:"food/water, habitat/shelter, ability to reproduce"},
+    ],
+    wordgame:[
+      {q:"SUSTAIN starts with SUS-. What other SUS- words can you think of?", a:"suspect, suspend, sustain, suspicious, susceptible, suspense"},
+      {q:"Change the ending of SUSTAIN to make it a noun meaning \"the quality of lasting.\"", a:"SUSTAINABILITY (add -ABILITY) or SUSTENANCE (what keeps you going)"},
+      {q:"SUSTAIN has 7 letters. How many are vowels?", a:"3 (U, A, I)"},
+    ],
+  },
+  THRIVE:{
+    riddle:[
+      {q:"I don't just survive \u2014 I flourish. Plants do me in the right soil; people do me in the right environment. What am I?", a:"thrive"},
+      {q:"I'm what businesses, gardens, and communities all hope to do. What am I?", a:"thrive"},
+      {q:"I'm the opposite of \"barely getting by.\" What am I?", a:"thriving"},
+    ],
+    teaser:[
+      {q:"Coral reefs thrive in warm, clear, shallow waters. Why are they struggling in many oceans right now?", a:"warming waters cause coral bleaching; pollution and acidification stress the ecosystem"},
+      {q:"Psychologists identify \"thriving\" as different from just being happy. What's the difference?", a:"happy = feeling good now \u00b7 thriving = growing, connected, purposeful \u2014 more sustainable wellbeing"},
+      {q:"Extremophiles are organisms that thrive in harsh conditions \u2014 lava vents, acid pools, polar ice. Why are they important for science?", a:"they show life's adaptability, hint at possible life on other planets, and produce useful enzymes for medicine/industry"},
+    ],
+    wordgame:[
+      {q:"What 4-letter word hides inside THRIVE in order \u2014 meaning \"to split or tear\"?", a:"RIVE (thRIVE) \u2014 to split or tear apart"},
+      {q:"THRIVE and THIEVE look alike. What's the difference in meaning \u2014 and in spelling?", a:"THRIVE = flourish \u00b7 THIEVE = to steal \u00b7 swap R for E (mostly) and change letter order"},
+      {q:"THRIVING ends in -ING. What part of speech does that make it?", a:"a present participle \u2014 usually functions as a verb or adjective (a thriving plant)"},
+    ],
+  },
+  TRANSFORM:{
+    riddle:[
+      {q:"I start as a caterpillar, go into a chrysalis, and come out with wings. What am I?", a:"a butterfly (undergoing metamorphosis)"},
+      {q:"I'm what water does when it freezes, melts, or evaporates \u2014 same molecules, different form. What am I?", a:"a phase change (or transformation)"},
+      {q:"I'm a math word for flipping, sliding, or rotating a shape. What am I?", a:"a transformation (in geometry)"},
+    ],
+    teaser:[
+      {q:"A caterpillar turns into a butterfly through metamorphosis. Inside the chrysalis, it literally dissolves and rebuilds. What organs must survive this transformation?", a:"special \"imaginal disc\" cells that carry the blueprint for adult features \u2014 the rest dissolves"},
+      {q:"Small daily transformations add up. If you read 10 pages a day, how many books (average 300 pages) could you finish in a year?", a:"about 12 books (365 \u00d7 10 = 3,650 pages \u00f7 300 = ~12)"},
+      {q:"The word \"transformation\" is used in many fields: biology, math, chemistry, psychology. What do all transformations have in common?", a:"a fundamental change from one state to another \u2014 the \"before\" and \"after\" are meaningfully different"},
+    ],
+    wordgame:[
+      {q:"TRANSFORM starts with TRANS-. What does this prefix mean?", a:"\"across\" or \"through\" or \"beyond\" (transport = carry across, translate = bring across languages)"},
+      {q:"TRANSFORM has 9 letters. How many vowels?", a:"2 (A, O)"},
+      {q:"Remove TRANS- from TRANSFORM. What word remains, and what does it mean?", a:"FORM \u2014 shape or structure \u00b7 TRANSFORM literally = \"change form\""},
+    ],
+  },
+};
+
+const SET_META = {
+  riddle:{ icon:"\u{1F9E9}", name:"Riddle" },
+  teaser:{ icon:"\u{1F9E0}", name:"Brain Teaser" },
+  wordgame:{ icon:"\u{1F524}", name:"Word Game" }
+};
+
+let state = { word:null, set:null, option:null };
+
+function renderWords(){
+  const grid = document.getElementById('wordGrid');
+  grid.innerHTML = WORDS.map(w =>
+    `<button class="word-tile" onclick="pickWord('${w}')">${w}</button>`
+  ).join('');
+}
+
+function pickWord(w){
+  state.word = w;
+  document.getElementById('chosenWord').textContent = w;
+  document.getElementById('crumbWord1').textContent = w;
+  goToScreen('sets');
+}
+
+function pickSet(s){
+  state.set = s;
+  document.getElementById('crumbWord2').textContent = state.word;
+  const setEl = document.getElementById('crumbSet');
+  setEl.textContent = `${SET_META[s].icon} ${SET_META[s].name}`;
+  renderOptions();
+  goToScreen('options');
+}
+
+function pickOption(i){
+  state.option = i;
+  renderCoupon();
+  goToScreen('coupon');
+}
+
+function renderOptions(){
+  const list = document.getElementById('optionList');
+  const options = COUPONS[state.word][state.set];
+  list.innerHTML = options.map((item, i) =>
+    `<button class="option-card ${state.set}" onclick="pickOption(${i})">
+       <div class="option-num">${i+1}</div>
+       <div class="option-text">${item.q}</div>
+     </button>`
+  ).join('');
+}
+
+function renderCoupon(){
+  const item = COUPONS[state.word][state.set][state.option];
+  document.getElementById('cpnWord').textContent = state.word;
+  document.getElementById('cpnAction').textContent = item.q;
+  document.getElementById('cpnAnswer').textContent = item.a;
+  const tag = document.getElementById('cpnSetTag');
+  tag.className = `coupon-set-tag ${state.set}`;
+  tag.textContent = `${SET_META[state.set].icon} ${SET_META[state.set].name}`;
+  // Reset reveal state
+  document.getElementById('answerReveal').classList.remove('shown');
+  document.getElementById('revealLabel').textContent = 'Reveal Answer';
+}
+
+function toggleAnswer(){
+  const panel = document.getElementById('answerReveal');
+  const label = document.getElementById('revealLabel');
+  if (panel.classList.contains('shown')){
+    panel.classList.remove('shown');
+    label.textContent = 'Reveal Answer';
+  } else {
+    panel.classList.add('shown');
+    label.textContent = 'Hide Answer';
+  }
+}
+
+function goToScreen(name){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(`screen-${name}`).classList.add('active');
+  document.body.classList.toggle('screen-coupon-active', name === 'coupon');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function startOver(){
+  state = { word:null, set:null, option:null };
+  goToScreen('words');
+}
+
+renderWords();
+</script>
+</body>
+</html>
