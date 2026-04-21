@@ -1,0 +1,2454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Big Idea Planner · Smile Bags · A Word &amp; Wonder Experience</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1e2838;
+    --ink-soft:#3d4a5e;
+    --muted:#6b7689;
+    --bg:#f4efe3;
+    --bg-deep:#ebe3d0;
+    --card:#ffffff;
+    --border:#d6cdb8;
+    --gold:#b89537;
+    --gold-soft:#d4b865;
+    --school:#3a6ea5;
+    --school-soft:#dce9f4;
+    --personal:#5a8c3a;
+    --personal-soft:#e1edd5;
+    --community:#b87333;
+    --community-soft:#f3e4d1;
+    --shadow:0 2px 8px rgba(30,40,56,.08);
+    --shadow-hover:0 6px 18px rgba(30,40,56,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    line-height:1.5;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  header{
+    background:var(--ink);
+    color:#f8f3e5;
+    padding:18px 32px;
+    border-bottom:3px solid var(--gold);
+  }
+  .header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .brand{display:flex;flex-direction:column;gap:2px}
+  .brand-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;letter-spacing:.5px}
+  .brand-sub{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;opacity:.7;font-weight:500}
+  .drive-pill{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--ink);padding:10px 18px;border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;letter-spacing:.3px;transition:transform .15s ease, box-shadow .15s ease;box-shadow:0 2px 6px rgba(0,0,0,.15);}
+  .drive-pill:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(0,0,0,.25)}
+  .drive-pill svg{width:16px;height:16px}
+
+  main{flex:1;max-width:1400px;margin:0 auto;width:100%;padding:32px;position:relative}
+  .screen{display:none;animation:fadeIn .3s ease}
+  .screen.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+  .intro{max-width:720px;margin:0 auto 32px;text-align:center}
+  .eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}
+  .intro h1{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;color:var(--ink);margin-bottom:10px;line-height:1.15}
+  .intro p{color:var(--ink-soft);font-size:15px;max-width:600px;margin:0 auto}
+
+  .nav-row{display:flex;align-items:center;gap:14px;margin-bottom:24px;max-width:1200px;margin-left:auto;margin-right:auto}
+  .back-btn{background:transparent;border:1px solid var(--border);padding:8px 14px;border-radius:999px;font-family:inherit;font-size:13px;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .15s ease, border-color .15s ease;}
+  .back-btn:hover{background:#fff;border-color:var(--ink)}
+  .crumb{font-size:13px;color:var(--muted);letter-spacing:.3px}
+  .crumb strong{color:var(--ink);font-weight:600}
+  .crumb .sep{margin:0 8px;opacity:.5}
+
+  .word-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;max-width:1100px;margin:0 auto;}
+  @media (max-width:900px){.word-grid{grid-template-columns:repeat(4,1fr)}}
+  @media (max-width:640px){.word-grid{grid-template-columns:repeat(3,1fr);gap:10px}}
+  @media (max-width:400px){.word-grid{grid-template-columns:repeat(2,1fr)}}
+  .word-tile{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px 10px;text-align:center;cursor:pointer;font-family:'Playfair Display',serif;font-size:19px;font-weight:800;letter-spacing:2.5px;color:var(--ink);transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;box-shadow:var(--shadow);}
+  .word-tile:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:var(--gold)}
+
+  .chosen-word{text-align:center;margin-bottom:28px;font-family:'Playfair Display',serif;font-size:54px;font-weight:800;letter-spacing:5px;color:var(--ink);position:relative;display:block;}
+  .chosen-word::after{content:"";display:block;width:60px;height:2px;background:var(--gold);margin:12px auto 0;}
+
+  .theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1000px;margin:0 auto;}
+  @media (max-width:780px){.theme-grid{grid-template-columns:1fr}}
+  .theme-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:32px 24px;text-align:center;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease;box-shadow:var(--shadow);position:relative;overflow:hidden;font-family:inherit;color:var(--ink);}
+  .theme-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover)}
+  .theme-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;}
+  .theme-card.school::before{background:var(--school)}
+  .theme-card.personal::before{background:var(--personal)}
+  .theme-card.community::before{background:var(--community)}
+  .theme-icon{font-size:38px;margin-bottom:10px;line-height:1}
+  .theme-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:6px;letter-spacing:.5px;}
+  .theme-card.school .theme-name{color:var(--school)}
+  .theme-card.personal .theme-name{color:var(--personal)}
+  .theme-card.community .theme-name{color:var(--community)}
+  .theme-desc{font-size:13px;color:var(--muted);line-height:1.5}
+
+  .option-list{display:flex;flex-direction:column;gap:14px;max-width:720px;margin:0 auto;}
+  .option-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px 24px;cursor:pointer;display:flex;align-items:center;gap:18px;transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;box-shadow:var(--shadow);text-align:left;font-family:inherit;width:100%;color:var(--ink);}
+  .option-card:hover{transform:translateX(4px);box-shadow:var(--shadow-hover)}
+  .option-card.school:hover{border-color:var(--school)}
+  .option-card.personal:hover{border-color:var(--personal)}
+  .option-card.community:hover{border-color:var(--community)}
+  .option-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#fff;}
+  .option-card.school .option-num{background:var(--school)}
+  .option-card.personal .option-num{background:var(--personal)}
+  .option-card.community .option-num{background:var(--community)}
+  .option-body{flex:1;min-width:0}
+  .option-subtitle{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+  .option-specific{font-size:15px;line-height:1.5}
+
+  /* ========== PLANNER CARD (larger to fit 5 SMART fields) ========== */
+  .planner-stage{display:flex;flex-direction:column;align-items:center;gap:24px;padding:20px 0;}
+  .planner-card{
+    background:#fffdf7;width:100%;max-width:720px;
+    border:2px solid var(--ink);border-radius:4px;
+    padding:40px 44px;position:relative;
+    box-shadow:0 8px 24px rgba(30,40,56,.18);
+  }
+  .planner-corner{position:absolute;top:14px;font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--gold);letter-spacing:1px}
+  .planner-corner.left{left:20px}
+  .planner-corner.right{right:20px}
+
+  .planner-inner{text-align:center;margin-top:14px}
+  .planner-eyebrow{
+    font-family:'Inter',sans-serif;font-size:11px;letter-spacing:4px;
+    text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px;
+  }
+  .planner-sub{
+    font-family:'Inter',sans-serif;font-size:12px;color:var(--muted);
+    letter-spacing:1px;text-transform:uppercase;margin-bottom:22px;font-weight:500;
+  }
+  .planner-word{
+    font-family:'Playfair Display',serif;font-size:58px;font-weight:800;
+    letter-spacing:6px;color:var(--ink);line-height:1;margin-bottom:4px;
+  }
+
+  .planner-theme-chip{
+    display:inline-flex;align-items:center;gap:6px;margin-top:14px;
+    padding:5px 14px;border-radius:999px;font-family:'Inter',sans-serif;
+    font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  }
+  .planner-theme-chip.school{background:var(--school-soft);color:var(--school)}
+  .planner-theme-chip.personal{background:var(--personal-soft);color:var(--personal)}
+  .planner-theme-chip.community{background:var(--community-soft);color:var(--community)}
+
+  .planner-divider{
+    display:flex;align-items:center;gap:10px;justify-content:center;
+    margin:22px 0 14px;
+  }
+  .planner-divider::before,.planner-divider::after{
+    content:"";flex:1;max-width:100px;height:1px;background:var(--border);
+  }
+  .planner-divider span{
+    font-family:'Inter',sans-serif;font-size:10px;letter-spacing:3px;
+    text-transform:uppercase;color:var(--muted);font-weight:600;
+  }
+
+  .planner-plan-sub{
+    font-family:'Inter',sans-serif;font-size:13px;font-weight:600;
+    color:var(--ink-soft);text-transform:uppercase;letter-spacing:1.5px;
+    margin-bottom:24px;
+  }
+
+  .smart-grid{
+    display:grid;grid-template-columns:auto 1fr;gap:14px 20px;
+    text-align:left;margin-top:8px;
+  }
+  .smart-letter{
+    font-family:'Playfair Display',serif;font-size:28px;font-weight:800;
+    color:var(--ink);line-height:1;letter-spacing:1px;
+    width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+    background:var(--bg-deep);border-radius:50%;
+    border:2px solid var(--gold);
+  }
+  .smart-cell{padding-top:8px}
+  .smart-label{
+    font-family:'Inter',sans-serif;font-size:10px;font-weight:700;
+    letter-spacing:2px;text-transform:uppercase;color:var(--gold);
+    margin-bottom:3px;
+  }
+  .smart-text{
+    font-family:'Playfair Display',serif;font-size:16px;line-height:1.45;
+    color:var(--ink);font-weight:500;
+  }
+
+  .planner-footer{
+    margin-top:28px;padding-top:18px;border-top:1px dashed var(--border);
+    font-family:'Inter',sans-serif;
+  }
+  .planner-from{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;
+  }
+  .planner-from .line-label{font-weight:600}
+  .planner-from .line{
+    display:inline-block;border-bottom:1px solid var(--ink);
+    min-width:120px;height:14px;margin-left:8px;
+  }
+
+  .micro-step{background:var(--bg-deep);border:1px solid var(--border);border-radius:10px;padding:16px 22px;max-width:720px;width:100%;display:flex;align-items:center;gap:14px;font-size:13px;color:var(--ink-soft);line-height:1.5;}
+  .micro-step-icon{flex-shrink:0;width:36px;height:36px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--ink);font-weight:700;font-family:'Playfair Display',serif}
+  .micro-step strong{color:var(--ink)}
+
+  .planner-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  .btn{font-family:inherit;font-size:14px;font-weight:600;letter-spacing:.3px;padding:12px 22px;border-radius:999px;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease;border:none;display:inline-flex;align-items:center;gap:8px;text-decoration:none;}
+  .btn-primary{background:var(--ink);color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.25)}
+  .btn-gold{background:var(--gold);color:var(--ink);box-shadow:0 2px 6px rgba(0,0,0,.15)}
+  .btn-gold:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.25)}
+
+  footer{background:var(--ink);color:#d6cdb8;padding:20px 32px;margin-top:40px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;text-align:center;font-weight:500;}
+  footer .dot{margin:0 10px;color:var(--gold)}
+
+  @media print{
+    header,footer,.nav-row,.planner-actions,.micro-step,.drive-pill{display:none !important}
+    body{background:#fff}
+    .planner-card{box-shadow:none;border:2px solid #000}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-title">Big Idea Planner</div>
+      <div class="brand-sub">Smile Bags &middot; A Word &amp; Wonder Experience</div>
+    </div>
+    <a class="drive-pill" id="driveLink" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.71 3.52L1.15 15l3.42 5.92h13.69L21.85 15 14.29 3.52H7.71zm1.42 2h5.74l5.36 9.48H14.49L9.13 5.52zM7.71 6.48L12.71 15H2.57L7.71 6.48z"/></svg>
+      Upload to Drive
+    </a>
+  </div>
+</header>
+
+<main>
+  <section id="screen-words" class="screen active">
+    <div class="intro">
+      <div class="eyebrow">Step 1 of 3</div>
+      <h1>Choose Your OneWord</h1>
+      <p>Every OneWord opens up three paths for a SMART plan — school, personal, and community. Pick a word that fits the student you're planning for.</p>
+    </div>
+    <div class="word-grid" id="wordGrid"></div>
+  </section>
+
+  <section id="screen-themes" class="screen">
+    <div class="nav-row">
+      <button class="back-btn" onclick="goToScreen('words')">&larr; Back to OneWords</button>
+      <div class="crumb"><strong id="crumbWord1"></strong></div>
+    </div>
+    <div class="intro">
+      <div class="eyebrow">Step 2 of 3</div>
+      <h1>Choose a Theme</h1>
+      <p>Three paths. Pick the one that fits the big idea.</p>
+    </div>
+    <div class="chosen-word" id="chosenWord"></div>
+    <div class="theme-grid">
+      <button class="theme-card school" onclick="pickTheme('school')">
+        <div class="theme-icon">&#128218;</div>
+        <div class="theme-name">School</div>
+        <div class="theme-desc">Goals tied to learning, classes, grades, and academic growth.</div>
+      </button>
+      <button class="theme-card personal" onclick="pickTheme('personal')">
+        <div class="theme-icon">&#127793;</div>
+        <div class="theme-name">Personal Skills</div>
+        <div class="theme-desc">Goals for habits, hobbies, health, and becoming who you want to be.</div>
+      </button>
+      <button class="theme-card community" onclick="pickTheme('community')">
+        <div class="theme-icon">&#129309;</div>
+        <div class="theme-name">Community &amp; Service</div>
+        <div class="theme-desc">Goals that help people around you — family, school, neighborhood, planet.</div>
+      </button>
+    </div>
+  </section>
+
+  <section id="screen-options" class="screen">
+    <div class="nav-row">
+      <button class="back-btn" onclick="goToScreen('themes')">&larr; Change theme</button>
+      <div class="crumb"><strong id="crumbWord2"></strong> <span class="sep">&middot;</span> <span id="crumbTheme"></span></div>
+    </div>
+    <div class="intro">
+      <div class="eyebrow">Step 3 of 3</div>
+      <h1>Choose the Plan</h1>
+      <p>Three example plans. Pick the one that fits best, then share the full SMART card.</p>
+    </div>
+    <div class="option-list" id="optionList"></div>
+  </section>
+
+  <section id="screen-planner" class="screen">
+    <div class="nav-row">
+      <button class="back-btn" onclick="goToScreen('options')">&larr; Pick a different plan</button>
+      <button class="back-btn" onclick="startOver()">&#8634; Start over</button>
+    </div>
+    <div class="planner-stage">
+      <div class="planner-card" id="plannerCard">
+        <div class="planner-corner left">&#10070;</div>
+        <div class="planner-corner right">&#10070;</div>
+        <div class="planner-inner">
+          <div class="planner-eyebrow">A Smile Bag Planner Card</div>
+          <div class="planner-sub">One Word &middot; One Big Idea &middot; Make It Happen</div>
+          <div class="planner-word" id="cpnWord"></div>
+          <span class="planner-theme-chip" id="cpnThemeChip"></span>
+          <div class="planner-divider"><span>The Plan</span></div>
+          <div class="planner-plan-sub" id="cpnSubtitle"></div>
+          <div class="smart-grid">
+            <div class="smart-letter">S</div>
+            <div class="smart-cell">
+              <div class="smart-label">Specific</div>
+              <div class="smart-text" id="cpnSpecific"></div>
+            </div>
+            <div class="smart-letter">M</div>
+            <div class="smart-cell">
+              <div class="smart-label">Measurable</div>
+              <div class="smart-text" id="cpnMeasurable"></div>
+            </div>
+            <div class="smart-letter">A</div>
+            <div class="smart-cell">
+              <div class="smart-label">Achievable</div>
+              <div class="smart-text" id="cpnAchievable"></div>
+            </div>
+            <div class="smart-letter">R</div>
+            <div class="smart-cell">
+              <div class="smart-label">Relevant</div>
+              <div class="smart-text" id="cpnRelevant"></div>
+            </div>
+            <div class="smart-letter">T</div>
+            <div class="smart-cell">
+              <div class="smart-label">Time-bound</div>
+              <div class="smart-text" id="cpnTimeBound"></div>
+            </div>
+          </div>
+          <div class="planner-footer">
+            <div class="planner-from">
+              <div><span class="line-label">From:</span><span class="line"></span></div>
+              <div><span class="line-label">Date:</span><span class="line"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="micro-step">
+        <div class="micro-step-icon">&#128248;</div>
+        <div>
+          <strong>Next steps:</strong> Press <strong>Print Screen</strong> (or <strong>Ctrl + Shift + Show Windows</strong> on Chromebook) to capture the full planner card, then save to your Chromebook and upload to the shared Drive folder.
+        </div>
+      </div>
+      <div class="planner-actions">
+        <button class="btn btn-primary" onclick="goToScreen('words')">Make another planner card</button>
+        <a class="btn btn-gold" id="driveLink2" href="#" target="_blank" rel="noopener">Open Drive folder</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Smile Bags <span class="dot">&middot;</span> A Word &amp; Wonder Experience <span class="dot">&middot;</span> Leadership <span class="dot">&middot;</span> Marquand <span class="dot">&middot;</span> Spring 2026
+</footer>
+
+<script>
+const DRIVE_URL = "https://drive.google.com/drive/folders/1D1AqGr8icdUbziUg9_8Ww1XyYhUXPxs4?usp=sharing";
+
+if (DRIVE_URL && DRIVE_URL.indexOf('REPLACE') === -1) {
+  document.getElementById('driveLink').href = DRIVE_URL;
+  document.getElementById('driveLink2').href = DRIVE_URL;
+} else {
+  document.getElementById('driveLink').style.display = 'none';
+  document.getElementById('driveLink2').style.display = 'none';
+}
+
+const WORDS = ["ABSORB","ADAPT","ANCHOR","BALANCE","BLOOM","BREATHE","CLEAR","CONNECT","CYCLE","EMERGE","FILTER","FLOW","GROW","HEAL","MIGRATE","PERSIST","RENEW","RESTORE","RETURN","RISE","ROOT","SHINE","SUSTAIN","THRIVE","TRANSFORM"];
+
+const PLANS = {
+  ABSORB:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Test Prep",
+        specific: "Absorb all the vocabulary in my SAT prep book.",
+        measurable: "Learn 15 new words per week; quiz myself every Friday.",
+        achievable: "Use flashcards on the bus and during free periods.",
+        relevant: "Strong vocabulary will boost my SAT reading score.",
+        timeBound: "8 weeks before the March test date.",
+      },
+      {
+        subtitle: "MS \u00b7 Reading Depth",
+        specific: "Read one nonfiction book on a topic I'm curious about.",
+        measurable: "Finish the book and write a 1-page summary of 5 key ideas.",
+        achievable: "Read 20 pages per night, 5 nights a week.",
+        relevant: "I want to absorb something that actually interests me, not just a class assignment.",
+        timeBound: "Finish within 4 weeks.",
+      },
+      {
+        subtitle: "MS \u00b7 Class Focus",
+        specific: "Take detailed, color-coded notes in science class every day.",
+        measurable: "Review notes the same night; re-read weekly before the quiz.",
+        achievable: "Block 10 minutes after dinner for same-day review.",
+        relevant: "My grade reflects what I actually remember, not just what I wrote down.",
+        timeBound: "Full grading period \u2014 9 weeks.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Language Learning",
+        specific: "Absorb enough Spanish to hold a 5-minute conversation.",
+        measurable: "Complete 1 Duolingo unit per week; practice with a friend 2x a week.",
+        achievable: "15-minute sessions on the app before bed.",
+        relevant: "I want to talk with my grandfather's side of the family.",
+        timeBound: "3 months to conversational level.",
+      },
+      {
+        subtitle: "MS \u00b7 Podcast Habit",
+        specific: "Absorb one science podcast episode per week.",
+        measurable: "Write 3 takeaways from each episode in a journal.",
+        achievable: "Listen while doing chores or getting ready in the morning.",
+        relevant: "Builds knowledge beyond what school covers.",
+        timeBound: "One full semester \u2014 16 weeks.",
+      },
+      {
+        subtitle: "HS \u00b7 Skill Deep-Dive",
+        specific: "Learn basic video editing in DaVinci Resolve.",
+        measurable: "Complete 5 YouTube tutorials; edit one full short film.",
+        achievable: "Work on it for 1 hour every Saturday.",
+        relevant: "I want this skill for my college portfolio and potential freelance work.",
+        timeBound: "Complete the short film within 6 weeks.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "MS/HS \u00b7 Local History",
+        specific: "Absorb the history of my neighborhood by interviewing 3 older residents.",
+        measurable: "Record each interview (30 min each); create a short write-up.",
+        achievable: "Use my phone's voice memos; schedule one interview every 2 weeks.",
+        relevant: "Their stories won't be preserved unless someone listens.",
+        timeBound: "Finish all 3 interviews in 6 weeks.",
+      },
+      {
+        subtitle: "HS \u00b7 Library Volunteer",
+        specific: "Volunteer weekly at the public library's summer reading program.",
+        measurable: "Log 4 hours per week for 8 weeks.",
+        achievable: "Shifts are flexible; most weeks fit around work schedule.",
+        relevant: "Reading changed my life; helping kids find books matters.",
+        timeBound: "Entire summer \u2014 June through August.",
+      },
+      {
+        subtitle: "MS \u00b7 Science Fair Support",
+        specific: "Help elementary students absorb science concepts by tutoring at their school science fair prep.",
+        measurable: "3 one-hour sessions; help each student with their hypothesis.",
+        achievable: "Coordinate with my old teacher; after-school sessions.",
+        relevant: "I remember how confusing science fair was; now I can give back.",
+        timeBound: "3 weeks before their fair date.",
+      },
+    ],
+  },
+  ADAPT:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Study Methods",
+        specific: "Adapt my study method for each subject instead of using one system for all.",
+        measurable: "Test 3 different methods (flashcards, Feynman, practice tests) over 3 weeks.",
+        achievable: "Pick one new method per week; track which boosts quiz scores.",
+        relevant: "My current one-size-fits-all approach isn't working for math.",
+        timeBound: "3-week trial; lock in the best method by end of October.",
+      },
+      {
+        subtitle: "MS \u00b7 New Class Challenge",
+        specific: "Adapt to the tougher workload in 7th grade by building a weekly planner habit.",
+        measurable: "Write every assignment in my planner; review it every Sunday.",
+        achievable: "Takes 10 minutes per week.",
+        relevant: "6th grade was easier \u2014 I need a system now.",
+        timeBound: "First quarter \u2014 9 weeks.",
+      },
+      {
+        subtitle: "HS \u00b7 Teacher Style",
+        specific: "Adapt to my new history teacher's essay-heavy style.",
+        measurable: "Get feedback on 3 draft essays before each final submission.",
+        achievable: "Use the writing center and office hours.",
+        relevant: "My first essay got a C \u2014 I need to learn what this teacher wants.",
+        timeBound: "By the 3rd graded essay of the semester.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "MS/HS \u00b7 New Environment",
+        specific: "Adapt to being the new kid after moving by joining 2 clubs.",
+        measurable: "Attend 3 meetings of each club within the first month.",
+        achievable: "Sign up at the activities fair; ask one person at each club to show me around.",
+        relevant: "Clubs are the fastest way to find people who share interests.",
+        timeBound: "6 weeks from first day.",
+      },
+      {
+        subtitle: "HS \u00b7 Injury Comeback",
+        specific: "Adapt my soccer training after an ankle sprain by switching to strength work.",
+        measurable: "3 gym sessions per week focusing on core + upper body.",
+        achievable: "School gym is open before practice.",
+        relevant: "I can't run, but I CAN come back stronger overall.",
+        timeBound: "6 weeks of recovery training.",
+      },
+      {
+        subtitle: "MS \u00b7 Family Change",
+        specific: "Adapt to my new family schedule by creating a morning routine that works for me.",
+        measurable: "Wake up 30 min earlier; complete 3-step routine (breakfast, pack, review day).",
+        achievable: "Go to bed 30 min earlier; use a phone alarm.",
+        relevant: "The new schedule leaves me rushing every morning.",
+        timeBound: "2 weeks to build the habit.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Accessibility Audit",
+        specific: "Help my school adapt to be more accessible for students with disabilities.",
+        measurable: "Walk the building, document 10 specific barriers, submit to admin.",
+        achievable: "Partner with SPED teacher for guidance; use existing accessibility checklist.",
+        relevant: "Small changes make big differences for classmates.",
+        timeBound: "Report submitted within 4 weeks.",
+      },
+      {
+        subtitle: "MS \u00b7 ESL Buddy",
+        specific: "Help a new ESL student adapt by being their lunch buddy.",
+        measurable: "Sit together 4 days a week; learn 5 words in their first language.",
+        achievable: "Coordinate with the ESL teacher to get matched.",
+        relevant: "Being new is hard \u2014 a friendly face makes school bearable.",
+        timeBound: "Full semester.",
+      },
+      {
+        subtitle: "HS \u00b7 Climate Response",
+        specific: "Organize a neighborhood event on how local gardens are adapting to climate change.",
+        measurable: "Guest speaker + 15 attendees minimum.",
+        achievable: "Host at the library; partner with the garden club.",
+        relevant: "Our community needs to prepare; this starts the conversation.",
+        timeBound: "Event held within 8 weeks.",
+      },
+    ],
+  },
+  ANCHOR:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Consistent Habits",
+        specific: "Anchor my school week with a Sunday planning ritual.",
+        measurable: "Every Sunday evening: review syllabus, fill planner, pack bag.",
+        achievable: "Block 30 minutes at the same time each Sunday.",
+        relevant: "Sunday chaos sets up a rough Monday \u2014 this fixes the week upstream.",
+        timeBound: "Build the habit over 4 consecutive Sundays.",
+      },
+      {
+        subtitle: "MS \u00b7 Study Spot",
+        specific: "Anchor my homework routine to a specific desk spot, not my bed.",
+        measurable: "Homework done at the desk 5 days a week.",
+        achievable: "Clear the desk; set up with supplies + good lighting.",
+        relevant: "Focusing at my desk is easier than in bed with distractions.",
+        timeBound: "3 weeks to establish the pattern.",
+      },
+      {
+        subtitle: "HS \u00b7 Mentor Meet",
+        specific: "Anchor my academic year with monthly check-ins with a teacher I trust.",
+        measurable: "One 20-minute meeting per month; come with 2 questions.",
+        achievable: "Most teachers have open office hours.",
+        relevant: "A trusted adult catches problems before they spiral.",
+        timeBound: "Every month of the school year.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Morning Routine",
+        specific: "Anchor my mornings with a 3-step routine: stretch, water, plan.",
+        measurable: "Complete all 3 steps within 15 min, 5 days a week.",
+        achievable: "Phone alarm + water bottle ready night before.",
+        relevant: "Rushed mornings make me anxious all day.",
+        timeBound: "21 days to form the habit.",
+      },
+      {
+        subtitle: "MS \u00b7 Family Connection",
+        specific: "Anchor my week with Friday family movie night, no phones.",
+        measurable: "Attend all 4 Friday nights each month.",
+        achievable: "Pick the movie together at dinner Thursday.",
+        relevant: "We don't talk enough \u2014 this creates a reliable time together.",
+        timeBound: "Commit to it for 3 months, then evaluate.",
+      },
+      {
+        subtitle: "HS \u00b7 Journaling Habit",
+        specific: "Anchor my day with a 5-minute journal entry each night.",
+        measurable: "Journal 5 nights per week minimum.",
+        achievable: "Keep the notebook on my pillow.",
+        relevant: "Processing the day helps me sleep and notice patterns.",
+        timeBound: "30 days to build; then re-evaluate.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Reliable Volunteer",
+        specific: "Be the anchor volunteer at my local food bank every Saturday.",
+        measurable: "3-hour shifts, every Saturday, for a full semester.",
+        achievable: "Commit to one regular shift instead of random sign-ups.",
+        relevant: "Food banks need reliable volunteers more than rotating ones.",
+        timeBound: "Full 16-week semester.",
+      },
+      {
+        subtitle: "MS \u00b7 Class Helper",
+        specific: "Anchor the back of the school bus by always saving a seat for the shy 6th grader who rides alone.",
+        measurable: "Every day we both ride, talk for at least 5 minutes.",
+        achievable: "Board the bus a bit earlier to claim the seat.",
+        relevant: "A small gesture, a daily safe spot \u2014 that's what an anchor is.",
+        timeBound: "Full school year.",
+      },
+      {
+        subtitle: "HS \u00b7 Neighborhood Safety",
+        specific: "Anchor my block's safety by organizing a monthly community walk.",
+        measurable: "5+ neighbors join each month; 30-minute walk with flashlights.",
+        achievable: "Post on the neighborhood app; start with friends' parents.",
+        relevant: "Visible community presence deters crime more than cameras.",
+        timeBound: "First walk within 4 weeks; monthly thereafter.",
+      },
+    ],
+  },
+  BALANCE:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Work-Life",
+        specific: "Balance my AP workload with my part-time job.",
+        measurable: "Cap work at 12 hours/week; schedule 2 study blocks on weekends.",
+        achievable: "Talk to my manager about limiting shifts on school nights.",
+        relevant: "Both matter; burning out in either hurts the other.",
+        timeBound: "New schedule locked in within 2 weeks.",
+      },
+      {
+        subtitle: "MS \u00b7 Sports + Study",
+        specific: "Balance basketball practice with homework.",
+        measurable: "Finish homework before 9pm every practice day.",
+        achievable: "Use study hall and the 20 min after practice.",
+        relevant: "Grades have to stay up to keep playing.",
+        timeBound: "Whole season.",
+      },
+      {
+        subtitle: "HS \u00b7 Subject Balance",
+        specific: "Balance my weakest subject (math) without letting my strongest (English) slip.",
+        measurable: "60% of study time on math, 40% on other subjects.",
+        achievable: "Protect math study on Sundays and Wednesdays.",
+        relevant: "Current strategy of \"coast in English, panic in math\" isn't working.",
+        timeBound: "Mid-quarter check-in in 4 weeks.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Screen Time",
+        specific: "Balance screen time with outdoor time.",
+        measurable: "30 min outside for every 2 hours on phone/computer.",
+        achievable: "Use phone's screen-time tracker; take walks after big study blocks.",
+        relevant: "My mood and sleep have gotten worse since phone use went up.",
+        timeBound: "Track for 30 days, then adjust.",
+      },
+      {
+        subtitle: "MS \u00b7 Hobby + Homework",
+        specific: "Balance art time with homework time by scheduling both.",
+        measurable: "1 hour homework, then 1 hour art \u2014 4 days a week.",
+        achievable: "Set a timer; keep art supplies next to desk.",
+        relevant: "Art is what keeps me motivated; I shouldn't have to give it up.",
+        timeBound: "3 weeks to settle the rhythm.",
+      },
+      {
+        subtitle: "HS \u00b7 Food + Rest",
+        specific: "Balance my eating and sleeping so I stop crashing in afternoon classes.",
+        measurable: "Eat breakfast 5 days/week; be in bed by 10:30pm 5 days/week.",
+        achievable: "Prep breakfast bars Sunday; put phone across room at 10pm.",
+        relevant: "My afternoon focus tanks every day \u2014 this is likely why.",
+        timeBound: "2 weeks of the new routine; see if focus improves.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "MS/HS \u00b7 Event Rep",
+        specific: "Help balance representation at school events by recruiting friends from different groups.",
+        measurable: "Bring at least 3 friends from outside my usual group to 2 events.",
+        achievable: "Invite them personally, not by group text.",
+        relevant: "Events feel cliquey; mixing helps everyone feel welcome.",
+        timeBound: "Next 2 school events.",
+      },
+      {
+        subtitle: "HS \u00b7 Voice Balance",
+        specific: "Balance who speaks in my class discussions by noticing quiet classmates.",
+        measurable: "Each discussion, pass the floor to 1 quieter person I ask for input.",
+        achievable: "Prep a go-to line: \"I'd like to hear what [name] thinks.\"",
+        relevant: "Same 4 voices dominate every class; that's not education for everyone.",
+        timeBound: "Every class discussion this semester.",
+      },
+      {
+        subtitle: "HS \u00b7 Ecosystem Project",
+        specific: "Restore balance to a local waterway by joining the watershed cleanup group.",
+        measurable: "Attend 4 cleanups; log trash types to identify patterns.",
+        achievable: "Most cleanups are Saturday mornings; I have that time.",
+        relevant: "Healthy ecosystems need active restoration, not just hope.",
+        timeBound: "4 cleanups across 3 months.",
+      },
+    ],
+  },
+  BLOOM:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Creative Project",
+        specific: "Let my creativity bloom by entering the school art show.",
+        measurable: "Submit 3 finished pieces by the deadline.",
+        achievable: "2 hours per weekend in the studio space.",
+        relevant: "I've been drawing privately for years; time to share.",
+        timeBound: "Show submission \u2014 6 weeks out.",
+      },
+      {
+        subtitle: "MS \u00b7 Class Confidence",
+        specific: "Bloom in science class by raising my hand at least once per period.",
+        measurable: "Track each hand-raise in my notebook.",
+        achievable: "Pre-read so I always have one prepared comment.",
+        relevant: "I know the answers \u2014 I just don't say them.",
+        timeBound: "4 weeks to build the habit.",
+      },
+      {
+        subtitle: "HS \u00b7 New Elective",
+        specific: "Bloom into a new subject by signing up for a photography elective.",
+        measurable: "Complete all assignments; submit final portfolio.",
+        achievable: "Fits in my Friday afternoon slot.",
+        relevant: "I want to grow outside my usual academic lane.",
+        timeBound: "Full semester.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "MS \u00b7 Talent Show",
+        specific: "Bloom on stage by performing at the school talent show.",
+        measurable: "Perform one 3-minute act; rehearse 5x before.",
+        achievable: "Practice in front of family first, then friends.",
+        relevant: "I've avoided the stage my whole life; it's time.",
+        timeBound: "Show date is 5 weeks away.",
+      },
+      {
+        subtitle: "HS \u00b7 Authentic Style",
+        specific: "Let my own style bloom by dressing how I actually want, not how my friends dress.",
+        measurable: "2 outfits per week that feel 100% me.",
+        achievable: "Thrift on weekends; start small with accessories.",
+        relevant: "I've been blending in too long.",
+        timeBound: "Experiment for 4 weeks.",
+      },
+      {
+        subtitle: "MS/HS \u00b7 Garden",
+        specific: "Start my own flower garden from seed and watch it bloom.",
+        measurable: "Plant 5 types; document weekly with photos.",
+        achievable: "Use a 2x2 ft patch or pots on the porch.",
+        relevant: "I want to actually grow something living.",
+        timeBound: "Plant in early spring; first blooms by late spring.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Quiet Voices",
+        specific: "Help quieter classmates bloom by nominating them for recognition.",
+        measurable: "Nominate 3 classmates for student awards this year.",
+        achievable: "Write thoughtful 1-paragraph submissions.",
+        relevant: "Great students get overlooked when they're quiet.",
+        timeBound: "First nomination by end of quarter.",
+      },
+      {
+        subtitle: "MS \u00b7 School Garden",
+        specific: "Help our school's garden bloom by joining weekly maintenance.",
+        measurable: "1 hour per week; at least 10 weeks.",
+        achievable: "Garden club meets during lunch on Wednesdays.",
+        relevant: "Our garden's food feeds families in need.",
+        timeBound: "Growing season \u2014 April through June.",
+      },
+      {
+        subtitle: "HS \u00b7 Local Pollinators",
+        specific: "Help pollinators bloom by planting a native-plant strip in my yard.",
+        measurable: "Plant 10 native species; count bees/butterflies weekly.",
+        achievable: "Get native plugs from the county extension office.",
+        relevant: "Pollinator populations are crashing; yards matter.",
+        timeBound: "Planted by late April; bloom by June.",
+      },
+    ],
+  },
+  BREATHE:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Test Anxiety",
+        specific: "Use breathing techniques to reduce test anxiety.",
+        measurable: "4-7-8 breathing for 90 seconds before every test.",
+        achievable: "Set a phone reminder; practice at home first.",
+        relevant: "I lose 10+ points per test from freezing up.",
+        timeBound: "Apply for 4 consecutive tests; evaluate.",
+      },
+      {
+        subtitle: "MS \u00b7 Presentation Nerves",
+        specific: "Breathe through my class presentation without panicking.",
+        measurable: "Start with 3 slow breaths; finish my 5-minute talk on time.",
+        achievable: "Practice 5x with mom listening.",
+        relevant: "Last time I rushed through and forgot half.",
+        timeBound: "Presentation in 2 weeks.",
+      },
+      {
+        subtitle: "HS \u00b7 Study Breaks",
+        specific: "Take structured breathing breaks during long study sessions.",
+        measurable: "Every 50 min of study, 3-minute breathing break before next session.",
+        achievable: "Use Pomodoro app; breathe at desk instead of scrolling phone.",
+        relevant: "Breaks are where retention happens \u2014 I've been skipping them.",
+        timeBound: "All study sessions for 2 weeks.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Anxiety Management",
+        specific: "Build a daily breathing practice to manage stress.",
+        measurable: "5 minutes of box breathing, every night before bed.",
+        achievable: "Use a free app like Insight Timer.",
+        relevant: "Stress is affecting my sleep and skin.",
+        timeBound: "30 consecutive days.",
+      },
+      {
+        subtitle: "MS \u00b7 Singing Practice",
+        specific: "Improve my singing breath control for choir.",
+        measurable: "Hold a note for 15 seconds by end of month.",
+        achievable: "Practice breathing exercises 10 min daily.",
+        relevant: "I run out of breath mid-phrase.",
+        timeBound: "4 weeks to reach 15-second hold.",
+      },
+      {
+        subtitle: "HS \u00b7 Meditation Habit",
+        specific: "Start a meditation practice using breath focus.",
+        measurable: "10 minutes, 4 days per week.",
+        achievable: "Same spot, same time each session.",
+        relevant: "I want one thing in my day that isn't about producing something.",
+        timeBound: "6 weeks of consistent practice.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Air Quality",
+        specific: "Help my community breathe cleaner air by organizing a no-idling campaign at school.",
+        measurable: "Put signs at all pickup areas; survey parent drivers.",
+        achievable: "Partner with environmental club + admin.",
+        relevant: "Idling cars at school pick-up harm students with asthma.",
+        timeBound: "Campaign launched within 6 weeks.",
+      },
+      {
+        subtitle: "MS/HS \u00b7 Peer Support",
+        specific: "Teach 3 stressed friends a simple breathing technique.",
+        measurable: "One conversation per friend; 5-minute walkthrough each.",
+        achievable: "Pick friends I already talk to about hard stuff.",
+        relevant: "Sharing tools spreads calm.",
+        timeBound: "Within 3 weeks.",
+      },
+      {
+        subtitle: "HS \u00b7 Tree Planting",
+        specific: "Help the planet breathe by joining a local tree-planting day.",
+        measurable: "Plant at least 10 trees in one event.",
+        achievable: "City Parks and Rec hosts quarterly plantings.",
+        relevant: "Trees clean air and cool cities.",
+        timeBound: "Next scheduled planting day.",
+      },
+    ],
+  },
+  CLEAR:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Backlog",
+        specific: "Clear my missing assignments before the grading cut-off.",
+        measurable: "List all 7 missing items; complete 1 per day.",
+        achievable: "Sort by due urgency; use free periods first.",
+        relevant: "Each zero drops my grade a full letter.",
+        timeBound: "All cleared within 7 days.",
+      },
+      {
+        subtitle: "MS \u00b7 Clean Workspace",
+        specific: "Clear my desk and backpack every Friday after school.",
+        measurable: "Desk visible; backpack empty of trash + old papers.",
+        achievable: "15 min after last class.",
+        relevant: "I waste Monday morning hunting for lost stuff.",
+        timeBound: "Every Friday this quarter.",
+      },
+      {
+        subtitle: "HS \u00b7 Clarify Confusion",
+        specific: "Stop pretending I understand things in calc class; ask when it's unclear.",
+        measurable: "Ask at least one clarifying question per class.",
+        achievable: "Write down what I don't get; ask at the end or in office hours.",
+        relevant: "Nodding along is killing my grade.",
+        timeBound: "Every class for 3 weeks.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Digital Declutter",
+        specific: "Clear my phone of apps that waste my time.",
+        measurable: "Uninstall 5 apps; unsubscribe from 10 notifications.",
+        achievable: "Take 30 minutes on Saturday morning.",
+        relevant: "I'm on my phone 6+ hours per day and hate it.",
+        timeBound: "One Saturday.",
+      },
+      {
+        subtitle: "MS \u00b7 Clean Bedroom",
+        specific: "Clear my bedroom so I can actually relax in it.",
+        measurable: "Remove 20 items I don't use; set up 3 clear surfaces.",
+        achievable: "One area per Saturday (desk, closet, floor).",
+        relevant: "A cluttered room stresses me out even when I'm not there.",
+        timeBound: "3 Saturdays.",
+      },
+      {
+        subtitle: "HS \u00b7 Clear Communication",
+        specific: "Say what I mean instead of hinting when I'm upset.",
+        measurable: "Use an \"I feel...when...\" statement at least twice per week.",
+        achievable: "Write the statement first, then say it aloud.",
+        relevant: "Hinting hasn't gotten me what I need.",
+        timeBound: "4 weeks of practice.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "MS/HS \u00b7 Park Cleanup",
+        specific: "Clear my local park of litter monthly.",
+        measurable: "Fill at least 2 trash bags each trip.",
+        achievable: "Bring a friend; 1 hour on Saturday mornings.",
+        relevant: "Kids play there; clean parks = happier kids.",
+        timeBound: "Monthly for 6 months.",
+      },
+      {
+        subtitle: "HS \u00b7 Clear Info",
+        specific: "Make the student council's decisions clearer by publishing a 1-page monthly summary.",
+        measurable: "Post summary by the 1st of each month; track views.",
+        achievable: "Use the existing school website.",
+        relevant: "Students complain they don't know what council does.",
+        timeBound: "Every month for the school year.",
+      },
+      {
+        subtitle: "HS \u00b7 Clear the Clutter Drive",
+        specific: "Organize a neighborhood \"clear your clutter\" donation drive.",
+        measurable: "Collect 5+ boxes of usable items from 10+ homes; deliver to local shelter.",
+        achievable: "Flyer the block; coordinate pickup on one Saturday.",
+        relevant: "People's extras are someone else's essentials.",
+        timeBound: "Drive held within 4 weeks.",
+      },
+    ],
+  },
+  CONNECT:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Study Group",
+        specific: "Connect with 3 classmates to form a weekly calc study group.",
+        measurable: "Meet every Wednesday for 8 weeks; work 2 problem sets together.",
+        achievable: "Reserve a library study room; bring snacks.",
+        relevant: "I learn better explaining things aloud.",
+        timeBound: "Starting next week, for the rest of the unit.",
+      },
+      {
+        subtitle: "MS \u00b7 Teacher Connection",
+        specific: "Connect with my favorite teacher by visiting during office hours.",
+        measurable: "One visit every 2 weeks; come with a real question.",
+        achievable: "Office hours are Tuesday after school.",
+        relevant: "A strong mentor relationship helps academically and personally.",
+        timeBound: "Whole semester.",
+      },
+      {
+        subtitle: "HS \u00b7 Cross-Subject",
+        specific: "Connect ideas across my classes instead of treating them separately.",
+        measurable: "Write 1 \"cross-class connection\" note per week.",
+        achievable: "Keep a dedicated notebook.",
+        relevant: "Learning sticks better when you see the web between subjects.",
+        timeBound: "Every week for a grading period.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Family Call",
+        specific: "Connect with my grandmother by calling every Sunday.",
+        measurable: "10-15 minute call, 4 weeks in a row.",
+        achievable: "Set a recurring alarm for 5pm Sunday.",
+        relevant: "She's 87 \u2014 I'll regret not calling.",
+        timeBound: "Every Sunday for 3 months, then reassess.",
+      },
+      {
+        subtitle: "MS \u00b7 Old Friend",
+        specific: "Reconnect with my best friend who moved to a different school.",
+        measurable: "One hangout per month, in person or online.",
+        achievable: "Start with a text this week.",
+        relevant: "We drifted, but we don't have to.",
+        timeBound: "First hangout within 2 weeks.",
+      },
+      {
+        subtitle: "HS \u00b7 New People",
+        specific: "Connect with 3 new people outside my usual friend group.",
+        measurable: "Real 10-minute conversation with each.",
+        achievable: "Use club meetings, lab partners, or sports teammates.",
+        relevant: "My circle is small; I'm curious what else is out there.",
+        timeBound: "Within 6 weeks.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Pen Pal",
+        specific: "Connect with residents at a nearby senior center through letters.",
+        measurable: "Write 2 letters per month; exchange with at least 1 resident.",
+        achievable: "Coordinate through the senior center's activity director.",
+        relevant: "Elders experience loneliness; letters matter more than we think.",
+        timeBound: "3 months minimum.",
+      },
+      {
+        subtitle: "MS \u00b7 Bridge Groups",
+        specific: "Connect kids from different grades by starting a mixed-grade lunch table.",
+        measurable: "Attract 5+ kids from 3+ grades, twice a week.",
+        achievable: "Set up a sign at an empty table; invite a few friends first.",
+        relevant: "Lunch is the loneliest time for new kids.",
+        timeBound: "Consistent for 6 weeks.",
+      },
+      {
+        subtitle: "HS \u00b7 School-Community",
+        specific: "Connect my school with a local nonprofit by organizing a joint event.",
+        measurable: "One event with 30+ attendees.",
+        achievable: "Partner with an existing club; use school facilities.",
+        relevant: "Our school has resources nonprofits don't.",
+        timeBound: "Event held within a semester.",
+      },
+    ],
+  },
+  CYCLE:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Study Cycle",
+        specific: "Build a cyclical study routine: review \u2192 practice \u2192 test \u2192 review.",
+        measurable: "Follow the 4-step cycle for every major unit.",
+        achievable: "Block each cycle step on my calendar.",
+        relevant: "Cramming once hasn't worked; spaced cycling will.",
+        timeBound: "Full semester across all AP classes.",
+      },
+      {
+        subtitle: "MS \u00b7 Weekly Reset",
+        specific: "End each school week with a 20-minute reset cycle.",
+        measurable: "Every Friday: clean desk, check grades, plan weekend studying.",
+        achievable: "Set a recurring phone reminder.",
+        relevant: "Little messes pile up into huge ones.",
+        timeBound: "Every Friday this quarter.",
+      },
+      {
+        subtitle: "HS \u00b7 Assignment Cycle",
+        specific: "Cycle through long-term assignments in stages instead of last-minute.",
+        measurable: "3 check-ins per essay: draft, revise, polish.",
+        achievable: "Put each stage on my calendar when assigned.",
+        relevant: "My last-minute essays lose 10+ points every time.",
+        timeBound: "Next 3 long-term assignments.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Sleep Cycle",
+        specific: "Regulate my sleep cycle by going to bed at the same time every night.",
+        measurable: "Lights out by 10:30pm, 5 nights per week.",
+        achievable: "Phone across the room; book by the bed.",
+        relevant: "My body is tired but my brain won't shut down \u2014 regular bedtime fixes it.",
+        timeBound: "30 consecutive days.",
+      },
+      {
+        subtitle: "MS \u00b7 Workout Cycle",
+        specific: "Follow a 3-day workout cycle: cardio, strength, flexibility.",
+        measurable: "3 workouts per week, one of each type.",
+        achievable: "30 min each; free YouTube videos.",
+        relevant: "Variety keeps me from getting bored and quitting.",
+        timeBound: "8 weeks.",
+      },
+      {
+        subtitle: "HS \u00b7 Money Cycle",
+        specific: "Build a monthly money cycle: earn \u2192 save \u2192 spend \u2192 track.",
+        measurable: "Track every dollar for 3 months; save 20% of every paycheck.",
+        achievable: "Free budgeting app; separate savings account.",
+        relevant: "I spend everything I earn and have no cushion.",
+        timeBound: "3-month habit window.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "MS/HS \u00b7 Recycling",
+        specific: "Start a recycling program on my school's hallway floor.",
+        measurable: "Set up 3 labeled bins; track weekly use.",
+        achievable: "Coordinate with custodial staff; get buy-in from teachers.",
+        relevant: "Our school trash is ~30% recyclables; fixable.",
+        timeBound: "Program running within 4 weeks.",
+      },
+      {
+        subtitle: "HS \u00b7 Garden Compost",
+        specific: "Build a compost cycle at the school garden using cafeteria scraps.",
+        measurable: "Collect from cafeteria twice a week; finished compost in 3 months.",
+        achievable: "Kitchen staff agreed; bin is already built.",
+        relevant: "Closes the food-waste loop and feeds the garden.",
+        timeBound: "First compost usable by week 12.",
+      },
+      {
+        subtitle: "HS \u00b7 Giving Cycle",
+        specific: "Create a monthly giving cycle for my allowance.",
+        measurable: "Donate 10% of my monthly earnings to a chosen cause.",
+        achievable: "Set up an auto-transfer with the bank.",
+        relevant: "Giving is a habit you build like any other.",
+        timeBound: "One year commitment.",
+      },
+    ],
+  },
+  EMERGE:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Research Topic",
+        specific: "Let my research paper topic emerge by doing 3 weeks of exploratory reading first.",
+        measurable: "Read 5 articles per week; annotate themes.",
+        achievable: "Use library database; 45 min after school.",
+        relevant: "I always pick topics too fast and get stuck halfway.",
+        timeBound: "Topic locked in by week 3.",
+      },
+      {
+        subtitle: "MS \u00b7 Raise My Hand",
+        specific: "Emerge as a participant in class by raising my hand once per day.",
+        measurable: "Track hand-raises in my planner.",
+        achievable: "Prepare one comment before class.",
+        relevant: "I'm invisible in discussion and it hurts my grade.",
+        timeBound: "4 weeks of consistency.",
+      },
+      {
+        subtitle: "HS \u00b7 Leadership Role",
+        specific: "Emerge as a club officer by running for secretary.",
+        measurable: "Submit nomination + deliver a 2-minute speech.",
+        achievable: "Talk to current officers about what it takes.",
+        relevant: "I've been a member for 2 years; time to step up.",
+        timeBound: "Election is in 6 weeks.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "MS/HS \u00b7 Share Art",
+        specific: "Let my artwork emerge from private notebook to public by posting one piece per week.",
+        measurable: "4 posts in 4 weeks.",
+        achievable: "Create a dedicated art account.",
+        relevant: "I've been hiding what I love; time to own it.",
+        timeBound: "4 weeks; then reassess.",
+      },
+      {
+        subtitle: "HS \u00b7 Own Voice",
+        specific: "Let my real opinions emerge in conversations instead of just agreeing.",
+        measurable: "Disagree (respectfully) in at least 2 conversations per week.",
+        achievable: "Practice phrases like \"I actually see it differently.\"",
+        relevant: "I'm tired of being agreeable at my own expense.",
+        timeBound: "4 weeks of practice.",
+      },
+      {
+        subtitle: "HS \u00b7 Writing Identity",
+        specific: "Emerge as a writer by starting a weekly blog on a topic I care about.",
+        measurable: "1 post per week for 12 weeks.",
+        achievable: "Use free Substack; 500 words per post.",
+        relevant: "Writing is how I think best \u2014 I want a public version of that.",
+        timeBound: "12 consecutive weekly posts.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 New Issue",
+        specific: "Help a new issue emerge on student council's agenda: mental health resources.",
+        measurable: "Draft a proposal; present it at 2 meetings.",
+        achievable: "Partner with counseling office for facts.",
+        relevant: "Nobody's talking about this; someone has to start.",
+        timeBound: "Proposal on agenda within 8 weeks.",
+      },
+      {
+        subtitle: "MS \u00b7 Shy Classmates",
+        specific: "Help a shy classmate emerge by including them in my group project.",
+        measurable: "Invite + give them a real role; check in mid-project.",
+        achievable: "They're usually last to be picked \u2014 get them first.",
+        relevant: "Being left out shaped my elementary years; I won't do that to someone else.",
+        timeBound: "Next group project.",
+      },
+      {
+        subtitle: "HS \u00b7 Local Story",
+        specific: "Help an unheard local story emerge by writing about a neighborhood issue for the school paper.",
+        measurable: "Publish one 600-word piece.",
+        achievable: "Interview 3 residents + 1 city official.",
+        relevant: "Local journalism is dying; students can help.",
+        timeBound: "Piece published within 6 weeks.",
+      },
+    ],
+  },
+  FILTER:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Source Filter",
+        specific: "Filter my research sources better by using a 3-question test: credible? recent? relevant?",
+        measurable: "Apply test to every source in my next 2 papers.",
+        achievable: "Write the 3 questions in a sticky note on my laptop.",
+        relevant: "Got dinged for weak sources last paper.",
+        timeBound: "Next 2 research assignments.",
+      },
+      {
+        subtitle: "MS \u00b7 Focus Filter",
+        specific: "Filter out phone distractions during homework.",
+        measurable: "Put phone in another room for 45 min blocks.",
+        achievable: "Use a kitchen timer so I don't need the phone at all.",
+        relevant: "My homework takes 2x longer with phone beside me.",
+        timeBound: "Every school night for 3 weeks.",
+      },
+      {
+        subtitle: "HS \u00b7 News Filter",
+        specific: "Filter my news consumption by subscribing to 2 opposing perspectives.",
+        measurable: "Read 1 article from each, 3 days a week.",
+        achievable: "Free newsletters; 10 min each morning.",
+        relevant: "My algorithm only shows me one side.",
+        timeBound: "6 weeks of balanced reading.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Social Media Filter",
+        specific: "Filter my social media by unfollowing accounts that make me feel worse.",
+        measurable: "Unfollow at least 20 accounts.",
+        achievable: "15 min audit on Saturday morning.",
+        relevant: "My scroll mood is 80% bad; the feed is the problem.",
+        timeBound: "One Saturday morning; recheck monthly.",
+      },
+      {
+        subtitle: "MS \u00b7 Friend Filter",
+        specific: "Filter how I respond to gossip \u2014 don't pass it on.",
+        measurable: "Each time gossip starts, change the subject.",
+        achievable: "Pre-plan one redirect line.",
+        relevant: "Spreading gossip has come back to burn me before.",
+        timeBound: "Every day for 4 weeks.",
+      },
+      {
+        subtitle: "HS \u00b7 Negative Filter",
+        specific: "Filter my self-talk by catching harsh thoughts and replacing them.",
+        measurable: "Track 3 instances per day in a notes app.",
+        achievable: "Use the pattern: \"I'd never say this to a friend \u2014 so don't say it to myself.\"",
+        relevant: "My inner critic is louder than anyone's.",
+        timeBound: "21 days of tracking.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Misinfo",
+        specific: "Help filter misinformation by correcting one false claim per week when I see it shared.",
+        measurable: "One respectful correction per week, with a source.",
+        achievable: "Save credible sources as bookmarks.",
+        relevant: "Silence enables misinformation.",
+        timeBound: "Ongoing; review after 4 weeks.",
+      },
+      {
+        subtitle: "MS/HS \u00b7 Water Quality",
+        specific: "Join a local water quality monitoring group that tests stream filters.",
+        measurable: "Attend 4 monitoring sessions; log readings.",
+        achievable: "Sign up through the city environmental office.",
+        relevant: "Local water issues affect everyone.",
+        timeBound: "4 monthly sessions.",
+      },
+      {
+        subtitle: "HS \u00b7 Donation Filter",
+        specific: "Filter clothing donations by sorting what's usable vs what isn't for the shelter.",
+        measurable: "Volunteer 4 sorting shifts.",
+        achievable: "Shelter runs Saturday morning sorts.",
+        relevant: "Bad donations waste staff time; good sorting multiplies impact.",
+        timeBound: "4 Saturdays in a row.",
+      },
+    ],
+  },
+  FLOW:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Deep Work",
+        specific: "Find flow state during homework by working in 90-minute focused blocks.",
+        measurable: "3 blocks per week, no interruptions.",
+        achievable: "Block on calendar; phone in drawer.",
+        relevant: "I work 2x better when fully focused.",
+        timeBound: "4 weeks of tracking.",
+      },
+      {
+        subtitle: "MS \u00b7 Essay Flow",
+        specific: "Improve my essay flow by writing rough drafts without stopping to edit.",
+        measurable: "One 30-minute no-stop draft per essay.",
+        achievable: "Cover the screen if needed; just type.",
+        relevant: "My perfectionism is why essays take me 5 hours.",
+        timeBound: "Next 3 essays.",
+      },
+      {
+        subtitle: "HS \u00b7 Connected Notes",
+        specific: "Let ideas flow between my classes by keeping one combined idea journal.",
+        measurable: "3 cross-class connections per week.",
+        achievable: "Use a single notebook for all classes' margins.",
+        relevant: "Real understanding is in the connections.",
+        timeBound: "Full semester.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Creative Flow",
+        specific: "Build a creative practice where I can enter flow.",
+        measurable: "1 hour of uninterrupted creative time, 3 days a week.",
+        achievable: "Pick a space with no phone, no interruptions.",
+        relevant: "I miss feeling absorbed in something for its own sake.",
+        timeBound: "4 weeks of consistent practice.",
+      },
+      {
+        subtitle: "MS \u00b7 Athletic Flow",
+        specific: "Enter flow during my sport by tuning out crowd noise.",
+        measurable: "3 practice games using a pre-game focus routine.",
+        achievable: "5-minute routine: breathe, visualize, one word cue.",
+        relevant: "I play my worst when I'm in my head.",
+        timeBound: "Apply across next 3 games.",
+      },
+      {
+        subtitle: "HS \u00b7 Conversation Flow",
+        specific: "Improve conversational flow by asking 2 follow-up questions per chat.",
+        measurable: "Practice in 5 conversations per week.",
+        achievable: "Memorize 3 go-to follow-ups like \"Tell me more about...\"",
+        relevant: "I tend to redirect to myself; that kills connection.",
+        timeBound: "4 weeks of practice.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Traffic Flow",
+        specific: "Help ease traffic flow around school by organizing staggered arrival suggestions.",
+        measurable: "Propose 1 solution to admin; get parent-group feedback.",
+        achievable: "Use existing school survey platform.",
+        relevant: "Pickup/dropoff is a mess; safer flow matters.",
+        timeBound: "Proposal submitted within 6 weeks.",
+      },
+      {
+        subtitle: "MS/HS \u00b7 Pantry Flow",
+        specific: "Help food bank inventory flow by volunteering on intake.",
+        measurable: "2 hours per week for 8 weeks.",
+        achievable: "Saturday morning shift.",
+        relevant: "Intake bottleneck means less food to families.",
+        timeBound: "8 weeks.",
+      },
+      {
+        subtitle: "HS \u00b7 Creek Health",
+        specific: "Help my local creek flow cleaner by joining watershed monitoring.",
+        measurable: "4 monitoring trips; record data each time.",
+        achievable: "Group meets monthly on Saturdays.",
+        relevant: "Our creek connects to waterways that feed thousands.",
+        timeBound: "4 months of participation.",
+      },
+    ],
+  },
+  GROW:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Grade Growth",
+        specific: "Grow my chemistry grade from a B- to a solid B+ this quarter.",
+        measurable: "Score 87%+ on all remaining assessments.",
+        achievable: "Weekly tutoring + 30 min review nights.",
+        relevant: "Chem GPA impacts my college applications.",
+        timeBound: "End of Q3 (8 weeks).",
+      },
+      {
+        subtitle: "MS \u00b7 Writing Growth",
+        specific: "Grow as a writer by journaling 3 pages a week on varied topics.",
+        measurable: "3 pages per week minimum; 12 weeks.",
+        achievable: "Write during study hall.",
+        relevant: "My essays all sound the same.",
+        timeBound: "12 weeks, then review.",
+      },
+      {
+        subtitle: "HS \u00b7 Public Speaking",
+        specific: "Grow my public speaking by joining debate club.",
+        measurable: "Attend every meeting; participate in 2 tournaments.",
+        achievable: "Club meets Thursday afternoons.",
+        relevant: "Public speaking opens doors.",
+        timeBound: "Full semester commitment.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Physical Growth",
+        specific: "Grow my physical strength with a progressive workout plan.",
+        measurable: "Add 5 lbs to my main lifts each month.",
+        achievable: "Gym 3x week; track in a notes app.",
+        relevant: "I want to be stronger for sports and confidence.",
+        timeBound: "6-month tracking window.",
+      },
+      {
+        subtitle: "MS \u00b7 Cooking Skills",
+        specific: "Grow my cooking skills by learning 5 full dinners.",
+        measurable: "Master 5 recipes; cook each twice.",
+        achievable: "One new recipe per week with a parent nearby.",
+        relevant: "I should know how to feed myself.",
+        timeBound: "10 weeks.",
+      },
+      {
+        subtitle: "HS \u00b7 Emotional Growth",
+        specific: "Grow my self-awareness by working with a school counselor.",
+        measurable: "6 sessions over the semester.",
+        achievable: "Counselor has open afternoon slots.",
+        relevant: "Processing stuff instead of burying it.",
+        timeBound: "6 sessions in 12 weeks.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Grow a Club",
+        specific: "Grow my environmental club from 8 to 20 members.",
+        measurable: "Track attendance weekly; goal is 20 by end of semester.",
+        achievable: "Tabling at lunch; social media campaign; friend referrals.",
+        relevant: "More members = more impact.",
+        timeBound: "End of semester (12 weeks).",
+      },
+      {
+        subtitle: "MS \u00b7 Community Garden",
+        specific: "Grow vegetables for a local food bank at our community garden.",
+        measurable: "Contribute 50 lbs of produce over the season.",
+        achievable: "Garden shift every other Saturday.",
+        relevant: "Fresh food is rare at food banks; this matters.",
+        timeBound: "Full growing season.",
+      },
+      {
+        subtitle: "HS \u00b7 Mentorship",
+        specific: "Help a younger student grow by mentoring them once a week.",
+        measurable: "Weekly 30-minute sessions for a semester.",
+        achievable: "Get matched via school mentoring program.",
+        relevant: "I remember what it was like to be the younger one.",
+        timeBound: "Full semester.",
+      },
+    ],
+  },
+  HEAL:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Recover a Grade",
+        specific: "Heal a failing grade by completing every late assignment.",
+        measurable: "Finish all 6 missing assignments.",
+        achievable: "2 per week over 3 weeks.",
+        relevant: "One more zero tanks my average.",
+        timeBound: "3 weeks to submit all.",
+      },
+      {
+        subtitle: "MS \u00b7 Restart After Break",
+        specific: "Heal my focus after a rough break by rebuilding my study routine.",
+        measurable: "First week back: full homework done 5 days in a row.",
+        achievable: "Start with just 30 min; build from there.",
+        relevant: "I lose momentum every break; this time I won't.",
+        timeBound: "First 2 weeks back.",
+      },
+      {
+        subtitle: "HS \u00b7 Make Amends",
+        specific: "Heal my relationship with a teacher I let down last quarter.",
+        measurable: "One honest conversation + 4 weeks of improved effort.",
+        achievable: "Go to office hours with an apology.",
+        relevant: "I need a good recommendation next year.",
+        timeBound: "Conversation this week; improvement over 4 weeks.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Sleep Debt",
+        specific: "Heal my sleep debt with 2 weeks of 9-hour nights.",
+        measurable: "In bed by 9:30pm; sleep tracked in phone.",
+        achievable: "Move homework earlier; no caffeine after 2pm.",
+        relevant: "I'm running on fumes and it shows everywhere.",
+        timeBound: "14 nights in a row.",
+      },
+      {
+        subtitle: "MS \u00b7 Injury Recovery",
+        specific: "Heal my knee by doing physical therapy exercises daily.",
+        measurable: "15 min PT, 6 days per week.",
+        achievable: "Do it while watching a show.",
+        relevant: "I want to play next season.",
+        timeBound: "6-week recovery protocol.",
+      },
+      {
+        subtitle: "HS \u00b7 Friendship Repair",
+        specific: "Heal the damage with my friend after our fight.",
+        measurable: "Apologize directly; one shared activity per week for a month.",
+        achievable: "Coffee, a walk \u2014 anything low-pressure.",
+        relevant: "They mattered before; worth repairing.",
+        timeBound: "First conversation within 1 week.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Hospital Volunteer",
+        specific: "Volunteer where healing happens \u2014 at the hospital gift shop or info desk.",
+        measurable: "2 shifts per month for 6 months.",
+        achievable: "Hospital volunteer coordinator assigns shifts.",
+        relevant: "Families in hospitals need kindness; small roles help.",
+        timeBound: "6 months.",
+      },
+      {
+        subtitle: "MS/HS \u00b7 Animal Shelter",
+        specific: "Help rescued animals heal by walking dogs at the shelter.",
+        measurable: "2 hours, every Saturday, for 3 months.",
+        achievable: "Complete shelter orientation first.",
+        relevant: "Shelter dogs heal through human contact.",
+        timeBound: "12 Saturdays.",
+      },
+      {
+        subtitle: "HS \u00b7 Environmental Heal",
+        specific: "Help heal a damaged area by joining a restoration project.",
+        measurable: "4 restoration days; track species planted.",
+        achievable: "Nature Conservancy lists monthly events.",
+        relevant: "Small hands multiply into big restoration.",
+        timeBound: "4 months, one day per month.",
+      },
+    ],
+  },
+  MIGRATE:{
+    school:[
+      {
+        subtitle: "HS \u00b7 New Course Path",
+        specific: "Migrate to honors-level English next year.",
+        measurable: "Maintain 90%+ this semester to qualify.",
+        achievable: "Tutor with current teacher; read extra books.",
+        relevant: "Honors aligns with my career direction.",
+        timeBound: "Qualify by end of this semester.",
+      },
+      {
+        subtitle: "MS \u00b7 New School Transition",
+        specific: "Migrate to middle school smoothly by mastering my new schedule.",
+        measurable: "Know all 7 teacher names + classroom locations in week 1.",
+        achievable: "Walk the routes on orientation day.",
+        relevant: "Starting strong sets the year's tone.",
+        timeBound: "First week of school.",
+      },
+      {
+        subtitle: "HS \u00b7 Subject Shift",
+        specific: "Migrate my academic focus from humanities to STEM to explore engineering.",
+        measurable: "Take physics, calc, and a coding elective next year.",
+        achievable: "Meet with counselor to plan schedule.",
+        relevant: "I've been curious about engineering but avoiding the math.",
+        timeBound: "Schedule set by end of registration.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Physical Move",
+        specific: "Handle my family's move to a new city by joining 2 activities in the first month.",
+        measurable: "Attend 4+ meetings of each.",
+        achievable: "Research options before we arrive; enroll first week.",
+        relevant: "Community softens every move.",
+        timeBound: "First month post-move.",
+      },
+      {
+        subtitle: "MS \u00b7 Friend Group Shift",
+        specific: "Migrate from a friend group that feels stuck to one that fits me better.",
+        measurable: "Sit at 3 different lunch tables this semester; find where I fit.",
+        achievable: "Start with one brave lunch.",
+        relevant: "Feeling wrong in my current group is draining.",
+        timeBound: "By end of semester.",
+      },
+      {
+        subtitle: "HS \u00b7 Habit Change",
+        specific: "Migrate from soda to water as my default drink.",
+        measurable: "Track daily; 5+ days without soda per week.",
+        achievable: "Keep a water bottle filled; no soda purchases.",
+        relevant: "Soda is my worst health habit.",
+        timeBound: "21 consecutive days.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Welcome New Families",
+        specific: "Help migrating families settle in by building a school welcome packet.",
+        measurable: "Create packet; distribute to 10+ new families.",
+        achievable: "Partner with main office.",
+        relevant: "First impressions matter; a good welcome sticks.",
+        timeBound: "Packet ready by August 1.",
+      },
+      {
+        subtitle: "MS/HS \u00b7 Bird Counts",
+        specific: "Contribute to the Christmas Bird Count, which tracks migrating birds.",
+        measurable: "4 hours of field observation; log all species.",
+        achievable: "Audubon chapter hosts the count annually.",
+        relevant: "Citizen science data shapes conservation.",
+        timeBound: "Annual count window.",
+      },
+      {
+        subtitle: "HS \u00b7 Refugee Support",
+        specific: "Support refugee families through a local resettlement nonprofit.",
+        measurable: "Volunteer 4 hours per month.",
+        achievable: "Tutoring, donation sorting, or welcome visits.",
+        relevant: "Migrating families need community to land well.",
+        timeBound: "6 months of monthly volunteering.",
+      },
+    ],
+  },
+  PERSIST:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Grade Recovery",
+        specific: "Raise my chemistry grade from a C+ to a B by the end of the quarter.",
+        measurable: "Track scores on every quiz and lab; aim for 85% or higher on the next 4 assessments.",
+        achievable: "Attend one tutoring session per week; study 30 minutes, 4 nights a week.",
+        relevant: "Chemistry is a prerequisite for the AP Bio class I want to take junior year.",
+        timeBound: "Six weeks \u2014 by the end of Q2 report cards.",
+      },
+      {
+        subtitle: "MS \u00b7 Reading Goal",
+        specific: "Persist through a challenging book I've put down twice.",
+        measurable: "20 pages per day until finished.",
+        achievable: "Read during lunch + 15 min before bed.",
+        relevant: "I want to stop giving up on tough books.",
+        timeBound: "Finish within 4 weeks.",
+      },
+      {
+        subtitle: "HS \u00b7 Math Struggle",
+        specific: "Persist through pre-calc even though I'm struggling.",
+        measurable: "Attend all office hours; complete every problem set.",
+        achievable: "2 office hour visits per week.",
+        relevant: "Dropping would mean not getting into calc.",
+        timeBound: "Full semester.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "MS \u00b7 Musical Instrument",
+        specific: "Learn to play \"Heart and Soul\" on the piano from start to finish.",
+        measurable: "Practice 15 minutes every day; play the full song without mistakes by week 4.",
+        achievable: "Use free YouTube tutorials and the keyboard at home.",
+        relevant: "I've always wanted to play at my grandma's birthday party next month.",
+        timeBound: "4 weeks of daily practice.",
+      },
+      {
+        subtitle: "HS \u00b7 Couch to 5K",
+        specific: "Persist through a couch-to-5K program to my first race.",
+        measurable: "3 runs per week; 5K by week 9.",
+        achievable: "Free app; neighborhood route.",
+        relevant: "Proof to myself that I can finish hard things.",
+        timeBound: "9 weeks.",
+      },
+      {
+        subtitle: "HS \u00b7 Art Portfolio",
+        specific: "Persist through building my art portfolio despite self-doubt.",
+        measurable: "Complete 10 portfolio pieces in 10 weeks.",
+        achievable: "One piece per week; Friday studio time.",
+        relevant: "The self-doubt is the point \u2014 pushing through is the skill.",
+        timeBound: "10 weeks.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Persistent Food Drive",
+        specific: "Organize a monthly canned food drive for my school's pantry.",
+        measurable: "Collect at least 50 items per drive; run it for 3 months.",
+        achievable: "Partner with the student council and put flyers in homeroom.",
+        relevant: "Food insecurity is a real need at our school \u2014 this helps neighbors directly.",
+        timeBound: "Launch March 1; third drive completed by May 31.",
+      },
+      {
+        subtitle: "MS \u00b7 Consistent Volunteer",
+        specific: "Volunteer at the animal shelter every Saturday, even when it's hard to show up.",
+        measurable: "12 consecutive Saturdays.",
+        achievable: "2-hour shifts from 9-11am.",
+        relevant: "Consistency is what the shelter needs, not heroic one-offs.",
+        timeBound: "3 months of Saturdays.",
+      },
+      {
+        subtitle: "HS \u00b7 Advocacy Letters",
+        specific: "Persist in writing to my representatives about an issue I care about.",
+        measurable: "One letter per month for 6 months.",
+        achievable: "Use online form letters as a template; personalize each.",
+        relevant: "Reps respond to volume; I won't be silent.",
+        timeBound: "6 months.",
+      },
+    ],
+  },
+  RENEW:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Fresh Start",
+        specific: "Renew my effort after a rough first semester.",
+        measurable: "Raise all Cs to Bs by midterm.",
+        achievable: "One extra study session per subject per week.",
+        relevant: "I'm not done \u2014 the year isn't over.",
+        timeBound: "6 weeks to midterm.",
+      },
+      {
+        subtitle: "MS \u00b7 Monday Reset",
+        specific: "Renew my focus every Monday with a 10-minute start-of-week ritual.",
+        measurable: "Complete ritual every Monday: review planner, set 3 goals, prep supplies.",
+        achievable: "10 min after breakfast.",
+        relevant: "Monday energy sets my week's tone.",
+        timeBound: "Every Monday this quarter.",
+      },
+      {
+        subtitle: "HS \u00b7 Drop and Rejoin",
+        specific: "Renew my interest in a club I dropped last year.",
+        measurable: "Attend every meeting for one quarter.",
+        achievable: "Club still meets Wednesday after school.",
+        relevant: "I quit for the wrong reasons; worth giving another shot.",
+        timeBound: "Full quarter (9 weeks).",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Energy Renewal",
+        specific: "Renew my energy with one daily restorative practice.",
+        measurable: "20 min per day of walk, stretch, or nap.",
+        achievable: "Same time each day (right after school).",
+        relevant: "I'm running on empty by Thursday every week.",
+        timeBound: "4 weeks of daily practice.",
+      },
+      {
+        subtitle: "MS \u00b7 New Look",
+        specific: "Renew my look by clearing old clothes and finding 5 outfits I love.",
+        measurable: "Donate 15 items; identify 5 outfit combos.",
+        achievable: "Saturday closet day with a friend.",
+        relevant: "I dress like 11-year-old me; I'm 14 now.",
+        timeBound: "Done in one Saturday.",
+      },
+      {
+        subtitle: "HS \u00b7 Morning Renewal",
+        specific: "Build a morning routine that renews me, not just wakes me up.",
+        measurable: "Same 4-step routine, 5 days per week.",
+        achievable: "Wake 15 min earlier; phone stays off till step 4.",
+        relevant: "Mornings set the entire day.",
+        timeBound: "21 days to build the habit.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Renewable Energy",
+        specific: "Push for renewable energy at my school through student government.",
+        measurable: "Research + present one 1-page proposal at a meeting.",
+        achievable: "Interview facilities director; reference other schools' switches.",
+        relevant: "Big changes start with proposals.",
+        timeBound: "Proposal presented within 6 weeks.",
+      },
+      {
+        subtitle: "MS \u00b7 Park Renewal",
+        specific: "Help renew my local park by joining the friends-of-park group.",
+        measurable: "Attend 4 meetings; contribute to 1 specific project.",
+        achievable: "Monthly meetings Saturday mornings.",
+        relevant: "My park looks tired; it can be better.",
+        timeBound: "4-month commitment.",
+      },
+      {
+        subtitle: "HS \u00b7 Program Revival",
+        specific: "Help renew a defunct school program (like a specific club) by reorganizing a launch.",
+        measurable: "Recruit 8 members; hold 3 meetings.",
+        achievable: "Partner with an advisor; use existing club model.",
+        relevant: "Some programs die from neglect, not from being unwanted.",
+        timeBound: "Launch within 8 weeks.",
+      },
+    ],
+  },
+  RESTORE:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Repair Grade",
+        specific: "Restore my GPA after a tough semester.",
+        measurable: "Raise overall GPA by 0.3 this semester.",
+        achievable: "Full effort in each class; no zeros on assignments.",
+        relevant: "Grades can be restored with effort, not just maintained.",
+        timeBound: "End of this semester.",
+      },
+      {
+        subtitle: "MS \u00b7 Restore Trust",
+        specific: "Restore my teacher's trust after a lying incident.",
+        measurable: "Honest conversation + 4 weeks of clear effort.",
+        achievable: "Own the mistake directly; follow through each day.",
+        relevant: "Trust is slow to rebuild but worth it.",
+        timeBound: "4 weeks of consistency.",
+      },
+      {
+        subtitle: "HS \u00b7 Lost Habit",
+        specific: "Restore my reading habit that I lost last summer.",
+        measurable: "2 books per month for 3 months.",
+        achievable: "Read 30 min before bed instead of scrolling.",
+        relevant: "I used to love reading \u2014 that me is still in there.",
+        timeBound: "3 months = 6 books.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Restore Confidence",
+        specific: "Restore my confidence after a tough breakup/rejection.",
+        measurable: "Do 3 things weekly that remind me who I am (favorite hobby, old friend, exercise).",
+        achievable: "Schedule all 3 every week.",
+        relevant: "I'm not who I was 3 months ago, and it's time to come back.",
+        timeBound: "8 weeks of consistency.",
+      },
+      {
+        subtitle: "MS \u00b7 Fix What's Broken",
+        specific: "Restore 5 broken things at home (toy, bike, etc.) instead of throwing them out.",
+        measurable: "Fix 5 items over 5 weekends.",
+        achievable: "YouTube repair videos; basic tools.",
+        relevant: "Fixing builds skill and saves stuff from landfills.",
+        timeBound: "5 weekends.",
+      },
+      {
+        subtitle: "HS \u00b7 Sleep Schedule",
+        specific: "Restore my sleep schedule after summer.",
+        measurable: "Asleep by 10:30pm, 6 nights a week.",
+        achievable: "Shift bedtime 15 min earlier per week.",
+        relevant: "School starts next week; unprepared sleep = tanked grades.",
+        timeBound: "2 weeks to full reset.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Historic Site",
+        specific: "Help restore a local historic site through a preservation nonprofit.",
+        measurable: "4 volunteer days this semester.",
+        achievable: "Historic preservation group accepts teens.",
+        relevant: "Places carry stories worth keeping.",
+        timeBound: "4 events across the semester.",
+      },
+      {
+        subtitle: "MS \u00b7 Library Books",
+        specific: "Help the librarian restore damaged books with tape + love.",
+        measurable: "Repair 20 books this semester.",
+        achievable: "30 min per week during lunch.",
+        relevant: "Every saved book is a kid who gets to read it.",
+        timeBound: "Full semester.",
+      },
+      {
+        subtitle: "HS \u00b7 Beach Restoration",
+        specific: "Help restore our local beach ecosystem by joining dune-planting days.",
+        measurable: "Plant 50 native grasses across 2 events.",
+        achievable: "Coastal nonprofit hosts monthly.",
+        relevant: "Healthy dunes protect our coast.",
+        timeBound: "2 events in 2 months.",
+      },
+    ],
+  },
+  RETURN:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Return to Reading",
+        specific: "Return to reading assigned novels instead of just SparkNotes.",
+        measurable: "Read all 4 remaining assigned books cover-to-cover.",
+        achievable: "25 pages per day on reading days.",
+        relevant: "My essays would be so much better with real reading.",
+        timeBound: "By end of semester.",
+      },
+      {
+        subtitle: "MS \u00b7 After Absence",
+        specific: "Return to school after a 2-week illness without falling behind.",
+        measurable: "Complete all missed work within 10 school days back.",
+        achievable: "One subject per day; use teachers' office hours.",
+        relevant: "Slipping further behind spirals fast.",
+        timeBound: "10 school days.",
+      },
+      {
+        subtitle: "HS \u00b7 Old Class Focus",
+        specific: "Return to the subject I used to love (art) by signing up for an elective again.",
+        measurable: "Complete all assignments; submit portfolio.",
+        achievable: "Fits my schedule.",
+        relevant: "I missed this; returning means trusting what I loved once.",
+        timeBound: "Full semester.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Return to Exercise",
+        specific: "Return to regular exercise after 3 months off.",
+        measurable: "3 workouts per week, easy-to-moderate.",
+        achievable: "Start at 50% of old intensity.",
+        relevant: "I miss how I felt when active.",
+        timeBound: "4 weeks to re-establish rhythm.",
+      },
+      {
+        subtitle: "MS \u00b7 Old Hobby",
+        specific: "Return to playing guitar after abandoning it last year.",
+        measurable: "Practice 20 min, 5 days per week.",
+        achievable: "Keep the guitar out where I can see it.",
+        relevant: "Starting over would mean losing what I already built.",
+        timeBound: "30 days.",
+      },
+      {
+        subtitle: "HS \u00b7 Return to Self",
+        specific: "Return to the interests I had before peer pressure changed them.",
+        measurable: "Re-engage with 2 old interests; pick one as a main focus.",
+        achievable: "Check old bookmarks, photos, notebooks.",
+        relevant: "Some of who I was is still the best version of me.",
+        timeBound: "4 weeks of re-exploration.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Return to Place",
+        specific: "Return to the elementary school I attended and volunteer as a reading helper.",
+        measurable: "1 hour per week for a semester.",
+        achievable: "Coordinate with principal; my old teachers still work there.",
+        relevant: "The school shaped me; I can give back.",
+        timeBound: "Full semester.",
+      },
+      {
+        subtitle: "MS \u00b7 Return Borrowed",
+        specific: "Return 10 borrowed books/items I've held too long.",
+        measurable: "10 items back to rightful owners in one month.",
+        achievable: "Make a list; plan return trips.",
+        relevant: "Honoring others' trust keeps friendships alive.",
+        timeBound: "30 days.",
+      },
+      {
+        subtitle: "HS \u00b7 Return Wildlife",
+        specific: "Help return a local wildlife area to native plants.",
+        measurable: "Remove 100 invasive plants over 4 work days.",
+        achievable: "County parks leads weekend events.",
+        relevant: "Restoration heals land we inherited broken.",
+        timeBound: "4 monthly events.",
+      },
+    ],
+  },
+  RISE:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Class Rank",
+        specific: "Rise in my class rank from top 25% to top 15%.",
+        measurable: "GPA improvement of at least 0.2.",
+        achievable: "One extra hour of study per week; office hours in my hardest class.",
+        relevant: "College apps care about trajectory.",
+        timeBound: "End of semester.",
+      },
+      {
+        subtitle: "MS \u00b7 Morning Start",
+        specific: "Rise earlier to get a calm start to my school day.",
+        measurable: "Wake 30 min earlier, 5 days a week.",
+        achievable: "Shift bedtime earlier by 30 min.",
+        relevant: "Rushing mornings tank the whole day.",
+        timeBound: "21 days to build.",
+      },
+      {
+        subtitle: "HS \u00b7 Rise to Challenge",
+        specific: "Rise to the challenge of an AP course I almost dropped.",
+        measurable: "B or higher all quarter.",
+        achievable: "Tutor weekly; use all review resources.",
+        relevant: "AP credit matters for college credit.",
+        timeBound: "End of quarter.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Rise Above Drama",
+        specific: "Rise above friend drama by not joining gossip chains.",
+        measurable: "Redirect every gossip conversation; count weekly.",
+        achievable: "Pre-plan 2 redirect lines.",
+        relevant: "Gossip costs more than it gives.",
+        timeBound: "4 weeks.",
+      },
+      {
+        subtitle: "MS \u00b7 Fitness Rise",
+        specific: "Rise my fitness level by doing a pull-up (I can't do one now).",
+        measurable: "1 full pull-up by end of 8 weeks.",
+        achievable: "Negative pull-ups + assisted band; gym 3x per week.",
+        relevant: "Proof I can build strength from zero.",
+        timeBound: "8-week progression.",
+      },
+      {
+        subtitle: "HS \u00b7 Public Speaking",
+        specific: "Rise to speaking in public by giving a toast at my family's event.",
+        measurable: "Deliver a 2-minute toast; rehearse 5x.",
+        achievable: "Write it in advance; rehearse to parents.",
+        relevant: "Facing this fear shrinks it.",
+        timeBound: "Event is in 4 weeks.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Rise Up and Speak",
+        specific: "Rise and speak at a city council meeting on an issue I care about.",
+        measurable: "Deliver 3-minute testimony.",
+        achievable: "Research + script + rehearse.",
+        relevant: "My voice matters even if I'm not old enough to vote.",
+        timeBound: "Next relevant meeting (within 8 weeks).",
+      },
+      {
+        subtitle: "MS \u00b7 Rise Against Bullying",
+        specific: "Rise against bullying by starting or joining an upstander group.",
+        measurable: "Attend + help lead 4 meetings this semester.",
+        achievable: "Counselor supports; I just need to show up.",
+        relevant: "Silence enables; presence disrupts.",
+        timeBound: "Full semester.",
+      },
+      {
+        subtitle: "HS \u00b7 Fundraising Rise",
+        specific: "Rise community funds for a cause I care about.",
+        measurable: "Raise $500 minimum.",
+        achievable: "Small events: bake sale, car wash, sponsor outreach.",
+        relevant: "Money is how causes scale.",
+        timeBound: "8-week campaign.",
+      },
+    ],
+  },
+  ROOT:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Root Causes",
+        specific: "Root cause my poor math grades \u2014 figure out where understanding breaks.",
+        measurable: "Identify 3 specific skill gaps; address each with targeted practice.",
+        achievable: "Meet with teacher for diagnosis.",
+        relevant: "Fixing symptoms hasn't worked \u2014 go to the root.",
+        timeBound: "Diagnosis + plan within 2 weeks.",
+      },
+      {
+        subtitle: "MS \u00b7 Root Vocabulary",
+        specific: "Learn word roots to decode unfamiliar words.",
+        measurable: "Learn 5 Latin/Greek roots per week for 6 weeks.",
+        achievable: "Use a free roots chart as flash cards.",
+        relevant: "This makes every subject easier.",
+        timeBound: "6 weeks = 30 roots.",
+      },
+      {
+        subtitle: "HS \u00b7 Rooted Schedule",
+        specific: "Root my weekly schedule with non-negotiable study blocks.",
+        measurable: "3 protected 90-min blocks per week.",
+        achievable: "Same time each week; mark on calendar.",
+        relevant: "Without rooted blocks, studying slips.",
+        timeBound: "Full quarter.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Family Roots",
+        specific: "Learn my family's roots by interviewing older relatives.",
+        measurable: "3 interviews, recorded; a short family write-up.",
+        achievable: "Start with grandma.",
+        relevant: "Stories get lost if no one asks.",
+        timeBound: "Within 2 months.",
+      },
+      {
+        subtitle: "MS \u00b7 Rooted Habits",
+        specific: "Root my day with 3 non-negotiable habits: make bed, eat breakfast, 10 min outside.",
+        measurable: "All 3 daily, 5 days per week.",
+        achievable: "None take more than 5 min.",
+        relevant: "Small roots build strong days.",
+        timeBound: "30 days.",
+      },
+      {
+        subtitle: "HS \u00b7 Core Values",
+        specific: "Identify my 3 core values and use them as decision-making roots.",
+        measurable: "Write them down; test them in 5 real decisions.",
+        achievable: "Journal exercises online.",
+        relevant: "I drift in decisions without a compass.",
+        timeBound: "One month of reflection.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Plant Trees",
+        specific: "Put down roots in my city by planting trees in public spaces.",
+        measurable: "Plant 10 trees across 2 city planting days.",
+        achievable: "City forestry coordinates events.",
+        relevant: "Trees outlive us; legacy work.",
+        timeBound: "2 planting days this year.",
+      },
+      {
+        subtitle: "MS \u00b7 Root Neighborhood",
+        specific: "Root myself more in my neighborhood by learning 10 neighbors' names.",
+        measurable: "10 names + 1 fact about each.",
+        achievable: "Say hi on walks; introduce myself.",
+        relevant: "Knowing neighbors makes a place home.",
+        timeBound: "2 months.",
+      },
+      {
+        subtitle: "HS \u00b7 Civic Roots",
+        specific: "Put down civic roots by joining a city youth commission.",
+        measurable: "Apply; attend every meeting once selected.",
+        achievable: "Monthly meetings; fits my schedule.",
+        relevant: "Young voices shape policy.",
+        timeBound: "One-year term.",
+      },
+    ],
+  },
+  SHINE:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Shine in Presentation",
+        specific: "Shine on my capstone presentation.",
+        measurable: "Rehearse 5x; aim for an A on delivery.",
+        achievable: "Record myself; refine each time.",
+        relevant: "This is the final grade for the whole project.",
+        timeBound: "Presentation day in 3 weeks.",
+      },
+      {
+        subtitle: "MS \u00b7 Class Participation",
+        specific: "Let my knowledge shine by answering more often in history.",
+        measurable: "One substantive comment per class period.",
+        achievable: "Pre-read the chapter.",
+        relevant: "I know more than I show.",
+        timeBound: "Every class for 4 weeks.",
+      },
+      {
+        subtitle: "HS \u00b7 Shine in Writing",
+        specific: "Submit my best essay yet to the school literary magazine.",
+        measurable: "Revise through 3 drafts.",
+        achievable: "Use writing center feedback.",
+        relevant: "Public work pushes quality.",
+        timeBound: "Submission deadline in 6 weeks.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Audition",
+        specific: "Shine at an audition for the school musical.",
+        measurable: "Memorize song + monologue; rehearse 10x.",
+        achievable: "Voice lessons + vocal coach feedback.",
+        relevant: "I haven't auditioned since 9th grade; time to try again.",
+        timeBound: "Audition in 5 weeks.",
+      },
+      {
+        subtitle: "MS \u00b7 Share Work",
+        specific: "Let my photography shine by entering the local youth art show.",
+        measurable: "Submit 3 photos.",
+        achievable: "Entry is free; I have a dozen good shots already.",
+        relevant: "Public acknowledgment is a different validation than just likes.",
+        timeBound: "Show deadline is 4 weeks away.",
+      },
+      {
+        subtitle: "HS \u00b7 Own My Skill",
+        specific: "Own and share one skill I've been humble about (coding).",
+        measurable: "Post 3 projects on GitHub.",
+        achievable: "Weekend project sessions.",
+        relevant: "Private skill = no opportunities.",
+        timeBound: "3 projects in 6 weeks.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Spotlight Others",
+        specific: "Help others shine by running a \"classmate of the week\" spotlight.",
+        measurable: "Spotlight 12 classmates over a semester.",
+        achievable: "Brief interview + post on school social media.",
+        relevant: "Everyone deserves a moment in the light.",
+        timeBound: "12 weeks.",
+      },
+      {
+        subtitle: "MS \u00b7 Light Drive",
+        specific: "Help people shine during hard winter months by organizing a holiday card drive.",
+        measurable: "Collect 100 cards for a senior center.",
+        achievable: "Involve homerooms; provide templates.",
+        relevant: "Cards brighten lonely holidays.",
+        timeBound: "Before December 20.",
+      },
+      {
+        subtitle: "HS \u00b7 Youth Voice",
+        specific: "Help young entrepreneurs shine by volunteering at a youth business competition.",
+        measurable: "One 4-hour volunteer shift.",
+        achievable: "Junior Achievement hosts these.",
+        relevant: "Judges and volunteers give the platform; someone has to be there.",
+        timeBound: "Next competition event.",
+      },
+    ],
+  },
+  SUSTAIN:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Sustain GPA",
+        specific: "Sustain my 3.8 GPA throughout AP season.",
+        measurable: "90%+ on all assessments this semester.",
+        achievable: "Consistent weekly study schedule; no cramming.",
+        relevant: "Senior year grades still count.",
+        timeBound: "Full semester.",
+      },
+      {
+        subtitle: "MS \u00b7 Sustain Effort",
+        specific: "Sustain my homework habit through the long winter stretch.",
+        measurable: "Complete all assignments for 10 weeks straight.",
+        achievable: "Same study time each day.",
+        relevant: "Winter is when most kids slip.",
+        timeBound: "10 consecutive weeks.",
+      },
+      {
+        subtitle: "HS \u00b7 Sustain Focus",
+        specific: "Sustain concentration during 90-minute block classes.",
+        measurable: "Full attention (no phone, no zoning out) for the whole period.",
+        achievable: "Phone in backpack; take notes actively.",
+        relevant: "Zoning out means re-learning from textbook later.",
+        timeBound: "Every class for 3 weeks.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Exercise Habit",
+        specific: "Sustain exercise 4x a week for 12 weeks.",
+        measurable: "48 workouts logged.",
+        achievable: "Same days, same times.",
+        relevant: "I've started workouts 10 times \u2014 this time I finish.",
+        timeBound: "12 weeks.",
+      },
+      {
+        subtitle: "MS \u00b7 Sustain Practice",
+        specific: "Sustain daily music practice for a full month.",
+        measurable: "20 min per day, 30 days in a row.",
+        achievable: "Same time each day.",
+        relevant: "Skill grows with consistency more than intensity.",
+        timeBound: "30 days.",
+      },
+      {
+        subtitle: "HS \u00b7 Sustainable Self-Care",
+        specific: "Build a self-care routine I can sustain even during stressful weeks.",
+        measurable: "Core 3 (sleep, move, friend contact) 5 days per week.",
+        achievable: "Keep it short enough to not skip.",
+        relevant: "Stressful weeks are when I need self-care most.",
+        timeBound: "Full semester.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Sustain Program",
+        specific: "Help sustain our school's long-running volunteer program by recruiting next year's leaders.",
+        measurable: "Train 2 underclassmen to take over.",
+        achievable: "Monthly training sessions.",
+        relevant: "Programs die when seniors leave without replacements.",
+        timeBound: "Trained by April.",
+      },
+      {
+        subtitle: "MS/HS \u00b7 Sustainable Choices",
+        specific: "Model sustainable choices by swapping to reusable lunch containers.",
+        measurable: "Zero disposable lunch items for one full semester.",
+        achievable: "Container set; dishwasher-safe.",
+        relevant: "Every skipped disposable = one less piece of trash.",
+        timeBound: "Full semester.",
+      },
+      {
+        subtitle: "HS \u00b7 Long-Term Volunteer",
+        specific: "Sustain volunteering at one nonprofit instead of rotating between many.",
+        measurable: "Same nonprofit, 8 hours per month, for 6 months.",
+        achievable: "Commit to one; decline new requests.",
+        relevant: "Deep relationships > shallow resume padding.",
+        timeBound: "6 months.",
+      },
+    ],
+  },
+  THRIVE:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Thrive in AP",
+        specific: "Thrive in my AP Lit class, not just survive.",
+        measurable: "A on every major essay.",
+        achievable: "Use teacher office hours every week.",
+        relevant: "AP is where I grow if I lean in.",
+        timeBound: "Full semester.",
+      },
+      {
+        subtitle: "MS \u00b7 Thrive in Middle",
+        specific: "Thrive in 8th grade by fully engaging, not coasting.",
+        measurable: "Straight As first quarter.",
+        achievable: "Study each subject 20 min per week minimum.",
+        relevant: "8th grade preps me for high school.",
+        timeBound: "Full year.",
+      },
+      {
+        subtitle: "HS \u00b7 Thrive in Elective",
+        specific: "Thrive in journalism class by publishing 3 articles.",
+        measurable: "3 published pieces; 1 front-page.",
+        achievable: "One article per month.",
+        relevant: "Publishing = real skill, real portfolio.",
+        timeBound: "Full semester.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Conditions to Thrive",
+        specific: "Identify my personal \"thriving conditions\" and protect them.",
+        measurable: "List 5 conditions; track how often each is met.",
+        achievable: "Weekly review in journal.",
+        relevant: "I have better weeks when conditions are right.",
+        timeBound: "4-week observation window.",
+      },
+      {
+        subtitle: "MS \u00b7 Thriving Space",
+        specific: "Create a thriving bedroom space that supports me.",
+        measurable: "Decluttered; one dedicated reading spot; 5 things that make me happy.",
+        achievable: "3 weekends of focused work.",
+        relevant: "My space shapes my mood.",
+        timeBound: "3 weekends.",
+      },
+      {
+        subtitle: "HS \u00b7 Friend Thriving",
+        specific: "Thrive socially by deepening 3 friendships.",
+        measurable: "One 1:1 hangout per month per friend for 3 months.",
+        achievable: "Schedule each at the start of the month.",
+        relevant: "Close friendships are where I feel most myself.",
+        timeBound: "3 months.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Help Community Thrive",
+        specific: "Help my community thrive by contributing to a farmers market.",
+        measurable: "Volunteer 2 Saturdays per month; 8 total over summer.",
+        achievable: "Market coordinator assigns shifts.",
+        relevant: "Markets sustain local farms + neighborhood life.",
+        timeBound: "Summer months.",
+      },
+      {
+        subtitle: "MS \u00b7 Thriving Classroom",
+        specific: "Help my classroom thrive by welcoming every new student.",
+        measurable: "Intro myself + sit with 3 new students this semester.",
+        achievable: "Notice who sits alone day 1.",
+        relevant: "First-day loneliness shapes a whole year.",
+        timeBound: "Whole semester.",
+      },
+      {
+        subtitle: "HS \u00b7 Ecosystem Health",
+        specific: "Help a local ecosystem thrive through a habitat restoration project.",
+        measurable: "6 half-days of restoration work.",
+        achievable: "Nature center runs weekends.",
+        relevant: "Thriving ecosystems = thriving community.",
+        timeBound: "6 half-days over 6 months.",
+      },
+    ],
+  },
+  TRANSFORM:{
+    school:[
+      {
+        subtitle: "HS \u00b7 Transform Study",
+        specific: "Transform my study method from passive rereading to active recall.",
+        measurable: "Use flashcards + practice problems for every unit.",
+        achievable: "Free app + 20 min per day.",
+        relevant: "Passive rereading isn't working \u2014 active recall is proven.",
+        timeBound: "Apply for 3 full units.",
+      },
+      {
+        subtitle: "MS \u00b7 Transform Mindset",
+        specific: "Transform my \"I'm not a math person\" mindset.",
+        measurable: "Catch + reframe the thought 3x per week.",
+        achievable: "Note it when I catch it.",
+        relevant: "Mindset limits skill.",
+        timeBound: "4 weeks.",
+      },
+      {
+        subtitle: "HS \u00b7 Transform Writing",
+        specific: "Transform my essay-writing process \u2014 outline first, write second.",
+        measurable: "Outline before drafting on every essay this quarter.",
+        achievable: "Writing center offers outline templates.",
+        relevant: "Freestyle drafts take me 3x as long.",
+        timeBound: "Full quarter.",
+      },
+    ],
+    personal:[
+      {
+        subtitle: "HS \u00b7 Transform Morning",
+        specific: "Transform my chaotic mornings into calm ones.",
+        measurable: "All morning tasks done by 7:30am, 5 days per week.",
+        achievable: "Prep the night before; wake up 15 min earlier.",
+        relevant: "My whole day is better if my morning is calm.",
+        timeBound: "21 days to build.",
+      },
+      {
+        subtitle: "MS \u00b7 Transform Habit",
+        specific: "Transform my phone habit by setting time limits on my 3 biggest apps.",
+        measurable: "Under 2 hours total per day on those apps.",
+        achievable: "Screen Time restrictions.",
+        relevant: "My phone owns me right now.",
+        timeBound: "3 weeks.",
+      },
+      {
+        subtitle: "HS \u00b7 Transform Identity",
+        specific: "Transform how I see myself by dropping one limiting label I use for myself.",
+        measurable: "Catch myself using the label 5 times; reframe each time.",
+        achievable: "Journal it when it happens.",
+        relevant: "Labels become self-fulfilling.",
+        timeBound: "4 weeks.",
+      },
+    ],
+    community:[
+      {
+        subtitle: "HS \u00b7 Transform a Policy",
+        specific: "Help transform one school policy I think is outdated.",
+        measurable: "Submit written proposal to admin; gather 50 student signatures.",
+        achievable: "Work with student council.",
+        relevant: "Small, well-argued proposals often succeed.",
+        timeBound: "Proposal submitted in 8 weeks.",
+      },
+      {
+        subtitle: "MS \u00b7 Transform Space",
+        specific: "Transform an unused corner of school into a reading nook.",
+        measurable: "Donate books; build shelves; open to students.",
+        achievable: "Get admin approval; ask for book donations.",
+        relevant: "Dead spaces can be used for good.",
+        timeBound: "Opened within a semester.",
+      },
+      {
+        subtitle: "HS \u00b7 Transform Perceptions",
+        specific: "Help transform how my school talks about mental health by organizing an assembly.",
+        measurable: "One assembly hosted; speaker from local nonprofit.",
+        achievable: "Partner with counseling office.",
+        relevant: "Assemblies shift culture when done well.",
+        timeBound: "Assembly held within the semester.",
+      },
+    ],
+  },
+};
+
+const THEME_META = {
+  school:    { icon:"\u{1F4DA}", name:"School" },
+  personal:  { icon:"\u{1F331}", name:"Personal Skills" },
+  community: { icon:"\u{1F91D}", name:"Community & Service" }
+};
+
+let state = { word:null, theme:null, option:null };
+
+function renderWords(){
+  const grid = document.getElementById('wordGrid');
+  grid.innerHTML = WORDS.map(w =>
+    `<button class="word-tile" onclick="pickWord('${w}')">${w}</button>`
+  ).join('');
+}
+
+function pickWord(w){
+  state.word = w;
+  document.getElementById('chosenWord').textContent = w;
+  document.getElementById('crumbWord1').textContent = w;
+  goToScreen('themes');
+}
+
+function pickTheme(t){
+  state.theme = t;
+  document.getElementById('crumbWord2').textContent = state.word;
+  document.getElementById('crumbTheme').textContent = `${THEME_META[t].icon} ${THEME_META[t].name}`;
+  renderOptions();
+  goToScreen('options');
+}
+
+function pickOption(i){
+  state.option = i;
+  renderPlanner();
+  goToScreen('planner');
+}
+
+function renderOptions(){
+  const list = document.getElementById('optionList');
+  const plans = PLANS[state.word][state.theme];
+  list.innerHTML = plans.map((plan, i) =>
+    `<button class="option-card ${state.theme}" onclick="pickOption(${i})">
+       <div class="option-num">${i+1}</div>
+       <div class="option-body">
+         <div class="option-subtitle">${plan.subtitle}</div>
+         <div class="option-specific">${plan.specific}</div>
+       </div>
+     </button>`
+  ).join('');
+}
+
+function renderPlanner(){
+  const plan = PLANS[state.word][state.theme][state.option];
+  document.getElementById('cpnWord').textContent = state.word;
+  document.getElementById('cpnSubtitle').textContent = plan.subtitle;
+  document.getElementById('cpnSpecific').textContent = plan.specific;
+  document.getElementById('cpnMeasurable').textContent = plan.measurable;
+  document.getElementById('cpnAchievable').textContent = plan.achievable;
+  document.getElementById('cpnRelevant').textContent = plan.relevant;
+  document.getElementById('cpnTimeBound').textContent = plan.timeBound;
+
+  const chip = document.getElementById('cpnThemeChip');
+  chip.className = `planner-theme-chip ${state.theme}`;
+  chip.textContent = `${THEME_META[state.theme].icon} ${THEME_META[state.theme].name}`;
+}
+
+function goToScreen(name){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(`screen-${name}`).classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function startOver(){
+  state = { word:null, theme:null, option:null };
+  goToScreen('words');
+}
+
+renderWords();
+</script>
+</body>
+</html>
