@@ -86,6 +86,31 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--dark);m
 .section-tag{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--green2);margin-bottom:6px;}
 .section-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--green);margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid var(--border);}
 
+/* ── LIVE TRACKER ── */
+.tracker-block{background:linear-gradient(135deg,#fff,#F0FBF4);border:1.5px solid var(--green2);border-radius:var(--radius);padding:24px 28px;margin-bottom:36px;box-shadow:0 4px 16px rgba(26,107,58,.08);}
+.tracker-headline{display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center;margin-bottom:24px;}
+.tracker-big{display:flex;align-items:baseline;gap:8px;flex-shrink:0;}
+.tracker-num{font-family:'Fredoka One',cursive;font-size:64px;color:var(--green);line-height:1;}
+.tracker-goal{font-family:'Fredoka One',cursive;font-size:18px;color:var(--mid);}
+.tracker-bar-wrap{display:flex;flex-direction:column;gap:8px;min-width:0;}
+.tracker-bar{height:14px;background:var(--cream);border:1px solid var(--border);border-radius:8px;overflow:hidden;position:relative;}
+.tracker-bar-fill{height:100%;background:linear-gradient(90deg,var(--green3),var(--gold));border-radius:6px;transition:width .8s cubic-bezier(.2,.8,.2,1);width:0%;}
+.tracker-bar-meta{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1.5px;color:var(--mid);}
+.tracker-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.tracker-mini{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
+.tracker-mini-name{font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:1.5px;color:var(--green2);margin-bottom:6px;text-transform:uppercase;line-height:1.3;}
+.tracker-mini-count{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--green);margin-bottom:6px;}
+.tracker-mini-count .of{color:var(--mid);font-weight:400;font-size:13px;}
+.tracker-mini-bar{height:6px;background:var(--cream);border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+.tracker-mini-bar-fill{height:100%;background:var(--green2);border-radius:3px;transition:width .8s cubic-bezier(.2,.8,.2,1);width:0%;}
+.tracker-mini.pending{opacity:.5;}
+.tracker-mini.pending .tracker-mini-name{color:#999;}
+.tracker-mini.pending .tracker-mini-count{color:#999;}
+.tracker-foot{display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding-top:14px;border-top:1px dashed var(--border);font-size:11px;color:var(--mid);font-family:'Fredoka One',cursive;letter-spacing:1px;}
+.tracker-refresh{background:none;border:1px solid var(--border);color:var(--green);font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:6px;cursor:pointer;transition:all .2s;}
+.tracker-refresh:hover{background:var(--green);color:#fff;border-color:var(--green);}
+.tracker-error{color:#a4361b;font-style:italic;text-transform:none;letter-spacing:0;}
+
 /* ── 8 TABS GRID ── */
 .tabs-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:40px;}
 .tab-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:0 2px 8px rgba(26,107,58,.05);}
@@ -121,6 +146,9 @@ footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spac
 @media(max-width:640px){
   .hero,.mission,.ow-strip,.ow-panel,.who-wrap,.main{padding-left:20px;padding-right:20px;}
   .tabs-grid,.res-grid,.fr-grid{grid-template-columns:1fr;}
+  .tracker-headline{grid-template-columns:1fr;gap:16px;}
+  .tracker-grid{grid-template-columns:1fr 1fr;}
+  .tracker-num{font-size:48px;}
 }
 </style>
 </head>
@@ -189,6 +217,28 @@ footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spac
 <!-- MAIN -->
 <div class="main">
 
+  <!-- LIVE TRACKER -->
+  <div class="section-tag">The Goal</div>
+  <div class="section-title">Live Class Progress</div>
+
+  <div class="tracker-block">
+    <div class="tracker-headline">
+      <div class="tracker-big">
+        <div class="tracker-num" id="trkTotal">—</div>
+        <div class="tracker-goal">/ 540 uploaded</div>
+      </div>
+      <div class="tracker-bar-wrap">
+        <div class="tracker-bar"><div class="tracker-bar-fill" id="trkBarFill"></div></div>
+        <div class="tracker-bar-meta"><span id="trkPct">0%</span> COMPLETE · 90 PER KIOSK × 6 KIOSKS</div>
+      </div>
+    </div>
+    <div class="tracker-grid" id="trkGrid"></div>
+    <div class="tracker-foot">
+      <span id="trkUpdated">Loading live count…</span>
+      <button class="tracker-refresh" onclick="refreshTracker()">↻ Refresh</button>
+    </div>
+  </div>
+
   <!-- 8 TABS -->
   <div class="section-tag">The Package</div>
   <div class="section-title">8 Activities, 1 OneWord</div>
@@ -241,7 +291,7 @@ footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spac
   <div class="section-title">All Project Files</div>
 
   <div class="res-grid">
-    <a href="LeadershipActivities_Kiosk_v2.html" target="_blank" class="res-card featured">
+    <a href="leadershipactivities-kiosk.html" target="_blank" class="res-card featured">
       <div class="res-icon">🌟</div>
       <div><div class="res-label">Leadership Activity Kiosk</div><div class="res-type">Student Kiosk · HTML</div></div>
       <div class="res-arrow">→</div>
@@ -251,14 +301,14 @@ footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spac
       <div><div class="res-label">2″ Sticker Designer</div><div class="res-type">Student Kiosk · HTML</div></div>
       <div class="res-arrow">→</div>
     </a>
-    <a href="Leadership_TeacherGuide.html" target="_blank" class="res-card">
+    <a href="Leadership_Teacher_Guide.html" target="_blank" class="res-card">
       <div class="res-icon">📋</div>
       <div><div class="res-label">Teacher Guide</div><div class="res-type">Ms. Marquand · HTML</div></div>
       <div class="res-arrow">→</div>
     </a>
-    <a href="#" class="res-card">
+    <a href="Leadership_Student_Guide.html" target="_blank" class="res-card">
       <div class="res-icon">📄</div>
-      <div><div class="res-label">Student Guide</div><div class="res-type">Student Guide · DOCX</div></div>
+      <div><div class="res-label">Student Guide</div><div class="res-type">Student Guide · HTML</div></div>
       <div class="res-arrow">→</div>
     </a>
     <a href="#" class="res-card">
@@ -284,6 +334,7 @@ footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spac
   </div>
 
   <br/><br/>
+  <a class="back-btn" href="https://lhhowell.github.io/kellamsmilebags/">🌿 Back to Smile Bags Main Site</a>
 
 </div>
 
@@ -330,6 +381,106 @@ function toggleOWC(i){var b=document.getElementById('owb'+i),a=document.getEleme
 function owAll(open){OW.forEach(function(_,i){document.getElementById('owb'+i).style.display=open?'block':'none';document.getElementById('owarr'+i).style.transform=open?'rotate(180deg)':'';})}
 function toggleOW(){var p=document.getElementById('owPanel'),open=p.style.display==='none';p.style.display=open?'block':'none';document.getElementById('owArrow').style.transform=open?'rotate(180deg)':'';document.getElementById('owBtnLabel').textContent=open?'Collapse — The 25 OneWords':'Explore the 25 OneWords';}
 buildOW();
+
+/* ── LIVE TRACKER ─────────────────────────────────────────────────────────
+   Fetches per-kiosk upload counts from the Leadership parent folder.
+   Apps Script walks into the parent, finds each child folder by name, and
+   returns { total, kiosks:{kindness:N, dream:N, ...} }. Redeploy script as
+   new version if the folder structure or goals change.
+   ───────────────────────────────────────────────────────────────────────── */
+const TRACKER_URL = "https://script.google.com/macros/s/AKfycbxKRb01BaercTTJYycYUwEWZkh_hYTC4qB1Zk0E2CYvjGzo_ms2a9ThWjT22IXhbQW6Eg/exec";
+
+const KIOSKS = [
+  { key:'kindness', name:'Kindness Coupons',   tab:'03' },
+  { key:'puzzle',   name:'Puzzle It Out',      tab:'02' },
+  { key:'calm',     name:'Calm-Down Toolkit',  tab:'04' },
+  { key:'dream',    name:'Dream Jar',          tab:'05' },
+  { key:'bigidea',  name:'Big Idea Planner',   tab:'06' },
+  { key:'letter',   name:'Handwritten Letter', tab:'07' }
+];
+const GOAL_PER = 90, GOAL_TOTAL = 540;
+
+function buildTrackerGrid(){
+  document.getElementById('trkGrid').innerHTML = KIOSKS.map(function(k){
+    return '<div class="tracker-mini pending" id="trk-'+k.key+'">'+
+      '<div class="tracker-mini-name">Tab '+k.tab+' · '+k.name+'</div>'+
+      '<div class="tracker-mini-count"><span class="n">—</span> <span class="of">/ 90</span></div>'+
+      '<div class="tracker-mini-bar"><div class="tracker-mini-bar-fill"></div></div>'+
+      '</div>';
+  }).join('');
+}
+
+function animateNum(el, from, to, ms){
+  var start = performance.now();
+  function step(now){
+    var t = Math.min(1, (now - start) / ms);
+    var eased = 1 - Math.pow(1 - t, 3);
+    el.textContent = Math.round(from + (to - from) * eased);
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function refreshTracker(){
+  var upd = document.getElementById('trkUpdated');
+  upd.classList.remove('tracker-error');
+  upd.textContent = 'Refreshing…';
+
+  if (!TRACKER_URL || TRACKER_URL.indexOf('REPLACE') !== -1){
+    upd.classList.add('tracker-error');
+    upd.textContent = 'Tracker not configured — see Apps Script setup.';
+    return;
+  }
+
+  fetch(TRACKER_URL + '?t=' + Date.now())
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(data){
+      if (data.error) throw new Error(data.error);
+
+      // Total + bar
+      var totalEl = document.getElementById('trkTotal');
+      var curr = parseInt(totalEl.textContent) || 0;
+      animateNum(totalEl, curr, data.total || 0, 900);
+
+      var pct = Math.min(100, ((data.total || 0) / GOAL_TOTAL) * 100);
+      document.getElementById('trkBarFill').style.width = pct + '%';
+      document.getElementById('trkPct').textContent = Math.round(pct) + '%';
+
+      // Per-kiosk minis
+      KIOSKS.forEach(function(k){
+        var tile    = document.getElementById('trk-' + k.key);
+        var count   = data.kiosks ? data.kiosks[k.key] : -1;
+        var numEl   = tile.querySelector('.n');
+        var barFill = tile.querySelector('.tracker-mini-bar-fill');
+
+        if (count === undefined || count < 0){
+          numEl.textContent = '—';
+          tile.classList.add('pending');
+          barFill.style.width = '0%';
+        } else {
+          var c0 = parseInt(numEl.textContent) || 0;
+          animateNum(numEl, c0, count, 900);
+          barFill.style.width = Math.min(100, (count / GOAL_PER) * 100) + '%';
+          tile.classList.remove('pending');
+        }
+      });
+
+      // Timestamp
+      var d = new Date(data.updated || Date.now());
+      var hh = d.getHours(), mm = String(d.getMinutes()).padStart(2,'0');
+      var ampm = hh >= 12 ? 'PM' : 'AM';
+      var h12 = hh % 12 || 12;
+      upd.textContent = 'Last updated ' + h12 + ':' + mm + ' ' + ampm;
+    })
+    .catch(function(err){
+      upd.classList.add('tracker-error');
+      upd.textContent = "Couldn't reach tracker — check Apps Script deployment.";
+      console.error('Tracker fetch error:', err);
+    });
+}
+
+buildTrackerGrid();
+refreshTracker();
 </script>
 </body>
 </html>
