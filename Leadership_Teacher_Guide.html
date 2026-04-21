@@ -1,293 +1,608 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Leadership · Teacher Guide · Smile Bags</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,500&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  --green:#1A6B3A;--green2:#2D8A52;--green3:#40A865;
-  --gold:#C9A84C;--gold2:#E8C97A;
-  --cream:#F5FBF7;--dark:#0D2E1A;--mid:#2A5438;
-  --border:#C8E6D0;--radius:14px;
-}
-body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;overflow-x:hidden;}
+  :root{
+    --ink:#1e2838;
+    --ink-soft:#3d4a5e;
+    --muted:#6b7689;
+    --bg:#f4efe3;
+    --bg-deep:#ebe3d0;
+    --bg-soft:#faf6ec;
+    --card:#ffffff;
+    --paper:#fffef5;
+    --border:#d6cdb8;
+    --border-soft:#ebe3d0;
+    --gold:#b89537;
+    --gold-soft:#d4b865;
+    --gold-tint:#f5ebd1;
+    --teal:#2d6a6b;
+    --teal-soft:#d6e8e9;
+    --green:#5a8c3a;
+    --green-soft:#dfedce;
+    --rose:#a85a4a;
+    --rose-soft:#f0d9d4;
+    --shadow-sm:0 2px 6px rgba(30,40,56,.06);
+    --shadow-md:0 4px 12px rgba(30,40,56,.1);
+    --shadow-lg:0 8px 24px rgba(30,40,56,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    line-height:1.6;min-height:100vh;
+  }
 
-/* ── HERO ── */
-.hero{background:linear-gradient(160deg,var(--dark) 0%,var(--green) 55%,#164F2C 100%);padding:56px 48px 48px;position:relative;overflow:hidden;}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%,rgba(201,168,76,.1) 0%,transparent 50%),radial-gradient(ellipse at 10% 70%,rgba(64,168,101,.12) 0%,transparent 45%);pointer-events:none;}
-.hero-deco{position:absolute;right:48px;top:50%;transform:translateY(-50%);font-size:7rem;opacity:.08;pointer-events:none;}
-.hero-tag{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;position:relative;}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:10px;position:relative;}
-.hero h1 em{color:var(--gold2);font-style:italic;}
-.hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:620px;line-height:1.7;margin-bottom:22px;position:relative;}
-.hero-pills{display:flex;flex-wrap:wrap;gap:8px;position:relative;}
-.pill{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;padding:5px 14px;border-radius:20px;}
-.pill-gold{background:rgba(201,168,76,.18);color:var(--gold2);border:1px solid rgba(201,168,76,.3);}
-.pill-green{background:rgba(64,168,101,.2);color:#95D5B2;border:1px solid rgba(64,168,101,.3);}
-.pill-cream{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);}
+  /* ── PRINT BUTTON ── */
+  .print-btn{
+    position:fixed;top:20px;right:20px;z-index:100;
+    background:var(--ink);color:var(--paper);
+    border:1px solid var(--gold);border-radius:999px;
+    padding:11px 22px;font-family:'Inter',sans-serif;
+    font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+    cursor:pointer;box-shadow:var(--shadow-md);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .print-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
 
-/* ── MISSION STRIP ── */
-.mission{background:var(--green2);padding:22px 48px;display:flex;align-items:flex-start;gap:20px;border-top:3px solid var(--gold);}
-.mission p{font-size:15px;color:rgba(255,255,255,.9);line-height:1.65;font-weight:300;}
-.mission strong{color:#fff;font-weight:700;}
+  /* ── HERO ── */
+  .hero{
+    background:var(--ink);color:var(--paper);
+    padding:60px 56px 50px;border-bottom:3px solid var(--gold);
+    position:relative;overflow:hidden;
+  }
+  .hero-deco{
+    position:absolute;right:60px;top:50%;transform:translateY(-50%);
+    font-family:'Playfair Display',serif;font-size:14rem;
+    opacity:.04;line-height:1;color:var(--gold);
+    pointer-events:none;font-weight:800;
+  }
+  .hero-inner{max-width:920px;margin:0 auto;position:relative}
+  .hero-eyebrow{
+    font-family:'Inter',sans-serif;font-size:11px;letter-spacing:3.5px;
+    text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:18px;
+  }
+  .hero-title{
+    font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.4rem);
+    font-weight:700;line-height:1.1;margin-bottom:14px;color:var(--paper);
+  }
+  .hero-title em{font-style:italic;color:var(--gold-soft);font-weight:500}
+  .hero-sub{
+    font-size:16px;color:rgba(255,254,245,.7);max-width:640px;
+    line-height:1.7;margin-bottom:26px;font-weight:400;
+  }
+  .hero-pills{display:flex;flex-wrap:wrap;gap:8px}
+  .pill{
+    font-family:'Inter',sans-serif;font-size:11px;font-weight:600;
+    letter-spacing:1.2px;text-transform:uppercase;
+    padding:6px 14px;border-radius:999px;
+  }
+  .pill-gold{background:rgba(184,149,55,.18);color:var(--gold-soft);border:1px solid rgba(184,149,55,.4)}
+  .pill-light{background:rgba(255,254,245,.08);color:rgba(255,254,245,.8);border:1px solid rgba(255,254,245,.18)}
 
-/* ── MAIN ── */
-.main{max-width:960px;margin:0 auto;padding:40px 48px 80px;}
-.section-tag{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--green2);margin-bottom:6px;margin-top:36px;}
-.section-tag.first{margin-top:0;}
-.section-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--green);margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid var(--border);}
+  /* ── MISSION ── */
+  .mission{
+    background:var(--gold);color:var(--ink);padding:24px 56px;
+    border-bottom:1px solid var(--border);
+  }
+  .mission-inner{
+    max-width:920px;margin:0 auto;
+    display:flex;align-items:flex-start;gap:18px;
+  }
+  .mission-icon{font-size:24px;line-height:1;flex-shrink:0;margin-top:2px}
+  .mission p{
+    font-size:15px;line-height:1.7;font-weight:500;color:var(--ink);
+  }
+  .mission strong{font-weight:800}
 
-/* ── CHECKLIST ── */
-.checklist{display:grid;gap:10px;}
-.check-item{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:14px 18px;display:flex;gap:14px;align-items:flex-start;box-shadow:0 2px 6px rgba(26,107,58,.04);}
-.check-box{width:22px;height:22px;border:2.5px solid var(--green2);border-radius:5px;flex-shrink:0;margin-top:1px;background:#fff;}
-.check-text{font-size:14px;color:#333;line-height:1.6;}
-.check-text strong{color:var(--green);}
-.check-text code{background:rgba(201,168,76,.15);color:var(--mid);padding:2px 7px;border-radius:4px;font-family:'Courier New',monospace;font-size:12px;}
+  /* ── MAIN ── */
+  main{max-width:920px;margin:0 auto;padding:48px 56px 100px}
 
-/* ── TABS GRID (8 TABS REF) ── */
-.tabs-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.tab-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:0 2px 8px rgba(26,107,58,.05);}
-.tab-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--green2);margin-bottom:4px;}
-.tab-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--green);margin-bottom:6px;}
-.tab-desc{font-size:12px;color:#555;line-height:1.6;}
-.tab-special{background:#F0FBF4;border-color:var(--green2);}
-.tab-special .tab-num{color:var(--green);}
+  /* ── SECTION HEADERS ── */
+  .section{margin-bottom:56px}
+  .section-eyebrow{
+    font-family:'Inter',sans-serif;font-size:11px;letter-spacing:3px;
+    text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px;
+  }
+  .section-title{
+    font-family:'Playfair Display',serif;font-size:28px;font-weight:700;
+    color:var(--ink);margin-bottom:6px;line-height:1.2;
+  }
+  .section-title em{font-style:italic;color:var(--teal);font-weight:500}
+  .section-intro{
+    color:var(--ink-soft);font-size:15px;line-height:1.7;
+    margin-bottom:24px;max-width:680px;
+  }
 
-/* ── NUMBERED STEP CARDS ── */
-.step-grid{display:grid;gap:12px;}
-.step-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 20px;display:flex;gap:18px;align-items:flex-start;box-shadow:0 2px 8px rgba(26,107,58,.05);}
-.step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--green);color:var(--gold2);font-family:'Fredoka One',cursive;font-size:16px;display:flex;align-items:center;justify-content:center;}
-.step-body{flex:1;}
-.step-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--green);margin-bottom:4px;}
-.step-desc{font-size:13px;color:#555;line-height:1.65;}
-.step-desc strong{color:var(--green);}
-.step-desc code{background:rgba(201,168,76,.15);color:var(--mid);padding:2px 6px;border-radius:4px;font-family:'Courier New',monospace;font-size:11.5px;}
+  /* ── STEP CARDS ── */
+  .step-grid{display:flex;flex-direction:column;gap:14px}
+  .step-card{
+    background:var(--card);border:1px solid var(--border-soft);
+    border-radius:12px;padding:20px 24px;
+    display:flex;gap:18px;align-items:flex-start;
+    box-shadow:var(--shadow-sm);
+  }
+  .step-num{
+    flex-shrink:0;width:38px;height:38px;border-radius:50%;
+    background:var(--ink);color:var(--gold-soft);
+    font-family:'Playfair Display',serif;font-size:18px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+    margin-top:1px;
+  }
+  .step-body{flex:1}
+  .step-title{
+    font-family:'Playfair Display',serif;font-size:17px;font-weight:700;
+    color:var(--ink);margin-bottom:5px;
+  }
+  .step-desc{
+    font-size:14px;color:var(--ink-soft);line-height:1.65;
+  }
+  .step-desc strong{color:var(--ink);font-weight:600}
+  .step-desc code{
+    font-family:'JetBrains Mono',monospace;font-size:12px;
+    background:var(--gold-tint);color:var(--ink);
+    padding:2px 7px;border-radius:4px;
+  }
+  .step-desc a{color:var(--teal);text-decoration:none;border-bottom:1px solid var(--teal-soft);font-weight:500}
+  .step-desc a:hover{border-bottom-color:var(--teal)}
+  .step-desc ul{margin:8px 0 0 0;padding-left:20px}
+  .step-desc ul li{margin-bottom:4px}
 
-/* ── CALLOUT ── */
-.callout{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);border-left:4px solid var(--gold);border-radius:12px;padding:18px 22px;margin:18px 0;}
-.callout-tag{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:6px;}
-.callout p{font-size:14px;color:#333;line-height:1.65;}
-.callout strong{color:var(--green);}
+  /* ── KIOSK CARDS ── */
+  .kiosk-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:720px){.kiosk-grid{grid-template-columns:1fr}}
+  .kiosk-card{
+    background:var(--card);border:1px solid var(--border-soft);
+    border-radius:12px;padding:18px 20px;
+    box-shadow:var(--shadow-sm);
+    transition:transform .15s ease, box-shadow .15s ease;
+    text-decoration:none;color:inherit;display:block;
+  }
+  .kiosk-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+  .kiosk-num{
+    font-family:'Inter',sans-serif;font-size:10px;letter-spacing:2px;
+    text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px;
+  }
+  .kiosk-name{
+    font-family:'Playfair Display',serif;font-size:18px;font-weight:700;
+    color:var(--ink);margin-bottom:6px;line-height:1.25;
+  }
+  .kiosk-desc{
+    font-size:13px;color:var(--ink-soft);line-height:1.6;
+  }
+  .kiosk-special{background:var(--gold-tint);border-color:var(--gold-soft)}
 
-/* ── BULLET LIST ── */
-.bullet-list{display:grid;gap:10px;list-style:none;}
-.bullet-list li{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:12px 16px 12px 44px;position:relative;font-size:14px;color:#333;line-height:1.6;box-shadow:0 2px 6px rgba(26,107,58,.04);}
-.bullet-list li::before{content:'✓';position:absolute;left:16px;top:12px;font-family:'Fredoka One',cursive;color:var(--green2);font-size:14px;pointer-events:none;}
-.bullet-list li strong{color:var(--green);}
-.bullet-list li code{background:rgba(201,168,76,.15);color:var(--mid);padding:2px 6px;border-radius:4px;font-family:'Courier New',monospace;font-size:12px;}
+  /* ── CALLOUT ── */
+  .callout{
+    background:var(--paper);border:1px solid var(--border);
+    border-left:4px solid var(--gold);
+    border-radius:8px;padding:18px 22px;margin:20px 0;
+  }
+  .callout.teal{border-left-color:var(--teal);background:var(--teal-soft)}
+  .callout.green{border-left-color:var(--green);background:var(--green-soft)}
+  .callout.rose{border-left-color:var(--rose);background:var(--rose-soft)}
+  .callout-tag{
+    font-family:'Inter',sans-serif;font-size:10px;font-weight:700;
+    letter-spacing:2px;text-transform:uppercase;color:var(--gold);
+    margin-bottom:6px;
+  }
+  .callout.teal .callout-tag{color:var(--teal)}
+  .callout.green .callout-tag{color:var(--green)}
+  .callout.rose .callout-tag{color:var(--rose)}
+  .callout p{font-size:14px;color:var(--ink);line-height:1.65}
+  .callout p + p{margin-top:8px}
+  .callout strong{font-weight:700}
+  .callout code{
+    font-family:'JetBrains Mono',monospace;font-size:12px;
+    background:var(--card);padding:2px 7px;border-radius:4px;color:var(--ink);
+  }
 
-/* ── TABLE ── */
-.stbl{width:100%;border-collapse:collapse;background:#fff;border-radius:var(--radius);overflow:hidden;border:1.5px solid var(--border);box-shadow:0 2px 8px rgba(26,107,58,.04);}
-.stbl th{background:var(--green);color:var(--gold2);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:12px 16px;text-align:left;}
-.stbl td{padding:14px 16px;font-size:13px;color:#333;line-height:1.6;border-top:1px solid var(--border);vertical-align:top;}
-.stbl td:first-child{font-family:'Fredoka One',cursive;color:var(--green);font-size:12px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;}
-.stbl code{background:rgba(201,168,76,.15);color:var(--mid);padding:2px 6px;border-radius:4px;font-family:'Courier New',monospace;font-size:11.5px;white-space:normal;}
+  /* ── CHECKLIST ── */
+  .checklist{display:flex;flex-direction:column;gap:10px}
+  .check-item{
+    background:var(--card);border:1px solid var(--border-soft);
+    border-radius:10px;padding:14px 18px;
+    display:flex;gap:14px;align-items:flex-start;
+    box-shadow:var(--shadow-sm);
+  }
+  .check-box{
+    width:22px;height:22px;border:2px solid var(--gold);border-radius:5px;
+    flex-shrink:0;margin-top:1px;background:var(--paper);
+  }
+  .check-text{font-size:14px;color:var(--ink);line-height:1.6}
+  .check-text strong{font-weight:700}
 
-/* ── BACK BUTTON ── */
-.back-btn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:var(--gold2);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:11px 20px;border-radius:8px;text-decoration:none;transition:all .2s;}
-.back-btn:hover{background:var(--green2);}
+  /* ── FILES TABLE ── */
+  .files-table{
+    width:100%;border-collapse:collapse;background:var(--card);
+    border:1px solid var(--border-soft);border-radius:10px;
+    overflow:hidden;box-shadow:var(--shadow-sm);
+  }
+  .files-table th{
+    background:var(--ink);color:var(--gold-soft);
+    font-family:'Inter',sans-serif;font-size:11px;font-weight:700;
+    letter-spacing:1.5px;text-transform:uppercase;
+    padding:13px 18px;text-align:left;
+  }
+  .files-table td{
+    padding:14px 18px;font-size:13px;color:var(--ink);
+    line-height:1.6;border-top:1px solid var(--border-soft);
+    vertical-align:top;
+  }
+  .files-table td:first-child{font-weight:600;white-space:nowrap}
+  .files-table code{
+    font-family:'JetBrains Mono',monospace;font-size:12px;
+    background:var(--gold-tint);padding:2px 7px;border-radius:4px;
+  }
+  .files-table .pending{color:var(--muted);font-style:italic}
 
-/* ── PRINT BUTTON ── */
-.print-btn{position:fixed;top:20px;right:20px;z-index:100;background:var(--green);color:var(--gold2);border:2px solid var(--gold);border-radius:50px;padding:12px 22px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;box-shadow:0 6px 18px rgba(13,46,26,.25);transition:all .2s;}
-.print-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(13,46,26,.3);background:var(--green2);}
+  /* ── BACK BUTTON ── */
+  .back-btn{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--ink);color:var(--gold-soft);
+    font-family:'Inter',sans-serif;font-size:12px;font-weight:600;
+    letter-spacing:1.5px;text-transform:uppercase;
+    padding:12px 22px;border-radius:999px;text-decoration:none;
+    transition:transform .15s ease, box-shadow .15s ease;
+    box-shadow:var(--shadow-sm);
+  }
+  .back-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
 
-/* ── FOOTER ── */
-footer{text-align:center;padding:28px;border-top:1px solid var(--border);margin-top:20px;}
-footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spacing:1px;}
+  /* ── FOOTER ── */
+  footer{
+    text-align:center;padding:32px 24px;
+    border-top:1px solid var(--border);background:var(--bg-soft);
+  }
+  footer p{
+    font-family:'Inter',sans-serif;font-size:11px;letter-spacing:1.5px;
+    text-transform:uppercase;color:var(--muted);font-weight:500;
+  }
+  footer .dot{margin:0 8px;color:var(--gold)}
 
-/* ── RESPONSIVE ── */
-@media(max-width:640px){
-  .hero,.mission,.main{padding-left:20px;padding-right:20px;}
-  .tabs-grid{grid-template-columns:1fr;}
-  .print-btn{top:14px;right:14px;padding:10px 16px;font-size:10px;}
-  .step-card{padding:14px 16px;gap:12px;}
-  .step-num{width:34px;height:34px;font-size:14px;}
-}
+  /* ── RESPONSIVE ── */
+  @media(max-width:720px){
+    .hero,.mission,main{padding-left:24px;padding-right:24px}
+    .hero{padding-top:40px;padding-bottom:36px}
+    .mission{padding-top:18px;padding-bottom:18px}
+    main{padding-top:36px;padding-bottom:60px}
+    .print-btn{top:14px;right:14px;padding:9px 18px;font-size:11px}
+    .hero-deco{display:none}
+  }
 
-/* ── PRINT ── */
-@media print{
-  .no-print{display:none !important;}
-  body{background:#fff;color:#000;}
-  .hero{padding:32px 36px 28px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .hero-deco{display:none;}
-  .mission{padding:16px 36px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .main{padding:24px 36px;max-width:none;}
-  .step-card,.tab-card,.check-item,.callout,.bullet-list li{break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .stbl{break-inside:avoid;page-break-inside:avoid;}
-  .stbl th,.stbl td{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .section-tag{margin-top:22px;}
-  footer{page-break-inside:avoid;}
-  a{color:inherit;text-decoration:none;}
-}
+  /* ── PRINT ── */
+  @media print{
+    .no-print{display:none !important}
+    body{background:#fff;color:#000}
+    .hero{padding:32px 36px 28px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .hero-deco{display:none}
+    .mission{padding:18px 36px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    main{padding:24px 36px;max-width:none}
+    .step-card,.kiosk-card,.check-item,.callout,.files-table{
+      break-inside:avoid;page-break-inside:avoid;
+      box-shadow:none !important;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    }
+    .files-table th,.files-table td{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .section{margin-bottom:36px}
+    footer{page-break-inside:avoid;background:#fff !important}
+    a{color:inherit;text-decoration:none}
+  }
 </style>
 </head>
 <body>
 
-<!-- PRINT BUTTON -->
-<button class="print-btn no-print" onclick="window.print()">🖨️ Print This Guide</button>
+<button class="print-btn no-print" onclick="window.print()">🖨️ Print Guide</button>
 
 <!-- HERO -->
 <div class="hero">
   <div class="hero-deco">📋</div>
-  <div class="hero-tag">Smile Bags · A Word &amp; Wonder Experience · Spring 2026</div>
-  <h1>Teacher Guide<br><em>Activity Kiosk</em></h1>
-  <p class="hero-sub">A complete reference for deploying the Leadership Activity Kiosk, approving student letters, and printing the class sticker set.</p>
-  <div class="hero-pills">
-    <div class="pill pill-gold">🌟 Katelyn Marquand</div>
-    <div class="pill pill-green">Leadership Skills · Grades 9–12</div>
-    <div class="pill pill-cream">Spring 2026</div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Spring 2026</div>
+    <h1 class="hero-title">Teacher Guide<br><em>Leadership Skills</em></h1>
+    <p class="hero-sub">Everything you need to deploy and run the 6-kiosk Smile Bags experience with your Leadership students — Drive setup, the live tracker, kiosk reference, the letter approval workflow, and the end-of-project reflection.</p>
+    <div class="hero-pills">
+      <span class="pill pill-gold">🌟 Katelyn Marquand</span>
+      <span class="pill pill-light">Leadership Skills · Grades 9–12</span>
+      <span class="pill pill-light">6-Part Package · Per Student</span>
+    </div>
   </div>
 </div>
 
 <!-- MISSION -->
 <div class="mission">
-  <span style="font-size:24px;flex-shrink:0;">📋</span>
-  <p><strong>What This Is.</strong> Leadership students use this kiosk to create an 8-part package for a child receiving a Smile Bag. Six activities build leadership skills for the recipient. <strong>Tab 7</strong> is a personal handwritten letter guided by a Gemini AI tutor and approved by you before printing. <strong>Tab 8</strong> is a OneWord sticker you print for the whole class at once.</p>
+  <div class="mission-inner">
+    <span class="mission-icon">🎯</span>
+    <p><strong>What This Is.</strong> Leadership students build a complete 6-part Smile Bag package for a child recipient (elementary, middle, or high school). Five activities are made through interactive web kiosks. The sixth — the Handwritten Letter — is reviewed by you in person before being placed in the bag. A live tracker shows class-wide progress in real time.</p>
+  </div>
 </div>
 
-<!-- MAIN -->
-<div class="main">
+<main>
 
-  <!-- SETUP CHECKLIST -->
-  <div class="section-tag first">Before Class</div>
-  <div class="section-title">Complete Setup Checklist</div>
-  <div class="checklist">
-    <div class="check-item"><div class="check-box"></div><div class="check-text">Deploy <strong>Code_LeadershipLetterReview.gs</strong> as a Web App in Google Apps Script — <em>Execute as: Me · Who has access: Anyone.</em></div></div>
-    <div class="check-item"><div class="check-box"></div><div class="check-text">Add your email address on <strong>line 11</strong> of <code>Code.gs</code> before deploying.</div></div>
-    <div class="check-item"><div class="check-box"></div><div class="check-text">Copy the Web App URL and paste it into the kiosk HTML, replacing <code>YOUR_APPS_SCRIPT_URL_HERE</code>.</div></div>
-    <div class="check-item"><div class="check-box"></div><div class="check-text">Set up the Gemini Gem using <strong>Leadership_Gemini_Gem_Setup.docx</strong>. Copy the Gem link and paste it into the kiosk HTML, replacing <code>GEM_LINK_HERE</code>.</div></div>
-    <div class="check-item"><div class="check-box"></div><div class="check-text">Upload the updated kiosk HTML to <strong>GitHub Pages</strong>.</div></div>
-    <div class="check-item"><div class="check-box"></div><div class="check-text">Post the kiosk link and the Gemini Gem link on <strong>Canvas</strong> for students.</div></div>
-    <div class="check-item"><div class="check-box"></div><div class="check-text">Keep <strong>Leadership_Sticker_Print_Sheet.html</strong> handy — you will use this to print all stickers at once.</div></div>
-  </div>
+  <!-- BEFORE THE PROJECT STARTS -->
+  <section class="section">
+    <div class="section-eyebrow">Before Class Begins</div>
+    <h2 class="section-title">One-Time <em>Setup</em></h2>
+    <p class="section-intro">Complete these steps once before launching the project. After this, the kiosks run themselves and the tracker updates automatically.</p>
 
-  <!-- 8 TABS REFERENCE -->
-  <div class="section-tag">Reference</div>
-  <div class="section-title">The Eight Tabs — What Each One Produces</div>
-  <div class="tabs-grid">
-    <div class="tab-card"><div class="tab-num">Tab 01</div><div class="tab-name">🤝 Friendship Cards</div><div class="tab-desc">Four age-appropriate challenges a child can do with a friend. Student customizes for Elementary, Middle, or High School recipient.</div></div>
-    <div class="tab-card"><div class="tab-num">Tab 02</div><div class="tab-name">🧩 Puzzle It Out</div><div class="tab-desc">A riddle connected to the student's OneWord, with an answer and a lesson. Student writes their own version.</div></div>
-    <div class="tab-card"><div class="tab-num">Tab 03</div><div class="tab-name">💛 Kindness Coupons</div><div class="tab-desc">Four coupons for genuine acts of service. Student writes the specific acts. Printed and cut.</div></div>
-    <div class="tab-card"><div class="tab-num">Tab 04</div><div class="tab-name">🌬️ Calm-Down Toolkit</div><div class="tab-desc">A breathing technique named after the student's word. The interactive breathing circle demonstrates the technique.</div></div>
-    <div class="tab-card"><div class="tab-num">Tab 05</div><div class="tab-name">✨ Dream Jar</div><div class="tab-desc">A fill-in activity guiding the child through a dream, a goal, and a message. Age-calibrated prompts.</div></div>
-    <div class="tab-card"><div class="tab-num">Tab 06</div><div class="tab-name">💡 Big Idea Planner</div><div class="tab-desc">A structured planning sheet with steps, resources, and purpose. 3–5 steps depending on age group.</div></div>
-    <div class="tab-card tab-special"><div class="tab-num">Tab 07 · Special</div><div class="tab-name">✉️ Letter</div><div class="tab-desc">Student-written personal letter. Guided by a Gemini tutor. Submitted for your approval. Written by hand on cardstock.</div></div>
-    <div class="tab-card tab-special"><div class="tab-num">Tab 08 · Special</div><div class="tab-name">🏷️ Sticker</div><div class="tab-desc">2-inch round OneWord sticker designed by the student. Submitted to Google Sheet. You print all stickers as a class set.</div></div>
-  </div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Confirm the Drive folder structure</div>
+          <div class="step-desc">A shared parent folder named <strong>Leadership Smile Bags · Spring 2026</strong> contains <strong>six child folders</strong> with these exact names:
+            <ul>
+              <li><code>Kindness Coupons</code></li>
+              <li><code>Dream Jar</code></li>
+              <li><code>Calm-Down Toolkit</code></li>
+              <li><code>Puzzle It Out</code></li>
+              <li><code>Big Idea Planner</code></li>
+              <li><code>Handwritten Letter</code></li>
+            </ul>
+            Names must match exactly (spelling, spacing, hyphens). The tracker auto-discovers folders by name.
+          </div>
+        </div>
+      </div>
 
-  <!-- LETTER APPROVAL WORKFLOW -->
-  <div class="section-tag">Tab 7 · Letter Workflow</div>
-  <div class="section-title">Letter Approval — How It Works</div>
-  <p style="font-size:14px;color:#555;line-height:1.7;margin-bottom:18px;">This is the most important teacher-facing process in the kiosk. Here is exactly how it works:</p>
-  <div class="step-grid">
-    <div class="step-card">
-      <div class="step-num">1</div>
-      <div class="step-body">
-        <div class="step-title">Student uses the Letter Writing Tutor</div>
-        <div class="step-desc">The kiosk guides the student through 5 questions one at a time. Their answers are assembled into a draft letter using their own words.</div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Verify the live tracker is connected</div>
+          <div class="step-desc">Open the <a href="Leadership_Menu.html">Leadership Menu</a> and look for the progress bar at the top. It should show counts for all 6 kiosks (starting at 0/90 each, totaling 0/540). If a tile shows <code>—</code>, the corresponding folder name in Drive doesn't match exactly. Fix the folder name and refresh.</div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Share the menu link with students</div>
+          <div class="step-desc">Post <code>https://lhhowell.github.io/kellamsmilebags/Leadership_Menu.html</code> on Canvas, in your Google Classroom stream, or project it during class. This is the students' single entry point — every kiosk and every Drive upload starts here.</div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Print or share the Reflection</div>
+          <div class="step-desc">The <strong>end-of-project Reflection</strong> is what students complete after they've built and submitted their bag's contents. Print copies or share the digital link — whichever fits your workflow. Details below in the Reflection section.</div>
+        </div>
       </div>
     </div>
-    <div class="step-card">
-      <div class="step-num">2</div>
-      <div class="step-body">
-        <div class="step-title">Student optionally uses Gemini</div>
-        <div class="step-desc">The <strong>Open in Gemini</strong> button opens the approved Gemini Gem in a new tab. Gemini asks the same 5 questions conversationally and helps the student shape their language. Student copies the result back into the kiosk editor.</div>
+  </section>
+
+  <!-- THE 6 KIOSKS -->
+  <section class="section">
+    <div class="section-eyebrow">Reference</div>
+    <h2 class="section-title">The Six Kiosks <em>at a glance</em></h2>
+    <p class="section-intro">Click any tile to open that kiosk in a new tab. Each kiosk follows the same flow: pick a OneWord → pick a category → pick an option → render a card students screenshot and upload to Drive.</p>
+
+    <div class="kiosk-grid">
+      <a class="kiosk-card" href="Leadership_PuzzleItOut_Kiosk.html" target="_blank">
+        <div class="kiosk-num">Tab 01</div>
+        <div class="kiosk-name">🧩 Puzzle It Out</div>
+        <div class="kiosk-desc">A puzzle for the recipient — riddle, brain teaser, or word game — with an optional reveal-the-answer button. 225 puzzles across 25 OneWords, scaled for grades 5–7.</div>
+      </a>
+      <a class="kiosk-card" href="Leadership_KindnessCoupons_Kiosk.html" target="_blank">
+        <div class="kiosk-num">Tab 02</div>
+        <div class="kiosk-name">💛 Kindness Coupons</div>
+        <div class="kiosk-desc">A coupon redeemable for one kind action, sized for K–5 recipients. Three theme sets per OneWord: Creative, Active, and Observational.</div>
+      </a>
+      <a class="kiosk-card" href="Leadership_CalmDownToolkit_Kiosk.html" target="_blank">
+        <div class="kiosk-num">Tab 03</div>
+        <div class="kiosk-name">🌬️ Calm-Down Toolkit</div>
+        <div class="kiosk-desc">A small calming tool the recipient can use in a hard moment. Three sets: Breath, Movement, and Senses. Built for K–5 recipients.</div>
+      </a>
+      <a class="kiosk-card" href="Leadership_DreamJar_Kiosk.html" target="_blank">
+        <div class="kiosk-num">Tab 04</div>
+        <div class="kiosk-name">✨ Dream Jar</div>
+        <div class="kiosk-desc">A dream slip the recipient keeps. Three sets: Gratitude, Adventure, and Memory. Built for K–5 recipients.</div>
+      </a>
+      <a class="kiosk-card" href="Leadership_BigIdeaPlanner_Kiosk.html" target="_blank">
+        <div class="kiosk-num">Tab 05</div>
+        <div class="kiosk-name">💡 Big Idea Planner</div>
+        <div class="kiosk-desc">A complete SMART plan for a real goal — School, Personal Skills, or Community. Targets middle and high school recipients. 1,125 plan pieces total.</div>
+      </a>
+      <a class="kiosk-card kiosk-special" href="Leadership_LetterKiosk_Kiosk.html" target="_blank">
+        <div class="kiosk-num">Tab 06 · Special</div>
+        <div class="kiosk-name">✉️ Handwritten Letter</div>
+        <div class="kiosk-desc">A starter prompt + guiding questions for a 5×7 handwritten letter. Three age tracks: Elementary, Middle, High. Has the teacher-gate workflow — see below.</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- DAILY WORKFLOW -->
+  <section class="section">
+    <div class="section-eyebrow">During Class</div>
+    <h2 class="section-title">The Student <em>Workflow</em></h2>
+    <p class="section-intro">Every student follows the same loop for each of the 6 kiosks. They can do them in any order, across multiple class periods. Most students will reach 6 cards in 2–3 days of focused work.</p>
+
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Pick your OneWord</div>
+          <div class="step-desc">From the kiosk's tile of 25 OneWords, choose one that fits the child you're building for. The same word carries through all 6 kiosks — Smile Bag recipients receive a fully connected, themed package.</div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Pick a set or age</div>
+          <div class="step-desc">Each kiosk offers 3 themed sets (or 3 age tracks for the Letter). Pick the one that fits the recipient's age and personality.</div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Pick the specific card</div>
+          <div class="step-desc">3 options appear within the chosen set or age. Pick the one most giftable for this specific recipient. The kiosk renders the final card.</div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Screenshot the card</div>
+          <div class="step-desc">On a Chromebook, press <code>Ctrl + Shift + Show Windows</code> (or <code>Print Screen</code> on PC, <code>Cmd + Shift + 4</code> on Mac). The card is the deliverable — saved as an image.</div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">Upload to the right Drive folder</div>
+          <div class="step-desc">Click <strong>Drive Folder</strong> on the kiosk header to jump to the parent folder. Open the matching child folder. Drag the screenshot in. The tracker counts it within 60 seconds.</div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <div class="step-title">Repeat for the remaining kiosks</div>
+          <div class="step-desc">Same pattern, same OneWord. Each student produces 6 cards total — one per kiosk — all themed around their chosen OneWord.</div>
+        </div>
       </div>
     </div>
-    <div class="step-card">
-      <div class="step-num">3</div>
-      <div class="step-body">
-        <div class="step-title">Student submits for review</div>
-        <div class="step-desc">Student clicks <strong>Submit for Teacher Review</strong>. The kiosk logs the letter to your Google Sheet and emails you the full letter with a one-click <strong>Approve</strong> link.</div>
+  </section>
+
+  <!-- LETTER APPROVAL -->
+  <section class="section">
+    <div class="section-eyebrow">Tab 06 · Special</div>
+    <h2 class="section-title">The Letter <em>Teacher Gate</em></h2>
+    <p class="section-intro">The Handwritten Letter is the only kiosk with a teacher-review step. Students don't upload a screenshot — they hand you the physical 5×7 card before it goes in the bag.</p>
+
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Student picks an age track and prompt</div>
+          <div class="step-desc">The Letter Kiosk shows 3 age cards (Elementary, Middle, High) with a starter prompt and 2–3 guiding questions on each. Student picks the one that fits their recipient.</div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Student writes by hand on a 5×7 card</div>
+          <div class="step-desc">Using the prompt and guiding questions as a scaffold, the student handwrites the letter. Length: 4–7 sentences. Tone: warm, specific, positive. Voice: their own.</div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Student hands the card to you</div>
+          <div class="step-desc">Before the letter goes anywhere near the bag, you read it. The kiosk reminds them to check legibility, tone, signature, and that it fits the 5×7 space.</div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">You approve or ask for a rewrite</div>
+          <div class="step-desc">If it passes, the card is placed in the bag. If something needs revision, hand it back with specific feedback — no formal "rejection" needed.</div>
+        </div>
       </div>
     </div>
-    <div class="step-card">
-      <div class="step-num">4</div>
-      <div class="step-body">
-        <div class="step-title">Student receives a token code</div>
-        <div class="step-desc">A short code (like <code>KSB-4F2A</code>) appears on screen. Students write this down. If they close the browser, they can re-enter the code to check approval status when they return — useful across two class periods.</div>
-      </div>
+
+    <div class="callout teal">
+      <div class="callout-tag">📋 Quality Check</div>
+      <p>When reading each letter, look for: <strong>(1)</strong> the OneWord is referenced or reflected in the message, <strong>(2)</strong> the tone fits the age group of the recipient, <strong>(3)</strong> nothing is crossed out or smudged, <strong>(4)</strong> the student signed with first name only (no last names for safety).</p>
     </div>
-    <div class="step-card">
-      <div class="step-num">5</div>
-      <div class="step-body">
-        <div class="step-title">You approve by email</div>
-        <div class="step-desc">Click the <strong>Approve</strong> link in the email. A confirmation page appears. The student's kiosk unlocks within 20 seconds automatically.</div>
-      </div>
+  </section>
+
+  <!-- TRACKER -->
+  <section class="section">
+    <div class="section-eyebrow">During the Project</div>
+    <h2 class="section-title">The Live <em>Tracker</em></h2>
+    <p class="section-intro">The progress bar at the top of the menu page shows real-time class-wide progress. It updates automatically as students upload.</p>
+
+    <div class="callout">
+      <div class="callout-tag">📊 What You'll See</div>
+      <p>A big number showing total uploads (goal: 540 — that's 90 students × 6 kiosks). Below it, six tiles — one per kiosk — showing per-kiosk progress out of 90. The numbers cache for 60 seconds, so the most recent upload may take a minute to appear. Click <strong>Refresh</strong> any time to force a fresh read.</p>
     </div>
-    <div class="step-card">
-      <div class="step-num">6</div>
-      <div class="step-body">
-        <div class="step-title">Student prints the Writing Guide</div>
-        <div class="step-desc">The <strong>Print Writing Guide</strong> button opens a new window with the Gemini draft as a reference at the top and 14 blank handwriting lines below. Student writes their letter by hand on this cardstock sheet.</div>
-      </div>
+
+    <div class="callout teal">
+      <div class="callout-tag">⚡ Daily Use</div>
+      <p>Open the menu page on the projector at the start of each work session. Students see the tally live as their classmates upload. The visible progress is its own motivator — no grading needed.</p>
     </div>
-  </div>
-  <div class="callout">
-    <div class="callout-tag">⚡ Two Class Periods</div>
-    <p>Tokens never expire. A Period 1 student who doesn't get approved during class can return in Period 2 or the next day, enter their token code on the Letter tab, and check status. <strong>The kiosk polls for 15 minutes then stops</strong> — students use the token code to resume.</p>
-  </div>
 
-  <!-- STICKER PRINTING -->
-  <div class="section-tag">Tab 8 · Sticker Workflow</div>
-  <div class="section-title">Sticker Printing — Class Set</div>
-  <p style="font-size:14px;color:#555;line-height:1.7;margin-bottom:14px;">Students submit their sticker designs digitally — they do not print individually. <strong>You print all stickers as one class set.</strong></p>
-  <ul class="bullet-list">
-    <li>Open <strong>Leadership_Sticker_Print_Sheet.html</strong> in Chrome.</li>
-    <li>Paste your Apps Script Web App URL into the URL field.</li>
-    <li>Click <strong>Load Stickers</strong> — all submissions appear in a 3×4 grid, 12 per page.</li>
-    <li>Load sticker paper into your printer (<strong>Avery 22807</strong> or equivalent 2-inch round).</li>
-    <li>Click <strong>Print Sheet</strong> — one print job, entire class set.</li>
-    <li>Mark the <strong>Printed?</strong> column <em>Yes</em> in your Google Sheet for each student.</li>
-  </ul>
+    <div class="callout rose">
+      <div class="callout-tag">⚠️ If a Tile Shows "—" or 0 Stays Stuck</div>
+      <p>The Drive folder name doesn't match what the tracker is looking for. Open the parent folder, check that the child folder is named exactly as listed in <strong>Step 1</strong> above (case, spaces, and hyphens matter), and rename if needed. The tile will populate within 60 seconds.</p>
+    </div>
+  </section>
 
-  <!-- QUALITY INDICATORS -->
-  <div class="section-tag">Approval</div>
-  <div class="section-title">Quality Indicators — What to Look For</div>
-  <ul class="bullet-list">
-    <li>Does the letter <strong>mention the student's OneWord?</strong> If not, ask them to revise.</li>
-    <li>Does it sound like a real person wrote it — or like AI output? The Gemini Gem is configured to use the student's own words, but <strong>check anyway.</strong></li>
-    <li>Is it <strong>at least 30 words?</strong> The kiosk enforces this before submitting, but very short letters may need more.</li>
-    <li>Is the <strong>tone appropriate</strong> for a child receiving a Smile Bag?</li>
-    <li>If you need a student to revise — simply do not click Approve. <strong>Reply to the email with specific feedback.</strong> The student can edit in the kiosk and resubmit.</li>
-  </ul>
+  <!-- BAG ASSEMBLY -->
+  <section class="section">
+    <div class="section-eyebrow">After All Cards Are In</div>
+    <h2 class="section-title">Bag <em>Assembly</em></h2>
+    <p class="section-intro">When a student has uploaded all 6 cards (5 kiosks + their approved letter), it's time to print and assemble.</p>
 
-  <!-- TIMELINE -->
-  <div class="section-tag">Pacing</div>
-  <div class="section-title">Suggested 4-Day Timeline</div>
-  <table class="stbl">
-    <thead><tr><th>Day</th><th>Activity</th></tr></thead>
-    <tbody>
-      <tr><td>Day 1</td><td>Introduce the project. Demo the kiosk. Assign OneWords and age groups. Walk through <strong>Tab 1 (Friendship Cards)</strong> together. Students complete <strong>Tabs 1–4</strong>.</td></tr>
-      <tr><td>Day 2</td><td>Students complete <strong>Tabs 5–6</strong> (Dream Jar, Big Idea Planner). Begin <strong>Tab 7</strong> — Letter tutor questions. Students who finish early begin Gemini draft.</td></tr>
-      <tr><td>Day 3</td><td>Students finalize letter, submit for review, receive token codes. You approve during class. Students write letter by hand on cardstock. Students complete <strong>Tab 8 (Sticker)</strong>.</td></tr>
-      <tr><td>Day 4</td><td>Print sticker sheet. Students assemble and submit complete packages.</td></tr>
-    </tbody>
-  </table>
+    <div class="checklist">
+      <div class="check-item"><div class="check-box"></div><div class="check-text">Print each student's 5 screenshots from their Drive folders. Each is sized for a standard 4×6 or 5×7 print — adjust paper as needed.</div></div>
+      <div class="check-item"><div class="check-box"></div><div class="check-text">Cut, fold, or trim cards as the format requires. The Kindness Coupons are designed to be cut apart along dashed lines.</div></div>
+      <div class="check-item"><div class="check-box"></div><div class="check-text">Add the approved Handwritten Letter to the stack.</div></div>
+      <div class="check-item"><div class="check-box"></div><div class="check-text">Place all 6 items in a Smile Bag along with any physical extras you've planned (snack, small toy, sticker, etc.).</div></div>
+      <div class="check-item"><div class="check-box"></div><div class="check-text">Tag the bag with the recipient's age range so the right bag goes to the right child at the receiving end.</div></div>
+    </div>
+  </section>
 
-  <!-- FILES REFERENCE -->
-  <div class="section-tag">Reference</div>
-  <div class="section-title">Project Files</div>
-  <table class="stbl">
-    <thead><tr><th>File</th><th>How to Use It</th></tr></thead>
-    <tbody>
-      <tr><td><code>LeadershipActivities_Kiosk_v2.html</code></td><td>Upload to GitHub Pages. Share link with students via Canvas.</td></tr>
-      <tr><td><code>Code_LeadershipLetterReview.gs</code></td><td>Deploy in Google Apps Script. Add your email on <strong>line 11</strong> before deploying.</td></tr>
-      <tr><td><code>Leadership_Gemini_Gem_Setup.docx</code></td><td>Follow setup instructions. Paste Gem link into kiosk HTML.</td></tr>
-      <tr><td><code>Leadership_Sticker_Print_Sheet.html</code></td><td>Keep locally. Open in Chrome when ready to print stickers.</td></tr>
-    </tbody>
-  </table>
+  <!-- REFLECTION -->
+  <section class="section">
+    <div class="section-eyebrow">After the Project Ends</div>
+    <h2 class="section-title">Student <em>Reflection</em></h2>
+    <p class="section-intro">After their bag is complete, every Leadership student completes a brief reflection. This is the moment the project turns inward — they've built for a stranger child, and now they pause to consider what that experience meant for them.</p>
 
-  <br/><br/>
-  <a class="back-btn no-print" href="Leadership_Menu.html">🌿 Back to Leadership Menu</a>
+    <div class="callout green">
+      <div class="callout-tag">📝 What's Included</div>
+      <p>The Reflection prompts students to think about the OneWord they chose, the recipient they imagined, and what they noticed about themselves through the process. It can be completed digitally or printed. A separate file — <code>Leadership_Reflection.html</code> — handles this. See the Project Files section below for the link.</p>
+    </div>
 
-</div>
+    <div class="callout teal">
+      <div class="callout-tag">⏱️ Time</div>
+      <p>Plan for 15–25 minutes of focused class time. The Reflection isn't a quiz — there are no wrong answers — but it benefits from a quiet, undistracted environment.</p>
+    </div>
+  </section>
 
-<footer><p>Smile Bags · A Word &amp; Wonder Experience · Leadership Skills · Katelyn Marquand · Spring 2026</p></footer>
+  <!-- PROJECT FILES -->
+  <section class="section">
+    <div class="section-eyebrow">Reference</div>
+    <h2 class="section-title">Project <em>Files</em></h2>
+    <p class="section-intro">All file names below are relative to the GitHub Pages folder: <code>https://lhhowell.github.io/kellamsmilebags/</code></p>
+
+    <table class="files-table">
+      <thead><tr><th>File</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>Leadership_Menu.html</code></td><td>Student entry point. Live tracker + 6 clickable kiosk tabs.</td></tr>
+        <tr><td><code>Leadership_PuzzleItOut_Kiosk.html</code></td><td>Tab 01 — Puzzles, brain teasers, and word games.</td></tr>
+        <tr><td><code>Leadership_KindnessCoupons_Kiosk.html</code></td><td>Tab 02 — Coupons for kind acts.</td></tr>
+        <tr><td><code>Leadership_CalmDownToolkit_Kiosk.html</code></td><td>Tab 03 — Calming tools for hard moments.</td></tr>
+        <tr><td><code>Leadership_DreamJar_Kiosk.html</code></td><td>Tab 04 — Dream slips for the recipient to keep.</td></tr>
+        <tr><td><code>Leadership_BigIdeaPlanner_Kiosk.html</code></td><td>Tab 05 — SMART plans for middle &amp; high recipients.</td></tr>
+        <tr><td><code>Leadership_LetterKiosk_Kiosk.html</code></td><td>Tab 06 — Letter starter prompts (with teacher gate).</td></tr>
+        <tr><td><code>Leadership_Reflection.html</code></td><td class="pending">End-of-project student reflection. Pending build.</td></tr>
+        <tr><td><code>Leadership_Teacher_Guide.html</code></td><td>This document.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <br>
+  <a class="back-btn no-print" href="Leadership_Menu.html">← Back to Leadership Menu</a>
+
+</main>
+
+<footer>
+  <p>Smile Bags <span class="dot">·</span> A Word &amp; Wonder Experience <span class="dot">·</span> Leadership Skills <span class="dot">·</span> Katelyn Marquand <span class="dot">·</span> Spring 2026</p>
+</footer>
 
 </body>
 </html>
