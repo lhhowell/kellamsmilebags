@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>DNA Trait Card Kiosk &mdash; Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:100vh;padding:0 0 60px;}
+.hero{background:#0a0f14;border-bottom:1px solid #1a2a1a;padding:40px 32px 36px;text-align:center;position:relative;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(76,175,130,.12) 0%,transparent 65%);pointer-events:none;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:4px;color:#4caf82;text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4.5vw,50px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:10px;}
+.hero-title span{color:#c9a84c;}
+.hero-sub{font-size:14px;color:#c8c4bc;max-width:620px;margin:0 auto;line-height:1.7;}
+.back-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #4caf82;background:transparent;color:#4caf82;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;cursor:pointer;margin:24px 24px 0;}
+
+.mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:0;background:#111;border:1px solid #1a2a1a;border-radius:12px;overflow:hidden;max-width:900px;margin:24px auto 0;}
+.mode-tab{padding:18px 24px;text-align:center;cursor:pointer;border:none;background:transparent;color:#444;width:100%;transition:all .2s;}
+.mode-tab.active{background:#0d1a0d;}
+.mode-tab-icon{font-size:22px;display:block;margin-bottom:6px;}
+.mode-tab-title{font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;color:inherit;display:block;margin-bottom:4px;}
+.mode-tab.active .mode-tab-title{color:#4caf82;}
+.mode-tab-desc{font-size:12px;color:#333;line-height:1.4;}
+.mode-tab.active .mode-tab-desc{color:#c8c4bc;}
+
+.workspace{max-width:900px;margin:0 auto;padding:0 24px;}
+.mode-panel{display:none;padding-top:20px;}
+.mode-panel.active{display:block;}
+.step-card{background:#0d0d0d;border:1px solid #1a2a1a;border-radius:14px;padding:24px;margin-bottom:14px;}
+.step-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#1a4a1a;margin-bottom:8px;}
+.step-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:12px;}
+.step-desc{font-size:13px;color:#c8c4bc;line-height:1.65;margin-bottom:16px;}
+
+/* OneWord grid */
+.ow-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;}
+.ow-btn{background:#0a0f14;border:2px solid #1a2a1a;border-radius:8px;padding:9px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;color:#c8c4bc;cursor:pointer;width:100%;text-align:center;}
+.ow-btn:hover{border-color:#c9a84c;color:#c9a84c;}
+.ow-btn.on{border-color:#4caf82;color:#4caf82;background:rgba(76,175,130,.1);}
+
+.gen-btn{width:100%;background:#4caf82;color:#111;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:3px;text-transform:uppercase;padding:16px;border:none;border-radius:10px;cursor:pointer;font-weight:700;}
+.gen-btn:hover{background:#3d9e72;}
+.gen-btn.off{background:#1a2a1a;color:#2a4a2a;cursor:not-allowed;}
+
+/* Allele display */
+.allele-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.allele-box{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:18px;font-weight:700;}
+.allele-D{background:#1B7A78;color:#9FE1CB;}
+.allele-R{background:#6B3F9E;color:#EDE4F7;}
+.pair-sep{display:flex;align-items:center;color:#333;font-size:18px;padding:0 2px;}
+
+/* Punnett square */
+.punnett{display:grid;grid-template-columns:40px 1fr 1fr;grid-template-rows:40px 1fr 1fr;gap:4px;width:fit-content;margin:0 auto 16px;}
+.punnett-header{background:#1a2a1a;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:16px;}
+.punnett-header.D{color:#9FE1CB;}
+.punnett-header.R{color:#EDE4F7;}
+.punnett-cell{width:80px;height:80px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:20px;cursor:pointer;transition:all .2s;border:2px solid transparent;}
+.punnett-cell.DD{background:#0d2a28;border-color:#1B7A78;color:#4caf82;}
+.punnett-cell.DR{background:#1a0a2a;border-color:#6B3F9E;color:#9F77DD;}
+.punnett-cell.RD{background:#1a0a2a;border-color:#6B3F9E;color:#9F77DD;}
+.punnett-cell.RR{background:#2a1a0a;border-color:#c9a84c;color:#c9a84c;}
+.punnett-cell.correct{border-color:#4caf82!important;}
+.punnett-cell.wrong{border-color:#D4537E!important;animation:shake .3s;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-3px);}75%{transform:translateX(3px);};}
+.punnett-empty{background:transparent;}
+
+/* Trait result display */
+.trait-result{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:10px;padding:14px;margin-bottom:14px;text-align:center;}
+.trait-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#4caf82;margin-bottom:6px;}
+.trait-value{font-size:14px;color:#c8c4bc;line-height:1.65;}
+.trait-pct{font-family:'Fredoka One',cursive;font-size:24px;color:#c9a84c;display:block;margin:8px 0 4px;}
+
+/* Print card */
+.print-section{display:none;background:#fff;color:#111;border-radius:12px;padding:28px;margin-bottom:4px;position:relative;}
+.print-section.show{display:block;}
+.print-section::before{content:'PREVIEW';position:absolute;top:12px;right:16px;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;color:#eee;}
+.card-header{text-align:center;margin-bottom:20px;}
+.card-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:#111;text-transform:uppercase;letter-spacing:2px;line-height:1.1;margin-bottom:6px;}
+.card-sub{font-size:12px;color:#999;font-style:italic;}
+.card-divider{border:none;border-top:3px solid #4caf82;width:60px;margin:12px auto;}
+.card-word{font-family:'Fredoka One',cursive;font-size:32px;color:#1B7A78;letter-spacing:4px;text-align:center;margin-bottom:20px;}
+
+.card-section{background:#f8f7f4;border-radius:10px;padding:16px;margin-bottom:16px;}
+.card-section-title{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#4caf82;margin-bottom:10px;}
+.card-alleles{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:8px;}
+.card-allele{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:16px;}
+.card-allele-D{background:#D6EEEE;color:#0F4F4E;}
+.card-allele-R{background:#EDE4F7;color:#6B3F9E;}
+.card-allele-desc{font-size:13px;color:#555;line-height:1.5;}
+
+/* Print Punnett */
+.print-punnett{display:grid;grid-template-columns:36px 1fr 1fr;grid-template-rows:36px 1fr 1fr;gap:4px;width:fit-content;margin:12px auto 8px;}
+.print-punnett-header{background:#e8e4dc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursine;font-size:14px;color:#333;width:36px;height:36px;}
+.print-punnett-cell{width:70px;height:70px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:16px;border:1px solid #ddd;}
+.print-cell-DD{background:#D6EEEE;color:#0F4F4E;}
+.print-cell-DR{background:#EDE4F7;color:#6B3F9E;}
+.print-cell-RD{background:#EDE4F7;color:#6B3F9E;}
+.print-cell-RR{background:#FFF3D6;color:#C8860A;}
+
+.card-pct-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
+.card-pct{flex:1;min-width:100px;background:#fff;border:1px solid #e8e4dc;border-radius:8px;padding:10px;text-align:center;}
+.card-pct-val{font-family:'Fredoka One',cursive;font-size:22px;color:#1B7A78;display:block;}
+.card-pct-label{font-size:11px;color:#888;line-height:1.4;}
+
+.card-trait{background:#e8f5ee;border-left:4px solid #4caf82;border-radius:4px;padding:12px 14px;margin-bottom:12px;}
+.card-trait-title{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;margin-bottom:6px;}
+.card-trait-text{font-size:13px;color:#444;line-height:1.65;}
+.card-genetics{background:#fff9e6;border-left:4px solid #c9a84c;border-radius:4px;padding:12px 14px;margin-bottom:12px;}
+.card-genetics-title{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#C8860A;margin-bottom:6px;}
+.card-genetics-text{font-size:13px;color:#444;line-height:1.65;}
+.card-footer-sig{text-align:center;margin-top:14px;font-size:10px;color:#ccc;font-family:'Fredoka One',cursive;letter-spacing:1px;}
+
+.print-btn{width:100%;background:#0a0f14;color:#4caf82;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:14px;border:1.5px solid #4caf82;border-radius:10px;cursor:pointer;margin-top:12px;}
+.print-btn:hover{background:#4caf82;color:#111;}
+
+/* Interactive Punnett mode */
+.punnett-input-grid{display:grid;grid-template-columns:50px 1fr 1fr;grid-template-rows:50px 1fr 1fr;gap:6px;width:fit-content;margin:0 auto 16px;}
+.pi-header{width:50px;height:50px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:20px;border-radius:8px;background:#1a2a1a;}
+.pi-header.D{color:#4caf82;}
+.pi-header.R{color:#9F77DD;}
+.pi-cell{width:90px;height:90px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border:2px solid #1a2a1a;background:#0a0f14;transition:all .2s;gap:4px;}
+.pi-cell:hover{border-color:#4caf82;}
+.pi-cell.selected-DD{background:#0d2a28;border-color:#4caf82;}
+.pi-cell.selected-DR,.pi-cell.selected-RD{background:#1a0a2a;border-color:#9F77DD;}
+.pi-cell.selected-RR{background:#1a1a0d;border-color:#c9a84c;}
+.pi-cell-opt{font-family:'Fredoka One',cursive;font-size:13px;color:#333;padding:4px 8px;border-radius:4px;cursor:pointer;transition:all .2s;}
+.pi-cell-opt:hover{color:#fff;}
+.pi-cell-opt.DD{color:#4caf82;}
+.pi-cell-opt.DR,.pi-cell-opt.RD{color:#9F77DD;}
+.pi-cell-opt.RR{color:#c9a84c;}
+
+.check-btn{background:#4caf82;color:#111;font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:12px 24px;border:none;border-radius:10px;cursor:pointer;font-weight:700;margin-top:12px;}
+.result{display:none;border-radius:14px;padding:22px;text-align:center;margin-top:14px;}
+.result.show{display:block;}
+.result.correct{background:rgba(76,175,130,.08);border:2px solid #4caf82;}
+.result.wrong{background:rgba(212,83,126,.08);border:2px solid #D4537E;}
+.result-emoji{font-size:38px;display:block;margin-bottom:10px;}
+.result-title{font-family:'Playfair Display',serif;font-size:20px;margin-bottom:8px;}
+.result.correct .result-title{color:#4caf82;}
+.result.wrong .result-title{color:#D4537E;}
+.result-text{font-size:13px;color:#c8c4bc;line-height:1.7;max-width:560px;margin:0 auto;}
+
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #0a151f;max-width:900px;margin:32px auto 0;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:12px;color:#1a2a1a;letter-spacing:1px;}
+
+@media print{
+  body{background:#fff;padding:0;}
+  .hero,.mode-tabs,.workspace .step-card,.action-row,.result,.print-btn,.back-btn,.footer{display:none!important;}
+  .print-section{display:block!important;position:static;box-shadow:none;border:none;padding:0;border-radius:0;}
+  .print-section::before{display:none;}
+  @page{size:letter;margin:.5in;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-brand">AP Bio + T.I.D.E. &middot; Exploration Kiosk</div>
+  <h1 class="hero-title">DNA<br><span>Trait Card</span></h1>
+  <p class="hero-sub">Every trait you have &mdash; eye color, tongue rolling, earlobe shape &mdash; is determined by dominant and recessive alleles inherited from your parents. Use a Punnett square to predict the probability of traits and decode the science of inheritance!</p>
+  <div style="font-family:'Fredoka One',cursive;font-size:11px;color:#4caf82;letter-spacing:1px;margin-top:14px;">Elena O'Brien &middot; AP Biology + T.I.D.E. &middot; Spring 2026</div>
+</div>
+
+<button type="button" onclick="window.location.href='APBio_TIDE_Kiosk_Menu.html'" class="back-btn">&#8592; Back to Kiosk Menu</button>
+
+<div class="mode-tabs">
+  <button class="mode-tab active" onclick="switchMode('make')">
+    <span class="mode-tab-icon">&#128196;</span>
+    <span class="mode-tab-title">Make It</span>
+    <span class="mode-tab-desc">Generate a printable DNA Trait Card with a Punnett square</span>
+  </button>
+  <button class="mode-tab" onclick="switchMode('solve')">
+    <span class="mode-tab-icon">&#129516;</span>
+    <span class="mode-tab-title">Solve It</span>
+    <span class="mode-tab-desc">Complete an interactive Punnett square to decode the hidden trait</span>
+  </button>
+</div>
+
+<div class="workspace">
+
+<!-- MAKE IT -->
+<div class="mode-panel active" id="panel-make">
+  <div class="step-card" style="margin-top:20px;">
+    <div class="step-num">How it works</div>
+    <div class="step-title">Dominant &amp; Recessive Alleles</div>
+    <div class="step-desc">Every trait in your body is controlled by two alleles &mdash; one from each parent. A dominant allele (D) is expressed whenever it is present. A recessive allele (R) is only expressed when both alleles are recessive (RR). A Punnett square predicts the probability of each combination appearing in offspring.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+      <div style="background:#0d2a28;border:1px solid #1B7A78;border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-family:'Fredoka One',cursive;font-size:28px;color:#4caf82;margin-bottom:6px;">DD</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:11px;color:#4caf82;margin-bottom:4px;">Homozygous Dominant</div>
+        <div style="font-size:11px;color:#c8c4bc;line-height:1.4;">Two dominant alleles. Dominant trait is expressed.</div>
+      </div>
+      <div style="background:#1a0a2a;border:1px solid #6B3F9E;border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-family:'Fredoka One',cursive;font-size:28px;color:#9F77DD;margin-bottom:6px;">DR</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:11px;color:#9F77DD;margin-bottom:4px;">Heterozygous</div>
+        <div style="font-size:11px;color:#c8c4bc;line-height:1.4;">One of each. Dominant trait is still expressed.</div>
+      </div>
+      <div style="background:#1a1a0d;border:1px solid #c9a84c;border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-family:'Fredoka One',cursive;font-size:28px;color:#c9a84c;margin-bottom:6px;">RR</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:11px;color:#c9a84c;margin-bottom:4px;">Homozygous Recessive</div>
+        <div style="font-size:11px;color:#c8c4bc;line-height:1.4;">Two recessive alleles. Recessive trait is expressed.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-num">Step 1 of 2</div>
+    <div class="step-title">Choose your OneWord</div>
+    <div class="step-desc">Each OneWord is linked to a real human trait and its dominant/recessive allele pattern.</div>
+    <div class="ow-grid">
+      <button class="ow-btn" onclick="selectMakeWord('ABSORB',this)">ABSORB</button>
+      <button class="ow-btn" onclick="selectMakeWord('ADAPT',this)">ADAPT</button>
+      <button class="ow-btn" onclick="selectMakeWord('ANCHOR',this)">ANCHOR</button>
+      <button class="ow-btn" onclick="selectMakeWord('BALANCE',this)">BALANCE</button>
+      <button class="ow-btn" onclick="selectMakeWord('BLOOM',this)">BLOOM</button>
+      <button class="ow-btn" onclick="selectMakeWord('BREATHE',this)">BREATHE</button>
+      <button class="ow-btn" onclick="selectMakeWord('CLEAR',this)">CLEAR</button>
+      <button class="ow-btn" onclick="selectMakeWord('CONNECT',this)">CONNECT</button>
+      <button class="ow-btn" onclick="selectMakeWord('CYCLE',this)">CYCLE</button>
+      <button class="ow-btn" onclick="selectMakeWord('EMERGE',this)">EMERGE</button>
+      <button class="ow-btn" onclick="selectMakeWord('FILTER',this)">FILTER</button>
+      <button class="ow-btn" onclick="selectMakeWord('FLOW',this)">FLOW</button>
+      <button class="ow-btn" onclick="selectMakeWord('GROW',this)">GROW</button>
+      <button class="ow-btn" onclick="selectMakeWord('HEAL',this)">HEAL</button>
+      <button class="ow-btn" onclick="selectMakeWord('MIGRATE',this)">MIGRATE</button>
+      <button class="ow-btn" onclick="selectMakeWord('PERSIST',this)">PERSIST</button>
+      <button class="ow-btn" onclick="selectMakeWord('RENEW',this)">RENEW</button>
+      <button class="ow-btn" onclick="selectMakeWord('RESTORE',this)">RESTORE</button>
+      <button class="ow-btn" onclick="selectMakeWord('RETURN',this)">RETURN</button>
+      <button class="ow-btn" onclick="selectMakeWord('RISE',this)">RISE</button>
+      <button class="ow-btn" onclick="selectMakeWord('ROOT',this)">ROOT</button>
+      <button class="ow-btn" onclick="selectMakeWord('SHINE',this)">SHINE</button>
+      <button class="ow-btn" onclick="selectMakeWord('SUSTAIN',this)">SUSTAIN</button>
+      <button class="ow-btn" onclick="selectMakeWord('THRIVE',this)">THRIVE</button>
+      <button class="ow-btn" onclick="selectMakeWord('TRANSFORM',this)">TRANSFORM</button>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-num">Step 2 of 2</div>
+    <div class="step-title">Generate your DNA Trait Card</div>
+    <button class="gen-btn off" id="genBtnMake" onclick="generateCard()">&#128196; Generate My DNA Trait Card</button>
+  </div>
+
+  <!-- Print Section -->
+  <div class="print-section" id="printSection">
+    <div class="card-header">
+      <div class="card-title">DNA Trait Card</div>
+      <hr class="card-divider"/>
+      <div class="card-sub">From a Kellam High School student &mdash; made just for you &#128149;</div>
+    </div>
+    <div class="card-word" id="cardWord"></div>
+
+    <div class="card-section">
+      <div class="card-section-title">&#129516; Your Trait</div>
+      <div class="card-alleles" id="cardAlleles"></div>
+      <div class="card-allele-desc" id="cardAllelDesc"></div>
+    </div>
+
+    <div class="card-section">
+      <div class="card-section-title">&#9974; Punnett Square &mdash; cross two heterozygous (DR) parents</div>
+      <div class="print-punnett" id="printPunnett"></div>
+      <div class="card-pct-row" id="cardPcts"></div>
+    </div>
+
+    <div class="card-trait" id="cardTrait">
+      <div class="card-trait-title">&#127807; OneWord Connection</div>
+      <div class="card-trait-text" id="cardTraitText"></div>
+    </div>
+    <div class="card-genetics" id="cardGenetics">
+      <div class="card-genetics-title">&#129516; Genetics Fact</div>
+      <div class="card-genetics-text" id="cardGeneticsText"></div>
+    </div>
+    <div class="card-footer-sig"></div>
+  </div>
+  <button class="print-btn" id="printBtn" onclick="window.print()" style="display:none !important;" hidden>&#128438; Print This DNA Trait Card</button>
+</div>
+
+<!-- SOLVE IT -->
+<div class="mode-panel" id="panel-solve">
+  <div class="step-card" style="margin-top:20px;">
+    <div class="step-num">Step 1 of 2</div>
+    <div class="step-title">Choose a OneWord to solve</div>
+    <div class="step-desc">Each OneWord is connected to a real human trait. Complete the Punnett square to predict the probability of each genotype &mdash; then decode what the dominant trait means for that OneWord!</div>
+    <div class="ow-grid">
+      <button class="ow-btn" onclick="selectSolveWord('ABSORB',this)">ABSORB</button>
+      <button class="ow-btn" onclick="selectSolveWord('ADAPT',this)">ADAPT</button>
+      <button class="ow-btn" onclick="selectSolveWord('ANCHOR',this)">ANCHOR</button>
+      <button class="ow-btn" onclick="selectSolveWord('BALANCE',this)">BALANCE</button>
+      <button class="ow-btn" onclick="selectSolveWord('BLOOM',this)">BLOOM</button>
+      <button class="ow-btn" onclick="selectSolveWord('BREATHE',this)">BREATHE</button>
+      <button class="ow-btn" onclick="selectSolveWord('CLEAR',this)">CLEAR</button>
+      <button class="ow-btn" onclick="selectSolveWord('CONNECT',this)">CONNECT</button>
+      <button class="ow-btn" onclick="selectSolveWord('CYCLE',this)">CYCLE</button>
+      <button class="ow-btn" onclick="selectSolveWord('EMERGE',this)">EMERGE</button>
+      <button class="ow-btn" onclick="selectSolveWord('FILTER',this)">FILTER</button>
+      <button class="ow-btn" onclick="selectSolveWord('FLOW',this)">FLOW</button>
+      <button class="ow-btn" onclick="selectSolveWord('GROW',this)">GROW</button>
+      <button class="ow-btn" onclick="selectSolveWord('HEAL',this)">HEAL</button>
+      <button class="ow-btn" onclick="selectSolveWord('MIGRATE',this)">MIGRATE</button>
+      <button class="ow-btn" onclick="selectSolveWord('PERSIST',this)">PERSIST</button>
+      <button class="ow-btn" onclick="selectSolveWord('RENEW',this)">RENEW</button>
+      <button class="ow-btn" onclick="selectSolveWord('RESTORE',this)">RESTORE</button>
+      <button class="ow-btn" onclick="selectSolveWord('RETURN',this)">RETURN</button>
+      <button class="ow-btn" onclick="selectSolveWord('RISE',this)">RISE</button>
+      <button class="ow-btn" onclick="selectSolveWord('ROOT',this)">ROOT</button>
+      <button class="ow-btn" onclick="selectSolveWord('SHINE',this)">SHINE</button>
+      <button class="ow-btn" onclick="selectSolveWord('SUSTAIN',this)">SUSTAIN</button>
+      <button class="ow-btn" onclick="selectSolveWord('THRIVE',this)">THRIVE</button>
+      <button class="ow-btn" onclick="selectSolveWord('TRANSFORM',this)">TRANSFORM</button>
+    </div>
+  </div>
+
+  <div class="step-card" id="solveDisplay" style="display:none;">
+    <div class="step-num">Step 2 of 2 &mdash; Complete the Punnett Square</div>
+    <div class="step-title" id="solveTitle"></div>
+    <div class="step-desc" id="solveDesc"></div>
+    <div style="font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#4caf82;margin-bottom:12px;">&#9974; Click each cell to cycle through the possible genotypes: DD &rarr; DR &rarr; RD &rarr; RR</div>
+    <div class="punnett-input-grid" id="solveGrid"></div>
+    <button class="check-btn" onclick="checkPunnett()">&#10003; Check My Punnett Square</button>
+    <div class="result" id="solveResult">
+      <span class="result-emoji" id="solveEmoji"></span>
+      <div class="result-title" id="solveResTitle"></div>
+      <div class="result-text" id="solveResText"></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
+</div>
+
+<script>
+// Each OneWord linked to a real trait with dominant/recessive info
+var TRAITS = {
+  ABSORB:{trait:'Tongue Rolling',D:'Can roll tongue',R:'Cannot roll tongue',dominantAllele:'T',recessiveAllele:'t',connection:'Your tongue muscles absorb signals from your brain telling them how to curl. Tongue rolling was long thought to be purely genetic, but scientists now know it\'s more complex!',genetics:'About 65-80% of people can roll their tongue. The tongue-rolling gene was one of the first traits used to teach Mendelian genetics in classrooms.'},
+  ADAPT:{trait:'Earwax Type',D:'Wet earwax (sticky)',R:'Dry earwax (flaky)',dominantAllele:'E',recessiveAllele:'e',connection:'Earwax type is controlled by a single gene called ABCC11. Populations adapted to cold, dry climates are more likely to carry the recessive dry earwax allele.',genetics:'Dry earwax is most common in East Asian populations (80-95%) while wet earwax is most common in African and European populations (97%). This is one of the clearest examples of natural selection in humans!'},
+  ANCHOR:{trait:'Attached Earlobes',D:'Free (hanging) earlobes',R:'Attached earlobes',dominantAllele:'A',recessiveAllele:'a',connection:'Earlobe attachment is one of the classic anchoring traits in genetics education. Free earlobes hang down while attached earlobes are connected directly to the side of the face.',genetics:'About 64% of people have free earlobes (dominant) and 36% have attached earlobes (recessive). Earlobe attachment is controlled by multiple genes, but is simplified to one gene pair for classroom genetics.'},
+  BALANCE:{trait:'Hand Dominance',D:'Right-handed',R:'Left-handed',dominantAllele:'H',recessiveAllele:'h',connection:'Hand dominance relates to brain hemisphere balance. The left brain controls the right hand. Most people show dominant right-handedness, but true ambidexterity is extremely rare.',genetics:'About 85-90% of people are right-handed. Handedness is actually controlled by many genes (polygenic), not just one. Left-handedness runs in families but does not follow simple Mendelian inheritance.'},
+  BLOOM:{trait:'Freckles',D:'Has freckles',R:'No freckles',dominantAllele:'F',recessiveAllele:'f',connection:'Freckles bloom in the sun because UV light triggers melanin production in freckle-prone skin. People with the dominant allele produce clusters of melanin rather than spreading it evenly.',genetics:'Freckles are caused by the MC1R gene. Sun exposure causes freckles to "bloom" darker in summer and fade in winter. Redheads are most likely to have freckles due to a related MC1R variant.'},
+  BREATHE:{trait:'Ability to Smell Asparagus',D:'Can smell asparagus in urine',R:'Cannot smell asparagus',dominantAllele:'A',recessiveAllele:'a',connection:'After eating asparagus, a sulfur compound is produced during digestion. Whether you can BREATHE in that distinctive smell depends on which version of an olfactory receptor gene you carry.',genetics:'About 22% of people carry the dominant allele that allows them to detect the asparagus smell. This is one of the most striking examples of how genetic variation affects sensory perception!'},
+  CLEAR:{trait:'Blue Eyes',D:'Brown/dark eyes',R:'Blue eyes',dominantAllele:'E',recessiveAllele:'e',connection:'Clear blue eyes result from low melanin in the iris. The recessive phenotype is a beautiful example of how the ABSENCE of a gene product can create a visible trait.',genetics:'Blue eyes originated as a single mutation about 6,000-10,000 years ago in one person near the Black Sea. Every blue-eyed person on Earth is descended from that one ancestor. Eye color is actually polygenic, but the OCA2 gene is the major contributor.'},
+  CONNECT:{trait:'Hitchhiker\'s Thumb',D:'Straight thumb',R:'Hitchhiker\'s thumb (bends back)',dominantAllele:'T',recessiveAllele:'t',connection:'Hitchhiker\'s thumb connects genetics to flexibility. The recessive allele allows the thumb to hyperextend backward beyond 45 degrees. It\'s a harmless variant that affects about 24% of people.',genetics:'The ability to extend your thumb backward is controlled by a gene affecting ligament flexibility. It\'s a classic genetics classroom demonstration because students can observe their own phenotype immediately!'},
+  CYCLE:{trait:'PTC Tasting',D:'Can taste PTC (bitter)',R:'Cannot taste PTC',dominantAllele:'T',recessiveAllele:'t',connection:'PTC (phenylthiocarbamide) is a compound that tastes extremely bitter to some people and completely tasteless to others. This cycles back to our ancient need to detect toxic plants!',genetics:'About 70% of people carry at least one dominant allele and can taste bitterness in PTC. This trait is used in genetics labs worldwide. The ability to taste bitterness in plants may have helped our ancestors avoid poisonous foods.'},
+  EMERGE:{trait:'Cleft Chin',D:'Smooth chin',R:'Cleft chin (dimple)',dominantAllele:'C',recessiveAllele:'c',connection:'A cleft chin emerges from incomplete fusion of the two halves of the jaw during development. It is one of the most visually recognizable recessive traits in genetics.',genetics:'Cleft chin is actually influenced by multiple genes. It appears more commonly in males and is more visible in Europeans. Famous people with cleft chins include many movie stars, which is why it\'s sometimes called the "Hollywood chin."'},
+  FILTER:{trait:'Cilantro Taste',D:'Normal taste',R:'Cilantro tastes like soap',dominantAllele:'O',recessiveAllele:'o',connection:'Your taste receptors filter flavor signals. The recessive variant of the OR6A2 gene makes cilantro taste like dish soap by detecting the same aldehyde compounds found in both cilantro AND soap!',genetics:'About 4-14% of people perceive cilantro as soapy. This is a fascinating example of how genetic variation in olfactory receptor genes creates completely different taste experiences from the same food.'},
+  FLOW:{trait:'Blood Type (ABO)',D:'A or B type',R:'O type (universal donor)',dominantAllele:'A/B',recessiveAllele:'O',connection:'Blood flows through your veins carrying markers on red blood cells that are determined by your genes. Type O is recessive and makes someone a universal donor because they lack the A and B antigens.',genetics:'Blood type is controlled by three alleles (IA, IB, and i). IA and IB are codominant while i is recessive. Type O (ii) is the most common blood type worldwide and is in highest demand for blood transfusions.'},
+  GROW:{trait:'Height',D:'Tall',R:'Short',dominantAllele:'H',recessiveAllele:'h',connection:'Growing tall requires the right combination of hundreds of genes plus proper nutrition. This is an example of a polygenic trait \u2014 controlled by many genes working together rather than just one.',genetics:'Height is controlled by over 700 genes and is one of the most studied polygenic traits. Nutrition and environment can influence height significantly. The Netherlands has the tallest average population in the world (183cm for men).'},
+  HEAL:{trait:'Widow\'s Peak',D:'Widow\'s peak (V-shaped hairline)',R:'Straight hairline',dominantAllele:'W',recessiveAllele:'w',connection:'A widow\'s peak is a V-shaped point in the center of the hairline. It\'s one of the classic dominant traits used in genetics education, along with how our hair grows back after injury.',genetics:'Widow\'s peak is dominant and appears in about 33% of the population. It is named after historical mourning caps worn by widows that had a V-shaped point. The trait follows relatively simple Mendelian inheritance.'},
+  MIGRATE:{trait:'Lactose Tolerance',D:'Lactose tolerant (can digest milk)',R:'Lactose intolerant',dominantAllele:'L',recessiveAllele:'l',connection:'The ability to digest milk as an adult migrated through human populations along with cattle herding cultures. Northern Europeans developed lactose tolerance independently from East Africans as both groups domesticated cattle.',genetics:'About 65% of the world\'s adult population is lactose intolerant. Lactose tolerance evolved separately at least 3 times in different populations. It is one of the most recent and clear examples of natural selection in modern humans.'},
+  PERSIST:{trait:'Tongue Folding',D:'Can fold tongue',R:'Cannot fold tongue',dominantAllele:'F',recessiveAllele:'f',connection:'Tongue folding (touching the tip of the tongue to the roof of the mouth and folding it back) requires persistence to learn whether you carry the dominant allele. About 50% of people can do it.',genetics:'Tongue folding is different from tongue rolling and is controlled by a separate gene. Many tongue traits are used in introductory genetics because they are easy to observe and ethically appropriate to study in a classroom setting.'},
+  RENEW:{trait:'Fingerprint Pattern',D:'Looped fingerprint',R:'Whorl or arch pattern',dominantAllele:'L',recessiveAllele:'l',connection:'Fingerprints form during fetal development and never change \u2014 they renew themselves if damaged and always return to the exact same pattern. The pattern type is influenced by genetics.',genetics:'About 60-65% of people have loop patterns, 30-35% have whorls, and 5% have arch patterns. Fingerprint patterns are influenced by both genetics and random variations during development, making identical twins have slightly different prints.'},
+  RESTORE:{trait:'Immune Response Strength',D:'Strong immune response',R:'Weaker immune response',dominantAllele:'I',recessiveAllele:'i',connection:'Your immune system restores itself after infection. Certain HLA gene variants give some people naturally stronger immune responses, helping them fight off infections more effectively.',genetics:'HLA (Human Leukocyte Antigen) genes are among the most variable in the human genome. This diversity exists because no single immune type is best against all pathogens. Genetic diversity in immunity protects our species as a whole.'},
+  RETURN:{trait:'Homing Ability / Spatial Navigation',D:'Strong sense of direction',R:'Poor sense of direction',dominantAllele:'N',recessiveAllele:'n',connection:'Some people always know which way is north. Spatial navigation ability has a genetic component linked to the hippocampus. Animals that migrate use similar brain structures to return home across thousands of miles.',genetics:'The RELN gene and variants near the EPHA3 gene are associated with spatial navigation ability. London taxi drivers famously develop larger hippocampi after years of navigation, showing both genetic and environmental influences.'},
+  RISE:{trait:'Morning Person vs Night Owl',D:'Morning person (early riser)',R:'Night owl (late riser)',dominantAllele:'M',recessiveAllele:'m',connection:'Your internal clock determines when you naturally rise. Chronotype \u2014 whether you are a morning person or night owl \u2014 has a strong genetic basis controlled by clock genes like PER3.',genetics:'The PER3 gene has two variants: a longer version associated with morning preference and a shorter version with evening preference. Teenagers naturally shift toward evening chronotypes due to hormonal changes, then shift back with age.'},
+  ROOT:{trait:'Ability to Curl Sides of Tongue',D:'Can curl tongue sides upward',R:'Cannot curl tongue sides',dominantAllele:'C',recessiveAllele:'c',connection:'This tongue trait connects to how deeply rooted genetics is in even the most minor physical characteristics. The ability to curl the sides of the tongue into a U-shape is a separate gene from tongue rolling.',genetics:'Multiple independent tongue traits have been mapped to different genes, demonstrating that even a single organ can express dozens of independently inherited characteristics. Your tongue alone is a lesson in genetics!'},
+  SHINE:{trait:'Bioluminescent Sensitivity',D:'Normal vision',R:'Enhanced low-light vision (night vision)',dominantAllele:'V',recessiveAllele:'v',connection:'While humans lack true bioluminescence, some people have variants in rhodopsin genes that make them better at seeing in dim light \u2014 similar to how animals that shine in the dark evolved enhanced photoreceptors.',genetics:'Rhodopsin is the light-sensitive protein in rod cells. Variants in the RHO gene affect how sensitive your night vision is. Animals like cats have a reflective layer (tapetum lucidum) behind the retina \u2014 which is why their eyes shine in the dark.'},
+  SUSTAIN:{trait:'Sickle Cell Trait',D:'Normal hemoglobin',R:'Sickle cell anemia',dominantAllele:'H',recessiveAllele:'h',connection:'The sickle cell allele is actually sustained in human populations because carriers (Dh) have resistance to malaria. This is one of the most powerful examples of how a "harmful" recessive allele can be maintained by natural selection.',genetics:'Sickle cell anemia is caused by a single point mutation. Carriers (Dh) have one normal and one sickle allele and show resistance to malaria. The highest frequency of the sickle allele appears in regions where malaria is most common.'},
+  THRIVE:{trait:'MAOA Gene (Warrior Gene)',D:'High MAOA activity',R:'Low MAOA activity',dominantAllele:'M',recessiveAllele:'m',connection:'The MAOA gene determines how quickly your brain breaks down mood-related chemicals. High activity variants help people remain calm under stress \u2014 they thrive in challenging environments by recovering faster emotionally.',genetics:'MAOA was called the "warrior gene" in early research, though the nickname is oversimplified. The gene does affect serotonin and dopamine processing. It is X-linked, meaning it is inherited differently in males and females.'},
+  TRANSFORM:{trait:'Taste Receptor Sensitivity',D:'Supertaster',R:'Non-taster',dominantAllele:'T',recessiveAllele:'t',connection:'Supertasters have more taste buds than average and experience flavors more intensely. The same food literally transforms into a different experience depending on your taste receptor gene variants.',genetics:'About 25% of people are supertasters, 50% are medium tasters, and 25% are non-tasters. Supertasters often dislike bitter vegetables like broccoli and Brussels sprouts. This trait is controlled by the TAS2R38 gene on chromosome 7.'}
+};
+
+function switchMode(mode) {
+  document.getElementById('panel-make').classList.toggle('active', mode==='make');
+  document.getElementById('panel-solve').classList.toggle('active', mode==='solve');
+  var tabs = document.querySelectorAll('.mode-tab');
+  tabs[0].classList.toggle('active', mode==='make');
+  tabs[1].classList.toggle('active', mode==='solve');
+}
+
+// MAKE IT
+var makeWord = '';
+function selectMakeWord(w,btn) {
+  makeWord = w;
+  var bs = document.querySelectorAll('#panel-make .ow-btn');
+  for(var i=0;i<bs.length;i++) bs[i].className='ow-btn';
+  btn.className='ow-btn on';
+  document.getElementById('genBtnMake').className='gen-btn';
+}
+
+function generateCard() {
+  if(!makeWord) return;
+  var t = TRAITS[makeWord];
+  if(!t) return;
+
+  document.getElementById('cardWord').textContent = makeWord;
+
+  // Alleles
+  var allelesHtml = '<div class="card-allele card-allele-D">'+t.dominantAllele+'</div>' +
+    '<span style="font-size:13px;color:#555;">= '+t.D+'</span>' +
+    '<div class="card-allele card-allele-R">'+t.recessiveAllele+'</div>' +
+    '<span style="font-size:13px;color:#555;">= '+t.R+'</span>';
+  document.getElementById('cardAlleles').innerHTML = allelesHtml;
+  document.getElementById('cardAllelDesc').textContent = 'Trait: '+t.trait;
+
+  // Punnett square (DR x DR cross)
+  var D = t.dominantAllele, R = t.recessiveAllele;
+  var punnettHtml =
+    '<div class="print-punnett-header" style="background:transparent;"></div>' +
+    '<div class="print-punnett-header" style="background:#D6EEEE;color:#0F4F4E;font-family:Fredoka One,cursive;font-size:16px;width:70px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:6px;">'+D+'</div>' +
+    '<div class="print-punnett-header" style="background:#EDE4F7;color:#6B3F9E;font-family:Fredoka One,cursive;font-size:16px;width:70px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:6px;">'+R+'</div>' +
+    '<div class="print-punnett-header" style="background:#D6EEEE;color:#0F4F4E;font-family:Fredoka One,cursive;font-size:16px;width:36px;height:70px;display:flex;align-items:center;justify-content:center;border-radius:6px;">'+D+'</div>' +
+    '<div class="print-punnett-cell print-cell-DD">'+D+D+'</div>' +
+    '<div class="print-punnett-cell print-cell-DR">'+D+R+'</div>' +
+    '<div class="print-punnett-header" style="background:#EDE4F7;color:#6B3F9E;font-family:Fredoka One,cursive;font-size:16px;width:36px;height:70px;display:flex;align-items:center;justify-content:center;border-radius:6px;">'+R+'</div>' +
+    '<div class="print-punnett-cell print-cell-RD">'+R+D+'</div>' +
+    '<div class="print-punnett-cell print-cell-RR">'+R+R+'</div>';
+  document.getElementById('printPunnett').innerHTML = punnettHtml;
+
+  // Percentages
+  document.getElementById('cardPcts').innerHTML =
+    '<div class="card-pct"><span class="card-pct-val">25%</span><span class="card-pct-label">'+D+D+' Homozygous Dominant<br>'+t.D+'</span></div>' +
+    '<div class="card-pct"><span class="card-pct-val">50%</span><span class="card-pct-label">'+D+R+' Heterozygous<br>'+t.D+'</span></div>' +
+    '<div class="card-pct"><span class="card-pct-val">25%</span><span class="card-pct-label">'+R+R+' Homozygous Recessive<br>'+t.R+'</span></div>';
+
+  document.getElementById('cardTraitText').textContent = t.connection;
+  document.getElementById('cardGeneticsText').textContent = t.genetics;
+
+  document.getElementById('printSection').classList.add('show');
+  // Tier 2: print button intentionally suppressed — exploration only
+  document.getElementById('printSection').scrollIntoView({behavior:'smooth'});
+}
+
+// SOLVE IT
+var solveWord = '';
+var cellStates = ['','','',''];
+var cellCycles = ['DD','DR','RD','RR'];
+
+function selectSolveWord(w,btn) {
+  solveWord = w;
+  var bs = document.querySelectorAll('#panel-solve .ow-btn');
+  for(var i=0;i<bs.length;i++) bs[i].className='ow-btn';
+  btn.className='ow-btn on';
+  buildSolveDisplay();
+}
+
+function buildSolveDisplay() {
+  var t = TRAITS[solveWord];
+  if(!t) return;
+  var D = t.dominantAllele, R = t.recessiveAllele;
+
+  document.getElementById('solveTitle').textContent = 'Trait: ' + t.trait;
+  document.getElementById('solveDesc').textContent = 'Cross two heterozygous parents ('+D+R+' \u00d7 '+D+R+'). Click each cell to cycle through the four possible genotype combinations. The dominant allele is '+D+' ('+t.D+') and the recessive allele is '+R+' ('+t.R+').';
+
+  cellStates = ['','','',''];
+
+  var gridHtml =
+    '<div class="pi-header" style="background:transparent;"></div>' +
+    '<div class="pi-header D">'+D+'</div>' +
+    '<div class="pi-header R">'+R+'</div>' +
+    '<div class="pi-header D">'+D+'</div>' +
+    '<div class="pi-cell" id="pc0" onclick="cycleCell(0)"><span style="font-size:22px;color:#333;">?</span></div>' +
+    '<div class="pi-cell" id="pc1" onclick="cycleCell(1)"><span style="font-size:22px;color:#333;">?</span></div>' +
+    '<div class="pi-header R">'+R+'</div>' +
+    '<div class="pi-cell" id="pc2" onclick="cycleCell(2)"><span style="font-size:22px;color:#333;">?</span></div>' +
+    '<div class="pi-cell" id="pc3" onclick="cycleCell(3)"><span style="font-size:22px;color:#333;">?</span></div>';
+
+  document.getElementById('solveGrid').innerHTML = gridHtml;
+  document.getElementById('solveResult').className='result';
+  document.getElementById('solveDisplay').style.display='block';
+  document.getElementById('solveDisplay').scrollIntoView({behavior:'smooth'});
+}
+
+function cycleCell(idx) {
+  var t = TRAITS[solveWord];
+  var D = t.dominantAllele, R = t.recessiveAllele;
+  var options = [D+D, D+R, R+D, R+R];
+  var cur = cellStates[idx];
+  var curIdx = options.indexOf(cur);
+  var next = options[(curIdx+1) % options.length];
+  cellStates[idx] = next;
+  var el = document.getElementById('pc'+idx);
+
+  // Determine color class
+  var colorClass = next===D+D?'selected-DD':next===D+R?'selected-DR':next===R+D?'selected-RD':'selected-RR';
+  var textColor = next===D+D?'#4caf82':next===D+R||next===R+D?'#9F77DD':'#c9a84c';
+  el.className = 'pi-cell '+colorClass;
+  el.innerHTML = '<span style="font-family:Fredoka One,cursive;font-size:22px;color:'+textColor+';">'+next+'</span>';
+}
+
+function checkPunnett() {
+  var t = TRAITS[solveWord];
+  var D = t.dominantAllele, R = t.recessiveAllele;
+  var correct = [D+D, D+R, R+D, R+R];
+  var allCorrect = true;
+
+  for(var i=0;i<4;i++) {
+    var el = document.getElementById('pc'+i);
+    if(cellStates[i]===correct[i]) {
+      el.classList.add('correct');
+    } else {
+      el.classList.add('wrong');
+      allCorrect = false;
+    }
+  }
+
+  var r = document.getElementById('solveResult');
+  r.className = 'result show '+(allCorrect?'correct':'wrong');
+  document.getElementById('solveEmoji').textContent = allCorrect?'\u{1F9EC}':'\u{1F4A1}';
+  document.getElementById('solveResTitle').textContent = allCorrect?
+    'Perfect Punnett Square! '+solveWord+' decoded!' :
+    'Not quite \u2014 check the highlighted cells!';
+  document.getElementById('solveResText').textContent = allCorrect?
+    t.connection + ' ' + t.genetics :
+    'Remember: the top headers are the parent\'s '+D+' and '+R+' alleles. The side headers are the other parent\'s '+D+' and '+R+' alleles. Each cell shows what happens when those two alleles combine!';
+  r.scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
