@@ -106,7 +106,8 @@ body{font-family:'Nunito',sans-serif;background:#1A1A1A;min-height:100vh;color:#
   .header,.sidebar,.preview-header,.btn-row,.instructions{display:none!important}
   .app{grid-template-columns:1fr;display:block}
   .main{background:#fff;padding:16px}
-  .bookmark-pair{gap:32px;justify-content:center}
+  .bookmark-pair{gap:0;justify-content:center}
+  .bookmark-pair>.bookmark-col:first-child .bookmark{border-right:1px dashed #666}
   .bookmark{box-shadow:none;border:1px solid #ddd}
   .bm-back{background:#FFFDF5}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -410,7 +411,7 @@ function resetToDefault(){
 
 function savePDF(){
   var style = document.createElement('style');
-  style.textContent = '@media print { .header,.sidebar,.preview-header,.btn-row,.instructions{display:none!important} .app{grid-template-columns:1fr;display:block} .main{background:#fff;padding:16px} .bookmark-pair{gap:32px;justify-content:center} .bookmark{box-shadow:none;border:1px solid #ddd} *{-webkit-print-color-adjust:exact;print-color-adjust:exact} }';
+  style.textContent = '@media print { .header,.sidebar,.preview-header,.btn-row,.instructions{display:none!important} .app{grid-template-columns:1fr;display:block} .main{background:#fff;padding:16px} .bookmark-pair{gap:0;justify-content:center} .bookmark-pair>.bookmark-col:first-child .bookmark{border-right:1px dashed #666} .bookmark{box-shadow:none;border:1px solid #ddd} *{-webkit-print-color-adjust:exact;print-color-adjust:exact} }';
   document.head.appendChild(style);
   window.print();
   setTimeout(function(){ document.head.removeChild(style); }, 1000);
