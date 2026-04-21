@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Letter Kiosk · Smile Bags · A Word &amp; Wonder Experience</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,500&family=Inter:wght@400;500;600;700;800&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1e2838;
+    --ink-soft:#3d4a5e;
+    --muted:#6b7689;
+    --bg:#f4efe3;
+    --bg-deep:#ebe3d0;
+    --card:#ffffff;
+    --paper:#fffef5;
+    --border:#d6cdb8;
+    --gold:#b89537;
+    --gold-soft:#d4b865;
+    --elementary:#c9683a;
+    --elementary-soft:#f5e1d1;
+    --middle:#5e7a9c;
+    --middle-soft:#dbe5f0;
+    --high:#6a7a3a;
+    --high-soft:#e0e8cc;
+    --shadow:0 2px 8px rgba(30,40,56,.08);
+    --shadow-hover:0 6px 18px rgba(30,40,56,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    line-height:1.5;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  header{
+    background:var(--ink);
+    color:#f8f3e5;
+    padding:18px 32px;
+    border-bottom:3px solid var(--gold);
+  }
+  .header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .brand{display:flex;flex-direction:column;gap:2px}
+  .brand-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;letter-spacing:.5px}
+  .brand-sub{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;opacity:.7;font-weight:500}
+  .drive-pill{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--ink);padding:10px 18px;border-radius:999px;text-decoration:none;font-size:13px;font-weight:600;letter-spacing:.3px;transition:transform .15s ease, box-shadow .15s ease;box-shadow:0 2px 6px rgba(0,0,0,.15);}
+  .drive-pill:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(0,0,0,.25)}
+  .drive-pill svg{width:16px;height:16px}
+
+  main{flex:1;max-width:1400px;margin:0 auto;width:100%;padding:32px;position:relative}
+  .screen{display:none;animation:fadeIn .3s ease}
+  .screen.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+  .intro{max-width:720px;margin:0 auto 32px;text-align:center}
+  .eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}
+  .intro h1{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;color:var(--ink);margin-bottom:10px;line-height:1.15}
+  .intro p{color:var(--ink-soft);font-size:15px;max-width:600px;margin:0 auto}
+
+  .nav-row{display:flex;align-items:center;gap:14px;margin-bottom:24px;max-width:1200px;margin-left:auto;margin-right:auto}
+  .back-btn{background:transparent;border:1px solid var(--border);padding:8px 14px;border-radius:999px;font-family:inherit;font-size:13px;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .15s ease, border-color .15s ease;}
+  .back-btn:hover{background:#fff;border-color:var(--ink)}
+  .crumb{font-size:13px;color:var(--muted);letter-spacing:.3px}
+  .crumb strong{color:var(--ink);font-weight:600}
+  .crumb .sep{margin:0 8px;opacity:.5}
+
+  .word-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;max-width:1100px;margin:0 auto;}
+  @media (max-width:900px){.word-grid{grid-template-columns:repeat(4,1fr)}}
+  @media (max-width:640px){.word-grid{grid-template-columns:repeat(3,1fr);gap:10px}}
+  @media (max-width:400px){.word-grid{grid-template-columns:repeat(2,1fr)}}
+  .word-tile{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px 10px;text-align:center;cursor:pointer;font-family:'Playfair Display',serif;font-size:19px;font-weight:800;letter-spacing:2.5px;color:var(--ink);transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;box-shadow:var(--shadow);}
+  .word-tile:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:var(--gold)}
+
+  .chosen-word{text-align:center;margin-bottom:28px;font-family:'Playfair Display',serif;font-size:54px;font-weight:800;letter-spacing:5px;color:var(--ink);position:relative;display:block;}
+  .chosen-word::after{content:"";display:block;width:60px;height:2px;background:var(--gold);margin:12px auto 0;}
+
+  /* ========== AGE CARDS ========== */
+  .age-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1050px;margin:0 auto;}
+  @media (max-width:780px){.age-grid{grid-template-columns:1fr}}
+  .age-card{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:26px 22px;cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    box-shadow:var(--shadow);position:relative;overflow:hidden;
+    font-family:inherit;color:var(--ink);text-align:left;width:100%;
+  }
+  .age-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover)}
+  .age-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;}
+  .age-card.elementary::before{background:var(--elementary)}
+  .age-card.middle::before{background:var(--middle)}
+  .age-card.high::before{background:var(--high)}
+  .age-card.elementary:hover{border-color:var(--elementary)}
+  .age-card.middle:hover{border-color:var(--middle)}
+  .age-card.high:hover{border-color:var(--high)}
+
+  .age-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .age-emoji{font-size:28px;line-height:1}
+  .age-title-block{flex:1}
+  .age-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;letter-spacing:.5px;line-height:1.15}
+  .age-card.elementary .age-title{color:var(--elementary)}
+  .age-card.middle .age-title{color:var(--middle)}
+  .age-card.high .age-title{color:var(--high)}
+  .age-range{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:2px}
+
+  .age-prompt{
+    font-family:'Playfair Display',serif;font-size:15px;font-style:italic;
+    line-height:1.5;color:var(--ink);margin-bottom:12px;font-weight:500;
+  }
+  .age-guides{
+    font-size:12px;color:var(--muted);line-height:1.5;
+    padding-left:18px;margin:0;
+  }
+  .age-guides li{margin-bottom:3px}
+  .age-pick{
+    display:inline-flex;align-items:center;gap:6px;margin-top:12px;
+    font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--ink);padding:6px 12px;border-radius:999px;
+    background:var(--bg-deep);
+  }
+
+  /* ========== LETTER CARD ========== */
+  .letter-stage{display:flex;flex-direction:column;align-items:center;gap:24px;padding:20px 0;}
+  .letter-card{
+    background:var(--paper);width:100%;max-width:700px;
+    border:2px solid var(--ink);border-radius:4px;
+    padding:40px 48px;position:relative;
+    box-shadow:0 8px 24px rgba(30,40,56,.18);
+    background-image:repeating-linear-gradient(
+      to bottom, transparent, transparent 31px,
+      rgba(30,40,56,0.06) 31px, rgba(30,40,56,0.06) 32px
+    );
+  }
+  .letter-corner{position:absolute;top:12px;font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--gold);letter-spacing:1px}
+  .letter-corner.left{left:18px}
+  .letter-corner.right{right:18px}
+
+  .letter-inner{text-align:center;margin-top:14px}
+  .letter-eyebrow{
+    font-family:'Inter',sans-serif;font-size:11px;letter-spacing:4px;
+    text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px;
+    background:var(--paper);display:inline-block;padding:0 10px;
+  }
+  .letter-sub{
+    font-family:'Inter',sans-serif;font-size:12px;color:var(--muted);
+    letter-spacing:1px;text-transform:uppercase;margin-bottom:22px;font-weight:500;
+    background:var(--paper);display:inline-block;padding:0 8px;
+  }
+  .letter-word{
+    font-family:'Playfair Display',serif;font-size:54px;font-weight:800;
+    letter-spacing:6px;color:var(--ink);line-height:1;margin-bottom:4px;
+    background:var(--paper);display:inline-block;padding:0 12px;
+  }
+  .letter-age-chip{
+    display:inline-flex;align-items:center;gap:6px;margin-top:14px;
+    padding:5px 14px;border-radius:999px;font-family:'Inter',sans-serif;
+    font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  }
+  .letter-age-chip.elementary{background:var(--elementary-soft);color:var(--elementary)}
+  .letter-age-chip.middle{background:var(--middle-soft);color:var(--middle)}
+  .letter-age-chip.high{background:var(--high-soft);color:var(--high)}
+
+  .letter-divider{
+    display:flex;align-items:center;gap:10px;justify-content:center;
+    margin:22px 0 14px;
+  }
+  .letter-divider::before,.letter-divider::after{
+    content:"";flex:1;max-width:100px;height:1px;background:var(--border);
+  }
+  .letter-divider span{
+    font-family:'Inter',sans-serif;font-size:10px;letter-spacing:3px;
+    text-transform:uppercase;color:var(--muted);font-weight:600;
+    background:var(--paper);padding:0 6px;
+  }
+
+  .letter-prompt-block{
+    background:rgba(255,253,240,0.7);border-left:3px solid var(--gold);
+    padding:14px 18px;margin:0 0 20px;border-radius:0 6px 6px 0;
+    text-align:left;
+  }
+  .letter-prompt-label{
+    font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+    color:var(--gold);margin-bottom:6px;
+  }
+  .letter-prompt{
+    font-family:'Playfair Display',serif;font-size:18px;font-style:italic;
+    color:var(--ink);line-height:1.4;font-weight:500;
+  }
+
+  .letter-guides-block{text-align:left;padding:0 4px;margin-bottom:24px}
+  .letter-guides-label{
+    font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+    color:var(--muted);margin-bottom:8px;
+  }
+  .letter-guides-list{
+    list-style:none;padding:0;margin:0;
+  }
+  .letter-guides-list li{
+    font-family:'Inter',sans-serif;font-size:14px;color:var(--ink-soft);
+    line-height:1.5;margin-bottom:6px;padding-left:18px;position:relative;
+  }
+  .letter-guides-list li::before{
+    content:"•";color:var(--gold);font-weight:700;font-size:16px;
+    position:absolute;left:4px;top:-2px;
+  }
+
+  .letter-footer{
+    margin-top:28px;padding-top:18px;border-top:1px dashed var(--border);
+    font-family:'Inter',sans-serif;
+    background:var(--paper);
+  }
+  .letter-from{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;
+  }
+  .letter-from .line-label{font-weight:600}
+  .letter-from .line{
+    display:inline-block;border-bottom:1px solid var(--ink);
+    min-width:120px;height:14px;margin-left:8px;
+  }
+
+  /* ========== TEACHER GATE CHECKLIST ========== */
+  .teacher-gate{
+    background:#fffbee;border:2px solid var(--gold);border-radius:10px;
+    padding:20px 24px;max-width:700px;width:100%;
+  }
+  .teacher-gate-header{
+    display:flex;align-items:center;gap:10px;margin-bottom:14px;
+    font-family:'Playfair Display',serif;font-weight:700;
+  }
+  .teacher-gate-icon{
+    width:32px;height:32px;border-radius:50%;background:var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink);font-weight:700;flex-shrink:0;
+  }
+  .teacher-gate-title{font-size:16px;color:var(--ink);letter-spacing:.5px}
+  .teacher-gate-sub{
+    font-family:'Inter',sans-serif;font-size:11px;font-weight:600;
+    color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .checklist{list-style:none;padding:0;margin:0}
+  .checklist li{
+    font-family:'Inter',sans-serif;font-size:14px;color:var(--ink);
+    line-height:1.5;margin-bottom:8px;padding-left:28px;position:relative;
+  }
+  .checklist li::before{
+    content:"";position:absolute;left:0;top:2px;
+    width:18px;height:18px;border:2px solid var(--gold);border-radius:4px;
+    background:var(--paper);
+  }
+  .checklist li strong{color:var(--ink);font-weight:700}
+
+  .micro-step{background:var(--bg-deep);border:1px solid var(--border);border-radius:10px;padding:16px 22px;max-width:700px;width:100%;display:flex;align-items:center;gap:14px;font-size:13px;color:var(--ink-soft);line-height:1.5;}
+  .micro-step-icon{flex-shrink:0;width:36px;height:36px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--ink);font-weight:700;font-family:'Playfair Display',serif}
+  .micro-step strong{color:var(--ink)}
+
+  .letter-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  .btn{font-family:inherit;font-size:14px;font-weight:600;letter-spacing:.3px;padding:12px 22px;border-radius:999px;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease;border:none;display:inline-flex;align-items:center;gap:8px;text-decoration:none;}
+  .btn-primary{background:var(--ink);color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.25)}
+  .btn-gold{background:var(--gold);color:var(--ink);box-shadow:0 2px 6px rgba(0,0,0,.15)}
+  .btn-gold:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.25)}
+
+  footer{background:var(--ink);color:#d6cdb8;padding:20px 32px;margin-top:40px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;text-align:center;font-weight:500;}
+  footer .dot{margin:0 10px;color:var(--gold)}
+
+  @media print{
+    header,footer,.nav-row,.letter-actions,.micro-step,.teacher-gate,.drive-pill{display:none !important}
+    body{background:#fff}
+    .letter-card{box-shadow:none;border:2px solid #000}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-title">Letter Kiosk</div>
+      <div class="brand-sub">Smile Bags &middot; A Word &amp; Wonder Experience</div>
+    </div>
+    <a class="drive-pill" id="driveLink" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.71 3.52L1.15 15l3.42 5.92h13.69L21.85 15 14.29 3.52H7.71zm1.42 2h5.74l5.36 9.48H14.49L9.13 5.52zM7.71 6.48L12.71 15H2.57L7.71 6.48z"/></svg>
+      Drive Folder
+    </a>
+  </div>
+</header>
+
+<main>
+  <section id="screen-words" class="screen active">
+    <div class="intro">
+      <div class="eyebrow">Step 1 of 3</div>
+      <h1>Choose Your OneWord</h1>
+      <p>Each OneWord unlocks three starter prompts — one for each age group. Pick a word that fits the child who will open your Smile Bag.</p>
+    </div>
+    <div class="word-grid" id="wordGrid"></div>
+  </section>
+
+  <section id="screen-ages" class="screen">
+    <div class="nav-row">
+      <button class="back-btn" onclick="goToScreen('words')">&larr; Back to OneWords</button>
+      <div class="crumb"><strong id="crumbWord"></strong></div>
+    </div>
+    <div class="intro">
+      <div class="eyebrow">Step 2 of 3</div>
+      <h1>Choose Your Recipient's Age</h1>
+      <p>Same OneWord, three different tones. Pick the prompt that fits who will read your letter.</p>
+    </div>
+    <div class="chosen-word" id="chosenWord"></div>
+    <div class="age-grid" id="ageGrid"></div>
+  </section>
+
+  <section id="screen-letter" class="screen">
+    <div class="nav-row">
+      <button class="back-btn" onclick="goToScreen('ages')">&larr; Change age</button>
+      <button class="back-btn" onclick="startOver()">&#8634; Start over</button>
+    </div>
+    <div class="intro">
+      <div class="eyebrow">Step 3 of 3</div>
+      <h1>Write Your Letter</h1>
+      <p>Use the prompt and guiding questions to draft a 5&times;7 handwritten card. Keep it warm, specific, and positive.</p>
+    </div>
+    <div class="letter-stage">
+      <div class="letter-card" id="letterCard">
+        <div class="letter-corner left">&#10070;</div>
+        <div class="letter-corner right">&#10070;</div>
+        <div class="letter-inner">
+          <div class="letter-eyebrow">A Smile Bag Letter Card</div>
+          <div class="letter-sub">One Word &middot; One Letter &middot; Handwritten With Care</div>
+          <div class="letter-word" id="cpnWord"></div>
+          <br>
+          <span class="letter-age-chip" id="cpnAgeChip"></span>
+          <div class="letter-divider"><span>Your Starter</span></div>
+          <div class="letter-prompt-block">
+            <div class="letter-prompt-label">Starter Prompt</div>
+            <div class="letter-prompt" id="cpnPrompt"></div>
+          </div>
+          <div class="letter-guides-block">
+            <div class="letter-guides-label">Guiding Questions</div>
+            <ul class="letter-guides-list" id="cpnGuides"></ul>
+          </div>
+          <div class="letter-footer">
+            <div class="letter-from">
+              <div><span class="line-label">From:</span><span class="line"></span></div>
+              <div><span class="line-label">Date:</span><span class="line"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="teacher-gate">
+        <div class="teacher-gate-header">
+          <div class="teacher-gate-icon">&#10003;</div>
+          <div class="teacher-gate-title">Before You Submit</div>
+        </div>
+        <div class="teacher-gate-sub">Ms. Marquand will review each card before bagging. Check your work:</div>
+        <ul class="checklist">
+          <li><strong>Legible handwriting</strong> — can someone else easily read it?</li>
+          <li><strong>Positive and warm</strong> — would you want to receive this?</li>
+          <li><strong>Signed</strong> — your first name (no last names).</li>
+          <li><strong>No cross-outs or smudges</strong> — rewrite cleanly if needed.</li>
+          <li><strong>Fits the card</strong> — 4&ndash;7 sentences on a 5&times;7 space.</li>
+        </ul>
+      </div>
+
+      <div class="micro-step">
+        <div class="micro-step-icon">&#9997;</div>
+        <div>
+          <strong>Next steps:</strong> Grab a 5&times;7 card and write your letter by hand using the prompt + guiding questions above. When finished, hand to Ms. Marquand for teacher review before placing in the Smile Bag.
+        </div>
+      </div>
+      <div class="letter-actions">
+        <button class="btn btn-primary" onclick="goToScreen('words')">Start another letter</button>
+        <a class="btn btn-gold" id="driveLink2" href="#" target="_blank" rel="noopener">Open Drive folder</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Smile Bags <span class="dot">&middot;</span> A Word &amp; Wonder Experience <span class="dot">&middot;</span> Leadership <span class="dot">&middot;</span> Marquand <span class="dot">&middot;</span> Spring 2026
+</footer>
+
+<script>
+const DRIVE_URL = "https://drive.google.com/drive/folders/1D1AqGr8icdUbziUg9_8Ww1XyYhUXPxs4?usp=sharing";
+
+if (DRIVE_URL && DRIVE_URL.indexOf('REPLACE') === -1) {
+  document.getElementById('driveLink').href = DRIVE_URL;
+  document.getElementById('driveLink2').href = DRIVE_URL;
+} else {
+  document.getElementById('driveLink').style.display = 'none';
+  document.getElementById('driveLink2').style.display = 'none';
+}
+
+const WORDS = ["ABSORB","ADAPT","ANCHOR","BALANCE","BLOOM","BREATHE","CLEAR","CONNECT","CYCLE","EMERGE","FILTER","FLOW","GROW","HEAL","MIGRATE","PERSIST","RENEW","RESTORE","RETURN","RISE","ROOT","SHINE","SUSTAIN","THRIVE","TRANSFORM"];
+
+const PROMPTS = {
+  ABSORB:{
+    elementary:{
+      prompt: "\"Being curious is like being a sponge \u2014 you soak up cool stuff every day.\"",
+      guides: [
+        "What's something new you learned recently that surprised you?",
+        "Where do you love to learn \u2014 school, home, outside?",
+        "What question do you wish someone would answer?",
+      ],
+    },
+    middle:{
+      prompt: "\"The best people I know soak up what the world teaches them \u2014 the good and the hard.\"",
+      guides: [
+        "What lesson has stuck with you this year?",
+        "Who in your life seems to really absorb ideas from others?",
+        "What kind of learning feels easiest for you?",
+      ],
+    },
+    high:{
+      prompt: "\"You get to choose what you absorb from the world around you.\"",
+      guides: [
+        "What are you paying attention to right now that shapes who you're becoming?",
+        "What do you wish more people took the time to absorb?",
+      ],
+    },
+  },
+  ADAPT:{
+    elementary:{
+      prompt: "\"When things change, you can change with them \u2014 and that's a superpower.\"",
+      guides: [
+        "Tell me about a time something didn't go as planned. What did you do?",
+        "What's one thing you're better at now than last year?",
+        "Who helps you when things are new or different?",
+      ],
+    },
+    middle:{
+      prompt: "\"The kids who adapt aren't the ones who never struggle \u2014 they're the ones who try a new way.\"",
+      guides: [
+        "What's a change you've handled this year that you're proud of?",
+        "When something gets hard, what helps you keep going?",
+        "What's one thing you had to adjust to that you didn't expect?",
+      ],
+    },
+    high:{
+      prompt: "\"Life will keep changing \u2014 the real skill is learning to move with it, not against it.\"",
+      guides: [
+        "What change has shaped you most in the last year?",
+        "What's something you used to believe that you see differently now?",
+      ],
+    },
+  },
+  ANCHOR:{
+    elementary:{
+      prompt: "\"Everyone needs something or someone to hold onto when life feels wobbly.\"",
+      guides: [
+        "Who makes you feel safe and steady?",
+        "What's your favorite place where you always feel okay?",
+        "What do you do when you feel nervous?",
+      ],
+    },
+    middle:{
+      prompt: "\"An anchor isn't heavy \u2014 it's what keeps you from drifting when things get rough.\"",
+      guides: [
+        "Who's an anchor person in your life? What makes them that way?",
+        "What routines help you feel grounded when the week feels wild?",
+        "What's something you always come back to when you need comfort?",
+      ],
+    },
+    high:{
+      prompt: "\"Your anchors are what you hold onto when the world feels loud \u2014 people, places, or principles.\"",
+      guides: [
+        "What's something in your life you won't let drift, no matter how busy it gets?",
+        "Who do you hope to be an anchor for someday?",
+      ],
+    },
+  },
+  BALANCE:{
+    elementary:{
+      prompt: "\"Life is better when you make room for work AND play.\"",
+      guides: [
+        "What's something you love to do for fun?",
+        "What's something important that takes hard work?",
+        "How do you know when you need a break?",
+      ],
+    },
+    middle:{
+      prompt: "\"Balance isn't about doing everything equally \u2014 it's about knowing what needs you most right now.\"",
+      guides: [
+        "What parts of your life feel in balance these days?",
+        "What's one thing you want more of in your week?",
+        "What's something small that resets you when you're overloaded?",
+      ],
+    },
+    high:{
+      prompt: "\"Nobody balances everything perfectly \u2014 the best you can do is notice what's tipping and adjust.\"",
+      guides: [
+        "Where in your life are you currently out of balance?",
+        "What would balance actually feel like for you?",
+      ],
+    },
+  },
+  BLOOM:{
+    elementary:{
+      prompt: "\"Flowers don't bloom all at once \u2014 and neither do you, and that's okay.\"",
+      guides: [
+        "What's something you've gotten better at this year?",
+        "What do you love most about yourself right now?",
+        "What's one thing you're still learning?",
+      ],
+    },
+    middle:{
+      prompt: "\"You don't have to bloom on anyone else's schedule.\"",
+      guides: [
+        "What's one way you've grown that surprised you?",
+        "Where do you feel most like yourself?",
+        "What are you looking forward to about getting older?",
+      ],
+    },
+    high:{
+      prompt: "\"Some people bloom early, some bloom late \u2014 both kinds matter.\"",
+      guides: [
+        "What part of yourself feels like it's opening up right now?",
+        "What conditions help you do your best work?",
+      ],
+    },
+  },
+  BREATHE:{
+    elementary:{
+      prompt: "\"When everything feels too big, a slow breath is a tiny superpower.\"",
+      guides: [
+        "What do you do when you feel scared or upset?",
+        "Where's a calm place you love?",
+        "What helps you feel better on a hard day?",
+      ],
+    },
+    middle:{
+      prompt: "\"Sometimes the bravest thing you can do is take one deep breath before reacting.\"",
+      guides: [
+        "What's a moment lately when stopping to breathe helped?",
+        "What makes you feel grounded when life feels too fast?",
+        "Who's someone you know who seems calm, even under pressure?",
+      ],
+    },
+    high:{
+      prompt: "\"You don't have to fix everything today \u2014 you just have to keep breathing.\"",
+      guides: [
+        "What's something you can let go of this week?",
+        "What moment in your day is just for you?",
+      ],
+    },
+  },
+  CLEAR:{
+    elementary:{
+      prompt: "\"A clean space makes it easier to think clear thoughts.\"",
+      guides: [
+        "Where's a clean, tidy place you like to be?",
+        "What does it feel like when your desk or room is clear?",
+        "What's something you've cleaned up that felt good after?",
+      ],
+    },
+    middle:{
+      prompt: "\"Clearing out what you don't need makes room for what matters.\"",
+      guides: [
+        "What's something you've cleared out of your life recently?",
+        "What makes your head feel clear?",
+        "When is it easiest to think clearly?",
+      ],
+    },
+    high:{
+      prompt: "\"Clarity rarely happens on a noisy day \u2014 sometimes you have to make the quiet.\"",
+      guides: [
+        "What do you know clearly about yourself right now?",
+        "What's been cluttering your mental space that you want to clear?",
+      ],
+    },
+  },
+  CONNECT:{
+    elementary:{
+      prompt: "\"The best moments usually happen with other people.\"",
+      guides: [
+        "Who makes you laugh the most?",
+        "What's something fun you love to do with friends or family?",
+        "Who is someone kind in your life?",
+      ],
+    },
+    middle:{
+      prompt: "\"Real friendships are built from small, steady moments \u2014 not big perfect ones.\"",
+      guides: [
+        "Who's a person you've connected with in a new way recently?",
+        "What makes you feel like you belong somewhere?",
+        "How do you know when someone is a real friend?",
+      ],
+    },
+    high:{
+      prompt: "\"Connection is the real wealth \u2014 even when quiet, even when distant.\"",
+      guides: [
+        "Who's someone you wish you talked to more?",
+        "What's a connection you want to keep strong after high school?",
+      ],
+    },
+  },
+  CYCLE:{
+    elementary:{
+      prompt: "\"The seasons come back around every year \u2014 and so do good days.\"",
+      guides: [
+        "What's your favorite season and why?",
+        "What's something that happens every year that you look forward to?",
+        "What's a routine that makes you happy?",
+      ],
+    },
+    middle:{
+      prompt: "\"Hard moments cycle through \u2014 and so do good ones. Hold on for the turn.\"",
+      guides: [
+        "What's something you've been through that came back around better?",
+        "What helps you through the tougher parts of the week?",
+        "What cycle or rhythm is working for you lately?",
+      ],
+    },
+    high:{
+      prompt: "\"Most things come back around \u2014 the art is learning what to carry forward and what to let fade.\"",
+      guides: [
+        "What's a pattern in your life you'd like to change?",
+        "What's a pattern you'd like to keep?",
+      ],
+    },
+  },
+  EMERGE:{
+    elementary:{
+      prompt: "\"Butterflies don't come out all at once \u2014 they push through bit by bit.\"",
+      guides: [
+        "What's something you tried that was scary at first?",
+        "What's something new you're becoming good at?",
+        "What makes you feel brave?",
+      ],
+    },
+    middle:{
+      prompt: "\"You're allowed to emerge slowly \u2014 show up when you're ready.\"",
+      guides: [
+        "What's a version of yourself starting to show up this year?",
+        "When do you feel most like the real you?",
+        "What's something you want to step into more?",
+      ],
+    },
+    high:{
+      prompt: "\"Who you're becoming is showing up in small moments \u2014 pay attention to them.\"",
+      guides: [
+        "What trait of yours is emerging that you didn't expect?",
+        "What do you want people to notice about you in five years?",
+      ],
+    },
+  },
+  FILTER:{
+    elementary:{
+      prompt: "\"You get to choose what you pay attention to \u2014 and what you let roll off.\"",
+      guides: [
+        "What makes you smile every single day?",
+        "What do you tune out when it's too noisy?",
+        "What's a kind thing someone said to you recently?",
+      ],
+    },
+    middle:{
+      prompt: "\"Not every thought that pops into your head is true \u2014 you can choose what to hold onto.\"",
+      guides: [
+        "What's one kind thing you can say to yourself today?",
+        "What's something negative you've learned to let go of?",
+        "Whose voices do you trust most in your life?",
+      ],
+    },
+    high:{
+      prompt: "\"Your inputs shape your outlook \u2014 choose carefully what you let in.\"",
+      guides: [
+        "What's something you've filtered out of your life that made it better?",
+        "Whose voice in your life makes you a better version of you?",
+      ],
+    },
+  },
+  FLOW:{
+    elementary:{
+      prompt: "\"Sometimes things feel easy and fun \u2014 that's called being in the flow.\"",
+      guides: [
+        "What do you do where time just disappears?",
+        "What's something you could do for hours?",
+        "When do you feel happiest?",
+      ],
+    },
+    middle:{
+      prompt: "\"Flow shows up when your skill meets something that matters to you.\"",
+      guides: [
+        "What's an activity where you totally lose track of time?",
+        "What do you love doing that most people don't know about?",
+        "How can you make more time for that in your week?",
+      ],
+    },
+    high:{
+      prompt: "\"Find what pulls you into flow \u2014 it's a clue about what you're meant to do.\"",
+      guides: [
+        "When was the last time you felt totally absorbed in something?",
+        "What would you do even if no one paid you or praised you for it?",
+      ],
+    },
+  },
+  GROW:{
+    elementary:{
+      prompt: "\"You're growing bigger, taller, stronger \u2014 and smarter \u2014 every single day.\"",
+      guides: [
+        "What's something you can do now that you couldn't last year?",
+        "What do you want to learn next?",
+        "Who helps you grow?",
+      ],
+    },
+    middle:{
+      prompt: "\"Growth happens in the middle of something hard \u2014 not at the end.\"",
+      guides: [
+        "What's a challenge that's growing you right now?",
+        "What's an area you want to grow in this year?",
+        "Who supports your growth the most?",
+      ],
+    },
+    high:{
+      prompt: "\"You don't outgrow growth \u2014 it just keeps changing shape.\"",
+      guides: [
+        "What's a way you've grown that nobody's really noticed yet?",
+        "What's something you want to grow into over the next year?",
+      ],
+    },
+  },
+  HEAL:{
+    elementary:{
+      prompt: "\"When you get a scrape, your body heals it \u2014 because you were built to get better.\"",
+      guides: [
+        "What helps you feel better when you're sad?",
+        "Who gives the best hugs?",
+        "What's something small that always makes your day better?",
+      ],
+    },
+    middle:{
+      prompt: "\"Healing isn't about pretending nothing hurt \u2014 it's about letting the hurt become wisdom.\"",
+      guides: [
+        "What's something kind you've done for yourself lately?",
+        "Who or what helps you bounce back when things are hard?",
+        "What's a small thing that restores you?",
+      ],
+    },
+    high:{
+      prompt: "\"Healing takes time \u2014 don't rush yourself through it to make others comfortable.\"",
+      guides: [
+        "What part of your life feels like it's healing right now?",
+        "What's one thing that's gotten easier over time?",
+      ],
+    },
+  },
+  MIGRATE:{
+    elementary:{
+      prompt: "\"Birds travel thousands of miles to find what they need \u2014 and you can be brave about new places too.\"",
+      guides: [
+        "Tell me about a place you've been that was new.",
+        "What's somewhere you'd love to visit one day?",
+        "Who helps you feel okay when you're somewhere unfamiliar?",
+      ],
+    },
+    middle:{
+      prompt: "\"Changing where you are \u2014 physically or in life \u2014 takes courage. And you've got that.\"",
+      guides: [
+        "What's a change you've handled well recently?",
+        "What have you learned from being somewhere new?",
+        "What would help another kid feel welcome at a new school?",
+      ],
+    },
+    high:{
+      prompt: "\"Sometimes the right move is to go \u2014 and sometimes it's to stay and put down roots.\"",
+      guides: [
+        "What's somewhere you hope to go that would shape you?",
+        "What's a move (big or small) you're glad you made?",
+      ],
+    },
+  },
+  PERSIST:{
+    elementary:{
+      prompt: "\"Keep trying \u2014 that's how big things get done.\"",
+      guides: [
+        "What's something you kept trying until you got it?",
+        "What's something hard you're working on now?",
+        "Who cheers you on when you feel like giving up?",
+      ],
+    },
+    middle:{
+      prompt: "\"The people who get good at things aren't the ones who never fail \u2014 they're the ones who keep showing up.\"",
+      guides: [
+        "What's something you've kept working on, even when it was hard?",
+        "What's a mistake that taught you something big?",
+        "Who in your life is really good at not giving up?",
+      ],
+    },
+    high:{
+      prompt: "\"Persistence is just being there tomorrow, then tomorrow, then tomorrow again.\"",
+      guides: [
+        "What's a goal you're still working toward, slowly?",
+        "What keeps you going when motivation runs out?",
+      ],
+    },
+  },
+  RENEW:{
+    elementary:{
+      prompt: "\"Every morning is a new chance to try again.\"",
+      guides: [
+        "What's something you love about starting a new day?",
+        "What makes you feel excited to wake up?",
+        "What's a fresh start you've had recently?",
+      ],
+    },
+    middle:{
+      prompt: "\"You don't have to wait for a new year to start again \u2014 you can renew anything, anytime.\"",
+      guides: [
+        "What's something you'd like a fresh start on?",
+        "What helps you reset after a rough day or week?",
+        "What's a new habit you've started that you're glad about?",
+      ],
+    },
+    high:{
+      prompt: "\"Renewal isn't about becoming someone new \u2014 it's about coming home to yourself.\"",
+      guides: [
+        "What part of you needs renewing right now?",
+        "What's something you've come back to that you used to love?",
+      ],
+    },
+  },
+  RESTORE:{
+    elementary:{
+      prompt: "\"When something breaks, it can usually be fixed \u2014 and that's a beautiful thing.\"",
+      guides: [
+        "What's something you've helped fix that made you proud?",
+        "What does your family do that makes home feel better?",
+        "What's a kind thing that restored your day?",
+      ],
+    },
+    middle:{
+      prompt: "\"Restoring something \u2014 a room, a friendship, a confidence \u2014 is some of the most important work there is.\"",
+      guides: [
+        "What's something you restored that was worth the effort?",
+        "Who restored something in you when you needed it?",
+        "What's a small way you can restore someone's day?",
+      ],
+    },
+    high:{
+      prompt: "\"Some things break before they can be made stronger \u2014 restoration is how that happens.\"",
+      guides: [
+        "What part of your life are you working to restore?",
+        "What's something precious that only got better after it almost didn't make it?",
+      ],
+    },
+  },
+  RETURN:{
+    elementary:{
+      prompt: "\"Coming home, coming back, seeing someone again \u2014 those moments are the best.\"",
+      guides: [
+        "What's your favorite thing about coming home?",
+        "Who makes you happy to see again?",
+        "What's a place you love going back to?",
+      ],
+    },
+    middle:{
+      prompt: "\"Going back to something \u2014 a hobby, a friend, a place \u2014 isn't going backward. It's circling home.\"",
+      guides: [
+        "What's something you've returned to after stepping away?",
+        "What's a place that feels like home, no matter how long you've been gone?",
+        "What's a feeling you keep coming back to?",
+      ],
+    },
+    high:{
+      prompt: "\"Some things are worth returning to \u2014 a person, a version of yourself, a way of thinking.\"",
+      guides: [
+        "What's something you want to return to in yourself?",
+        "Who do you hope to stay connected to, no matter where life takes you?",
+      ],
+    },
+  },
+  RISE:{
+    elementary:{
+      prompt: "\"The sun rises every day \u2014 and so can you.\"",
+      guides: [
+        "What's your favorite part of the morning?",
+        "What makes you feel strong and brave?",
+        "What's something you're excited to do today?",
+      ],
+    },
+    middle:{
+      prompt: "\"Rising isn't about being the loudest \u2014 it's about showing up when it matters.\"",
+      guides: [
+        "When's a time you rose to something hard?",
+        "What's something you want to rise to this year?",
+        "Who inspires you to do better?",
+      ],
+    },
+    high:{
+      prompt: "\"You rise by reaching \u2014 up, out, past what used to feel possible.\"",
+      guides: [
+        "What's a moment you've risen to that you didn't know you had in you?",
+        "What's an impact you hope to have?",
+      ],
+    },
+  },
+  ROOT:{
+    elementary:{
+      prompt: "\"Trees have deep roots that keep them strong \u2014 you do too.\"",
+      guides: [
+        "Who's part of your family that you love?",
+        "What traditions do you love in your home?",
+        "What makes you feel safe and loved?",
+      ],
+    },
+    middle:{
+      prompt: "\"Your roots are your people, your history, and what you value most.\"",
+      guides: [
+        "What's a family story that means a lot to you?",
+        "What are you proud of that comes from where you came from?",
+        "Who taught you something that stuck?",
+      ],
+    },
+    high:{
+      prompt: "\"Staying rooted isn't staying stuck \u2014 it's knowing where your strength comes from.\"",
+      guides: [
+        "What do you want to carry forward from your family or culture?",
+        "What values are the roots of who you are?",
+      ],
+    },
+  },
+  SHINE:{
+    elementary:{
+      prompt: "\"Your smile, your kindness, your ideas \u2014 they all make the world shinier.\"",
+      guides: [
+        "What's something you do really well?",
+        "What makes you smile the biggest?",
+        "What's a compliment someone gave you that you loved?",
+      ],
+    },
+    middle:{
+      prompt: "\"You don't have to dim your shine so other people feel comfortable.\"",
+      guides: [
+        "What's something unique about you that you're proud of?",
+        "What do your friends love about you?",
+        "How do you help others shine?",
+      ],
+    },
+    high:{
+      prompt: "\"The brightest light doesn't blind \u2014 it helps others see.\"",
+      guides: [
+        "What's something you do that helps others shine?",
+        "What gift of yours is the world waiting for you to share more?",
+      ],
+    },
+  },
+  SUSTAIN:{
+    elementary:{
+      prompt: "\"Taking care of the Earth \u2014 and of yourself \u2014 matters every day.\"",
+      guides: [
+        "What's one way you help take care of the planet?",
+        "What's a healthy habit you're proud of?",
+        "How do you take care of the people you love?",
+      ],
+    },
+    middle:{
+      prompt: "\"What sustains you today is what will carry you tomorrow \u2014 choose it on purpose.\"",
+      guides: [
+        "What daily habit makes you feel better?",
+        "What's something good in your life you want to make last?",
+        "What do you do to take care of yourself when it's been a lot?",
+      ],
+    },
+    high:{
+      prompt: "\"You can't pour from an empty cup \u2014 sustaining yourself is part of serving others.\"",
+      guides: [
+        "What sustains you when you feel drained?",
+        "What's a long-term practice you're building that your future self will thank you for?",
+      ],
+    },
+  },
+  THRIVE:{
+    elementary:{
+      prompt: "\"You thrive when you get to be yourself \u2014 fully, happily, loudly.\"",
+      guides: [
+        "When do you feel most like yourself?",
+        "What's your happy place?",
+        "What's something that always makes you laugh?",
+      ],
+    },
+    middle:{
+      prompt: "\"Thriving is more than surviving \u2014 it's doing what makes you light up.\"",
+      guides: [
+        "What's something you're really good at?",
+        "Where and when do you feel like you're thriving?",
+        "What's one small thing that always boosts your mood?",
+      ],
+    },
+    high:{
+      prompt: "\"Thriving is personal \u2014 figure out your conditions and protect them.\"",
+      guides: [
+        "What conditions help you thrive?",
+        "What's a version of thriving that only belongs to you?",
+      ],
+    },
+  },
+  TRANSFORM:{
+    elementary:{
+      prompt: "\"Caterpillars turn into butterflies \u2014 and you're always becoming something amazing.\"",
+      guides: [
+        "What's something you used to be scared of that you're not anymore?",
+        "What's something new you can do now?",
+        "What do you dream of becoming?",
+      ],
+    },
+    middle:{
+      prompt: "\"Transformation happens in the middle \u2014 when it looks like nothing yet, but something is becoming.\"",
+      guides: [
+        "What's something about yourself that's changing right now?",
+        "What's a hard moment that changed you for the better?",
+        "Who's someone you've watched transform that inspires you?",
+      ],
+    },
+    high:{
+      prompt: "\"The transformations that stick come from within \u2014 not from trying to become someone else.\"",
+      guides: [
+        "What's a transformation you're in the middle of?",
+        "What's something about yourself you hope never changes?",
+      ],
+    },
+  },
+};
+
+const AGE_META = {
+  elementary: { emoji: "\u{1F9D2}", title: "Elementary",       range: "K\u20135" },
+  middle:     { emoji: "\u{1F392}", title: "Middle School",    range: "6\u20138" },
+  high:       { emoji: "\u{1F393}", title: "High School",      range: "9\u201312" }
+};
+
+let state = { word: null, age: null };
+
+function renderWords(){
+  const grid = document.getElementById('wordGrid');
+  grid.innerHTML = WORDS.map(w =>
+    `<button class="word-tile" onclick="pickWord('${w}')">${w}</button>`
+  ).join('');
+}
+
+function pickWord(w){
+  state.word = w;
+  document.getElementById('chosenWord').textContent = w;
+  document.getElementById('crumbWord').textContent = w;
+  renderAges();
+  goToScreen('ages');
+}
+
+function renderAges(){
+  const grid = document.getElementById('ageGrid');
+  const ages = ['elementary','middle','high'];
+  grid.innerHTML = ages.map(age => {
+    const meta = AGE_META[age];
+    const data = PROMPTS[state.word][age];
+    const guidesHtml = data.guides.map(g => `<li>${g}</li>`).join('');
+    return `<button class="age-card ${age}" onclick="pickAge('${age}')">
+      <div class="age-header">
+        <div class="age-emoji">${meta.emoji}</div>
+        <div class="age-title-block">
+          <div class="age-title">${meta.title}</div>
+          <div class="age-range">${meta.range}</div>
+        </div>
+      </div>
+      <div class="age-prompt">${data.prompt}</div>
+      <ul class="age-guides">${guidesHtml}</ul>
+      <div class="age-pick">Pick this &rarr;</div>
+    </button>`;
+  }).join('');
+}
+
+function pickAge(a){
+  state.age = a;
+  renderLetter();
+  goToScreen('letter');
+}
+
+function renderLetter(){
+  const data = PROMPTS[state.word][state.age];
+  const meta = AGE_META[state.age];
+  document.getElementById('cpnWord').textContent = state.word;
+  document.getElementById('cpnPrompt').textContent = data.prompt;
+
+  const chip = document.getElementById('cpnAgeChip');
+  chip.className = `letter-age-chip ${state.age}`;
+  chip.textContent = `${meta.emoji} ${meta.title} (${meta.range})`;
+
+  const guidesList = document.getElementById('cpnGuides');
+  guidesList.innerHTML = data.guides.map(g => `<li>${g}</li>`).join('');
+}
+
+function goToScreen(name){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(`screen-${name}`).classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function startOver(){
+  state = { word: null, age: null };
+  goToScreen('words');
+}
+
+renderWords();
+</script>
+</body>
+</html>
