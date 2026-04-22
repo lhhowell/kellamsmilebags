@@ -145,12 +145,56 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 .footer-sig{font-family:'Fredoka One',cursive;font-size:12px;color:#1a2a1a;letter-spacing:1px;}
 
 @media print{
-  body{background:#fff;padding:0;}
-  .hero,.mode-tabs,.workspace .step-card,.action-row,.result,.print-btn,.back-btn,.footer{display:none!important;}
-  .print-section{display:block!important;position:static;box-shadow:none;border:none;padding:0;border-radius:0;}
-  .print-section::before{display:none;}
-  @page{size:letter;margin:.5in;}
+  /* ─── Trading Card Print Layout ─────────────────────────────
+     Landscape letter page (11" × 8.5").
+     Two 4" × 6" panels side-by-side, flush against a dashed cut line.
+     Student cuts down the middle, glues the two panels back-to-back.
+     Standard #10 pattern applied to card printing.
+     ──────────────────────────────────────────────────────────── */
+  @page{size:letter landscape;margin:.25in;}
+  body{background:#fff;padding:0;margin:0;}
+  /* Hide ALL screen-only UI */
+  .hero,.mode-tabs,.workspace,.action-row,.result,.print-btn,.back-btn,.footer,.print-section{display:none!important;}
+  /* Show only the print card pair */
+  #printCardPair{display:flex!important;width:100%;height:100vh;gap:0;align-items:stretch;justify-content:center;}
+  .tc-panel{width:4in;height:6in;padding:.28in;background:#fff;color:#111;display:flex;flex-direction:column;box-sizing:border-box;overflow:hidden;}
+  /* Dashed cut line between panels */
+  .tc-panel.tc-front{border-right:2px dashed #888;}
+  /* ─── FRONT PANEL ─── */
+  .tc-front-frame{flex:1;border:3px solid #4caf82;border-radius:12px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;}
+  .tc-front-brand{font-family:'Fredoka One',cursive;font-size:8px;letter-spacing:2.5px;color:#4caf82;text-transform:uppercase;}
+  .tc-front-word{font-family:'Fredoka One',cursive;font-size:44px;color:#1B7A78;letter-spacing:3px;margin:8px 0;line-height:1;}
+  .tc-front-divider{border:none;border-top:2px solid #c9a84c;width:40px;margin:4px auto;}
+  .tc-front-trait-label{font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:2px;color:#C8860A;text-transform:uppercase;margin-top:4px;}
+  .tc-front-trait{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#333;line-height:1.3;margin:4px 8px;}
+  .tc-front-alleles{display:flex;gap:10px;justify-content:center;margin:10px 0 6px;}
+  .tc-front-allele{width:42px;height:42px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:22px;}
+  .tc-front-allele.d{background:#D6EEEE;color:#0F4F4E;}
+  .tc-front-allele.r{background:#EDE4F7;color:#6B3F9E;}
+  .tc-front-type{font-family:'Fredoka One',cursive;font-size:8px;letter-spacing:1.5px;color:#888;text-transform:uppercase;margin-top:4px;}
+  .tc-front-footer{font-size:8px;color:#999;font-style:italic;margin-top:auto;padding-top:6px;border-top:1px solid #eee;width:100%;}
+  /* ─── BACK PANEL ─── */
+  .tc-back-frame{flex:1;border:3px solid #4caf82;border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;}
+  .tc-back-title{font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:2px;color:#4caf82;text-transform:uppercase;text-align:center;margin-bottom:4px;}
+  .tc-back-word{font-family:'Fredoka One',cursive;font-size:14px;color:#1B7A78;letter-spacing:2px;text-align:center;margin-bottom:6px;}
+  .tc-back-section{margin-bottom:7px;}
+  .tc-back-section-title{font-family:'Fredoka One',cursive;font-size:7.5px;letter-spacing:1.5px;color:#C8860A;text-transform:uppercase;margin-bottom:3px;}
+  .tc-back-punnett{display:grid;grid-template-columns:22px 1fr 1fr;grid-template-rows:22px 1fr 1fr;gap:2px;width:fit-content;margin:0 auto 4px;}
+  .tc-back-punnett-h{background:#e8e4dc;border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:9px;color:#333;width:22px;height:22px;}
+  .tc-back-punnett-c{width:42px;height:42px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:11px;border:1px solid #ddd;}
+  .tc-back-pcts{display:flex;gap:4px;margin-bottom:6px;}
+  .tc-back-pct{flex:1;background:#f8f7f4;border-radius:4px;padding:3px;text-align:center;}
+  .tc-back-pct-val{font-family:'Fredoka One',cursive;font-size:12px;color:#1B7A78;display:block;line-height:1.1;}
+  .tc-back-pct-lbl{font-size:6.5px;color:#888;line-height:1.2;}
+  .tc-back-connection{background:#e8f5ee;border-left:3px solid #4caf82;border-radius:3px;padding:5px 7px;margin-bottom:5px;}
+  .tc-back-connection-text{font-size:8px;color:#444;line-height:1.4;}
+  .tc-back-fact{background:#fff9e6;border-left:3px solid #c9a84c;border-radius:3px;padding:5px 7px;margin-bottom:5px;}
+  .tc-back-fact-text{font-size:8px;color:#444;line-height:1.4;}
+  .tc-back-sig{font-family:'Fredoka One',cursive;font-size:6px;letter-spacing:1px;color:#aaa;text-align:center;margin-top:auto;padding-top:4px;}
 }
+
+/* Hide the print-card-pair entirely on screen — only used for print */
+#printCardPair{display:none;}
 </style>
 </head>
 <body>
@@ -274,6 +318,59 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
     </div>
     <div class="card-footer-sig"></div>
   </div>
+
+  <!-- ─── PRINT-ONLY: Trading Card Pair (front + back, landscape layout) ─── -->
+  <!-- Hidden on screen (#printCardPair{display:none}); revealed by @media print. -->
+  <!-- Populated by generateCard(). Student prints landscape, cuts the dashed line, -->
+  <!-- glues the two 4"x6" panels back-to-back to form a 2-sided trading card. -->
+  <div id="printCardPair" aria-hidden="true">
+    <!-- FRONT PANEL -->
+    <div class="tc-panel tc-front">
+      <div class="tc-front-frame">
+        <div class="tc-front-brand">DNA Trait Card</div>
+        <div>
+          <div class="tc-front-word" id="tcFrontWord"></div>
+          <hr class="tc-front-divider"/>
+          <div class="tc-front-trait-label">Your Trait</div>
+          <div class="tc-front-trait" id="tcFrontTrait"></div>
+        </div>
+        <div>
+          <div class="tc-front-alleles">
+            <div class="tc-front-allele d" id="tcFrontAlleleD">C</div>
+            <div class="tc-front-allele r" id="tcFrontAlleleR">c</div>
+          </div>
+          <div class="tc-front-type" id="tcFrontType">Dominant / Recessive</div>
+        </div>
+        <div class="tc-front-footer">From an AP Env Sci student &mdash; made just for you &#128149;</div>
+      </div>
+    </div>
+    <!-- BACK PANEL -->
+    <div class="tc-panel tc-back">
+      <div class="tc-back-frame">
+        <div class="tc-back-title">The Science</div>
+        <div class="tc-back-word" id="tcBackWord"></div>
+
+        <div class="tc-back-section">
+          <div class="tc-back-section-title">&#9974; Punnett Square (DR &times; DR)</div>
+          <div class="tc-back-punnett" id="tcBackPunnett"></div>
+          <div class="tc-back-pcts" id="tcBackPcts"></div>
+        </div>
+
+        <div class="tc-back-connection">
+          <div class="tc-back-section-title">&#127807; OneWord Connection</div>
+          <div class="tc-back-connection-text" id="tcBackConnection"></div>
+        </div>
+
+        <div class="tc-back-fact">
+          <div class="tc-back-section-title">&#129516; Genetics Fact</div>
+          <div class="tc-back-fact-text" id="tcBackFact"></div>
+        </div>
+
+        <div class="tc-back-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; AP Env Sci &middot; Spring 2026</div>
+      </div>
+    </div>
+  </div>
+
   <button class="print-btn" id="printBtn" onclick="window.print()" style="display:none;">&#128438; Print This DNA Trait Card</button>
 </div>
 
@@ -419,12 +516,43 @@ function generateCard() {
   document.getElementById('cardTraitText').textContent = t.connection;
   document.getElementById('cardGeneticsText').textContent = t.genetics;
 
+  // ─── Populate Trading Card Pair (print-only) ────────────────
+  // FRONT panel: word + trait name + allele badges + phenotype line
+  document.getElementById('tcFrontWord').textContent = makeWord;
+  document.getElementById('tcFrontTrait').textContent = t.trait;
+  document.getElementById('tcFrontAlleleD').textContent = t.dominantAllele;
+  document.getElementById('tcFrontAlleleR').textContent = t.recessiveAllele;
+  document.getElementById('tcFrontType').textContent =
+    t.dominantAllele + ' = ' + t.D + '  |  ' + t.recessiveAllele + ' = ' + t.R;
+
+  // BACK panel: word + Punnett + percentages + connection + fact
+  document.getElementById('tcBackWord').textContent = makeWord;
+  var backPunnett =
+    '<div class="tc-back-punnett-h" style="background:transparent;"></div>' +
+    '<div class="tc-back-punnett-h" style="background:#D6EEEE;color:#0F4F4E;width:42px;height:22px;">'+D+'</div>' +
+    '<div class="tc-back-punnett-h" style="background:#EDE4F7;color:#6B3F9E;width:42px;height:22px;">'+R+'</div>' +
+    '<div class="tc-back-punnett-h" style="background:#D6EEEE;color:#0F4F4E;width:22px;height:42px;">'+D+'</div>' +
+    '<div class="tc-back-punnett-c print-cell-DD">'+D+D+'</div>' +
+    '<div class="tc-back-punnett-c print-cell-DR">'+D+R+'</div>' +
+    '<div class="tc-back-punnett-h" style="background:#EDE4F7;color:#6B3F9E;width:22px;height:42px;">'+R+'</div>' +
+    '<div class="tc-back-punnett-c print-cell-RD">'+R+D+'</div>' +
+    '<div class="tc-back-punnett-c print-cell-RR">'+R+R+'</div>';
+  document.getElementById('tcBackPunnett').innerHTML = backPunnett;
+
+  document.getElementById('tcBackPcts').innerHTML =
+    '<div class="tc-back-pct"><span class="tc-back-pct-val">25%</span><span class="tc-back-pct-lbl">'+D+D+'<br>Dominant</span></div>' +
+    '<div class="tc-back-pct"><span class="tc-back-pct-val">50%</span><span class="tc-back-pct-lbl">'+D+R+'<br>Hetero</span></div>' +
+    '<div class="tc-back-pct"><span class="tc-back-pct-val">25%</span><span class="tc-back-pct-lbl">'+R+R+'<br>Recessive</span></div>';
+
+  document.getElementById('tcBackConnection').textContent = t.connection;
+  document.getElementById('tcBackFact').textContent = t.genetics;
+
   document.getElementById('printSection').classList.add('show');
   document.getElementById('printBtn').style.display = 'block';
   document.getElementById('printSection').scrollIntoView({behavior:'smooth'});
 
   // Tracker submission (Standard #11: mode:"no-cors")
-  submitToTracker(word);
+  submitToTracker(makeWord);
 }
 
 // ─── Honaker Tracker Submission ─────────────────────────────────
