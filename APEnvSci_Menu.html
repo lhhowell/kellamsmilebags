@@ -103,10 +103,6 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
   <div class="hero-meta">AP Env Sci &middot; Spring 2026 &middot; 75 Items</div>
 </div>
 
-<div class="back-wrap">
-  <a href="index.html" class="back-btn">&#8592; Back to Smile Bags</a>
-</div>
-
 <!-- MISSION -->
 <div class="mission">
   <div class="mission-box">
@@ -120,22 +116,25 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 <!-- TRACKER -->
 <div class="tracker">
   <div class="tracker-box">
-    <div class="tracker-title">&#128202; Live Tracker</div>
+    <div class="tracker-title">&#128202; Class Goals</div>
     <div class="tracker-grid">
       <div class="tracker-tile">
         <div class="tracker-tile-label">DNA Trait Cards</div>
-        <div class="tracker-tile-count" id="count-dna">0 / 15</div>
+        <div class="tracker-tile-count">Goal: 15</div>
       </div>
       <div class="tracker-tile">
         <div class="tracker-tile-label">Mirror Stickers</div>
-        <div class="tracker-tile-count" id="count-mirror">0 / 45</div>
+        <div class="tracker-tile-count">Goal: 45</div>
       </div>
       <div class="tracker-tile">
         <div class="tracker-tile-label">Bookmarks</div>
-        <div class="tracker-tile-count" id="count-bookmark">0 / 15</div>
+        <div class="tracker-tile-count">Goal: 15</div>
       </div>
     </div>
-    <div class="tracker-total">Total: <span id="count-total">0</span> / 75</div>
+    <div class="tracker-total">Total Goal: <span>75</span> Items</div>
+    <div style="margin-top:18px;">
+      <a href="https://docs.google.com/spreadsheets/d/1aFZnnF29ABmIPc9pAH61kh0TS_fnuou0WZOYHw9gAqU/edit" target="_blank" rel="noopener" style="display:inline-block;background:transparent;color:#4caf82;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 22px;border:1.5px solid #4caf82;border-radius:999px;text-decoration:none;transition:all .2s;">&#128202; View Live Submissions &rarr;</a>
+    </div>
   </div>
 </div>
 
@@ -224,64 +223,6 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
   <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; AP Environmental Science &middot; Honaker &middot; Spring 2026</div>
   <div class="footer-body">Built by AP Env Sci scientists for students who need a smile.</div>
 </div>
-
-<script>
-// ─── Honaker Tracker ─────────────────────────────────────────────
-// Uses JSONP to bypass CORS — Apps Script Web Apps don't send
-// Access-Control-Allow-Origin headers, so fetch() from a different
-// origin (github.io → script.google.com) is blocked. JSONP loads
-// the response as a <script> tag, which browsers allow cross-origin.
-var TRACKER_URL = "https://script.google.com/macros/s/AKfycbzdqSjuIMy7v5Q-dkEpSuv8crZzazDWV-Qqo8x2mQxcmj2n9nNbXqG_2eCrUjGAfThe/exec";
-
-// JSONP callback counter — each call gets a unique function name so
-// multiple refreshes in flight don't collide.
-var _trackerCbCounter = 0;
-
-function refreshTracker() {
-  if (!TRACKER_URL || TRACKER_URL.indexOf("REPLACE_WITH") === 0) return;
-
-  var cbName = "_trackerCb" + (++_trackerCbCounter);
-  var timeoutId;
-
-  // Define the callback function globally so the JSONP response can call it
-  window[cbName] = function(d) {
-    clearTimeout(timeoutId);
-    try {
-      var dna = (d.dna || 0), mirror = (d.mirror || 0), bookmark = (d.bookmark || 0);
-      document.getElementById('count-dna').textContent       = dna + ' / 15';
-      document.getElementById('count-mirror').textContent    = mirror + ' / 45';
-      document.getElementById('count-bookmark').textContent  = bookmark + ' / 15';
-      document.getElementById('count-total').textContent     = dna + mirror + bookmark;
-      console.log("[Tracker] counts updated:", d);
-    } catch(e) {
-      console.warn("[Tracker] render failed:", e.message);
-    }
-    cleanup();
-  };
-
-  function cleanup() {
-    try { delete window[cbName]; } catch(e) { window[cbName] = undefined; }
-    if (script && script.parentNode) script.parentNode.removeChild(script);
-  }
-
-  // Cache-bust + JSONP callback param
-  var url = TRACKER_URL + "?action=counts&callback=" + cbName + "&_=" + Date.now();
-  var script = document.createElement('script');
-  script.src = url;
-  script.onerror = function() {
-    console.warn("[Tracker] JSONP script load failed");
-    cleanup();
-  };
-  // Safety timeout — if Apps Script doesn't respond in 10s, clean up
-  timeoutId = setTimeout(function() {
-    console.warn("[Tracker] request timed out");
-    cleanup();
-  }, 10000);
-  document.body.appendChild(script);
-}
-refreshTracker();
-setInterval(refreshTracker, 60000);  // refresh every 60s
-</script>
 
 </body>
 </html>

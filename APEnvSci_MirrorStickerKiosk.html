@@ -336,32 +336,46 @@ function drawSticker(canvas, size){
   ctx.fill();
 
   // ICON — render in the top third
-  var iconSize = size * 0.28;
+  var iconSize = size * 0.24;
   var iconX = center - iconSize / 2;
-  var iconY = size * 0.16;
+  var iconY = size * 0.18;
   drawIconOnCanvas(ctx, state.icon, iconX, iconY, iconSize, color);
 
-  // ONEWORD — centered, bold, big
+  // ONEWORD — centered, bold, measured to fit inside the inner circle
+  // Max text width = diameter of inner circle minus margin (~76% of size)
   ctx.fillStyle = color;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  // Scale font to fit — shorter words get bigger
-  var wordFontSize = Math.max(size * 0.11, Math.min(size * 0.18, size * 1.8 / Math.max(state.word.length, 4)));
+  var maxTextWidth = size * 0.72;
+  // Start big, shrink until the word fits comfortably
+  var wordFontSize = size * 0.20;
   ctx.font = '700 ' + wordFontSize + 'px "Fredoka One", "Comic Sans MS", sans-serif';
-  ctx.fillText(state.word, center, center + size * 0.05);
+  while (ctx.measureText(state.word).width > maxTextWidth && wordFontSize > size * 0.06) {
+    wordFontSize -= size * 0.005;
+    ctx.font = '700 ' + wordFontSize + 'px "Fredoka One", "Comic Sans MS", sans-serif';
+  }
+  ctx.fillText(state.word, center, size * 0.55);
 
-  // NAME — small, bottom arc area
+  // NAME — small, below the word
   var nameRaw = (document.getElementById('studentName').value || '').trim();
   if (nameRaw){
     ctx.fillStyle = hexToRgba(color, 0.75);
     ctx.font = '400 ' + (size * 0.048) + 'px "Nunito", sans-serif';
-    ctx.fillText('— by ' + nameRaw, center, size * 0.82);
+    // Also measure-and-fit for long names
+    var nameStr = '— by ' + nameRaw;
+    var maxNameWidth = size * 0.65;
+    var nameFontSize = size * 0.048;
+    while (ctx.measureText(nameStr).width > maxNameWidth && nameFontSize > size * 0.028) {
+      nameFontSize -= size * 0.002;
+      ctx.font = '400 ' + nameFontSize + 'px "Nunito", sans-serif';
+    }
+    ctx.fillText(nameStr, center, size * 0.74);
   }
 
-  // Tiny footer mark
+  // Tiny footer mark — moved down toward bottom edge, well clear of word
   ctx.fillStyle = hexToRgba(color, 0.45);
-  ctx.font = '400 ' + (size * 0.028) + 'px "Nunito", sans-serif';
-  ctx.fillText('Smile Bags · Spring 2026', center, size * 0.91);
+  ctx.font = '400 ' + (size * 0.026) + 'px "Nunito", sans-serif';
+  ctx.fillText('Smile Bags · Spring 2026', center, size * 0.88);
 }
 
 function drawIconOnCanvas(ctx, key, x, y, size, color){
