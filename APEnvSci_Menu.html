@@ -226,31 +226,58 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 </div>
 
 <script>
-// ─── Honaker Tracker (Standard #11: mode:"no-cors" on submit; pull counts via GET) ───
-// Paste the live Apps Script Web App URL here after deployment.
+// ─── Honaker Tracker ─────────────────────────────────────────────
+// Uses JSONP to bypass CORS — Apps Script Web Apps don't send
+// Access-Control-Allow-Origin headers, so fetch() from a different
+// origin (github.io → script.google.com) is blocked. JSONP loads
+// the response as a <script> tag, which browsers allow cross-origin.
 var TRACKER_URL = "https://script.google.com/macros/s/AKfycbzdqSjuIMy7v5Q-dkEpSuv8crZzazDWV-Qqo8x2mQxcmj2n9nNbXqG_2eCrUjGAfThe/exec";
+
+// JSONP callback counter — each call gets a unique function name so
+// multiple refreshes in flight don't collide.
+var _trackerCbCounter = 0;
 
 function refreshTracker() {
   if (!TRACKER_URL || TRACKER_URL.indexOf("REPLACE_WITH") === 0) return;
-  // Cache-bust with timestamp param so browsers don't serve stale 0 counts.
-  var url = TRACKER_URL + "?action=counts&_=" + Date.now();
-  fetch(url, { method: "GET", redirect: "follow" })
-    .then(function(r){
-      if (!r.ok) throw new Error("HTTP " + r.status);
-      return r.json();
-    })
-    .then(function(d){
+
+  var cbName = "_trackerCb" + (++_trackerCbCounter);
+  var timeoutId;
+
+  // Define the callback function globally so the JSONP response can call it
+  window[cbName] = function(d) {
+    clearTimeout(timeoutId);
+    try {
       var dna = (d.dna || 0), mirror = (d.mirror || 0), bookmark = (d.bookmark || 0);
       document.getElementById('count-dna').textContent       = dna + ' / 15';
       document.getElementById('count-mirror').textContent    = mirror + ' / 45';
       document.getElementById('count-bookmark').textContent  = bookmark + ' / 15';
       document.getElementById('count-total').textContent     = dna + mirror + bookmark;
       console.log("[Tracker] counts updated:", d);
-    })
-    .catch(function(e){
-      // Log to console so we can diagnose if the fetch is blocked
-      console.warn("[Tracker] fetch failed:", e.message);
-    });
+    } catch(e) {
+      console.warn("[Tracker] render failed:", e.message);
+    }
+    cleanup();
+  };
+
+  function cleanup() {
+    try { delete window[cbName]; } catch(e) { window[cbName] = undefined; }
+    if (script && script.parentNode) script.parentNode.removeChild(script);
+  }
+
+  // Cache-bust + JSONP callback param
+  var url = TRACKER_URL + "?action=counts&callback=" + cbName + "&_=" + Date.now();
+  var script = document.createElement('script');
+  script.src = url;
+  script.onerror = function() {
+    console.warn("[Tracker] JSONP script load failed");
+    cleanup();
+  };
+  // Safety timeout — if Apps Script doesn't respond in 10s, clean up
+  timeoutId = setTimeout(function() {
+    console.warn("[Tracker] request timed out");
+    cleanup();
+  }, 10000);
+  document.body.appendChild(script);
 }
 refreshTracker();
 setInterval(refreshTracker, 60000);  // refresh every 60s
