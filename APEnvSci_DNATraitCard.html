@@ -156,13 +156,13 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 <body>
 
 <div class="hero">
-  <div class="hero-brand">AP Bio + T.I.D.E. &middot; Exploration Kiosk</div>
+  <div class="hero-brand">AP Env Sci &middot; Trading Card Kiosk</div>
   <h1 class="hero-title">DNA<br><span>Trait Card</span></h1>
   <p class="hero-sub">Every trait you have &mdash; eye color, tongue rolling, earlobe shape &mdash; is determined by dominant and recessive alleles inherited from your parents. Use a Punnett square to predict the probability of traits and decode the science of inheritance!</p>
-  <div style="font-family:'Fredoka One',cursive;font-size:11px;color:#4caf82;letter-spacing:1px;margin-top:14px;">Elena O'Brien &middot; AP Biology + T.I.D.E. &middot; Spring 2026</div>
+  <div style="font-family:'Fredoka One',cursive;font-size:11px;color:#4caf82;letter-spacing:1px;margin-top:14px;"><a href="APEnvSci_Teacher_Guide.html" style="color:inherit;text-decoration:none;border-bottom:1px dotted currentColor;">Honaker</a> &middot; AP Environmental Science &middot; Spring 2026</div>
 </div>
 
-<button type="button" onclick="window.location.href='APBio_TIDE_Kiosk_Menu.html'" class="back-btn">&#8592; Back to Kiosk Menu</button>
+<button type="button" onclick="window.location.href='APEnvSci_Menu.html'" class="back-btn">&#8592; Back to Kiosk Menu</button>
 
 <div class="mode-tabs">
   <button class="mode-tab active" onclick="switchMode('make')">
@@ -248,7 +248,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
     <div class="card-header">
       <div class="card-title">DNA Trait Card</div>
       <hr class="card-divider"/>
-      <div class="card-sub">From a Kellam High School student &mdash; made just for you &#128149;</div>
+      <div class="card-sub">From an AP Env Sci student &mdash; made just for you &#128149;</div>
     </div>
     <div class="card-word" id="cardWord"></div>
 
@@ -274,7 +274,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
     </div>
     <div class="card-footer-sig"></div>
   </div>
-  <button class="print-btn" id="printBtn" onclick="window.print()" style="display:none !important;" hidden>&#128438; Print This DNA Trait Card</button>
+  <button class="print-btn" id="printBtn" onclick="window.print()">&#128438; Print This DNA Trait Card</button>
 </div>
 
 <!-- SOLVE IT -->
@@ -330,7 +330,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 </div>
 
 <div class="footer">
-  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Laura Howell, ITS &middot; Spring 2026</div>
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; AP Environmental Science &middot; Honaker &middot; Spring 2026</div>
 </div>
 
 <script>
@@ -420,8 +420,35 @@ function generateCard() {
   document.getElementById('cardGeneticsText').textContent = t.genetics;
 
   document.getElementById('printSection').classList.add('show');
-  // Tier 2: print button intentionally suppressed — exploration only
+  document.getElementById('printBtn').style.display = 'block';
   document.getElementById('printSection').scrollIntoView({behavior:'smooth'});
+
+  // Tracker submission (Standard #11: mode:"no-cors")
+  submitToTracker(word);
+}
+
+// ─── Honaker Tracker Submission ─────────────────────────────────
+// Paste the live Apps Script Web App URL here after deployment.
+// Apps Script side: Standard #9 (Debug Log tab) + doPost handler writing to Honaker's sheet.
+var SCRIPT_URL = "REPLACE_WITH_HONAKER_DNATRAITCARD_SCRIPT_URL";
+
+function submitToTracker(word) {
+  if (!SCRIPT_URL || SCRIPT_URL.indexOf("REPLACE_WITH") === 0) return; // no-op until URL is set
+  var payload = {
+    activity: "DNATraitCard",
+    class: "AP Environmental Science",
+    teacher: "Honaker",
+    word: word,
+    timestamp: new Date().toISOString()
+  };
+  try {
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {"Content-Type": "text/plain;charset=utf-8"},
+      body: JSON.stringify(payload)
+    });
+  } catch(e) { /* fail silently — submission is fire-and-forget */ }
 }
 
 // SOLVE IT
