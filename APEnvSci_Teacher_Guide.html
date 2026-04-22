@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Teacher Guide &mdash; AP Env Sci Smile Bags</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#fdfcf8;color:#1a2a1a;min-height:100vh;padding:0 0 60px;line-height:1.7;}
+
+/* ─── HERO ─── */
+.hero{background:linear-gradient(135deg,#0a0f14 0%,#0d1a14 100%);color:#fff;text-align:center;padding:56px 24px 48px;border-bottom:4px solid #c9a84c;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:4px;color:#4caf82;text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,52px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:12px;}
+.hero-title span{color:#c9a84c;}
+.hero-sub{font-size:16px;color:#c8c4bc;max-width:720px;margin:0 auto 20px;line-height:1.7;}
+.hero-meta{font-family:'Fredoka One',cursive;font-size:11px;color:#888;letter-spacing:2px;margin-top:14px;text-transform:uppercase;}
+
+/* ─── BACK BUTTON ─── */
+.back-wrap{max-width:900px;margin:0 auto;padding:24px 24px 0;}
+.back-btn{display:inline-block;background:transparent;color:#4caf82;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 18px;border:1.5px solid #dcd5c6;border-radius:8px;cursor:pointer;transition:all .2s;text-decoration:none;}
+.back-btn:hover{border-color:#4caf82;background:#f0f7f3;}
+
+/* ─── CONTENT ─── */
+.content{max-width:900px;margin:0 auto;padding:32px 24px;}
+.section{margin-bottom:44px;}
+.section-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:3px;color:#4caf82;text-transform:uppercase;margin-bottom:6px;}
+.section-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:#1a2a1a;margin-bottom:16px;line-height:1.2;border-bottom:2px solid #e8e4d8;padding-bottom:10px;}
+.section-title span{color:#c9a84c;}
+.section p{margin-bottom:14px;color:#3d3d3d;font-size:15px;}
+.section strong{color:#1a2a1a;}
+.section ul, .section ol{margin:12px 0 14px 24px;color:#3d3d3d;font-size:15px;}
+.section li{margin-bottom:8px;}
+
+/* ─── CALLOUT BOXES ─── */
+.callout{background:#f0f7f3;border-left:4px solid #4caf82;border-radius:4px;padding:18px 22px;margin:18px 0;}
+.callout-title{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;color:#1B7A78;text-transform:uppercase;margin-bottom:8px;}
+.callout p{margin-bottom:10px;font-size:14px;}
+.callout p:last-child{margin-bottom:0;}
+.callout.gold{background:#fdf8e8;border-left-color:#c9a84c;}
+.callout.gold .callout-title{color:#c8860a;}
+.callout.lav{background:#f4eff9;border-left-color:#6B3F9E;}
+.callout.lav .callout-title{color:#6B3F9E;}
+
+/* ─── KIOSK CARDS ─── */
+.kiosk-block{background:#fff;border:1px solid #e8e4d8;border-radius:14px;padding:28px;margin-bottom:18px;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.kiosk-header{display:flex;gap:16px;align-items:flex-start;margin-bottom:14px;}
+.kiosk-icon{font-size:32px;width:56px;height:56px;background:#f0f7f3;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.kiosk-body{flex:1;}
+.kiosk-num{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;color:#4caf82;text-transform:uppercase;margin-bottom:4px;}
+.kiosk-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:#1a2a1a;margin-bottom:4px;}
+.kiosk-count{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1.5px;color:#c8860a;text-transform:uppercase;}
+.kiosk-link{display:inline-block;margin-top:10px;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;color:#4caf82;text-transform:uppercase;text-decoration:none;border-bottom:1px dotted #4caf82;}
+.kiosk-link:hover{color:#1B7A78;}
+
+/* ─── MATERIALS CHECKLIST ─── */
+.materials-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:14px;}
+.material-card{background:#fff;border:1px solid #e8e4d8;border-radius:10px;padding:16px 18px;}
+.material-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;color:#c8860a;text-transform:uppercase;margin-bottom:4px;}
+.material-item{font-size:14px;color:#1a2a1a;font-weight:600;margin-bottom:2px;}
+.material-note{font-size:12px;color:#777;line-height:1.5;}
+
+/* ─── RUBRIC TABLE ─── */
+.rubric-table{width:100%;border-collapse:collapse;margin-top:12px;background:#fff;border-radius:8px;overflow:hidden;border:1px solid #e8e4d8;}
+.rubric-table th{background:#f0f7f3;text-align:left;padding:12px 14px;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;color:#1B7A78;text-transform:uppercase;border-bottom:2px solid #4caf82;}
+.rubric-table td{padding:12px 14px;border-bottom:1px solid #f0ede5;vertical-align:top;font-size:13px;color:#3d3d3d;line-height:1.55;}
+.rubric-table tr:last-child td{border-bottom:none;}
+.rubric-table td:first-child{font-weight:700;color:#1a2a1a;white-space:nowrap;}
+
+/* ─── FAQ ─── */
+.faq-item{background:#fff;border:1px solid #e8e4d8;border-radius:10px;padding:18px 22px;margin-bottom:12px;}
+.faq-q{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#1a2a1a;margin-bottom:8px;}
+.faq-a{font-size:14px;color:#3d3d3d;line-height:1.65;}
+
+/* ─── STEPS LIST ─── */
+.steps{counter-reset:stepc;list-style:none;margin:14px 0 14px 0;padding:0;}
+.steps li{position:relative;padding:10px 10px 10px 42px;margin-bottom:8px;background:#fff;border:1px solid #e8e4d8;border-radius:8px;counter-increment:stepc;font-size:14px;color:#3d3d3d;}
+.steps li::before{content:counter(stepc);position:absolute;left:10px;top:10px;width:24px;height:24px;background:#4caf82;color:#fff;border-radius:50%;font-family:'Fredoka One',cursive;font-size:11px;display:flex;align-items:center;justify-content:center;}
+
+/* ─── LINK STYLE ─── */
+.content a{color:#1B7A78;text-decoration:none;border-bottom:1px dotted #1B7A78;}
+.content a:hover{color:#0F4F4E;border-bottom-style:solid;}
+
+/* ─── STANDARDS LIST ─── */
+.standard-row{background:#fff;border:1px solid #e8e4d8;border-radius:8px;padding:14px 18px;margin-bottom:10px;}
+.standard-code{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;color:#c8860a;text-transform:uppercase;margin-bottom:4px;}
+.standard-text{font-size:14px;color:#1a2a1a;line-height:1.55;}
+
+/* ─── FOOTER ─── */
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #e8e4d8;max-width:900px;margin:48px auto 0;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:11px;color:#4caf82;letter-spacing:2px;line-height:1.8;}
+.footer-body{font-size:12px;color:#888;margin-top:10px;font-style:italic;}
+
+@media print{
+  body{background:#fff;}
+  .hero{background:#0a0f14!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .back-wrap{display:none;}
+  .section{break-inside:avoid;}
+  .kiosk-block,.faq-item,.callout,.standard-row,.material-card{break-inside:avoid;}
+  @page{margin:.5in;}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-brand">Teacher Guide &middot; Smile Bags</div>
+  <h1 class="hero-title">AP Environmental <span>Science</span></h1>
+  <p class="hero-sub">Smile Disc &amp; 3D Print Unit &mdash; a post-AP service-learning capstone that turns environmental science into tangible care for students who need a smile. Built with Honaker's classroom in mind.</p>
+  <div class="hero-meta">Spring 2026 &middot; 75 Items &middot; 3 Kiosks</div>
+</div>
+
+<div class="back-wrap">
+  <a href="APEnvSci_Menu.html" class="back-btn">&#8592; Back to Kiosk Menu</a>
+</div>
+
+<div class="content">
+
+  <!-- ─── 1 · UNIT OVERVIEW ─── -->
+  <section class="section">
+    <div class="section-num">01</div>
+    <h2 class="section-title">Unit <span>Overview</span></h2>
+    <p>After AP testing, AP Environmental Science students take on a passion project that connects the real-world science they have been studying &mdash; cleft conditions, 3D printing filament lifecycle, acrylic mirror material analysis &mdash; to a hands-on service contribution through <strong>Operation Smiles</strong>. Over the course of the unit, each student contributes <strong>three original items</strong> that travel into Smile Bags for elementary and middle-school recipients:</p>
+    <ul>
+      <li><strong>15 DNA Trait Cards</strong> &mdash; genetics trading cards linking a OneWord to a real human trait</li>
+      <li><strong>45 Smile Mirror Stickers</strong> &mdash; OneWord circular stickers adhered to the back of Smile Mirror discs</li>
+      <li><strong>15 Research Bookmarks</strong> &mdash; "Did You Know?" bookmarks pairing a OneWord with an environmental fact</li>
+    </ul>
+    <p>All three kiosks are browser-based. Students do not need accounts; they just open the kiosk, pick a OneWord, and build. Every submission is logged to a shared tracker spreadsheet you can view at any time.</p>
+
+    <div class="callout">
+      <div class="callout-title">&#127807; Future Ready Attributes</div>
+      <p>This unit directly supports <strong>Thinkers &amp; Inquirers</strong> (students apply environmental science thinking to new contexts) and <strong>Personally &amp; Socially Responsible</strong> (students produce real artifacts for real recipients).</p>
+    </div>
+  </section>
+
+  <!-- ─── 2 · LEARNING STANDARDS ─── -->
+  <section class="section">
+    <div class="section-num">02</div>
+    <h2 class="section-title">Learning <span>Standards</span></h2>
+    <p>Each kiosk integrates concepts from multiple AP Environmental Science topics. Standards references below are suggested alignments; adapt as needed for your state framework.</p>
+
+    <div class="standard-row">
+      <div class="standard-code">AP ES &middot; Unit 5.10</div>
+      <div class="standard-text"><strong>Impacts of Agricultural Practices.</strong> DNA Trait Cards surface the heritability and genetic variation concepts that underpin selective breeding, GMO regulation, and biodiversity loss discussions.</div>
+    </div>
+
+    <div class="standard-row">
+      <div class="standard-code">AP ES &middot; Unit 8.5</div>
+      <div class="standard-text"><strong>Solid Waste Disposal.</strong> Mirror Sticker production and 3D printing filament analysis invite students to track material lifecycles from raw input to disposable output.</div>
+    </div>
+
+    <div class="standard-row">
+      <div class="standard-code">AP ES &middot; Unit 9.10</div>
+      <div class="standard-text"><strong>Sustainability.</strong> The entire Smile Bags contribution is a case study in sustainable design: reusing, repurposing, and applying science for social good.</div>
+    </div>
+
+    <div class="standard-row">
+      <div class="standard-code">NGSS &middot; HS-LS3-1</div>
+      <div class="standard-text"><strong>Inheritance of Traits.</strong> DNA Trait Cards require students to explain dominant/recessive allele inheritance using Punnett squares &mdash; the Mendelian foundation underlying modern genetics.</div>
+    </div>
+
+    <div class="standard-row">
+      <div class="standard-code">NGSS &middot; HS-ETS1-3</div>
+      <div class="standard-text"><strong>Engineering Design.</strong> Student-designed Mirror Stickers and hand-drawn card illustrations engage the engineering design cycle within constraints (2.5&quot; circular format, Cricut-compatible output).</div>
+    </div>
+
+    <div class="standard-row">
+      <div class="standard-code">ISTE &middot; 1.4</div>
+      <div class="standard-text"><strong>Innovative Designer.</strong> Students use digital tools (kiosk builders, Canva, Cricut Design Space, Google Drive) to create original artifacts that solve a real problem for a real audience.</div>
+    </div>
+  </section>
+
+  <!-- ─── 3 · MATERIALS CHECKLIST ─── -->
+  <section class="section">
+    <div class="section-num">03</div>
+    <h2 class="section-title">Materials <span>Checklist</span></h2>
+    <p>What you will need beyond the digital kiosks.</p>
+
+    <div class="materials-grid">
+
+      <div class="material-card">
+        <div class="material-label">Hardware</div>
+        <div class="material-item">Bambu Lab 3D Printer</div>
+        <div class="material-note">Access to the Design Lab printer for smile disc production. Filament: PLA, white or light blue recommended for sticker contrast.</div>
+      </div>
+
+      <div class="material-card">
+        <div class="material-label">Hardware</div>
+        <div class="material-item">Cricut Cutting Machine</div>
+        <div class="material-note">Design Lab (Room 210). Cricut Design Space account required.</div>
+      </div>
+
+      <div class="material-card">
+        <div class="material-label">Supplies</div>
+        <div class="material-item">Adhesive Sticker Paper</div>
+        <div class="material-note">Cricut-compatible printable vinyl or sticker paper for the 45 Mirror Stickers. 2.5&quot; round cuts.</div>
+      </div>
+
+      <div class="material-card">
+        <div class="material-label">Supplies</div>
+        <div class="material-item">3&quot; Round Acrylic Mirrors</div>
+        <div class="material-note">45 Smile Mirror discs. Students adhere OneWord stickers to the back-facing side.</div>
+      </div>
+
+      <div class="material-card">
+        <div class="material-label">Supplies</div>
+        <div class="material-item">Cardstock (White)</div>
+        <div class="material-note">For bookmarks and DNA Trait Cards. 65+ lb weight recommended for durability. Letter size.</div>
+      </div>
+
+      <div class="material-card">
+        <div class="material-label">Supplies</div>
+        <div class="material-item">Fine-Tip Markers + Colored Pencils</div>
+        <div class="material-note">For student personalization on DNA Trait Cards and hand-drawn sticker illustrations.</div>
+      </div>
+
+      <div class="material-card">
+        <div class="material-label">Digital</div>
+        <div class="material-item">Class Google Drive Folder</div>
+        <div class="material-note">For uploading hand-drawn designs and externally-created stickers. Link embedded in the Mirror Sticker Kiosk.</div>
+      </div>
+
+      <div class="material-card">
+        <div class="material-label">Digital</div>
+        <div class="material-item">Submissions Tracker Spreadsheet</div>
+        <div class="material-note">Pre-configured. Auto-captures every kiosk submission. See Section 5 for viewing instructions.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── 4 · THE THREE KIOSKS ─── -->
+  <section class="section">
+    <div class="section-num">04</div>
+    <h2 class="section-title">The Three <span>Kiosks</span></h2>
+    <p>Each kiosk is a self-contained browser tool. Students can move between them in any order, though the sequence below mirrors the content progression from individual (DNA) to group (Mirror) to audience (Bookmark).</p>
+
+    <div class="kiosk-block">
+      <div class="kiosk-header">
+        <div class="kiosk-icon">&#129516;</div>
+        <div class="kiosk-body">
+          <div class="kiosk-num">Tab 01</div>
+          <div class="kiosk-name">DNA Trait Card</div>
+          <div class="kiosk-count">15 cards per student</div>
+        </div>
+      </div>
+      <p>Students pick a OneWord, match it to a real human trait, and generate a printable two-sided trading card with a Punnett square, OneWord connection, and genetics fact. The print layout produces two 4&quot;&times;6&quot; panels side-by-side; students cut the dashed line and glue the two pieces back-to-back to form a double-sided card.</p>
+      <p><strong>Required output:</strong> a finished trading card. <strong>Student role:</strong> scientist + designer. Each student personalizes every card with a hand-drawn illustration, personal note, or stickers before it goes into the bag.</p>
+      <a class="kiosk-link" href="APEnvSci_DNATraitCard.html" target="_blank">Open DNA Trait Card Kiosk &rarr;</a>
+    </div>
+
+    <div class="kiosk-block">
+      <div class="kiosk-header">
+        <div class="kiosk-icon">&#129693;</div>
+        <div class="kiosk-body">
+          <div class="kiosk-num">Tab 02</div>
+          <div class="kiosk-name">Mirror Sticker Kiosk</div>
+          <div class="kiosk-count">45 stickers per class group</div>
+        </div>
+      </div>
+      <p>Students design 2.5&quot; round OneWord stickers for the back of 45 Smile Mirror discs. Three workflows are supported:</p>
+      <ul>
+        <li><strong>Path 1 &mdash; Build in kiosk:</strong> pick a OneWord, icon (5 options), color (4 options), add first name, download as transparent PNG</li>
+        <li><strong>Path 2 &mdash; Design external:</strong> Canva, Adobe Express, or Google Drawings (2.5&quot; round, transparent PNG)</li>
+        <li><strong>Path 3 &mdash; Hand draw:</strong> on paper, photograph overhead, upload to class Drive folder</li>
+      </ul>
+      <p>All paths funnel into the same class Drive folder. From there, the designs import into Cricut Design Space and the machine cuts + prints the stickers on adhesive paper.</p>
+      <a class="kiosk-link" href="APEnvSci_MirrorStickerKiosk.html" target="_blank">Open Mirror Sticker Kiosk &rarr;</a>
+    </div>
+
+    <div class="kiosk-block">
+      <div class="kiosk-header">
+        <div class="kiosk-icon">&#128278;</div>
+        <div class="kiosk-body">
+          <div class="kiosk-num">Tab 03</div>
+          <div class="kiosk-name">Research Bookmark</div>
+          <div class="kiosk-count">15 bookmarks per student</div>
+        </div>
+      </div>
+      <p>Students translate environmental research thinking into a "Did You Know?" bookmark for a middle-school recipient. Each bookmark pairs a OneWord with a real-world environmental science fact and a hands-on activity the recipient can try. Prints as a flush-sides saddle-fold &mdash; students cut once and fold to make a durable two-sided bookmark.</p>
+      <p><em>Note: the filename is <code>APResearch_BookmarkBuilder_MiddleSchool.html</code> (legacy name preserved to avoid breaking existing links). The content is fully rebranded for AP Environmental Science.</em></p>
+      <a class="kiosk-link" href="APResearch_BookmarkBuilder_MiddleSchool.html" target="_blank">Open Research Bookmark Kiosk &rarr;</a>
+    </div>
+  </section>
+
+  <!-- ─── 5 · VIEWING SUBMISSIONS ─── -->
+  <section class="section">
+    <div class="section-num">05</div>
+    <h2 class="section-title">Viewing <span>Submissions</span></h2>
+    <p>Every time a student generates a DNA Trait Card, downloads a Mirror Sticker, or completes a Bookmark, a submission row is automatically logged to a shared Google Sheet. You can view the data in real time &mdash; no refresh button, no waiting, no export.</p>
+
+    <div class="callout gold">
+      <div class="callout-title">&#128202; Quick-access button</div>
+      <p>On the <a href="APEnvSci_Menu.html">AP Env Sci Kiosk Menu</a>, under the Class Goals tiles, click the green <strong>"View Live Submissions &rarr;"</strong> button. It opens the tracker spreadsheet in a new tab.</p>
+    </div>
+
+    <p>If you prefer, open the spreadsheet directly:</p>
+    <p><a href="https://docs.google.com/spreadsheets/d/1aFZnnF29ABmIPc9pAH61kh0TS_fnuou0WZOYHw9gAqU/edit" target="_blank">Honaker AP Env Sci Smile Bags Tracker &rarr;</a></p>
+
+    <h3 style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin:24px 0 10px;color:#1a2a1a;">What you will see</h3>
+
+    <ol class="steps">
+      <li><strong>Submissions tab.</strong> The main log. Each row is one completed item. Columns: Timestamp, Activity (DNATraitCard / MirrorSticker / Bookmark), OneWord, Student Name (if provided), Class, Teacher, and a Meta column with the full JSON payload for reference.</li>
+      <li><strong>Debug Log tab.</strong> Diagnostic entries only. Captures every kiosk ping so if something breaks (rare), you can see exactly when and why. You generally will not need to look here.</li>
+    </ol>
+
+    <h3 style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin:24px 0 10px;color:#1a2a1a;">Useful filters &amp; formulas</h3>
+
+    <p>Because everything lives in one tab with an Activity column, you can quickly count progress per kiosk using COUNTIF formulas in any empty cell:</p>
+
+    <ul>
+      <li><code>=COUNTIF(B:B,"DNATraitCard")</code> &mdash; total DNA cards submitted</li>
+      <li><code>=COUNTIF(B:B,"MirrorSticker")</code> &mdash; total stickers designed</li>
+      <li><code>=COUNTIF(B:B,"Bookmark")</code> &mdash; total bookmarks completed</li>
+      <li><code>=COUNTIFS(B:B,"DNATraitCard",D:D,"StudentName")</code> &mdash; count for a specific student</li>
+    </ul>
+
+    <p>Google Sheets filter views (Data &rarr; Create a filter view) are ideal for sorting by student name or filtering by a specific activity during grading.</p>
+  </section>
+
+  <!-- ─── 6 · THE EMPTY SPACE IS THE POINT ─── -->
+  <section class="section">
+    <div class="section-num">06</div>
+    <h2 class="section-title">The Empty Space <span>Is The Point</span></h2>
+    <p>When students preview their DNA Trait Cards, they may notice <strong>significant blank space</strong> below the science content on both the front and the back panels. This is not a bug. It is the most important pedagogical feature of the unit.</p>
+
+    <div class="callout lav">
+      <div class="callout-title">&#127874; Why the space exists</div>
+      <p>With 90 students each producing 15 cards, the class will generate roughly <strong>1,350 trading cards</strong>. If every card were identical to the kiosk output, the recipient would get a printed worksheet. Real trading cards are made by a person, not a printer.</p>
+    </div>
+
+    <p>Encourage students to fill the blank space in any way that makes each card unique:</p>
+    <ul>
+      <li>&#127912; <strong>Hand-draw a small illustration</strong> representing the OneWord (BLOOM becomes a flower, ROOT becomes a tree)</li>
+      <li>&#9997;&#65039; <strong>Write a personal message</strong> to the recipient &mdash; an encouragement, a question, a short story</li>
+      <li>&#11088; <strong>Add stickers, doodles, signatures</strong> &mdash; anything that makes it feel personal</li>
+      <li>&#128150; <strong>Decorate the back panel</strong> too &mdash; it is the first thing a recipient flips to</li>
+    </ul>
+    <p>This turns 1,350 printed cards into 1,350 <strong>unique handmade gifts</strong>. The recipient gets something a person actually made for them, not just printed. That is the Smile Bags spirit in its purest form.</p>
+
+    <p><strong>Classroom framing:</strong> you may want to reserve the last 10&ndash;15 minutes of each work session for personalization. Students who are done with the science content can lean fully into the art &mdash; which is where the emotional weight of the gift lives.</p>
+  </section>
+
+  <!-- ─── 7 · ASSESSMENT ─── -->
+  <section class="section">
+    <div class="section-num">07</div>
+    <h2 class="section-title">Assessment <span>Rubric</span></h2>
+    <p>Suggested assessment criteria. Adapt weights to fit your grading system. Because every kiosk submission is automatically logged, <strong>completion is quantifiable without any self-reporting</strong>.</p>
+
+    <table class="rubric-table">
+      <thead>
+        <tr>
+          <th style="width:18%;">Dimension</th>
+          <th style="width:27%;">Proficient (4)</th>
+          <th style="width:27%;">Developing (3)</th>
+          <th style="width:28%;">Emerging (2)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Completion</td>
+          <td>All 75 required items submitted to tracker (15 DNA + 45 Mirror + 15 Bookmark)</td>
+          <td>90&ndash;99% submitted</td>
+          <td>Less than 90% submitted</td>
+        </tr>
+        <tr>
+          <td>Scientific Accuracy</td>
+          <td>Punnett squares, allele notation, and environmental facts are accurately applied and clearly explained</td>
+          <td>Minor errors in allele notation or fact attribution; core science is correct</td>
+          <td>Multiple factual or notation errors; evidence of copy-paste without comprehension</td>
+        </tr>
+        <tr>
+          <td>Craft &amp; Care</td>
+          <td>Every card is personalized with hand-drawn art, a written message, or decoration; stickers are cleanly applied</td>
+          <td>Most items personalized; some obvious duplicates or rushed work</td>
+          <td>Minimal personalization; items look printer-output-only</td>
+        </tr>
+        <tr>
+          <td>Audience Awareness</td>
+          <td>Content reads as written <em>for</em> a specific age range (elementary or middle); language is approachable, encouraging, recipient-centered</td>
+          <td>Generally accessible but occasionally reverts to AP-level vocabulary or self-focused voice</td>
+          <td>Content reads as written for the student, not the recipient</td>
+        </tr>
+        <tr>
+          <td>Reflection</td>
+          <td>Completes the unit reflection form thoughtfully, connecting the service contribution to unit content</td>
+          <td>Reflection is completed but surface-level</td>
+          <td>Reflection missing or superficial</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <div class="callout-title">&#128210; Grading efficiency tip</div>
+      <p>Because the tracker spreadsheet has a Student Name column, you can sort by student and see every submission at a glance. Use a filter view to grade one student at a time without scrolling through 1,350+ rows.</p>
+    </div>
+  </section>
+
+  <!-- ─── 8 · FAQ ─── -->
+  <section class="section">
+    <div class="section-num">08</div>
+    <h2 class="section-title">Student <span>FAQ</span></h2>
+    <p>Common questions students ask. Feel free to share this section directly or paraphrase in class.</p>
+
+    <div class="faq-item">
+      <div class="faq-q">How many of each do I have to make?</div>
+      <div class="faq-a">As a class, you are contributing <strong>75 total items</strong>: 15 DNA Trait Cards, 45 Mirror Stickers, and 15 Research Bookmarks. Your teacher will assign individual targets based on class size.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Do I have to type my name on everything?</div>
+      <div class="faq-a">It is optional and encouraged. When you add your first name, the recipient knows a specific person made their card or sticker. That small personal connection is part of what makes a Smile Bag feel like a gift rather than a donation.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">My OneWord is really long &mdash; like TRANSFORM. Will it fit on the sticker?</div>
+      <div class="faq-a">Yes. The kiosk automatically shrinks the text to fit inside the circle no matter how long the word is. It has been tested with every OneWord in the project.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Can I make my own sticker art instead of using the kiosk builder?</div>
+      <div class="faq-a">Absolutely. The Mirror Sticker Kiosk describes three workflows. You can use Canva, Adobe Express, Google Drawings, or even hand-draw on paper and upload a photograph. The only requirement is that the final file is a 2.5&quot; round PNG with a transparent background, saved to the class Drive folder.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Why is there so much blank space on my DNA Trait Card?</div>
+      <div class="faq-a">That space is for you. Draw an illustration of your OneWord. Write a short note to the recipient. Add stickers or doodles. Every card goes into a bag for a real person &mdash; make it feel like a gift, not a worksheet.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Can I make more than the required number?</div>
+      <div class="faq-a">Yes, and please do. Every extra card or sticker is one more smile. Submissions have no upper limit.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What if I mess up a card? Do I throw it away?</div>
+      <div class="faq-a">Generate a new one. The kiosk does not limit your submissions. For paper cards, recycle the mistake and print a fresh one. For Mirror Stickers printed on adhesive paper, the materials cost more &mdash; so design carefully in the preview before downloading.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">How do I know my submission went through?</div>
+      <div class="faq-a">The kiosks are designed to work silently. When the card renders or the PNG downloads, the submission has already been sent. Your teacher can verify anytime by opening the tracker spreadsheet.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Who receives these Smile Bags?</div>
+      <div class="faq-a">Elementary and middle-school students across the region who are connected with Operation Smiles. They are children who are going through medical procedures or recovery, and the bags are a small way to let them know someone is thinking of them.</div>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; AP Environmental Science &middot; Honaker &middot; Spring 2026</div>
+  <div class="footer-body">Built by AP Env Sci scientists for students who need a smile.</div>
+</div>
+
+</body>
+</html>
