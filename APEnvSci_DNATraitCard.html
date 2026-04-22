@@ -152,9 +152,12 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
      Standard #10 pattern applied to card printing.
      ──────────────────────────────────────────────────────────── */
   @page{size:letter landscape;margin:.25in;}
-  body{background:#fff;padding:0;margin:0;}
-  /* Hide ALL screen-only UI */
-  .hero,.mode-tabs,.workspace,.action-row,.result,.print-btn,.back-btn,.footer,.print-section{display:none!important;}
+  body{background:#fff!important;padding:0;margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  /* Hide screen-only UI — but NOT .workspace itself, which contains #printCardPair */
+  .hero,.mode-tabs,.back-btn,.footer,.print-section,.mode-panel .step-card,.mode-panel .action-row,.mode-panel .result,.print-btn{display:none!important;}
+  /* Make the workspace a simple container, no padding/max-width */
+  .workspace{max-width:none!important;padding:0!important;margin:0!important;}
+  .mode-panel{display:block!important;padding:0!important;margin:0!important;}
   /* Show only the print card pair */
   #printCardPair{display:flex!important;width:100%;height:100vh;gap:0;align-items:stretch;justify-content:center;}
   .tc-panel{width:4in;height:6in;padding:.28in;background:#fff;color:#111;display:flex;flex-direction:column;box-sizing:border-box;overflow:hidden;}
