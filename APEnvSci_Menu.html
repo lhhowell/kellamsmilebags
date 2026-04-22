@@ -232,16 +232,25 @@ var TRACKER_URL = "https://script.google.com/macros/s/AKfycbzdqSjuIMy7v5Q-dkEpSu
 
 function refreshTracker() {
   if (!TRACKER_URL || TRACKER_URL.indexOf("REPLACE_WITH") === 0) return;
-  fetch(TRACKER_URL + "?action=counts")
-    .then(function(r){ return r.json(); })
+  // Cache-bust with timestamp param so browsers don't serve stale 0 counts.
+  var url = TRACKER_URL + "?action=counts&_=" + Date.now();
+  fetch(url, { method: "GET", redirect: "follow" })
+    .then(function(r){
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    })
     .then(function(d){
       var dna = (d.dna || 0), mirror = (d.mirror || 0), bookmark = (d.bookmark || 0);
       document.getElementById('count-dna').textContent       = dna + ' / 15';
       document.getElementById('count-mirror').textContent    = mirror + ' / 45';
       document.getElementById('count-bookmark').textContent  = bookmark + ' / 15';
       document.getElementById('count-total').textContent     = dna + mirror + bookmark;
+      console.log("[Tracker] counts updated:", d);
     })
-    .catch(function(e){ /* fail silently — tracker is display-only */ });
+    .catch(function(e){
+      // Log to console so we can diagnose if the fetch is blocked
+      console.warn("[Tracker] fetch failed:", e.message);
+    });
 }
 refreshTracker();
 setInterval(refreshTracker, 60000);  // refresh every 60s
