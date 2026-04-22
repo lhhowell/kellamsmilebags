@@ -144,8 +144,13 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 .footer{text-align:center;padding:32px 24px 0;border-top:1px solid #0a151f;max-width:900px;margin:32px auto 0;}
 .footer-sig{font-family:'Fredoka One',cursive;font-size:12px;color:#1a2a1a;letter-spacing:1px;}
 
-/* Print happens in an isolated popup window (see printCard() below) —
-   no @media print rules needed in the main document. */
+@media print{
+  body{background:#fff;padding:0;}
+  .hero,.mode-tabs,.workspace .step-card,.action-row,.result,.print-btn,.back-btn,.footer{display:none!important;}
+  .print-section{display:block!important;position:static;box-shadow:none;border:none;padding:0;border-radius:0;}
+  .print-section::before{display:none;}
+  @page{size:letter;margin:.5in;}
+}
 </style>
 </head>
 <body>
@@ -269,7 +274,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
     </div>
     <div class="card-footer-sig"></div>
   </div>
-  <button class="print-btn" id="printBtn" onclick="printCard()">&#128438; Print This DNA Trait Card</button>
+  <button class="print-btn" id="printBtn" onclick="window.print()">&#128438; Print This DNA Trait Card</button>
 </div>
 
 <!-- SOLVE IT -->
@@ -444,103 +449,6 @@ function submitToTracker(word) {
       body: JSON.stringify(payload)
     });
   } catch(e) { /* fail silently — submission is fire-and-forget */ }
-}
-
-// ─── Print Card — Hidden Iframe Approach (v3) ───────────────────
-// Why v3: v1/v2 popup approach kept producing blank print previews.
-// Root cause unclear but likely document.write() on about:blank popups
-// being blocked or delayed by modern browsers. Iframes sidestep this:
-//   - Embedded in current document (no cross-window timing)
-//   - contentDocument.write() is reliable (same-origin)
-//   - window.print() on the iframe's contentWindow prints ONLY the iframe
-//   - User sees Chrome's native print preview with just the card content
-//   - Fallback: if iframe fails, inline debug banner shows what went wrong
-function printCard() {
-  var section = document.getElementById('printSection');
-  if (!section || !section.classList.contains('show')) {
-    alert('Generate a card first, then print.');
-    return;
-  }
-  var cardHTML = section.innerHTML;
-
-  // Remove any previous print iframe
-  var existing = document.getElementById('print-iframe');
-  if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
-
-  // Create off-screen iframe (not display:none — some browsers skip rendering)
-  var iframe = document.createElement('iframe');
-  iframe.id = 'print-iframe';
-  iframe.setAttribute('aria-hidden', 'true');
-  iframe.style.cssText = 'position:fixed;right:-9999px;bottom:-9999px;width:8.5in;height:11in;border:0;';
-  document.body.appendChild(iframe);
-
-  // System font stack — no network font wait
-  var FONT_ROUND = "'Fredoka One', 'Comic Sans MS', 'Trebuchet MS', sans-serif";
-  var FONT_SERIF = "'Playfair Display', Georgia, 'Times New Roman', serif";
-  var FONT_SANS  = "'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-
-  var html = ''
-    + '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>'
-    + '<title>DNA Trait Card</title>'
-    + '<style>'
-    + '*{box-sizing:border-box;margin:0;padding:0;}'
-    + 'body{font-family:' + FONT_SANS + ';padding:.5in;color:#111;background:#fff;}'
-    + '.card-header{text-align:center;margin-bottom:20px;}'
-    + '.card-title{font-family:' + FONT_SERIF + ';font-size:26px;font-weight:900;color:#111;text-transform:uppercase;letter-spacing:2px;line-height:1.1;margin-bottom:6px;}'
-    + '.card-sub{font-size:12px;color:#999;font-style:italic;}'
-    + '.card-divider{border:none;border-top:3px solid #4caf82;width:60px;margin:12px auto;}'
-    + '.card-word{font-family:' + FONT_ROUND + ';font-size:32px;color:#1B7A78;letter-spacing:4px;text-align:center;margin-bottom:20px;}'
-    + '.card-section{background:#f8f7f4;border-radius:10px;padding:16px;margin-bottom:16px;}'
-    + '.card-section-title{font-family:' + FONT_ROUND + ';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#4caf82;margin-bottom:10px;}'
-    + '.card-alleles{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:8px;}'
-    + '.card-allele{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:' + FONT_ROUND + ';font-size:16px;}'
-    + '.card-allele-D{background:#D6EEEE;color:#0F4F4E;}'
-    + '.card-allele-R{background:#EDE4F7;color:#6B3F9E;}'
-    + '.card-allele-desc{font-size:13px;color:#555;line-height:1.5;}'
-    + '.print-punnett{display:grid;grid-template-columns:36px 1fr 1fr;grid-template-rows:36px 1fr 1fr;gap:4px;width:fit-content;margin:12px auto 8px;}'
-    + '.print-punnett-header{background:#e8e4dc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:' + FONT_ROUND + ';font-size:14px;color:#333;width:36px;height:36px;}'
-    + '.print-punnett-cell{width:70px;height:70px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:' + FONT_ROUND + ';font-size:16px;border:1px solid #ddd;}'
-    + '.card-pct-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}'
-    + '.card-pct{flex:1;min-width:100px;background:#fff;border:1px solid #e8e4dc;border-radius:8px;padding:10px;text-align:center;}'
-    + '.card-pct-val{font-family:' + FONT_ROUND + ';font-size:22px;color:#1B7A78;display:block;}'
-    + '.card-pct-label{font-size:11px;color:#888;line-height:1.4;}'
-    + '.card-trait{background:#e8f5ee;border-left:4px solid #4caf82;border-radius:4px;padding:12px 14px;margin-bottom:12px;}'
-    + '.card-trait-title{font-family:' + FONT_ROUND + ';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;margin-bottom:6px;}'
-    + '.card-trait-text{font-size:13px;color:#444;line-height:1.65;}'
-    + '.card-genetics{background:#fff9e6;border-left:4px solid #c9a84c;border-radius:4px;padding:12px 14px;margin-bottom:12px;}'
-    + '.card-genetics-title{font-family:' + FONT_ROUND + ';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#C8860A;margin-bottom:6px;}'
-    + '.card-genetics-text{font-size:13px;color:#444;line-height:1.65;}'
-    + '.card-footer-sig{text-align:center;margin-top:14px;font-size:10px;color:#ccc;font-family:' + FONT_ROUND + ';letter-spacing:1px;}'
-    + '@page{size:letter;margin:.5in;}'
-    + '@media print{body{padding:0;}}'
-    + '</style></head><body>'
-    + cardHTML
-    + '</body></html>';
-
-  var doc = iframe.contentDocument || iframe.contentWindow.document;
-  doc.open();
-  doc.write(html);
-  doc.close();
-
-  // Give the iframe a beat to layout, then print
-  // Using requestAnimationFrame + setTimeout guarantees a paint cycle completes
-  var fire = function() {
-    try {
-      iframe.contentWindow.focus();
-      iframe.contentWindow.print();
-    } catch (e) {
-      alert('Print failed: ' + e.message + '. Try the browser\'s File > Print menu.');
-    }
-  };
-  if (window.requestAnimationFrame) {
-    requestAnimationFrame(function() {
-      requestAnimationFrame(function() {
-        setTimeout(fire, 200);
-      });
-    });
-  } else {
-    setTimeout(fire, 400);
-  }
 }
 
 // SOLVE IT
