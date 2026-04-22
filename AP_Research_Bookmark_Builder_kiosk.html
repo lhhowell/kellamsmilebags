@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<!-- saved from url=(0096)https://lhhowell.github.io/kellamsmilebags/KellamSmileBags_APResearch_BookmarkBuilder_Kiosk.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SMILE BAGS — AP Research Bookmark Builder</title>
+<link href="./SMILE BAGS — AP Research Bookmark Builder_files/css2" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#C8860A; --gold-l:#FFF3D6;
+  --black:#1A1A1A; --gray:#555;
+  --radius:16px;
+}
+body{font-family:'Nunito',sans-serif;background:#1A1A1A;min-height:100vh;color:#fff}
+
+/* ── HEADER ── */
+.header{background:linear-gradient(135deg,#1A1A1A 0%,#2A2A2A 100%);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--gold)}
+.header-brand{font-family:'Fredoka One',cursive;font-size:22px;color:var(--gold);letter-spacing:1px}
+.header-brand span{color:#fff}
+.header-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;text-align:center}
+.header-sub{font-size:12px;color:#888;text-align:center;margin-top:2px}
+
+/* ── LAYOUT ── */
+.app{display:grid;grid-template-columns:320px 1fr;min-height:calc(100vh - 74px)}
+
+/* ── SIDEBAR ── */
+.sidebar{background:#111;border-right:2px solid #333;padding:24px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:20px}
+.sidebar-section{display:flex;flex-direction:column;gap:8px}
+.sidebar-label{font-family:'Fredoka One',cursive;font-size:13px;color:var(--gold);letter-spacing:2px;text-transform:uppercase}
+.word-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.word-btn{padding:8px 6px;border-radius:8px;border:2px solid #333;background:#1A1A1A;color:#888;font-family:'Fredoka One',cursive;font-size:12px;cursor:pointer;transition:all .2s;text-align:center;letter-spacing:1px}
+.word-btn:hover{border-color:var(--gold);color:var(--gold)}
+.word-btn.active{background:var(--gold);color:#fff;border-color:var(--gold)}
+
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:12px;font-weight:700;color:#888;letter-spacing:1px;text-transform:uppercase}
+.field textarea,.field input{background:#1A1A1A;border:2px solid #333;border-radius:8px;color:#fff;font-family:'Nunito',sans-serif;font-size:12px;padding:10px;resize:vertical;line-height:1.6;transition:border .2s}
+.field textarea:focus,.field input:focus{outline:none;border-color:var(--gold)}
+.field textarea{min-height:72px}
+
+/* ── MAIN AREA ── */
+.main{background:#1E1E1E;padding:28px;overflow-y:auto;display:flex;flex-direction:column;gap:24px}
+.preview-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.preview-title{font-family:'Fredoka One',cursive;font-size:18px;color:#fff}
+.preview-title span{color:var(--gold)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap}
+.btn{padding:10px 22px;border-radius:30px;border:none;font-family:'Fredoka One',cursive;font-size:14px;cursor:pointer;transition:all .2s;letter-spacing:1px}
+.btn-print{background:var(--gold);color:#fff}
+.btn-print:hover{background:#A06A00;transform:translateY(-1px)}
+.btn-pdf{background:#fff;color:#1A1A1A}
+.btn-pdf:hover{background:#eee;transform:translateY(-1px)}
+.btn-reset{background:#333;color:#888}
+.btn-reset:hover{background:#444;color:#fff}
+.btn-submit{background:linear-gradient(135deg,#1A6B3A,#2E7D32);color:#fff;border:none}
+.btn-submit:hover{background:linear-gradient(135deg,#155a30,#266329);transform:translateY(-1px)}
+.btn-submit:disabled{background:#333!important;color:#666!important;cursor:default;transform:none}
+
+/* ── BOOKMARK PREVIEW ── */
+.bookmark-pair{display:flex;gap:40px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
+.bookmark-col{display:flex;flex-direction:column;align-items:center;gap:10px}
+.bookmark-col-label{font-family:'Fredoka One',cursive;font-size:13px;color:#666;letter-spacing:2px;text-transform:uppercase}
+.bookmark{width:192px;height:672px;border-radius:12px;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,.5);flex-shrink:0;position:relative;display:flex;flex-direction:column}
+
+/* FRONT */
+.bm-front{display:flex;flex-direction:column;align-items:center}
+.bm-stripe{width:100%;height:6px;flex-shrink:0}
+.bm-word{margin-top:24px;font-family:'Playfair Display',serif;font-size:20px;font-weight:900;letter-spacing:1px;line-height:1;text-align:center;text-shadow:2px 2px 0 rgba(0,0,0,.3);padding:0 12px;white-space:nowrap;overflow:hidden}
+.bm-meaning{margin-top:6px;font-size:9.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-align:center;opacity:.7;padding:0 12px}
+.bm-divider{margin:12px auto;width:56px;height:2px;opacity:.6}
+.bm-illus{flex:1;display:flex;align-items:center;justify-content:center;padding:4px 12px;width:100%}
+.bm-illus svg{width:100%;height:auto}
+.bm-dyk{width:calc(100% - 16px);margin:0 8px;border-radius:8px;padding:9px 9px 7px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08)}
+.bm-dyk-lbl{font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;text-align:center;color:#FFD740}
+.bm-dyk-txt{font-size:8.5px;font-weight:600;line-height:1.55;color:rgba(255,255,255,.9)}
+.bm-foot{width:100%;padding:9px 10px 12px;text-align:center;margin-top:8px;border-top:1px solid rgba(255,255,255,.15);background:rgba(0,0,0,.2)}
+.bm-foot-t{font-family:'Fredoka One',cursive;font-size:8.5px;color:#FFD740;letter-spacing:1.5px}
+.bm-foot-s{font-size:7px;color:rgba(255,255,255,.45);margin-top:1px}
+
+/* BACK */
+.bm-back{display:flex;flex-direction:column;background:#FFFDF5}
+.bm-back-top{padding:14px 12px 10px;text-align:center;flex-shrink:0}
+.bm-back-word{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:#FFD740;letter-spacing:1px;white-space:nowrap;overflow:hidden}
+.bm-back-sub{font-size:8px;font-weight:700;color:rgba(255,255,255,.7);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px}
+.bm-tryit{padding:9px 11px 8px;flex-shrink:0;border-bottom:1px dashed #E0DDD5}
+.bm-sec-lbl{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:4px}
+.bm-sec-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.bm-supplies{border-radius:6px;padding:5px 8px;margin-bottom:6px;font-size:8px;font-weight:700;line-height:1.6}
+.bm-step{display:flex;gap:5px;margin-bottom:4px;align-items:flex-start}
+.bm-step-n{width:14px;height:14px;border-radius:50%;color:#fff;font-family:'Fredoka One',cursive;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.bm-step-t{font-size:8px;font-weight:600;color:#2A2A2A;line-height:1.5}
+.bm-msg{padding:9px 11px 8px;flex:1;border-bottom:1px dashed #E0DDD5}
+.bm-msg-txt{font-size:8px;font-style:italic;font-weight:600;color:#2A2A2A;line-height:1.6;border-left:3px solid;padding:5px 7px;border-radius:0 6px 6px 0;background:rgba(200,134,10,.06)}
+.bm-msg-attr{margin-top:6px;font-size:7px;color:#888;font-weight:600}
+.bm-bfoot{padding:8px 12px;text-align:center;flex-shrink:0}
+.bm-bfoot-t{font-family:'Fredoka One',cursive;font-size:8.5px;color:#FFD740;letter-spacing:1px}
+.bm-bfoot-s{font-size:7px;color:rgba(255,255,255,.5);margin-top:1px}
+
+/* ── INSTRUCTIONS ── */
+.instructions{background:#111;border:1px solid #333;border-radius:12px;padding:20px 24px;font-size:13px;color:#888;line-height:1.8;max-width:680px;margin:0 auto}
+.instructions strong{color:var(--gold)}
+
+/* ── PRINT STYLES ── */
+@media print{
+  body{background:#fff}
+  .header,.sidebar,.preview-header,.btn-row,.instructions{display:none!important}
+  .app{grid-template-columns:1fr;display:block}
+  .main{background:#fff;padding:16px}
+  .bookmark-pair{gap:32px;justify-content:center}
+  .bookmark{box-shadow:none;border:1px solid #ddd}
+  .bm-back{background:#FFFDF5}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+<link rel="stylesheet" href="chrome-extension://kfiocjonplkilcjfgabfngiddebalkod/fonts/Metropolis.css"></head>
+<body>
+
+<div class="header">
+  <div class="header-brand">Smile Bags</div>
+  <div>
+    <div class="header-title">AP Research · Bookmark Builder · <span style="color:#C8860A">Elementary Edition</span></div>
+    <div class="header-sub">Select your OneWord · Edit your content · Print your bookmark</div>
+  </div>
+  <div style="width:180px;display:flex;align-items:center;justify-content:flex-end;">
+    <img src="https://lhhowell.github.io/kellamsmilebags/SmileBag_Mascots.png" alt="Smile Bag Mascots" style="height:56px;width:auto;" />
+  </div>
+</div>
+
+<div class="app">
+
+  <!-- ══ SIDEBAR ══ -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">1 — Choose Your Word</div>
+      <div class="word-grid" id="wordGrid"><button class="word-btn" id="wbtn-ABSORB">ABSORB</button><button class="word-btn" id="wbtn-ADAPT">ADAPT</button><button class="word-btn" id="wbtn-ANCHOR">ANCHOR</button><button class="word-btn" id="wbtn-BALANCE">BALANCE</button><button class="word-btn" id="wbtn-BLOOM">BLOOM</button><button class="word-btn" id="wbtn-BREATHE">BREATHE</button><button class="word-btn" id="wbtn-CLEAR">CLEAR</button><button class="word-btn" id="wbtn-CONNECT">CONNECT</button><button class="word-btn" id="wbtn-CYCLE">CYCLE</button><button class="word-btn" id="wbtn-EMERGE">EMERGE</button><button class="word-btn" id="wbtn-FILTER">FILTER</button><button class="word-btn" id="wbtn-FLOW">FLOW</button><button class="word-btn" id="wbtn-GROW">GROW</button><button class="word-btn" id="wbtn-HEAL">HEAL</button><button class="word-btn" id="wbtn-MIGRATE">MIGRATE</button><button class="word-btn" id="wbtn-PERSIST">PERSIST</button><button class="word-btn" id="wbtn-RENEW">RENEW</button><button class="word-btn" id="wbtn-RESTORE">RESTORE</button><button class="word-btn" id="wbtn-RETURN">RETURN</button><button class="word-btn" id="wbtn-RISE">RISE</button><button class="word-btn" id="wbtn-ROOT">ROOT</button><button class="word-btn" id="wbtn-SHINE">SHINE</button><button class="word-btn" id="wbtn-SUSTAIN">SUSTAIN</button><button class="word-btn" id="wbtn-THRIVE">THRIVE</button><button class="word-btn" id="wbtn-TRANSFORM">TRANSFORM</button></div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">2 — Your Name</div>
+      <div class="field">
+        <label>First Name</label>
+        <input type="text" id="studentName" placeholder="e.g. Jordan" maxlength="30">
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">3 — Edit Your Content</div>
+
+      <div class="field">
+        <label>Did You Know? Fact</label>
+        <textarea id="editFact" rows="5" placeholder="Write a surprising, specific science fact connected to your OneWord. Include real numbers, real names, real science. 3-4 sentences."></textarea>
+      </div>
+
+      <div class="field">
+        <label>What You Need (supplies)</label>
+        <textarea id="editSupplies" rows="3" placeholder="List the 1-3 items you selected from the Science Supply Bar. e.g. Your magnifying glass, Your seed packet"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Step 1</label>
+        <textarea id="editStep1" rows="3" placeholder="Step 1: A specific hands-on action using one of your chosen supplies..."></textarea>
+      </div>
+      <div class="field">
+        <label>Step 2</label>
+        <textarea id="editStep2" rows="3" placeholder="Step 2: What does the student observe, discover, or do next?"></textarea>
+      </div>
+      <div class="field">
+        <label>Step 3</label>
+        <textarea id="editStep3" rows="3" placeholder="Step 3: Connect back to your OneWord — what did the student just experience?"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Your Message</label>
+        <textarea id="editMessage" rows="4" placeholder="A personal message in your own voice. What did this word teach you? Honest, warm, brief."></textarea>
+      </div>
+    </div>
+
+    <button class="btn btn-submit" onclick="submitBookmark()" id="submitBtn" style="margin-top:4px">💾 Save My Bookmark</button>
+    <button class="btn btn-reset" onclick="resetToDefault()" style="margin-top:6px">↺ Reset to Default</button>
+    <div id="submitMsg" style="display:none;margin-top:8px;padding:10px;border-radius:8px;font-size:12px;font-weight:700;text-align:center;"></div>
+  </div>
+
+  <!-- ══ MAIN ══ -->
+  <div class="main">
+    <div class="preview-header">
+      <div class="preview-title">Live Preview — <span id="previewWordLabel">Select a word to begin</span></div>
+      <div class="btn-row">
+        <button class="btn btn-print" onclick="window.print()">🖨️ Print Bookmark</button>
+        <button class="btn btn-pdf" onclick="savePDF()">📄 Save as PDF</button>
+      </div>
+    </div>
+
+    <div class="bookmark-pair" id="bookmarkPair">
+      <!-- Rendered by JS -->
+      <div id="emptyState" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px;width:100%">
+       <img src="https://lhhowell.github.io/kellamsmilebags/SmileBag_Mascots.png" alt="Smile Bag Mascots" style="width:75%;height:auto;display:block;margin:0 auto;" />
+        <div style="font-family:&#39;Fredoka One&#39;,cursive;font-size:20px;color:#C8860A;text-align:center;letter-spacing:1px">
+          ← Select your OneWord to build your bookmark
+        </div>
+        <div style="font-size:13px;color:#555;text-align:center;max-width:360px;line-height:1.7">
+          Choose your word · Edit your content · Save &amp; Print
+        </div>
+      </div>
+    </div>
+
+    <div class="instructions">
+      <strong>How to use this kiosk:</strong><br>
+      1. Click your assigned OneWord on the left — your bookmark pre-populates with a research fact, activity, and message.<br>
+      2. Read through the content. Edit any field to make it your own — your words, your voice.<br>
+      3. When you are happy with your bookmark, click <strong>Print Bookmark</strong> to print on cardstock, or <strong>Save as PDF</strong> to save a digital copy.<br>
+      4. Print front and back on the same sheet of cardstock · Laminate for durability · Punch a hole at the top for a ribbon.<br>
+      <strong>Tip:</strong> The bookmark is 2 inches × 7 inches. Print at actual size (100% scale) for best results.
+    </div>
+  </div>
+</div>
+
+<script>
+// ══ DATA ══
+var WORDS = {
+  RENEW:{meaning:"Starting fresh and becoming new again",colors:{bg1:"#1B5E20",bg2:"#4CAF50",bg3:"#CCFF90",accent:"#69F0AE",gold:"#FFD740",text:"#fff",backTop:"#2E7D32",backBar:"#A5D6A7"},fact:"Every spring, trees push out millions of new leaves — renewing themselves after winter. A single oak tree can live for 500 years, renewing its leaves each season. Scientists call this cycle \"phenology\" — the study of nature's great renewals.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Look at your seed through the magnifying glass. See the tiny lines? Each one is a future root — ready to renew into a whole plant.","Find something outside that looks old or dry. Look closely — do you see any tiny new growth? Nature is always renewing quietly.","Plant your seed at home. Each day it grows is a tiny renewal. Watch for the first green tip breaking through the soil."],message:"The more I studied environmental systems, the more I realized — renewal is not a big dramatic event. It happens in tiny moments, every single day. So do you."},
+  THRIVE:{meaning:"Growing strong and flourishing",colors:{bg1:"#E65100",bg2:"#FF8F00",bg3:"#FFD740",accent:"#FFAB40",gold:"#fff",text:"#fff",backTop:"#E65100",backBar:"#FFE082"},fact:"Plants grow toward light in a process called phototropism — they literally bend and reach to thrive. Sunflowers track the sun across the sky each day, maximizing the light they absorb. Thriving is not passive — it takes constant reaching.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Hold your hand near a sunny window. Feel the warmth? That is the energy plants use to thrive. Now imagine needing that energy to survive every single day.","Look at your seed packet — read what the plant needs to thrive. Sun? Water? Soil? Make a plan to give it exactly what it needs.","Plant your seed. Every time you water it, you are actively helping something thrive. That is a powerful thing to do."],message:"I researched what it takes for ecosystems to thrive — and the answer surprised me. It is not strength. It is the right conditions. Find yours."},
+  BREATHE:{meaning:"Finding calm in a hard moment",colors:{bg1:"#01579B",bg2:"#0288D1",bg3:"#B3E5FC",accent:"#80D8FF",gold:"#FFD740",text:"#fff",backTop:"#0277BD",backBar:"#B3E5FC"},fact:"Trees are Earth's lungs. A single mature tree produces enough oxygen for two people to breathe for an entire year. When you walk through a forest, every breath you take was made by a tree. You and trees have been breathing together for millions of years.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Take 3 slow, deep breaths right now. In for 4 counts, out for 6. Feel your body calm down? That is the power of breathing intentionally.","Look at a leaf through your magnifying glass. See the tiny holes? Those are stomata — the leaf's breathing pores. Trees breathe just like you.","Plant your seed. As it grows, it will start making oxygen — breathing life into the air around it. You are growing a breathing partner."],message:"When research felt overwhelming, I kept coming back to one thing — just breathe. The data, the writing, the pressure — all of it gets easier when you remember to breathe first."},
+  BLOOM:{meaning:"Opening up to something beautiful",colors:{bg1:"#880E4F",bg2:"#C2185B",bg3:"#F48FB1",accent:"#FF80AB",gold:"#FFD740",text:"#fff",backTop:"#AD1457",backBar:"#F8BBD0"},fact:"Flowers bloom using an extraordinary internal clock called a circadian rhythm — they know exactly when to open based on light and temperature. Cherry blossoms in Japan have bloomed at almost the same time every year for over 1,200 years. Blooming is not random — it is precise, patient, and perfectly timed.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Look at the smallest detail you can find. Zoom in with your magnifying glass. Beauty is blooming in places you have not looked yet.","Read your seed packet. What will your seed bloom into? What color? What shape? Imagine it fully bloomed before it has even started.","Plant your seed and wait patiently. The most beautiful blooms take the longest. Your wait is part of the story."],message:"I spent months researching — and the best moments came not when I forced answers, but when I let understanding bloom on its own. Good things open when they are ready."},
+  RESTORE:{meaning:"Bringing something back to life",colors:{bg1:"#004D40",bg2:"#00796B",bg3:"#B2DFDB",accent:"#64FFDA",gold:"#FFD740",text:"#fff",backTop:"#00695C",backBar:"#B2DFDB"},fact:"Wetlands can filter and restore polluted water naturally — removing 95% of harmful bacteria before it reaches rivers. Scientists call them 'nature's kidneys.' When wetlands are protected, they restore water quality that would cost billions of dollars to replicate with technology.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Pour a small amount of water into your hand and let it dry. That water evaporated and joined the water cycle — restoring itself to the sky.","Find something that looks worn or old nearby. Could it be restored? What would it need? Nature asks this question about everything.","Plant your seed in healthy soil. Soil itself is a living system that restores nutrients — your seed will be restored by everything the soil has to give."],message:"I researched restoration ecology — how broken ecosystems can heal. What I found is that restoration always starts small. One seed. One action. One choice to begin."},
+  SUSTAIN:{meaning:"Keeping something going over time",colors:{bg1:"#33691E",bg2:"#558B2F",bg3:"#DCEDC8",accent:"#B2FF59",gold:"#FFD740",text:"#fff",backTop:"#558B2F",backBar:"#DCEDC8"},fact:"The oldest living tree on Earth is a bristlecone pine called Methuselah — it is 4,855 years old and still growing. It has sustained itself through ice ages and centuries of change by growing incredibly slowly and efficiently. Sometimes the secret to sustaining is doing less, more carefully.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Look at your seed through the magnifying glass. Inside that tiny shell is everything needed to sustain a whole plant for years. Incredible efficiency.","Think of one thing you do every day without thinking. That habit sustains your routine. What habit could you add to sustain something that matters?","Plant your seed and commit to watering it consistently — even on days you forget everything else. Sustainability is showing up, especially when it is hard."],message:"Sustaining a research project over a full year taught me that momentum is not about big pushes. It is about small, consistent actions. The same is true for everything worth keeping."},
+  RISE:{meaning:"Moving upward toward something greater",colors:{bg1:"#1A237E",bg2:"#283593",bg3:"#9FA8DA",accent:"#536DFE",gold:"#FFD740",text:"#fff",backTop:"#283593",backBar:"#C5CAE9"},fact:"Hot air rises because it is less dense than cool air — a principle called convection. This same force drives ocean currents, weather patterns, and the rising of bread dough. Everything that rises does so because it has become lighter than what surrounds it.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Hold your hand above something warm. Feel the warm air rising? You just felt convection — the force that powers weather and ocean currents.","Drop your seed from a height and watch it fall. Now imagine it reversed — rising up through soil toward light. That is exactly what will happen when you plant it.","Plant your seed near a window. Watch which direction the stem grows. It will always rise toward the light. Follow your light too."],message:"There were moments when my research felt like it was going nowhere. Then I remembered — rising is not always visible. Sometimes you are building the foundation. Keep going up."},
+  GROW:{meaning:"Becoming more than you were",colors:{bg1:"#1B5E20",bg2:"#388E3C",bg3:"#C8E6C9",accent:"#00E676",gold:"#FFD740",text:"#fff",backTop:"#2E7D32",backBar:"#C8E6C9"},fact:"Bamboo can grow up to 35 inches in a single day. But for the first five years after planting, nothing appears above the ground. The bamboo spends years growing an enormous root system underground. Then it explodes upward. Growth is always happening, even when you cannot see it.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Look at your seed closely through the magnifying glass. It looks still and quiet — but inside, it is waiting to grow. Are there quiet moments in your life that are actually preparation?","Measure something small today. Come back in a week and measure again. Growth is always happening.","Plant your seed and mark the date. Every millimeter it grows, you grew it. You made that happen."],message:"AP Research grew me in ways I did not expect. The subject matter mattered — but what I really grew was patience, persistence, and the ability to sit with not knowing. Those will last forever."},
+  FLOW:{meaning:"Moving forward, even slowly",colors:{bg1:"#0D2B45",bg2:"#1565C0",bg3:"#B3E5FC",accent:"#40C4FF",gold:"#FFD740",text:"#fff",backTop:"#0D4A7A",backBar:"#B3E5FC"},fact:"Water never stops moving. Even when a river looks still, water flows underground, through soil, through roots, and into clouds — then falls as rain to start again. The water in your glass might have once been a dinosaur's river. Water has been flowing in the same cycle on Earth for over 4 billion years.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Look at one seed through your magnifying glass. Can you see the tiny lines? Those are channels where water will flow once you plant it.","Hold the seed in your palm and breathe warm air on it. You just gave it the first two things it needs — warmth and moisture — to start flowing into life.","Plant your seed at home. Watch where the water goes when you pour it. Does it flow straight down? Does it spread? That is FLOW."],message:"The more I learned about water systems, the more I realized — everything flows. Even you. Keep going."},
+  SHINE:{meaning:"Sharing your light with others",colors:{bg1:"#F57F17",bg2:"#F9A825",bg3:"#FFF9C4",accent:"#FFD740",gold:"#1A1A1A",text:"#1A1A1A",backTop:"#F57F17",backBar:"#FFF9C4"},fact:"The sun's light takes exactly 8 minutes and 20 seconds to reach Earth — traveling 93 million miles. That light then bounces off surfaces, travels through leaves, and powers photosynthesis — the process that feeds almost all life on Earth. Every time something shines, it is passing energy forward.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Use your magnifying glass to focus sunlight onto a surface. You just concentrated light energy — the same way plants do with photosynthesis.","Look for something shiny near you. What makes it shine? Shine comes from reflection — from taking in light and sending it back out.","Plant your seed in the sunniest spot you can find. Give it your best light."],message:"Research taught me that knowledge only matters when it shines outward — when you share what you find with others. Do not keep your light to yourself."},
+  HEAL:{meaning:"Getting better, inside and out",colors:{bg1:"#004D40",bg2:"#00897B",bg3:"#B2DFDB",accent:"#64FFDA",gold:"#FFD740",text:"#fff",backTop:"#00695C",backBar:"#E0F2F1"},fact:"When you get a cut, your body sends platelets rushing to the wound within seconds — they stick together to form a clot and start healing immediately. Your body has been healing itself since before you were born. Healing is not something that happens to you — it is something your body constantly does for you.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Look at the back of your hand through the magnifying glass. See the tiny lines? Those are skin cells — constantly renewing and healing, even right now.","Find a plant that looks slightly wilted. Give it water and watch what happens over the next hour. Healing begins the moment you give something what it needs.","Plant your seed. If it does not grow right away, try adjusting the water or light. Healing — in people and plants — sometimes just needs a small adjustment."],message:"I studied immune systems and ecological recovery for my research. The pattern I kept finding: healing always starts from the inside, quietly, before anything is visible. Trust the process."},
+  BALANCE:{meaning:"Finding steadiness between two things",colors:{bg1:"#4A148C",bg2:"#7B1FA2",bg3:"#E1BEE7",accent:"#EA80FC",gold:"#FFD740",text:"#fff",backTop:"#6A1B9A",backBar:"#E1BEE7"},fact:"Ecosystems maintain balance through feedback loops — when one species grows too large, predators increase, populations balance back. The entire Amazon rainforest maintains its own rainfall by releasing water vapor that becomes clouds. Balance in nature is not static — it is a constant, dynamic conversation.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Balance your seed packet on one finger. Feel the tiny adjustments you make? That is dynamic balance — constant small corrections. That is how nature does it too.","Look through the magnifying glass at two different surfaces — one rough, one smooth. Balance is not about sameness. It is about the right relationship between different things.","Plant two seeds side by side. Water them the same. Watch — they may grow differently. Balance does not mean identical outcomes."],message:"Writing a research paper taught me that balance between analysis and creativity, between confidence and doubt, is not found once. It is found again every single day."},
+  ADAPT:{meaning:"Changing to meet a new challenge",colors:{bg1:"#006064",bg2:"#00838F",bg3:"#B2EBF2",accent:"#18FFFF",gold:"#FFD740",text:"#fff",backTop:"#00838F",backBar:"#B2EBF2"},fact:"The axolotl salamander can regrow lost limbs, parts of its heart, and even sections of its brain — fully functional. Scientists are studying its DNA to understand how adaptation at the cellular level works. Animals that thrive for millions of years do not just survive change — they adapt to make change their superpower.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Try writing your name with your non-dominant hand. Awkward, right? Your brain is adapting in real time — building new neural pathways. That is adaptation.","Look at your seed under the magnifying glass. It has a hard shell — an adaptation that protects it through cold, dry, and harsh conditions until the time is right to grow.","If your seed does not grow in one spot, move it. Adaptation is not giving up — it is trying a new approach. Scientists do this every day."],message:"My research question changed three times. My methodology changed twice. I adapted. And the final paper was better than anything I planned at the start. Adapt. It works."},
+  CYCLE:{meaning:"Everything returning and beginning again",colors:{bg1:"#1B5E20",bg2:"#2E7D32",bg3:"#DCEDC8",accent:"#76FF03",gold:"#FFD740",text:"#fff",backTop:"#388E3C",backBar:"#DCEDC8"},fact:"Carbon has been cycling through Earth's atmosphere, oceans, soil, and living things for 4.5 billion years. Every carbon atom in your body was once a dinosaur, a tree, an ocean creature. You are made of cycled matter — the universe reusing its building blocks over and over again.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Breathe out onto the magnifying glass lens and watch it fog. You just released carbon dioxide — the same carbon that was once inside another living thing. The cycle continues.","Look at soil through the magnifying glass. See the dark bits? That is decomposed organic matter — the cycle completing itself and starting again.","Plant your seed. When it grows, blooms, and eventually drops seeds of its own — the cycle continues. You started something that will keep going."],message:"I studied biogeochemical cycles — the grand loops that keep Earth alive. What struck me most is that nothing is wasted. Everything cycles back. Even hard years become good ones."},
+  EMERGE:{meaning:"Coming out into something new",colors:{bg1:"#4A148C",bg2:"#6A1B9A",bg3:"#E1BEE7",accent:"#E040FB",gold:"#FFD740",text:"#fff",backTop:"#7B1FA2",backBar:"#F3E5F5"},fact:"A caterpillar inside a chrysalis does not just grow wings — it completely dissolves into a liquid soup and reorganizes into an entirely new creature. A butterfly shares almost no physical structure with the caterpillar it once was. Emerging is not just changing — it is becoming something fundamentally new.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Look at your seed through the magnifying glass. Right now it looks dormant — but everything it needs to emerge is already inside. What is inside you, waiting to emerge?","Fold a piece of paper into a small shape. Now slowly unfold it. Watch something new emerge from something you thought was finished.","Plant your seed. The moment the first tiny green tip breaks the soil — that is emergence. Watch for it. It is one of nature's most beautiful moments."],message:"By the end of AP Research I emerged as a different thinker. I did not know that going in. You will not know what you emerge into either — and that is the most exciting part."},
+  ANCHOR:{meaning:"Knowing where you belong",colors:{bg1:"#0D1B2A",bg2:"#1B3A5C",bg3:"#CFD8DC",accent:"#82B1FF",gold:"#FFD740",text:"#fff",backTop:"#1A237E",backBar:"#CFD8DC"},fact:"Tree roots can extend two to three times the width of the tree's canopy underground — an invisible anchor system that holds the tree through storms and decades. A 100-year-old oak may have roots stretching 300 feet in every direction. What you see above ground is only part of the story.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Press your feet firmly into the ground and stand still for 30 seconds. Feel the stability? That is what roots do for a tree.","Look at your seed under the magnifying glass. The first thing it will grow is a root — before any leaves, before any stem. It anchors before it rises.","Plant your seed and pay attention to which direction the root grows. It always grows down — toward gravity. An anchor always knows which way to go."],message:"Research showed me that the strongest ideas have deep anchors — evidence, data, honest questions. Build your anchor before you build your argument. In research and in life."},
+  ABSORB:{meaning:"Taking in everything around you",colors:{bg1:"#4A0E2E",bg2:"#880E4F",bg3:"#FCE4EC",accent:"#FF80AB",gold:"#FFD740",text:"#fff",backTop:"#880E4F",backBar:"#FCE4EC"},fact:"A single gram of activated charcoal has a surface area of 500 square meters — larger than a basketball court — because of its porous structure. This makes it one of the most absorbent materials on Earth, used to filter water, treat poisoning, and clean air. The secret to absorbing more is having more openness.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Hold your magnifying glass lens over a piece of white paper in sunlight. The glass absorbs and focuses light energy. More focus = more absorption.","Look at the seed coat through the magnifying glass. It has tiny pores that absorb water when the time is right — then the seed explodes into growth.","Water your planted seed slowly — watch the soil absorb the water. Notice how it takes in just what it needs. Practice absorbing what YOU need today."],message:"The best thing I did in AP Research was absorb everything — papers I did not fully understand, feedback that stung, ideas that seemed unrelated. It all became part of the final work."},
+  FILTER:{meaning:"Letting through only what matters",colors:{bg1:"#0D3B5E",bg2:"#1565C0",bg3:"#E3F2FD",accent:"#82B1FF",gold:"#FFD740",text:"#fff",backTop:"#1976D2",backBar:"#BBDEFB"},fact:"Your kidneys filter your entire blood supply about 40 times every day — removing waste while keeping everything your body needs. They make thousands of tiny decisions per second about what passes through and what does not. Filtering is one of the most sophisticated processes in biology — and your body does it automatically.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Pour water through a paper towel into a cup. The towel filtered out particles. Now look at what it caught under the magnifying glass — you can see what the filter removed.","Think of three things you heard today. Which ones are worth keeping? Which ones should you filter out? Your brain filters thousands of inputs every second.","Plant your seed in good soil — garden soil works better than plain dirt because it has already been filtered by nature. Give your seed the best start."],message:"Research requires constant filtering — which sources are credible? Which data matters? Which arguments are relevant? The best researchers are the best filters. Practice every day."},
+  PERSIST:{meaning:"Keeping going when things are hard",colors:{bg1:"#B71C1C",bg2:"#C62828",bg3:"#FFCDD2",accent:"#FF5252",gold:"#FFD740",text:"#fff",backTop:"#C62828",backBar:"#FFCDD2"},fact:"Tardigrades — microscopic animals called water bears — can survive in outer space, boiling water, extreme radiation, and total dehydration for decades. They enter a state called cryptobiosis, suspending all life functions until conditions improve. Persistence sometimes means knowing when to pause and when to push.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Look at your seed under the magnifying glass. That seed may have been sitting dormant for months — persisting through storage, waiting for the right moment. Patience is part of persistence.","Try to balance something small on the tip of your finger for 30 seconds. When it falls, start again. Notice how each try gets slightly easier. That is persistence building skill.","Plant your seed and mark the date. If it takes longer than expected to sprout, keep watering. Persistence means you do not give up before the miracle happens."],message:"AP Research is a year-long test of persistence. There were weeks when nothing worked. Looking back — those were the weeks I grew the most. Persist. The growth is happening even when you cannot see it."},
+  CONNECT:{meaning:"Building bridges between things and people",colors:{bg1:"#4E342E",bg2:"#6D4C41",bg3:"#D7CCC8",accent:"#FFAB40",gold:"#FFD740",text:"#fff",backTop:"#5D4037",backBar:"#D7CCC8"},fact:"Trees in a forest are connected underground through a network of fungal threads called mycorrhizae — sometimes called the 'wood wide web.' Through this network, trees share nutrients, water, and chemical signals. Mother trees feed their seedlings through these connections. Forests are one connected community.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Look at the surface of a leaf through the magnifying glass. See the network of veins? That is a connection system — moving water and nutrients to every cell. Nature's internet.","Think of three people who are connected to each other through you. You are a hub — more connected than you realize.","When you plant your seed, put it near other plants if you can. Plants actually grow better with neighbors — the connections help them all thrive."],message:"The most important connections in my research were unexpected ones — a paper from a different field that changed everything, a classmate's question that unlocked a new idea. Stay open to unlikely connections."},
+  TRANSFORM:{meaning:"Becoming something completely different",colors:{bg1:"#1A237E",bg2:"#4527A0",bg3:"#EDE7F6",accent:"#7C4DFF",gold:"#FFD740",text:"#fff",backTop:"#311B92",backBar:"#EDE7F6"},fact:"When a caterpillar transforms into a butterfly, its body produces digestive enzymes that dissolve almost everything into a protein-rich liquid. Then, tiny clusters of cells called imaginal discs use that liquid to build an entirely new creature. Transformation requires breaking down before building up.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Look at your seed under the magnifying glass. It will transform from this hard shell into a living, breathing plant. Something has to break open before something new can grow.","Tear a small piece of paper into tiny pieces. Mix them with water and press them together. Something new emerges from something that was torn apart. Transformation.","Plant your seed and watch for the moment the shell breaks. The transformation from seed to seedling happens in that break — when the old form gives way to the new one."],message:"AP Research transformed how I think. Not just about my topic — about everything. I cannot think the way I used to. That is the best kind of transformation."},
+  MIGRATE:{meaning:"Moving to where you need to be",colors:{bg1:"#E65100",bg2:"#BF360C",bg3:"#FFE0B2",accent:"#FFAB40",gold:"#FFD740",text:"#fff",backTop:"#BF360C",backBar:"#FFE0B2"},fact:"Arctic terns migrate from the Arctic to the Antarctic and back every year — a round trip of 44,000 miles. Over a lifetime, one bird travels a distance equivalent to three trips to the moon and back. They follow the sun, chasing summer on both ends of the Earth. Migration is the pursuit of the conditions where you thrive.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Hold your magnifying glass up and look through it in different directions. The world looks different from every angle. Migration is about finding the angle where you see best.","Look at your seed packet. Seeds migrate too — carried by wind, water, and animals to new places where they can grow. Your seed traveled to get to you.","Plant your seed somewhere new — somewhere you would not normally think to put a plant. Migration is about finding the unexpected place where you belong."],message:"Research requires migration — moving between sources, between ideas, between frameworks. The researchers I admire most are the ones who are always willing to move toward better thinking."},
+  ROOT:{meaning:"Knowing where you come from",colors:{bg1:"#3E2723",bg2:"#4E342E",bg3:"#D7CCC8",accent:"#A1887F",gold:"#FFD740",text:"#fff",backTop:"#4E342E",backBar:"#D7CCC8"},fact:"The root system of a single rye grass plant, if all its roots were laid end to end, would stretch 380 miles. Roots make up more than half of a plant's total mass — mostly invisible underground. What holds a living thing up is almost always hidden. Roots matter more than what shows.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Press your thumb into soft soil or sand. See the impression? That is what roots do — they press into the earth and hold. Try to pull your thumb out slowly. Feel the resistance? That is root strength.","Look at your seed under the magnifying glass. The first thing it will grow is a root — pointing down, anchoring in, before anything rises. Roots always come first.","When you plant your seed, loosen the soil gently with your finger first. Make it easy for the roots to reach deep. Give your roots room to grow."],message:"AP Research rooted me in evidence-based thinking — in questioning, in proving, in intellectual honesty. Those roots will hold me up for the rest of my life, even when nothing else feels stable."},
+  CLEAR:{meaning:"Finding clarity after confusion",colors:{bg1:"#006064",bg2:"#00838F",bg3:"#E0F7FA",accent:"#18FFFF",gold:"#FFD740",text:"#fff",backTop:"#0097A7",backBar:"#E0F7FA"},fact:"The clearest natural water on Earth is found in Blue Lake, New Zealand — with visibility of up to 80 meters. The water is filtered through ancient glacial rock for up to 16 years before reaching the lake, removing virtually all particles. Clarity comes from a long, slow process of filtering. It cannot be rushed.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Breathe on your magnifying glass lens and let it fog. Wait. Watch it clear. Clarity always returns — you just have to wait for the fog to pass.","Look through the clean lens at something small and complex. When the glass is clear, you can see things you could not see before. Clarity reveals detail.","Plant your seed in clear water for 24 hours before planting — soaking helps it absorb water and begin the germination process more quickly."],message:"There was a moment — about eight months into my research — when everything became clear. The fog of confusion lifted and I saw exactly what my argument was. That moment was worth the whole year."},
+  RETURN:{meaning:"Coming back to where you started, changed",colors:{bg1:"#1A237E",bg2:"#283593",bg3:"#C5CAE9",accent:"#536DFE",gold:"#FFD740",text:"#fff",backTop:"#303F9F",backBar:"#C5CAE9"},fact:"Salmon spend years in the ocean, traveling thousands of miles — then return to the exact stream where they were born to spawn. Scientists believe they navigate using Earth's magnetic field and the unique chemical signature of their home stream. Return is not just going back — it is recognizing home from across thousands of miles.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Close your eyes and think of a place where you feel completely at home. What does it smell like? Sound like? That sense of home — of where you belong — is what guides salmon across oceans.","Look at your seed through the magnifying glass. When it grows and eventually drops its own seeds — those seeds will return to the soil and start the cycle again. Everything returns.","Plant your seed and give it a name. When you return to check on it each day, you are practicing one of the most important habits: coming back to what you care about."],message:"When AP Research ended, I returned to who I was — but different. Changed by the process. Every real journey works that way. You return to yourself, but bigger. Better. More."}
+};
+
+var WORD_LIST = Object.keys(WORDS).sort();
+var currentWord = null;
+
+// Build word grid
+var grid = document.getElementById('wordGrid');
+WORD_LIST.forEach(function(w){
+  var btn = document.createElement('button');
+  btn.className = 'word-btn';
+  btn.textContent = w;
+  btn.id = 'wbtn-' + w;
+  btn.onclick = function(){ selectWord(w); };
+  grid.appendChild(btn);
+});
+
+function selectWord(w){
+  currentWord = w;
+  var d = WORDS[w];
+  // Update active button
+  document.querySelectorAll('.word-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('wbtn-' + w).classList.add('active');
+  // Clear fields — students research and write their own content
+  document.getElementById('editFact').value = '';
+  document.getElementById('editSupplies').value = '';
+  document.getElementById('editStep1').value = '';
+  document.getElementById('editStep2').value = '';
+  document.getElementById('editStep3').value = '';
+  document.getElementById('editMessage').value = '';
+  // Update label
+  document.getElementById('previewWordLabel').textContent = w;
+  // Render bookmark
+  renderBookmark();
+}
+
+function getEditedData(){
+  if(!currentWord) return null;
+  var d = WORDS[currentWord];
+  return {
+    word: currentWord,
+    meaning: d.meaning,
+    colors: d.colors,
+    fact: document.getElementById('editFact').value,
+    supplies: document.getElementById('editSupplies').value,
+    steps: [
+      document.getElementById('editStep1').value,
+      document.getElementById('editStep2').value,
+      document.getElementById('editStep3').value
+    ],
+    message: document.getElementById('editMessage').value
+  };
+}
+
+// Add live update listeners
+['editFact','editSupplies','editStep1','editStep2','editStep3','editMessage'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', function(){
+    if(currentWord) renderBookmark();
+  });
+});
+
+function renderBookmark(){
+  var d = getEditedData();
+  if(!d) return;
+  var c = d.colors;
+  var pair = document.getElementById('bookmarkPair');
+  var es = document.getElementById('emptyState');
+  if(es) es.style.display = 'none';
+
+  var stepsHtml = d.steps.map(function(s,i){
+    return '<div class="bm-step">' +
+      '<div class="bm-step-n" style="background:'+c.backTop+';">'+(i+1)+'</div>' +
+      '<div class="bm-step-t">'+escHtml(s)+'</div>' +
+      '</div>';
+  }).join('');
+
+  var suppliesHtml = escHtml(d.supplies).replace(/\n/g,'<br/>');
+
+  pair.innerHTML =
+    // FRONT
+    '<div class="bookmark-col">' +
+    '<div class="bookmark-col-label">Front</div>' +
+    '<div class="bookmark bm-front" style="background:linear-gradient(175deg,'+c.bg1+' 0%,'+c.bg2+' 40%,'+c.bg1+' 100%);">' +
+      '<div class="bm-stripe" style="background:linear-gradient(90deg,'+c.gold+',#fff,'+c.gold+');opacity:.9"></div>' +
+      '<div class="bm-word" style="color:'+c.gold+';">'+d.word+'</div>' +
+      '<div class="bm-meaning" style="color:'+c.text+';">'+escHtml(d.meaning)+'</div>' +
+      '<div class="bm-divider" style="background:linear-gradient(90deg,transparent,'+c.gold+',transparent);"></div>' +
+      '<div class="bm-illus">'+getIllustration(d.word, c)+'</div>' +
+      '<div class="bm-dyk">' +
+        '<div class="bm-dyk-lbl">🔬 Did You Know?</div>' +
+        '<div class="bm-dyk-txt">'+escHtml(d.fact)+'</div>' +
+      '</div>' +
+      '<div class="bm-foot">' +
+        '<div class="bm-foot-t">SMILE BAGS</div>' +
+        '<div class="bm-foot-s">AP Research · Spring 2026</div>' +
+      '</div>' +
+    '</div></div>' +
+
+    // BACK
+    '<div class="bookmark-col">' +
+    '<div class="bookmark-col-label">Back</div>' +
+    '<div class="bookmark bm-back">' +
+      '<div class="bm-back-top" style="background:linear-gradient(135deg,'+c.bg1+','+c.backTop+');">' +
+        '<div class="bm-back-word">'+d.word+'</div>' +
+        '<div class="bm-back-sub">Try It! Activity</div>' +
+      '</div>' +
+      '<div class="bm-tryit">' +
+        '<div class="bm-sec-lbl" style="color:'+c.backTop+';"><div class="bm-sec-dot" style="background:'+c.backTop+';"></div>What You Need</div>' +
+        '<div class="bm-supplies" style="background:'+c.backBar+'33;color:'+c.bg1+';">'+suppliesHtml+'</div>' +
+        '<div class="bm-sec-lbl" style="color:'+c.backTop+';"><div class="bm-sec-dot" style="background:'+c.backTop+';"></div>Try It!</div>' +
+        stepsHtml +
+      '</div>' +
+      '<div class="bm-msg">' +
+        '<div class="bm-msg-lbl" style="color:'+c.gold+';font-family:\'Fredoka One\',cursive;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:4px;">' +
+          '<div style="width:5px;height:5px;border-radius:50%;background:'+c.gold+';flex-shrink:0;"></div>A Message For You' +
+        '</div>' +
+        '<div class="bm-msg-txt" style="border-left-color:'+c.gold+';">'+escHtml(d.message)+'"</div>' +
+        '<div class="bm-msg-attr">— ' + (document.getElementById('studentName').value.trim() ? document.getElementById('studentName').value.trim() + ', Your Kellam Scientist' : 'Your Kellam Scientist') + ' · Kellam High School</div>' +
+      '</div>' +
+      '<div class="bm-bfoot" style="background:linear-gradient(135deg,'+c.bg1+','+c.backTop+');">' +
+        '<div class="bm-bfoot-t">SMILE BAGS</div>' +
+        '<div class="bm-bfoot-s">AP Research · Kellam High School</div>' +
+      '</div>' +
+    '</div></div>';
+}
+
+function escHtml(s){
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function getIllustration(word, c){
+  // Unique SVG illustration for each word
+  var svgs = {
+    FLOW: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.3)"/><path d="M0,100 Q42,78 84,96 Q126,114 168,90 L168,160 L0,160Z" fill="rgba(255,255,255,.12)"/><path d="M0,118 Q42,100 84,112 Q126,124 168,108 L168,160 L0,160Z" fill="rgba(255,255,255,.10)"/><ellipse cx="84" cy="48" rx="18" ry="24" fill="rgba(100,200,255,.55)" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/><ellipse cx="68" cy="40" rx="6" ry="10" fill="rgba(255,255,255,.25)" transform="rotate(-15,68,40)"/><ellipse cx="40" cy="88" rx="20" ry="12" fill="rgba(255,215,64,.6)"/><path d="M60,88 L72,80 L72,96Z" fill="rgba(200,134,10,.7)"/><circle cx="35" cy="85" r="4" fill="rgba(255,255,255,.8)"/><circle cx="35" cy="85" r="2" fill="rgba(0,30,80,.8)"/><circle cx="112" cy="70" rx="16" ry="10" fill="rgba(27,122,120,.7)" cx="112" cy="70"/><path d="M128,70 L138,63 L138,77Z" fill="rgba(13,100,90,.8)"/><circle cx="96" cy="136" r="28" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="1.5"/><circle cx="96" cy="136" r="18" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="1"/></svg>',
+    BLOOM: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.2)"/><g transform="translate(84,80)"><ellipse cx="0" cy="-36" rx="14" ry="22" fill="rgba(255,128,171,.8)"/><ellipse cx="0" cy="36" rx="14" ry="22" fill="rgba(255,128,171,.8)"/><ellipse cx="-36" cy="0" rx="22" ry="14" fill="rgba(255,128,171,.8)"/><ellipse cx="36" cy="0" rx="22" ry="14" fill="rgba(255,128,171,.8)"/><ellipse cx="-25" cy="-25" rx="14" ry="20" fill="rgba(244,143,177,.8)" transform="rotate(-45,-25,-25)"/><ellipse cx="25" cy="-25" rx="14" ry="20" fill="rgba(244,143,177,.8)" transform="rotate(45,25,-25)"/><ellipse cx="-25" cy="25" rx="14" ry="20" fill="rgba(244,143,177,.8)" transform="rotate(45,-25,25)"/><ellipse cx="25" cy="25" rx="14" ry="20" fill="rgba(244,143,177,.8)" transform="rotate(-45,25,25)"/><circle cx="0" cy="0" r="20" fill="rgba(255,215,64,.9)"/><circle cx="0" cy="0" r="12" fill="rgba(200,134,10,.9)"/></g><rect x="80" y="115" width="8" height="36" rx="4" fill="rgba(76,175,80,.8)"/><ellipse cx="64" cy="130" rx="16" ry="10" fill="rgba(76,175,80,.7)" transform="rotate(-30,64,130)"/><ellipse cx="104" cy="130" rx="16" ry="10" fill="rgba(76,175,80,.7)" transform="rotate(30,104,130)"/></svg>',
+    GROW: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.25)"/><rect x="76" y="60" width="16" height="88" rx="6" fill="rgba(56,142,60,.8)"/><ellipse cx="84" cy="55" rx="40" ry="28" fill="rgba(76,175,80,.75)"/><ellipse cx="60" cy="80" rx="30" ry="20" fill="rgba(56,142,60,.7)"/><ellipse cx="108" cy="80" rx="30" ry="20" fill="rgba(56,142,60,.7)"/><ellipse cx="84" cy="30" rx="28" ry="20" fill="rgba(102,187,106,.75)"/><ellipse cx="84" cy="140" rx="50" ry="12" fill="rgba(62,39,35,.6)"/><circle cx="84" cy="140" r="6" fill="rgba(200,134,10,.8)"/></svg>',
+    SHINE: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.15)"/><circle cx="84" cy="75" r="38" fill="rgba(255,215,64,.85)"/><circle cx="84" cy="75" r="38" fill="none" stroke="rgba(255,160,0,.6)" stroke-width="3"/><line x1="84" y1="22" x2="84" y2="10" stroke="rgba(255,160,0,.8)" stroke-width="4" stroke-linecap="round"/><line x1="84" y1="128" x2="84" y2="140" stroke="rgba(255,160,0,.8)" stroke-width="4" stroke-linecap="round"/><line x1="31" y1="75" x2="19" y2="75" stroke="rgba(255,160,0,.8)" stroke-width="4" stroke-linecap="round"/><line x1="137" y1="75" x2="149" y2="75" stroke="rgba(255,160,0,.8)" stroke-width="4" stroke-linecap="round"/><line x1="47" y1="39" x2="38" y2="30" stroke="rgba(255,160,0,.7)" stroke-width="3" stroke-linecap="round"/><line x1="121" y1="111" x2="130" y2="120" stroke="rgba(255,160,0,.7)" stroke-width="3" stroke-linecap="round"/><line x1="121" y1="39" x2="130" y2="30" stroke="rgba(255,160,0,.7)" stroke-width="3" stroke-linecap="round"/><line x1="47" y1="111" x2="38" y2="120" stroke="rgba(255,160,0,.7)" stroke-width="3" stroke-linecap="round"/><circle cx="70" cy="62" r="9" fill="rgba(255,255,255,.45)"/></svg>',
+    BREATHE: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.2)"/><path d="M84,30 Q60,35 48,55 Q36,75 48,95 Q60,115 84,120 Q108,115 120,95 Q132,75 120,55 Q108,35 84,30Z" fill="rgba(129,212,250,.35)" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/><path d="M84,48 Q72,52 66,65 Q60,78 66,90 Q72,102 84,106 Q96,102 102,90 Q108,78 102,65 Q96,52 84,48Z" fill="rgba(129,212,250,.4)"/><path d="M84,65 Q78,68 76,75 Q74,82 76,88 Q78,94 84,96 Q90,94 92,88 Q94,82 92,75 Q90,68 84,65Z" fill="rgba(255,255,255,.5)"/><ellipse cx="40" cy="36" rx="18" ry="10" fill="rgba(255,255,255,.15)"/><ellipse cx="128" cy="40" rx="22" ry="12" fill="rgba(255,255,255,.15)"/><ellipse cx="30" cy="130" rx="14" ry="8" fill="rgba(76,175,80,.4)"/><ellipse cx="138" cy="125" rx="18" ry="10" fill="rgba(76,175,80,.4)"/></svg>',
+    RISE: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.3)"/><path d="M84,20 L96,60 L120,60 L100,82 L108,122 L84,100 L60,122 L68,82 L48,60 L72,60 Z" fill="rgba(255,215,64,.75)"/><circle cx="84" cy="72" r="20" fill="rgba(255,215,64,.5)"/><line x1="84" y1="122" x2="84" y2="148" stroke="rgba(255,215,64,.6)" stroke-width="3" stroke-dasharray="4,3"/><ellipse cx="84" cy="148" rx="30" ry="8" fill="rgba(255,215,64,.2)"/></svg>',
+    RENEW: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.25)"/><path d="M84,80 m-40,0 a40,40 0 1,1 80,0" fill="none" stroke="rgba(105,240,174,.8)" stroke-width="8" stroke-linecap="round"/><path d="M44,80 L36,66 L58,72 Z" fill="rgba(105,240,174,.8)"/><path d="M84,80 m-40,0 a40,40 0 0,0 40,-40" fill="none" stroke="rgba(255,215,64,.7)" stroke-width="8" stroke-linecap="round"/><path d="M84,40 L98,32 L92,54 Z" fill="rgba(255,215,64,.7)"/><circle cx="84" cy="80" r="12" fill="rgba(76,175,80,.8)"/><ellipse cx="50" cy="128" rx="20" ry="8" fill="rgba(56,142,60,.5)"/><ellipse cx="118" cy="132" rx="16" ry="6" fill="rgba(56,142,60,.4)"/></svg>',
+    HEAL: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.2)"/><path d="M84,110 L40,72 Q28,55 40,42 Q52,28 66,38 L84,55 L102,38 Q116,28 128,42 Q140,55 128,72 Z" fill="rgba(100,255,218,.7)"/><rect x="76" y="56" width="16" height="48" rx="4" fill="rgba(255,255,255,.6)"/><rect x="60" y="72" width="48" height="16" rx="4" fill="rgba(255,255,255,.6)"/><ellipse cx="84" cy="132" rx="24" ry="8" fill="rgba(0,105,92,.4)"/></svg>',
+    BALANCE: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.25)"/><line x1="84" y1="30" x2="84" y2="140" stroke="rgba(255,255,255,.5)" stroke-width="3"/><line x1="40" y1="75" x2="128" y2="75" stroke="rgba(234,128,252,.8)" stroke-width="4" stroke-linecap="round"/><circle cx="40" cy="90" r="20" fill="rgba(234,128,252,.5)" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/><circle cx="128" cy="90" r="20" fill="rgba(234,128,252,.5)" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/><circle cx="84" cy="40" r="10" fill="rgba(255,215,64,.8)"/><line x1="40" y1="75" x2="40" y2="90" stroke="rgba(255,255,255,.4)" stroke-width="2"/><line x1="128" y1="75" x2="128" y2="90" stroke="rgba(255,255,255,.4)" stroke-width="2"/></svg>',
+    ADAPT: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.2)"/><ellipse cx="84" cy="80" rx="50" ry="36" fill="rgba(0,131,143,.6)"/><ellipse cx="84" cy="80" rx="50" ry="36" fill="none" stroke="rgba(24,255,255,.5)" stroke-width="2" stroke-dasharray="6,4"/><circle cx="84" cy="80" r="18" fill="rgba(24,255,255,.7)"/><ellipse cx="84" cy="62" rx="8" ry="5" fill="rgba(255,255,255,.6)"/><path d="M60,100 Q70,115 84,118 Q98,115 108,100" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2.5" stroke-linecap="round"/><circle cx="60" cy="72" r="5" fill="rgba(255,255,255,.7)"/><circle cx="108" cy="72" r="5" fill="rgba(255,255,255,.7)"/></svg>',
+    CYCLE: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.25)"/><circle cx="84" cy="80" r="50" fill="none" stroke="rgba(118,255,3,.5)" stroke-width="8"/><circle cx="84" cy="80" r="50" fill="none" stroke="rgba(255,215,64,.4)" stroke-width="8" stroke-dasharray="50,100" stroke-dashoffset="50"/><path d="M84,30 L94,46 L74,46 Z" fill="rgba(118,255,3,.8)"/><path d="M134,80 L118,90 L118,70 Z" fill="rgba(255,215,64,.7)"/><path d="M84,130 L74,114 L94,114 Z" fill="rgba(118,255,3,.7)"/><circle cx="84" cy="80" r="16" fill="rgba(46,125,50,.8)"/></svg>',
+    EMERGE: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.25)"/><ellipse cx="84" cy="108" rx="36" ry="28" fill="rgba(106,27,154,.6)" stroke="rgba(224,64,251,.4)" stroke-width="2"/><path d="M84,108 Q72,80 56,68 Q68,62 84,80 Q100,62 112,68 Q96,80 84,108Z" fill="rgba(224,64,251,.7)"/><path d="M84,108 Q70,88 58,85 Q66,78 84,92 Q102,78 110,85 Q98,88 84,108Z" fill="rgba(255,128,171,.6)"/><circle cx="84" cy="50" r="10" fill="rgba(255,215,64,.8)"/><line x1="84" y1="80" x2="84" y2="60" stroke="rgba(255,215,64,.5)" stroke-width="2" stroke-dasharray="3,2"/></svg>',
+    ANCHOR: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.35)"/><circle cx="84" cy="35" r="14" fill="none" stroke="rgba(130,177,255,.8)" stroke-width="4"/><line x1="84" y1="49" x2="84" y2="130" stroke="rgba(130,177,255,.8)" stroke-width="5" stroke-linecap="round"/><line x1="52" y1="130" x2="116" y2="130" stroke="rgba(130,177,255,.8)" stroke-width="5" stroke-linecap="round"/><path d="M52,130 Q52,148 60,148" fill="none" stroke="rgba(130,177,255,.7)" stroke-width="4" stroke-linecap="round"/><path d="M116,130 Q116,148 108,148" fill="none" stroke="rgba(130,177,255,.7)" stroke-width="4" stroke-linecap="round"/><line x1="52" y1="75" x2="116" y2="75" stroke="rgba(255,215,64,.5)" stroke-width="3" stroke-linecap="round"/></svg>',
+    ABSORB: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.25)"/><rect x="44" y="44" width="80" height="80" rx="16" fill="rgba(136,14,79,.6)" stroke="rgba(255,128,171,.4)" stroke-width="2"/><circle cx="62" cy="62" r="8" fill="rgba(255,128,171,.5)"/><circle cx="84" cy="55" r="6" fill="rgba(255,128,171,.4)"/><circle cx="106" cy="62" r="8" fill="rgba(255,128,171,.5)"/><circle cx="62" cy="84" r="6" fill="rgba(255,128,171,.4)"/><circle cx="84" cy="84" r="10" fill="rgba(255,215,64,.7)"/><circle cx="106" cy="84" r="6" fill="rgba(255,128,171,.4)"/><circle cx="62" cy="106" r="8" fill="rgba(255,128,171,.5)"/><circle cx="84" cy="113" r="6" fill="rgba(255,128,171,.4)"/><circle cx="106" cy="106" r="8" fill="rgba(255,128,171,.5)"/><ellipse cx="84" cy="24" rx="8" ry="12" fill="rgba(130,177,255,.6)"/><line x1="84" y1="36" x2="84" y2="44" stroke="rgba(130,177,255,.6)" stroke-width="2"/></svg>',
+    FILTER: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.25)"/><path d="M30,30 L138,30 L100,75 L100,138 L68,122 L68,75 Z" fill="rgba(25,118,210,.6)" stroke="rgba(130,177,255,.5)" stroke-width="2"/><ellipse cx="84" cy="28" rx="8" ry="6" fill="rgba(66,165,245,.8)"/><ellipse cx="60" cy="35" rx="6" ry="4" fill="rgba(66,165,245,.6)"/><ellipse cx="108" cy="35" rx="6" ry="4" fill="rgba(66,165,245,.6)"/><ellipse cx="84" cy="148" rx="10" ry="8" fill="rgba(130,177,255,.5)"/><line x1="84" y1="138" x2="84" y2="148" stroke="rgba(130,177,255,.6)" stroke-width="2"/></svg>',
+    PERSIST: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.25)"/><path d="M84,20 L84,148" stroke="rgba(255,82,82,.6)" stroke-width="6" stroke-linecap="round"/><path d="M84,20 L84,148" stroke="rgba(255,215,64,.5)" stroke-width="6" stroke-linecap="round" stroke-dasharray="8,80" stroke-dashoffset="0"/><circle cx="84" cy="20" r="12" fill="rgba(255,82,82,.8)"/><circle cx="84" cy="148" r="16" fill="rgba(255,215,64,.8)"/><path d="M50,60 L84,40 L118,60" fill="none" stroke="rgba(255,82,82,.5)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M50,95 L84,75 L118,95" fill="none" stroke="rgba(255,82,82,.4)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    CONNECT: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.25)"/><circle cx="84" cy="80" r="14" fill="rgba(255,171,64,.8)"/><circle cx="40" cy="50" r="10" fill="rgba(161,136,127,.7)"/><circle cx="128" cy="50" r="10" fill="rgba(161,136,127,.7)"/><circle cx="40" cy="112" r="10" fill="rgba(161,136,127,.7)"/><circle cx="128" cy="112" r="10" fill="rgba(161,136,127,.7)"/><line x1="40" y1="50" x2="84" y2="80" stroke="rgba(255,171,64,.5)" stroke-width="2.5"/><line x1="128" y1="50" x2="84" y2="80" stroke="rgba(255,171,64,.5)" stroke-width="2.5"/><line x1="40" y1="112" x2="84" y2="80" stroke="rgba(255,171,64,.5)" stroke-width="2.5"/><line x1="128" y1="112" x2="84" y2="80" stroke="rgba(255,171,64,.5)" stroke-width="2.5"/><line x1="40" y1="50" x2="128" y2="50" stroke="rgba(161,136,127,.3)" stroke-width="1.5"/><line x1="40" y1="112" x2="128" y2="112" stroke="rgba(161,136,127,.3)" stroke-width="1.5"/></svg>',
+    TRANSFORM: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.25)"/><ellipse cx="44" cy="120" rx="28" ry="18" fill="rgba(69,39,160,.7)"/><path d="M44,120 Q60,100 84,80" stroke="rgba(124,77,255,.6)" stroke-width="3" fill="none" stroke-dasharray="5,3"/><path d="M84,80 Q108,60 124,40 Q136,28 144,30 Q148,42 136,52 Q124,62 108,70 Q92,78 84,80Z" fill="rgba(224,64,251,.7)"/><path d="M84,80 Q96,72 108,58 Q120,44 128,36 Q132,44 124,52 Q116,60 104,68 Q92,76 84,80Z" fill="rgba(255,128,171,.6)"/><circle cx="44" cy="120" r="8" fill="rgba(255,215,64,.6)"/></svg>',
+    MIGRATE: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.25)"/><path d="M20,80 Q84,20 148,80" fill="none" stroke="rgba(255,171,64,.6)" stroke-width="3" stroke-dasharray="6,4"/><g transform="translate(54,42)"><path d="M0,-12 L8,4 L0,0 L-8,4 Z" fill="rgba(255,171,64,.85)" transform="rotate(40)"/></g><g transform="translate(84,30)"><path d="M0,-12 L8,4 L0,0 L-8,4 Z" fill="rgba(255,171,64,.9)" transform="rotate(0)"/></g><g transform="translate(114,42)"><path d="M0,-12 L8,4 L0,0 L-8,4 Z" fill="rgba(255,171,64,.85)" transform="rotate(-40)"/></g><circle cx="84" cy="110" r="30" fill="none" stroke="rgba(255,171,64,.3)" stroke-width="2"/><line x1="84" y1="80" x2="84" y2="140" stroke="rgba(255,171,64,.3)" stroke-width="1.5"/><line x1="54" y1="110" x2="114" y2="110" stroke="rgba(255,171,64,.3)" stroke-width="1.5"/></svg>',
+    ROOT: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.3)"/><rect x="76" y="20" width="16" height="60" rx="6" fill="rgba(161,136,127,.7)"/><ellipse cx="84" cy="18" rx="24" ry="16" fill="rgba(62,39,35,.7)"/><path d="M84,80 L60,110 L44,140" stroke="rgba(161,136,127,.7)" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M84,80 L108,110 L124,140" stroke="rgba(161,136,127,.7)" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M84,95 L84,148" stroke="rgba(161,136,127,.8)" stroke-width="5" stroke-linecap="round"/><path d="M60,110 L44,125" stroke="rgba(161,136,127,.5)" stroke-width="3" stroke-linecap="round"/><path d="M108,110 L124,125" stroke="rgba(161,136,127,.5)" stroke-width="3" stroke-linecap="round"/></svg>',
+    CLEAR: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.15)"/><ellipse cx="84" cy="75" rx="52" ry="52" fill="rgba(24,255,255,.12)" stroke="rgba(24,255,255,.4)" stroke-width="2"/><ellipse cx="84" cy="75" rx="36" ry="36" fill="rgba(24,255,255,.15)" stroke="rgba(24,255,255,.5)" stroke-width="2"/><ellipse cx="84" cy="75" rx="20" ry="20" fill="rgba(24,255,255,.25)" stroke="rgba(24,255,255,.7)" stroke-width="2"/><ellipse cx="84" cy="75" rx="8" ry="8" fill="rgba(255,255,255,.8)"/><ellipse cx="74" cy="62" rx="10" ry="16" fill="rgba(255,255,255,.2)" transform="rotate(-20,74,62)"/><ellipse cx="84" cy="138" rx="18" ry="6" fill="rgba(0,131,143,.3)"/></svg>',
+    RETURN: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.3)"/><path d="M84,80 m0,-50 a50,50 0 1,1 0,100 a50,50 0 1,1 0,-100" fill="none" stroke="rgba(83,109,254,.6)" stroke-width="6"/><path d="M84,30 L96,48 L72,44 Z" fill="rgba(83,109,254,.8)"/><circle cx="84" cy="80" r="12" fill="rgba(255,215,64,.8)"/><circle cx="84" cy="80" r="6" fill="rgba(200,134,10,.9)"/><line x1="84" y1="86" x2="84" y2="110" stroke="rgba(255,215,64,.4)" stroke-width="2" stroke-dasharray="3,3"/></svg>',
+    SUSTAIN: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.25)"/><ellipse cx="84" cy="90" rx="50" ry="36" fill="rgba(85,139,47,.6)"/><ellipse cx="84" cy="85" rx="36" ry="26" fill="rgba(102,187,106,.6)"/><ellipse cx="84" cy="80" rx="22" ry="16" fill="rgba(178,255,89,.5)"/><circle cx="84" cy="40" r="18" fill="rgba(255,215,64,.75)"/><line x1="84" y1="58" x2="84" y2="72" stroke="rgba(56,142,60,.8)" stroke-width="4" stroke-linecap="round"/><path d="M40,145 Q84,128 128,145" fill="none" stroke="rgba(56,142,60,.4)" stroke-width="2" stroke-dasharray="4,3"/></svg>',
+    RESTORE: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.25)"/><path d="M24,100 Q60,60 84,80 Q108,100 144,55" fill="none" stroke="rgba(100,255,218,.7)" stroke-width="4" stroke-linecap="round"/><circle cx="24" cy="100" r="8" fill="rgba(100,255,218,.6)"/><circle cx="144" cy="55" r="8" fill="rgba(100,255,218,.6)"/><ellipse cx="60" cy="130" rx="20" ry="10" fill="rgba(0,121,107,.5)"/><ellipse cx="108" cy="135" rx="16" ry="8" fill="rgba(0,121,107,.4)"/><path d="M84,55 Q80,40 84,30 Q88,40 84,55Z" fill="rgba(100,255,218,.6)"/><ellipse cx="74" cy="52" rx="10" ry="6" fill="rgba(100,255,218,.4)" transform="rotate(-30,74,52)"/><ellipse cx="94" cy="52" rx="10" ry="6" fill="rgba(100,255,218,.4)" transform="rotate(30,94,52)"/></svg>',
+    THRIVE: '<svg viewBox="0 0 168 160" xmlns="http://www.w3.org/2000/svg"><rect width="168" height="160" rx="6" fill="rgba(0,0,0,.2)"/><rect x="78" y="60" width="12" height="90" rx="4" fill="rgba(56,142,60,.8)"/><ellipse cx="84" cy="55" rx="34" ry="24" fill="rgba(255,213,79,.8)"/><circle cx="84" cy="55" r="14" fill="rgba(200,134,10,.8)"/><path d="M50,80 Q66,60 84,70" fill="none" stroke="rgba(56,142,60,.6)" stroke-width="4" stroke-linecap="round"/><path d="M118,80 Q102,60 84,70" fill="none" stroke="rgba(56,142,60,.6)" stroke-width="4" stroke-linecap="round"/><line x1="84" y1="78" x2="50" y2="80" stroke="rgba(56,142,60,.4)" stroke-width="2"/><line x1="84" y1="78" x2="118" y2="80" stroke="rgba(56,142,60,.4)" stroke-width="2"/><ellipse cx="84" cy="148" rx="40" ry="10" fill="rgba(62,39,35,.4)"/></svg>'
+  };
+  return svgs[word] || svgs['FLOW'];
+}
+
+function resetToDefault(){
+  if(!currentWord) return;
+  selectWord(currentWord);
+}
+
+function savePDF(){
+  var style = document.createElement('style');
+  style.textContent = '@media print { .header,.sidebar,.preview-header,.btn-row,.instructions{display:none!important} .app{grid-template-columns:1fr;display:block} .main{background:#fff;padding:16px} .bookmark-pair{gap:32px;justify-content:center} .bookmark{box-shadow:none;border:1px solid #ddd} *{-webkit-print-color-adjust:exact;print-color-adjust:exact} }';
+  document.head.appendChild(style);
+  window.print();
+  setTimeout(function(){ document.head.removeChild(style); }, 1000);
+}
+
+function submitBookmark(){
+  if(!currentWord){ alert('Please select a OneWord first.'); return; }
+  var name = document.getElementById('studentName').value.trim();
+  if(!name){ alert('Please enter your name before saving.'); return; }
+  var btn = document.getElementById('submitBtn');
+  var msg = document.getElementById('submitMsg');
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+  var d = getEditedData();
+  google.script.run
+    .withSuccessHandler(function(){
+      btn.disabled = false;
+      btn.textContent = '✓ Saved!';
+      msg.style.display = 'block';
+      msg.style.background = '#D4EDDA';
+      msg.style.color = '#155724';
+      msg.textContent = 'Your bookmark has been saved! You can now print it.';
+      setTimeout(function(){
+        btn.textContent = '💾 Save My Bookmark';
+      }, 3000);
+    })
+    .withFailureHandler(function(){
+      btn.disabled = false;
+      btn.textContent = '💾 Save My Bookmark';
+      msg.style.display = 'block';
+      msg.style.background = '#F8D7DA';
+      msg.style.color = '#721C24';
+      msg.textContent = 'Something went wrong. Please try again.';
+    })
+    .submitBookmark({
+      studentName: name,
+      word: d.word,
+      fact: d.fact,
+      supplies: d.supplies,
+      step1: d.steps[0],
+      step2: d.steps[1],
+      step3: d.steps[2],
+      message: d.message
+    });
+}
+</script>
+
+
+<bubbles-pinned-extension-ppbfhhgcdehhbjigifndnfmcihegokbb style="z-index: 2147483647; position: fixed; left: 0px; bottom: 10%; box-sizing: border-box; display: none;"><template shadowrootmode="open">
+<style>
+  .hide {
+    display: none !important;
+  }
+
+  .container {
+    position: absolute;
+    transition: left 0.3s ease-out, width 0.3s ease-out;
+    display: flex;
+    justify-content: flex-start;
+    width: 40px;
+    height: 40px;
+    left: -22px;
+  }
+
+  /* HOVER STYLES */
+  .container.hover,
+  .container.auto-open,
+  .container.force-open,
+  .container:has(.status-error) {
+    left: 0;
+    width: 266px;
+  }
+
+  .container.hover .drawer,
+  .container.auto-open .drawer,
+  .container.force-open .drawer,
+  .container:has(.status-error) .drawer {
+    left: 60px;
+    width: 205px;
+    overflow: visible;
+    position: inherit;
+  }
+
+  .container.hover.meeting .drawer,
+  .container.auto-open.meeting .drawer,
+  .container.force-open.meeting .drawer,
+  .container:has(.status-error) .drawer {
+    width: 300px;
+  }
+
+  .container.hover .bubble,
+  .container.auto-open .bubble,
+  .container.force-open.meeting .bubble,
+  .container:has(.status-error) .bubble {
+    left: 8px;
+  }
+
+  /* END HOVER STYLES */
+
+  .button {
+    position: relative;
+  }
+
+  .bubble {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    z-index: 100;
+    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.11), 0px 6px 16px rgba(0, 0, 0, 0.2);
+    margin: auto 0;
+    transition: all 0.2s ease-out;
+  }
+
+  .bubble:hover {
+    cursor: pointer;
+  }
+
+  .bubble:hover+.drawer .meeting-callout.status-default,
+  .bubble:hover+.drawer .meeting-callout.status-default .meeting-callout__arrow,
+  .bubble:hover+.drawer .meeting-callout.status-login,
+  .bubble:hover+.drawer .meeting-callout.status-login .meeting-callout__arrow {
+    background-color: #1426C5;
+  }
+
+  .bubble svg {
+    height: 40px;
+    width: 40px;
+  }
+
+  .drawer {
+    overflow: hidden;
+    position: absolute;
+    left: 12px;
+    width: 0;
+    display: flex;
+    align-items: center;
+    top: 0;
+    bottom: 0;
+    height: 40px;
+    margin: auto;
+    transition: all 0.3s ease-out;
+  }
+
+  .options-container {
+    background: #13121C;
+    border-radius: 12px;
+    display: flex;
+    height: 100%;
+    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.11), 0px 6px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .options-container div {
+    width: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+
+  .options-container div svg {
+    height: 20px;
+    width: 20px;
+  }
+
+  .options-container div:hover {
+    cursor: pointer;
+    background: #555469;
+  }
+
+  #js-face-button {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+  }
+
+  #js-image-button {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+  }
+
+  .power-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    border: solid 2px #BDBBC8;
+    background: #F7F7F7;
+    border-radius: 28px;
+    height: 28px;
+    width: 28px;
+    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.11), 0px 6px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .power-button svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .power-button:hover {
+    cursor: pointer;
+    border: solid 2px #FACBCB;
+  }
+
+  .power-button:hover svg path {
+    stroke: #F37E7E;
+  }
+
+  .meeting .power-button {
+    display: none;
+  }
+
+
+
+  .modal {
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  .modal__background {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  .modal__content-container {
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 234px;
+    width: 283px;
+    border-radius: 8px;
+    background: #ffffff;
+    margin: auto;
+  }
+
+  .modal__content {
+    padding: 30px;
+  }
+
+  .modal__content h1,
+  .modal__content p,
+  .modal__content span,
+  .modal__content button {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    text-align: center;
+  }
+
+  .modal__content h1 {
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 16px;
+    color: #13121C;
+  }
+
+  .modal__description {
+    font-size: 12px;
+    line-height: 20px;
+    max-width: 189px;
+    margin: auto;
+    margin-bottom: 24px;
+    color: #555469;
+  }
+
+  .modal__description .three-dots {
+    vertical-align: text-bottom;
+  }
+
+  .modal__button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .modal__button-container button {
+    width: 105px;
+    height: 32px;
+    border: 1px solid #BDBBC8;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+    color: #555469;
+    background-color: #ffffff;
+  }
+
+  .modal__button-container button:hover {
+    cursor: pointer;
+  }
+
+  .modal__button-container button.hide-button {
+    border-color: #F37E7E;
+    background-color: #F37E7E;
+    color: #ffffff;
+  }
+
+  .modal__snooze {
+    font-size: 10px;
+    line-height: 20px;
+    color: #555469;
+  }
+
+  .modal__snooze span {
+    text-decoration: underline;
+    color: #F37E7E;
+  }
+
+  .modal__snooze span:hover {
+    cursor: pointer;
+  }
+
+  .tooltip {
+    position: absolute;
+    visibility: hidden;
+    left: 0;
+    top: -27px;
+  }
+
+  .tooltip.visible {
+    visibility: visible;
+    transition: visibility 0.4s ease-in;
+  }
+
+  .tooltip.dragging {
+    opacity: 0;
+    transition: opacity .2s ease-in;
+  }
+
+  .tooltip.visible.right {
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    left: 38px;
+  }
+
+  .tooltip.dragging {
+    opacity: 0;
+    transition: opacity .2s ease-in;
+  }
+
+  .tooltip-inner {
+    color: #ffffff;
+    font-family: Inter;
+    font-size: 10px;
+    line-height: 17px;
+    background: #555469;
+    box-shadow: 0px 4px 12px rgb(0 0 0 / 15%);
+    border-radius: 8px;
+    padding: 2px 8px;
+    height: 17px;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+    z-index: 2;
+    white-space: nowrap;
+  }
+
+  .button.tooltip-disabled:hover .tooltip {
+    visibility: hidden;
+    transition: none;
+  }
+
+  /* MEETING PAGE STYLES */
+
+  .container.meeting .options-container {
+    display: none;
+  }
+
+  .container.meeting .tooltip {
+    display: none;
+  }
+
+  .meeting-callout {
+    width: 254px;
+    height: 40px;
+    border-radius: 12px;
+    user-select: none;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: 0.15s background-color ease-out;
+    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.11), 0px 6px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .meeting .meeting-callout {
+    display: flex;
+  }
+
+  .meeting-callout.status-default,
+  .meeting-callout.status-login {
+    cursor: pointer;
+  }
+
+  .meeting-callout__inner {
+    position: relative;
+    display: none;
+    justify-content: space-between;
+    padding: 0 8px;
+    align-items: center;
+    background-color: rgba(19, 18, 28, 0.20);
+    font-family: 'Inter';
+    font-size: 14px;
+    font-style: normal;
+    line-height: normal;
+    color: white;
+    border-radius: 8px;
+    width: 230px;
+    height: 32px;
+    z-index: 1;
+  }
+
+  .meeting-callout.status-default {
+    font-weight: 700;
+  }
+
+  .meeting-callout__arrow {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    transform: rotate(45deg);
+    left: -6px;
+    top: calc(50% - 8px);
+    z-index: 0;
+    transition: 0.15s background-color ease-out;
+  }
+
+  /* Background colors */
+  .meeting-callout.status-default,
+  .meeting-callout.status-default .meeting-callout__arrow,
+  .meeting-callout.status-login,
+  .meeting-callout.status-login .meeting-callout__arrow {
+    background-color: #4557F6;
+  }
+
+  .meeting-callout.status-default:hover,
+  .meeting-callout.status-default:hover .meeting-callout__arrow,
+  .meeting-callout.status-login:hover,
+  .meeting-callout.status-login:hover .meeting-callout__arrow {
+    background-color: #1426C5;
+  }
+
+  .meeting-callout.status-joining,
+  .meeting-callout.status-joining .meeting-callout__arrow,
+  .meeting-callout.status-error,
+  .meeting-callout.status-error .meeting-callout__arrow {
+    background-color: #555469;
+  }
+
+  .meeting-callout.status-success,
+  .meeting-callout.status-success .meeting-callout__arrow {
+    background-color: #53A778;
+  }
+
+  /** Only display correct status element */
+  .meeting-callout.status-default .meeting-callout__inner.default,
+  .meeting-callout.status-joining .meeting-callout__inner.joining,
+  .meeting-callout.status-success .meeting-callout__inner.success,
+  .meeting-callout.status-error .meeting-callout__inner.error,
+  .meeting-callout.status-login .meeting-callout__inner.login {
+    display: flex;
+  }
+
+  .meeting-callout-spin {
+    animation: bubbles-meeting-callout-spin 2s linear infinite;
+  }
+
+  @keyframes bubbles-meeting-callout-spin {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* .auto-open-effect {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    animation: hourglassAnimation 6s linear;
+    border-radius: 12px;
+  } */
+
+  /* .auto-open .auto-open-effect {
+    display: block;
+  } */
+
+  /* @keyframes hourglassAnimation {
+    0% {
+      width: 100%;
+    }
+
+    5% {
+      width: 95%;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    100% {
+      width: 8px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  } */
+
+  /* END MEETING PAGE STYLES */
+
+  .close-auto-open {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background-color: #555469;
+    transition: 0.15s background-color ease-out;
+    border-radius: 10px;
+    margin-left: 8px;
+    cursor: pointer;
+  }
+
+  .close-auto-open:hover {
+    background-color: #13121c;
+  }
+
+  .auto-open .close-auto-open {
+    display: flex;
+  }
+</style>
+<div class="container" style="top: 0px;">
+  <div class="bubble button" id="js-bubble">
+    <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="48" cy="48" r="48" fill="white"></circle>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M48 80.087C65.7211 80.087 80.087 65.7211 80.087 48C80.087 30.2789 65.7211 15.913 48 15.913C30.2789 15.913 15.913 30.2789 15.913 48C15.913 65.7211 30.2789 80.087 48 80.087ZM48 89C70.6437 89 89 70.6437 89 48C89 25.3563 70.6437 7 48 7C25.3563 7 7 25.3563 7 48C7 70.6437 25.3563 89 48 89Z" fill="#4557F6"></path>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M27.9439 53.9464C30.0747 52.7144 32.8007 53.443 34.0326 55.5738C35.4914 58.0968 37.5882 60.1917 40.1126 61.648C43.1471 63.3987 45.6097 64.0436 48.4462 64.0436C50.9075 64.0435 52.9028 66.0388 52.9028 68.5C52.9028 70.9613 50.9076 72.9566 48.4463 72.9566C43.8905 72.9567 39.9059 71.8188 35.6585 69.3684C31.7797 67.1306 28.5579 63.9118 26.3165 60.0351C25.0845 57.9043 25.8131 55.1783 27.9439 53.9464Z" fill="#4557F6"></path>
+    </svg>
+    <div class="tooltip">
+      <div class="tooltip-inner">
+        New bubble
+      </div>
+    </div>
+  </div>
+  <div class="drawer">
+    <div class="options-container">
+      <div class="button" id="js-face-button">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.9165 8.54224L19.1667 5.62549V14.3758L13.9165 11.459" stroke="white" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M12.4586 15.8336H3.125C2.73822 15.8336 2.36727 15.68 2.09377 15.4065C1.82028 15.133 1.66663 14.7621 1.66663 14.3753V5.625C1.66663 5.23822 1.82028 4.86727 2.09377 4.59377C2.36727 4.32028 2.73822 4.16663 3.125 4.16663H12.4586C12.8454 4.16663 13.2164 4.32028 13.4898 4.59377C13.7633 4.86727 13.917 5.23822 13.917 5.625V14.3753C13.917 14.7621 13.7633 15.133 13.4898 15.4065C13.2164 15.68 12.8454 15.8336 12.4586 15.8336Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <div class="tooltip">
+          <div class="tooltip-inner">
+            Camera
+          </div>
+        </div>
+      </div>
+      <div class="button" id="js-screen-button">
+        <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4.08337 15L16.5834 15C17.2737 15 17.8334 14.4404 17.8334 13.75V5C17.8334 4.30964 17.2737 3.75 16.5834 3.75L4.08337 3.75C3.39302 3.75 2.83337 4.30964 2.83337 5L2.83337 13.75C2.83337 14.4404 3.39302 15 4.08337 15Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M12.8334 17.5H7.83337" stroke="white" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M10.3334 15V17.5" stroke="white" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <div class="tooltip">
+          <div class="tooltip-inner">
+            Screen
+          </div>
+        </div>
+      </div>
+      <div class="button" id="js-image-button">
+        <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 1C16.5 0.723858 16.7239 0.5 17 0.5H18.5C19.0771 0.5 19.6017 0.644607 19.9786 1.02145C20.3554 1.39829 20.5 1.92293 20.5 2.5V4C20.5 4.27614 20.2761 4.5 20 4.5C19.7239 4.5 19.5 4.27614 19.5 4V2.5C19.5 2.07707 19.3946 1.85171 19.2714 1.72855C19.1483 1.60539 18.9229 1.5 18.5 1.5H17.001C16.7248 1.5 16.5 1.27614 16.5 1Z" fill="white"></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M4.5 1C4.5 0.723858 4.27614 0.5 4 0.5H2.5C1.92293 0.5 1.39829 0.644607 1.02145 1.02145C0.644607 1.39829 0.5 1.92293 0.5 2.5V4C0.5 4.27614 0.723858 4.5 1 4.5C1.27614 4.5 1.5 4.27614 1.5 4V2.5C1.5 2.07707 1.60539 1.85171 1.72855 1.72855C1.85171 1.60539 2.07707 1.5 2.5 1.5H3.99902C4.27516 1.5 4.5 1.27614 4.5 1Z" fill="white"></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 17C16.5 17.2761 16.7239 17.5 17 17.5H18.5C19.0771 17.5 19.6017 17.3554 19.9786 16.9786C20.3554 16.6017 20.5 16.0771 20.5 15.5V14C20.5 13.7239 20.2761 13.5 20 13.5C19.7239 13.5 19.5 13.7239 19.5 14V15.5C19.5 15.9229 19.3946 16.1483 19.2714 16.2714C19.1483 16.3946 18.9229 16.5 18.5 16.5H17.001C16.7248 16.5 16.5 16.7239 16.5 17Z" fill="white"></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M4.5 17C4.5 17.2761 4.27614 17.5 4 17.5H2.5C1.92293 17.5 1.39829 17.3554 1.02145 16.9786C0.644607 16.6017 0.5 16.0771 0.5 15.5V14C0.5 13.7239 0.723858 13.5 1 13.5C1.27614 13.5 1.5 13.7239 1.5 14V15.5C1.5 15.9229 1.60539 16.1483 1.72855 16.2714C1.85171 16.3946 2.07707 16.5 2.5 16.5H3.99902C4.27516 16.5 4.5 16.7239 4.5 17Z" fill="white"></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M10.6892 11.2828C10.4977 11.3932 10.2567 11.5 10 11.5C9.58685 11.5 9.22873 11.2965 8.95 11.0875C8.67135 10.8785 8.40028 10.6074 8.16019 10.3673L8.14645 10.3536C7.88991 10.097 7.66602 9.87451 7.45 9.7125C7.22873 9.54654 7.08685 9.5 7 9.5C6.96951 9.5 6.89134 9.51207 6.75481 9.56896C6.62444 9.62328 6.46995 9.70606 6.29625 9.81462C5.94886 10.0317 5.56236 10.3281 5.19509 10.6341C4.82988 10.9385 4.49371 11.244 4.24822 11.4741C4.12572 11.589 4.02636 11.6845 3.95792 11.7511C3.92371 11.7843 3.89725 11.8103 3.87953 11.8278L3.85962 11.8475L3.85481 11.8523L3.85373 11.8534L3.5 11.5C3.14645 11.1464 3.14649 11.1464 3.14655 11.1463L3.14883 11.1441L3.15479 11.1381L3.17712 11.116C3.1965 11.0969 3.22474 11.0692 3.26084 11.0341C3.33302 10.9639 3.43679 10.8641 3.56428 10.7446C3.81879 10.506 4.17013 10.1865 4.55491 9.86589C4.93764 9.54695 5.36364 9.21826 5.76625 8.96663C5.96756 8.84081 6.17244 8.72828 6.37019 8.64588C6.56179 8.56605 6.7805 8.5 7 8.5C7.41315 8.5 7.77128 8.70346 8.05 8.9125C8.32865 9.12149 8.59972 9.39259 8.83981 9.6327L8.85356 9.64645C9.11009 9.90298 9.33398 10.1255 9.55 10.2875C9.77128 10.4535 9.91315 10.5 10 10.5C9.99909 10.5 9.99856 10.5003 10 10.5C10.0092 10.4982 10.0682 10.4865 10.1897 10.4164C10.3196 10.3416 10.4779 10.2256 10.6628 10.0703C11.0333 9.75903 11.4542 9.33868 11.8964 8.89645L11.9073 8.88564C12.3368 8.45612 12.7867 8.00616 13.194 7.66402C13.3997 7.49124 13.6087 7.33374 13.8108 7.21721C14.0023 7.10681 14.2433 7 14.5 7C14.743 7 14.9693 7.08841 15.1554 7.18996C15.3471 7.29452 15.5366 7.43535 15.716 7.58912C16.0749 7.89674 16.4392 8.296 16.7591 8.67991C17.0814 9.0666 17.3699 9.45144 17.5772 9.7385C17.6811 9.88238 17.7652 10.0025 17.8236 10.087C17.8527 10.1293 17.8755 10.1627 17.8912 10.1858L17.9092 10.2125L17.9141 10.2197L17.9154 10.2217C17.9155 10.2218 17.916 10.2226 17.5 10.5L17.084 10.7774L17.083 10.7759L17.0792 10.7703L17.0634 10.7468C17.0493 10.726 17.0281 10.6949 17.0007 10.6552C16.9457 10.5756 16.8658 10.4614 16.7665 10.324C16.5676 10.0486 16.2937 9.6834 15.9909 9.32009C15.6858 8.954 15.3626 8.60326 15.0652 8.34838C14.9165 8.2209 14.7857 8.12735 14.6766 8.06785C14.562 8.00534 14.507 8 14.5 8C14.5009 8 14.5014 7.99972 14.5 8C14.4908 8.0018 14.4318 8.01353 14.3103 8.08357C14.1804 8.15845 14.0222 8.27439 13.8372 8.42973C13.4667 8.74097 13.0458 9.16132 12.6036 9.60355L12.5927 9.61436C12.1632 10.0439 11.7133 10.4938 11.306 10.836C11.1003 11.0088 10.8913 11.1663 10.6892 11.2828Z" fill="white"></path>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M15 4H6C4.89543 4 4 4.89543 4 6V12C4 13.1046 4.89543 14 6 14H15C16.1046 14 17 13.1046 17 12V6C17 4.89543 16.1046 4 15 4ZM6 3C4.34315 3 3 4.34315 3 6V12C3 13.6569 4.34315 15 6 15H15C16.6569 15 18 13.6569 18 12V6C18 4.34315 16.6569 3 15 3H6Z" fill="white"></path>
+        </svg>
+        <div class="tooltip">
+          <div class="tooltip-inner">
+            Screenshot
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="meeting-callout" id="meeting-callout">
+      <div class="meeting-callout__inner default">
+        Record meeting with Bubbles
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M7.13044 3L8.24603 6.01484L11.2609 7.13044L8.24603 8.24603L7.13044 11.2609L6.01484 8.24603L3 7.13044L6.01484 6.01484L7.13044 3Z" fill="#DDD9FA"></path>
+          <path d="M14.1521 7.95651L16.0486 13.0817L21.1739 14.9783L16.0486 16.8748L14.1521 22L12.2556 16.8748L7.13037 14.9783L12.2556 13.0817L14.1521 7.95651Z" fill="#DDD9FA"></path>
+        </svg>
+      </div>
+      <div class="meeting-callout__inner joining">
+        Joining...
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none" class="meeting-callout-spin">
+          <path d="M9.69453 1.52868C10.4683 1.82722 11.1758 2.27525 11.7764 2.84719C12.3771 3.41913 12.8592 4.10378 13.1953 4.86204C13.5313 5.62031 13.7148 6.43734 13.7351 7.26649C13.7554 8.09565 13.6122 8.92068 13.3136 9.69449C13.0151 10.4683 12.5671 11.1757 11.9951 11.7764C11.4232 12.377 10.7385 12.8592 9.98028 13.1952C9.22201 13.5313 8.40498 13.7147 7.57583 13.735C6.74667 13.7553 5.92164 13.6121 5.14783 13.3136C4.37402 13.0151 3.66659 12.567 3.06593 11.9951C2.46527 11.4232 1.98315 10.7385 1.64708 9.98024C1.31101 9.22197 1.12759 8.40494 1.10728 7.57579C1.08697 6.74663 1.23018 5.9216 1.52872 5.14779C1.82726 4.37398 2.27529 3.66655 2.84723 3.06589C3.41917 2.46523 4.10382 1.98311 4.86208 1.64704C5.62035 1.31098 6.43738 1.12755 7.26653 1.10724C8.09568 1.08694 8.92072 1.23014 9.69453 1.52868L9.69453 1.52868Z" stroke="white" stroke-opacity="0.2" stroke-width="2.10526"></path>
+          <path d="M9.69453 1.52868C10.9389 2.00876 11.9993 2.87046 12.7239 3.99028C13.4484 5.1101 13.7998 6.43054 13.7277 7.76235" stroke="white" stroke-width="2.10526" stroke-linecap="round"></path>
+        </svg>
+      </div>
+      <div class="meeting-callout__inner success">
+        Bubbles joined
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <path d="M18.5625 6.18793L8.9375 15.8125L4.125 11.0004" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </div>
+      <div class="meeting-callout__inner error">
+        There was an error. <span>:(</span>
+      </div>
+      <div class="meeting-callout__inner login">
+        Log in to Bubbles to record
+      </div>
+
+      <div class="meeting-callout__arrow"></div>
+    </div>
+    <div class="close-auto-open" id="close-auto-open">
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M9.375 2.625L2.625 9.375" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M9.375 9.375L2.625 2.625" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </div>
+    <div class="power-button button" id="js-power-button">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12.9167 6.33289C14.1784 7.20101 15 8.61757 15 10.2177C15 12.8589 12.7614 15 10 15C7.23858 15 5 12.8589 5 10.2177C5 8.61757 5.82161 7.20101 7.08333 6.33289" stroke="#9D9CA8" stroke-width="1.5" stroke-linecap="round"></path>
+        <path d="M10 9.16663L10 4.16663" stroke="#9D9CA8" stroke-width="1.5" stroke-linecap="round"></path>
+      </svg>
+      <div class="tooltip right">
+        <div class="tooltip-inner">
+          Hide this shortcut
+        </div>
+      </div>
+    </div>
+    <div class="modal hide" id="js-modal">
+      <div class="modal__background" id="js-modal-background"></div>
+      <div class="modal__content-container">
+        <div class="modal__content">
+          <h1>Hide shortcut</h1>
+          <p class="modal__description">
+            <span>You can turn it back on by clicking</span>
+            <svg class="three-dots" width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1" y="0.5" width="15" height="15" rx="7.5" fill="#F7F7F7"></rect>
+              <path d="M7.84375 8C7.84375 8.36244 8.13756 8.65625 8.5 8.65625C8.86244 8.65625 9.15625 8.36244 9.15625 8C9.15625 7.63756 8.86244 7.34375 8.5 7.34375C8.13756 7.34375 7.84375 7.63756 7.84375 8Z" fill="#555469" stroke="#555469" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M7.84375 4.5C7.84375 4.86244 8.13756 5.15625 8.5 5.15625C8.86244 5.15625 9.15625 4.86244 9.15625 4.5C9.15625 4.13756 8.86244 3.84375 8.5 3.84375C8.13756 3.84375 7.84375 4.13756 7.84375 4.5Z" fill="#555469" stroke="#555469" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M7.84375 11.5C7.84375 11.8624 8.13756 12.1563 8.5 12.1563C8.86244 12.1563 9.15625 11.8624 9.15625 11.5C9.15625 11.1376 8.86244 10.8437 8.5 10.8437C8.13756 10.8437 7.84375 11.1376 7.84375 11.5Z" fill="#555469" stroke="#555469" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              <rect x="1" y="0.5" width="15" height="15" rx="7.5" stroke="#BDBBC8"></rect>
+            </svg>
+            <span>in the extension.</span>
+          </p>
+          <div class="modal__button-container">
+            <button id="js-cancel-button">Cancel</button>
+            <button class="hide-button" id="js-hide-button">Hide</button>
+          </div>
+          <p class="modal__snooze">Or <span id="js-snooze-button">Snooze shortcut for 24 hours</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></template></bubbles-pinned-extension-ppbfhhgcdehhbjigifndnfmcihegokbb></body></html>
