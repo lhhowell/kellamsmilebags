@@ -446,13 +446,15 @@ function submitToTracker(word) {
   } catch(e) { /* fail silently — submission is fire-and-forget */ }
 }
 
-// ─── Print Card — Isolated Popup Window ─────────────────────────
-// Replaces window.print() to avoid freezing on heavy-tab Chromebooks.
-// Rationale: window.print() rasterizes the entire current DOM (hero + mode
-// tabs + interactive Punnett + hidden panels + gradients + shadows). With
-// 10+ other tabs already competing for memory, the print preview hangs and
-// freezes the tab. This function opens a fresh lightweight window containing
-// ONLY the card HTML + a minimal CSS subset, then prints THAT window.
+// ─── Print Card — Isolated Popup Window (v2) ────────────────────
+// Why v2 exists: v1 auto-fired popup.print() after a font-ready promise.
+// On some systems fonts never fully resolve (Google Fonts slow/blocked or
+// the promise resolves before layout settles), so the print preview spins
+// forever on a blank/half-rendered popup. v2 fixes this two ways:
+//   1) No Google Fonts in the popup — use system font stack + fallbacks.
+//      No network dependency = no hang waiting on a font request.
+//   2) The popup renders the card fully and shows its OWN Print button.
+//      User clicks when ready. Zero timing races, zero auto-fire.
 function printCard() {
   var section = document.getElementById('printSection');
   if (!section || !section.classList.contains('show')) {
@@ -465,62 +467,71 @@ function printCard() {
     alert('Popup blocked. Please allow popups for this site and try again.');
     return;
   }
-  // Minimal CSS — card rules only. No hero, no mode panels, no gradients,
-  // no shadows, no pseudo-elements. Keeps the printed DOM light.
+  // System font stack — no Google Fonts, no network wait.
+  // 'Fredoka One' and 'Playfair Display' fall through to nearest system
+  // alternative if not cached from the parent page.
+  var SYS_SERIF  = "'Playfair Display', Georgia, 'Times New Roman', serif";
+  var SYS_ROUND  = "'Fredoka One', 'Comic Sans MS', 'Trebuchet MS', sans-serif";
+  var SYS_SANS   = "'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
   var html = ''
     + '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>'
     + '<title>DNA Trait Card &mdash; Print</title>'
-    + '<link rel="preconnect" href="https://fonts.googleapis.com">'
-    + '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-    + '<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">'
     + '<style>'
     + '*{box-sizing:border-box;margin:0;padding:0;}'
-    + 'body{font-family:\'Nunito\',sans-serif;padding:24px;color:#111;background:#fff;}'
+    + 'body{font-family:' + SYS_SANS + ';padding:24px;color:#111;background:#f0f0f0;}'
+    + '.print-toolbar{position:sticky;top:0;background:#1a2a1a;color:#fff;padding:12px 16px;margin:-24px -24px 24px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.2);z-index:10;}'
+    + '.print-toolbar button{font-family:' + SYS_ROUND + ';font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:10px 22px;margin:0 6px;border:none;border-radius:8px;cursor:pointer;}'
+    + '.print-toolbar .btn-print{background:#4caf82;color:#fff;}'
+    + '.print-toolbar .btn-print:hover{background:#3d9670;}'
+    + '.print-toolbar .btn-close{background:transparent;color:#aaa;border:1px solid #555;}'
+    + '.print-toolbar .btn-close:hover{color:#fff;border-color:#fff;}'
+    + '.card-wrap{background:#fff;max-width:720px;margin:0 auto;padding:32px;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.08);}'
     + '.card-header{text-align:center;margin-bottom:20px;}'
-    + '.card-title{font-family:\'Playfair Display\',serif;font-size:26px;font-weight:900;color:#111;text-transform:uppercase;letter-spacing:2px;line-height:1.1;margin-bottom:6px;}'
+    + '.card-title{font-family:' + SYS_SERIF + ';font-size:26px;font-weight:900;color:#111;text-transform:uppercase;letter-spacing:2px;line-height:1.1;margin-bottom:6px;}'
     + '.card-sub{font-size:12px;color:#999;font-style:italic;}'
     + '.card-divider{border:none;border-top:3px solid #4caf82;width:60px;margin:12px auto;}'
-    + '.card-word{font-family:\'Fredoka One\',cursive;font-size:32px;color:#1B7A78;letter-spacing:4px;text-align:center;margin-bottom:20px;}'
+    + '.card-word{font-family:' + SYS_ROUND + ';font-size:32px;color:#1B7A78;letter-spacing:4px;text-align:center;margin-bottom:20px;}'
     + '.card-section{background:#f8f7f4;border-radius:10px;padding:16px;margin-bottom:16px;}'
-    + '.card-section-title{font-family:\'Fredoka One\',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#4caf82;margin-bottom:10px;}'
+    + '.card-section-title{font-family:' + SYS_ROUND + ';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#4caf82;margin-bottom:10px;}'
     + '.card-alleles{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:8px;}'
-    + '.card-allele{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:\'Fredoka One\',cursive;font-size:16px;}'
+    + '.card-allele{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:' + SYS_ROUND + ';font-size:16px;}'
     + '.card-allele-D{background:#D6EEEE;color:#0F4F4E;}'
     + '.card-allele-R{background:#EDE4F7;color:#6B3F9E;}'
     + '.card-allele-desc{font-size:13px;color:#555;line-height:1.5;}'
     + '.print-punnett{display:grid;grid-template-columns:36px 1fr 1fr;grid-template-rows:36px 1fr 1fr;gap:4px;width:fit-content;margin:12px auto 8px;}'
-    + '.print-punnett-header{background:#e8e4dc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:\'Fredoka One\',cursive;font-size:14px;color:#333;width:36px;height:36px;}'
-    + '.print-punnett-cell{width:70px;height:70px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:\'Fredoka One\',cursive;font-size:16px;border:1px solid #ddd;}'
+    + '.print-punnett-header{background:#e8e4dc;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:' + SYS_ROUND + ';font-size:14px;color:#333;width:36px;height:36px;}'
+    + '.print-punnett-cell{width:70px;height:70px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:' + SYS_ROUND + ';font-size:16px;border:1px solid #ddd;}'
     + '.card-pct-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}'
     + '.card-pct{flex:1;min-width:100px;background:#fff;border:1px solid #e8e4dc;border-radius:8px;padding:10px;text-align:center;}'
-    + '.card-pct-val{font-family:\'Fredoka One\',cursive;font-size:22px;color:#1B7A78;display:block;}'
+    + '.card-pct-val{font-family:' + SYS_ROUND + ';font-size:22px;color:#1B7A78;display:block;}'
     + '.card-pct-label{font-size:11px;color:#888;line-height:1.4;}'
     + '.card-trait{background:#e8f5ee;border-left:4px solid #4caf82;border-radius:4px;padding:12px 14px;margin-bottom:12px;}'
-    + '.card-trait-title{font-family:\'Fredoka One\',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;margin-bottom:6px;}'
+    + '.card-trait-title{font-family:' + SYS_ROUND + ';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;margin-bottom:6px;}'
     + '.card-trait-text{font-size:13px;color:#444;line-height:1.65;}'
     + '.card-genetics{background:#fff9e6;border-left:4px solid #c9a84c;border-radius:4px;padding:12px 14px;margin-bottom:12px;}'
-    + '.card-genetics-title{font-family:\'Fredoka One\',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#C8860A;margin-bottom:6px;}'
+    + '.card-genetics-title{font-family:' + SYS_ROUND + ';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#C8860A;margin-bottom:6px;}'
     + '.card-genetics-text{font-size:13px;color:#444;line-height:1.65;}'
-    + '.card-footer-sig{text-align:center;margin-top:14px;font-size:10px;color:#ccc;font-family:\'Fredoka One\',cursive;letter-spacing:1px;}'
-    + '@media print{@page{size:letter;margin:.5in;}body{padding:0;}}'
+    + '.card-footer-sig{text-align:center;margin-top:14px;font-size:10px;color:#ccc;font-family:' + SYS_ROUND + ';letter-spacing:1px;}'
+    + '@media print{'
+    + '  .print-toolbar{display:none!important;}'
+    + '  body{background:#fff!important;padding:0;}'
+    + '  .card-wrap{box-shadow:none!important;padding:0;max-width:none;}'
+    + '  @page{size:letter;margin:.5in;}'
+    + '}'
     + '</style></head><body>'
-    + cardHTML
+    + '<div class="print-toolbar">'
+    + '  <button class="btn-print" onclick="window.print()">&#128438; Print Card</button>'
+    + '  <button class="btn-close" onclick="window.close()">Close</button>'
+    + '</div>'
+    + '<div class="card-wrap">' + cardHTML + '</div>'
     + '</body></html>';
   popup.document.open();
   popup.document.write(html);
   popup.document.close();
-  // Wait for fonts to load before triggering print — prevents blank-font flash.
-  var tryPrint = function() {
-    try {
-      popup.focus();
-      popup.print();
-    } catch(e) { /* user closed popup or print cancelled */ }
-  };
-  if (popup.document.fonts && popup.document.fonts.ready) {
-    popup.document.fonts.ready.then(function(){ setTimeout(tryPrint, 150); });
-  } else {
-    setTimeout(tryPrint, 700); // fallback for older browsers
-  }
+  popup.focus();
+  // NOTE: We intentionally do NOT call popup.print() here.
+  // The user clicks the Print button inside the popup when ready.
+  // This eliminates font-ready timing races and blank-popup spinners.
 }
 
 // SOLVE IT
