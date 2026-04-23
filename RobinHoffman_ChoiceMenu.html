@@ -15,12 +15,14 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:#1a1a2e;paddi
   .hero{background:var(--burgundy)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   .no-print{display:none!important;}
   .cat-header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .example-panel{display:block!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .example-toggle{display:none!important;}
   @page{size:letter;margin:.5in;}
   .item-card{break-inside:avoid;}
 }
 
 .hero{background:linear-gradient(135deg,var(--burgundy),#4A1020);padding:36px 48px;position:relative;overflow:hidden;}
-.hero::after{content:'✍️';position:absolute;right:48px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.1;}
+.hero::after{content:'✍️';position:absolute;right:48px;top:50%;transform:translateY(-50%);font-size:5rem;opacity:.1;pointer-events:none;}
 .hero-tag{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
 .hero h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:#fff;margin-bottom:8px;}
 .hero h1 span{color:var(--gold);}
@@ -28,6 +30,8 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:#1a1a2e;paddi
 .hero-note{font-size:13px;color:rgba(255,255,255,.5);font-style:italic;}
 
 .print-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);border:none;color:var(--burgundy);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;border-radius:6px;cursor:pointer;margin:20px 48px 0;}
+.expand-all-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1.5px solid var(--burgundy);color:var(--burgundy);font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:8px 14px;border-radius:6px;cursor:pointer;margin-left:8px;}
+.expand-all-btn:hover{background:rgba(107,30,46,.05);}
 
 .content{max-width:860px;margin:0 auto;padding:0 48px;}
 
@@ -66,6 +70,24 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:#1a1a2e;paddi
 .tag-kiosk{background:#E3F2FD;color:#1565C0;}
 .tag-print{background:#F3E5F5;color:#6A1B9A;}
 
+/* EXAMPLE PANEL (new) */
+.example-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:10px;background:transparent;border:1.5px solid var(--gold);color:var(--gold2);font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 12px;border-radius:6px;cursor:pointer;transition:all .2s;}
+.example-toggle:hover{background:rgba(201,168,76,.1);}
+.example-toggle .arr{transition:transform .2s;font-size:9px;display:inline-block;}
+.example-toggle.open .arr{transform:rotate(180deg);}
+.example-panel{display:none;background:#FDF8EF;border:1px solid #EAD9B8;border-left:4px solid var(--gold2);border-radius:8px;padding:14px 18px;margin-top:10px;}
+.example-panel.open{display:block;}
+.example-meta{font-size:11px;color:#8a7755;font-family:'Courier New',monospace;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed #d4c4a0;}
+.example-meta span{margin-right:12px;}
+.example-meta b{color:#5A3000;font-weight:700;text-transform:uppercase;letter-spacing:.5px;font-size:10px;}
+.example-body{font-size:12.5px;color:#2d2416;line-height:1.7;}
+.example-body p{margin-bottom:8px;}
+.example-body p:last-child{margin-bottom:0;}
+.example-body em{color:#5A3000;font-style:italic;}
+.example-body strong{color:var(--burgundy);font-weight:700;}
+.output-block{background:#fff;border:1px dashed #c9b88a;border-radius:6px;padding:10px 12px;margin:6px 0;font-size:12px;}
+.output-label{font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#a88a4a;margin-bottom:4px;}
+
 /* NOTES SECTION */
 .notes-section{background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px;margin-top:32px;}
 .notes-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#999;margin-bottom:10px;}
@@ -82,10 +104,14 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:#1a1a2e;paddi
   <div class="hero-tag">Smile Bags · A Word &amp; Wonder Experience · Spring 2026</div>
   <h1>Teacher <span>Choice Menu</span></h1>
   <p class="hero-sub">19 student contribution options for Virginia Teachers for Tomorrow and English 12. Check the items you'd like each class to complete — then share your selections with Ms. Howell.</p>
-  <p class="hero-note">Items marked 🍫 and 🏷️ have live student kiosks ready. All others can be completed on paper or digitally.</p>
+  <p class="hero-note">Items marked 🍫 and 🏷️ have live student kiosks ready. Tap <em>"See Example"</em> on any item to view a sample student output.</p>
 </div>
 
-<button class="print-btn no-print" onclick="window.print()">🖨️ Print This Menu</button>
+<div class="no-print">
+  <button class="print-btn" onclick="window.print()">🖨️ Print This Menu</button>
+  <button class="expand-all-btn" onclick="toggleAllEx(true)">Expand All Examples</button>
+  <button class="expand-all-btn" onclick="toggleAllEx(false)">Collapse All</button>
+</div>
 
 <div class="content">
 
@@ -93,11 +119,11 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:#1a1a2e;paddi
     <div class="sum-card"><div class="sum-num">19</div><div class="sum-lbl">Total Options</div></div>
     <div class="sum-card"><div class="sum-num">2</div><div class="sum-lbl">Kiosks Ready</div></div>
     <div class="sum-card"><div class="sum-num">10</div><div class="sum-lbl">Bags to Fill</div></div>
-    <div class="sum-card"><div class="sum-num">🎓</div><div class="sum-lbl">Kellam HS</div></div>
+    <div class="sum-card"><div class="sum-num">🎓</div><div class="sum-lbl">Senior Made</div></div>
   </div>
 
   <div class="instructions">
-    <p><strong>How to use this menu:</strong> Check the items you want each class to complete. You can assign the same items to both classes, or different items to each. Once you've made your selections, share with Ms. Howell so the kiosks and print templates can be activated. Items marked <strong>🍫 Kiosk Ready</strong> are already built and live. Items marked <strong>🖨️ Printable</strong> will be formatted as print-ready templates.</p>
+    <p><strong>How to use this menu:</strong> Check the items you want each class to complete. You can assign the same items to both classes, or different items to each. Once you've made your selections, share with Ms. Howell so the kiosks and print templates can be activated. Items marked <strong>🍫 Kiosk Ready</strong> are already built and live. Items marked <strong>🖨️ Printable</strong> will be formatted as print-ready templates. Every item shows a <strong>💡 See Example</strong> link so you can preview a sample student output before choosing.</p>
   </div>
 
   <!-- WRITING-BASED -->
@@ -107,87 +133,211 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:#1a1a2e;paddi
       <div><div class="cat-title">Writing-Based Items</div><div class="cat-sub">English 12 strength · Authentic writing for a real audience</div></div>
     </div>
     <div class="items-grid">
-      <div class="item-card" onclick="toggleCheck(this)">
-        <div class="item-check">✓</div>
+
+      <!-- ITEM 1 -->
+      <div class="item-card">
+        <div class="item-check" onclick="toggleCheck(this)">✓</div>
         <div class="item-body">
           <div class="item-num">Item 1</div>
           <div class="item-name">💌 Graduating Senior Letter</div>
           <div class="item-desc">A personal handwritten or typed letter from a graduating senior: "I was where you are. I made it through. Here's what I want you to know." Warm, honest, and deeply personal.</div>
           <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-print">🖨️ Printable</span></div>
+          <button class="example-toggle" onclick="toggleEx(this)">💡 See Example <span class="arr">▼</span></button>
+          <div class="example-panel">
+            <div class="example-meta"><span><b>OneWord:</b> ANCHOR</span><span><b>Length:</b> ~180 words</span><span><b>Format:</b> Typed, 5×7 cardstock</span></div>
+            <div class="example-body">
+              <p>Four years ago I walked into Kellam feeling like I didn't belong here. Let me just tell you straight up — that feeling lied to me. It will probably lie to you too.</p>
+              <p>Here's what I wish someone had told freshman me: find one person, one class, one <em>anything</em> that makes the building feel smaller. Mine was the art room during lunch. Ms. Garcia didn't care that I ate my sandwich in the corner by the clay sink — she just passed me materials. That room was my anchor. Find yours. It doesn't have to be impressive. It just has to be yours.</p>
+              <p>I'm graduating in a few weeks. I'll never eat lunch in that art room again, and honestly that's hitting harder than I expected. But the thing about anchors is they work even when you're not holding onto them anymore. What grounds you once keeps grounding you, even from a distance.</p>
+              <p>You've got this. Seriously.</p>
+              <p><em>— A senior who made it, and who was rooting for you before this bag even got packed.</em></p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="item-card" onclick="toggleCheck(this)">
-        <div class="item-check">✓</div>
+
+      <!-- ITEM 2 -->
+      <div class="item-card">
+        <div class="item-check" onclick="toggleCheck(this)">✓</div>
         <div class="item-body">
           <div class="item-num">Item 2</div>
           <div class="item-name">📜 Original Poem</div>
           <div class="item-desc">A 4–8 line original poem tied to the student's OneWord. Printed on cardstock. Can be free verse, structured, or haiku-style.</div>
           <div class="item-tags"><span class="tag tag-e12">English 12</span><span class="tag tag-print">🖨️ Printable</span></div>
+          <button class="example-toggle" onclick="toggleEx(this)">💡 See Example <span class="arr">▼</span></button>
+          <div class="example-panel">
+            <div class="example-meta"><span><b>OneWord:</b> BLOOM</span><span><b>Form:</b> Free verse, 8 lines</span></div>
+            <div class="example-body">
+              <p><em>Nothing blooms on demand.<br>
+              Not roses. Not daisies. Not you.<br>
+              Some things need winter first —<br>
+              the quiet, the cold, the waiting.<br>
+              Then, in their own time,<br>
+              without asking permission,<br>
+              without an audience,<br>
+              they open.</em></p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="item-card" onclick="toggleCheck(this)">
-        <div class="item-check">✓</div>
+
+      <!-- ITEM 3 -->
+      <div class="item-card">
+        <div class="item-check" onclick="toggleCheck(this)">✓</div>
         <div class="item-body">
           <div class="item-num">Item 3</div>
           <div class="item-name">📚 Book Recommendation Card</div>
           <div class="item-desc">One book that helped the student + a 2–3 sentence personal note explaining why. A senior's reading list, passed forward.</div>
           <div class="item-tags"><span class="tag tag-e12">English 12</span><span class="tag tag-print">🖨️ Printable</span></div>
+          <button class="example-toggle" onclick="toggleEx(this)">💡 See Example <span class="arr">▼</span></button>
+          <div class="example-panel">
+            <div class="example-meta"><span><b>Format:</b> 4×6 card, two-sided</span></div>
+            <div class="example-body">
+              <p><strong>Book:</strong> <em>The House on Mango Street</em> by Sandra Cisneros</p>
+              <p><strong>Why I'm passing this one forward:</strong> Esperanza writes her way out of a neighborhood that feels too small for her. She doesn't leave angry. She leaves gracious. But she leaves. If you've ever felt like you don't fit where you are — or if you love where you are but you're worried it's holding you back — she'll show you that writing things down is the beginning of figuring out where you're going.</p>
+              <p>It's short. You can read it in a weekend. But you'll think about it for years. I did.</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="item-card" onclick="toggleCheck(this)">
-        <div class="item-check">✓</div>
+
+      <!-- ITEM 4 -->
+      <div class="item-card">
+        <div class="item-check" onclick="toggleCheck(this)">✓</div>
         <div class="item-body">
           <div class="item-num">Item 4</div>
           <div class="item-name">🖊️ Words of Wisdom Card</div>
           <div class="item-desc">3–5 lines of honest advice from a graduating senior. What do you wish someone had told you? Printed on a 4×6 card.</div>
           <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-print">🖨️ Printable</span></div>
+          <button class="example-toggle" onclick="toggleEx(this)">💡 See Example <span class="arr">▼</span></button>
+          <div class="example-panel">
+            <div class="example-meta"><span><b>Format:</b> 4×6 card</span><span><b>Five pieces of advice</b></span></div>
+            <div class="example-body">
+              <p><strong>1.</strong> The people who look like they have it all together are just better at hiding that they don't.</p>
+              <p><strong>2.</strong> Asking for help is a skill. The sooner you learn it, the easier every year after this one gets.</p>
+              <p><strong>3.</strong> Not every friendship is supposed to last four years. Some people walk with you for a season. Both kinds count.</p>
+              <p><strong>4.</strong> 8 AM is hard for everyone. You're not weak. It's just 8 AM.</p>
+              <p><strong>5.</strong> One day soon — not today, but soon — you will look back on this year and be genuinely proud of yourself. I promise.</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="item-card" onclick="toggleCheck(this)">
-        <div class="item-check">✓</div>
+
+      <!-- ITEM 5 -->
+      <div class="item-card">
+        <div class="item-check" onclick="toggleCheck(this)">✓</div>
         <div class="item-body">
           <div class="item-num">Item 5</div>
           <div class="item-name">✉️ Letter to a Younger Self</div>
           <div class="item-desc">Reflective writing prompt: write to yourself at a younger age. What do you wish you'd known? Personal, powerful, and uniquely senior-appropriate.</div>
           <div class="item-tags"><span class="tag tag-e12">English 12</span><span class="tag tag-print">🖨️ Printable</span></div>
+          <button class="example-toggle" onclick="toggleEx(this)">💡 See Example <span class="arr">▼</span></button>
+          <div class="example-panel">
+            <div class="example-meta"><span><b>Written to:</b> 9th-grade self</span></div>
+            <div class="example-body">
+              <p><em>Dear 9th-grade me,</em></p>
+              <p>Stop trying to be invisible. It's exhausting and nobody is even watching you that hard. People are busy thinking about themselves. That's a relief if you let it be one.</p>
+              <p>Try out for the musical. I know — you're terrified. Do it anyway. You are going to meet someone in row 3 who tells you you're funny, and for the first time in your life, you are going to believe it. That one yes changes everything about the next four years.</p>
+              <p>Also: the B+ in chemistry doesn't matter. I know it feels like the world is ending. It isn't. Pinky promise.</p>
+              <p><em>Love,<br>You (four years later, still laughing at her texts)</em></p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="item-card" onclick="toggleCheck(this)">
-        <div class="item-check">✓</div>
+
+      <!-- ITEM 6 -->
+      <div class="item-card">
+        <div class="item-check" onclick="toggleCheck(this)">✓</div>
         <div class="item-body">
           <div class="item-num">Item 6</div>
           <div class="item-name">🔤 Advice Acrostic</div>
           <div class="item-desc">Each letter of the student's OneWord begins a line of advice or encouragement. Creative, structured, and visually striking on a card.</div>
           <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-print">🖨️ Printable</span></div>
+          <button class="example-toggle" onclick="toggleEx(this)">💡 See Example <span class="arr">▼</span></button>
+          <div class="example-panel">
+            <div class="example-meta"><span><b>OneWord:</b> ANCHOR</span></div>
+            <div class="example-body">
+              <p><strong>A</strong> — Ask for help <em>before</em> you need it, not after.<br>
+              <strong>N</strong> — Notice the people who show up quietly. They're the real ones.<br>
+              <strong>C</strong> — Cry if you need to. It's not weakness. It's maintenance.<br>
+              <strong>H</strong> — Hold on, even when holding on is the hardest thing.<br>
+              <strong>O</strong> — Open doors for yourself. Nobody else will.<br>
+              <strong>R</strong> — Remember: this feeling isn't forever. Feelings move. You will too.</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="item-card" onclick="toggleCheck(this)">
-        <div class="item-check">✓</div>
+
+      <!-- ITEM 7 -->
+      <div class="item-card">
+        <div class="item-check" onclick="toggleCheck(this)">✓</div>
         <div class="item-body">
           <div class="item-num">Item 7</div>
           <div class="item-name">📝 Journaling Prompt Card</div>
           <div class="item-desc">A thoughtful writing prompt connected to the OneWord — designed to help the recipient reflect, process, and express themselves.</div>
           <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-print">🖨️ Printable</span></div>
+          <button class="example-toggle" onclick="toggleEx(this)">💡 See Example <span class="arr">▼</span></button>
+          <div class="example-panel">
+            <div class="example-meta"><span><b>OneWord:</b> RESTORE</span></div>
+            <div class="example-body">
+              <p><strong>Prompt:</strong></p>
+              <p>Think of one relationship in your life right now — with a person, a place, or even with yourself — that feels broken or distant.</p>
+              <p>Write a letter to that relationship. Don't try to fix it. Just describe it honestly:</p>
+              <p style="padding-left:16px;">• What did it used to feel like?<br>
+              • What feels different now?<br>
+              • What would <em>restored</em> look like, if you could picture it?</p>
+              <p>You don't have to send this letter. You just have to write it.</p>
+              <p><em>(Sometimes restoring something starts with finally letting yourself say out loud what it is.)</em></p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="item-card" onclick="toggleCheck(this)">
-        <div class="item-check">✓</div>
+
+      <!-- ITEM 8 -->
+      <div class="item-card">
+        <div class="item-check" onclick="toggleCheck(this)">✓</div>
         <div class="item-body">
           <div class="item-num">Item 8</div>
           <div class="item-name">🌿 Vocabulary Story Card</div>
           <div class="item-desc">A 50-word micro-story built entirely around the OneWord. Tiny but complete — every word chosen carefully.</div>
           <div class="item-tags"><span class="tag tag-e12">English 12</span><span class="tag tag-print">🖨️ Printable</span></div>
+          <button class="example-toggle" onclick="toggleEx(this)">💡 See Example <span class="arr">▼</span></button>
+          <div class="example-panel">
+            <div class="example-meta"><span><b>OneWord:</b> BLOOM</span><span><b>Word count:</b> exactly 50</span></div>
+            <div class="example-body">
+              <p><em>The tulip bulb looked dead for months. Dormant. Buried. Forgotten in cold dirt behind the garage.</em></p>
+              <p><em>Then one Tuesday in March — no warning — green pushed through the frozen soil.</em></p>
+              <p><em>By Friday: a crimson bloom, face tilted to the sun.</em></p>
+              <p><em>Nobody had coaxed it.</em></p>
+              <p><em>It simply decided.</em></p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="item-card" onclick="toggleCheck(this)">
-        <div class="item-check">✓</div>
+
+      <!-- ITEM 9 -->
+      <div class="item-card">
+        <div class="item-check" onclick="toggleCheck(this)">✓</div>
         <div class="item-body">
           <div class="item-num">Item 9</div>
           <div class="item-name">📖 Word Origin Card</div>
           <div class="item-desc">Etymology, definition, and the student's personal connection to their OneWord. A literary deep-dive printed on a card.</div>
           <div class="item-tags"><span class="tag tag-e12">English 12</span><span class="tag tag-print">🖨️ Printable</span></div>
+          <button class="example-toggle" onclick="toggleEx(this)">💡 See Example <span class="arr">▼</span></button>
+          <div class="example-panel">
+            <div class="example-meta"><span><b>OneWord:</b> PERSIST</span></div>
+            <div class="example-body">
+              <p><strong>PERSIST</strong></p>
+              <p><strong>Root:</strong> Latin <em>persistere</em> — from <em>per-</em> (thoroughly) + <em>sistere</em> (to stand, to stand firm).</p>
+              <p><strong>Literal meaning:</strong> <em>to stand firmly through.</em></p>
+              <p><strong>First used in English:</strong> 1530s. Originally described water carving stone — something so gentle, so quiet, that you almost don't see it working. But given time, it reshapes mountains.</p>
+              <p><strong>My connection to this word:</strong> My grandma told me once that I was "the most stubborn child she'd ever raised." I thought it was an insult for years. I finally asked her what she meant, and she said, <em>"You don't quit. That's not stubbornness. That's persistence. It's going to save your life one day."</em> She was right. It has.</p>
+              <p><strong>Your connection:</strong> __________________________</p>
+            </div>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 
@@ -198,42 +348,107 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:#1a1a2e;paddi
       <div><div class="cat-title">Teaching-Based Items</div><div class="cat-sub">Teachers for Tomorrow strength · Future educators designing for students</div></div>
     </div>
     <div class="items-grid">
-      <div class="item-card" onclick="toggleCheck(this)">
-        <div class="item-check">✓</div>
+
+      <!-- ITEM 10 -->
+      <div class="item-card">
+        <div class="item-check" onclick="toggleCheck(this)">✓</div>
         <div class="item-body">
           <div class="item-num">Item 10</div>
           <div class="item-name">📖 Mini Read-Aloud Card</div>
           <div class="item-desc">A short passage (3–5 sentences) + one guided discussion question. Designed for a teacher or parent to read aloud with a younger student.</div>
           <div class="item-tags"><span class="tag tag-tft">Teachers for Tomorrow</span><span class="tag tag-print">🖨️ Printable</span></div>
+          <button class="example-toggle" onclick="toggleEx(this)">💡 See Example <span class="arr">▼</span></button>
+          <div class="example-panel">
+            <div class="example-meta"><span><b>OneWord:</b> GROW</span><span><b>Best for:</b> recipient reading with a mentor or family member</span></div>
+            <div class="example-body">
+              <p><strong>To read aloud:</strong></p>
+              <p><em>Amara planted a seed on Monday. On Tuesday — nothing. On Wednesday — nothing. On Thursday — still nothing. On Friday, she almost dug it up to check. But she waited.</em></p>
+              <p><em>Two weeks later, a tiny green shoot pushed through the soil.</em></p>
+              <p><em>"You were busy the whole time," Amara whispered. "Just where I couldn't see you."</em></p>
+              <p><strong>Discussion question:</strong><br>What is something <em>you</em> are working on right now that nobody else can see yet?</p>
+              <p><strong>Bonus:</strong> Can you draw what Amara's seed looked like on Day 1? Day 14?</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="item-card" onclick="toggleCheck(this)">
-        <div class="item-check">✓</div>
+
+      <!-- ITEM 11 -->
+      <div class="item-card">
+        <div class="item-check" onclick="toggleCheck(this)">✓</div>
         <div class="item-body">
           <div class="item-num">Item 11</div>
           <div class="item-name">🎯 Vocabulary Game Card</div>
           <div class="item-desc">A simple word game using the OneWord — matching, fill-in-the-blank, or definition challenge. Designed by a future teacher for a younger student.</div>
           <div class="item-tags"><span class="tag tag-tft">Teachers for Tomorrow</span><span class="tag tag-print">🖨️ Printable</span></div>
+          <button class="example-toggle" onclick="toggleEx(this)">💡 See Example <span class="arr">▼</span></button>
+          <div class="example-panel">
+            <div class="example-meta"><span><b>Game:</b> OneWord Match</span><span><b>Best for:</b> ages 6–10</span></div>
+            <div class="example-body">
+              <p><strong>How to play:</strong> Cut out the four word cards and four meaning cards below. Mix them up. Match each word to its meaning. Then play again with a partner and see who is faster.</p>
+              <div class="output-block">
+                <div class="output-label">Word Cards</div>
+                🌱 BLOOM &nbsp;·&nbsp; ⚓ ANCHOR &nbsp;·&nbsp; 🌅 RISE &nbsp;·&nbsp; ✨ SHINE
+              </div>
+              <div class="output-block">
+                <div class="output-label">Meaning Cards</div>
+                → <em>"To open up and show what's inside"</em><br>
+                → <em>"Something that keeps you steady when everything moves"</em><br>
+                → <em>"To get up even when it's hard"</em><br>
+                → <em>"To show the world who you really are"</em>
+              </div>
+              <p><strong>Bonus challenge:</strong> Pick one word. Act it out. Can someone guess which one?</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="item-card" onclick="toggleCheck(this)">
-        <div class="item-check">✓</div>
+
+      <!-- ITEM 12 -->
+      <div class="item-card">
+        <div class="item-check" onclick="toggleCheck(this)">✓</div>
         <div class="item-body">
           <div class="item-num">Item 12</div>
           <div class="item-name">✏️ Story Starter Card</div>
           <div class="item-desc">An illustrated writing prompt for a younger student — an opening sentence connected to the OneWord that sparks imagination.</div>
           <div class="item-tags"><span class="tag tag-tft">Teachers for Tomorrow</span><span class="tag tag-print">🖨️ Printable</span></div>
+          <button class="example-toggle" onclick="toggleEx(this)">💡 See Example <span class="arr">▼</span></button>
+          <div class="example-panel">
+            <div class="example-meta"><span><b>OneWord:</b> TRANSFORM</span></div>
+            <div class="example-body">
+              <p><strong>Picture on the card:</strong> A fuzzy green caterpillar hanging upside down from a leaf.</p>
+              <p><strong>Story starter:</strong></p>
+              <p><em>The caterpillar didn't know it was going to become something new. It just knew it was tired. Really, really tired. So it stopped moving, and it curled up on a leaf, and it waited. And while it waited, something quiet started happening inside…</em></p>
+              <p><strong>Your turn!</strong></p>
+              <p style="padding-left:16px;">• What is the caterpillar thinking while it waits?<br>
+              • What does it become?<br>
+              • Draw a picture of what comes out of the cocoon.</p>
+              <p><em>(There is no wrong answer. Even if what comes out isn't a butterfly — that's okay too.)</em></p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="item-card" onclick="toggleCheck(this)">
-        <div class="item-check">✓</div>
+
+      <!-- ITEM 13 -->
+      <div class="item-card">
+        <div class="item-check" onclick="toggleCheck(this)">✓</div>
         <div class="item-body">
           <div class="item-num">Item 13</div>
           <div class="item-name">🍎 "My Favorite Teacher Taught Me..." Card</div>
           <div class="item-desc">A reflection card where the student writes what a favorite teacher taught them — connected to their OneWord. A future teacher passing forward a lesson.</div>
           <div class="item-tags"><span class="tag tag-tft">Teachers for Tomorrow</span><span class="tag tag-print">🖨️ Printable</span></div>
+          <button class="example-toggle" onclick="toggleEx(this)">💡 See Example <span class="arr">▼</span></button>
+          <div class="example-panel">
+            <div class="example-meta"><span><b>OneWord for recipient:</b> ANCHOR</span></div>
+            <div class="example-body">
+              <p><strong>My favorite teacher:</strong> Mrs. Ramirez — 3rd grade.</p>
+              <p><strong>What she taught me:</strong> That making a mistake in front of the whole class isn't embarrassing. It's brave.</p>
+              <p>One day I spelled <em>friend</em> wrong on the board. I froze. I wanted to disappear into the tile. Mrs. Ramirez looked at me, smiled, and said, <em>"Good. Now the whole class gets to learn it right."</em> Then she wrote the correct spelling underneath mine and moved on like nothing had happened.</p>
+              <p>I have never forgotten that moment. I'm going to be a teacher one day. And when one of <em>my</em> students spells something wrong on the board, I already know exactly what I'm going to say.</p>
+              <p><strong>Your OneWord is ANCHOR.</strong> Mrs. Ramirez was one of mine. I hope you find yours.</p>
+            </div>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 
@@ -244,60 +459,175 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:#1a1a2e;paddi
       <div><div class="cat-title">Creative &amp; Mixed Items</div><div class="cat-sub">Both classes · Visual, tactile, and expressive contributions</div></div>
     </div>
     <div class="items-grid">
-      <div class="item-card" onclick="toggleCheck(this)">
-        <div class="item-check" style="background:#fff8ee;border-color:#C8860A;">✓</div>
+
+      <!-- ITEM 14 -->
+      <div class="item-card">
+        <div class="item-check" onclick="toggleCheck(this)" style="background:#fff8ee;border-color:#C8860A;">✓</div>
         <div class="item-body">
           <div class="item-num">Item 14 · Kiosk Ready</div>
           <div class="item-name">🍫 Candy Bar Wrap</div>
           <div class="item-desc">Student designs a custom candy bar wrapper with their OneWord and an original inspirational message. Printed and wrapped around a standard chocolate bar.</div>
           <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-kiosk">🍫 Kiosk Ready</span><span class="tag tag-print">🖨️ Printable</span></div>
+          <button class="example-toggle" onclick="toggleEx(this)">💡 See Example <span class="arr">▼</span></button>
+          <div class="example-panel">
+            <div class="example-meta"><span><b>OneWord:</b> BLOOM</span><span><b>Theme:</b> Garden</span><span><b>Length:</b> ≤100 chars</span></div>
+            <div class="example-body">
+              <div class="output-block">
+                <div class="output-label">As Printed</div>
+                <p style="margin-bottom:8px;"><strong>Design:</strong> Deep burgundy background · sage green sketched vines · gold foil-look lettering · Garden theme.</p>
+                <p style="margin-bottom:8px;"><strong>Student-written message:</strong><br>
+                <em>"Today is your day. Unwrap slowly. Savor the small thing. You bloomed through a hard season."</em></p>
+                <p><strong>From:</strong> Class of 2026 · Virginia Teachers for Tomorrow</p>
+              </div>
+              <p>Prints as a 7-inch strip. Wraps around a standard 1.55oz Hershey bar. Sealed with a small piece of gold washi tape.</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="item-card" onclick="toggleCheck(this)">
-        <div class="item-check" style="background:#fff8ee;border-color:#C8860A;">✓</div>
+
+      <!-- ITEM 15 -->
+      <div class="item-card">
+        <div class="item-check" onclick="toggleCheck(this)" style="background:#fff8ee;border-color:#C8860A;">✓</div>
         <div class="item-body">
           <div class="item-num">Item 15 · Kiosk Ready</div>
           <div class="item-name">🏷️ Custom Sticker Sheet</div>
           <div class="item-desc">Student generates a personalized sticker sheet featuring their OneWord, name, and class. Printed on sticker paper — a take-home collectible.</div>
           <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-kiosk">🏷️ Kiosk Ready</span><span class="tag tag-print">🖨️ Printable</span></div>
+          <button class="example-toggle" onclick="toggleEx(this)">💡 See Example <span class="arr">▼</span></button>
+          <div class="example-panel">
+            <div class="example-meta"><span><b>OneWord:</b> SHINE</span><span><b>Style:</b> Botanical</span></div>
+            <div class="example-body">
+              <div class="output-block">
+                <div class="output-label">As Printed</div>
+                <p><strong>Design:</strong> Gold outer ring · ivy leaf border · "SHINE" in cursive script at center · small "Class of 2026" along the bottom curve.</p>
+                <p style="margin-top:8px;"><strong>Quantity:</strong> 12 identical stickers on one Avery 22807 sheet (2-inch rounds).</p>
+              </div>
+              <p>The recipient peels and places — water bottle, laptop, planner, locker mirror. Small reminders everywhere. One sheet lasts a semester.</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="item-card" onclick="toggleCheck(this)">
-        <div class="item-check">✓</div>
+
+      <!-- ITEM 16 -->
+      <div class="item-card">
+        <div class="item-check" onclick="toggleCheck(this)">✓</div>
         <div class="item-body">
           <div class="item-num">Item 16</div>
           <div class="item-name">🖼️ Vision Board Mini Card</div>
           <div class="item-desc">A collage-style printable where students arrange images, words, and symbols connected to their OneWord. A visual representation of what the word means to them.</div>
           <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-print">🖨️ Printable</span></div>
+          <button class="example-toggle" onclick="toggleEx(this)">💡 See Example <span class="arr">▼</span></button>
+          <div class="example-panel">
+            <div class="example-meta"><span><b>OneWord:</b> RISE</span><span><b>Format:</b> 5×7, heavyweight matte</span></div>
+            <div class="example-body">
+              <p><strong>Card layout:</strong></p>
+              <p>Center: the word <strong>RISE</strong> in hand-lettered gold, about 2 inches tall.</p>
+              <p>Arranged around it, six small collaged images:</p>
+              <p style="padding-left:16px;">• A photograph of a sunrise<br>
+              • A seedling pushing through a concrete crack<br>
+              • A bird photographed mid-takeoff<br>
+              • The number "1" on a running bib<br>
+              • A hand reaching upward through water<br>
+              • A single candle, just lit</p>
+              <p><strong>Small caption at the bottom:</strong><br>
+              <em>Rising doesn't have to be loud. It just has to be real.</em></p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="item-card" onclick="toggleCheck(this)">
-        <div class="item-check">✓</div>
+
+      <!-- ITEM 17 -->
+      <div class="item-card">
+        <div class="item-check" onclick="toggleCheck(this)">✓</div>
         <div class="item-body">
           <div class="item-num">Item 17</div>
           <div class="item-name">🔖 Paper Bookmark</div>
           <div class="item-desc">Hand-illustrated or digitally designed bookmark featuring the OneWord. Laminated for durability. A simple, beautiful item that gets used every day.</div>
           <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-print">🖨️ Printable</span></div>
+          <button class="example-toggle" onclick="toggleEx(this)">💡 See Example <span class="arr">▼</span></button>
+          <div class="example-panel">
+            <div class="example-meta"><span><b>OneWord:</b> BREATHE</span><span><b>Size:</b> 2×7 in, laminated</span></div>
+            <div class="example-body">
+              <div class="output-block">
+                <div class="output-label">Front (navy blue background, gold ink)</div>
+                <p style="margin-bottom:6px;"><strong>Top:</strong> BREATHE.</p>
+                <p style="margin-bottom:6px;"><strong>Middle:</strong> a single line-drawing of ocean waves curling toward the shore.</p>
+                <p><strong>Bottom:</strong> <em>Page after page. Breath after breath. Keep going.</em></p>
+              </div>
+              <div class="output-block">
+                <div class="output-label">Back (solid navy)</div>
+                <p><em>You don't have to finish the book today. You just have to read one more page.</em></p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="item-card" onclick="toggleCheck(this)">
-        <div class="item-check">✓</div>
+
+      <!-- ITEM 18 -->
+      <div class="item-card">
+        <div class="item-check" onclick="toggleCheck(this)">✓</div>
         <div class="item-body">
           <div class="item-num">Item 18</div>
           <div class="item-name">📰 Mini Zine</div>
           <div class="item-desc">A 4-panel fold-and-cut booklet. Students fill each panel with writing, art, or a mix — all connected to their OneWord. One sheet of paper, folded into a tiny magazine.</div>
           <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-print">🖨️ Printable</span></div>
+          <button class="example-toggle" onclick="toggleEx(this)">💡 See Example <span class="arr">▼</span></button>
+          <div class="example-panel">
+            <div class="example-meta"><span><b>OneWord:</b> HEAL</span><span><b>Format:</b> one sheet, 4-panel fold</span></div>
+            <div class="example-body">
+              <div class="output-block">
+                <div class="output-label">Panel 1 — Cover</div>
+                Large hand-drawn title: <strong>HEAL.</strong> Below: a simple illustration of a bandaged hand. Byline: <em>by [Senior Name], Class of 2026.</em>
+              </div>
+              <div class="output-block">
+                <div class="output-label">Panel 2 — What I Know About Healing</div>
+                • Healing is not linear. Some days you're further along. Some days you're further back. Both days count.<br>
+                • Healing is not the same as forgetting.<br>
+                • You are allowed to heal at the speed your body decides.
+              </div>
+              <div class="output-block">
+                <div class="output-label">Panel 3 — 3 Things That Help Me</div>
+                1. Sleep. Real sleep. Not the 2 AM kind.<br>
+                2. Two friends who are honest with me even when I don't want honesty.<br>
+                3. Being outside, even for ten minutes.
+              </div>
+              <div class="output-block">
+                <div class="output-label">Panel 4 — Back Cover</div>
+                <em>Whoever is reading this — you are not behind. You are right where you are. And that is okay. Fold this back up and put it somewhere you'll find it on a hard day.</em>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="item-card" onclick="toggleCheck(this)">
-        <div class="item-check">✓</div>
+
+      <!-- ITEM 19 -->
+      <div class="item-card">
+        <div class="item-check" onclick="toggleCheck(this)">✓</div>
         <div class="item-body">
           <div class="item-num">Item 19</div>
           <div class="item-name">🪞 Affirmation Mirror Card</div>
           <div class="item-desc">A card designed to be taped to a mirror or locker. "Every time you see this, remember: [OneWord]." Simple, daily, and lasting.</div>
           <div class="item-tags"><span class="tag tag-both">Both Classes</span><span class="tag tag-print">🖨️ Printable</span></div>
+          <button class="example-toggle" onclick="toggleEx(this)">💡 See Example <span class="arr">▼</span></button>
+          <div class="example-panel">
+            <div class="example-meta"><span><b>Format:</b> 3×5 card, matte pastel</span></div>
+            <div class="example-body">
+              <div class="output-block">
+                <div class="output-label">Card Front (soft lavender background)</div>
+                <p style="margin-bottom:6px;">Every time you see this, remember:</p>
+                <p style="font-size:18px;font-family:'Playfair Display',serif;color:var(--burgundy);margin-bottom:6px;"><strong>YOU ARE ENOUGH.</strong></p>
+                <p style="font-size:11px;color:#888;"><em>You always have been. You don't have to earn it. It was never on the table.</em></p>
+              </div>
+              <div class="output-block">
+                <div class="output-label">Card Back</div>
+                <em>Tape this to your mirror. Your locker. Your laptop. The inside of your binder. Wherever you'll see it on the days you forget.<br>
+                — From a senior who had to learn this the hard way.</em>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 
@@ -320,9 +650,29 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:#1a1a2e;paddi
 <div class="footer"><p>Smile Bags · A Word &amp; Wonder Experience · Robin Hoffman · Choice Menu · Spring 2026</p></div>
 
 <script>
-function toggleCheck(card){
-  var cb=card.querySelector('.item-check');
+function toggleCheck(cb){
   cb.classList.toggle('checked');
+}
+function toggleEx(btn){
+  var panel = btn.nextElementSibling;
+  btn.classList.toggle('open');
+  panel.classList.toggle('open');
+  var lbl = btn.firstChild;
+  if(btn.classList.contains('open')){
+    btn.innerHTML = '💡 Hide Example <span class="arr">▼</span>';
+    btn.classList.add('open');
+  } else {
+    btn.innerHTML = '💡 See Example <span class="arr">▼</span>';
+  }
+}
+function toggleAllEx(open){
+  var btns = document.querySelectorAll('.example-toggle');
+  var panels = document.querySelectorAll('.example-panel');
+  btns.forEach(function(b){
+    b.classList.toggle('open', open);
+    b.innerHTML = (open ? '💡 Hide Example' : '💡 See Example') + ' <span class="arr">▼</span>';
+  });
+  panels.forEach(function(p){ p.classList.toggle('open', open); });
 }
 </script>
 </body>

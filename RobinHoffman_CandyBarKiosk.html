@@ -13,6 +13,15 @@ body{font-family:'Nunito',sans-serif;background:#FFF8EE;min-height:100vh;padding
 .hdr h1{font-family:'Fredoka One',cursive;font-size:24px;color:#fff;}
 .hdr p{font-size:13px;color:rgba(255,255,255,.75);margin-top:5px;}
 
+/* ── COUNTER STRIP ── */
+.counter-strip{background:linear-gradient(135deg,#FFF8EE,#FFF0E0);border-bottom:2px solid #C9A84C;padding:12px 20px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;}
+.counter-pill{background:#fff;border:2.5px solid #C9A84C;border-radius:24px;padding:6px 16px;font-family:'Fredoka One',cursive;font-size:13px;color:#6B1E2E;display:inline-flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(201,168,76,.2);}
+.counter-icon{font-size:16px;}
+.counter-progress{background:rgba(107,30,46,.1);border-radius:10px;height:8px;width:160px;overflow:hidden;position:relative;}
+.counter-bar{background:linear-gradient(90deg,#C9A84C,#C8860A);height:100%;width:0%;transition:width .6s cubic-bezier(.4,0,.2,1);border-radius:10px;}
+.counter-pill.goal-reached{background:linear-gradient(135deg,#FFF8EE,#F5E4A8);border-color:#C8860A;color:#5A3000;animation:celebrate 2s ease infinite;}
+@keyframes celebrate{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+
 .prog{display:flex;align-items:flex-start;justify-content:center;padding:14px 16px;background:#fff;border-bottom:2px solid #F5D5A0;gap:4px;flex-wrap:wrap;}
 .prog-item{display:flex;flex-direction:column;align-items:center;gap:3px;}
 .prog-dot{width:32px;height:32px;border-radius:50%;background:#F5D5A0;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:13px;color:#fff;transition:all .3s;}
@@ -69,14 +78,23 @@ body{font-family:'Nunito',sans-serif;background:#FFF8EE;min-height:100vh;padding
 .token-box{background:#FFF3D6;border:2px solid #C8860A;border-radius:12px;padding:14px;display:inline-block;margin-top:14px;}
 .token-code{font-family:'Fredoka One',cursive;font-size:28px;letter-spacing:4px;color:#7A4F00;}
 
-@media(max-width:600px){.word-grid{grid-template-columns:repeat(2,1fr);} .theme-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.word-grid{grid-template-columns:repeat(2,1fr);} .theme-grid{grid-template-columns:1fr 1fr;} .counter-progress{width:110px;}}
 </style>
 </head>
 <body>
 
 <div class="hdr">
   <h1>🍫 Candy Bar Wrap Designer</h1>
-  <p>Smile Bags · A Word &amp; Wonder Experience · Robin Hoffman · Spring 2026</p>
+  <p>Smile Bags &middot; A Word &amp; Wonder Experience &middot; Robin Hoffman &middot; Spring 2026</p>
+</div>
+
+<!-- COUNTER STRIP -->
+<div class="counter-strip">
+  <div class="counter-pill" id="counterPill">
+    <span class="counter-icon">🍫</span>
+    <span id="counterText">Loading count…</span>
+  </div>
+  <div class="counter-progress" title="Progress toward 10 wraps"><div class="counter-bar" id="counterBar"></div></div>
 </div>
 
 <div class="prog">
@@ -175,7 +193,28 @@ body{font-family:'Nunito',sans-serif;background:#FFF8EE;min-height:100vh;padding
 </div>
 
 <script>
-var SCRIPT_URL="YOUR_APPS_SCRIPT_URL_HERE";
+var SCRIPT_URL="https://script.google.com/macros/s/AKfycbxpI9oZZFLIJrmCfph6a0bDiIr6sadmGbOVA_Azzhr5_g9p4ZT6Olgtji69scSh02qM/exec";
+var TARGET_COUNT=10;
+var CURRENT_COUNT=0;
+
+/* APPS SCRIPT doGet CONTRACT — for the eventual Code.gs:
+ * When called with ?callback=cbName (JSONP):
+ *   return: cbName({"count":N,"target":10});
+ * When called without callback (plain JSON):
+ *   return: {"count":N,"target":10}
+ * Example implementation:
+ *   function doGet(e){
+ *     var sheet=SpreadsheetApp.openById(SHEET_ID).getSheetByName("Wraps");
+ *     var count=Math.max(0,sheet.getLastRow()-1);
+ *     var json=JSON.stringify({count:count,target:10});
+ *     var cb=e&&e.parameter&&e.parameter.callback;
+ *     var out=cb?(cb+"("+json+");"):json;
+ *     return ContentService.createTextOutput(out)
+ *       .setMimeType(cb?ContentService.MimeType.JAVASCRIPT:ContentService.MimeType.JSON);
+ *   }
+ * Note: Standard #9 — also write each GET/POST to a "Debug Log" tab via logToDebugLog_().
+ */
+
 var WORDS=["ABSORB","ADAPT","ANCHOR","BALANCE","BLOOM","BREATHE","CLEAR","CONNECT","CYCLE","EMERGE","FILTER","FLOW","GROW","HEAL","MIGRATE","PERSIST","RENEW","RESTORE","RETURN","RISE","ROOT","SHINE","SUSTAIN","THRIVE","TRANSFORM"];
 var THEMES=[
   {name:"Burgundy & Gold",bg:"#6B1E2E",accent:"#C9A84C",text:"#FFF8EE",dark:false},
@@ -187,7 +226,38 @@ var THEMES=[
 ];
 var sName="",sClass="",selWord=null,sMsg="",selTheme=THEMES[0];
 
-document.addEventListener("DOMContentLoaded",function(){buildWordGrid();buildThemeGrid();});
+document.addEventListener("DOMContentLoaded",function(){buildWordGrid();buildThemeGrid();fetchCount();});
+
+/* ── COUNTER (JSONP) ── */
+function fetchCount(){
+  if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){
+    updateCounterUI(0,"— of "+TARGET_COUNT+" created");
+    return;
+  }
+  var cbName="cbCount_"+Date.now()+"_"+Math.floor(Math.random()*1000);
+  var script=document.createElement("script");
+  var cleanup=function(){try{delete window[cbName];}catch(e){window[cbName]=null;} if(script&&script.parentNode){script.parentNode.removeChild(script);}};
+  window[cbName]=function(data){
+    var count=(data&&typeof data.count==="number")?data.count:0;
+    updateCounterUI(count);
+    cleanup();
+  };
+  script.onerror=function(){updateCounterUI(0,"— of "+TARGET_COUNT+" created");cleanup();};
+  script.src=SCRIPT_URL+(SCRIPT_URL.indexOf("?")>-1?"&":"?")+"callback="+cbName;
+  document.body.appendChild(script);
+}
+function updateCounterUI(count,overrideText){
+  CURRENT_COUNT=count;
+  var pct=Math.min(100,(count/TARGET_COUNT)*100);
+  var text;
+  if(overrideText){text=overrideText;}
+  else if(count>=TARGET_COUNT){text="🎉 Goal reached! "+count+" of "+TARGET_COUNT;}
+  else {text=count+" of "+TARGET_COUNT+" wraps created";}
+  document.getElementById("counterText").textContent=text;
+  document.getElementById("counterBar").style.width=pct+"%";
+  var pill=document.getElementById("counterPill");
+  if(count>=TARGET_COUNT){pill.classList.add("goal-reached");} else {pill.classList.remove("goal-reached");}
+}
 
 function buildWordGrid(){
   var g=document.getElementById("wordGrid");
@@ -254,7 +324,7 @@ function drawWrap(){
     // Name/class right panel
     '<text x="505" y="65" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="12" fill="'+ac+'" letter-spacing="1">'+escXml(name)+'</text>'+
     '<text x="505" y="85" text-anchor="middle" dominant-baseline="middle" font-family="Nunito, sans-serif" font-size="8" fill="'+ac+'" opacity="0.6">CLASS OF 2026</text>'+
-    '<text x="505" y="105" text-anchor="middle" dominant-baseline="middle" font-family="Nunito, sans-serif" font-size="7" fill="'+ac+'" opacity="0.5">KELLAM</text>'+
+    '<text x="505" y="105" text-anchor="middle" dominant-baseline="middle" font-family="Nunito, sans-serif" font-size="7" fill="'+ac+'" opacity="0.5">SENIOR LEGACY</text>'+
     // Center message area
     '<text x="280" y="34" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="11" fill="'+ac+'" opacity="0.55" letter-spacing="3">SMILE BAGS · WORD &amp; WONDER</text>'+
     // Message lines
@@ -278,13 +348,19 @@ function printWrap(){
 function doSubmit(){
   var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
   document.getElementById("tokCode").textContent=tok;
-  var payload={studentName:sName,class:sClass,teacher:"Robin Hoffman",word:selWord,message:sMsg,theme:selTheme?selTheme.name:"",token:tok};
+  var payload={studentName:sName,class:sClass,teacher:"Robin Hoffman",activity:"CandyBarWrap",word:selWord,message:sMsg,theme:selTheme?selTheme.name:"",token:tok};
   document.querySelector(".print-btn-main").textContent="Submitting...";
   document.querySelector(".print-btn-main").disabled=true;
   if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){showDone();return;}
-  fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)}).then(function(){showDone();}).catch(function(){showDone();});
+  // Standard #11: mode:"no-cors" — without this, POST redirects to googleusercontent.com and strips body.
+  fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",body:JSON.stringify(payload)}).then(function(){showDone();}).catch(function(){showDone();});
 }
-function showDone(){document.getElementById("notSub").style.display="none";document.getElementById("subBox").style.display="block";}
+function showDone(){
+  document.getElementById("notSub").style.display="none";
+  document.getElementById("subBox").style.display="block";
+  // Refresh counter after a short delay so the new row has landed in the sheet
+  setTimeout(fetchCount,1500);
+}
 
 function nav(n){
   document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});

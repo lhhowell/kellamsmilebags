@@ -11,6 +11,16 @@ body{font-family:'Nunito',sans-serif;background:#FFF8EE;min-height:100vh;padding
 .hdr{background:linear-gradient(135deg,#6B1E2E,#4A1020);padding:20px 28px;text-align:center;}
 .hdr h1{font-family:'Fredoka One',cursive;font-size:24px;color:#fff;}
 .hdr p{font-size:13px;color:rgba(255,255,255,.75);margin-top:5px;}
+
+/* ── COUNTER STRIP ── */
+.counter-strip{background:linear-gradient(135deg,#FFF8EE,#FFF0E0);border-bottom:2px solid #C9A84C;padding:12px 20px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;}
+.counter-pill{background:#fff;border:2.5px solid #C9A84C;border-radius:24px;padding:6px 16px;font-family:'Fredoka One',cursive;font-size:13px;color:#6B1E2E;display:inline-flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(201,168,76,.2);}
+.counter-icon{font-size:16px;}
+.counter-progress{background:rgba(107,30,46,.1);border-radius:10px;height:8px;width:160px;overflow:hidden;position:relative;}
+.counter-bar{background:linear-gradient(90deg,#C9A84C,#C8860A);height:100%;width:0%;transition:width .6s cubic-bezier(.4,0,.2,1);border-radius:10px;}
+.counter-pill.goal-reached{background:linear-gradient(135deg,#FFF8EE,#F5E4A8);border-color:#C8860A;color:#5A3000;animation:celebrate 2s ease infinite;}
+@keyframes celebrate{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+
 .prog{display:flex;align-items:flex-start;justify-content:center;padding:14px 16px;background:#fff;border-bottom:2px solid #F5D5A0;gap:4px;flex-wrap:wrap;}
 .prog-item{display:flex;flex-direction:column;align-items:center;gap:3px;}
 .prog-dot{width:32px;height:32px;border-radius:50%;background:#F5D5A0;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:13px;color:#fff;transition:all .3s;}
@@ -63,11 +73,21 @@ body{font-family:'Nunito',sans-serif;background:#FFF8EE;min-height:100vh;padding
 .nav-row{display:flex;gap:12px;justify-content:flex-end;margin-top:16px;}
 .btn-next{padding:14px 28px;background:linear-gradient(135deg,#6B1E2E,#4A1020);color:#fff;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;box-shadow:0 5px 16px rgba(107,30,46,.3);}
 .btn-back{padding:14px 20px;border:3px solid #F5D5A0;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;color:#888;background:#fff;}
-@media(max-width:640px){.word-grid{grid-template-columns:repeat(3,1fr);}.studio{grid-template-columns:1fr;}.preview-col{position:static;}.img-grid{grid-template-columns:repeat(5,1fr);}}
+@media(max-width:640px){.word-grid{grid-template-columns:repeat(3,1fr);}.studio{grid-template-columns:1fr;}.preview-col{position:static;}.img-grid{grid-template-columns:repeat(5,1fr);}.counter-progress{width:110px;}}
 </style>
 </head>
 <body>
 <div class="hdr"><h1>&#127991; Custom Sticker Designer</h1><p>Smile Bags &middot; A Word &amp; Wonder Experience &middot; Robin Hoffman &middot; Spring 2026</p></div>
+
+<!-- COUNTER STRIP -->
+<div class="counter-strip">
+  <div class="counter-pill" id="counterPill">
+    <span class="counter-icon">&#127991;</span>
+    <span id="counterText">Loading count&hellip;</span>
+  </div>
+  <div class="counter-progress" title="Progress toward 10 sticker sheets"><div class="counter-bar" id="counterBar"></div></div>
+</div>
+
 <div class="prog">
   <div class="prog-item"><div class="prog-dot active" id="pd0">1</div><div class="prog-lbl active" id="pl0">My Info</div></div>
   <div class="prog-arr">&rsaquo;</div>
@@ -151,7 +171,27 @@ body{font-family:'Nunito',sans-serif;background:#FFF8EE;min-height:100vh;padding
   </div>
 </div>
 <script>
-var SCRIPT_URL="YOUR_APPS_SCRIPT_URL_HERE";
+var SCRIPT_URL="https://script.google.com/macros/s/AKfycbxpI9oZZFLIJrmCfph6a0bDiIr6sadmGbOVA_Azzhr5_g9p4ZT6Olgtji69scSh02qM/exec";
+var TARGET_COUNT=10;
+var CURRENT_COUNT=0;
+
+/* APPS SCRIPT doGet CONTRACT — for the eventual Code.gs:
+ * When called with ?callback=cbName (JSONP):
+ *   return: cbName({"count":N,"target":10});
+ * When called without callback (plain JSON):
+ *   return: {"count":N,"target":10}
+ * Example implementation (apply Standard #9 Debug Log alongside):
+ *   function doGet(e){
+ *     var sheet=SpreadsheetApp.openById(SHEET_ID).getSheetByName("StickerSheets");
+ *     var count=Math.max(0,sheet.getLastRow()-1);
+ *     var json=JSON.stringify({count:count,target:10});
+ *     var cb=e&&e.parameter&&e.parameter.callback;
+ *     var out=cb?(cb+"("+json+");"):json;
+ *     return ContentService.createTextOutput(out)
+ *       .setMimeType(cb?ContentService.MimeType.JAVASCRIPT:ContentService.MimeType.JSON);
+ *   }
+ */
+
 var WORDS=["ABSORB","ADAPT","ANCHOR","BALANCE","BLOOM","BREATHE","CLEAR","CONNECT","CYCLE","EMERGE","FILTER","FLOW","GROW","HEAL","MIGRATE","PERSIST","RENEW","RESTORE","RETURN","RISE","ROOT","SHINE","SUSTAIN","THRIVE","TRANSFORM"];
 var FONTS=[
   {name:"Friendly",css:"Fredoka One, cursive",sample:"Bloom"},
@@ -173,7 +213,38 @@ var IMAGES={
 var sName="",sClass="",selWord=null;
 var selFont=FONTS[0],selColor=COLORS[0],selImage="\uD83C\uDF31";
 
-document.addEventListener("DOMContentLoaded",function(){buildWordGrid();buildFontGrid();buildColorRow();buildImageGrids();drawPreview();});
+document.addEventListener("DOMContentLoaded",function(){buildWordGrid();buildFontGrid();buildColorRow();buildImageGrids();drawPreview();fetchCount();});
+
+/* ── COUNTER (JSONP) ── */
+function fetchCount(){
+  if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){
+    updateCounterUI(0,"\u2014 of "+TARGET_COUNT+" created");
+    return;
+  }
+  var cbName="cbCount_"+Date.now()+"_"+Math.floor(Math.random()*1000);
+  var script=document.createElement("script");
+  var cleanup=function(){try{delete window[cbName];}catch(e){window[cbName]=null;} if(script&&script.parentNode){script.parentNode.removeChild(script);}};
+  window[cbName]=function(data){
+    var count=(data&&typeof data.count==="number")?data.count:0;
+    updateCounterUI(count);
+    cleanup();
+  };
+  script.onerror=function(){updateCounterUI(0,"\u2014 of "+TARGET_COUNT+" created");cleanup();};
+  script.src=SCRIPT_URL+(SCRIPT_URL.indexOf("?")>-1?"&":"?")+"callback="+cbName;
+  document.body.appendChild(script);
+}
+function updateCounterUI(count,overrideText){
+  CURRENT_COUNT=count;
+  var pct=Math.min(100,(count/TARGET_COUNT)*100);
+  var text;
+  if(overrideText){text=overrideText;}
+  else if(count>=TARGET_COUNT){text="\uD83C\uDF89 Goal reached! "+count+" of "+TARGET_COUNT;}
+  else {text=count+" of "+TARGET_COUNT+" sticker sheets created";}
+  document.getElementById("counterText").textContent=text;
+  document.getElementById("counterBar").style.width=pct+"%";
+  var pill=document.getElementById("counterPill");
+  if(count>=TARGET_COUNT){pill.classList.add("goal-reached");} else {pill.classList.remove("goal-reached");}
+}
 
 function buildWordGrid(){
   var g=document.getElementById("wordGrid");
@@ -255,7 +326,7 @@ function drawSheet(){
   }}
   // Registration marks for Cricut Print Then Cut
   var rm='<line x1="0" y1="0" x2="16" y2="0" stroke="#000" stroke-width="0.5"/><line x1="0" y1="0" x2="0" y2="16" stroke="#000" stroke-width="0.5"/><line x1="612" y1="0" x2="596" y2="0" stroke="#000" stroke-width="0.5"/><line x1="612" y1="0" x2="612" y2="16" stroke="#000" stroke-width="0.5"/><line x1="0" y1="792" x2="16" y2="792" stroke="#000" stroke-width="0.5"/><line x1="0" y1="792" x2="0" y2="776" stroke="#000" stroke-width="0.5"/><line x1="612" y1="792" x2="596" y2="792" stroke="#000" stroke-width="0.5"/><line x1="612" y1="792" x2="612" y2="776" stroke="#000" stroke-width="0.5"/>';
-  svg.innerHTML='<rect width="612" height="792" fill="#fff"/>'+rm+stickers+'<text x="306" y="782" text-anchor="middle" font-family="Fredoka One,cursive" font-size="9" fill="#ccc" letter-spacing="1">Smile Bags &middot; A Word &amp; Wonder Experience &middot; '+escXml(name)+' &middot; Class of 2026 &middot; Kellam</text>';
+  svg.innerHTML='<rect width="612" height="792" fill="#fff"/>'+rm+stickers+'<text x="306" y="782" text-anchor="middle" font-family="Fredoka One,cursive" font-size="9" fill="#ccc" letter-spacing="1">Smile Bags &middot; A Word &amp; Wonder Experience &middot; '+escXml(name)+' &middot; Class of 2026 &middot; Spring 2026</text>';
 }
 function toWord(){sName=document.getElementById("iName").value.trim();sClass=document.getElementById("iClass").value;if(!sName){alert("Please enter your name!");return;}nav(1);}
 function toDesign(){if(!selWord){alert("Please choose your OneWord!");return;}document.getElementById("s2h").textContent="Design Your Sticker \u2014 "+selWord;drawPreview();nav(2);}
@@ -276,11 +347,17 @@ function printSheet(){
 function doSubmit(){
   var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
   document.getElementById("tokCode").textContent=tok;
-  var payload={studentName:sName,class:sClass,teacher:"Robin Hoffman",word:selWord,font:selFont?selFont.name:"",color:selColor?selColor.name:"",image:selImage,token:tok};
+  var payload={studentName:sName,class:sClass,teacher:"Robin Hoffman",activity:"StickerSheet",word:selWord,font:selFont?selFont.name:"",color:selColor?selColor.name:"",image:selImage,token:tok};
   if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){showDone();return;}
-  fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)}).then(function(){showDone();}).catch(function(){showDone();});
+  // Standard #11: mode:"no-cors" — without this, POST redirects to googleusercontent.com and strips body.
+  fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",body:JSON.stringify(payload)}).then(function(){showDone();}).catch(function(){showDone();});
 }
-function showDone(){document.getElementById("notSub").style.display="none";document.getElementById("subBox").style.display="block";}
+function showDone(){
+  document.getElementById("notSub").style.display="none";
+  document.getElementById("subBox").style.display="block";
+  // Refresh counter after a short delay so the new row has landed in the sheet
+  setTimeout(fetchCount,1500);
+}
 </script>
 </body>
 </html>
