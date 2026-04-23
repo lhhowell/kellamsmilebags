@@ -312,10 +312,14 @@ function drawWrap(){
   }
   var msgLines=wrapTxt(msg,38);
 
-  // Dynamic letter-spacing for OneWord: shorter words can afford wider spacing,
-  // longer words need tight spacing to avoid touching the panel edges.
+  // Dynamic OneWord sizing based on length — keeps short words dramatic,
+  // shrinks longer ones so they fit inside the widened side panel (125px).
   var wordLen=word.length;
-  var wordLS = wordLen<=5 ? 2 : wordLen<=7 ? 0.5 : 0;
+  var wordFS, wordLS;
+  if (wordLen <= 5)      { wordFS = 22; wordLS = 2;   }
+  else if (wordLen === 6){ wordFS = 22; wordLS = 1;   }
+  else if (wordLen === 7){ wordFS = 19; wordLS = 0.5; }
+  else                   { wordFS = 14; wordLS = 0;   }
 
   svg.innerHTML=
     // Background
@@ -323,22 +327,22 @@ function drawWrap(){
     // Border
     '<rect x="3" y="3" width="'+(w-6)+'" height="'+(h-6)+'" rx="4" fill="none" stroke="'+ac+'" stroke-width="2.5"/>'+
     '<rect x="8" y="8" width="'+(w-16)+'" height="'+(h-16)+'" rx="3" fill="none" stroke="'+ac+'" stroke-width="1" opacity="0.4"/>'+
-    // Left panel — decorative
-    '<rect x="0" y="0" width="110" height="'+h+'" fill="rgba(0,0,0,.18)"/>'+
-    '<line x1="110" y1="10" x2="110" y2="'+(h-10)+'" stroke="'+ac+'" stroke-width="1.5" opacity="0.6"/>'+
+    // Left panel — decorative (widened to 125px for longer OneWords)
+    '<rect x="0" y="0" width="125" height="'+h+'" fill="rgba(0,0,0,.18)"/>'+
+    '<line x1="125" y1="10" x2="125" y2="'+(h-10)+'" stroke="'+ac+'" stroke-width="1.5" opacity="0.6"/>'+
     // OneWord - left panel
-    '<text x="55" y="72" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="22" fill="'+ac+'" letter-spacing="'+wordLS+'">'+escXml(word)+'</text>'+
-    '<text x="55" y="96" text-anchor="middle" dominant-baseline="middle" font-family="Nunito, sans-serif" font-size="9" fill="'+ac+'" opacity="0.7" letter-spacing="1">ONE WORD</text>'+
+    '<text x="62" y="72" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="'+wordFS+'" fill="'+ac+'" letter-spacing="'+wordLS+'">'+escXml(word)+'</text>'+
+    '<text x="62" y="96" text-anchor="middle" dominant-baseline="middle" font-family="Nunito, sans-serif" font-size="9" fill="'+ac+'" opacity="0.7" letter-spacing="1">ONE WORD</text>'+
     // Decorative dots left
-    '<circle cx="55" cy="30" r="3" fill="'+ac+'" opacity="0.5"/>'+
-    '<circle cx="55" cy="140" r="3" fill="'+ac+'" opacity="0.5"/>'+
-    // Right panel — decorative
-    '<rect x="450" y="0" width="110" height="'+h+'" fill="rgba(0,0,0,.18)"/>'+
-    '<line x1="450" y1="10" x2="450" y2="'+(h-10)+'" stroke="'+ac+'" stroke-width="1.5" opacity="0.6"/>'+
-    // Name/class right panel
-    '<text x="505" y="65" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="12" fill="'+ac+'" letter-spacing="1">'+escXml(name)+'</text>'+
-    '<text x="505" y="85" text-anchor="middle" dominant-baseline="middle" font-family="Nunito, sans-serif" font-size="8" fill="'+ac+'" opacity="0.6">CLASS OF 2026</text>'+
-    '<text x="505" y="105" text-anchor="middle" dominant-baseline="middle" font-family="Nunito, sans-serif" font-size="7" fill="'+ac+'" opacity="0.5">SENIOR LEGACY</text>'+
+    '<circle cx="62" cy="30" r="3" fill="'+ac+'" opacity="0.5"/>'+
+    '<circle cx="62" cy="140" r="3" fill="'+ac+'" opacity="0.5"/>'+
+    // Right panel — decorative (widened to 125px for visual symmetry)
+    '<rect x="435" y="0" width="125" height="'+h+'" fill="rgba(0,0,0,.18)"/>'+
+    '<line x1="435" y1="10" x2="435" y2="'+(h-10)+'" stroke="'+ac+'" stroke-width="1.5" opacity="0.6"/>'+
+    // Name/class right panel (centered at x=497)
+    '<text x="497" y="65" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="12" fill="'+ac+'" letter-spacing="1">'+escXml(name)+'</text>'+
+    '<text x="497" y="85" text-anchor="middle" dominant-baseline="middle" font-family="Nunito, sans-serif" font-size="8" fill="'+ac+'" opacity="0.6">CLASS OF 2026</text>'+
+    '<text x="497" y="105" text-anchor="middle" dominant-baseline="middle" font-family="Nunito, sans-serif" font-size="7" fill="'+ac+'" opacity="0.5">SENIOR LEGACY</text>'+
     // Center message area
     '<text x="280" y="34" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="11" fill="'+ac+'" opacity="0.55" letter-spacing="3">SMILE BAGS · WORD &amp; WONDER</text>'+
     // Message lines
