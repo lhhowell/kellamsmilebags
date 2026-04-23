@@ -111,6 +111,22 @@ a.pill-gold:hover{background:rgba(201,168,76,.3);border-color:rgba(201,168,76,.5
 /* ── SENIOR BANNER ── */
 .senior-banner{background:linear-gradient(135deg,var(--burgundy),var(--burgundy2));border-radius:var(--radius);padding:24px 28px;margin-bottom:32px;position:relative;overflow:hidden;}
 .senior-banner::after{content:'"';position:absolute;right:24px;top:-10px;font-family:'Playfair Display',serif;font-size:8rem;color:rgba(255,255,255,.06);line-height:1;pointer-events:none;}
+
+/* ── DEFAULTS BLOCK ── */
+.defaults-block{background:#fff;border:1.5px solid var(--border);border-left:5px solid var(--gold);border-radius:var(--radius);padding:24px 28px;margin-bottom:32px;box-shadow:0 2px 10px rgba(107,30,46,.05);}
+.defaults-header{display:flex;align-items:center;gap:12px;margin-bottom:6px;}
+.defaults-icon{font-size:1.5rem;}
+.defaults-tag{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold2);}
+.defaults-title{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--burgundy);margin-bottom:8px;line-height:1.3;}
+.defaults-intro{font-size:13px;color:#555;line-height:1.7;margin-bottom:18px;}
+.defaults-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 16px;margin-bottom:16px;}
+.defaults-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;}
+.defaults-check{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;margin-top:1px;}
+.defaults-text{font-size:13px;color:#333;line-height:1.5;font-weight:600;}
+.defaults-text em{display:block;font-size:11px;color:#888;font-weight:400;margin-top:2px;font-style:normal;}
+.defaults-note{background:#FDF5E8;border-radius:8px;padding:12px 16px;font-size:12px;color:#7a5520;line-height:1.65;margin-top:12px;border-left:3px solid var(--gold);}
+.defaults-note strong{color:var(--burgundy);}
+@media(max-width:640px){.defaults-grid{grid-template-columns:1fr;}}
 .senior-banner-tag{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold2);margin-bottom:8px;}
 .senior-banner h3{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.3;}
 .senior-banner p{font-size:13px;color:rgba(255,255,255,.75);line-height:1.7;max-width:620px;}
@@ -133,7 +149,7 @@ footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spac
   <p class="hero-sub">Robin Hoffman's seniors are leaving something behind — words, wisdom, and handmade gifts for the students who come after them. Two classes. One mission. A senior legacy.</p>
   <div class="hero-pills">
     <a class="pill pill-gold" href="RobinHoffman_TeacherGuide.html">📚 Robin Hoffman</a>
-    <div class="pill pill-red">🎓 Senior Made · 10 Bags</div>
+    <div class="pill pill-red">🎓 Senior Made · 25 Bags</div>
     <div class="pill pill-cream">Teachers for Tomorrow + English 12</div>
   </div>
 </div>
@@ -195,6 +211,26 @@ footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spac
     <p>Many of Robin Hoffman's students are graduating this spring. These Smile Bags are one of their final acts at Kellam — a chance to leave something meaningful for the students who come after them. The words they write, the items they make, and the care they put in will outlast their time here.</p>
   </div>
 
+  <!-- EVERY HIGH SCHOOL BAG INCLUDES -->
+  <div class="defaults-block">
+    <div class="defaults-header">
+      <span class="defaults-icon">🎁</span>
+      <div class="defaults-tag">Standard Bag Contents</div>
+    </div>
+    <div class="defaults-title">What's Added to Every HS Bag</div>
+    <p class="defaults-intro">Ms. Hoffman's bags go to Kellam High School students. When bags are turned in, Ms. Howell adds the following <strong>High School bag defaults</strong> to every bag before delivery. <em>(Elementary and Middle School bags receive a different set of defaults appropriate to their recipient age.)</em></p>
+    <div class="defaults-grid">
+      <div class="defaults-item"><div class="defaults-check">✓</div><div class="defaults-text">OneWord Bookmark<em>Themed to the bag's OneWord</em></div></div>
+      <div class="defaults-item"><div class="defaults-check">✓</div><div class="defaults-text">OneWord Stickers<em>Personalized sticker sheet</em></div></div>
+      <div class="defaults-item"><div class="defaults-check">✓</div><div class="defaults-text">Inspirational Mirror<em>Message on the back</em></div></div>
+      <div class="defaults-item"><div class="defaults-check">✓</div><div class="defaults-text">Stencils<em>For drawing &amp; lettering</em></div></div>
+      <div class="defaults-item"><div class="defaults-check">✓</div><div class="defaults-text">Kinetic Fidget Spinner<em>Sensory &amp; calming</em></div></div>
+      <div class="defaults-item"><div class="defaults-check">✓</div><div class="defaults-text">Rainbow Scratch Art Notes<em>Creative reveal paper</em></div></div>
+      <div class="defaults-item"><div class="defaults-check">✓</div><div class="defaults-text">Mini Canvas<em>Paints with the paint kit</em></div></div>
+      <div class="defaults-item"><div class="defaults-check">✓</div><div class="defaults-text">Creative Supply<em>Crayons · pencils · paint · Play-Doh</em></div></div>
+    </div>
+  </div>
+
   <!-- CLASS CARDS -->
   <div class="section-tag">Participating Classes</div>
   <div class="section-title">Two Classes, One Legacy</div>
@@ -233,6 +269,11 @@ footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spac
   <div class="section-title">All Project Files</div>
 
   <div class="res-grid">
+    <a href="https://drive.google.com/drive/folders/1rdvEvGhaI7Bie-LMWRv3rwpQNweNDstB?usp=drive_link" target="_blank" class="res-card">
+      <div class="res-icon">📁</div>
+      <div><div class="res-label">Class Drive Folder</div><div class="res-type">Uploads · Google Drive</div></div>
+      <div class="res-arrow">→</div>
+    </a>
     <a href="RobinHoffman_CandyBarKiosk.html" target="_blank" class="res-card">
       <div class="res-icon">🍫</div>
       <div><div class="res-label">Candy Bar Wrap Kiosk</div><div class="res-type">Student Kiosk · HTML</div></div>
