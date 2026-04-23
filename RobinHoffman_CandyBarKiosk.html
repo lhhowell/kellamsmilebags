@@ -312,6 +312,11 @@ function drawWrap(){
   }
   var msgLines=wrapTxt(msg,38);
 
+  // Dynamic letter-spacing for OneWord: shorter words can afford wider spacing,
+  // longer words need tight spacing to avoid touching the panel edges.
+  var wordLen=word.length;
+  var wordLS = wordLen<=5 ? 2 : wordLen<=7 ? 0.5 : 0;
+
   svg.innerHTML=
     // Background
     '<rect x="0" y="0" width="'+w+'" height="'+h+'" fill="'+bg+'"/>'+
@@ -322,7 +327,7 @@ function drawWrap(){
     '<rect x="0" y="0" width="110" height="'+h+'" fill="rgba(0,0,0,.18)"/>'+
     '<line x1="110" y1="10" x2="110" y2="'+(h-10)+'" stroke="'+ac+'" stroke-width="1.5" opacity="0.6"/>'+
     // OneWord - left panel
-    '<text x="55" y="72" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="22" fill="'+ac+'" letter-spacing="2">'+escXml(word)+'</text>'+
+    '<text x="55" y="72" text-anchor="middle" dominant-baseline="middle" font-family="Fredoka One, cursive" font-size="22" fill="'+ac+'" letter-spacing="'+wordLS+'">'+escXml(word)+'</text>'+
     '<text x="55" y="96" text-anchor="middle" dominant-baseline="middle" font-family="Nunito, sans-serif" font-size="9" fill="'+ac+'" opacity="0.7" letter-spacing="1">ONE WORD</text>'+
     // Decorative dots left
     '<circle cx="55" cy="30" r="3" fill="'+ac+'" opacity="0.5"/>'+

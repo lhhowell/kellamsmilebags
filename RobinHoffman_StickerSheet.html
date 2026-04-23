@@ -348,9 +348,16 @@ function nav(n){
 }
 function printSheet(){
   var svg=document.getElementById("sheetSVG");
-  var s=new XMLSerializer().serializeToString(svg);
+  // Clone and strip screen-only inline style (width:100%;max-width:380px) so the
+  // print window can scale the SVG to full page. Inline style has higher
+  // specificity than @media print CSS rules, so we must remove it, not override.
+  var clone=svg.cloneNode(true);
+  clone.removeAttribute("style");
+  clone.setAttribute("width","8.5in");
+  clone.setAttribute("height","11in");
+  var s=new XMLSerializer().serializeToString(clone);
   var w=window.open("","_blank");
-  w.document.write("<!DOCTYPE html><html><head><title>Stickers \u00B7 "+escXml(selWord||"")+"<\/title><style>*{margin:0;padding:0;}body{background:#fff;}@media print{@page{size:8.5in 11in;margin:0;}svg{width:8.5in;height:11in;display:block;}}<\/style><\/head><body>"+s+"<script>window.onload=function(){window.print();window.onafterprint=function(){window.close();};};<\/script><\/body><\/html>");
+  w.document.write("<!DOCTYPE html><html><head><title>Stickers \u00B7 "+escXml(selWord||"")+"<\/title><style>*{margin:0;padding:0;}html,body{background:#fff;}body{display:block;}svg{width:8.5in;height:11in;display:block;}@page{size:8.5in 11in;margin:0;}@media print{body{margin:0;}}<\/style><\/head><body>"+s+"<script>window.onload=function(){window.print();window.onafterprint=function(){window.close();};};<\/script><\/body><\/html>");
   w.document.close();
 }
 function doSubmit(){

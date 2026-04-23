@@ -29,7 +29,10 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:#1a1a2e;paddi
 .hero-sub{font-size:14px;color:rgba(255,255,255,.65);line-height:1.7;max-width:600px;margin-bottom:18px;}
 .hero-note{font-size:13px;color:rgba(255,255,255,.5);font-style:italic;}
 
-.print-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);border:none;color:var(--burgundy);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;border-radius:6px;cursor:pointer;margin:20px 48px 0;}
+.top-nav-row{display:flex;gap:10px;align-items:center;margin:20px 48px 0;flex-wrap:wrap;}
+.back-link{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1.5px solid var(--burgundy);color:var(--burgundy);font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:8px 14px;border-radius:6px;text-decoration:none;transition:all .2s;}
+.back-link:hover{background:var(--burgundy);color:var(--gold);}
+.print-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);border:none;color:var(--burgundy);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;border-radius:6px;cursor:pointer;}
 .expand-all-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1.5px solid var(--burgundy);color:var(--burgundy);font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:8px 14px;border-radius:6px;cursor:pointer;margin-left:8px;}
 .expand-all-btn:hover{background:rgba(107,30,46,.05);}
 
@@ -107,7 +110,8 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:#1a1a2e;paddi
   <p class="hero-note">Items marked 🍫 and 🏷️ have live student kiosks ready. Tap <em>"See Example"</em> on any item to view a sample student output.</p>
 </div>
 
-<div class="no-print">
+<div class="top-nav-row no-print">
+  <a class="back-link" href="RobinHoffman_Menu.html">← Back to Project Hub</a>
   <button class="print-btn" onclick="window.print()">🖨️ Print This Menu</button>
   <button class="expand-all-btn" onclick="toggleAllEx(true)">Expand All Examples</button>
   <button class="expand-all-btn" onclick="toggleAllEx(false)">Collapse All</button>

@@ -21,7 +21,10 @@ body{font-family:'Nunito',sans-serif;background:#f4f1ec;color:#1a1a2e;padding-bo
 .pill-gold{background:rgba(201,168,76,.18);color:var(--gold);border:1px solid rgba(201,168,76,.3);}
 .pill-red{background:rgba(168,62,84,.25);color:#F4A8B8;border:1px solid rgba(168,62,84,.4);}
 
-.print-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);border:none;color:var(--burgundy);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;border-radius:6px;cursor:pointer;margin:20px 40px 0;}
+.top-nav-row{display:flex;gap:10px;align-items:center;margin:20px 40px 0;flex-wrap:wrap;}
+.back-link{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1.5px solid var(--burgundy);color:var(--burgundy);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;transition:all .2s;}
+.back-link:hover{background:var(--burgundy);color:var(--gold);}
+.print-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);border:none;color:var(--burgundy);font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;border-radius:6px;cursor:pointer;}
 
 .content{max-width:860px;margin:0 auto;padding:0 40px;}
 .section{margin-top:44px;}
@@ -95,7 +98,10 @@ footer p{font-family:'Fredoka One',cursive;font-size:11px;color:#aaa;letter-spac
   </div>
 </div>
 
-<button class="print-btn no-print" onclick="window.print()">🖨️ Print This Guide</button>
+<div class="top-nav-row no-print">
+  <a class="back-link" href="RobinHoffman_Menu.html">← Back to Project Hub</a>
+  <button class="print-btn" onclick="window.print()">🖨️ Print This Guide</button>
+</div>
 
 <div class="content">
 
