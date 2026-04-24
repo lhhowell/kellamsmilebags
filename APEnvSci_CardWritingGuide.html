@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>How to Write a Smile Bag Card · AP Env Sci · Honaker</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,600&family=Nunito:wght@400;600;700;800&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --forest:#1B4332;
+  --forest-deep:#0F2F23;
+  --moss:#40916C;
+  --sage:#95D5B2;
+  --cream:#FDFBF4;
+  --paper:#FFFCF5;
+  --gold:#C9A84C;
+  --gold-deep:#8B6F26;
+  --ink:#1A2A22;
+  --ink-soft:#4A5B52;
+  --muted:#8A9A90;
+  --card-pink:#FDF0E6;
+  --card-blue:#EAF4F8;
+  --card-yellow:#FDF6D6;
+  --rule:rgba(27,67,50,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--cream);color:var(--ink);font-family:'Nunito',sans-serif;line-height:1.65;font-size:15px;}
+
+/* ── TOP BREADCRUMB (Standard #13) ── */
+.top-breadcrumb{background:var(--forest-deep);padding:10px 32px;border-bottom:1px solid rgba(255,255,255,.08);}
+.top-breadcrumb a{color:var(--gold);font-family:'Fraunces',serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:600;text-decoration:none;opacity:.85;transition:opacity .2s;}
+.top-breadcrumb a:hover{opacity:1;}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,var(--forest),var(--forest-deep));color:#fff;padding:56px 32px 44px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 20% 0%,rgba(149,213,178,.15),transparent 60%),radial-gradient(ellipse at 80% 100%,rgba(201,168,76,.12),transparent 55%);pointer-events:none;}
+.hero-eyebrow{font-family:'Fraunces',serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);opacity:.9;margin-bottom:14px;font-weight:600;position:relative;}
+.hero h1{font-family:'Fraunces',serif;font-size:46px;font-weight:700;line-height:1.1;margin-bottom:14px;letter-spacing:-.5px;position:relative;}
+.hero h1 em{font-style:italic;color:var(--sage);font-weight:600;}
+.hero-sub{font-family:'Fraunces',serif;font-style:italic;font-size:17px;color:rgba(255,255,255,.85);max-width:560px;margin:0 auto;position:relative;font-weight:400;}
+.hero-meta{margin-top:26px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:700;position:relative;}
+
+/* ── PRINT BAR ── */
+.print-bar{background:var(--paper);border-bottom:1px solid var(--rule);padding:14px 32px;display:flex;justify-content:flex-end;gap:12px;}
+.print-btn{background:var(--forest);color:#fff;border:none;padding:10px 22px;border-radius:50px;font-family:'Fraunces',serif;font-weight:600;font-size:13px;letter-spacing:1px;cursor:pointer;transition:all .2s;box-shadow:0 3px 10px rgba(27,67,50,.2);}
+.print-btn:hover{background:var(--forest-deep);transform:translateY(-1px);box-shadow:0 5px 14px rgba(27,67,50,.3);}
+
+/* ── CONTAINER ── */
+.wrap{max-width:780px;margin:0 auto;padding:48px 32px 64px;}
+
+/* ── SECTIONS ── */
+.section{margin-bottom:48px;}
+.sect-num{display:inline-block;font-family:'Fraunces',serif;font-size:14px;font-weight:600;color:var(--gold-deep);background:rgba(201,168,76,.14);padding:3px 12px;border-radius:50px;letter-spacing:2px;margin-bottom:12px;}
+.sect-title{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--forest);line-height:1.2;margin-bottom:12px;letter-spacing:-.3px;}
+.sect-title em{font-style:italic;color:var(--moss);font-weight:600;}
+.sect-lead{font-size:16px;color:var(--ink-soft);margin-bottom:22px;max-width:640px;}
+
+/* ── WHY IT MATTERS (intro callout) ── */
+.why-box{background:var(--paper);border-left:4px solid var(--moss);padding:24px 28px;border-radius:4px;margin-bottom:24px;box-shadow:0 2px 12px rgba(27,67,50,.04);}
+.why-box p{font-family:'Fraunces',serif;font-size:17px;line-height:1.7;color:var(--ink);font-weight:400;}
+.why-box p + p{margin-top:10px;}
+.why-box strong{color:var(--forest);font-weight:700;}
+
+/* ── TIP LIST ── */
+.tips{display:grid;grid-template-columns:1fr;gap:16px;}
+.tip{background:var(--paper);border-radius:10px;padding:20px 24px;border:1px solid var(--rule);display:grid;grid-template-columns:48px 1fr;gap:20px;align-items:start;}
+.tip-num{font-family:'Fraunces',serif;font-size:34px;font-weight:700;color:var(--moss);line-height:1;font-style:italic;}
+.tip-body h3{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--forest);margin-bottom:4px;}
+.tip-body p{font-size:14.5px;color:var(--ink-soft);line-height:1.6;}
+
+/* ── CHECKLIST ── */
+.checklist{background:linear-gradient(135deg,var(--paper),#F7F2E4);border-radius:10px;padding:28px 32px;border:1px dashed var(--gold);}
+.checklist h3{font-family:'Fraunces',serif;font-size:20px;color:var(--forest);margin-bottom:14px;font-style:italic;font-weight:600;}
+.checklist ul{list-style:none;padding:0;}
+.checklist li{padding:8px 0 8px 32px;position:relative;font-size:15px;color:var(--ink);}
+.checklist li::before{content:"☐";position:absolute;left:0;top:6px;font-size:20px;color:var(--gold-deep);line-height:1;}
+
+/* ── EXAMPLE CARDS ── */
+.examples-intro{margin-bottom:22px;font-size:15.5px;color:var(--ink-soft);}
+.cards-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-bottom:18px;}
+.ex-card{padding:24px 22px;border-radius:3px;position:relative;box-shadow:0 6px 20px rgba(27,67,50,.08),0 1px 3px rgba(27,67,50,.06);transform:rotate(-.8deg);transition:transform .3s;min-height:220px;display:flex;flex-direction:column;}
+.ex-card:nth-child(2){transform:rotate(.5deg);}
+.ex-card:nth-child(3){transform:rotate(-.3deg);}
+.ex-card:hover{transform:rotate(0) translateY(-3px);}
+.ex-card.c1{background:var(--card-pink);}
+.ex-card.c2{background:var(--card-blue);}
+.ex-card.c3{background:var(--card-yellow);}
+.ex-label{font-family:'Fraunces',serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold-deep);margin-bottom:14px;}
+.ex-text{font-family:'Caveat',cursive;font-size:22px;line-height:1.45;color:var(--ink);flex-grow:1;}
+.ex-text .oneword{font-family:'Fraunces',serif;font-size:16px;font-weight:700;letter-spacing:2px;color:var(--forest);display:block;margin-bottom:6px;font-style:normal;}
+.ex-sig{font-family:'Caveat',cursive;font-size:20px;color:var(--moss);margin-top:12px;text-align:right;font-weight:600;}
+
+/* ── LETTERHEAD NOTE ── */
+.letterhead-note{background:var(--forest);color:#fff;border-radius:10px;padding:24px 28px;display:flex;gap:20px;align-items:center;margin-top:22px;}
+.letterhead-icon{font-size:40px;line-height:1;flex-shrink:0;}
+.letterhead-note h4{font-family:'Fraunces',serif;font-size:17px;color:var(--sage);margin-bottom:4px;font-weight:600;}
+.letterhead-note p{font-size:14px;color:rgba(255,255,255,.88);line-height:1.55;}
+
+/* ── FOOTER ── */
+.footer{background:var(--forest-deep);color:rgba(255,255,255,.65);padding:26px 32px;text-align:center;font-family:'Fraunces',serif;font-size:12px;letter-spacing:1.5px;font-style:italic;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .hero h1{font-size:34px;}
+  .wrap{padding:32px 20px 48px;}
+  .sect-title{font-size:24px;}
+  .cards-row{grid-template-columns:1fr;gap:20px;}
+  .tip{grid-template-columns:40px 1fr;gap:14px;padding:16px 18px;}
+  .tip-num{font-size:28px;}
+}
+
+/* ── PRINT STYLES ── */
+@media print{
+  @page{margin:.45in;}
+  html,body{background:#fff;font-size:11pt;}
+  .top-breadcrumb,.print-bar{display:none;}
+  .hero{padding:20px 0 14px;background:#fff;color:var(--forest);break-inside:avoid;border-bottom:2px solid var(--forest);}
+  .hero::before{display:none;}
+  .hero h1{font-size:26pt;color:var(--forest);}
+  .hero h1 em{color:var(--moss);}
+  .hero-eyebrow{color:var(--gold-deep);}
+  .hero-sub{color:var(--ink-soft);}
+  .hero-meta{color:var(--muted);}
+  .wrap{padding:16pt 0 0;max-width:100%;}
+  .section{margin-bottom:18pt;break-inside:avoid;}
+  .sect-title{font-size:16pt;}
+  .sect-lead{font-size:11pt;}
+  .why-box{box-shadow:none;padding:12pt 16pt;}
+  .why-box p{font-size:11pt;}
+  .tips{gap:6pt;}
+  .tip{padding:8pt 12pt;box-shadow:none;break-inside:avoid;}
+  .tip-num{font-size:20pt;}
+  .tip-body h3{font-size:12pt;}
+  .tip-body p{font-size:10pt;}
+  .checklist{padding:12pt 16pt;break-inside:avoid;}
+  .checklist li{padding:4pt 0 4pt 22pt;font-size:10.5pt;}
+  .cards-row{gap:8pt;break-inside:avoid;}
+  .ex-card{min-height:auto;padding:14pt 14pt;box-shadow:none;transform:none!important;border:1px solid var(--rule);}
+  .ex-text{font-size:14pt;}
+  .ex-sig{font-size:13pt;}
+  .letterhead-note{background:#fff;color:var(--ink);border:2px solid var(--forest);break-inside:avoid;padding:12pt 16pt;}
+  .letterhead-note h4{color:var(--forest);}
+  .letterhead-note p{color:var(--ink-soft);}
+  .footer{background:#fff;color:var(--muted);padding:10pt 0 0;border-top:1px solid var(--rule);margin-top:14pt;}
+}
+</style>
+</head>
+<body>
+
+<div class="top-breadcrumb">
+  <a href="APEnvSci_Menu.html">&larr; Back to AP Env Sci Menu</a>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow">Smile Bags &middot; A Word &amp; Wonder Experience</div>
+  <h1>How to Write a <em>Smile Bag Card</em></h1>
+  <div class="hero-sub">A short guide to writing a handwritten note that actually lands for a middle schooler.</div>
+  <div class="hero-meta">AP Environmental Science &middot; Honaker &middot; Spring 2026</div>
+</div>
+
+<div class="print-bar">
+  <button class="print-btn" onclick="window.print()">&#128438;&nbsp; Print This Guide</button>
+</div>
+
+<div class="wrap">
+
+  <section class="section">
+    <span class="sect-num">01</span>
+    <h2 class="sect-title">Who is this card <em>for?</em></h2>
+    <div class="why-box">
+      <p>Your card is going to a middle schooler &mdash; 6th, 7th, or 8th grade &mdash; who could use a smile today. They might be nervous, tired, recovering from a medical procedure, or just having a rough week.</p>
+      <p><strong>Your words matter, even the short ones.</strong> One honest sentence from a real person is worth more than a whole page of cliches.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <span class="sect-num">02</span>
+    <h2 class="sect-title">Seven tips for a <em>great</em> note</h2>
+    <p class="sect-lead">You have a 4&times;4" space on the Smile Bags letterhead. Two to four lines is perfect &mdash; then fill the rest with doodles, color, and personality.</p>
+    <div class="tips">
+      <div class="tip"><div class="tip-num">1</div><div class="tip-body"><h3>Keep it short.</h3><p>Two to four lines. The blank space on the card is part of the gift &mdash; it means you wrote with intention.</p></div></div>
+      <div class="tip"><div class="tip-num">2</div><div class="tip-body"><h3>Sound like a person, not a poster.</h3><p>Middle schoolers can spot a cheesy fake-inspirational message instantly. Write it the way you would say it to a friend.</p></div></div>
+      <div class="tip"><div class="tip-num">3</div><div class="tip-body"><h3>Acknowledge that middle school is real.</h3><p>They are dealing with big feelings, hard days, and a lot of change. A card that says "I see you" lands harder than "Have a great day!"</p></div></div>
+      <div class="tip"><div class="tip-num">4</div><div class="tip-body"><h3>Be specific when you can.</h3><p>"You're awesome" is kind. "The way you keep trying when stuff is hard is awesome" is better.</p></div></div>
+      <div class="tip"><div class="tip-num">5</div><div class="tip-body"><h3>Sign your first name only.</h3><p>Keeps it personal and keeps it safe. No last names, no school, no contact info.</p></div></div>
+      <div class="tip"><div class="tip-num">6</div><div class="tip-body"><h3>Keep it positive.</h3><p>No sad, dark, or political content. Every card is a gift. If you wouldn't want to receive it, don't send it.</p></div></div>
+      <div class="tip"><div class="tip-num">7</div><div class="tip-body"><h3>Make it yours &mdash; embellish.</h3><p>Doodle a small illustration, add a border, draw a flower next to your OneWord, use colored pens, add a small sticker. A handmade card feels like a gift, not a worksheet &mdash; and the decoration is often what the recipient remembers first.</p></div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <span class="sect-num">03</span>
+    <h2 class="sect-title">Before you <em>turn it in</em></h2>
+    <div class="checklist">
+      <h3>Quick pre-flight check</h3>
+      <ul>
+        <li>Read it out loud. Does it sound like you?</li>
+        <li>Check spelling and punctuation.</li>
+        <li>Ask yourself: would a 12-year-old be happy to open this?</li>
+        <li>First name signed? No last name, school, or contact info?</li>
+        <li>Writing stays inside the 4&times;4 space (below the heart divider)?</li>
+        <li>Added color, doodles, or small decoration to make it feel handmade?</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <span class="sect-num">04</span>
+    <h2 class="sect-title">Three <em>examples</em> &mdash; three different voices</h2>
+    <p class="examples-intro">You don't have to copy these. Pick the voice closest to how you actually write, and make yours.</p>
+    <div class="cards-row">
+      <div class="ex-card c1">
+        <div class="ex-label">Short &amp; real</div>
+        <div class="ex-text">Hey friend &mdash;<br/>Middle school is hard.<br/>So are you.<br/>Keep showing up.</div>
+        <div class="ex-sig">&mdash; Maya</div>
+      </div>
+      <div class="ex-card c2">
+        <div class="ex-label">OneWord anchored</div>
+        <div class="ex-text"><span class="oneword">BLOOM.</span>You don't have to rush or be like anyone else. Take your time. You're growing exactly right.</div>
+        <div class="ex-sig">&mdash; Jordan</div>
+      </div>
+      <div class="ex-card c3">
+        <div class="ex-label">Warm &amp; honest</div>
+        <div class="ex-text">Reminder:<br/>You don't have to be perfect. You just have to be you. That's already enough.</div>
+        <div class="ex-sig">&mdash; Daniela</div>
+      </div>
+    </div>
+    <div class="letterhead-note">
+      <div class="letterhead-icon">&#9997;&#65039;</div>
+      <div>
+        <h4>About the letterhead</h4>
+        <p>Write on the Smile Bags 4&times;4 letterhead Ms. Honaker will provide. The dashed lines on the full sheet show where to cut &mdash; one printed page gives you four cards. Write <strong>below the heart divider</strong> so the mascots stay visible at the top of your message &mdash; then use the space around your words to doodle, color, and make it unmistakably yours.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="footer">
+  Smile Bags &middot; A Word &amp; Wonder Experience &middot; AP Environmental Science &middot; Honaker &middot; Spring 2026
+</div>
+
+</body>
+</html>
