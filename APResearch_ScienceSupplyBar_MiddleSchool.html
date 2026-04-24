@@ -8,6 +8,12 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Nunito',sans-serif;background:#1A1A1A;color:#fff;min-height:100vh;padding:32px 20px;}
+
+/* Back-link (Standard #13) */
+.back-link{display:inline-block;color:rgba(255,255,255,0.6);font-size:13px;text-decoration:none;margin-bottom:12px;letter-spacing:0.5px;transition:color .2s;}
+.back-link:hover{color:#C8860A;text-decoration:underline;}
+.back-wrap{max-width:960px;margin:0 auto 12px;}
+
 .page-header{text-align:center;margin-bottom:40px;}
 .brand{font-family:'Fredoka One',cursive;font-size:18px;color:#C8860A;letter-spacing:2px;margin-bottom:8px;}
 .page-title{font-family:'Playfair Display',serif;font-size:42px;font-weight:900;color:#fff;line-height:1.2;margin-bottom:8px;}
@@ -17,13 +23,32 @@ body{font-family:'Nunito',sans-serif;background:#1A1A1A;color:#fff;min-height:10
 .rule-box h3{font-family:'Fredoka One',cursive;font-size:18px;color:#C8860A;margin-bottom:10px;letter-spacing:1px;}
 .rule-box p{font-size:15px;color:#ccc;line-height:1.7;}
 .rule-box strong{color:#fff;}
-.supplies-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:960px;margin:0 auto 48px;}
-.supply-card{background:#111;border:2px solid #333;border-radius:16px;padding:22px 16px;text-align:center;transition:border-color .2s;}
+
+/* Selection counter */
+.counter-bar{max-width:960px;margin:0 auto 18px;background:#0d0d0d;border:1px solid #2a2a2a;border-radius:10px;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+.counter-text{font-family:'Fredoka One',cursive;font-size:14px;color:#fff;letter-spacing:1px;}
+.counter-text span{color:#C8860A;}
+
+.supplies-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:960px;margin:0 auto 32px;}
+.supply-card{background:#111;border:2px solid #333;border-radius:16px;padding:22px 16px;text-align:center;transition:border-color .2s,background .2s,transform .15s;cursor:pointer;position:relative;user-select:none;}
 .supply-card:hover{border-color:#C8860A;}
+.supply-card:active{transform:scale(0.98);}
+.supply-card.selected{border-color:#C8860A;background:#1f1812;box-shadow:0 0 0 1px #C8860A inset;}
+.supply-card.selected::before{content:"✓";position:absolute;top:8px;right:10px;background:#C8860A;color:#1A1A1A;font-family:'Fredoka One',cursive;font-size:14px;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1;pointer-events:none;}
 .supply-emoji{font-size:48px;margin-bottom:12px;display:block;}
 .supply-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#fff;margin-bottom:8px;}
 .supply-why{font-size:13px;color:#888;line-height:1.6;margin-bottom:10px;}
 .supply-connection{font-size:11px;color:#C8860A;font-weight:700;letter-spacing:0.5px;border-top:1px solid #333;padding-top:10px;}
+
+/* Save button + status */
+.save-bar{max-width:960px;margin:0 auto 48px;text-align:center;}
+.save-btn{font-family:'Fredoka One',cursive;font-size:16px;letter-spacing:2px;color:#1A1A1A;background:#C8860A;border:none;padding:16px 38px;border-radius:999px;cursor:pointer;text-transform:uppercase;transition:all .2s;}
+.save-btn:hover:not(:disabled){background:#e09b1c;transform:translateY(-1px);}
+.save-btn:disabled{background:#3a3a3a;color:#777;cursor:not-allowed;}
+.save-msg{margin-top:14px;font-size:14px;color:#888;min-height:20px;}
+.save-msg.success{color:#4CAF50;font-weight:700;}
+.save-msg.error{color:#e07b7b;font-weight:700;}
+
 .clues-section{max-width:960px;margin:0 auto 40px;}
 .clues-title{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:#fff;text-align:center;margin-bottom:8px;}
 .clues-title span{color:#C8860A;}
@@ -40,24 +65,34 @@ body{font-family:'Nunito',sans-serif;background:#1A1A1A;color:#fff;min-height:10
 .footer-note p{font-size:14px;color:#888;line-height:1.7;}
 .footer-note strong{color:#C8860A;}
 .footer-sig{margin-top:16px;font-family:'Fredoka One',cursive;font-size:14px;color:#555;letter-spacing:1px;}
+
 @media(max-width:700px){
   .supplies-grid{grid-template-columns:repeat(2,1fr);}
   .clues-grid{grid-template-columns:1fr;}
+  .counter-bar{flex-direction:column;text-align:center;}
 }
+
 @media print{
   body{background:#fff;color:#000;padding:16px;}
   .page-title{color:#000;}
   .page-title span,.brand,.clue-num,.supply-connection{color:#C8860A;}
   .rule-box{background:#FFF3D6;border-color:#C8860A;}
   .rule-box p,.supply-why,.clue-hint,.footer-note p{color:#333;}
-  .supply-card,.clue-card,.footer-note{background:#F9F9F9;border-color:#ddd;break-inside:avoid;}
+  .supply-card,.clue-card,.footer-note{background:#F9F9F9;border-color:#ddd;break-inside:avoid;cursor:default;}
+  .supply-card.selected{background:#FFF8E1;border-color:#C8860A;box-shadow:none;}
+  .supply-card.selected::before{display:none;}
   .supply-name,.clue-q,.clues-title{color:#000;}
+  .back-wrap,.counter-bar,.save-bar{display:none!important;}
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
   @page{size:letter;margin:.5in;}
 }
 </style>
 </head>
 <body>
+
+<div class="back-wrap">
+  <a href="APEnvSci_Menu.html" class="back-link">&larr; Back to AP Env Sci Menu</a>
+</div>
 
 <div class="page-header">
   <div class="brand">SMILE BAGS &middot; MIDDLE SCHOOL EDITION</div>
@@ -67,67 +102,77 @@ body{font-family:'Nunito',sans-serif;background:#1A1A1A;color:#fff;min-height:10
 
 <div class="rule-box">
   <h3>How the Science Supply Bar Works</h3>
-  <p>Browse the supplies below. Choose <strong>1&ndash;3 items</strong> that connect to your OneWord and your research. In your bookmark, explain <strong>why</strong> you chose each item using your scientific reasoning. Your supplies go in the Smile Bag alongside your &ldquo;Did You Know?&rdquo; bookmark &mdash; giving a middle school student something real to explore and discover!</p>
+  <p>Browse the supplies below. <strong>Tap each item</strong> you'd like to choose for your Smile Bag (1&ndash;3 items recommended). When you're done, hit <strong>Save My Selections</strong> &mdash; this helps us track which supplies are being used. In your bookmark, explain <strong>why</strong> you chose each item using your scientific reasoning.</p>
+</div>
+
+<div class="counter-bar">
+  <div class="counter-text">Selected: <span id="selectionCount">0</span> item(s)</div>
+  <div class="counter-text" style="color:#888;font-size:12px;">Tap a card to select &middot; Tap again to deselect</div>
 </div>
 
 <div class="supplies-grid">
 
-  <div class="supply-card">
+  <div class="supply-card" data-supply="Crayons & Colored Pencils" onclick="toggleSupply(this)">
     <span class="supply-emoji">&#127774;</span>
     <div class="supply-name">Crayons &amp; Colored Pencils</div>
     <div class="supply-why">Color is science. Light wavelengths, pigment chemistry, and the psychology of color all connect to real research. Students can use these to draw observations and diagrams.</div>
     <div class="supply-connection">Light &middot; Chemistry &middot; Psychology &middot; Art &amp; Design</div>
   </div>
 
-  <div class="supply-card">
+  <div class="supply-card" data-supply="Stickers" onclick="toggleSupply(this)">
     <span class="supply-emoji">&#11088;</span>
     <div class="supply-name">Stickers</div>
     <div class="supply-why">Adhesives involve polymer chemistry. Stickers also connect to positive reinforcement in behavioral science and reward systems studied in psychology.</div>
     <div class="supply-connection">Chemistry &middot; Psychology &middot; Behavioral Science</div>
   </div>
 
-  <div class="supply-card">
+  <div class="supply-card" data-supply="Play-Doh" onclick="toggleSupply(this)">
     <span class="supply-emoji">&#127939;</span>
     <div class="supply-name">Play-Doh</div>
     <div class="supply-why">A hands-on tool for modeling atoms, cells, landforms, and scientific structures. Perfect for building and testing three-dimensional scientific models.</div>
     <div class="supply-connection">Modeling &middot; Biology &middot; Earth Science &middot; Chemistry</div>
   </div>
 
-  <div class="supply-card">
+  <div class="supply-card" data-supply="Ruler" onclick="toggleSupply(this)">
     <span class="supply-emoji">&#128207;</span>
     <div class="supply-name">Ruler</div>
     <div class="supply-why">Measurement is the foundation of all science. Connects to data collection, scale, proportion, and the metric system used in scientific research worldwide.</div>
     <div class="supply-connection">Data &middot; Physics &middot; Engineering &middot; Math</div>
   </div>
 
-  <div class="supply-card">
+  <div class="supply-card" data-supply="Mini Notepad" onclick="toggleSupply(this)">
     <span class="supply-emoji">&#128211;</span>
     <div class="supply-name">Mini Notepad</div>
     <div class="supply-why">Scientists record observations, hypotheses, and data in field notebooks. A notepad invites students to start thinking like a researcher in their everyday life.</div>
     <div class="supply-connection">Scientific Method &middot; Any Research Area</div>
   </div>
 
-  <div class="supply-card">
+  <div class="supply-card" data-supply="Rubber Bands" onclick="toggleSupply(this)">
     <span class="supply-emoji">&#129517;</span>
     <div class="supply-name">Rubber Bands</div>
     <div class="supply-why">Elasticity, potential energy, and simple machines. Rubber bands demonstrate physics concepts and are used in engineering design challenges worldwide.</div>
     <div class="supply-connection">Physics &middot; Engineering &middot; Energy &middot; Materials Science</div>
   </div>
 
-  <div class="supply-card">
+  <div class="supply-card" data-supply="Seeds" onclick="toggleSupply(this)">
     <span class="supply-emoji">&#127807;</span>
     <div class="supply-name">Seeds</div>
     <div class="supply-why">Seeds represent life cycles, genetics, ecosystems, and food systems. A student can grow something real from their smile bag &mdash; one of the most powerful science connections possible.</div>
     <div class="supply-connection">Biology &middot; Genetics &middot; Environmental Science</div>
   </div>
 
-  <div class="supply-card">
+  <div class="supply-card" data-supply="Mirror" onclick="toggleSupply(this)">
     <span class="supply-emoji">&#129351;</span>
     <div class="supply-name">Mirror</div>
     <div class="supply-why">Reflection, light, symmetry, and optics. Mirrors connect to physics and the science of how we perceive the world. Students can explore symmetry found in nature and design.</div>
     <div class="supply-connection">Physics &middot; Optics &middot; Light &middot; Symmetry</div>
   </div>
 
+</div>
+
+<div class="save-bar">
+  <button id="saveBtn" class="save-btn" onclick="saveSelections()" disabled>&#128190; Save My Selections</button>
+  <div id="saveMsg" class="save-msg"></div>
 </div>
 
 <div class="clues-section">
@@ -203,6 +248,72 @@ body{font-family:'Nunito',sans-serif;background:#1A1A1A;color:#fff;min-height:10
   <p style="margin-top:10px;font-style:italic;">Remember: the goal is to give a middle school student something real to explore, question, and discover.</p>
   <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; Spring 2026</div>
 </div>
+
+<script>
+const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbxfT9cjUgt4dy5jrFdkx2iccGjJduW6--fwOkECBxYcqA8B6D9HJF4mu666-tOUdhggxA/exec';
+
+function toggleSupply(card) {
+  card.classList.toggle('selected');
+  updateCounter();
+}
+
+function updateCounter() {
+  const count = document.querySelectorAll('.supply-card.selected').length;
+  document.getElementById('selectionCount').textContent = count;
+  document.getElementById('saveBtn').disabled = (count === 0);
+}
+
+async function logSupplySelection(supplyName) {
+  try {
+    const payload = {
+      activity: 'SupplySelection',
+      word: supplyName,
+      student_name: '',
+      class: 'AP Environmental Science',
+      teacher: 'Honaker',
+      content: supplyName,
+      timestamp: new Date().toISOString()
+    };
+    await fetch(SUBMIT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+  } catch (err) {
+    console.warn('Supply log failed (non-blocking):', err);
+  }
+}
+
+async function saveSelections() {
+  const selectedCards = document.querySelectorAll('.supply-card.selected');
+  if (selectedCards.length === 0) return;
+
+  const btn = document.getElementById('saveBtn');
+  const msg = document.getElementById('saveMsg');
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+  msg.className = 'save-msg';
+  msg.textContent = '';
+
+  // Fire one POST per selected supply (Standard #11 — fire-and-forget)
+  const supplies = Array.from(selectedCards).map(c => c.dataset.supply);
+  supplies.forEach(name => logSupplySelection(name));
+
+  // Optimistic UI — no-cors responses are unreadable, so we can't actually
+  // confirm. Verification lives in the Submissions tab.
+  setTimeout(() => {
+    msg.className = 'save-msg success';
+    msg.textContent = '✓ Saved ' + supplies.length + ' supply selection(s). Thank you!';
+    // Reset selection state
+    selectedCards.forEach(c => c.classList.remove('selected'));
+    updateCounter();
+    btn.textContent = '💾 Save My Selections';
+    // Clear the success message after a few seconds
+    setTimeout(() => { msg.textContent = ''; msg.className = 'save-msg'; }, 5000);
+  }, 500);
+}
+</script>
 
 </body>
 </html>
