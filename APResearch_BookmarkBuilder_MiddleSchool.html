@@ -231,6 +231,8 @@ body{font-family:'Nunito',sans-serif;background:#1A1A1A;min-height:100vh;color:#
 </div>
 
 <script>
+const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbx2kIL0IpCeSEo1PKd1EUDRe_1hIqq8fSkko9Tw1RLHfQ-N6Cl6A1G5wuCEJb0vuF_8ew/exec';
+
 // ══ DATA ══
 var WORDS = {
   RENEW:{meaning:"Starting fresh and becoming new again",colors:{bg1:"#1B5E20",bg2:"#4CAF50",bg3:"#CCFF90",accent:"#69F0AE",gold:"#FFD740",text:"#fff",backTop:"#2E7D32",backBar:"#A5D6A7"},fact:"Every spring, trees push out millions of new leaves — renewing themselves after winter. A single oak tree can live for 500 years, renewing its leaves each season. Scientists call this cycle \"phenology\" — the study of nature's great renewals.",supplies:"🔍 Your magnifying glass\n🌱 Your seed packet\n(both are in this bag!)",steps:["Look at your seed through the magnifying glass. See the tiny lines? Each one is a future root — ready to renew into a whole plant.","Find something outside that looks old or dry. Look closely — do you see any tiny new growth? Nature is always renewing quietly.","Plant your seed at home. Each day it grows is a tiny renewal. Watch for the first green tip breaking through the soil."],message:"The more I studied environmental systems, the more I realized — renewal is not a big dramatic event. It happens in tiny moments, every single day. So do you."},
@@ -432,6 +434,27 @@ function savePDF(){
   setTimeout(function(){ document.head.removeChild(style); }, 1000);
 }
 
+async function logBookmarkToSheet() {
+  try {
+    const editedData = getEditedData();
+    const payload = {
+      Activity: 'Bookmarks',
+      OneWord: currentWord,
+      Name: document.getElementById('studentName').value.trim(),
+      Content: JSON.stringify(editedData),
+      Timestamp: new Date().toISOString()
+    };
+    await fetch(SUBMIT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+  } catch (err) {
+    console.warn('Bookmark log failed (non-blocking):', err);
+  }
+}
+
 function submitBookmark(){
   if(!currentWord){ alert('Please select a OneWord first.'); return; }
   var name = document.getElementById('studentName').value.trim();
@@ -449,6 +472,7 @@ function submitBookmark(){
       msg.style.background = '#D4EDDA';
       msg.style.color = '#155724';
       msg.textContent = 'Your bookmark has been saved! You can now print it.';
+      logBookmarkToSheet();
       setTimeout(function(){
         btn.textContent = '💾 Save My Bookmark';
       }, 3000);
