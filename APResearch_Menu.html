@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AP Research &mdash; Smile Bags</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#1A1A1A;color:#fff;min-height:100vh;padding:0 0 60px;line-height:1.6;}
+
+/* ─── HERO ─── */
+.hero{text-align:center;padding:56px 24px 32px;max-width:900px;margin:0 auto;border-bottom:1px solid #2a2a2a;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:4px;color:#C8860A;text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,56px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:14px;}
+.hero-title span{color:#C8860A;}
+.hero-sub{font-size:15px;color:#c8c4bc;max-width:640px;margin:0 auto 22px;line-height:1.7;}
+.hero-meta{font-family:'Fredoka One',cursive;font-size:11px;color:#777;letter-spacing:2px;margin-top:14px;text-transform:uppercase;}
+
+/* ─── MISSION STRIP ─── */
+.mission{max-width:900px;margin:32px auto;padding:0 24px;}
+.mission-box{background:linear-gradient(135deg,#1f1812 0%,#181818 100%);border:1px solid #2a2a2a;border-radius:14px;padding:28px;}
+.mission-title{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;color:#C8860A;text-transform:uppercase;margin-bottom:12px;}
+.mission-body{font-size:14px;color:#c8c4bc;line-height:1.7;}
+.mission-body strong{color:#fff;}
+
+/* ─── TEACHER PICKER ─── */
+.section{max-width:900px;margin:40px auto;padding:0 24px;}
+.section-title{font-family:'Fredoka One',cursive;font-size:14px;letter-spacing:4px;color:#C8860A;text-transform:uppercase;margin-bottom:8px;text-align:center;}
+.section-sub{font-size:13px;color:#888;text-align:center;margin-bottom:24px;line-height:1.6;}
+
+.teacher-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.teacher-card{background:#111;border:1px solid #2a2a2a;border-radius:14px;padding:32px 28px;text-align:center;}
+.teacher-name{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:#fff;margin-bottom:6px;}
+.teacher-role{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;color:#C8860A;text-transform:uppercase;margin-bottom:20px;}
+.teacher-links{display:flex;flex-direction:column;gap:12px;}
+.teacher-btn{background:#1f1812;border:1.5px solid #C8860A;color:#C8860A;font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:1px;padding:14px 18px;border-radius:10px;text-decoration:none;transition:all .2s;text-transform:uppercase;}
+.teacher-btn:hover{background:#C8860A;color:#1A1A1A;transform:translateY(-1px);}
+.teacher-btn.primary{background:#C8860A;color:#1A1A1A;}
+.teacher-btn.primary:hover{background:#e09b1c;}
+
+/* ─── TRACKER ─── */
+.tracker{max-width:900px;margin:24px auto;padding:0 24px;}
+.tracker-box{background:#111;border:1px solid #2a2a2a;border-radius:14px;padding:24px;text-align:center;}
+.tracker-title{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:3px;color:#C8860A;text-transform:uppercase;margin-bottom:14px;}
+.tracker-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:14px;}
+.tracker-tile{background:#0a0a0a;border:1px solid #2a2a2a;border-radius:10px;padding:14px 10px;}
+.tracker-tile-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;color:#777;text-transform:uppercase;margin-bottom:6px;}
+.tracker-tile-count{font-family:'Fredoka One',cursive;font-size:18px;color:#C8860A;}
+.tracker-total{font-family:'Fredoka One',cursive;font-size:14px;letter-spacing:2px;color:#fff;padding-top:12px;border-top:1px solid #2a2a2a;text-transform:uppercase;}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width:720px){
+  .teacher-grid{grid-template-columns:1fr;}
+  .tracker-grid{grid-template-columns:1fr;}
+}
+
+/* ─── FOOTER ─── */
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #2a2a2a;max-width:900px;margin:48px auto 0;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:11px;color:#C8860A;letter-spacing:2px;line-height:1.8;}
+.footer-body{font-size:12px;color:#555;margin-top:10px;font-style:italic;}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-brand">Smile Bags &middot; A Word &amp; Wonder Experience</div>
+  <h1 class="hero-title">AP <span>Research</span></h1>
+  <p class="hero-sub">Smile Bags Unit &mdash; AP Research scholars apply their inquiry skills to a service-learning contribution. Each student creates a Science Bookmark and selects supplies for a Smile Bag bound for an elementary recipient.</p>
+  <div class="hero-meta">AP Research &middot; Spring 2026</div>
+</div>
+
+<!-- MISSION -->
+<div class="mission">
+  <div class="mission-box">
+    <div class="mission-title">&#128218; The Unit</div>
+    <div class="mission-body">
+      AP Research students translate research thinking into a hands-on contribution: a <strong>Science Bookmark</strong> built around a OneWord, paired with a <strong>set of supplies</strong> selected from the Science Supply Bar. Each completed bag travels to an elementary recipient with a fact, an activity, and a personal message from a high school scientist. Future Ready attributes: <strong>Thinkers &amp; Inquirers</strong> and <strong>Personally &amp; Socially Responsible</strong>.
+    </div>
+  </div>
+</div>
+
+<!-- TEACHER PICKER -->
+<div class="section">
+  <div class="section-title">Choose Your Class</div>
+  <div class="section-sub">Click on your teacher's card to access your kiosks.</div>
+
+  <div class="teacher-grid">
+
+    <div class="teacher-card">
+      <div class="teacher-name">Mrs. McGee</div>
+      <div class="teacher-role">AP Research</div>
+      <div class="teacher-links">
+        <a href="APResearch_SupplyBar_McGee.html" class="teacher-btn primary">&#129520; Science Supply Bar</a>
+        <a href="APResearch_BookmarkBuilder_McGee.html" class="teacher-btn">&#128278; Bookmark Builder</a>
+      </div>
+    </div>
+
+    <div class="teacher-card">
+      <div class="teacher-name">Mrs. Stone</div>
+      <div class="teacher-role">AP Research</div>
+      <div class="teacher-links">
+        <a href="APResearch_SupplyBar_Stone.html" class="teacher-btn primary">&#129520; Science Supply Bar</a>
+        <a href="APResearch_BookmarkBuilder_Stone.html" class="teacher-btn">&#128278; Bookmark Builder</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TRACKER -->
+<div class="tracker">
+  <div class="tracker-box">
+    <div class="tracker-title">&#128202; Class Goals</div>
+    <div class="tracker-grid">
+      <div class="tracker-tile">
+        <div class="tracker-tile-label">Mrs. McGee &middot; Bookmarks</div>
+        <div class="tracker-tile-count">Goal: 15</div>
+      </div>
+      <div class="tracker-tile">
+        <div class="tracker-tile-label">Mrs. Stone &middot; Bookmarks</div>
+        <div class="tracker-tile-count">Goal: 15</div>
+      </div>
+    </div>
+    <div class="tracker-total">Tracked: <span style="color:#C8860A;font-size:18px;">30</span> Total Bookmarks</div>
+    <div style="margin-top:18px;">
+      <a href="https://docs.google.com/spreadsheets/d/1lkDIve0CFtATF4MreZ5IVfLWVCTxrczqCt2FiQLwZyE/edit" target="_blank" rel="noopener" style="display:inline-block;background:transparent;color:#C8860A;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 22px;border:1.5px solid #C8860A;border-radius:999px;text-decoration:none;transition:all .2s;">&#128202; View Live Submissions &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; AP Research &middot; Spring 2026</div>
+  <div class="footer-body">Built by AP Research scholars for elementary students who need a smile.</div>
+</div>
+
+</body>
+</html>
