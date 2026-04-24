@@ -9,7 +9,7 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Nunito',sans-serif;background:#FFF8EE;min-height:100vh;padding-bottom:60px;}
 
-/* ── TOP BREADCRUMB (nav to parent Menu) ── */
+/* ── TOP BREADCRUMB (nav to parent Menu — Standard #13) ── */
 .top-breadcrumb{background:#2A0D14;padding:8px 28px;border-bottom:1px solid rgba(255,255,255,.1);}
 .top-breadcrumb a{color:#C9A84C;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;opacity:.75;transition:opacity .2s;display:inline-flex;align-items:center;gap:4px;}
 .top-breadcrumb a:hover{opacity:1;}
@@ -69,9 +69,11 @@ body{font-family:'Nunito',sans-serif;background:#FFF8EE;min-height:100vh;padding
 .img-btn{background:#fff;border:2.5px solid #F5D5A0;border-radius:8px;padding:6px 4px;cursor:pointer;text-align:center;transition:all .2s;font-size:1.4rem;line-height:1;}
 .img-btn:hover{border-color:#6B1E2E;transform:scale(1.05);}
 .img-btn.sel{border-color:#6B1E2E;background:#FFF0E0;}
-.print-note{background:#FFF3D6;border:1.5px solid #C8860A;border-radius:10px;padding:14px 18px;font-size:13px;color:#7A4F00;line-height:1.65;margin-bottom:14px;}
+.print-note{background:#FFF3D6;border:1.5px solid #C8860A;border-radius:10px;padding:14px 18px;font-size:13px;color:#7A4F00;line-height:1.75;margin-bottom:14px;}
 .print-note strong{color:#5A3000;}
-.sheet-preview{display:flex;justify-content:center;padding:10px 0;overflow-x:auto;}
+.print-note .opt{display:block;margin-top:6px;}
+.final-preview{display:flex;justify-content:center;padding:14px 0;}
+.final-preview svg{filter:drop-shadow(0 6px 24px rgba(107,30,46,.18));}
 .print-btn-main{width:100%;padding:16px;background:linear-gradient(135deg,#6B1E2E,#4A1020);color:#fff;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:18px;cursor:pointer;margin-bottom:8px;}
 .sub-box{background:#F0F8E8;border-radius:16px;padding:28px;text-align:center;display:none;}
 .token-box{background:#FFF3D6;border:2px solid #C8860A;border-radius:12px;padding:14px;display:inline-block;margin-top:14px;}
@@ -79,7 +81,18 @@ body{font-family:'Nunito',sans-serif;background:#FFF8EE;min-height:100vh;padding
 .nav-row{display:flex;gap:12px;justify-content:flex-end;margin-top:16px;}
 .btn-next{padding:14px 28px;background:linear-gradient(135deg,#6B1E2E,#4A1020);color:#fff;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;box-shadow:0 5px 16px rgba(107,30,46,.3);}
 .btn-back{padding:14px 20px;border:3px solid #F5D5A0;border-radius:50px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;color:#888;background:#fff;}
-@media(max-width:640px){.word-grid{grid-template-columns:repeat(3,1fr);}.studio{grid-template-columns:1fr;}.preview-col{position:static;}.img-grid{grid-template-columns:repeat(5,1fr);}.counter-progress{width:110px;}}
+
+/* ── FULL-SIZE SCREENSHOT MODAL ── */
+.fs-modal{display:none;position:fixed;inset:0;background:#fff;z-index:9999;align-items:center;justify-content:center;flex-direction:column;padding:20px;}
+.fs-modal.show{display:flex;}
+.fs-close{position:absolute;top:20px;right:20px;background:#6B1E2E;color:#fff;border:none;border-radius:50%;width:48px;height:48px;font-size:22px;cursor:pointer;font-family:'Fredoka One',cursive;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:2;}
+.fs-close:hover{background:#4A1020;}
+.fs-svg{width:min(70vw,70vh);height:min(70vw,70vh);filter:drop-shadow(0 8px 32px rgba(107,30,46,.12));}
+.fs-hint{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#C8860A;margin-top:24px;}
+.fs-caption{margin-top:10px;font-family:'Nunito',sans-serif;font-size:14px;color:#666;text-align:center;max-width:480px;line-height:1.7;padding:0 20px;}
+.fs-caption strong{color:#6B1E2E;font-weight:800;}
+
+@media(max-width:640px){.word-grid{grid-template-columns:repeat(3,1fr);}.studio{grid-template-columns:1fr;}.preview-col{position:static;}.img-grid{grid-template-columns:repeat(5,1fr);}.counter-progress{width:110px;}.fs-svg{width:min(82vw,58vh);height:min(82vw,58vh);}}
 </style>
 </head>
 <body>
@@ -94,7 +107,7 @@ body{font-family:'Nunito',sans-serif;background:#FFF8EE;min-height:100vh;padding
     <span class="counter-icon">&#127991;</span>
     <span id="counterText">Loading count&hellip;</span>
   </div>
-  <div class="counter-progress" title="Progress toward 10 sticker sheets"><div class="counter-bar" id="counterBar"></div></div>
+  <div class="counter-progress" title="Progress toward 25 sticker designs"><div class="counter-bar" id="counterBar"></div></div>
 </div>
 
 <div class="prog">
@@ -104,10 +117,11 @@ body{font-family:'Nunito',sans-serif;background:#FFF8EE;min-height:100vh;padding
   <div class="prog-arr">&rsaquo;</div>
   <div class="prog-item"><div class="prog-dot" id="pd2">3</div><div class="prog-lbl" id="pl2">Design</div></div>
   <div class="prog-arr">&rsaquo;</div>
-  <div class="prog-item"><div class="prog-dot" id="pd3">4</div><div class="prog-lbl" id="pl3">Print!</div></div>
+  <div class="prog-item"><div class="prog-dot" id="pd3">4</div><div class="prog-lbl" id="pl3">Save!</div></div>
 </div>
+
 <div class="screen active" id="scr0">
-  <div class="scr-hd"><h2>Let's design your stickers! &#127991;</h2><p>You'll choose your word, pick a font and color, select an image, and print 12 stickers on one sheet.</p></div>
+  <div class="scr-hd"><h2>Let's design your sticker! &#127991;</h2><p>You'll choose your word, pick a font and color, select an image, and save your sticker for Cricut.</p></div>
   <div class="white-card">
     <label class="field-label">Your first name</label>
     <input class="field-inp" id="iName" type="text" placeholder="Type your name..."/>
@@ -120,14 +134,16 @@ body{font-family:'Nunito',sans-serif;background:#FFF8EE;min-height:100vh;padding
   </div>
   <div class="nav-row"><button class="btn-next" onclick="toWord()">Next &rarr;</button></div>
 </div>
+
 <div class="screen" id="scr1">
-  <div class="scr-hd"><h2>Choose Your OneWord &#127775;</h2><p>Your OneWord will be the centerpiece of every sticker.</p></div>
+  <div class="scr-hd"><h2>Choose Your OneWord &#11088;</h2><p>Your OneWord will be the centerpiece of your sticker.</p></div>
   <div class="white-card"><div class="word-grid" id="wordGrid"></div></div>
   <div class="nav-row">
     <button class="btn-back" onclick="nav(0)">&#8592; Back</button>
     <button class="btn-next" onclick="toDesign()">Next &mdash; Design My Sticker &rarr;</button>
   </div>
 </div>
+
 <div class="screen" id="scr2">
   <div class="scr-hd"><h2 id="s2h">Design Your Sticker &#10024;</h2><p>Choose your font, background color, and image. Your sticker updates live!</p></div>
   <div class="white-card">
@@ -154,32 +170,47 @@ body{font-family:'Nunito',sans-serif;background:#FFF8EE;min-height:100vh;padding
   </div>
   <div class="nav-row">
     <button class="btn-back" onclick="nav(1)">&#8592; Back</button>
-    <button class="btn-next" onclick="toPreview()">Preview My Sheet &rarr;</button>
+    <button class="btn-next" onclick="toPreview()">Preview My Sticker &rarr;</button>
   </div>
 </div>
+
 <div class="screen" id="scr3">
-  <div class="scr-hd"><h2 id="s3h">Your Sticker Sheet! &#127991;</h2><p>12 stickers &middot; 2&Prime; circles &middot; Cricut-ready. Corner marks guide the cut.</p></div>
-  <div class="print-note"><strong>&#128203; Two Options:</strong><br>&#128438; <strong>Print My Sticker Sheet</strong> — prints directly with corner cut-guides; cut with scissors along each circle. Works on full-sheet sticker paper (inkjet compatible) or regular paper.<br>&#128229; <strong>Download for Cricut Design Space</strong> — saves a clean PNG (no cut marks) ready to upload to Cricut. Design Space adds its own registration marks for Print Then Cut.</div>
+  <div class="scr-hd"><h2 id="s3h">Your Sticker! &#127991;</h2><p>Save your sticker. Printing happens in D210.</p></div>
+  <div class="print-note">
+    <strong>&#128203; Save Your Sticker &mdash; Printing Happens in D210</strong>
+    <span class="opt"><strong>&#128229; Download PNG</strong> &mdash; saves a transparent-background file perfect for Cricut Design Space. Drop it in our shared Drive folder.</span>
+    <span class="opt"><strong>&#128269; View Full-Size, then Screenshot</strong> &mdash; press <strong>Win + Shift + S</strong> (or <strong>&#8984; + Shift + 4</strong> on Mac) to capture, then save to the Drive folder.</span>
+    <span class="opt"><strong>&#128438; Printing</strong> &mdash; all bag-item printing happens on the D210 printers.</span>
+  </div>
   <div class="white-card">
-    <div class="sheet-preview"><svg id="sheetSVG" viewBox="0 0 612 792" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:380px;border:1px solid #e8e4dc;border-radius:8px;background:#fff;"></svg></div>
+    <div class="final-preview"><svg id="finalSVG" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:320px;"></svg></div>
   </div>
   <div id="notSub">
-    <button class="print-btn-main" onclick="printSheet()">&#128438; Print My Sticker Sheet</button>
-    <button class="print-btn-main" style="background:linear-gradient(135deg,#1565C0,#0D47A1);margin-top:8px;" onclick="downloadForCricut()">&#128229; Download for Cricut Design Space</button>
-    <button class="print-btn-main" style="background:linear-gradient(135deg,#2D7A4F,#1B5E20);margin-top:8px;" onclick="doSubmit()">&#10003; Submit &amp; Print</button>
+    <button class="print-btn-main" onclick="downloadSticker()">&#128229; Download My Sticker PNG</button>
+    <button class="print-btn-main" style="background:linear-gradient(135deg,#1565C0,#0D47A1);margin-top:8px;" onclick="showFullScreen()">&#128269; View Full-Size for Screenshot</button>
+    <button class="print-btn-main" style="background:linear-gradient(135deg,#2D7A4F,#1B5E20);margin-top:8px;" onclick="doSubmit()">&#10003; Submit My Design</button>
     <p style="font-size:12px;color:#888;font-style:italic;text-align:center;margin-top:8px;">Submit logs your design to Ms. Hoffman.</p>
   </div>
   <div class="sub-box" id="subBox">
     <div style="font-size:52px;margin-bottom:12px;">&#127881;</div>
-    <div style="font-family:'Fredoka One',cursive;font-size:22px;color:#2D7A4F;margin-bottom:6px;">Sheet Submitted!</div>
-    <p style="font-size:14px;color:#555;line-height:1.7;">Your sticker design is saved. Don't forget to print!</p>
+    <div style="font-family:'Fredoka One',cursive;font-size:22px;color:#2D7A4F;margin-bottom:6px;">Sticker Submitted!</div>
+    <p style="font-size:14px;color:#555;line-height:1.7;">Your design is saved. Don't forget to download or screenshot your sticker and drop it in the Drive folder!</p>
     <div class="token-box"><div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#C8860A;margin-bottom:4px;">Your code</div><div class="token-code" id="tokCode">KSB-0000</div></div>
-    <button class="print-btn-main" style="margin-top:16px;width:auto;padding:12px 28px;" onclick="printSheet()">&#128438; Print My Sheet</button>
+    <button class="print-btn-main" style="margin-top:16px;width:auto;padding:12px 28px;" onclick="downloadSticker()">&#128229; Download My Sticker</button>
   </div>
   <div class="nav-row" style="justify-content:flex-start;margin-top:12px;">
     <button class="btn-back" onclick="nav(2)">&#8592; Change Design</button>
   </div>
 </div>
+
+<!-- FULL-SIZE SCREENSHOT MODAL -->
+<div class="fs-modal" id="fsModal" onclick="fsBgClick(event)">
+  <button class="fs-close" onclick="closeFullScreen()" aria-label="Close full-size view">&#10005;</button>
+  <svg class="fs-svg" id="fsSVG" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg"></svg>
+  <div class="fs-hint">&#128247; Screenshot This View</div>
+  <div class="fs-caption"><strong>Press Win + Shift + S</strong> (or <strong>&#8984; + Shift + 4</strong> on Mac) to capture your sticker. Save the screenshot to our shared Drive folder. Click &#10005; when done.</div>
+</div>
+
 <script>
 var SCRIPT_URL="https://script.google.com/macros/s/AKfycbxpI9oZZFLIJrmCfph6a0bDiIr6sadmGbOVA_Azzhr5_g9p4ZT6Olgtji69scSh02qM/exec";
 var TARGET_COUNT=25;
@@ -187,19 +218,22 @@ var CURRENT_COUNT=0;
 
 /* APPS SCRIPT doGet CONTRACT — for the eventual Code.gs:
  * When called with ?callback=cbName (JSONP):
- *   return: cbName({"count":N,"target":10});
+ *   return: cbName({"count":N,"target":25});
  * When called without callback (plain JSON):
- *   return: {"count":N,"target":10}
+ *   return: {"count":N,"target":25}
  * Example implementation (apply Standard #9 Debug Log alongside):
  *   function doGet(e){
  *     var sheet=SpreadsheetApp.openById(SHEET_ID).getSheetByName("StickerSheets");
  *     var count=Math.max(0,sheet.getLastRow()-1);
- *     var json=JSON.stringify({count:count,target:10});
+ *     var json=JSON.stringify({count:count,target:25});
  *     var cb=e&&e.parameter&&e.parameter.callback;
  *     var out=cb?(cb+"("+json+");"):json;
  *     return ContentService.createTextOutput(out)
  *       .setMimeType(cb?ContentService.MimeType.JAVASCRIPT:ContentService.MimeType.JSON);
  *   }
+ * NOTE: activity field in POST payload is still "StickerSheet" for backward
+ * compatibility with the existing Google Sheet tab name. Each row now represents
+ * one sticker design, not a 12-up sheet.
  */
 
 var WORDS=["ABSORB","ADAPT","ANCHOR","BALANCE","BLOOM","BREATHE","CLEAR","CONNECT","CYCLE","EMERGE","FILTER","FLOW","GROW","HEAL","MIGRATE","PERSIST","RENEW","RESTORE","RETURN","RISE","ROOT","SHINE","SUSTAIN","THRIVE","TRANSFORM"];
@@ -249,7 +283,7 @@ function updateCounterUI(count,overrideText){
   var text;
   if(overrideText){text=overrideText;}
   else if(count>=TARGET_COUNT){text="\uD83C\uDF89 Goal reached! "+count+" of "+TARGET_COUNT;}
-  else {text=count+" of "+TARGET_COUNT+" sticker sheets created";}
+  else {text=count+" of "+TARGET_COUNT+" sticker designs created";}
   document.getElementById("counterText").textContent=text;
   document.getElementById("counterBar").style.width=pct+"%";
   var pill=document.getElementById("counterPill");
@@ -298,103 +332,59 @@ function buildImgGrid(id,imgs){
 function isLightColor(hex){var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return(r*.299+g*.587+b*.114)>155;}
 function escXml(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 
-function drawSticker(svgEl,cx,cy,r,word,name,font,color,image){
+/* ── STICKER RENDERING (proportional to radius — one render path for preview, final, modal, and download) ── */
+function buildStickerSvgGroup(cx,cy,r,word,name,font,color,image){
   var bg=color.hex,isLight=isLightColor(bg);
-  var textCol=isLight?"#1A1A1A":"#FFFFFF";
-  var accentCol=isLight?"rgba(0,0,0,.15)":"rgba(255,255,255,.25)";
-  var wl=word.length,wfs=wl<=4?22:wl<=6?19:wl<=8?16:wl<=10?14:12;
-  svgEl.innerHTML=
+  var tc=isLight?"#1A1A1A":"#FFFFFF",ac=isLight?"rgba(0,0,0,.15)":"rgba(255,255,255,.25)";
+  var wl=word.length;
+  var scale=wl<=4?0.244:wl<=6?0.211:wl<=8?0.178:wl<=10?0.156:0.133;
+  var wfs=r*scale, nameSize=r*0.10;
+  return (
     '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+bg+'"/>'+
-    '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r-5)+'" fill="none" stroke="'+accentCol+'" stroke-width="1.5"/>'+
-    '<text x="'+cx+'" y="'+(cy-14)+'" text-anchor="middle" dominant-baseline="middle" font-size="'+(r*.48)+'">'+image+'</text>'+
-    '<line x1="'+(cx-r*.5)+'" y1="'+(cy+12)+'" x2="'+(cx+r*.5)+'" y2="'+(cy+12)+'" stroke="'+accentCol+'" stroke-width="1"/>'+
-    '<text x="'+cx+'" y="'+(cy+26)+'" text-anchor="middle" dominant-baseline="middle" font-family="'+escXml(font.css)+'" font-size="'+wfs+'" fill="'+textCol+'" letter-spacing="1">'+escXml(word)+'</text>'+
-    '<text x="'+cx+'" y="'+(cy+r-14)+'" text-anchor="middle" dominant-baseline="middle" font-family="Nunito,sans-serif" font-size="9" fill="'+textCol+'" opacity="0.7">'+escXml(name)+'</text>';
+    '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r-r*0.055)+'" fill="none" stroke="'+ac+'" stroke-width="'+(r*0.017)+'"/>'+
+    '<text x="'+cx+'" y="'+(cy-r*0.156)+'" text-anchor="middle" dominant-baseline="middle" font-size="'+(r*.48)+'">'+image+'</text>'+
+    '<line x1="'+(cx-r*.5)+'" y1="'+(cy+r*0.133)+'" x2="'+(cx+r*.5)+'" y2="'+(cy+r*0.133)+'" stroke="'+ac+'" stroke-width="'+(r*0.011)+'"/>'+
+    '<text x="'+cx+'" y="'+(cy+r*0.289)+'" text-anchor="middle" dominant-baseline="middle" font-family="'+escXml(font.css)+'" font-size="'+wfs+'" fill="'+tc+'" letter-spacing="1">'+escXml(word)+'</text>'+
+    '<text x="'+cx+'" y="'+(cy+r-r*0.156)+'" text-anchor="middle" dominant-baseline="middle" font-family="Nunito,sans-serif" font-size="'+nameSize+'" fill="'+tc+'" opacity="0.7">'+escXml(name)+'</text>'
+  );
+}
+function drawSticker(svgEl,cx,cy,r,word,name,font,color,image){
+  svgEl.innerHTML=buildStickerSvgGroup(cx,cy,r,word,name,font,color,image);
 }
 function drawPreview(){
   var s=document.getElementById("previewSVG");if(!s)return;
   drawSticker(s,100,100,90,selWord||"WORD",sName||"Student",selFont,selColor,selImage);
 }
-function drawSheet(){
-  var svg=document.getElementById("sheetSVG");
-  var r=68,cols=3,rows=4,colSp=204,rowSp=198,startX=102,startY=99;
-  var word=selWord||"WORD",name=sName||"Student";
-  var stickers="";
-  for(var row=0;row<rows;row++){for(var col=0;col<cols;col++){
-    var cx=startX+col*colSp,cy=startY+row*rowSp;
-    var bg=selColor.hex,isLight=isLightColor(bg);
-    var tc=isLight?"#1A1A1A":"#FFFFFF",ac=isLight?"rgba(0,0,0,.15)":"rgba(255,255,255,.25)";
-    var wl=word.length,wfs=wl<=4?20:wl<=6?17:wl<=8?14:wl<=10?12:10;
-    stickers+=
-      '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+bg+'"/>'+
-      '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r-4)+'" fill="none" stroke="'+ac+'" stroke-width="1.2"/>'+
-      '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r+1)+'" fill="none" stroke="#000" stroke-width="0.4" opacity="0.35"/>'+
-      '<text x="'+cx+'" y="'+(cy-12)+'" text-anchor="middle" dominant-baseline="middle" font-size="'+(r*.44)+'">'+selImage+'</text>'+
-      '<line x1="'+(cx-r*.48)+'" y1="'+(cy+10)+'" x2="'+(cx+r*.48)+'" y2="'+(cy+10)+'" stroke="'+ac+'" stroke-width="0.8"/>'+
-      '<text x="'+cx+'" y="'+(cy+24)+'" text-anchor="middle" dominant-baseline="middle" font-family="'+escXml(selFont.css)+'" font-size="'+wfs+'" fill="'+tc+'" letter-spacing="1">'+escXml(word)+'</text>'+
-      '<text x="'+cx+'" y="'+(cy+r-12)+'" text-anchor="middle" dominant-baseline="middle" font-family="Nunito,sans-serif" font-size="8" fill="'+tc+'" opacity="0.65">'+escXml(name)+'</text>';
-  }}
-  // Registration marks for Cricut Print Then Cut
-  var rm='<line x1="0" y1="0" x2="16" y2="0" stroke="#000" stroke-width="0.5"/><line x1="0" y1="0" x2="0" y2="16" stroke="#000" stroke-width="0.5"/><line x1="612" y1="0" x2="596" y2="0" stroke="#000" stroke-width="0.5"/><line x1="612" y1="0" x2="612" y2="16" stroke="#000" stroke-width="0.5"/><line x1="0" y1="792" x2="16" y2="792" stroke="#000" stroke-width="0.5"/><line x1="0" y1="792" x2="0" y2="776" stroke="#000" stroke-width="0.5"/><line x1="612" y1="792" x2="596" y2="792" stroke="#000" stroke-width="0.5"/><line x1="612" y1="792" x2="612" y2="776" stroke="#000" stroke-width="0.5"/>';
-  svg.innerHTML='<rect width="612" height="792" fill="#fff"/>'+rm+stickers+'<text x="306" y="782" text-anchor="middle" font-family="Fredoka One,cursive" font-size="9" fill="#ccc" letter-spacing="1">Smile Bags &middot; A Word &amp; Wonder Experience &middot; '+escXml(name)+' &middot; Class of 2026 &middot; Spring 2026</text>';
+function drawFinalSticker(){
+  var s=document.getElementById("finalSVG");if(!s)return;
+  drawSticker(s,200,200,180,selWord||"WORD",sName||"Student",selFont,selColor,selImage);
 }
+
+/* ── NAVIGATION ── */
 function toWord(){sName=document.getElementById("iName").value.trim();sClass=document.getElementById("iClass").value;if(!sName){alert("Please enter your name!");return;}nav(1);}
 function toDesign(){if(!selWord){alert("Please choose your OneWord!");return;}document.getElementById("s2h").textContent="Design Your Sticker \u2014 "+selWord;drawPreview();nav(2);}
-function toPreview(){document.getElementById("s3h").textContent="Your Sticker Sheet, "+sName+"!";drawSheet();nav(3);}
+function toPreview(){document.getElementById("s3h").textContent="Your Sticker, "+sName+"!";drawFinalSticker();nav(3);}
 function nav(n){
   document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active");});
   document.getElementById("scr"+n).classList.add("active");
   for(var i=0;i<=3;i++){var pd=document.getElementById("pd"+i),pl=document.getElementById("pl"+i);if(!pd)continue;pd.classList.remove("active","done");pl.classList.remove("active");if(i<n)pd.classList.add("done");else if(i===n){pd.classList.add("active");pl.classList.add("active");}}
   window.scrollTo(0,0);
 }
-function printSheet(){
-  var svg=document.getElementById("sheetSVG");
-  // Clone and strip screen-only inline style (width:100%;max-width:380px) so the
-  // print window can scale the SVG to full page. Inline style has higher
-  // specificity than @media print CSS rules, so we must remove it, not override.
-  var clone=svg.cloneNode(true);
-  clone.removeAttribute("style");
-  clone.setAttribute("width","8.5in");
-  clone.setAttribute("height","11in");
-  var s=new XMLSerializer().serializeToString(clone);
-  var w=window.open("","_blank");
-  w.document.write("<!DOCTYPE html><html><head><title>Stickers \u00B7 "+escXml(selWord||"")+"<\/title><style>*{margin:0;padding:0;}html,body{background:#fff;}body{display:block;}svg{width:8.5in;height:11in;display:block;}@page{size:8.5in 11in;margin:0;}@media print{body{margin:0;}}<\/style><\/head><body>"+s+"<script>window.onload=function(){window.print();window.onafterprint=function(){window.close();};};<\/script><\/body><\/html>");
-  w.document.close();
-}
 
-function downloadForCricut(){
-  // Build a clean SVG WITHOUT registration marks — Cricut Design Space adds its own
-  // registration marks during its Print Then Cut workflow. Our corner marks would
-  // confuse the calibration. Also omits the bottom footer text to maximize usable
-  // sticker area in Design Space.
-  var r=68,cols=3,rows=4,colSp=204,rowSp=198,startX=102,startY=99;
+/* ── DOWNLOAD SINGLE STICKER (transparent PNG for Cricut Design Space) ── */
+function downloadSticker(){
   var word=selWord||"WORD",name=sName||"Student";
-  var stickers="";
-  for(var row=0;row<rows;row++){for(var col=0;col<cols;col++){
-    var cx=startX+col*colSp,cy=startY+row*rowSp;
-    var bg=selColor.hex,isLight=isLightColor(bg);
-    var tc=isLight?"#1A1A1A":"#FFFFFF",ac=isLight?"rgba(0,0,0,.15)":"rgba(255,255,255,.25)";
-    var wl=word.length,wfs=wl<=4?20:wl<=6?17:wl<=8?14:wl<=10?12:10;
-    stickers+=
-      '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+bg+'"/>'+
-      '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r-4)+'" fill="none" stroke="'+ac+'" stroke-width="1.2"/>'+
-      '<text x="'+cx+'" y="'+(cy-12)+'" text-anchor="middle" dominant-baseline="middle" font-size="'+(r*.44)+'">'+selImage+'</text>'+
-      '<line x1="'+(cx-r*.48)+'" y1="'+(cy+10)+'" x2="'+(cx+r*.48)+'" y2="'+(cy+10)+'" stroke="'+ac+'" stroke-width="0.8"/>'+
-      '<text x="'+cx+'" y="'+(cy+24)+'" text-anchor="middle" dominant-baseline="middle" font-family="'+escXml(selFont.css)+'" font-size="'+wfs+'" fill="'+tc+'" letter-spacing="1">'+escXml(word)+'</text>'+
-      '<text x="'+cx+'" y="'+(cy+r-12)+'" text-anchor="middle" dominant-baseline="middle" font-family="Nunito,sans-serif" font-size="8" fill="'+tc+'" opacity="0.65">'+escXml(name)+'</text>';
-  }}
-  // Clean SVG: transparent background (no white rect), NO registration marks, NO footer text
-  // Using xmlns explicitly — required for standalone SVG rendered to canvas
-  var cleanSvg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 792" width="612" height="792">'+stickers+'</svg>';
+  // 400x400 viewBox, canvas 1200x1200 = 300dpi for a 4" sticker (crisp even scaled down to 2").
+  // Cricut Design Space uses alpha to detect sticker shape during Print Then Cut,
+  // so we do NOT fill the canvas with a background color — transparency is intentional.
+  var stickerSvg=buildStickerSvgGroup(200,200,180,word,name,selFont,selColor,selImage);
+  var cleanSvg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">'+stickerSvg+'</svg>';
 
-  // Render to canvas at 300 DPI for crisp Cricut output (612×792 at 72dpi → 2550×3300 at 300dpi)
   var canvas=document.createElement("canvas");
-  canvas.width=2550;
-  canvas.height=3300;
+  canvas.width=1200;
+  canvas.height=1200;
   var ctx=canvas.getContext("2d");
-  // White background so Design Space sees a clean sheet
-  ctx.fillStyle="#ffffff";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
+  // Canvas starts transparent by default — leaving it that way on purpose.
 
   var img=new Image();
   img.onload=function(){
@@ -404,7 +394,7 @@ function downloadForCricut(){
       var url=URL.createObjectURL(blob);
       var a=document.createElement("a");
       a.href=url;
-      a.download="OneWord_Stickers_"+(name||"Student")+"_"+(word||"OneWord")+".png";
+      a.download="OneWord_Sticker_"+(name||"Student")+"_"+(word||"OneWord")+".png";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -412,13 +402,30 @@ function downloadForCricut(){
     },"image/png");
   };
   img.onerror=function(){
-    alert("Could not render sticker sheet. Please try the Print option instead.");
+    alert("Could not render sticker. Please try the Full-Size screenshot option instead.");
   };
-  // Encode SVG as data URL — safer than Blob URL for cross-browser SVG→canvas rendering
   var svgBlob=new Blob([cleanSvg],{type:"image/svg+xml;charset=utf-8"});
   var svgUrl=URL.createObjectURL(svgBlob);
   img.src=svgUrl;
 }
+
+/* ── FULL-SIZE MODAL FOR SCREENSHOT ── */
+function showFullScreen(){
+  var s=document.getElementById("fsSVG");
+  drawSticker(s,200,200,180,selWord||"WORD",sName||"Student",selFont,selColor,selImage);
+  document.getElementById("fsModal").classList.add("show");
+  document.body.style.overflow="hidden";
+}
+function closeFullScreen(){
+  document.getElementById("fsModal").classList.remove("show");
+  document.body.style.overflow="";
+}
+function fsBgClick(e){
+  // Close only when clicking directly on the modal background, not on SVG/caption/button.
+  if(e.target.id==="fsModal"){closeFullScreen();}
+}
+
+/* ── SUBMIT TO APPS SCRIPT ── */
 function doSubmit(){
   var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
   document.getElementById("tokCode").textContent=tok;
