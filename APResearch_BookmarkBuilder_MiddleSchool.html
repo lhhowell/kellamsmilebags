@@ -438,11 +438,13 @@ async function logBookmarkToSheet() {
   try {
     const editedData = getEditedData();
     const payload = {
-      Activity: 'Bookmarks',
-      OneWord: currentWord,
-      Name: document.getElementById('studentName').value.trim(),
-      Content: JSON.stringify(editedData),
-      Timestamp: new Date().toISOString()
+      activity: 'Bookmark',
+      word: currentWord,
+      student_name: document.getElementById('studentName').value.trim(),
+      class: 'AP Environmental Science',
+      teacher: 'Honaker',
+      content: JSON.stringify(editedData),
+      timestamp: new Date().toISOString()
     };
     await fetch(SUBMIT_URL, {
       method: 'POST',
@@ -463,38 +465,24 @@ function submitBookmark(){
   var msg = document.getElementById('submitMsg');
   btn.disabled = true;
   btn.textContent = 'Saving...';
-  var d = getEditedData();
-  google.script.run
-    .withSuccessHandler(function(){
-      btn.disabled = false;
-      btn.textContent = '✓ Saved!';
-      msg.style.display = 'block';
-      msg.style.background = '#D4EDDA';
-      msg.style.color = '#155724';
-      msg.textContent = 'Your bookmark has been saved! You can now print it.';
-      logBookmarkToSheet();
-      setTimeout(function(){
-        btn.textContent = '💾 Save My Bookmark';
-      }, 3000);
-    })
-    .withFailureHandler(function(){
-      btn.disabled = false;
+
+  // Fire-and-forget POST to Apps Script (Standard #11 — mode:"no-cors"
+  // means the response is unreadable on this side, so we use optimistic UI).
+  logBookmarkToSheet();
+
+  // Show success immediately — the POST is non-blocking and uncheckable
+  // from the browser. Verification lives in the Submissions tab.
+  setTimeout(function(){
+    btn.disabled = false;
+    btn.textContent = '✓ Saved!';
+    msg.style.display = 'block';
+    msg.style.background = '#D4EDDA';
+    msg.style.color = '#155724';
+    msg.textContent = 'Your bookmark has been saved! You can now print it.';
+    setTimeout(function(){
       btn.textContent = '💾 Save My Bookmark';
-      msg.style.display = 'block';
-      msg.style.background = '#F8D7DA';
-      msg.style.color = '#721C24';
-      msg.textContent = 'Something went wrong. Please try again.';
-    })
-    .submitBookmark({
-      studentName: name,
-      word: d.word,
-      fact: d.fact,
-      supplies: d.supplies,
-      step1: d.steps[0],
-      step2: d.steps[1],
-      step3: d.steps[2],
-      message: d.message
-    });
+    }, 3000);
+  }, 400);
 }
 </script>
 </body>
