@@ -16,6 +16,9 @@ body{font-family:'Nunito',sans-serif;background:#1A1A1A;min-height:100vh;color:#
 
 /* ── HEADER ── */
 .header{background:linear-gradient(135deg,#1A1A1A 0%,#2A2A2A 100%);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--gold)}
+.header-left{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.parent-menu-link{font-size:13px;color:rgba(255,255,255,0.7);text-decoration:none;font-weight:600;line-height:1.2}
+.parent-menu-link:hover{text-decoration:underline;color:#fff}
 .header-brand{font-family:'Fredoka One',cursive;font-size:22px;color:var(--gold);letter-spacing:1px}
 .header-brand span{color:#fff}
 .header-title{font-family:'Playfair Display',serif;font-size:18px;color:#fff;text-align:center}
@@ -116,7 +119,10 @@ body{font-family:'Nunito',sans-serif;background:#1A1A1A;min-height:100vh;color:#
 <body>
 
 <div class="header">
-  <div class="header-brand"><span>Kellam</span> Smile Bags</div>
+  <div class="header-left">
+    <a class="parent-menu-link" href="APEnvSci_Menu.html">← Back to AP Env Sci Menu</a>
+    <div class="header-brand"><span>Kellam</span> Smile Bags</div>
+  </div>
   <div>
     <div class="header-title">AP Research · Bookmark Builder · <span style="color:#C8860A">Middle School Edition</span></div>
     <div class="header-sub">Select your OneWord · Edit your content · Print your bookmark</div>
