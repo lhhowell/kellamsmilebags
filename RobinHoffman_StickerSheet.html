@@ -159,12 +159,13 @@ body{font-family:'Nunito',sans-serif;background:#FFF8EE;min-height:100vh;padding
 </div>
 <div class="screen" id="scr3">
   <div class="scr-hd"><h2 id="s3h">Your Sticker Sheet! &#127991;</h2><p>12 stickers &middot; 2&Prime; circles &middot; Cricut-ready. Corner marks guide the cut.</p></div>
-  <div class="print-note"><strong>&#128203; Printing Instructions:</strong> Print the sheet, then cut out the stickers with scissors along each circle. For sticker paper: use full-sheet sticker paper (inkjet compatible). For regular paper: print and cut with scissors. Set margins to <strong>None</strong>, scale <strong>100%</strong>.</div>
+  <div class="print-note"><strong>&#128203; Two Options:</strong><br>&#128438; <strong>Print My Sticker Sheet</strong> — prints directly with corner cut-guides; cut with scissors along each circle. Works on full-sheet sticker paper (inkjet compatible) or regular paper.<br>&#128229; <strong>Download for Cricut Design Space</strong> — saves a clean PNG (no cut marks) ready to upload to Cricut. Design Space adds its own registration marks for Print Then Cut.</div>
   <div class="white-card">
     <div class="sheet-preview"><svg id="sheetSVG" viewBox="0 0 612 792" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:380px;border:1px solid #e8e4dc;border-radius:8px;background:#fff;"></svg></div>
   </div>
   <div id="notSub">
     <button class="print-btn-main" onclick="printSheet()">&#128438; Print My Sticker Sheet</button>
+    <button class="print-btn-main" style="background:linear-gradient(135deg,#1565C0,#0D47A1);margin-top:8px;" onclick="downloadForCricut()">&#128229; Download for Cricut Design Space</button>
     <button class="print-btn-main" style="background:linear-gradient(135deg,#2D7A4F,#1B5E20);margin-top:8px;" onclick="doSubmit()">&#10003; Submit &amp; Print</button>
     <p style="font-size:12px;color:#888;font-style:italic;text-align:center;margin-top:8px;">Submit logs your design to Ms. Hoffman.</p>
   </div>
@@ -359,6 +360,64 @@ function printSheet(){
   var w=window.open("","_blank");
   w.document.write("<!DOCTYPE html><html><head><title>Stickers \u00B7 "+escXml(selWord||"")+"<\/title><style>*{margin:0;padding:0;}html,body{background:#fff;}body{display:block;}svg{width:8.5in;height:11in;display:block;}@page{size:8.5in 11in;margin:0;}@media print{body{margin:0;}}<\/style><\/head><body>"+s+"<script>window.onload=function(){window.print();window.onafterprint=function(){window.close();};};<\/script><\/body><\/html>");
   w.document.close();
+}
+
+function downloadForCricut(){
+  // Build a clean SVG WITHOUT registration marks — Cricut Design Space adds its own
+  // registration marks during its Print Then Cut workflow. Our corner marks would
+  // confuse the calibration. Also omits the bottom footer text to maximize usable
+  // sticker area in Design Space.
+  var r=68,cols=3,rows=4,colSp=204,rowSp=198,startX=102,startY=99;
+  var word=selWord||"WORD",name=sName||"Student";
+  var stickers="";
+  for(var row=0;row<rows;row++){for(var col=0;col<cols;col++){
+    var cx=startX+col*colSp,cy=startY+row*rowSp;
+    var bg=selColor.hex,isLight=isLightColor(bg);
+    var tc=isLight?"#1A1A1A":"#FFFFFF",ac=isLight?"rgba(0,0,0,.15)":"rgba(255,255,255,.25)";
+    var wl=word.length,wfs=wl<=4?20:wl<=6?17:wl<=8?14:wl<=10?12:10;
+    stickers+=
+      '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+bg+'"/>'+
+      '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r-4)+'" fill="none" stroke="'+ac+'" stroke-width="1.2"/>'+
+      '<text x="'+cx+'" y="'+(cy-12)+'" text-anchor="middle" dominant-baseline="middle" font-size="'+(r*.44)+'">'+selImage+'</text>'+
+      '<line x1="'+(cx-r*.48)+'" y1="'+(cy+10)+'" x2="'+(cx+r*.48)+'" y2="'+(cy+10)+'" stroke="'+ac+'" stroke-width="0.8"/>'+
+      '<text x="'+cx+'" y="'+(cy+24)+'" text-anchor="middle" dominant-baseline="middle" font-family="'+escXml(selFont.css)+'" font-size="'+wfs+'" fill="'+tc+'" letter-spacing="1">'+escXml(word)+'</text>'+
+      '<text x="'+cx+'" y="'+(cy+r-12)+'" text-anchor="middle" dominant-baseline="middle" font-family="Nunito,sans-serif" font-size="8" fill="'+tc+'" opacity="0.65">'+escXml(name)+'</text>';
+  }}
+  // Clean SVG: transparent background (no white rect), NO registration marks, NO footer text
+  // Using xmlns explicitly — required for standalone SVG rendered to canvas
+  var cleanSvg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 792" width="612" height="792">'+stickers+'</svg>';
+
+  // Render to canvas at 300 DPI for crisp Cricut output (612×792 at 72dpi → 2550×3300 at 300dpi)
+  var canvas=document.createElement("canvas");
+  canvas.width=2550;
+  canvas.height=3300;
+  var ctx=canvas.getContext("2d");
+  // White background so Design Space sees a clean sheet
+  ctx.fillStyle="#ffffff";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  var img=new Image();
+  img.onload=function(){
+    ctx.drawImage(img,0,0,canvas.width,canvas.height);
+    canvas.toBlob(function(blob){
+      if(!blob){alert("Could not generate PNG. Please try again.");return;}
+      var url=URL.createObjectURL(blob);
+      var a=document.createElement("a");
+      a.href=url;
+      a.download="OneWord_Stickers_"+(name||"Student")+"_"+(word||"OneWord")+".png";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function(){URL.revokeObjectURL(url);},1000);
+    },"image/png");
+  };
+  img.onerror=function(){
+    alert("Could not render sticker sheet. Please try the Print option instead.");
+  };
+  // Encode SVG as data URL — safer than Blob URL for cross-browser SVG→canvas rendering
+  var svgBlob=new Blob([cleanSvg],{type:"image/svg+xml;charset=utf-8"});
+  var svgUrl=URL.createObjectURL(svgBlob);
+  img.src=svgUrl;
 }
 function doSubmit(){
   var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
