@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crafting Smiles Hub &mdash; Welcome</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#F7F5F0; --text:#1A1A2E;
+    --teal:#1B7A78; --teal-deep:#0F4F4E; --teal-light:#D6EEEE;
+    --pink:#B5446E; --pink-light:#FDE8EF;
+    --gold:#C8860A; --gold-light:#FFF3D6;
+    --purple:#6B3F9E; --green:#2D5016;
+    --muted:#8A8070;
+  }
+  body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+
+  /* TOP BAR */
+  .topbar{background:#1A1A2E;color:#fff;padding:14px 32px;font-family:'Courier New',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+  .topbar-brand{color:rgba(255,255,255,.7)}
+  .topbar-back{color:#D6EEEE;text-decoration:none}
+  .topbar-back:hover{color:#fff}
+
+  /* HERO */
+  .hero{position:relative;background:#1A1A2E;background-image:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(27,122,120,.35) 0%,transparent 70%),radial-gradient(ellipse 40% 60% at 10% 80%,rgba(181,68,110,.25) 0%,transparent 60%),radial-gradient(ellipse 30% 40% at 50% 10%,rgba(107,63,158,.22) 0%,transparent 60%);color:#fff;padding:88px 40px 72px;text-align:center;animation:fadeUp .6s ease both}
+  .hero-tag{display:inline-block;font-family:'Courier New',monospace;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:#fff;background:rgba(255,255,255,.13);padding:6px 18px;border-radius:20px;border:1px solid rgba(255,255,255,.28);margin-bottom:32px}
+  .hero h1{font-family:Georgia,serif;font-size:clamp(64px,9vw,128px);font-weight:900;line-height:1;margin-bottom:24px}
+  .hero h1 em{font-style:italic;color:#D6EEEE}
+  .hero-tagline{font-size:18px;font-weight:400;color:rgba(255,255,255,.92);max-width:620px;margin:0 auto 16px;line-height:1.65;font-style:italic;font-family:Georgia,serif}
+  .hero-sub{font-size:15px;font-weight:300;color:rgba(255,255,255,.6);max-width:580px;margin:0 auto;line-height:1.75}
+
+  /* SECTION SHELL */
+  .section{max-width:980px;margin:0 auto;padding:80px 32px}
+  .section-label{font-family:'Courier New',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+  .section-title{font-family:Georgia,serif;font-size:clamp(28px,4vw,44px);font-weight:700;line-height:1.18;margin-bottom:18px;color:var(--text)}
+  .section-intro{font-size:16px;color:#4A4A5A;line-height:1.75;font-weight:300;max-width:680px;margin-bottom:40px}
+
+  /* SECTION 1 — WHO BELONGS */
+  .audience-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .audience-card{background:#fff;border-radius:12px;padding:24px 22px;border-left:4px solid var(--teal);box-shadow:0 2px 12px rgba(0,0,0,.04);transition:transform .2s,box-shadow .2s}
+  .audience-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.08)}
+  .audience-card h3{font-family:Georgia,serif;font-size:18px;color:var(--teal-deep);margin-bottom:6px;font-weight:700}
+  .audience-card p{font-size:13px;color:#555;line-height:1.65;font-weight:300}
+
+  /* SECTION 2 — NON-NEGOTIABLES (dark) */
+  .nn-wrap{background:#1A1A2E;color:#fff;padding:64px 32px;max-width:980px;margin:0 auto;border-radius:24px}
+  .nn-head{text-align:center;max-width:680px;margin:0 auto}
+  .nn-head .section-label{color:#C8860A}
+  .nn-head h2{font-family:Georgia,serif;font-size:clamp(28px,4vw,40px);font-weight:700;line-height:1.2;color:#fff;margin-bottom:10px}
+  .nn-head p{font-size:15px;color:rgba(255,255,255,.7);line-height:1.7;font-weight:300}
+  .nn-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px;margin-top:44px;max-width:880px;margin-left:auto;margin-right:auto}
+  .nn-item{position:relative;padding-left:60px}
+  .nn-num{position:absolute;left:0;top:-6px;font-family:Georgia,serif;font-size:48px;font-weight:900;color:#C8860A;line-height:1}
+  .nn-title{font-family:Georgia,serif;font-size:21px;font-weight:700;margin-bottom:8px;color:#fff;line-height:1.25}
+  .nn-desc{font-size:14px;color:rgba(255,255,255,.72);line-height:1.7;font-weight:300}
+
+  /* SECTION 3 — PATHWAYS */
+  .paths-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+  .path-card{background:#fff;border-radius:12px;padding:24px 22px;border-top:5px solid var(--teal);box-shadow:0 2px 12px rgba(0,0,0,.06);transition:transform .2s,box-shadow .2s;text-decoration:none;color:inherit;display:flex;flex-direction:column;min-height:200px}
+  .path-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+  .path-num{font-family:'Courier New',monospace;font-size:10px;letter-spacing:.18em;color:var(--muted);margin-bottom:10px;text-transform:uppercase}
+  .path-card h3{font-family:Georgia,serif;font-size:19px;color:var(--text);margin-bottom:10px;line-height:1.3;font-weight:700}
+  .path-card p{font-size:13px;color:#555;line-height:1.65;font-weight:300;flex:1}
+  .path-card-link{font-family:'Courier New',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-top:16px;font-weight:700}
+  .path-card.maker{border-top:5px solid var(--gold);background:linear-gradient(180deg,#FFFBEC 0%,#fff 60%)}
+  .path-card.maker .path-card-link{color:var(--gold)}
+  .path-card.maker:hover{box-shadow:0 8px 28px rgba(200,134,10,.2)}
+  .maker-tag{display:inline-block;font-family:'Courier New',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);background:var(--gold-light);padding:4px 10px;border-radius:20px;margin-bottom:10px;font-weight:700}
+
+  /* SECTION 4 — ONEWORD CHIPS */
+  .oneword-grid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:28px}
+  .oneword-chip{font-family:'Courier New',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;background:#fff;color:var(--teal-deep);border:1.5px solid var(--teal-light);padding:8px 14px;border-radius:20px;font-weight:700}
+  .oneword-chip:hover{background:var(--teal-light)}
+
+  /* SECTION 5 — PALETTE */
+  .palette{display:flex;height:80px;border-radius:12px;overflow:hidden;margin-top:28px;box-shadow:0 4px 16px rgba(0,0,0,.08)}
+  .palette-block{flex:1;display:flex;align-items:flex-end;justify-content:center;padding:8px 4px;color:#fff;font-family:'Courier New',monospace;font-size:9px;letter-spacing:.1em;font-weight:700}
+  .palette-caption{font-size:13px;color:var(--muted);margin-top:14px;font-family:'Courier New',monospace;letter-spacing:.06em;text-align:center}
+
+  /* SECTION 6 — SUBMIT */
+  .submit-paths{display:flex;flex-direction:column;gap:14px}
+  .submit-row{background:#fff;border-radius:12px;padding:22px 24px;display:grid;grid-template-columns:160px 1fr;gap:24px;align-items:start;border-left:4px solid #ddd;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+  .submit-row.maker{border-left-color:var(--gold);background:linear-gradient(180deg,#FFFBEC 0%,#fff 100%);box-shadow:0 4px 16px rgba(200,134,10,.1)}
+  .submit-pathname{font-family:'Courier New',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700;line-height:1.5}
+  .submit-row.maker .submit-pathname{color:var(--gold)}
+  .submit-steps{font-size:14px;color:#444;line-height:1.7;font-weight:400}
+  .submit-steps ol{padding-left:20px;margin-top:10px}
+  .submit-steps li{margin-bottom:5px}
+  .maker-callout{display:block;color:var(--gold);font-weight:700;margin-bottom:6px;font-size:13px}
+
+  /* SECTION 7 — CLOSING */
+  .closing{background:linear-gradient(135deg,var(--teal-deep),var(--teal));color:#fff;padding:64px 40px;text-align:center;border-radius:24px;max-width:980px;margin:0 auto 80px}
+  .closing-quote{font-family:Georgia,serif;font-size:clamp(20px,2.6vw,28px);font-style:italic;line-height:1.5;font-weight:400;max-width:720px;margin:0 auto 18px;color:rgba(255,255,255,.96)}
+  .closing-sig{font-family:'Courier New',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+
+  /* FOOTER */
+  .footer{background:#1A1A2E;padding:32px 40px;text-align:center}
+  .footer-sig{font-family:Georgia,serif;font-size:18px;color:#fff;font-weight:700;margin-bottom:6px}
+  .footer-meta{font-family:'Courier New',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+  @media(max-width:720px){
+    .topbar{padding:12px 20px;font-size:10px}
+    .hero{padding:60px 24px 52px}
+    .section{padding:56px 24px}
+    .nn-wrap{padding:48px 24px;border-radius:0}
+    .closing{padding:48px 24px;border-radius:0;margin-bottom:0}
+    .submit-row{grid-template-columns:1fr;gap:8px}
+    .nn-item{padding-left:0}
+    .nn-num{position:static;display:block;margin-bottom:8px}
+  }
+</style>
+</head>
+<body>
+
+<!-- BREADCRUMB / TOP BAR -->
+<div class="topbar">
+  <span class="topbar-brand">Smile Bags &middot; A Word &amp; Wonder Experience</span>
+  <a href="https://lhhowell.github.io/kellamsmilebags/" class="topbar-back">&larr; Back to Smile Bags Hub</a>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-tag">Crafting Smiles Hub &middot; Independent Pathways</div>
+  <h1>Welcome.</h1>
+  <p class="hero-tagline">If you&rsquo;ve wondered whether you belong here &mdash; yes.</p>
+  <p class="hero-sub">This page is your starting point: who can contribute, what counts, the seven pathways, and how to submit your work. No class required, no graduation date required.</p>
+</header>
+
+<!-- SECTION 1 — WHO BELONGS -->
+<section class="section">
+  <div class="section-label">Who Belongs Here</div>
+  <h2 class="section-title">Four kinds of people contribute through the Hub.</h2>
+  <p class="section-intro">The Crafting Smiles Hub exists for anyone who wants to make something for a child who needs a smile. It doesn&rsquo;t ask whether you&rsquo;re enrolled at Kellam or what year you graduated &mdash; it asks whether you have something to give.</p>
+
+  <div class="audience-grid">
+    <div class="audience-card">
+      <h3>Current Students</h3>
+      <p>Any student at Kellam High School, in any grade, regardless of class enrollment.</p>
+    </div>
+    <div class="audience-card">
+      <h3>Alumni</h3>
+      <p>Former students who graduated and want to keep contributing &mdash; distance and time don&rsquo;t matter.</p>
+    </div>
+    <div class="audience-card">
+      <h3>Former STE(A)M Campers</h3>
+      <p>Anyone who attended the summer STE(A)M Camps. Once a camper, always part of the project.</p>
+    </div>
+    <div class="audience-card">
+      <h3>Friends of the Project</h3>
+      <p>Parents, educators, makers, and anyone whose hands and hearts want to help.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2 — NON-NEGOTIABLES -->
+<div class="nn-wrap">
+  <div class="nn-head">
+    <div class="section-label">The Three Non-Negotiables</div>
+    <h2>Three things every contribution shares.</h2>
+    <p>No matter which pathway you choose &mdash; these are the floor.</p>
+  </div>
+  <div class="nn-list">
+    <div class="nn-item">
+      <div class="nn-num">1</div>
+      <div class="nn-title">Made by you.</div>
+      <p class="nn-desc">Original work &mdash; your hands, your design, your voice. Not someone else&rsquo;s design, not commercially produced, not lifted from elsewhere. The making is what makes it count.</p>
+    </div>
+    <div class="nn-item">
+      <div class="nn-num">2</div>
+      <div class="nn-title">Connected to a OneWord.</div>
+      <p class="nn-desc">Pick one of the 25 shared OneWords and let it shape your contribution. The word is the thread that ties every Smile Bag to the same project.</p>
+    </div>
+    <div class="nn-item">
+      <div class="nn-num">3</div>
+      <div class="nn-title">For a child who needs a smile.</div>
+      <p class="nn-desc">Recipient-blind, age-appropriate, kindness-centered. You don&rsquo;t know who gets it. They don&rsquo;t know who made it. The kindness travels in both directions.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3 — SEVEN PATHWAYS -->
+<section class="section">
+  <div class="section-label">Seven Pathways</div>
+  <h2 class="section-title">Pick your lane.</h2>
+  <p class="section-intro">Every pathway leads to the same destination &mdash; a Smile Bag in the hands of a child who needs it. Choose the one that fits your time, your tools, and your skill.</p>
+
+  <div class="paths-grid">
+    <a href="https://lhhowell.github.io/kellamsmilebags/CraftingSmiles_Kiosk.html" target="_blank" class="path-card">
+      <div class="path-num">Path 01</div>
+      <h3>OneWord 3D Bookmark</h3>
+      <p>Design a OneWord-themed bookmark in the Crafting Smiles Kiosk. Printed on the Bambu Lab printer in the project palette.</p>
+      <span class="path-card-link">Open Kiosk &rarr;</span>
+    </a>
+    <a href="https://lhhowell.github.io/kellamsmilebags/CraftingSmiles_Kiosk.html" target="_blank" class="path-card">
+      <div class="path-num">Path 02</div>
+      <h3>Magic Illusion Spinner</h3>
+      <p>Design a 3D spinning toy that creates an optical illusion when it moves. Built in the same Crafting Smiles Kiosk.</p>
+      <span class="path-card-link">Open Kiosk &rarr;</span>
+    </a>
+    <a href="https://lhhowell.github.io/kellamsmilebags/ChatGPT_ABCs_ColoringBook.html" target="_blank" class="path-card">
+      <div class="path-num">Path 03</div>
+      <h3>ABC&rsquo;s Animals Coloring Book</h3>
+      <p>Choose from 38 alphabet-themed animal coloring pages. Print and slip into a bag &mdash; instant contribution.</p>
+      <span class="path-card-link">Browse 38 Pages &rarr;</span>
+    </a>
+    <a href="https://lhhowell.github.io/kellamsmilebags/ChatGPT_ABCs_FruitsVeggies_ColoringBook.html" target="_blank" class="path-card">
+      <div class="path-num">Path 04</div>
+      <h3>ABC&rsquo;s Fruits &amp; Veggies Coloring Book</h3>
+      <p>31 alphabet-themed fruit and vegetable coloring pages. Same easy contribution: pick, print, place in a bag.</p>
+      <span class="path-card-link">Browse 31 Pages &rarr;</span>
+    </a>
+    <a href="https://lhhowell.github.io/kellamsmilebags/NSHS_Preview.html" target="_blank" class="path-card">
+      <div class="path-num">Path 05</div>
+      <h3>SNHS Bag Builder</h3>
+      <p>Science National Honor Society members build a complete 10-item bag spanning at least 3 categories. Sign-up required.</p>
+      <span class="path-card-link">SNHS Overview &rarr;</span>
+    </a>
+    <a href="https://lhhowell.github.io/kellamsmilebags/KSB_ServicePoints_Guide.html" target="_blank" class="path-card">
+      <div class="path-num">Path 06</div>
+      <h3>Service Points (Club Members)</h3>
+      <p>Build a complete bag &mdash; 10 items across 3+ activities &mdash; and earn club service points. First come, first served.</p>
+      <span class="path-card-link">Service Points Guide &rarr;</span>
+    </a>
+    <a href="#submit" class="path-card maker">
+      <div class="path-num">Path 07</div>
+      <span class="maker-tag">Maker Path</span>
+      <h3>Original 3D Designs</h3>
+      <p>Bring your own design built in your own tool &mdash; Tinkercad, Fusion 360, OnShape, Blender, or anything else. Connect it to a OneWord. The path for alumni, former campers, and friends with their own craft.</p>
+      <span class="path-card-link">See How to Submit &darr;</span>
+    </a>
+  </div>
+</section>
+
+<!-- SECTION 4 — ONEWORD CONNECTION -->
+<section class="section" style="text-align:center">
+  <div class="section-label">The OneWord Connection</div>
+  <h2 class="section-title">25 shared words. Pick one.</h2>
+  <p class="section-intro" style="margin-left:auto;margin-right:auto">Every Smile Bag contribution begins with a OneWord. The same 25 connect environmental science to social-emotional well-being across every classroom, club, and pathway.</p>
+
+  <div class="oneword-grid">
+    <span class="oneword-chip">Absorb</span><span class="oneword-chip">Adapt</span><span class="oneword-chip">Anchor</span><span class="oneword-chip">Balance</span><span class="oneword-chip">Bloom</span><span class="oneword-chip">Breathe</span><span class="oneword-chip">Clear</span><span class="oneword-chip">Connect</span><span class="oneword-chip">Cycle</span><span class="oneword-chip">Emerge</span><span class="oneword-chip">Filter</span><span class="oneword-chip">Flow</span><span class="oneword-chip">Grow</span><span class="oneword-chip">Heal</span><span class="oneword-chip">Migrate</span><span class="oneword-chip">Persist</span><span class="oneword-chip">Renew</span><span class="oneword-chip">Restore</span><span class="oneword-chip">Return</span><span class="oneword-chip">Rise</span><span class="oneword-chip">Root</span><span class="oneword-chip">Shine</span><span class="oneword-chip">Sustain</span><span class="oneword-chip">Thrive</span><span class="oneword-chip">Transform</span>
+  </div>
+</section>
+
+<!-- SECTION 5 — PALETTE -->
+<section class="section">
+  <div class="section-label">The Project Palette</div>
+  <h2 class="section-title">Match the colors where it matters.</h2>
+  <p class="section-intro">For 3D prints, paper goods, and any visual element with color choices &mdash; these are the project&rsquo;s signature tones. Bambu Lab filaments and digital designs alike should lean on this palette to keep the bags visually unified.</p>
+
+  <div class="palette">
+    <div class="palette-block" style="background:#1B7A78">#1B7A78</div>
+    <div class="palette-block" style="background:#0F4F4E">#0F4F4E</div>
+    <div class="palette-block" style="background:#B5446E">#B5446E</div>
+    <div class="palette-block" style="background:#C8860A">#C8860A</div>
+    <div class="palette-block" style="background:#6B3F9E">#6B3F9E</div>
+    <div class="palette-block" style="background:#2D5016">#2D5016</div>
+    <div class="palette-block" style="background:#1A1A2E">#1A1A2E</div>
+  </div>
+  <p class="palette-caption">Teal &middot; Deep Teal &middot; Pink &middot; Gold &middot; Purple &middot; Forest Green &middot; Navy</p>
+</section>
+
+<!-- SECTION 6 — HOW TO SUBMIT -->
+<section class="section" id="submit">
+  <div class="section-label">How to Submit</div>
+  <h2 class="section-title">Each pathway has its own intake.</h2>
+  <p class="section-intro">Most paths submit themselves through their kiosks. The Maker Path runs through Laura Howell directly &mdash; keep reading.</p>
+
+  <div class="submit-paths">
+    <div class="submit-row">
+      <div class="submit-pathname">Bookmark<br>Spinner</div>
+      <div class="submit-steps">Submit through the Crafting Smiles Kiosk&rsquo;s built-in flow. Choose your OneWord, design your piece, and follow the on-screen submission steps.</div>
+    </div>
+    <div class="submit-row">
+      <div class="submit-pathname">Coloring Books</div>
+      <div class="submit-steps">No formal submission. Pick a page from either ABC&rsquo;s book, print on standard paper, and place it directly in a Smile Bag during assembly.</div>
+    </div>
+    <div class="submit-row">
+      <div class="submit-pathname">SNHS Bag Builder</div>
+      <div class="submit-steps">Sign up through the SNHS Overview, follow the SNHS Student Guide, and submit your completed 10-item bag through the SNHS workflow.</div>
+    </div>
+    <div class="submit-row">
+      <div class="submit-pathname">Service Points</div>
+      <div class="submit-steps">Build your 10-item bag, then submit through the Service Points Guide &amp; Submission form. Your club sponsor signs off and points are awarded.</div>
+    </div>
+    <div class="submit-row maker">
+      <div class="submit-pathname">Maker Path<br>(Original 3D Designs)</div>
+      <div class="submit-steps">
+        <span class="maker-callout">For alumni, former campers, and friends with their own design tools:</span>
+        <ol>
+          <li>Choose your OneWord from the list of 25.</li>
+          <li>Design your piece in your tool of choice &mdash; Tinkercad, Fusion 360, OnShape, Blender, or anything else you use.</li>
+          <li>Share the design link with Laura Howell (text or email) for a quick alignment check before you print.</li>
+          <li>Print on your printer, in the project palette where applicable.</li>
+          <li>Coordinate logistics with Laura &mdash; ship, drop off, or hand-deliver depending on your distance from Kellam.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7 — CLOSING -->
+<div class="closing">
+  <p class="closing-quote">Every contribution gets a quick alignment check. If something needs a tweak, you&rsquo;ll hear about it. No contribution is rejected without conversation &mdash; the kindness is what matters, and there&rsquo;s almost always a way to land it.</p>
+  <p class="closing-sig">Hub Principle &middot; Crafting Smiles</p>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-sig">Smile Bags</div>
+  <div class="footer-meta">A Word &amp; Wonder Experience &middot; Crafting Smiles Hub &middot; Spring 2026</div>
+</footer>
+
+</body>
+</html>
