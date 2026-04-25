@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Smile Bags &mdash; AP Research Bookmark Lesson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#f4f1ec;color:#1a1a1a;padding:24px;line-height:1.5;}
+.page{max-width:1100px;margin:0 auto;background:#fff;padding:32px 40px;box-shadow:0 4px 20px rgba(0,0,0,0.08);border-radius:6px;}
+
+/* ── HEADER ── */
+.head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #C8860A;padding-bottom:14px;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
+.head-left{flex:1;min-width:280px;}
+.brand{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;color:#C8860A;text-transform:uppercase;margin-bottom:4px;}
+.title{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;line-height:1.1;color:#1a1a1a;}
+.title span{color:#C8860A;}
+.attribution{font-size:12px;color:#666;margin-top:6px;font-style:italic;}
+.head-right{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;color:#999;text-transform:uppercase;text-align:right;}
+
+/* ── 2-COLUMN BODY ── */
+.body{display:grid;grid-template-columns:1.1fr 1.4fr;gap:32px;align-items:start;}
+
+/* ── LEFT: STEPS ── */
+.steps-title{font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:2px;color:#C8860A;text-transform:uppercase;margin-bottom:10px;}
+.step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start;}
+.step-num{font-family:'Fredoka One',cursive;font-size:18px;color:#fff;background:#C8860A;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1;}
+.step-body{flex:1;}
+.step-h{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:2px;}
+.step-d{font-size:12.5px;color:#444;line-height:1.55;}
+.step-d strong{color:#1a1a1a;}
+
+/* ── RIGHT: WORKED EXAMPLE BOOKMARK ── */
+.example-title{font-family:'Fredoka One',cursive;font-size:13px;letter-spacing:2px;color:#C8860A;text-transform:uppercase;margin-bottom:10px;}
+.example-sub{font-size:11.5px;color:#666;font-style:italic;margin-bottom:14px;}
+.example-sub strong{color:#1a1a1a;font-style:normal;}
+
+/* The bookmark pair — a real working example using the kiosk's visual style */
+.bm-pair{display:flex;gap:8px;justify-content:center;align-items:flex-start;}
+.bm{width:200px;height:520px;border-radius:6px;overflow:hidden;display:flex;flex-direction:column;border:1px solid #e3dfd6;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+
+/* Front bookmark */
+.bm-front{background:linear-gradient(175deg,#1a4d3e 0%,#2d6b56 40%,#1a4d3e 100%);color:#fff;}
+.bm-front-top{padding:18px 14px 12px;text-align:center;border-top:6px solid #C8860A;}
+.bm-front-word{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:#FFD740;letter-spacing:2px;}
+.bm-front-tag{font-size:9px;font-weight:700;color:#fff;letter-spacing:1.5px;text-transform:uppercase;margin-top:4px;opacity:0.9;}
+.bm-front-art{flex:1;display:flex;align-items:center;justify-content:center;padding:16px;}
+.bm-front-foot{padding:12px;text-align:center;background:rgba(0,0,0,0.15);}
+.bm-front-foot-word{font-family:'Fredoka One',cursive;font-size:11px;color:#FFD740;letter-spacing:1px;}
+.bm-front-foot-sub{font-size:8px;color:#fff;opacity:0.7;letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+
+/* Back bookmark */
+.bm-back{background:#FFFDF5;color:#1a1a1a;}
+.bm-back-top{padding:14px 12px 10px;text-align:center;background:linear-gradient(135deg,#1a4d3e,#0d2d24);}
+.bm-back-word{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;color:#FFD740;letter-spacing:1px;}
+.bm-back-sub{font-size:8px;font-weight:700;color:#fff;opacity:0.8;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+.bm-back-content{padding:12px 11px;flex:1;font-size:8.5px;line-height:1.45;}
+.bm-back-section{margin-bottom:9px;}
+.bm-back-h{font-family:'Fredoka One',cursive;font-size:9px;color:#1a4d3e;letter-spacing:0.8px;text-transform:uppercase;margin-bottom:3px;}
+.bm-back-fact{background:#e8f0ec;padding:6px 7px;border-radius:3px;font-size:8px;color:#1a4d3e;line-height:1.4;}
+.bm-back-steps{padding-left:0;list-style:none;}
+.bm-back-step{display:flex;gap:5px;margin-bottom:3px;align-items:flex-start;}
+.bm-back-step-n{background:#1a4d3e;color:#fff;font-family:'Fredoka One',cursive;font-size:8px;width:13px;height:13px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1;}
+.bm-back-step-t{font-size:8px;color:#1a1a1a;line-height:1.4;}
+.bm-back-msg{background:#fffaeb;border-left:2px solid #C8860A;padding:5px 7px;font-style:italic;font-size:8px;color:#5c4a1a;}
+.bm-back-attr{font-size:7px;color:#888;margin-top:3px;}
+.bm-back-foot{padding:9px;text-align:center;background:#1a4d3e;}
+.bm-back-foot-t{font-family:'Fredoka One',cursive;font-size:9px;color:#FFD740;letter-spacing:1px;}
+.bm-back-foot-s{font-size:7px;color:#fff;opacity:0.7;margin-top:1px;}
+
+/* ── CALLOUT BOX ── */
+.callout{margin-top:18px;background:#fffaeb;border:1px solid #f0d899;border-left:4px solid #C8860A;padding:12px 16px;border-radius:4px;font-size:12px;color:#5c4a1a;line-height:1.55;}
+.callout strong{color:#1a1a1a;display:block;margin-bottom:3px;font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:1px;text-transform:uppercase;}
+
+/* ── FOOTER ── */
+.foot{margin-top:22px;padding-top:12px;border-top:1px solid #e3dfd6;font-family:'Fredoka One',cursive;font-size:9px;letter-spacing:2px;color:#999;text-transform:uppercase;text-align:center;}
+
+/* ── PRINT ── */
+@page{size:letter landscape;margin:0.4in;}
+@media print{
+  body{background:#fff;padding:0;}
+  .page{box-shadow:none;border-radius:0;padding:0;max-width:100%;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="head-left">
+      <div class="brand">Smile Bags &middot; A Word &amp; Wonder Experience</div>
+      <div class="title">AP Research <span>Bookmark Lesson</span></div>
+      <div class="attribution">Lesson handout &middot; Mrs. McGee, AP Research</div>
+    </div>
+    <div class="head-right">Lesson Handout<br/>Spring 2026</div>
+  </div>
+
+  <!-- BODY: 2 columns -->
+  <div class="body">
+
+    <!-- LEFT: STEPS -->
+    <div>
+      <div class="steps-title">&#128218; The 5-Step Flow</div>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-h">Open the Science Supply Bar</div>
+          <div class="step-d"> From the AP Research Menu, click <strong>Science Supply Bar</strong>. Read each supply card and consider how it connects to your research thinking.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-h">Pick your OneWord and 1&ndash;3 supplies</div>
+          <div class="step-d">Choose a OneWord that captures the spirit of your research. Then tap 1&ndash;3 supplies that connect to your word and your reasoning. Your selections log automatically. Click <strong>Confirm My Supplies</strong>.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-h">Launch the Bookmark Builder</div>
+          <div class="step-d">Click <strong>Create My Bookmark</strong>. The Bookmark Builder opens with your OneWord and supplies ready. Add your name, write a quick fact about your supplies, list 3 simple steps for the elementary student to try, and add a personal message.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-h">Save and Print</div>
+          <div class="step-d">Click <strong>Save My Bookmark</strong> &mdash; your work logs to the spreadsheet. Then click <strong>Print Bookmark</strong>. The Front and Back print side-by-side as a single landscape page with a dashed fold line.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-h">Cut, Fold, Glue</div>
+          <div class="step-d">Cut once around the outside of the printed pair. Fold forward along the dashed center line so the Front faces out and the Back faces out (like a greeting card). Glue the two inside surfaces together. Laminate if you have time. Place in your Smile Bag.</div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>&#9889; Why &ldquo;honest&rdquo; matters</strong>
+        Choose supplies that genuinely connect to your OneWord and your research. A student picking <em>seeds</em> for the word GROW because they study germination is stronger than a student picking <em>stickers</em> because they're nearby. Let your scientific reasoning guide you &mdash; then explain it on the bookmark.
+      </div>
+    </div>
+
+    <!-- RIGHT: WORKED EXAMPLE -->
+    <div>
+      <div class="example-title">&#128278; Worked Example</div>
+      <div class="example-sub">
+        OneWord: <strong>CONNECT</strong> &middot; Supplies: <strong>Play-Doh</strong> + <strong>Stickers</strong>
+      </div>
+
+      <div class="bm-pair">
+
+        <!-- FRONT -->
+        <div class="bm bm-front">
+          <div class="bm-front-top">
+            <div class="bm-front-word">CONNECT</div>
+            <div class="bm-front-tag">Building Bridges Together</div>
+          </div>
+          <div class="bm-front-art">
+            <!-- Inline SVG: two figures connected by a chain link -->
+            <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+              <!-- Soft glow background -->
+              <circle cx="70" cy="70" r="62" fill="rgba(255,215,64,0.08)"/>
+              <circle cx="70" cy="70" r="48" fill="rgba(255,215,64,0.06)"/>
+              <!-- Left node -->
+              <circle cx="38" cy="70" r="14" fill="#FFD740" opacity="0.95"/>
+              <circle cx="38" cy="70" r="14" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.5"/>
+              <!-- Right node -->
+              <circle cx="102" cy="70" r="14" fill="#FFD740" opacity="0.95"/>
+              <circle cx="102" cy="70" r="14" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.5"/>
+              <!-- Connecting links (chain) -->
+              <ellipse cx="58" cy="70" rx="9" ry="7" fill="none" stroke="#fff" stroke-width="2.5" opacity="0.85"/>
+              <ellipse cx="70" cy="70" rx="9" ry="7" fill="none" stroke="#fff" stroke-width="2.5" opacity="0.85"/>
+              <ellipse cx="82" cy="70" rx="9" ry="7" fill="none" stroke="#fff" stroke-width="2.5" opacity="0.85"/>
+              <!-- Small sparkle dots -->
+              <circle cx="70" cy="44" r="1.8" fill="#FFD740"/>
+              <circle cx="55" cy="100" r="1.5" fill="#FFD740" opacity="0.7"/>
+              <circle cx="88" cy="100" r="1.5" fill="#FFD740" opacity="0.7"/>
+            </svg>
+          </div>
+          <div class="bm-front-foot">
+            <div class="bm-front-foot-word">&#128218; DID YOU KNOW?</div>
+            <div class="bm-front-foot-sub">Two things connect when they share a piece of themselves.</div>
+          </div>
+        </div>
+
+        <!-- BACK -->
+        <div class="bm bm-back">
+          <div class="bm-back-top">
+            <div class="bm-back-word">CONNECT</div>
+            <div class="bm-back-sub">Try It! Activity</div>
+          </div>
+          <div class="bm-back-content">
+
+            <div class="bm-back-section">
+              <div class="bm-back-h">&#127807; What You Need</div>
+              <div class="bm-back-fact">Play-Doh (any 2 colors) and a few stickers.</div>
+            </div>
+
+            <div class="bm-back-section">
+              <div class="bm-back-h">&#9889; Try It!</div>
+              <ol class="bm-back-steps">
+                <li class="bm-back-step"><span class="bm-back-step-n">1</span><span class="bm-back-step-t">Roll two Play-Doh balls in different colors. Press a sticker onto each one.</span></li>
+                <li class="bm-back-step"><span class="bm-back-step-n">2</span><span class="bm-back-step-t">Smush the two balls together. Notice how the colors connect at the seam.</span></li>
+                <li class="bm-back-step"><span class="bm-back-step-n">3</span><span class="bm-back-step-t">Pull them apart slowly. What stays? What goes? That&rsquo;s how connections work.</span></li>
+              </ol>
+            </div>
+
+            <div class="bm-back-section">
+              <div class="bm-back-h">&#128153; A Message For You</div>
+              <div class="bm-back-msg">
+                You connect to people every day &mdash; family, friends, even strangers who smile back. Each connection makes you a little stronger. Keep building yours!
+              </div>
+              <div class="bm-back-attr">&mdash; Your AP Research Scientist</div>
+            </div>
+
+          </div>
+          <div class="bm-back-foot">
+            <div class="bm-back-foot-t">SMILE BAGS</div>
+            <div class="bm-back-foot-s">A Word &amp; Wonder Experience</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="foot">Smile Bags &middot; A Word &amp; Wonder Experience &middot; AP Research &middot; Spring 2026 &middot; McGee &middot; AP Research</div>
+
+</div>
+</body>
+</html>
