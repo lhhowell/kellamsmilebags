@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Smile Bags &mdash; The 25 OneWords</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#1A1A1A;color:#fff;min-height:100vh;padding:0 0 60px;line-height:1.65;}
+
+/* Back-link */
+.back-wrap{max-width:1100px;margin:0 auto 12px;padding:8px 24px;background:#0a0a0a;border-bottom:1px solid #2a2a2a;}
+.back-link{color:rgba(255,255,255,0.6);font-size:13px;text-decoration:none;letter-spacing:0.5px;transition:color .2s;margin-right:24px;}
+.back-link:hover{color:#C8860A;text-decoration:underline;}
+
+/* HERO */
+.hero{text-align:center;padding:56px 24px 32px;max-width:900px;margin:0 auto;border-bottom:1px solid #2a2a2a;}
+.hero-brand{font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:4px;color:#C8860A;text-transform:uppercase;margin-bottom:14px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,60px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:14px;}
+.hero-title span{color:#C8860A;}
+.hero-sub{font-size:15px;color:#c8c4bc;max-width:680px;margin:0 auto;line-height:1.7;}
+
+/* INTRO */
+.intro{max-width:760px;margin:32px auto;padding:0 24px;text-align:center;}
+.intro p{font-size:15px;color:#888;font-style:italic;line-height:1.7;}
+
+/* WORD GRID */
+.words-section{max-width:1100px;margin:32px auto;padding:0 24px;}
+.words-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.word-card{background:#0d0d0d;border:1px solid #2a2a2a;border-radius:12px;padding:20px 22px;transition:border-color .2s;}
+.word-card:hover{border-color:#C8860A;}
+.word-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:#C8860A;letter-spacing:2px;margin-bottom:14px;text-align:center;border-bottom:1px solid #2a2a2a;padding-bottom:10px;}
+.word-pair{display:flex;flex-direction:column;gap:12px;}
+.pair-side{padding:8px 0;}
+.pair-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;}
+.pair-side.science .pair-label{color:#7BAF8A;}
+.pair-side.sel .pair-label{color:#E8B36F;}
+.pair-text{font-size:13px;color:#d4d0c8;line-height:1.6;}
+
+/* COUNTER STRIP */
+.counter{text-align:center;padding:24px;font-family:'Fredoka One',cursive;font-size:14px;letter-spacing:2px;color:#777;text-transform:uppercase;border-top:1px solid #2a2a2a;margin-top:32px;}
+.counter span{color:#C8860A;font-size:18px;}
+
+/* FOOTER */
+.footer{text-align:center;padding:32px 24px 0;border-top:1px solid #2a2a2a;max-width:900px;margin:48px auto 0;}
+.footer-sig{font-family:'Fredoka One',cursive;font-size:11px;color:#C8860A;letter-spacing:2px;line-height:1.8;}
+
+@media (max-width:720px){
+  .words-grid{grid-template-columns:1fr;}
+  .hero{padding:40px 20px 24px;}
+}
+
+@media print{
+  body{background:#fff;color:#000;}
+  .back-wrap,.counter{display:none!important;}
+  .hero,.hero-brand,.hero-title,.hero-title span,.intro,.intro p,.footer-sig{color:#000!important;background:#fff!important;}
+  .word-card{background:#fff!important;border:1px solid #ccc!important;break-inside:avoid;page-break-inside:avoid;}
+  .word-title{color:#C8860A!important;border-color:#ccc!important;}
+  .pair-text{color:#333!important;}
+  .pair-side.science .pair-label{color:#1a4d3e!important;}
+  .pair-side.sel .pair-label{color:#8a5a1a!important;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  @page{size:letter portrait;margin:0.5in;}
+}
+</style>
+</head>
+<body>
+
+<div class="back-wrap">
+  <a href="SmileBags_WHY.html" class="back-link">&larr; Back to The WHY</a>
+  <a href="APResearch_Menu.html" class="back-link">&larr; Back to AP Research Menu</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-brand">Smile Bags &middot; A Word &amp; Wonder Experience</div>
+  <h1 class="hero-title">The 25 <span>OneWords</span></h1>
+  <p class="hero-sub">Each word lives in two worlds at once: in the natural systems we study, and in the inner lives we navigate every day.</p>
+</div>
+
+<!-- INTRO -->
+<div class="intro">
+  <p>The same forces that sustain ecosystems &mdash; balance, flow, renewal, resilience &mdash; are the forces that sustain people too. Read each pair side by side. Let the connection speak.</p>
+</div>
+
+<!-- WORD GRID -->
+<div class="words-section">
+  <div class="words-grid">
+    <div class="word-card">
+      <div class="word-title">ABSORB</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Plants and soils absorb carbon, water, and nutrients to sustain ecosystems.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Taking in new information and experiences with an open, curious mind.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">ADAPT</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Species adapt to changing environments through evolution and behavioral shifts.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Adjusting thoughts and responses when life feels uncertain or unfamiliar.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">ANCHOR</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Root systems anchor soil, preventing erosion and stabilizing ecosystems.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Finding people, places, and practices that keep you grounded and steady.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">BALANCE</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Ecosystems depend on balance between predators, prey, and available resources.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Maintaining equilibrium between work, rest, relationships, and personal needs.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">BLOOM</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Flowering plants bloom in response to light, temperature, and seasonal cues.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Thriving naturally when your environment and essential needs are consistently met.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">BREATHE</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Photosynthesis and respiration are Earth&rsquo;s breath &mdash; oxygen and carbon in continuous exchange.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Breath is the body&rsquo;s fastest tool for calming the nervous system and resetting.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">CLEAR</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Clear water, clear skies, and clear-cut forests all signal environmental health or harm.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Clarity of mind comes when we slow down, process emotions, and release what isn&rsquo;t ours.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">CONNECT</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Food webs connect every organism in an ecosystem &mdash; nothing exists in true isolation.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Healthy relationships and a sense of belonging are essential to human well-being.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">CYCLE</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Water, carbon, and nitrogen move through Earth in continuous, life-sustaining cycles.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Life moves in cycles &mdash; rest, effort, grief, and renewal are all natural and necessary.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">EMERGE</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Species emerge from dormancy, cocoons, and seeds when conditions are right.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Growth happens gradually &mdash; and then suddenly, you emerge stronger than before.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">FILTER</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Wetlands and organisms filter toxins and pollutants from water and air.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Learning to filter out negativity and noise so you can focus on what truly matters.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">FLOW</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Rivers flow through watersheds, carrying energy and life across vast landscapes.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Finding your flow state &mdash; where effort feels effortless and purpose feels clear.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">GROW</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Growth requires sunlight, nutrients, water, and time &mdash; it cannot be forced or rushed.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Personal growth requires the same patience and conditions that ecosystems demand.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">HEAL</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Ecosystems heal after disturbance through succession, regeneration, and time.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Healing is not linear &mdash; for people or for nature &mdash; and both deserve patience.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">MIGRATE</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Animals migrate seasonally in response to temperature, food availability, and light.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Transitions and change are a natural part of every life journey &mdash; not something to fear.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">PERSIST</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Resilient species persist through drought, wildfire, and long-term climate shifts.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Persistence through difficulty builds strength, character, and a deeper sense of identity.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">RENEW</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Forests renew after fire; soils renew through decomposition and the return of nutrients.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Rest and recovery are how we renew our energy, creativity, and sense of purpose.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">RESTORE</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Habitat restoration rebuilds what was lost or degraded through human impact.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Restoring relationships and self-trust after hard seasons is an act of quiet courage.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">RETURN</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Salmon return to their birth streams &mdash; nature is always drawn back toward its origin.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Returning to your values and sense of self after feeling lost is always possible.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">RISE</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Sea levels rise, but so do tides, seeds breaking soil, and birds at first light.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Rising above challenges without denying they existed &mdash; that is resilience in action.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">ROOT</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Deep root systems stabilize plants and reach water sources during periods of drought.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Your roots &mdash; family, culture, values, and history &mdash; keep you stable when life shifts.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">SHINE</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">The sun powers all life on Earth through light energy and the process of photosynthesis.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Letting your authentic self shine is both a gift to others and an act of personal courage.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">SUSTAIN</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Sustainability keeps ecosystems and communities viable and thriving for future generations.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Building habits that sustain your mental and physical health is an investment in your future.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">THRIVE</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Species thrive in ecosystems where their needs are consistently and reliably met.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">You deserve environments &mdash; social and physical &mdash; where you can truly and fully thrive.</div>
+        </div>
+      </div>
+    </div>
+    <div class="word-card">
+      <div class="word-title">TRANSFORM</div>
+      <div class="word-pair">
+        <div class="pair-side science">
+          <div class="pair-label">&#127794; In Science</div>
+          <div class="pair-text">Metamorphosis, decomposition, and erosion transform matter into something entirely new.</div>
+        </div>
+        <div class="pair-side sel">
+          <div class="pair-label">&#128153; In You</div>
+          <div class="pair-text">Every challenge you survive has the power to transform you into someone stronger.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="counter"><span>25</span> OneWords &middot; <span>50</span> Definitions &middot; One Shared Vocabulary</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-sig">Smile Bags &middot; A Word &amp; Wonder Experience &middot; AP Research &middot; Spring 2026</div>
+</div>
+
+</body>
+</html>
