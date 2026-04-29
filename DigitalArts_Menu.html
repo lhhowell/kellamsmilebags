@@ -53,6 +53,7 @@ body{font-family:'Nunito',sans-serif;background:#0a140a;color:#fff;min-height:10
 .sol-label{font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#557055;}
 .sol-badge{background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.25);color:#C9A84C;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1px;padding:4px 12px;border-radius:20px;}
 .footer{text-align:center;font-size:12px;color:#2a4a2a;padding:40px 20px 0;max-width:900px;margin:0 auto;font-family:'Fredoka One',cursive;letter-spacing:1px;}
+.footer-copyright{text-align:center;font-size:10px;color:#1a3a1a;padding:8px 20px 0;max-width:900px;margin:0 auto;font-family:'Fredoka One',cursive;letter-spacing:.5px;}
 @media(max-width:600px){.kiosk-grid{grid-template-columns:1fr;}.hero{padding:28px 20px 24px;}}
 
 /* ── Live Trackers ── */
@@ -98,13 +99,6 @@ body{font-family:'Nunito',sans-serif;background:#0a140a;color:#fff;min-height:10
     <div class="tracker-bar"><div class="tracker-fill" id="colFill" style="width:0%;"></div></div>
     <div class="tracker-meta"><span id="colCount">—</span> of <strong>45</strong></div>
     <div class="tracker-sub">Set G: <span id="colG">—</span> &middot; Set H: <span id="colH">—</span></div>
-  </div>
-  <div class="tracker-card">
-    <div class="tracker-icon">🧩</div>
-    <div class="tracker-name">Jigsaw Puzzles</div>
-    <div class="tracker-bar"><div class="tracker-fill" id="jpFill" style="width:0%;"></div></div>
-    <div class="tracker-meta"><span id="jpCount">—</span> of <strong>45</strong></div>
-    <div class="tracker-sub">12pc: <span id="jp12">—</span> &middot; 18pc: <span id="jp18">—</span> &middot; 24pc: <span id="jp24">—</span></div>
   </div>
 </div>
 
@@ -289,6 +283,7 @@ body{font-family:'Nunito',sans-serif;background:#0a140a;color:#fff;min-height:10
 </div>
 
 <div class="footer">Digital Arts &middot; Creation Kiosk &middot; Smile Bags: A Word &amp; Wonder Experience &middot; Kayla Gau &middot; Spring 2026</div>
+<div class="footer-copyright">&copy; 2025&ndash;2026 Laura Howell. All rights reserved.</div>
 <script>
 /* ── LIVE COUNTS — fetched from Apps Script doGet?action=counts ── */
 // ⚠️ Paste your Apps Script Web App URL here after deployment.
@@ -314,13 +309,6 @@ function fetchDigitalArtsCounts(){
       document.getElementById('colFill').style.width = Math.min(100, Math.round((col.total / col.goal) * 100)) + '%';
       document.getElementById('colG').textContent = col.setG;
       document.getElementById('colH').textContent = col.setH;
-
-      var jp = d.jigsaw || {total:0, pieces12:0, pieces18:0, pieces24:0, goal:45};
-      document.getElementById('jpCount').textContent = jp.total;
-      document.getElementById('jpFill').style.width = Math.min(100, Math.round((jp.total / jp.goal) * 100)) + '%';
-      document.getElementById('jp12').textContent = jp.pieces12;
-      document.getElementById('jp18').textContent = jp.pieces18;
-      document.getElementById('jp24').textContent = jp.pieces24;
     })
     .catch(function(e){ console.warn('Tracker fetch failed:', e); });
 }
