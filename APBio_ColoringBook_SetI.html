@@ -259,9 +259,24 @@ function downloadPage() {
 function printPage() {
   if(current < 0) return;
   var win = window.open('');
-  win.document.write('<img src="' + PAGES[current].img + '" style="max-width:100%;"/>');
+  var imgUrl = PAGES[current].img;
+  var word = PAGES[current].word;
+  win.document.write(
+    '<!DOCTYPE html><html><head><meta charset="UTF-8"/>' +
+    '<title>Smile Bags Coloring Page &middot; ' + word + '</title>' +
+    '<style>' +
+      '@page{size:letter portrait;margin:0.4in;}' +
+      'html,body{margin:0;padding:0;background:#fff;}' +
+      'body{text-align:center;}' +
+      'img{max-width:7.5in;max-height:10in;width:auto;height:auto;display:inline-block;page-break-inside:avoid;}' +
+      '@media print{img{max-width:7.5in;max-height:10in;page-break-inside:avoid;page-break-after:avoid;}}' +
+    '</style></head><body>' +
+    '<img src="' + imgUrl + '" alt="' + word + ' coloring page" ' +
+      'onload="setTimeout(function(){window.focus();window.print();},150);" ' +
+      'onerror="document.body.innerHTML=\'<p style=&quot;font-family:sans-serif;padding:40px;&quot;>Image failed to load. Please close this window and try again.</p>\';"/>' +
+    '</body></html>'
+  );
   win.document.close();
-  win.print();
   // Standard #5: print = log submission
   submitPageToSheet(PAGES[current]);
 }
