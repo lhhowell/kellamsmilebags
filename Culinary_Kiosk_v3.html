@@ -146,6 +146,10 @@ body { font-family:'Nunito',sans-serif; background:var(--cream); min-height:100v
   .level-grid { grid-template-columns:1fr; }
   .word-grid  { grid-template-columns:repeat(4,1fr); }
 }
+.kiosk-footer{text-align:center;padding:24px 20px 32px;margin-top:20px;border-top:1px solid #e8ddd0;background:#FFFCF5;}
+.kiosk-footer-brand{font-family:'Fredoka One',cursive;font-size:.8rem;color:var(--navy);letter-spacing:.04em;margin-bottom:4px;}
+.kiosk-footer-sub{font-size:.65rem;color:var(--mid);font-weight:600;letter-spacing:.08em;margin-bottom:8px;}
+.kiosk-footer-copyright{font-size:.6rem;color:#9a8770;font-weight:600;letter-spacing:.04em;}
 </style>
 </head>
 <body>
@@ -757,5 +761,12 @@ function restart() {
 function show(id) { document.getElementById(id).classList.add('show'); }
 function hide(id) { document.getElementById(id).classList.remove('show'); }
 </script>
+
+<!-- FOOTER -->
+<footer class="kiosk-footer">
+  <div class="kiosk-footer-brand">🍪 Smile Bags · A Word &amp; Wonder Experience</div>
+  <div class="kiosk-footer-sub">Culinary Arts with Ms. Sayers · Spring 2026</div>
+  <div class="kiosk-footer-copyright">&copy; 2025&ndash;2026 Laura Howell. All rights reserved.</div>
+</footer>
 </body>
 </html>
