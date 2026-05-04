@@ -57,10 +57,28 @@
   .chip-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
   .chip { background:rgba(200,168,75,0.12); border:1px solid rgba(200,168,75,0.3); color:var(--gold); font-size:12px; padding:4px 12px; border-radius:20px; letter-spacing:.04em; }
   @media print {
+    @page { size: letter landscape; margin: 0.4in; }
     body { background:white !important; } body::before { display:none; }
     .site-header,.screen:not(.active),.no-print { display:none !important; }
-    .wrap { padding:0; max-width:100%; } .card-stage { margin:0; }
-    .trading-card { width:3.5in; box-shadow:none; border:2pt solid #1a2410; margin:0.25in auto; display:block; }
+    .wrap { padding:0; max-width:100%; }
+    /* 2-up landscape layout — both cards print side-by-side */
+    .card-stage {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5in;
+      margin: 0;
+      align-items: start;
+      justify-items: center;
+      page-break-inside: avoid;
+    }
+    .trading-card {
+      width: 4.4in !important;
+      box-shadow: none;
+      border: 2pt solid #1a2410;
+      margin: 0 !important;
+      display: block;
+      page-break-inside: avoid;
+    }
     .trading-card::before { display:none; } .card-art { filter:none; }
     .card-bottom { background:#1a2410 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
     .btn-row,.print-note,.back-to-hub { display:none; }
@@ -133,7 +151,7 @@
       <button class="btn-ghost" onclick="goTo(1)">← New Card</button>
       <button class="btn-primary" onclick="window.print()">🖨 Print Card</button>
     </div>
-    <p class="print-note no-print" style="text-align:center;font-size:12px;color:var(--muted);margin-top:16px;">Print on cardstock · Standard letter size · Cut along the card border</p>
+    <p class="print-note no-print" style="text-align:center;font-size:12px;color:var(--muted);margin-top:16px;">Prints 2 identical cards per page · Letter landscape · Cardstock recommended · Cut along card border</p>
   </div>
 
 </div>
@@ -148,6 +166,23 @@ function pickLevel(lv){selectedLevel=lv;document.querySelectorAll('.level-card')
 function checkStep2(){const n=document.getElementById('nameInput').value.trim();document.getElementById('btn2').disabled=!(selectedLevel&&n.length>0);}
 function buildCard(){const name=document.getElementById('nameInput').value.trim();const quote=QUOTES[selectedWord]?.[selectedLevel]||'';document.getElementById('chipRow').innerHTML='<span class="chip">'+selectedWord+'</span><span class="chip">'+selectedLevel+' Level</span><span class="chip">Signed by '+name+'</span>';const wt=selectedWord.charAt(0)+selectedWord.slice(1).toLowerCase();const img=document.getElementById('cardImg');img.style.display='block';document.getElementById('cardArtFallback').style.display='none';img.src='https://lhhowell.github.io/kellamsmilebags/TC_'+wt+'.png';document.getElementById('fallbackWord').textContent=selectedWord;document.getElementById('cardQuote').textContent='"'+quote+'"';document.getElementById('cardSig').textContent=name;goTo(3);}
 init();
+// ─── PRINT: duplicate card so each page prints 2 copies side-by-side ───
+(() => {
+  let _printClone = null;
+  window.addEventListener('beforeprint', () => {
+    const card = document.querySelector('.trading-card');
+    const stage = document.querySelector('.card-stage');
+    if (card && stage && !_printClone) {
+      _printClone = card.cloneNode(true);
+      _printClone.removeAttribute('id');
+      _printClone.classList.add('print-clone');
+      stage.appendChild(_printClone);
+    }
+  });
+  window.addEventListener('afterprint', () => {
+    if (_printClone) { _printClone.remove(); _printClone = null; }
+  });
+})();
 </script>
 </body>
 </html>
