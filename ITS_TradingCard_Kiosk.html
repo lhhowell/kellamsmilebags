@@ -60,6 +60,8 @@
     @page { size: letter landscape; margin: 0.4in; }
     body { background:white !important; } body::before { display:none; }
     .site-header,.screen:not(.active),.no-print { display:none !important; }
+    /* Hide screen chrome on print — they leak onto a wasted first page */
+    .step-label,.section-title,.section-hint,.chip-row,.gold-divider { display:none !important; }
     .wrap { padding:0; max-width:100%; }
     /* 2-up landscape layout — both cards print side-by-side */
     .card-stage {
