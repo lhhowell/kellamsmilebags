@@ -261,6 +261,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0a0f;color:#fff;min-height:10
 <script>
 // ── SUBMISSION WIRING (Standard #5 + #7) ────────────────────
 var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzEmRvijoOk21PK_EvB_zT_Dy5GwgFiNdAqv-PYgk23RB929cFs6y1ZkP1YNkiCXQ3-/exec";
+var SUBMISSION_SECRET = "GRtvfpag2ewQnZuSNNyK5KqXR4HeL7E5";
 
 function fetchBagTracker(){
   if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0) return;
@@ -291,7 +292,8 @@ function submitToSheet(){
     class: 'AP Bio + T.I.D.E.',
     word: message,
     message: message,
-    token: token
+    token: token,
+    secret: SUBMISSION_SECRET
   };
   fetch(SCRIPT_URL, {
     method: 'POST',
