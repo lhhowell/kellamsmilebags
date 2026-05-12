@@ -662,6 +662,7 @@ renderPage(0);
 /* ── SUBMISSION + LIVE TRACKER ─────────────────────────────── */
 // ⚠️ Paste your Apps Script Web App URL here after deployment.
 var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyPk1fe0vattPkEHA8BV4hnX8mAeDdVywc3X7rWNXykj0X8tVcZzVzol_hYAd7dmcWXDQ/exec";
+var SUBMISSION_SECRET = "hd4sQa7JZrSfvAZBdtThEJLnjn2BSE5C";
 
 function setgSubmit(){
   var page = PAGES[currentIndex];
@@ -685,7 +686,8 @@ function setgSubmit(){
     word: page.word.toUpperCase(),
     set: 'G',
     style: 'Nature Poster',
-    token: token
+    token: token,
+    secret: SUBMISSION_SECRET
   };
 
   if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0){

@@ -250,6 +250,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;pa
 <script>
 // ⚠️ Paste your Apps Script Web App URL here after deployment.
 var SCRIPT_URL="https://script.google.com/macros/s/AKfycbyPk1fe0vattPkEHA8BV4hnX8mAeDdVywc3X7rWNXykj0X8tVcZzVzol_hYAd7dmcWXDQ/exec";
+var SUBMISSION_SECRET = "hd4sQa7JZrSfvAZBdtThEJLnjn2BSE5C";
 
 var WORDS=["ABSORB","ADAPT","ANCHOR","BALANCE","BLOOM","BREATHE","CLEAR","CONNECT","CYCLE","EMERGE","FILTER","FLOW","GROW","HEAL","MIGRATE","PERSIST","RENEW","RESTORE","RETURN","RISE","ROOT","SHINE","SUSTAIN","THRIVE","TRANSFORM"];
 
@@ -374,7 +375,8 @@ function doSubmit(){
     style: selStyle ? selStyle.name : "",
     background: selColor ? selColor.name : "",
     method: "Screenshot + Canvas",
-    token: tok
+    token: tok,
+    secret: SUBMISSION_SECRET
   };
   if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0){showDone();return;}
   fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
