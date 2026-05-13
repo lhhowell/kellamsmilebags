@@ -251,6 +251,7 @@ body{font-family:'Nunito',sans-serif;background:#1A1A1A;min-height:100vh;color:#
 
 <script>
 const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbxfT9cjUgt4dy5jrFdkx2iccGjJduW6--fwOkECBxYcqA8B6D9HJF4mu666-tOUdhggxA/exec';
+const SUBMISSION_SECRET = '2Y78gR3sE2CYraKQEPxrCQ3qifL8tepX';
 
 // ══ DATA ══
 var WORDS = {
@@ -458,6 +459,7 @@ async function logBookmarkToSheet() {
     const editedData = getEditedData();
     const payload = {
       activity: 'Bookmark',
+      secret: SUBMISSION_SECRET,
       word: currentWord,
       student_name: document.getElementById('studentName').value.trim(),
       class: 'AP Environmental Science',
