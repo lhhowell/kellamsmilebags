@@ -431,7 +431,9 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;pa
 <script>
 // ⚠️ IMPORTANT: Paste your live Apps Script Web App URL here after deployment.
 // (Until you do, submissions will simulate success but won't be logged.)
-var SCRIPT_URL="https://script.google.com/macros/s/AKfycbx2kIL0IpCeSEo1PKd1EUDRe_1hIqq8fSkko9Tw1RLHfQ-N6Cl6A1G5wuCEJb0vuF_8ew/exec";
+var SCRIPT_URL="https://script.google.com/macros/s/AKfycbynrIgckf0cElzXPmAy06M-TgIBoyov9nTWMDBQs1Z92M2orqdZS1aVc3m6xW5XRViu/exec";
+var SCRIPT_TOKEN="smilebags-glover-2026-210012";
+var SPREADSHEET_ID="1Pun8dZJDiLKe9jzW2OAQE_64_AY3LrWvOVACPQqUAAk";
 
 // Shared state
 var sName="",sClass="",sGrade="";
@@ -713,7 +715,7 @@ function drawBmPreview(){
 function bmSubmit(){
   var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
   document.getElementById("bmTokCode").textContent=tok;
-  var payload={activity:"Bookmark",studentName:sName,class:sClass,grade:sGrade,teacher:"Sharon Glover",word:bmWord,emoji:bmEmoji,color1:bmColor1?bmColor1.name:"",color1Hex:bmColor1?bmColor1.hex:"",color2:bmColor2?bmColor2.name:"",color2Hex:bmColor2?bmColor2.hex:"",token:tok};
+  var payload={activity:"Bookmark",studentName:sName,class:sClass,grade:sGrade,teacher:"Sharon Glover",word:bmWord,emoji:bmEmoji,color1:bmColor1?bmColor1.name:"",color1Hex:bmColor1?bmColor1.hex:"",color2:bmColor2?bmColor2.name:"",color2Hex:bmColor2?bmColor2.hex:"",submissionId:tok,token:SCRIPT_TOKEN,spreadsheetId:SPREADSHEET_ID};
   var btn=document.querySelector("#bmNotSub .submit-btn");btn.textContent="Submitting...";btn.disabled=true;
   if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){bmShowDone();return;}
   fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)}).then(function(){bmShowDone();}).catch(function(){bmShowDone();});
@@ -795,7 +797,7 @@ function drawQcPreview(){
 function qcSubmit(){
   var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
   document.getElementById("qcTokCode").textContent=tok;
-  var payload={activity:"QuoteCard",studentName:sName,class:sClass,grade:sGrade,teacher:"Sharon Glover",school:"Princess Anne Middle",word:qcWord,quote:qcQuote,shape:qcShape,colorPair:qcPair?qcPair.name:"",font:qcFont?qcFont.name:"",token:tok};
+  var payload={activity:"QuoteCard",studentName:sName,class:sClass,grade:sGrade,teacher:"Sharon Glover",school:"Princess Anne Middle",word:qcWord,quote:qcQuote,shape:qcShape,colorPair:qcPair?qcPair.name:"",font:qcFont?qcFont.name:"",submissionId:tok,token:SCRIPT_TOKEN,spreadsheetId:SPREADSHEET_ID};
   var btn=document.querySelector("#qcNotSub .submit-btn");btn.textContent="Submitting...";btn.disabled=true;
   if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){qcShowDone();return;}
   fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)}).then(function(){qcShowDone();}).catch(function(){qcShowDone();});
