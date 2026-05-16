@@ -552,7 +552,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 </div>
 
 <script>
-var SCRIPT_URL="https://script.google.com/macros/s/AKfycbzqP6Tzz4Q_1rtBDmAvyNhYoEo_gnQDw9_bYejrfj3skQPQFruztuf2QIAzmdaCy90e/exec";
+var SCRIPT_URL="https://script.google.com/macros/s/AKfycbz2TPOfAhAExNrO4L0p0tUI8xJRaEfLoWvGD59911Jb2_Sm74tFCQPTXqTZmsYxc4gz5w/exec";
+var SCRIPT_TOKEN="smilebags-vinson-2026-642531";
+var SPREADSHEET_ID="1_DJjDDipItfC7jnX64rviSUrcec-zywMD35eVwfIWpU";
 
 var WORDS=[
   {word:"ABSORB",  meaning:"Taking in everything around you"},
@@ -926,7 +928,7 @@ function escXml(str){return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;
 function doSubmit1(){
   var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
   document.getElementById("tok1Code").textContent=tok;
-  var payload={activity:"avidCard1",studentName:sName,studentGrade:sGrade,teacher:"Deena Vinson",word:selWord?selWord.word:"",wordMeaning:selWord?selWord.meaning:"",reflection:sReflect,card1Quote:sQuote,shape:selShape,school:selPair?selPair.school:"",color1Name:selPair?selPair.c1.n:"",color1Hex:selPair?selPair.c1.h:"",color2Name:selPair?selPair.c2.n:"",color2Hex:selPair?selPair.c2.h:"",font:selFont?selFont.name:"",card:"1",token:tok};
+  var payload={activity:"avidCard1",studentName:sName,studentGrade:sGrade,teacher:"Deena Vinson",word:selWord?selWord.word:"",wordMeaning:selWord?selWord.meaning:"",reflection:sReflect,card1Quote:sQuote,shape:selShape,school:selPair?selPair.school:"",color1Name:selPair?selPair.c1.n:"",color1Hex:selPair?selPair.c1.h:"",color2Name:selPair?selPair.c2.n:"",color2Hex:selPair?selPair.c2.h:"",font:selFont?selFont.name:"",card:"1",submissionId:tok,token:SCRIPT_TOKEN,spreadsheetId:SPREADSHEET_ID};
   var btn=document.querySelector("#notSub1 .submit-btn");btn.textContent="Submitting...";btn.disabled=true;
   if(!SCRIPT_URL||SCRIPT_URL.indexOf('https://')!==0){showDone1();return;}
   fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",body:JSON.stringify(payload)}).then(function(){showDone1();}).catch(function(){showDone1();});
@@ -936,7 +938,7 @@ function showDone1(){document.getElementById("notSub1").style.display="none";doc
 function doSubmit2(){
   var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
   document.getElementById("tok2Code").textContent=tok;
-  var payload={activity:"avidCard2",studentName:c2Name,studentGrade:c2Grade,teacher:"Deena Vinson",word:selWord2?selWord2.word:"",wordMeaning:selWord2?selWord2.meaning:"",card2Quote:selQuote2||"",shape:selShape2,colorPair:selPair2?selPair2.name:"",color1Name:selPair2?selPair2.c1.n:"",color1Hex:selPair2?selPair2.c1.h:"",color2Name:selPair2?selPair2.c2.n:"",color2Hex:selPair2?selPair2.c2.h:"",font:selFont2?selFont2.name:"",card:"2",token:tok};
+  var payload={activity:"avidCard2",studentName:c2Name,studentGrade:c2Grade,teacher:"Deena Vinson",word:selWord2?selWord2.word:"",wordMeaning:selWord2?selWord2.meaning:"",card2Quote:selQuote2||"",shape:selShape2,colorPair:selPair2?selPair2.name:"",color1Name:selPair2?selPair2.c1.n:"",color1Hex:selPair2?selPair2.c1.h:"",color2Name:selPair2?selPair2.c2.n:"",color2Hex:selPair2?selPair2.c2.h:"",font:selFont2?selFont2.name:"",card:"2",submissionId:tok,token:SCRIPT_TOKEN,spreadsheetId:SPREADSHEET_ID};
   var btn=document.querySelector("#notSub2 .submit-btn");btn.textContent="Submitting...";btn.disabled=true;
   if(!SCRIPT_URL||SCRIPT_URL.indexOf('https://')!==0){showDone2();return;}
   fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",body:JSON.stringify(payload)}).then(function(){showDone2();}).catch(function(){showDone2();});
