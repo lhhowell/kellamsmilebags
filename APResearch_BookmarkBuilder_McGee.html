@@ -436,12 +436,15 @@ function savePDF(){
   setTimeout(function(){ document.head.removeChild(style); }, 1000);
 }
 
-const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbzOTlnZKCxpFYG69QOWTB7qWM0SsBJP3BKAwC-l0DVdvSOkN9L1GXBZSGz94eIur3rkXw/exec';
+const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbyVbRd-YWHUs3KFU6gPgQ1-eMaNHjSGsO4HBIbhA2yLh0ROs_CSrdjVqKuyCNz3ZREq/exec';
+const SCRIPT_TOKEN = '<<AP_RESEARCH_SCRIPT_TOKEN>>';
+const SPREADSHEET_ID = '1XIzB78kEejzpc-7NFWNZuz-ceNMaIN-5FrhdxRzX1qU';
 const TEACHER = 'McGee';
 
 async function logBookmarkToSheet() {
   try {
     const d = getEditedData();
+    const submissionId = 'KSB-AR-' + Math.random().toString(36).substr(2, 4).toUpperCase();
     const payload = {
       activity: 'Bookmark',
       word: currentWord,
@@ -449,7 +452,10 @@ async function logBookmarkToSheet() {
       class: 'AP Research',
       teacher: TEACHER,
       content: JSON.stringify(d),
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      submissionId: submissionId,
+      token: SCRIPT_TOKEN,
+      spreadsheetId: SPREADSHEET_ID
     };
     await fetch(SUBMIT_URL, {
       method: 'POST',
