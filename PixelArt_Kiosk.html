@@ -182,7 +182,9 @@ body{font-family:'Nunito',sans-serif;background:#0a0a0a;color:#fff;min-height:10
 
 <script>
 // ── SUBMISSION WIRING (Standard #5 + #7) ────────────────────
-var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzEmRvijoOk21PK_EvB_zT_Dy5GwgFiNdAqv-PYgk23RB929cFs6y1ZkP1YNkiCXQ3-/exec";
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwfI4l_WrGpj2OGifu_dSLiNyLrJ3ZZGNwHHqczA4HbygvPQxJEHJOYRybPh75bd4P8/exec";
+var SCRIPT_TOKEN = "smilebags-obrien-2026-123456";
+var SPREADSHEET_ID = "1ruH_Rr60g5XfiPS5-uJwZiKQhyC1wMYzTOEXHNJ-kcA";
 
 function fetchBagTracker(){
   if(!SCRIPT_URL || SCRIPT_URL.indexOf('https://') !== 0) return;
@@ -211,7 +213,9 @@ function submitToSheet(){
     class: 'AP Bio + T.I.D.E.',
     word: (typeof selectedWord !== 'undefined' && selectedWord) ? selectedWord : '',
     pattern: (typeof selectedColor !== 'undefined' && selectedColor) ? selectedColor : '',
-    token: token
+    submissionId: token,
+    token: SCRIPT_TOKEN,
+    spreadsheetId: SPREADSHEET_ID
   };
   fetch(SCRIPT_URL, {
     method: 'POST',
