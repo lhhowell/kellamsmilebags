@@ -227,11 +227,7 @@
       <div class="brand-title">Big Idea Planner</div>
       <div class="brand-sub">Smile Bags &middot; A Word &amp; Wonder Experience</div>
     </div>
-    <a class="drive-pill" id="driveLink" href="#" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.71 3.52L1.15 15l3.42 5.92h13.69L21.85 15 14.29 3.52H7.71zm1.42 2h5.74l5.36 9.48H14.49L9.13 5.52zM7.71 6.48L12.71 15H2.57L7.71 6.48z"/></svg>
-      Upload to Drive
-    </a>
-  </div>
+    </div>
 </header>
 
 <main>
@@ -241,6 +237,10 @@
       <h1>Choose Your OneWord</h1>
       <p>Every OneWord opens up three paths for a SMART plan — school, personal, and community. Pick a word that fits the student you're planning for.</p>
     </div>
+    <div style="max-width:480px;margin:0 auto 24px;padding:16px;background:rgba(0,0,0,0.05);border-radius:8px;">
+  <label for="studentName" style="display:block;font-weight:700;margin-bottom:8px;font-size:13px;letter-spacing:1px;text-transform:uppercase;">Your Name (required)</label>
+  <input type="text" id="studentName" placeholder="Enter your name to begin..." style="width:100%;padding:10px 12px;border-radius:6px;border:2px solid #ccc;background:#fff;color:#333;font-size:15px;font-family:inherit;"/>
+</div>
     <div class="word-grid" id="wordGrid"></div>
   </section>
 
@@ -338,15 +338,9 @@
           </div>
         </div>
       </div>
-      <div class="micro-step">
-        <div class="micro-step-icon">&#128248;</div>
-        <div>
-          <strong>Next steps:</strong> Press <strong>Print Screen</strong> (or <strong>Ctrl + Shift + Show Windows</strong> on Chromebook) to capture the full planner card, then save to your Chromebook and upload to the shared Drive folder.
-        </div>
-      </div>
       <div class="planner-actions">
         <button class="btn btn-primary" onclick="goToScreen('words')">Make another planner card</button>
-        <a class="btn btn-gold" id="driveLink2" href="#" target="_blank" rel="noopener">Open Drive folder</a>
+        <button class="btn btn-gold" onclick="submitToBag()">🖨️ Print + Save</button>
       </div>
     </div>
   </section>
@@ -357,16 +351,6 @@
 </footer>
 
 <script>
-const DRIVE_URL = "https://drive.google.com/drive/folders/1D1AqGr8icdUbziUg9_8Ww1XyYhUXPxs4?usp=sharing";
-
-if (DRIVE_URL && DRIVE_URL.indexOf('REPLACE') === -1) {
-  document.getElementById('driveLink').href = DRIVE_URL;
-  document.getElementById('driveLink2').href = DRIVE_URL;
-} else {
-  document.getElementById('driveLink').style.display = 'none';
-  document.getElementById('driveLink2').style.display = 'none';
-}
-
 const WORDS = ["ABSORB","ADAPT","ANCHOR","BALANCE","BLOOM","BREATHE","CLEAR","CONNECT","CYCLE","EMERGE","FILTER","FLOW","GROW","HEAL","MIGRATE","PERSIST","RENEW","RESTORE","RETURN","RISE","ROOT","SHINE","SUSTAIN","THRIVE","TRANSFORM"];
 
 const PLANS = {
@@ -2378,6 +2362,13 @@ const THEME_META = {
   community: { icon:"\u{1F91D}", name:"Community & Service" }
 };
 
+
+// ── v2 + Path B submission config (added 2026-05-16) ──
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz-Tk5aD1ukFvssotpC_zL4Ru7J9HajY9YQivh5dh5EEfKYri8xOFp3Y-z4qzrxRMS42w/exec";
+const SCRIPT_TOKEN = "smilebags-marquand-2026-210012";
+const SPREADSHEET_ID = "1n4V2yAaAboze_qWPwpkMsr11Be40QdFPTQeC61olv2Y";
+const ACTIVITY = "bigidea";
+
 let state = { word:null, theme:null, option:null };
 
 function renderWords(){
@@ -2449,6 +2440,46 @@ function startOver(){
 }
 
 renderWords();
+
+// ── v2 + Path B submission helper (added 2026-05-16) ──
+async function submitToBag() {
+  const nameEl = document.getElementById('studentName');
+  const name = nameEl ? (nameEl.value || '').trim() : '';
+  if (!name) {
+    alert('Please enter your name before printing.');
+    if (nameEl) nameEl.focus();
+    return;
+  }
+  const submissionId = 'KSB-' + ACTIVITY.toUpperCase().slice(0,3) + '-' +
+    Math.random().toString(36).substring(2,6).toUpperCase();
+  const safeState = (typeof state === 'object' && state) ? state : {};
+  const payload = {
+    activity: ACTIVITY,
+    studentName: name,
+    class: 'Leadership',
+    teacher: 'Katelyn Marquand',
+    word: safeState.word || '',
+    set: safeState.set || '',
+    option: safeState.option || '',
+    theme: safeState.theme || '',
+    age: safeState.age || '',
+    submissionId: submissionId,
+    token: SCRIPT_TOKEN,
+    spreadsheetId: SPREADSHEET_ID
+  };
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+  } catch (err) {
+    console.warn('submitToBag failed (non-blocking):', err);
+  }
+  window.print();
+}
+
 </script>
 </body>
 </html>
