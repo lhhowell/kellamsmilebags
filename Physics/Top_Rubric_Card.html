@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<title>Spinning Top Rubric — Reference Card</title>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  @page { size: letter; margin: 0.4in; }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    background: #DCE6EE;
+    color: #3D2D20;
+    margin: 0;
+    padding: 24px 28px;
+    max-width: 8.5in;
+  }
+  .sheet {
+    background: #FAEFD8;
+    padding: 28px 30px 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(61, 45, 32, 0.08);
+    position: relative;
+  }
+  .sheet::before, .sheet::after {
+    content: '✦';
+    position: absolute;
+    color: #5C8A4A;
+    font-size: 18pt;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .sheet::before { top: 14px; left: 18px; }
+  .sheet::after  { top: 14px; right: 18px; }
+  .header {
+    text-align: center;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ED9F4A;
+  }
+  .header .word-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 8pt;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #b89860;
+    margin: 0;
+  }
+  .header h1 {
+    font-family: 'Allura', cursive;
+    margin: 4px 0 0;
+    font-size: 44pt;
+    color: #6B3FA0;
+    line-height: 1;
+  }
+  .header .sub {
+    font-family: 'Inter', sans-serif;
+    margin: 4px 0 0;
+    font-size: 11pt;
+    color: #5C8A4A;
+    font-style: italic;
+  }
+  .intro {
+    background: rgba(107, 63, 160, 0.08);
+    border-left: 4px solid #6B3FA0;
+    padding: 12px 16px;
+    font-size: 12pt;
+    margin-bottom: 18px;
+    line-height: 1.5;
+    border-radius: 0 6px 6px 0;
+  }
+  .intro strong { color: #6B3FA0; }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .card {
+    background: white;
+    border: 1px solid rgba(184, 152, 96, 0.4);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .card h3 {
+    margin: 0 0 4px;
+    font-size: 14pt;
+    color: #3D2D20;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+  }
+  .card h3 .num {
+    background: #6B3FA0;
+    color: #FAEFD8;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12pt;
+    font-weight: bold;
+    font-family: 'Inter', sans-serif;
+  }
+  .card .why {
+    font-size: 10pt;
+    color: #888;
+    margin: 0 0 10px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .compare-cell {
+    text-align: center;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 10pt;
+    font-family: 'Inter', sans-serif;
+  }
+  .bad  { background: rgba(163, 81, 67, 0.12); color: #A35143; border: 1px solid rgba(163, 81, 67, 0.3); }
+  .good { background: rgba(92, 138, 74, 0.15);  color: #5C8A4A; border: 1px solid rgba(92, 138, 74, 0.35); }
+  .compare-cell .label {
+    font-weight: 600;
+    font-size: 11pt;
+    margin-bottom: 4px;
+    display: block;
+    letter-spacing: 0.5px;
+  }
+  .compare-cell svg { display: block; margin: 4px auto; }
+  .scoring {
+    background: white;
+    border: 2px solid #ED9F4A;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+  }
+  .scoring h3 {
+    margin: 0 0 10px;
+    color: #ED9F4A;
+    font-size: 16pt;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+  }
+  .scale {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin: 0 0 12px;
+    font-family: 'Inter', sans-serif;
+  }
+  .scale-cell {
+    text-align: center;
+    padding: 10px 8px;
+    border-radius: 6px;
+    font-size: 10pt;
+    font-weight: 600;
+  }
+  .s-poor { background: rgba(163, 81, 67, 0.15);  color: #A35143; }
+  .s-ok   { background: rgba(237, 159, 74, 0.18); color: #B8731F; }
+  .s-good { background: rgba(92, 138, 74, 0.18);  color: #5C8A4A; }
+  .scale-cell .big { font-size: 18pt; display: block; margin-bottom: 2px; }
+  .bands {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-top: 8px;
+    font-family: 'Inter', sans-serif;
+  }
+  .band {
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 11pt;
+  }
+  .band .total { font-size: 18pt; font-weight: 700; display: block; margin-bottom: 2px; }
+  .b1 { background: rgba(163, 81, 67, 0.15);  color: #A35143; }
+  .b2 { background: rgba(237, 159, 74, 0.18); color: #B8731F; }
+  .b3 { background: rgba(92, 138, 74, 0.18);  color: #5C8A4A; }
+  .footer {
+    text-align: center;
+    color: #b89860;
+    font-size: 9pt;
+    margin-top: 14px;
+    padding-top: 8px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.3px;
+  }
+</style>
+</head><body>
+
+<div class="sheet">
+<div class="header">
+  <p class="word-label">The OneWord</p>
+  <h1>Balance</h1>
+  <p class="sub">Spinning Top Rubric · Score each top using these 4 questions</p>
+</div>
+
+<div class="intro">
+  <strong>How to use:</strong> Look at a top. Score each of the 4 questions: ❌ Needs work (1), ⚠️ Just OK (2), ✅ Looking good (3). Add up the points (max 12) to predict how long it will spin.
+</div>
+
+<div class="grid">
+
+  <div class="card">
+    <h3><span class="num">1</span> Where's the weight?</h3>
+    <p class="why">Heavy stuff at the bottom edge stores more spin energy.</p>
+    <div class="compare">
+      <div class="compare-cell bad">
+        <span class="label">❌ TOP-HEAVY</span>
+        <svg width="48" height="64" viewBox="0 0 48 64">
+          <ellipse cx="24" cy="14" rx="14" ry="8" fill="#A35143" opacity="0.7"/>
+          <line x1="24" y1="22" x2="24" y2="56" stroke="#A35143" stroke-width="3"/>
+          <line x1="24" y1="56" x2="20" y2="62" stroke="#A35143" stroke-width="2"/>
+          <line x1="24" y1="56" x2="28" y2="62" stroke="#A35143" stroke-width="2"/>
+        </svg>
+        <div>Heavy on top</div>
+      </div>
+      <div class="compare-cell good">
+        <span class="label">✅ BOTTOM-HEAVY</span>
+        <svg width="48" height="64" viewBox="0 0 48 64">
+          <line x1="24" y1="6" x2="24" y2="40" stroke="#5C8A4A" stroke-width="3"/>
+          <ellipse cx="24" cy="48" rx="18" ry="6" fill="#5C8A4A" opacity="0.7"/>
+          <polygon points="24,54 22,62 26,62" fill="#5C8A4A"/>
+        </svg>
+        <div>Heavy at bottom edge</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="num">2</span> How pointy is the bottom?</h3>
+    <p class="why">A sharp point touches less surface = less friction.</p>
+    <div class="compare">
+      <div class="compare-cell bad">
+        <span class="label">❌ FLAT / WIDE</span>
+        <svg width="48" height="64" viewBox="0 0 48 64">
+          <line x1="24" y1="6" x2="24" y2="36" stroke="#A35143" stroke-width="3"/>
+          <ellipse cx="24" cy="40" rx="14" ry="5" fill="none" stroke="#A35143" stroke-width="2"/>
+          <rect x="14" y="48" width="20" height="8" fill="#A35143" opacity="0.7"/>
+        </svg>
+        <div>Wide bottom</div>
+      </div>
+      <div class="compare-cell good">
+        <span class="label">✅ SHARP POINT</span>
+        <svg width="48" height="64" viewBox="0 0 48 64">
+          <line x1="24" y1="6" x2="24" y2="36" stroke="#5C8A4A" stroke-width="3"/>
+          <ellipse cx="24" cy="40" rx="14" ry="5" fill="none" stroke="#5C8A4A" stroke-width="2"/>
+          <polygon points="24,42 18,58 30,58" fill="#5C8A4A" opacity="0.7"/>
+          <circle cx="24" cy="60" r="1.5" fill="#5C8A4A"/>
+        </svg>
+        <div>Tiny tip</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="num">3</span> Is it balanced?</h3>
+    <p class="why">Lopsided = wobble = energy lost to wobble instead of spin.</p>
+    <div class="compare">
+      <div class="compare-cell bad">
+        <span class="label">❌ LOPSIDED</span>
+        <svg width="48" height="64" viewBox="0 0 48 64">
+          <line x1="24" y1="6" x2="24" y2="34" stroke="#A35143" stroke-width="3"/>
+          <ellipse cx="20" cy="40" rx="12" ry="5" fill="#A35143" opacity="0.6"/>
+          <circle cx="14" cy="46" r="3" fill="#A35143"/>
+          <polygon points="22,46 18,60 26,60" fill="#A35143" opacity="0.7"/>
+        </svg>
+        <div>Off-center bits</div>
+      </div>
+      <div class="compare-cell good">
+        <span class="label">✅ SYMMETRIC</span>
+        <svg width="48" height="64" viewBox="0 0 48 64">
+          <line x1="24" y1="6" x2="24" y2="34" stroke="#5C8A4A" stroke-width="3"/>
+          <ellipse cx="24" cy="40" rx="14" ry="5" fill="#5C8A4A" opacity="0.6"/>
+          <polygon points="24,46 18,60 30,60" fill="#5C8A4A" opacity="0.7"/>
+        </svg>
+        <div>Same all around</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="num">4</span> Is it smooth?</h3>
+    <p class="why">Bumps and sticking-out parts catch the air and slow it down.</p>
+    <div class="compare">
+      <div class="compare-cell bad">
+        <span class="label">❌ BUMPY / SPIKY</span>
+        <svg width="48" height="64" viewBox="0 0 48 64">
+          <line x1="24" y1="6" x2="24" y2="32" stroke="#A35143" stroke-width="3"/>
+          <path d="M 6 40 L 14 36 L 18 42 L 22 36 L 26 42 L 30 36 L 34 42 L 42 40 L 36 50 L 12 50 Z" fill="#A35143" opacity="0.7"/>
+          <polygon points="24,52 20,62 28,62" fill="#A35143"/>
+        </svg>
+        <div>Spikes &amp; gears</div>
+      </div>
+      <div class="compare-cell good">
+        <span class="label">✅ STREAMLINED</span>
+        <svg width="48" height="64" viewBox="0 0 48 64">
+          <line x1="24" y1="6" x2="24" y2="32" stroke="#5C8A4A" stroke-width="3"/>
+          <path d="M 8 42 Q 24 32 40 42 Q 32 50 16 50 Z" fill="#5C8A4A" opacity="0.7"/>
+          <polygon points="24,52 20,62 28,62" fill="#5C8A4A"/>
+        </svg>
+        <div>Smooth shape</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="scoring">
+  <h3>Scoring</h3>
+  <div class="scale">
+    <div class="scale-cell s-poor"><span class="big">1</span>❌ Needs work</div>
+    <div class="scale-cell s-ok"><span class="big">2</span>⚠️ Just OK</div>
+    <div class="scale-cell s-good"><span class="big">3</span>✅ Looking good</div>
+  </div>
+  <div style="font-size:12pt;font-weight:600;margin:8px 0 4px;font-family:'Cormorant Garamond',serif;">Add up your scores. What's the predicted spin time?</div>
+  <div class="bands">
+    <div class="band b1"><span class="total">4–6</span>About 1–5 seconds</div>
+    <div class="band b2"><span class="total">7–9</span>About 5–15 seconds</div>
+    <div class="band b3"><span class="total">10–12</span>About 15–30 seconds</div>
+  </div>
+</div>
+
+<div class="footer">Smile Bags · A Word &amp; Wonder Experience · Physics · Acikgoz · Spring 2026</div>
+</div>
+
+</body></html>

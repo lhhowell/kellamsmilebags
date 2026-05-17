@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<title>Spinning Tops Lab — Activity Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  @page { size: letter; margin: 0.4in; }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    background: #DCE6EE;
+    color: #3D2D20;
+    margin: 0;
+    padding: 24px 28px;
+    max-width: 8.5in;
+    line-height: 1.5;
+  }
+  .sheet {
+    background: #FAEFD8;
+    padding: 28px 30px 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(61, 45, 32, 0.08);
+    position: relative;
+  }
+  .sheet::before, .sheet::after {
+    content: '✦';
+    position: absolute;
+    color: #5C8A4A;
+    font-size: 18pt;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .sheet::before { top: 14px; left: 18px; }
+  .sheet::after  { top: 14px; right: 18px; }
+  .header {
+    text-align: center;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ED9F4A;
+  }
+  .header .word-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 8pt;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #b89860;
+    margin: 0;
+  }
+  .header h1 {
+    font-family: 'Allura', cursive;
+    margin: 4px 0 0;
+    font-size: 44pt;
+    color: #6B3FA0;
+    line-height: 1;
+  }
+  .header .sub {
+    font-family: 'Inter', sans-serif;
+    margin: 4px 0 0;
+    font-size: 11pt;
+    color: #5C8A4A;
+    font-style: italic;
+  }
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .phase {
+    background: white;
+    border: 1px solid rgba(184, 152, 96, 0.4);
+    border-radius: 8px;
+    padding: 14px 14px;
+    text-align: center;
+  }
+  .phase .num {
+    background: #6B3FA0;
+    color: #FAEFD8;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16pt;
+    font-weight: bold;
+    margin-bottom: 6px;
+    font-family: 'Inter', sans-serif;
+  }
+  .phase h3 {
+    margin: 4px 0 4px;
+    font-size: 14pt;
+    color: #3D2D20;
+    font-weight: 600;
+  }
+  .phase .time {
+    font-size: 10pt;
+    color: #b89860;
+    font-style: italic;
+    font-family: 'Inter', sans-serif;
+  }
+  .phase ul {
+    text-align: left;
+    margin: 8px 0 0;
+    padding-left: 16px;
+    font-size: 10.5pt;
+    font-family: 'Inter', sans-serif;
+    color: #3D2D20;
+  }
+  .phase ul li { margin: 3px 0; }
+  .panel {
+    background: rgba(107, 63, 160, 0.08);
+    border-left: 4px solid #6B3FA0;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+    border-radius: 0 6px 6px 0;
+  }
+  .panel.peach {
+    background: rgba(237, 159, 74, 0.14);
+    border-left-color: #ED9F4A;
+  }
+  .panel.green {
+    background: rgba(92, 138, 74, 0.12);
+    border-left-color: #5C8A4A;
+  }
+  .panel h3 {
+    margin: 0 0 8px;
+    font-size: 14pt;
+    color: #6B3FA0;
+    font-weight: 600;
+  }
+  .panel.peach h3 { color: #ED9F4A; }
+  .panel.green h3 { color: #5C8A4A; }
+  .panel p, .panel li {
+    font-size: 11pt;
+    margin: 4px 0;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .panel ul { font-family: 'Inter', sans-serif; font-size: 10.5pt; }
+  .twocol {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .twocol .panel { margin-bottom: 0; }
+  .footer {
+    text-align: center;
+    color: #b89860;
+    font-size: 9pt;
+    margin-top: 14px;
+    padding-top: 8px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.3px;
+  }
+</style>
+</head><body>
+
+<div class="sheet">
+<div class="header">
+  <p class="word-label">The OneWord</p>
+  <h1>Balance</h1>
+  <p class="sub">Spinning Tops Lab · Predict · Test · Compare · Redesign</p>
+</div>
+
+<div class="phases">
+  <div class="phase">
+    <div class="num">1</div>
+    <h3>Predict</h3>
+    <div class="time">~15 minutes</div>
+    <ul>
+      <li>Look at all the printed tops</li>
+      <li>Score each on the rubric</li>
+      <li>Predict its spin time</li>
+      <li>Submit on the kiosk</li>
+    </ul>
+  </div>
+  <div class="phase">
+    <div class="num">2</div>
+    <h3>Test</h3>
+    <div class="time">~20 minutes</div>
+    <ul>
+      <li>Spin each top 3 times</li>
+      <li>Time each spin</li>
+      <li>Average your trials</li>
+      <li>Enter on the kiosk</li>
+    </ul>
+  </div>
+  <div class="phase">
+    <div class="num">3</div>
+    <h3>Compare</h3>
+    <div class="time">~10 minutes</div>
+    <ul>
+      <li>Look at class data</li>
+      <li>Did predictions match?</li>
+      <li>Which top surprised you?</li>
+      <li>Why?</li>
+    </ul>
+  </div>
+  <div class="phase">
+    <div class="num">4</div>
+    <h3>Redesign</h3>
+    <div class="time">Next class</div>
+    <ul>
+      <li>A few designers iterate</li>
+      <li>Reprint in D210</li>
+      <li>Round 2 testing</li>
+      <li>Quick reflection</li>
+    </ul>
+  </div>
+</div>
+
+<div class="panel">
+  <h3>The Big Idea</h3>
+  <p>A spinning top stays up because it's spinning. The longer it can hold onto its spin, the longer it stays up. Three things steal the spin: <strong>friction at the bottom</strong>, <strong>air pushing on the sides</strong>, and <strong>wobble from being lopsided</strong>. Good designs reduce all three.</p>
+  <p style="margin-top:10px;font-style:italic;color:#6B3FA0;">That's the OneWord — Balance — at work.</p>
+</div>
+
+<div class="twocol">
+  <div class="panel peach">
+    <h3>Setup You'll Need</h3>
+    <ul>
+      <li>The 17 printed tops (PLA, from D210)</li>
+      <li>One test surface everyone uses (glass tile or smooth desk)</li>
+      <li>Stopwatches or phone timers</li>
+      <li>Rubric cards (one per student)</li>
+      <li>Kiosk link or QR code on the board</li>
+    </ul>
+  </div>
+  <div class="panel green">
+    <h3>Fair Test Rules</h3>
+    <ul>
+      <li>Same surface for every spin</li>
+      <li>Same launch — pinch the stem and twist</li>
+      <li>3 spins per top, average them</li>
+      <li>If it falls in under 1 second, redo it</li>
+      <li>Time to the first wobble-fall, not the dead stop</li>
+    </ul>
+  </div>
+</div>
+
+<div class="panel" style="margin-top:14px;">
+  <h3>For the Redesigners</h3>
+  <p>If you got picked for Round 2: look at where your top scored low on the rubric. Pick <strong>one thing to change</strong> — a sharper tip, a wider base, less weight on top. Re-print, re-test, see if it spun longer. That's engineering.</p>
+</div>
+
+<div class="footer">Smile Bags · A Word &amp; Wonder Experience · Physics · Acikgoz · Spring 2026</div>
+</div>
+
+</body></html>
