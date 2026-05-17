@@ -138,6 +138,9 @@ body{font-family:'Nunito',sans-serif;background:#f4f1ec;color:#1a1a1a;min-height
 </div>
 
 <script>
+// Image folder location — change this one line if images ever move again
+const IMG_PATH = "ABCs_FruitsVeggies/";
+
 const ITEMS = [
   {letter:"A",name:"Apple",file:"ch_apple.png"},
   {letter:"B",name:"Banana",file:"ch_banana.png"},
@@ -188,7 +191,7 @@ function buildGrid(){
       '<div class="cards-grid">' +
       byLetter[letter].map(a =>
         '<div class="card" onclick="openModal(\''+a.letter+'\',\''+a.name.replace(/'/g,"&#39;")+'\',\''+a.file+'\')">' +
-        '<div class="card-img-wrap"><img src="'+a.file+'" alt="'+a.name+'" loading="lazy"></div>' +
+        '<div class="card-img-wrap"><img src="'+IMG_PATH+a.file+'" alt="'+a.name+'" loading="lazy"></div>' +
         '<div class="card-label"><span>'+a.letter+'</span>'+a.name+'</div>' +
         '</div>'
       ).join('') +
@@ -208,9 +211,9 @@ function openModal(letter, name, file){
   currentFile = file;
   document.getElementById('modalLetter').textContent = letter;
   document.getElementById('modalName').textContent = name;
-  document.getElementById('modalImg').src = file;
+  document.getElementById('modalImg').src = IMG_PATH + file;
   document.getElementById('modalImg').alt = name;
-  document.getElementById('modalDownload').href = file;
+  document.getElementById('modalDownload').href = IMG_PATH + file;
   document.getElementById('modalDownload').setAttribute('download', file);
   document.getElementById('modal').classList.add('open');
 }
@@ -294,7 +297,7 @@ body { display: flex; align-items: center; justify-content: center; background: 
       <path d="M14 14 Q 8 18 12 22" />
     </g>
   </svg>
-  <div class="art"><img src="${currentFile}" alt="${currentName}"></div>
+  <div class="art"><img src="${IMG_PATH}${currentFile}" alt="${currentName}"></div>
 </div>
 <script>
   const img = document.querySelector('.art img');
