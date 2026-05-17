@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Balance Trading Card Kiosk · Smile Bags · Physics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* ── BASE ─────────────────────────────────────────────── */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #0f0a1c;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 15% 20%, rgba(154,111,217,.10) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 80%, rgba(237,159,74,.08) 0%, transparent 50%);
+    pointer-events: none; z-index: 0;
+  }
+  .container {
+    position: relative; z-index: 1;
+    max-width: 980px; margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  /* ── HEADER ───────────────────────────────────────────── */
+  .header { text-align: center; margin-bottom: 32px; padding-bottom: 22px; border-bottom: 1px solid rgba(255,255,255,.08); }
+  .header .eyebrow {
+    font-size: .62rem; letter-spacing: .22em;
+    color: #ED9F4A; text-transform: uppercase;
+    margin-bottom: 10px; font-weight: 700;
+  }
+  .header h1 {
+    font-size: clamp(1.6rem, 4vw, 2.3rem);
+    font-weight: 800; color: #fff;
+    margin-bottom: 4px;
+    letter-spacing: -.01em;
+  }
+  .header h1 span { color: #C2A6E8; }
+  .header .sub {
+    font-family: 'Allura', cursive;
+    font-size: 2rem; color: #ED9F4A;
+    line-height: 1;
+  }
+
+  /* ── STEP DOTS ────────────────────────────────────────── */
+  .step-dots {
+    display: flex; justify-content: center; gap: 10px;
+    margin-bottom: 24px;
+  }
+  .step-dot {
+    display: flex; align-items: center; gap: 7px;
+    padding: 6px 12px; border-radius: 18px;
+    background: rgba(255,255,255,.04);
+    font-size: .68rem; font-weight: 600;
+    color: rgba(255,255,255,.45);
+    transition: all .25s;
+  }
+  .step-dot .num {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: rgba(255,255,255,.08);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: .65rem; font-weight: 700;
+  }
+  .step-dot.active {
+    background: rgba(154,111,217,.18);
+    color: #C2A6E8;
+    border: 1px solid rgba(154,111,217,.4);
+  }
+  .step-dot.active .num { background: #6B3FA0; color: #fff; }
+  .step-dot.done {
+    background: rgba(127,176,95,.14);
+    color: #A8CC8B;
+  }
+  .step-dot.done .num { background: #5C8A4A; color: #fff; }
+
+  /* ── STEP PANELS ─────────────────────────────────────── */
+  .step-panel { display: none; }
+  .step-panel.active { display: block; animation: fadeIn .3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .step-title {
+    font-size: 1.4rem; font-weight: 700; color: #fff;
+    text-align: center; margin-bottom: 6px;
+  }
+  .step-hint {
+    text-align: center;
+    color: rgba(255,255,255,.55);
+    font-size: .92rem;
+    margin-bottom: 26px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+  }
+
+  /* ── STEP 1: NAME ─────────────────────────────────────── */
+  .name-wrap {
+    max-width: 480px; margin: 0 auto;
+    background: rgba(36,27,64,.6);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 14px;
+    padding: 28px 26px;
+  }
+  .name-row { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 14px; }
+  .name-row label { display: block; font-size: .7rem; text-transform: uppercase; letter-spacing: .14em; color: rgba(255,255,255,.5); margin-bottom: 6px; font-weight: 600; }
+  .name-row input {
+    width: 100%; padding: 10px 14px;
+    background: rgba(15,10,28,.7);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 8px;
+    color: #fff; font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+  }
+  .name-row input:focus {
+    outline: none;
+    border-color: #9A6FD9;
+    background: rgba(15,10,28,.9);
+  }
+
+  /* ── STEP 2: DESIGN PICKER ───────────────────────────── */
+  .design-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 14px;
+  }
+  .design-card {
+    background: rgba(36,27,64,.55);
+    border: 2px solid rgba(255,255,255,.08);
+    border-radius: 12px;
+    padding: 18px 12px 14px;
+    cursor: pointer;
+    transition: transform .2s, border-color .2s, background .2s;
+    text-align: center;
+  }
+  .design-card:hover { transform: translateY(-3px); border-color: rgba(154,111,217,.5); }
+  .design-card.selected {
+    border-color: #ED9F4A;
+    background: rgba(237,159,74,.10);
+    transform: translateY(-3px);
+  }
+  .design-card svg {
+    width: 100%; height: 110px;
+    display: block;
+    margin-bottom: 10px;
+    color: #C2A6E8;
+  }
+  .design-card.selected svg { color: #ED9F4A; }
+  .design-name {
+    font-size: .82rem; font-weight: 600;
+    color: rgba(255,255,255,.85);
+  }
+
+  /* ── STEP 3: QUOTE PICKER ────────────────────────────── */
+  .quote-list { display: grid; gap: 10px; }
+  .quote-item {
+    background: rgba(36,27,64,.55);
+    border: 2px solid rgba(255,255,255,.08);
+    border-radius: 10px;
+    padding: 14px 18px;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    line-height: 1.45;
+    color: rgba(255,255,255,.88);
+  }
+  .quote-item:hover { border-color: rgba(154,111,217,.4); transform: translateX(3px); }
+  .quote-item.selected {
+    border-color: #ED9F4A;
+    background: rgba(237,159,74,.10);
+    color: #fff;
+  }
+  .quote-item::before {
+    content: '"';
+    color: #ED9F4A;
+    font-family: 'Allura', cursive;
+    font-size: 2rem;
+    margin-right: 6px;
+    vertical-align: -8px;
+    opacity: .55;
+  }
+
+  /* ── STEP 4: PREVIEW ─────────────────────────────────── */
+  .preview-wrap { display: flex; justify-content: center; margin-bottom: 24px; }
+
+  /* ── THE CARD (used in preview + print) ──────────────── */
+  .card {
+    width: 3.5in;
+    height: 5in;
+    background: #FAEFD8;
+    color: #3D2D20;
+    position: relative;
+    padding: .28in .25in;
+    display: flex; flex-direction: column;
+    text-align: center;
+    border: 1px solid rgba(184,152,96,.4);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgba(0,0,0,.4);
+    font-family: 'Cormorant Garamond', serif;
+  }
+  @media print { .card { box-shadow: none; border-radius: 0; } }
+  .card .corner {
+    position: absolute;
+    font-size: 14pt;
+    color: #ED9F4A;
+    line-height: 1;
+  }
+  .card .corner.tl { top: 0.10in; left: 0.12in; }
+  .card .corner.tr { top: 0.10in; right: 0.12in; }
+  .card .corner.bl { bottom: 0.10in; left: 0.12in; }
+  .card .corner.br { bottom: 0.10in; right: 0.12in; }
+
+  .card-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 6.5pt; font-weight: 700;
+    letter-spacing: .25em;
+    color: #6B3FA0;
+    margin-top: 0.04in;
+    margin-bottom: 0.04in;
+  }
+  .card-top-illo {
+    flex: 0 0 1.7in;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-top-illo svg {
+    width: 1.7in; height: 1.7in;
+    color: #6B3FA0;
+  }
+  .card-wordmark {
+    font-family: 'Allura', cursive;
+    font-size: 38pt;
+    line-height: 1;
+    color: #6B3FA0;
+    margin-bottom: 0.04in;
+  }
+  .card-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 10pt;
+    line-height: 1.40;
+    color: #3D2D20;
+    padding: 0 0.05in;
+    flex: 1;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-sig-line {
+    border-top: 1px solid rgba(184,152,96,.55);
+    padding-top: 0.06in;
+    margin-top: 0.04in;
+  }
+  .card-sig {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 9pt;
+    color: #6B5040;
+  }
+  .card-sig .sig-name {
+    font-family: 'Allura', cursive;
+    font-size: 16pt;
+    color: #6B3FA0;
+    margin-left: 4px;
+    vertical-align: -2px;
+  }
+  .card-brand {
+    font-family: 'Inter', sans-serif;
+    font-size: 5.5pt; font-weight: 700;
+    color: #888;
+    letter-spacing: .08em;
+    margin-top: 0.03in;
+  }
+
+  /* ── BUTTONS / NAV ───────────────────────────────────── */
+  .nav-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+  .btn {
+    padding: 11px 22px;
+    border-radius: 8px;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    font-size: .92rem; font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+    letter-spacing: .02em;
+  }
+  .btn-primary {
+    background: #ED9F4A;
+    color: #3D2D20;
+  }
+  .btn-primary:hover { background: #F5BC7E; transform: translateY(-1px); }
+  .btn-primary:disabled {
+    background: rgba(255,255,255,.08);
+    color: rgba(255,255,255,.3);
+    cursor: not-allowed;
+    transform: none;
+  }
+  .btn-secondary {
+    background: transparent;
+    color: rgba(255,255,255,.7);
+    border: 1px solid rgba(255,255,255,.18);
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,.05); color: #fff; }
+  .btn-print {
+    background: #5C8A4A;
+    color: #fff;
+    padding: 13px 28px;
+    font-size: 1rem;
+  }
+  .btn-print:hover { background: #7FB05F; transform: translateY(-1px); }
+
+  /* ── FOOTER ──────────────────────────────────────────── */
+  .footer {
+    text-align: center;
+    margin-top: 36px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255,255,255,.06);
+    font-size: .72rem;
+    color: rgba(154,111,217,.5);
+    letter-spacing: .04em;
+  }
+  .footer-sub {
+    font-size: .58rem;
+    color: rgba(255,255,255,.25);
+    margin-top: 5px;
+    letter-spacing: .06em;
+  }
+
+  /* ── PRINT ───────────────────────────────────────────── */
+  .print-page { display: none; }
+  @media print {
+    @page { size: letter portrait; margin: 0.4in; }
+    body { background: white; }
+    body::before, .container, .header, .step-dots, .step-panel, .nav-row, .footer { display: none !important; }
+    .print-page {
+      display: flex !important;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3in;
+    }
+    .print-page .cut-line {
+      width: 100%;
+      border-top: 1px dashed rgba(163, 81, 67, .6);
+    }
+    .print-page .card { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="eyebrow">Smile Bags · Physics · Spring 2026</div>
+    <h1>The Balance Trading <span>Card Kiosk</span></h1>
+    <div class="sub">Balance</div>
+  </div>
+
+  <!-- STEP DOTS -->
+  <div class="step-dots">
+    <div class="step-dot active" data-step="1"><span class="num">1</span> Your Name</div>
+    <div class="step-dot" data-step="2"><span class="num">2</span> Choose a Design</div>
+    <div class="step-dot" data-step="3"><span class="num">3</span> Choose a Quote</div>
+    <div class="step-dot" data-step="4"><span class="num">4</span> Preview &amp; Print</div>
+  </div>
+
+  <!-- STEP 1: NAME -->
+  <section class="step-panel active" id="panel-1">
+    <div class="step-title">Sign your card</div>
+    <div class="step-hint">Your name goes on the back so the recipient knows who made this for them.</div>
+    <div class="name-wrap">
+      <div class="name-row">
+        <div>
+          <label>First name</label>
+          <input id="input-firstName" type="text" autocomplete="given-name" placeholder="e.g., Avery" />
+        </div>
+        <div>
+          <label>Last initial</label>
+          <input id="input-lastInitial" type="text" maxlength="1" placeholder="A" />
+        </div>
+      </div>
+    </div>
+    <div class="nav-row">
+      <div></div>
+      <button class="btn btn-primary" id="btn-next-1" disabled>Continue &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 2: DESIGN PICKER -->
+  <section class="step-panel" id="panel-2">
+    <div class="step-title">Choose a spinning top design</div>
+    <div class="step-hint">Pick the one that feels right. Each is a generic illustration — none is anyone's actual print.</div>
+    <div class="design-grid" id="design-grid"></div>
+    <div class="nav-row">
+      <button class="btn btn-secondary" data-back="1">&larr; Back</button>
+      <button class="btn btn-primary" id="btn-next-2" disabled>Continue &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 3: QUOTE PICKER -->
+  <section class="step-panel" id="panel-3">
+    <div class="step-title">Choose a Balance quote</div>
+    <div class="step-hint">Pick the one that says what you want this child to hear.</div>
+    <div class="quote-list" id="quote-list"></div>
+    <div class="nav-row">
+      <button class="btn btn-secondary" data-back="2">&larr; Back</button>
+      <button class="btn btn-primary" id="btn-next-3" disabled>Continue &rarr;</button>
+    </div>
+  </section>
+
+  <!-- STEP 4: PREVIEW -->
+  <section class="step-panel" id="panel-4">
+    <div class="step-title">Your card is ready</div>
+    <div class="step-hint">Print onto cardstock. You&rsquo;ll get 2 copies per sheet &mdash; place one in a Smile Bag, keep one or share one.</div>
+    <div class="preview-wrap" id="preview-wrap"></div>
+    <div class="nav-row">
+      <button class="btn btn-secondary" data-back="3">&larr; Back</button>
+      <button class="btn btn-print" id="btn-print">🖨️ Print my Card (2 copies)</button>
+    </div>
+  </section>
+
+  <div class="footer">
+    🎯 SMILE BAGS · A WORD &amp; WONDER EXPERIENCE
+    <div class="footer-sub">Physics · Mr. Acikgoz · Spring 2026 · Created by Laura Howell · © 2025–2026</div>
+  </div>
+
+</div>
+
+<!-- HIDDEN: print layout, 2 copies of the same card -->
+<div class="print-page" id="print-page">
+  <div id="print-card-1"></div>
+  <div class="cut-line"></div>
+  <div id="print-card-2"></div>
+</div>
+
+<!-- SVG DEFINITIONS: 8 generic spinning top designs -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- 1. Classic Peg Top -->
+    <symbol id="top-1" viewBox="0 0 200 260">
+      <circle cx="100" cy="48" r="14" fill="currentColor"/>
+      <rect x="96" y="58" width="8" height="14" fill="currentColor"/>
+      <path d="M 40 78 L 160 78 L 100 230 Z" fill="currentColor"/>
+    </symbol>
+    <!-- 2. Dreidel -->
+    <symbol id="top-2" viewBox="0 0 200 260">
+      <rect x="96" y="32" width="8" height="14" fill="currentColor"/>
+      <circle cx="100" cy="28" r="8" fill="currentColor"/>
+      <rect x="52" y="58" width="96" height="100" rx="6" fill="currentColor"/>
+      <path d="M 52 158 L 148 158 L 100 230 Z" fill="currentColor"/>
+    </symbol>
+    <!-- 3. Flared Bell -->
+    <symbol id="top-3" viewBox="0 0 200 260">
+      <rect x="96" y="40" width="8" height="18" fill="currentColor"/>
+      <circle cx="100" cy="38" r="10" fill="currentColor"/>
+      <path d="M 100 60 C 144 60, 170 110, 158 158 L 100 230 L 42 158 C 30 110, 56 60, 100 60 Z" fill="currentColor"/>
+    </symbol>
+    <!-- 4. UFO / Saucer -->
+    <symbol id="top-4" viewBox="0 0 200 260">
+      <ellipse cx="100" cy="56" rx="14" ry="6" fill="currentColor"/>
+      <path d="M 100 62 L 100 82" stroke="currentColor" stroke-width="6"/>
+      <ellipse cx="100" cy="98" rx="80" ry="20" fill="currentColor"/>
+      <path d="M 30 98 L 100 230 L 170 98 Z" fill="currentColor"/>
+    </symbol>
+    <!-- 5. Sphere on Stem -->
+    <symbol id="top-5" viewBox="0 0 200 260">
+      <circle cx="100" cy="80" r="52" fill="currentColor"/>
+      <path d="M 84 128 L 116 128 L 100 230 Z" fill="currentColor"/>
+    </symbol>
+    <!-- 6. Geometric Cog (octagon-ish) -->
+    <symbol id="top-6" viewBox="0 0 200 260">
+      <rect x="96" y="36" width="8" height="14" fill="currentColor"/>
+      <circle cx="100" cy="32" r="6" fill="currentColor"/>
+      <polygon points="100,60 154,84 168,140 138,180 62,180 32,140 46,84" fill="currentColor"/>
+      <path d="M 62 180 L 138 180 L 100 230 Z" fill="currentColor"/>
+    </symbol>
+    <!-- 7. Tall Cylinder -->
+    <symbol id="top-7" viewBox="0 0 200 260">
+      <ellipse cx="100" cy="44" rx="32" ry="8" fill="currentColor"/>
+      <rect x="68" y="44" width="64" height="130" fill="currentColor"/>
+      <ellipse cx="100" cy="174" rx="32" ry="8" fill="currentColor"/>
+      <path d="M 76 178 L 124 178 L 100 230 Z" fill="currentColor"/>
+    </symbol>
+    <!-- 8. Diamond / Bicone -->
+    <symbol id="top-8" viewBox="0 0 200 260">
+      <rect x="96" y="30" width="8" height="14" fill="currentColor"/>
+      <circle cx="100" cy="28" r="6" fill="currentColor"/>
+      <path d="M 100 48 L 160 130 L 100 230 L 40 130 Z" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
+<script>
+// ─────────────────────────────────────────────────────────
+// DATA: designs + quotes
+// (Edit the QUOTES array to swap or add. Keep them in scope
+//  for K–12 recipients — warm, useful, age-appropriate.)
+// ─────────────────────────────────────────────────────────
+const DESIGNS = [
+  { id: 1, name: 'Classic Peg Top' },
+  { id: 2, name: 'Dreidel' },
+  { id: 3, name: 'Flared Bell' },
+  { id: 4, name: 'UFO Saucer' },
+  { id: 5, name: 'Sphere Top' },
+  { id: 6, name: 'Geometric Cog' },
+  { id: 7, name: 'Tall Cylinder' },
+  { id: 8, name: 'Diamond Bicone' }
+];
+
+const QUOTES = [
+  "Balance is finding the middle, even on hard days.",
+  "Stand strong. Stand steady. Stand for yourself.",
+  "Every spin needs a steady center.",
+  "Even tall trees start with steady roots.",
+  "Balance isn't standing still — it's moving without falling.",
+  "The best spinners learn how to start over.",
+  "Find your center, and the world will spin around it.",
+  "Every well-balanced thing began crooked, then got tuned.",
+  "Balance is staying upright while the world tilts.",
+  "What spins fastest holds the stillest at its center.",
+  "True balance isn't perfect — it's knowing where your weight belongs.",
+  "You don't need to stop spinning to find your balance. You need to know what holds you steady."
+];
+
+// ─────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────
+const state = {
+  step: 1,
+  firstName: '',
+  lastInitial: '',
+  designId: null,
+  quoteIdx: null
+};
+
+// ─────────────────────────────────────────────────────────
+// STEP NAVIGATION
+// ─────────────────────────────────────────────────────────
+function goToStep(n) {
+  state.step = n;
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + n).classList.add('active');
+  document.querySelectorAll('.step-dot').forEach(d => {
+    const s = parseInt(d.dataset.step, 10);
+    d.classList.remove('active', 'done');
+    if (s < n) d.classList.add('done');
+    else if (s === n) d.classList.add('active');
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (n === 4) renderPreview();
+}
+
+document.querySelectorAll('[data-back]').forEach(btn => {
+  btn.addEventListener('click', () => goToStep(parseInt(btn.dataset.back, 10)));
+});
+
+// ─────────────────────────────────────────────────────────
+// STEP 1: NAME INPUT
+// ─────────────────────────────────────────────────────────
+const fnInput = document.getElementById('input-firstName');
+const liInput = document.getElementById('input-lastInitial');
+const next1   = document.getElementById('btn-next-1');
+
+function validateStep1() {
+  const fn = fnInput.value.trim();
+  const li = liInput.value.trim();
+  next1.disabled = fn.length < 1;
+  state.firstName = fn;
+  state.lastInitial = li;
+}
+fnInput.addEventListener('input', validateStep1);
+liInput.addEventListener('input', validateStep1);
+next1.addEventListener('click', () => goToStep(2));
+
+// ─────────────────────────────────────────────────────────
+// STEP 2: DESIGN PICKER
+// ─────────────────────────────────────────────────────────
+const designGrid = document.getElementById('design-grid');
+const next2 = document.getElementById('btn-next-2');
+
+DESIGNS.forEach(d => {
+  const card = document.createElement('div');
+  card.className = 'design-card';
+  card.dataset.id = d.id;
+  card.innerHTML = `
+    <svg viewBox="0 0 200 260" aria-label="${d.name}">
+      <use href="#top-${d.id}"></use>
+    </svg>
+    <div class="design-name">${d.name}</div>
+  `;
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.design-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    state.designId = d.id;
+    next2.disabled = false;
+  });
+  designGrid.appendChild(card);
+});
+next2.addEventListener('click', () => goToStep(3));
+
+// ─────────────────────────────────────────────────────────
+// STEP 3: QUOTE PICKER
+// ─────────────────────────────────────────────────────────
+const quoteList = document.getElementById('quote-list');
+const next3 = document.getElementById('btn-next-3');
+
+QUOTES.forEach((q, i) => {
+  const item = document.createElement('div');
+  item.className = 'quote-item';
+  item.textContent = q;
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.quote-item').forEach(c => c.classList.remove('selected'));
+    item.classList.add('selected');
+    state.quoteIdx = i;
+    next3.disabled = false;
+  });
+  quoteList.appendChild(item);
+});
+next3.addEventListener('click', () => goToStep(4));
+
+// ─────────────────────────────────────────────────────────
+// STEP 4: PREVIEW + PRINT
+// ─────────────────────────────────────────────────────────
+function buildCardHTML() {
+  const sigName = state.firstName + (state.lastInitial ? ' ' + state.lastInitial + '.' : '');
+  const quote = QUOTES[state.quoteIdx];
+  return `
+    <div class="card">
+      <div class="corner tl">✦</div>
+      <div class="corner tr">✦</div>
+      <div class="corner bl">✦</div>
+      <div class="corner br">✦</div>
+      <div class="card-eyebrow">THE&nbsp;ONEWORD</div>
+      <div class="card-top-illo">
+        <svg viewBox="0 0 200 260"><use href="#top-${state.designId}"></use></svg>
+      </div>
+      <div class="card-wordmark">Balance</div>
+      <div class="card-quote">&ldquo;${quote}&rdquo;</div>
+      <div class="card-sig-line">
+        <div class="card-sig">with kindness, from <span class="sig-name">${sigName}</span></div>
+        <div class="card-brand">🎯 SMILE BAGS · A WORD &amp; WONDER EXPERIENCE</div>
+      </div>
+    </div>`;
+}
+
+function renderPreview() {
+  document.getElementById('preview-wrap').innerHTML = buildCardHTML();
+  document.getElementById('print-card-1').innerHTML = buildCardHTML();
+  document.getElementById('print-card-2').innerHTML = buildCardHTML();
+}
+
+document.getElementById('btn-print').addEventListener('click', () => {
+  window.print();
+});
+
+// Auto-focus first name input
+fnInput.focus();
+</script>
+
+</body>
+</html>

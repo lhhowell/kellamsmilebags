@@ -27,6 +27,7 @@
   --opt-b:#5C8A4A;       /* Lesson — sage */
   --opt-c:#C8860A;       /* Rubric — peach-deep */
   --opt-d:#7B5BB5;       /* AI Evaluation — light purple */
+  --opt-e:#ED9F4A;       /* Trading Cards — peach */
   --radius:18px;
 }
 
@@ -245,6 +246,7 @@ body::before{
 .opt-b .opt-letter-badge{background:rgba(92,138,74,.25);color:#A8CC8B;border:1px solid rgba(92,138,74,.4);}
 .opt-c .opt-letter-badge{background:rgba(200,134,10,.25);color:#F5BC7E;border:1px solid rgba(200,134,10,.4);}
 .opt-d .opt-letter-badge{background:rgba(123,91,181,.25);color:#C2A6E8;border:1px solid rgba(123,91,181,.4);}
+.opt-e .opt-letter-badge{background:rgba(237,159,74,.25);color:#F5C28E;border:1px solid rgba(237,159,74,.45);}
 
 .opt-icon-wrap{
   width:48px;height:48px;border-radius:14px;
@@ -255,6 +257,7 @@ body::before{
 .opt-b .opt-icon-wrap{background:rgba(92,138,74,.18);}
 .opt-c .opt-icon-wrap{background:rgba(200,134,10,.18);}
 .opt-d .opt-icon-wrap{background:rgba(123,91,181,.18);}
+.opt-e .opt-icon-wrap{background:rgba(237,159,74,.18);}
 
 .opt-title{
   font-family:'Baloo 2',cursive;
@@ -269,6 +272,7 @@ body::before{
 .opt-b .opt-tagline{color:rgba(168,204,139,.85);}
 .opt-c .opt-tagline{color:rgba(245,188,126,.85);}
 .opt-d .opt-tagline{color:rgba(194,166,232,.85);}
+.opt-e .opt-tagline{color:rgba(245,194,142,.9);}
 
 .opt-desc{
   font-size:.78rem;color:rgba(255,255,255,.5);
@@ -287,6 +291,7 @@ body::before{
 .opt-b .opt-btn{background:var(--opt-b);color:white;}
 .opt-c .opt-btn{background:var(--opt-c);color:white;}
 .opt-d .opt-btn{background:var(--opt-d);color:white;}
+.opt-e .opt-btn{background:var(--opt-e);color:#3D2D20;}
 .opt-btn:hover{filter:brightness(1.15);}
 .opt-btn-arrow{font-size:1rem;transition:transform .18s;}
 .opt-card:hover .opt-btn-arrow{transform:translateX(4px);}
@@ -301,6 +306,7 @@ body::before{
 .opt-b .opt-corner{background:var(--opt-b);}
 .opt-c .opt-corner{background:var(--opt-c);}
 .opt-d .opt-corner{background:var(--opt-d);}
+.opt-e .opt-corner{background:var(--opt-e);}
 
 /* ── UTILITY ── */
 .utility-pills{
@@ -485,6 +491,24 @@ body::before{
         <div class="opt-desc">What AI predicted for each of the 17 designs &mdash; score, spin time, what&rsquo;s strong, and what to redesign. Compare these calls to the actual outcomes in the Roster.</div>
         <button class="opt-btn">
           Open the Gallery
+          <span class="opt-btn-arrow">&rarr;</span>
+        </button>
+      </div>
+    </a>
+
+    <!-- OPTION E -->
+    <a class="opt-card opt-e" href="Balance_TradingCard_Kiosk.html">
+      <div class="opt-corner"></div>
+      <div class="opt-content">
+        <div class="opt-top">
+          <span class="opt-letter-badge">The Card Kiosk</span>
+          <div class="opt-icon-wrap">🃏</div>
+        </div>
+        <div class="opt-title">Balance Trading Cards</div>
+        <div class="opt-tagline">Pick a design &middot; pick a quote &middot; sign &middot; print.</div>
+        <div class="opt-desc">An interactive kiosk: students choose a spinning top design, pair it with a Balance quote, sign the card, and print 2 copies for Smile Bags.</div>
+        <button class="opt-btn">
+          Open the Kiosk
           <span class="opt-btn-arrow">&rarr;</span>
         </button>
       </div>
