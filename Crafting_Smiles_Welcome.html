@@ -11,6 +11,7 @@
     --teal:#1B7A78; --teal-deep:#0F4F4E; --teal-light:#D6EEEE;
     --pink:#B5446E; --pink-light:#FDE8EF;
     --gold:#C8860A; --gold-light:#FFF3D6;
+    --rose:#B5446E; --rose-light:#FDE8EF;
     --purple:#6B3F9E; --green:#2D5016;
     --muted:#8A8070;
   }
@@ -66,6 +67,12 @@
   .path-card.maker{border-top:5px solid var(--gold);background:linear-gradient(180deg,#FFFBEC 0%,#fff 60%)}
   .path-card.maker .path-card-link{color:var(--gold)}
   .path-card.maker:hover{box-shadow:0 8px 28px rgba(200,134,10,.2)}
+  .path-card.club{border-top:5px solid var(--rose);background:linear-gradient(180deg,#FFF6F9 0%,#fff 60%)}
+  .path-card.club .path-card-link{color:var(--rose)}
+  .path-card.club:hover{box-shadow:0 8px 28px rgba(181,68,110,.2)}
+  .path-card.club.coming-soon{opacity:.85;cursor:default}
+  .path-card.club.coming-soon:hover{transform:none;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+  .club-tag{display:inline-block;font-family:'Courier New',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--rose);background:var(--rose-light);padding:4px 10px;border-radius:20px;margin-bottom:10px;font-weight:700}
   .maker-tag{display:inline-block;font-family:'Courier New',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);background:var(--gold-light);padding:4px 10px;border-radius:20px;margin-bottom:10px;font-weight:700}
 
   /* SECTION 4 — ONEWORD CHIPS */
@@ -198,6 +205,30 @@
       <p>Bring your own design built in your own tool &mdash; Tinkercad, Fusion 360, OnShape, Blender, or anything else. Connect it to a OneWord. The path for alumni, former campers, and friends with their own craft.</p>
       <span class="path-card-link">See How to Submit &darr;</span>
     </a>
+  </div>
+</section>
+
+<!-- SECTION · STUDENT CLUBS -->
+<section class="section">
+  <div class="section-label">Student Clubs</div>
+  <h2 class="section-title">Clubs joining the effort.</h2>
+  <p class="section-intro">Beyond the open pathways, Kellam student clubs are contributing as organized groups &mdash; each bringing their own focus, members, and gifts to the Smile Bags project.</p>
+
+  <div class="paths-grid">
+    <a href="https://lhhowell.github.io/kellamsmilebags/APBio_TIDE_Kiosk_Menu.html" target="_blank" class="path-card club">
+      <div class="path-num">T.I.D.E. Coalition</div>
+      <span class="club-tag">Student Club</span>
+      <h3>T.I.D.E. Coalition Smile Bag Builders</h3>
+      <p>Elena O&rsquo;Brien &middot; Togetherness through Inclusion, Diversity &amp; Equity. Members browse all 20 creation options across four categories, choose activities that connect to the Zoo Project and their OneWord. Recipients: North Landing Elementary.</p>
+      <span class="path-card-link">Open Kiosk Hub &rarr;</span>
+    </a>
+    <div class="path-card club coming-soon">
+      <div class="path-num">AVID Club</div>
+      <span class="club-tag">Student Club &middot; Coming Soon</span>
+      <h3>AVID Club</h3>
+      <p>Service-learning support. Building on AVID&rsquo;s foundation of Costa&rsquo;s Levels of Thinking, collaborative inquiry, and student-led leadership. Specific contribution details coming soon.</p>
+      <span class="path-card-link">Details Coming Soon</span>
+    </div>
   </div>
 </section>
 
