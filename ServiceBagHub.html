@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Smile Bags — Service Bag Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#111;min-height:100vh;padding:28px 16px 60px;}
+.page{max-width:760px;margin:0 auto;}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#1A1A1A 0%,#0A0A0A 100%);border:3px solid #C8860A;border-radius:24px 24px 0 0;padding:36px 36px 0;position:relative;overflow:hidden;}
+.hdr::before{content:'';position:absolute;top:-80px;right:-80px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(200,134,10,.18) 0%,transparent 70%);}
+.hdr-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(200,134,10,.18);border:2px solid #C8860A;border-radius:50px;padding:7px 18px;font-family:'Fredoka One',cursive;font-size:13px;color:#F0C040;letter-spacing:2px;margin-bottom:18px;position:relative;z-index:1;}
+.hdr-inner{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;position:relative;z-index:1;}
+.hdr-title{font-family:'Fredoka One',cursive;font-size:54px;color:#fff;line-height:1.0;letter-spacing:1px;}
+.hdr-title span{color:#F0C040;display:block;}
+.hdr-sub{font-size:15px;color:rgba(255,255,255,.65);margin-top:12px;line-height:1.7;max-width:440px;}
+.hdr-sub strong{color:#F0C040;}
+.hdr-emblem{text-align:center;flex-shrink:0;padding-top:6px;}
+.hdr-emblem .big-icon{font-size:80px;line-height:1;filter:drop-shadow(0 4px 16px rgba(200,134,10,.5));}
+.hdr-emblem .lbl{font-family:'Fredoka One',cursive;font-size:11px;color:#C8860A;letter-spacing:3px;margin-top:6px;}
+.hdr-wave{display:block;width:100%;margin-top:28px;}
+
+/* HERO */
+.hero{background:#1A1A1A;border-left:6px solid #C8860A;border-right:6px solid #C8860A;padding:24px 32px;display:flex;align-items:center;gap:22px;}
+.hero-icon{font-size:56px;flex-shrink:0;}
+.hero-text h3{font-family:'Fredoka One',cursive;font-size:24px;color:#F0C040;margin-bottom:6px;}
+.hero-text p{font-size:15px;color:#ccc;line-height:1.75;}
+.hero-text strong{color:#fff;}
+
+/* SPONSOR CALLOUT */
+.sponsor-callout{background:#1F1700;border:2px solid #C8860A;border-radius:14px;padding:18px 22px;margin-bottom:16px;display:flex;gap:16px;align-items:flex-start;}
+.sponsor-callout .sc-icon{font-size:36px;flex-shrink:0;}
+.sponsor-callout h4{font-family:'Fredoka One',cursive;font-size:20px;color:#F0C040;margin-bottom:4px;}
+.sponsor-callout p{font-size:14px;color:#bbb;line-height:1.7;}
+.sponsor-callout strong{color:#fff;}
+
+/* SECTIONS */
+.section{background:#1A1A1A;border:2px solid #2A2A2A;border-radius:18px;padding:26px 30px;box-shadow:0 4px 24px rgba(0,0,0,.4);margin-bottom:16px;}
+.section-title{font-family:'Fredoka One',cursive;font-size:24px;color:#F0C040;margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:16px;}
+.step{display:flex;gap:16px;align-items:flex-start;}
+.step-num{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#C8860A,#F0C040);color:#111;font-family:'Fredoka One',cursive;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;box-shadow:0 2px 10px rgba(200,134,10,.4);}
+.step-body h4{font-family:'Fredoka One',cursive;font-size:18px;color:#fff;margin-bottom:4px;}
+.step-body p{font-size:14px;color:#aaa;line-height:1.7;}
+.step-body strong{color:#F0C040;}
+
+/* ALERT */
+.alert{background:#1F1700;border-left:5px solid #C8860A;border-radius:0 12px 12px 0;padding:14px 18px;font-size:14px;color:#D4A020;line-height:1.7;margin-top:16px;}
+.alert strong{color:#F0C040;}
+
+/* TABLE */
+.act-table{width:100%;border-collapse:collapse;font-size:14px;}
+.act-table thead tr{background:linear-gradient(90deg,#C8860A,#E0A820);}
+.act-table thead th{padding:12px 14px;text-align:left;color:#111;font-family:'Fredoka One',cursive;font-size:15px;font-weight:400;}
+.act-table thead th:last-child{text-align:center;}
+.act-table tbody tr{border-bottom:1px solid #2A2A2A;transition:background .15s;}
+.act-table tbody tr:hover{background:#222;}
+.act-table td{padding:13px 14px;vertical-align:top;color:#bbb;line-height:1.6;}
+.act-kiosk{font-family:'Fredoka One',cursive;font-size:15px;color:#fff;display:block;margin-bottom:2px;}
+.act-item{font-size:12px;color:#888;}
+.badge-pts{display:inline-block;background:#1F1700;border:2px solid #C8860A;border-radius:20px;padding:4px 14px;font-family:'Fredoka One',cursive;font-size:14px;color:#F0C040;}
+
+.pill-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+.pill{background:#1F1F1F;border:2px solid #333;border-radius:50px;padding:6px 14px;font-size:13px;font-weight:800;color:#F0C040;display:flex;align-items:center;gap:6px;}
+.pill .dot{width:8px;height:8px;border-radius:50%;background:#C8860A;flex-shrink:0;}
+
+/* TRACKER */
+.tracker-hd{display:grid;grid-template-columns:2fr 1.5fr 1fr 44px;gap:8px;padding:10px 14px;background:linear-gradient(90deg,#C8860A,#E0A820);border-radius:10px 10px 0 0;}
+.tracker-hd span{font-family:'Fredoka One',cursive;font-size:13px;color:#111;}
+.tracker-hd span:last-child{text-align:center;}
+.tracker-wrap{border:2px solid #2A2A2A;border-top:none;border-radius:0 0 10px 10px;overflow:hidden;}
+.tracker-row{display:grid;grid-template-columns:2fr 1.5fr 1fr 44px;gap:8px;padding:10px 14px 0;border-bottom:1px solid #222;align-items:start;flex-wrap:wrap;}.tracker-row>div:not(.tracker-link-row){align-self:center;padding-bottom:10px;}
+.tracker-row:last-child{border-bottom:none;}
+.tracker-row:nth-child(even){background:#1E1E1E;}
+.tracker-row select{width:100%;border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:#ddd;outline:none;cursor:pointer;}
+.tracker-row select option{background:#222;color:#ddd;}
+.tracker-row input{width:100%;border:none;border-bottom:2px solid #333;background:transparent;font-family:'Nunito',sans-serif;font-size:13px;padding:2px 0;outline:none;color:#ddd;}
+.tracker-row input:focus{border-bottom-color:#C8860A;}
+.tracker-row input::placeholder{color:#555;}
+.tracker-check{width:24px;height:24px;border:2.5px solid #C8860A;border-radius:6px;margin:0 auto;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;}
+.tracker-check.done{background:#C8860A;}
+.tracker-check.done::after{content:'checkmark';color:#111;font-size:14px;font-weight:900;}
+.tracker-total{background:#1F1700;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;border-top:2px solid #C8860A;}
+.tracker-total-lbl{font-family:'Fredoka One',cursive;font-size:16px;color:#C8860A;}
+.tracker-total-val{font-family:'Fredoka One',cursive;font-size:26px;color:#F0C040;}
+.progress-bar-wrap{background:#222;border-radius:50px;height:12px;margin:12px 0 4px;overflow:hidden;}
+.progress-bar{background:linear-gradient(90deg,#C8860A,#F0C040);height:100%;border-radius:50px;width:0%;transition:width .4s;}
+.progress-lbl{font-size:12px;color:#666;text-align:right;font-weight:700;}
+/* ── Bag Countdown Ticker ── */
+.ticker-wrap{background:#111;border:3px solid #C8860A;border-radius:18px;padding:20px 28px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.ticker-left{display:flex;flex-direction:column;gap:4px;}
+.ticker-label{font-family:'Fredoka One',cursive;font-size:13px;color:#C8860A;letter-spacing:2px;text-transform:uppercase;}
+.ticker-count{font-family:'Fredoka One',cursive;font-size:62px;color:#F0C040;line-height:1;text-shadow:0 0 30px rgba(240,192,64,.4);}
+.ticker-sub{font-size:13px;color:#888;}
+.ticker-sub strong{color:#ddd;}
+.ticker-bar-wrap{flex:1;min-width:140px;}
+.ticker-bar-track{background:#222;border-radius:50px;height:16px;overflow:hidden;margin-bottom:8px;}
+.ticker-bar-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,#C8860A,#F0C040);transition:width .8s ease;}
+.ticker-slots{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;}
+.ticker-slot{width:18px;height:18px;border-radius:4px;border:2px solid #333;background:#222;transition:background .3s;}
+.ticker-slot.taken{background:#C8860A;border-color:#C8860A;}
+.ticker-full{background:#3A0000;border:3px solid #CC0000;border-radius:18px;padding:20px 28px;text-align:center;margin-bottom:16px;}
+.ticker-full h3{font-family:'Fredoka One',cursive;font-size:24px;color:#FF6666;margin-bottom:8px;}
+.ticker-full p{font-size:14px;color:#bbb;line-height:1.7;}
+.field-select{width:100%;padding:10px 14px;border:2px solid #333;border-radius:10px;background:#111;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#ddd;outline:none;cursor:pointer;margin-top:4px;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C8860A' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;}
+.field-select:focus{border-color:#C8860A;}
+.field-select option{background:#1A1A1A;color:#ddd;}
+
+/* SIGN-OFF */
+.signoff{border:2px dashed #333;border-radius:16px;padding:22px 26px;}
+.signoff h4{font-family:'Fredoka One',cursive;font-size:20px;color:#F0C040;margin-bottom:6px;}
+.signoff p{font-size:13px;color:#888;margin-bottom:16px;line-height:1.6;}
+.signoff-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.field-lbl{font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#666;display:block;margin-bottom:8px;}
+.field-line{border-bottom:2px solid #333;min-height:28px;}
+
+/* FOOTER */
+.footer{text-align:center;padding:24px;font-size:12px;color:#444;font-style:italic;}
+
+@media print{
+  body{background:#fff;padding:0;}
+  .page{max-width:100%;}
+  .hdr,.hero,.sponsor-callout,.section,.tracker-total,.alert,.signoff{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .no-print{display:none;}
+}
+@media(max-width:560px){
+  .hdr-title{font-size:38px;}
+  .hdr-inner{flex-direction:column;}
+  .signoff-grid{grid-template-columns:1fr;}
+  .tracker-hd,.tracker-row{grid-template-columns:2fr 1fr 36px;}
+  .tracker-hd span:nth-child(2),.tracker-row div:nth-child(2){display:none;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-badge">&#127881; SERVICE POINTS OPPORTUNITY</div>
+    <div class="hdr-inner">
+      <div>
+        <div class="hdr-title">Smile Bags<span>Service Bag Hub</span></div>
+        <div class="hdr-sub">Earn service points by building a <strong>complete bag</strong> for a child in our community.<br/>Spring 2026 &middot; Open to all students &middot; Through your club sponsor</div>
+      </div>
+      <div class="hdr-emblem">
+        <div class="big-icon">&#128155;</div>
+        <div class="lbl">MAKE AN IMPACT</div>
+      </div>
+    </div>
+    <svg class="hdr-wave" viewBox="0 0 760 44" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,22 C120,44 240,0 380,22 C520,44 640,0 760,22 L760,44 L0,44 Z" fill="#111"/>
+    </svg>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-icon">&#127873;</div>
+    <div class="hero-text">
+      <h3>What is a Smile Bag?</h3>
+      <p>Every child deserves to feel seen. A Smile Bag is a <strong>handmade gift bag filled with at least 10 original items</strong> — bookmarks, spinners, stickers, quote cards, and more. These bags are delivered to children in our community who are facing hardship, illness, or uncertainty. <strong>Your creativity becomes someone else's hope.</strong> Build a complete bag through your club and earn service points!</p>
+    </div>
+  </div>
+
+  <!-- SPONSOR CALLOUT -->
+  <div style="padding:0 0 16px;background:#111;">
+    <div class="sponsor-callout">
+      <div class="sc-icon">&#127381;</div>
+      <div>
+        <h4>Club Members Only &mdash; Service Points Through Your Sponsor</h4>
+        <p>Service points for Smile Bags are awarded <strong>exclusively through club sponsors</strong>. You must be participating as a club member and have your club sponsor verify your completed bag before points are awarded. Not sure if your club is participating? Ask your sponsor!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BAG COUNTDOWN TICKER -->
+  <div id="tickerWrap" class="ticker-wrap" style="display:none;">
+    <div class="ticker-left">
+      <div class="ticker-label">&#127381; Bags Remaining</div>
+      <div class="ticker-count" id="tickerNum">—</div>
+      <div class="ticker-sub">of <strong>20</strong> total bags available</div>
+    </div>
+    <div class="ticker-bar-wrap">
+      <div class="ticker-bar-track"><div class="ticker-bar-fill" id="tickerBar" style="width:100%;"></div></div>
+      <div class="ticker-slots" id="tickerSlots"></div>
+    </div>
+  </div>
+  <div id="tickerFull" class="ticker-full" style="display:none;">
+    <h3>&#128683; All Smile Bag Slots Are Claimed!</h3>
+    <p>All 20 bags have been reserved. Thank you to everyone who participated — your creativity is making a difference. See Ms. Howell if you have questions about future opportunities.</p>
+  </div>
+  <div id="tickerLoading" style="text-align:center;padding:16px;font-family:'Fredoka One',cursive;font-size:15px;color:#555;letter-spacing:1px;">Checking available bags...</div>
+
+  <!-- HOW IT WORKS -->
+  <div class="section">
+    <div class="section-title">&#128196; How to Earn Your Service Points</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Print &amp; get your permission slip signed</h4>
+          <p>Print the permission slip from this page, have your club sponsor sign it, and return it to <strong style="color:#F0C040;">Ms. Howell in D210</strong> before you begin. Your sponsor only confirms you are an active club member — nothing else is required from them.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Visit the kiosks and create your items</h4>
+          <p>Use any of the kiosks listed below to design and submit items. <strong>You need items from at least 4 different activities.</strong> Every submission gives you a KSB code — write it in your tracker!</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Reach 10 items total</h4>
+          <p>You can submit multiple items from the same kiosk, but you need a minimum of <strong>10 items total</strong> from at least <strong>4 different activities</strong> to qualify for a complete bag.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Check the box &amp; submit when you are ready</h4>
+          <p>Once you have completed your 10 items, check the confirmation box at the bottom of this page and submit. <strong>Ms. Howell will verify your KSB codes and notify your sponsor</strong> directly — no further action is needed from you or your sponsor. Upon verification, <strong>5 service points</strong> will be awarded and your bag will be assembled and delivered!</p>
+        </div>
+      </div>
+    </div>
+    <div class="alert">&#9888;&#65039; <strong>Important:</strong> Every item must be submitted through a kiosk with a KSB code (KSB-XXXX). Items without a code cannot be counted. You may earn <strong>5 service points</strong> for one complete bag per semester. Ms. Howell verifies all submission codes &mdash; your sponsor only needs to confirm you have club permission.</div>
+  </div>
+
+  <!-- ACTIVITIES -->
+  <div class="section">
+    <div class="section-title">&#127775; What Can I Make?</div>
+    <table class="act-table">
+      <thead>
+        <tr>
+          <th>Kiosk &amp; Activity</th>
+          <th>What you make</th>
+          <th style="text-align:center;">Counts as</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-left:4px solid #C8860A;">
+          <td><span class="act-kiosk">&#128278; Crafting Smiles</span><span class="act-item">Bookmark Builder</span><span style="display:inline-block;margin-top:4px;background:#1F1700;border:1px solid #C8860A;border-radius:6px;padding:2px 8px;font-size:10px;color:#F0C040;font-weight:800;letter-spacing:1px;">&#128249; 3D DESIGN REQUIRED</span></td>
+          <td>Design a personalized 3D-printed bookmark in <strong style="color:#fff;">Tinkercad, Fusion 360, or similar</strong>. Submit your kiosk entry <em>and</em> a shareable design link.</td>
+          <td><span class="badge-pts">1 item</span></td>
+        </tr>
+        <tr style="border-left:4px solid #C8860A;">
+          <td><span class="act-kiosk">&#127744; Crafting Smiles</span><span class="act-item">Magic Illusion Spinner</span><span style="display:inline-block;margin-top:4px;background:#1F1700;border:1px solid #C8860A;border-radius:6px;padding:2px 8px;font-size:10px;color:#F0C040;font-weight:800;letter-spacing:1px;">&#128249; 3D DESIGN REQUIRED</span></td>
+          <td>Design your spinner in <strong style="color:#fff;">Tinkercad, Fusion 360, or similar</strong> — you can remix the base model. Submit your kiosk entry <em>and</em> a shareable design link.</td>
+          <td><span class="badge-pts">1 item</span></td>
+        </tr>
+        <tr>
+          <td><span class="act-kiosk">&#128203; AVID Quote Cards</span><span class="act-item">Ms. Vinson &middot; AVID</span></td>
+          <td>Write an original inspirational quote card for a child connected to a OneWord</td>
+          <td><span class="badge-pts">1 item</span></td>
+        </tr>
+        <tr>
+          <td><span class="act-kiosk">&#127829; Sticker Station</span><span class="act-item">Sticker Kiosk</span></td>
+          <td>Design a custom sticker to include in the bag</td>
+          <td><span class="badge-pts">1 item</span></td>
+        </tr>
+        <tr>
+          <td><span class="act-kiosk">&#128196; Bookmark Builder</span><span class="act-item">Printed Bookmark Kiosk</span></td>
+          <td>Design a printed paper bookmark with a quote and colors</td>
+          <td><span class="badge-pts">1 item</span></td>
+        </tr>
+        <tr>
+          <td><span class="act-kiosk">&#129504; AP Psychology</span><span class="act-item">Positivity Card</span></td>
+          <td>Create a science-backed affirmation or kindness card for a child</td>
+          <td><span class="badge-pts">1 item</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pill-row">
+      <div class="pill"><span class="dot"></span>Minimum 10 items</div>
+      <div class="pill"><span class="dot"></span>At least 4 different activities</div>
+      <div class="pill"><span class="dot"></span>Every item needs a KSB code</div>
+      <div class="pill"><span class="dot"></span>Club members only</div>
+      <div class="pill" style="background:#1F1700;border-color:#C8860A;"><span class="dot" style="background:#F0C040;"></span><strong style="color:#F0C040;">5 service points awarded</strong></div>
+    </div>
+    <div style="background:#1F1700;border-left:5px solid #C8860A;border-radius:0 10px 10px 0;padding:12px 16px;font-size:13px;color:#D4A020;line-height:1.7;margin-top:14px;">
+      &#128249; <strong style="color:#F0C040;">3D-Printed Items Rule:</strong> You may submit both a Bookmark <em>and</em> a Spinner — they are different items. However, you <strong style="color:#fff;">cannot count two Bookmarks or two Spinners</strong>. <strong style="color:#F0C040;">Most importantly:</strong> 3D-print items require you to <strong style="color:#fff;">actually design the item in Tinkercad, Fusion 360, or a similar tool</strong> and paste a shareable link in your tracker. No link = item does not count. All other kiosk items may be submitted more than once as long as each is a <strong style="color:#fff;">different design</strong>.
+    </div>
+  </div>
+
+  <!-- TRACKER -->
+  <div class="section">
+    <div class="section-title">&#128202; My Item Tracker</div>
+    <p style="font-size:14px;color:#888;margin-bottom:16px;">Write your KSB submission code after each kiosk visit. Check the box when your sponsor confirms it.</p>
+    <div class="tracker-hd">
+      <span>ACTIVITY</span>
+      <span>KSB CODE</span>
+      <span style="text-align:center;">DATE</span>
+      <span style="text-align:center;">&#10003;</span>
+    </div>
+    <div class="tracker-wrap" id="trackerWrap"></div>
+    <div class="tracker-total">
+      <div class="tracker-total-lbl">Items Completed</div>
+      <div class="tracker-total-val"><span id="doneCount">0</span> / 10</div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="progress-lbl" id="progressLbl">0% toward a complete bag</div>
+  </div>
+
+  <!-- PERMISSION SLIP -->
+  <div class="section">
+    <div class="section-title">&#128196; Step 1 — Get Your Permission Slip Signed</div>
+    <p style="font-size:14px;color:#888;line-height:1.7;margin-bottom:16px;">Before you start collecting items, print the permission slip below, have your club sponsor sign it, and return it to <strong style="color:#fff;">Ms. Howell in D210</strong>. Your sponsor only needs to confirm you are an active club member — they are not responsible for reviewing your submissions.</p>
+    <a href="https://lhhowell.github.io/kellamsmilebags/KSB_ServicePoints_Permission.html" target="_blank"
+      style="display:flex;align-items:center;gap:14px;background:#1F1700;border:2px solid #C8860A;border-radius:14px;padding:16px 22px;text-decoration:none;transition:all .2s;">
+      <span style="font-size:36px;">&#128438;</span>
+      <div>
+        <div style="font-family:'Fredoka One',cursive;font-size:18px;color:#F0C040;margin-bottom:3px;">Print Permission Slip</div>
+        <div style="font-size:12px;color:#888;">Opens in a new tab &middot; Print and return to Ms. Howell in D210</div>
+      </div>
+      <span style="margin-left:auto;font-family:'Fredoka One',cursive;font-size:13px;color:#C8860A;white-space:nowrap;">Open &#8599;</span>
+    </a>
+  </div>
+
+  <!-- SUBMIT SECTION -->
+  <div class="section" id="submitSection">
+    <div class="section-title">&#9997;&#65039; Submit Your Completed Bag</div>
+    <p style="font-size:14px;color:#888;margin-bottom:20px;">Fill in your info below, then hit Submit. Your sponsor will receive your entry and verify your service points.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+
+      <!-- First name -->
+      <div>
+        <span class="field-lbl">First Name</span>
+        <input id="sFirstName" type="text" placeholder="Your first name"
+          style="width:100%;padding:11px 14px;border:2px solid #333;border-radius:10px;background:#111;font-family:Nunito,sans-serif;font-size:15px;font-weight:700;color:#ddd;outline:none;"
+          oninput="this.style.borderColor=this.value.trim().length>0?'#1B7A78':'#CC0000'"/>
+      </div>
+
+      <!-- Last initial — one letter only -->
+      <div>
+        <span class="field-lbl">Last Initial <span style="color:#C8860A;font-size:10px;">(one letter only)</span></span>
+        <input id="sLastInitial" type="text" maxlength="1" placeholder="e.g. H"
+          style="width:100%;padding:11px 14px;border:2px solid #333;border-radius:10px;background:#111;font-family:'Fredoka One',cursive;font-size:22px;color:#F0C040;outline:none;text-transform:uppercase;text-align:center;letter-spacing:4px;"
+          oninput="this.value=this.value.replace(/[^a-zA-Z]/g,'').toUpperCase();this.style.borderColor=this.value.length===1?'#1B7A78':'#CC0000'"/>
+      </div>
+
+      <!-- Grade -->
+      <div>
+        <span class="field-lbl">Grade</span>
+        <select id="sGrade" class="field-select">
+          <option value="">-- Select grade --</option>
+          <option>9th grade</option>
+          <option>10th grade</option>
+          <option>11th grade</option>
+          <option>12th grade</option>
+        </select>
+      </div>
+
+      <!-- Club sponsor -->
+      <div>
+        <span class="field-lbl">Club Sponsor</span>
+        <select id="sSponsor" class="field-select">
+          <option value="">-- Select your club --</option>
+          <option value="Bible Club|Bible Club">Bible Club</option>
+          <option value="Speech Club|Speech Club">Speech Club</option>
+        </select>
+        <div style="font-size:11px;color:#666;margin-top:6px;font-style:italic;">&#128204; Your club sponsor will verify that you have permission to earn service points through your club.</div>
+      </div>
+
+      <!-- Recipient group — full width -->
+      <div style="grid-column:1/-1;">
+        <span class="field-lbl">My Bag is For</span>
+        <select id="sRecipient" class="field-select">
+          <option value="">-- Select recipient group --</option>
+          <option value="Elementary School">&#127823; Elementary School</option>
+          <option value="Middle School">&#128218; Middle School</option>
+          <option value="High School">&#127891; High School</option>
+        </select>
+      </div>
+
+    </div>
+
+    <!-- Submit button -->
+    <div id="notSubmitted">
+      <button id="submitBtn" onclick="doSubmit()" disabled
+        style="width:100%;padding:16px;background:linear-gradient(135deg,#C8860A,#F0C040);color:#111;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:20px;cursor:pointer;box-shadow:0 5px 20px rgba(200,134,10,.4);letter-spacing:.5px;opacity:0.4;">
+        &#127881; Submit My Completed Bag!
+      </button>
+      <p style="font-size:12px;color:#555;text-align:center;margin-top:8px;font-style:italic;">
+        Your sponsor confirms club permission. Ms. Howell verifies your KSB codes.
+      </p>
+    </div>
+
+    <!-- Success state -->
+    <div id="submittedBox" style="display:none;background:#1A1A00;border:2px solid #C8860A;border-radius:16px;padding:28px;text-align:center;">
+      <div style="font-size:56px;margin-bottom:12px;">&#127942;</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:26px;color:#F0C040;margin-bottom:8px;">Bag Submitted!</div>
+      <p style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">
+        Your completed bag has been logged. Ms. Howell will verify your KSB codes. Bring this sheet to your club sponsor so they can confirm your club membership and sign off.<br/>Write down your submission code below!
+      </p>
+      <div style="background:#111;border:2px solid #C8860A;border-radius:12px;padding:16px;display:inline-block;">
+        <div style="font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#C8860A;margin-bottom:6px;">Your Submission Code</div>
+        <div id="tokDisplay" style="font-family:'Fredoka One',cursive;font-size:32px;letter-spacing:6px;color:#F0C040;">KSB-0000</div>
+        <div style="font-size:11px;color:#666;margin-top:6px;">Show this to your sponsor if needed.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">Smile Bags &middot; Spring 2026 &middot; Questions? See Ms. Howell or your club sponsor &middot; lhhowell.github.io/kellamsmilebags</div>
+</div>
+
+<script>
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyquv8-NQSQGCabI50zDikapuiY9S-O8caVZ3LA52BsSmc365Mfif7bYQGCY8IfFiES/exec";
+var BAG_LIMIT  = 20;
+var _remaining = BAG_LIMIT;  // updated after fetch
+
+// ── Load live slot count on page load ────────────────────────
+function loadTicker() {
+  if (!SCRIPT_URL || SCRIPT_URL === "YOUR_APPS_SCRIPT_URL_HERE") {
+    // Dev mode — show full ticker with dummy data
+    renderTicker(18, false);
+    return;
+  }
+  fetch(SCRIPT_URL, {redirect:'follow', mode:'cors'})
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      renderTicker(d.remaining, d.full);
+    })
+    .catch(function(){
+      // If fetch fails, just hide the loading notice gracefully
+      document.getElementById("tickerLoading").style.display = "none";
+      document.getElementById("tickerWrap").style.display    = "flex";
+      renderTicker(BAG_LIMIT, false);
+    });
+}
+
+function renderTicker(remaining, full) {
+  _remaining = remaining;
+  document.getElementById("tickerLoading").style.display = "none";
+
+  if (full || remaining <= 0) {
+    document.getElementById("tickerFull").style.display = "block";
+    // Disable submit button
+    var btn = document.getElementById("submitBtn");
+    if (btn) { btn.disabled = true; btn.style.opacity = "0.4"; btn.style.cursor = "not-allowed"; }
+    return;
+  }
+
+  document.getElementById("tickerWrap").style.display = "flex";
+  document.getElementById("tickerNum").textContent    = remaining;
+
+  // Drain bar — pct of slots still open
+  var pct = Math.round((remaining / BAG_LIMIT) * 100);
+  document.getElementById("tickerBar").style.width = pct + "%";
+  // Turn bar red when getting low
+  if (remaining <= 5) {
+    document.getElementById("tickerBar").style.background = "linear-gradient(90deg,#CC0000,#FF4444)";
+    document.getElementById("tickerNum").style.color = "#FF6666";
+  }
+
+  // Slot dots — 20 squares, gold = taken, dark = open
+  var slotsEl = document.getElementById("tickerSlots");
+  slotsEl.innerHTML = "";
+  for (var i = 0; i < BAG_LIMIT; i++) {
+    var dot = document.createElement("div");
+    dot.className = "ticker-slot" + (i < (BAG_LIMIT - remaining) ? " taken" : "");
+    dot.title = i < (BAG_LIMIT - remaining) ? "Claimed" : "Available";
+    slotsEl.appendChild(dot);
+  }
+}
+
+function buildTracker(){
+  var wrap=document.getElementById("trackerWrap");
+  for(var i=0;i<12;i++){
+    var row=document.createElement("div");
+    row.className="tracker-row";
+    row.setAttribute("data-row",i);
+    row.innerHTML=
+      '<div><select onchange="onActivityChange(this)">'+ 
+        '<option value="">— choose activity —</option>'+
+        '<option>Crafting Smiles — Bookmark</option>'+
+        '<option>Crafting Smiles — Spinner</option>'+
+        '<option>AVID Quote Card</option>'+
+        '<option>Sticker Station</option>'+
+        '<option>Bookmark Builder</option>'+
+        '<option>AP Psychology Card</option>'+
+      '</select></div>'+
+      '<div><input type="text" placeholder="KSB-XXXX" maxlength="8" style="text-transform:uppercase;"/></div>'+
+      '<div><input type="text" placeholder="MM/DD" maxlength="5" style="text-align:center;"/></div>'+
+      '<div class="tracker-check" onclick="toggleCheck(this)"></div>';
+    // Link row — hidden until a 3D item is selected
+    var linkRow=document.createElement("div");
+    linkRow.className="tracker-link-row";
+    linkRow.style.cssText="display:none;grid-column:1/-1;padding:6px 0 10px 6px;";
+    var linkDiv=document.createElement("div");
+    linkDiv.style.cssText="display:flex;align-items:center;gap:8px;background:#1F1700;border:2px solid #C8860A;border-radius:10px;padding:8px 12px;";
+    var linkIcon=document.createElement("span");
+    linkIcon.style.fontSize="18px";
+    linkIcon.textContent="&#128249;";
+    var linkInner=document.createElement("div");
+    linkInner.style.flex="1";
+    var linkLabel=document.createElement("div");
+    linkLabel.style.cssText="font-family:Arial,sans-serif;font-weight:800;font-size:11px;color:#C8860A;letter-spacing:1px;margin-bottom:4px;";
+    linkLabel.innerHTML='TINKERCAD / FUSION 360 SHAREABLE LINK <span style="color:#FF6666;">* required</span>';
+    var linkInput=document.createElement("input");
+    linkInput.type="url";
+    linkInput.className="design-link-input";
+    linkInput.placeholder="https://www.tinkercad.com/things/... or similar";
+    linkInput.style.cssText="width:100%;border:none;border-bottom:2px solid #C8860A;background:transparent;font-family:Nunito,sans-serif;font-size:13px;color:#ddd;outline:none;padding:2px 0;";
+    linkInput.addEventListener("input",function(){this.style.borderColor=this.value.trim().length>10?"#1B7A78":"#C8860A";});
+    linkInner.appendChild(linkLabel);
+    linkInner.appendChild(linkInput);
+    linkDiv.appendChild(linkIcon);
+    linkDiv.appendChild(linkInner);
+    linkRow.appendChild(linkDiv);
+    row.appendChild(linkRow);
+    wrap.appendChild(row);
+  }
+}
+
+function onActivityChange(sel){
+  var row=sel.closest(".tracker-row");
+  var linkRow=row.querySelector(".tracker-link-row");
+  var is3D=PRINT_ONCE.indexOf(sel.value)!==-1;
+  linkRow.style.display=is3D?"block":"none";
+  // If unchecking a 3D item back to non-3D, clear the link
+  if(!is3D){
+    var inp=linkRow.querySelector(".design-link-input");
+    if(inp)inp.value="";
+  }
+  // Reapply grid — link row spans all columns
+  row.style.gridTemplateColumns=is3D?"2fr 1.5fr 1fr 44px":"2fr 1.5fr 1fr 44px";
+}
+
+// 3D-printed items that can only appear ONCE each
+var PRINT_ONCE = ["Crafting Smiles — Bookmark", "Crafting Smiles — Spinner"];
+
+function getCheckedActivities(){
+  var acts=[];
+  document.querySelectorAll(".tracker-row").forEach(function(row){
+    var chk=row.querySelector(".tracker-check");
+    var sel=row.querySelector("select");
+    if(chk&&chk.classList.contains("done")&&sel&&sel.value){
+      acts.push(sel.value);
+    }
+  });
+  return acts;
+}
+
+function toggleCheck(el){
+  var row=el.closest(".tracker-row");
+  var sel=row?row.querySelector("select"):null;
+  var activity=sel?sel.value:"";
+
+  // If trying to check ON — validate first
+  if(!el.classList.contains("done")){
+    // Must have an activity selected
+    if(!activity){
+      alert("Please choose an activity for this row before checking it off!");
+      return;
+    }
+    // 3D-print duplicate check
+    if(PRINT_ONCE.indexOf(activity)!==-1){
+      var already=getCheckedActivities();
+      var count=already.filter(function(a){return a===activity;}).length;
+      if(count>=1){
+        alert("You can only count one \""+activity+"\" — the 3D-printed item is the same file regardless of color. Choose a different activity for this row!");
+        return;
+      }
+    }
+  }
+
+  el.classList.toggle("done");
+  el.textContent=el.classList.contains("done")?"✓":"";
+  // Highlight the row red if unchecked after warning
+  if(row){row.style.background=el.classList.contains("done")?"":"";} 
+  updateCount();
+}
+
+function updateCount(){
+  var done=document.querySelectorAll(".tracker-check.done").length;
+  document.getElementById("doneCount").textContent=done;
+  var pct=Math.min(100,Math.round(done/10*100));
+  document.getElementById("progressBar").style.width=pct+"%";
+  document.getElementById("progressLbl").textContent=
+    pct+"% toward a complete bag"+(done>=10?" — Ready to submit! 🎉":"");
+}
+
+function collectKsbCodes(){
+  var codes=[];
+  document.querySelectorAll(".tracker-row").forEach(function(row){
+    var chk=row.querySelector(".tracker-check");
+    var inp=row.querySelector('input[type="text"]');
+    if(chk&&chk.classList.contains("done")&&inp&&inp.value.trim()){
+      codes.push(inp.value.trim().toUpperCase());
+    }
+  });
+  return codes;
+}
+
+function collectDesignLinks(){
+  var links=[];
+  document.querySelectorAll(".tracker-row").forEach(function(row){
+    var chk=row.querySelector(".tracker-check");
+    var sel=row.querySelector("select");
+    var linkInp=row.querySelector(".design-link-input");
+    if(chk&&chk.classList.contains("done")&&sel&&PRINT_ONCE.indexOf(sel.value)!==-1&&linkInp&&linkInp.value.trim()){
+      links.push(sel.value+": "+linkInp.value.trim());
+    }
+  });
+  return links;
+}
+
+function getDuplicatePrintItems(){
+  var acts=getCheckedActivities();
+  var dupes=[];
+  PRINT_ONCE.forEach(function(item){
+    var count=acts.filter(function(a){return a===item;}).length;
+    if(count>1)dupes.push(item+" (×"+count+")");
+  });
+  return dupes;
+}
+
+function getUniqueActivityCount(){
+  var acts=getCheckedActivities();
+  var unique={};
+  acts.forEach(function(a){unique[a]=1;});
+  return Object.keys(unique).length;
+}
+
+function doSubmit(){
+  var firstName  = document.getElementById("sFirstName").value.trim();
+  var lastInitial= document.getElementById("sLastInitial").value.trim().toUpperCase().replace(/[^A-Z]/g,"").charAt(0)||"";
+  var grade      = document.getElementById("sGrade").value;
+  var sponsorRaw = document.getElementById("sSponsor").value;
+  var recipient  = document.getElementById("sRecipient").value;
+  var codes      = collectKsbCodes();
+  var done       = document.querySelectorAll(".tracker-check.done").length;
+  var dupes      = getDuplicatePrintItems();
+  var uniqueActs = getUniqueActivityCount();
+
+  // Validation
+  if(!firstName){alert("Please enter your first name!");return;}
+  if(!lastInitial){alert("Please enter your last initial (one letter)!");return;}
+  if(!grade){alert("Please select your grade!");return;}
+  if(!sponsorRaw){alert("Please select your club sponsor!");return;}
+  if(!recipient){alert("Please select who your bag is for!");return;}
+  if(done<10){alert("You need at least 10 items checked off before submitting!");return;}
+  // Check all checked 3D-print rows have a design link
+  var missingLinks=[];
+  document.querySelectorAll(".tracker-row").forEach(function(row){
+    var chk=row.querySelector(".tracker-check");
+    var sel=row.querySelector("select");
+    var linkInp=row.querySelector(".design-link-input");
+    if(chk&&chk.classList.contains("done")&&sel&&PRINT_ONCE.indexOf(sel.value)!==-1){
+      var link=linkInp?linkInp.value.trim():"";
+      if(!link||link.length<10){
+        missingLinks.push(sel.value);
+      }
+    }
+  });
+  if(missingLinks.length>0){
+    alert("Missing 3D design link!\n\nThese items need a shareable Tinkercad or design link:\n\n• "+missingLinks.join("\n• ")+"\n\nPaste your shareable link in the gold link field under each 3D item.");
+    return;
+  }
+
+  if(dupes.length>0){
+    alert("Duplicate 3D-printed items found:\n\n"+dupes.join("\n")+"\n\nEach 3D-printed item can only count once. Please uncheck the extra rows.");
+    return;
+  }
+  if(uniqueActs<4){alert("Your bag needs items from at least 4 different activities. You have "+uniqueActs+" right now — keep visiting more kiosks!");return;}
+  if(codes.length<1){alert("Please enter at least one KSB submission code in your tracker!");return;}
+
+  // Parse sponsor value "LastName, First|Club Name"
+  var parts   = sponsorRaw.split("|");
+  var sponsor = parts[0]||sponsorRaw;
+  var club    = parts[1]||"";
+
+  var tok = "KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
+  document.getElementById("tokDisplay").textContent=tok;
+
+  var payload={
+    token:        tok,
+    firstName:    firstName,
+    lastInitial:  lastInitial,
+    grade:        grade,
+    club:         club,
+    sponsor:      sponsor,
+    recipientGroup: recipient,
+    ksbCodes:     codes,
+    itemCount:    done,
+    designLinks:  collectDesignLinks()
+  };
+
+  var btn=document.getElementById("submitBtn");
+  btn.textContent="Submitting...";btn.disabled=true;
+
+  if(!SCRIPT_URL||SCRIPT_URL==="YOUR_APPS_SCRIPT_URL_HERE"){showDone();return;}
+
+  fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.status==="full"){
+        btn.textContent="Submit My Completed Bag!";btn.disabled=false;
+        renderTicker(0, true);
+        alert("All 20 bags have just been claimed — the last slot was taken while you were working. See Ms. Howell for next steps!");
+        return;
+      }
+      // Update ticker with new remaining count
+      if(typeof d.remaining!=="undefined") renderTicker(d.remaining, d.full||false);
+      showDone();
+    })
+    .catch(function(){showDone();});
+}
+
+function showDone(){
+  document.getElementById("notSubmitted").style.display="none";
+  document.getElementById("submittedBox").style.display="block";
+}
+
+buildTracker();
+loadTicker();
+</script>
+</body>
+</html>
