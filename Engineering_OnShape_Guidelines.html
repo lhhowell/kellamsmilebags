@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Printed Assembly Kit · OnShape CAD · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --orange: #B55A00;
+  --orange-light: #FDECD9;
+  --orange-mid: #E89244;
+  --ink: #1B2A41;
+  --ink-soft: #3A4A5F;
+  --paper: #FDFAF5;
+  --paper-warm: #F8F1E5;
+  --line: #D9CFBF;
+  --green: #1A6B3A;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.6;
+  font-size: 15px;
+}
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 24px 60px; }
+
+/* ========== HEADER ========== */
+.hero {
+  background: linear-gradient(135deg, var(--ink) 0%, #2A3F5F 100%);
+  color: #fff;
+  padding: 56px 24px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+}
+.hero-inner { max-width: 980px; margin: 0 auto; position: relative; }
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--orange-mid);
+  margin-bottom: 14px;
+}
+.hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(38px, 6vw, 64px);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  margin-bottom: 14px;
+}
+.hero-sub {
+  font-size: 18px;
+  font-weight: 400;
+  color: #C9D6E8;
+  max-width: 720px;
+  line-height: 1.5;
+}
+.hero-meta {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+.hero-meta-item {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15);
+  padding: 6px 12px;
+  border-radius: 4px;
+  color: #DCE5F0;
+}
+.hero-meta-item strong { color: var(--orange-mid); margin-right: 6px; font-weight: 600; }
+
+/* ========== INTRO CALLOUT ========== */
+.intro-callout {
+  background: var(--orange-light);
+  border-left: 6px solid var(--orange);
+  padding: 28px 32px;
+  margin: -32px auto 48px;
+  max-width: 840px;
+  border-radius: 10px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 8px 24px rgba(27,42,65,.08);
+}
+.intro-callout-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.intro-callout p {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.7;
+}
+.intro-callout p + p { margin-top: 10px; }
+.intro-callout em {
+  font-style: italic;
+  color: var(--orange);
+  font-weight: 600;
+}
+
+/* ========== SECTIONS ========== */
+section { margin-bottom: 56px; }
+.section-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--orange);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 38px;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  margin-bottom: 8px;
+  line-height: 1.05;
+}
+.section-sub {
+  color: var(--ink-soft);
+  font-size: 15px;
+  margin-bottom: 24px;
+  max-width: 720px;
+}
+
+/* ========== STANDARDS TABLE ========== */
+.std-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(27,42,65,.08);
+}
+.std-table thead { background: var(--ink); color: #fff; }
+.std-table th {
+  text-align: left;
+  padding: 12px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.std-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--paper-warm);
+  font-size: 14px;
+  vertical-align: top;
+}
+.std-table tr:last-child td { border-bottom: none; }
+.std-table .std-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  color: var(--orange);
+  white-space: nowrap;
+  font-size: 13px;
+}
+.std-table .std-topic { font-weight: 600; color: var(--ink); }
+
+/* ========== FUTURE READY ========== */
+.fr-callout {
+  background: var(--ink);
+  color: #fff;
+  padding: 28px 32px;
+  border-radius: 10px;
+  margin-top: 24px;
+}
+.fr-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--orange-mid);
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+.fr-list { display: grid; gap: 14px; }
+.fr-item { display: flex; gap: 14px; }
+.fr-item-bullet {
+  color: var(--orange-mid);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  flex-shrink: 0;
+  font-size: 13px;
+  padding-top: 2px;
+}
+.fr-item-text { font-size: 14px; line-height: 1.6; color: #DCE5F0; }
+.fr-item-text strong { color: #fff; font-weight: 600; }
+
+/* ========== MODEL LIBRARY ========== */
+.cat-section { margin-bottom: 32px; }
+.cat-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed var(--line);
+}
+.cat-emoji { font-size: 28px; }
+.cat-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+.model-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 16px;
+}
+.model {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px 22px;
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform .15s, box-shadow .15s;
+}
+.model:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(27,42,65,.1); }
+.model-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--paper-warm);
+}
+.model-emoji { font-size: 24px; }
+.model-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.03em;
+  color: var(--ink);
+}
+.model-row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 12px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.model-row-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--orange);
+  font-weight: 600;
+  padding-top: 2px;
+}
+.model-row-value { color: var(--ink-soft); }
+.model-row-value strong { color: var(--ink); font-weight: 600; }
+.model-words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+}
+.model-word {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  background: var(--orange-light);
+  color: var(--orange);
+  padding: 3px 8px;
+  border-radius: 3px;
+}
+
+/* ========== SNAP-FIT ========== */
+.golden-rule {
+  background: linear-gradient(135deg, #FFF8EC 0%, var(--orange-light) 100%);
+  border: 2px solid var(--orange);
+  border-radius: 10px;
+  padding: 24px 28px;
+  margin-bottom: 24px;
+}
+.golden-rule-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: var(--orange);
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+.golden-rule p { font-size: 15px; line-height: 1.7; color: var(--ink); }
+.golden-rule code {
+  font-family: 'JetBrains Mono', monospace;
+  background: #fff;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 13px;
+  color: var(--orange);
+  border: 1px solid var(--line);
+}
+
+.joint-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(27,42,65,.08);
+}
+.joint-table thead { background: var(--ink); color: #fff; }
+.joint-table th {
+  text-align: left;
+  padding: 12px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.joint-table td {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--paper-warm);
+  font-size: 14px;
+  vertical-align: top;
+  line-height: 1.6;
+}
+.joint-table tr:last-child td { border-bottom: none; }
+.joint-table .joint-name {
+  font-weight: 700;
+  color: var(--orange);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 17px;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+.joint-table .joint-best { color: var(--ink); font-weight: 500; }
+
+/* ========== STEPS ========== */
+.steps { display: grid; gap: 14px; }
+.step {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.step-num {
+  background: var(--ink);
+  color: var(--orange-mid);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0;
+}
+.step-body { padding: 18px 22px; }
+.step-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: var(--ink);
+  letter-spacing: 0.03em;
+  margin-bottom: 8px;
+}
+.step-text { font-size: 14px; color: var(--ink-soft); line-height: 1.65; }
+.step-text strong { color: var(--ink); }
+
+/* ========== CHECKLIST ========== */
+.checklist {
+  background: #fff;
+  border: 1.5px solid var(--orange);
+  border-radius: 10px;
+  padding: 24px 28px;
+}
+.checklist-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+.check-item {
+  display: flex;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--paper-warm);
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+  align-items: flex-start;
+}
+.check-item:last-child { border-bottom: none; }
+.check-box {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--orange);
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s;
+}
+.check-item.done .check-box {
+  background: var(--orange);
+}
+.check-item.done .check-box::after {
+  content: '✓';
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+}
+.check-text { color: var(--ink); flex: 1; line-height: 1.55; }
+.check-item.done .check-text {
+  color: var(--ink-soft);
+  text-decoration: line-through;
+}
+
+/* ========== CLOSING ========== */
+.closing {
+  background: linear-gradient(135deg, var(--ink) 0%, #2A3F5F 100%);
+  color: #fff;
+  padding: 36px 32px;
+  border-radius: 12px;
+  margin-top: 40px;
+  text-align: center;
+}
+.closing-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--orange-mid);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+.closing p {
+  font-size: 16px;
+  line-height: 1.7;
+  max-width: 640px;
+  margin: 0 auto;
+  color: #DCE5F0;
+}
+.closing em {
+  color: var(--orange-mid);
+  font-style: normal;
+  font-weight: 600;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.03em;
+  display: block;
+  margin-top: 12px;
+}
+
+/* ========== FOOTER ========== */
+footer {
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  padding: 32px 0 16px;
+  margin-top: 40px;
+  border-top: 1px solid var(--line);
+}
+
+/* ========== MOBILE ========== */
+@media (max-width: 640px) {
+  .hero { padding: 40px 20px 36px; }
+  .intro-callout { margin-left: 16px; margin-right: 16px; padding: 22px 22px; }
+  .model-grid { grid-template-columns: 1fr; }
+  .model-row { grid-template-columns: 1fr; gap: 4px; }
+  .step { grid-template-columns: 56px 1fr; }
+  .step-num { font-size: 36px; }
+  .section-title { font-size: 30px; }
+  .std-table th, .std-table td { padding: 10px 12px; font-size: 13px; }
+  .joint-table th, .joint-table td { padding: 12px; font-size: 13px; }
+}
+
+/* ========== PRINT ========== */
+@media print {
+  @page { size: letter portrait; margin: 0.55in; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  body { background: #fff; font-size: 11pt; }
+  .wrap { max-width: none; padding: 0; }
+  .hero { padding: 24px; page-break-inside: avoid; }
+  .hero h1 { font-size: 36pt; }
+  .hero-sub { font-size: 12pt; }
+  .intro-callout { margin: 18px 0 24px; box-shadow: none; page-break-inside: avoid; }
+  section { margin-bottom: 28px; page-break-inside: avoid; }
+  .section-title { font-size: 26pt; }
+  .model-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .model { padding: 12px; box-shadow: none; }
+  .model:hover { transform: none; }
+  .step { page-break-inside: avoid; }
+  .checklist { page-break-inside: avoid; box-shadow: none; }
+  .closing { page-break-inside: avoid; }
+  footer { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Smile Bags · Word &amp; Wonder Experience</div>
+    <h1>3D Printed Assembly Kit</h1>
+    <p class="hero-sub">Design a 5–8 piece snap-fit assembly kit for a child to build themselves. No glue. No tools. Just pieces that click together — and a moment of joy when the last piece locks into place.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><strong>COURSE</strong> Introduction to Engineering · 8540</div>
+      <div class="hero-meta-item"><strong>TOOL</strong> OnShape CAD</div>
+      <div class="hero-meta-item"><strong>PRINTER</strong> Bambu Lab · Orange PLA</div>
+      <div class="hero-meta-item"><strong>TEACHER</strong> Kaitlin Beamer</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="intro-callout">
+  <div class="intro-callout-label">Your Contribution to the Smile Bag</div>
+  <p>You are designing a snap-fit assembly kit for a child to build themselves. Choose from vehicles, mechanical items, or nature-inspired models. Every piece snaps together — no glue, no tools, no frustration for the child. Design in OnShape CAD and export STL files for printing on the Bambu Lab printer in orange PLA.</p>
+  <p>The child opens the bag, finds the pieces, and builds it themselves. <em>That click of the last piece — that is the gift.</em></p>
+</div>
+
+<!-- ========== STANDARDS ========== -->
+<section>
+  <div class="section-num">01 · Standards Alignment</div>
+  <h2 class="section-title">What You're Demonstrating</h2>
+  <p class="section-sub">Virginia CTE Introduction to Engineering (8540) · STEM Career Cluster</p>
+
+  <table class="std-table">
+    <thead>
+      <tr>
+        <th style="width:18%">Standard</th>
+        <th style="width:28%">Topic</th>
+        <th>Connection to This Activity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="std-code">ENG.1</td>
+        <td class="std-topic">Engineering Design Process</td>
+        <td>Follow the full design cycle: define constraints, sketch, model in OnShape, test snap-fit tolerances, refine.</td>
+      </tr>
+      <tr>
+        <td class="std-code">ENG.2</td>
+        <td class="std-topic">Parametric Modeling &amp; Constraints</td>
+        <td>Apply OnShape's sketch constraints and parametric dimensions to design precise, manufacturable parts.</td>
+      </tr>
+      <tr>
+        <td class="std-code">ENG.3</td>
+        <td class="std-topic">Fabrication &amp; Prototyping</td>
+        <td>Export STL files and use the Bambu Lab printer to fabricate and test physical prototypes.</td>
+      </tr>
+      <tr>
+        <td class="std-code">WRS 1</td>
+        <td class="std-topic">Creativity &amp; Innovation</td>
+        <td>Design original assembly kits, selecting model type and developing snap-fit geometry.</td>
+      </tr>
+      <tr>
+        <td class="std-code">WRS 5</td>
+        <td class="std-topic">Critical Thinking &amp; Problem Solving</td>
+        <td>Apply tolerance constraints and iterate on designs based on physical test results.</td>
+      </tr>
+      <tr>
+        <td class="std-code">WRS 14</td>
+        <td class="std-topic">Uses Technology</td>
+        <td>Use OnShape CAD — an industry-standard parametric tool — and Bambu Lab for fabrication.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="fr-callout">
+    <div class="fr-label">Future Ready Graduate Profile</div>
+    <div class="fr-list">
+      <div class="fr-item">
+        <span class="fr-item-bullet">→</span>
+        <span class="fr-item-text"><strong>Problem Solvers &amp; Value Creators</strong> — applying parametric engineering design to fabricate a functional multi-part object.</span>
+      </div>
+      <div class="fr-item">
+        <span class="fr-item-bullet">→</span>
+        <span class="fr-item-text"><strong>Thinkers &amp; Inquirers</strong> — investigating snap-fit tolerances, parametric constraints, and design iteration in OnShape.</span>
+      </div>
+      <div class="fr-item">
+        <span class="fr-item-bullet">→</span>
+        <span class="fr-item-text"><strong>Knowledgeable</strong> — connecting engineering and manufacturing concepts to a real-world fabrication challenge.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== MODEL LIBRARY ========== -->
+<section>
+  <div class="section-num">02 · Model Library</div>
+  <h2 class="section-title">Choose Your Kit</h2>
+  <p class="section-sub">Pick one model from the library below. Each entry shows the pieces, OnShape CAD approach, and optional OneWord connections to consider.</p>
+
+  <!-- VEHICLES -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-emoji">🚗</div>
+      <div class="cat-name">Vehicles</div>
+    </div>
+    <div class="model-grid">
+
+      <div class="model">
+        <div class="model-head"><span class="model-emoji">🚗</span><span class="model-name">Simple Car</span></div>
+        <div class="model-row"><div class="model-row-label">Pieces</div><div class="model-row-value">Body · 4 wheels · 2 axles · axle clips</div></div>
+        <div class="model-row"><div class="model-row-label">OnShape</div><div class="model-row-value">Sketch the body profile on the Top plane. Extrude. Create wheel cylinders as separate Part Studios. Use the in-context assembly to position axle holes. Snap-fit axle clips constrain the wheels.</div></div>
+        <div class="model-row"><div class="model-row-label">OneWord</div><div class="model-row-value"><div class="model-words"><span class="model-word">FLOW</span><span class="model-word">RISE</span><span class="model-word">MIGRATE</span><span class="model-word">RETURN</span></div></div></div>
+      </div>
+
+      <div class="model">
+        <div class="model-head"><span class="model-emoji">🚢</span><span class="model-name">Boat</span></div>
+        <div class="model-row"><div class="model-row-label">Pieces</div><div class="model-row-value">Hull · deck · cabin · 2 side rails · mast</div></div>
+        <div class="model-row"><div class="model-row-label">OnShape</div><div class="model-row-value">Loft the hull from two cross-section sketches. Extrude the deck as a separate part. Use mating connectors in the Assembly for deck-to-hull snap-fit. Cabin and mast use pin-and-socket mates.</div></div>
+        <div class="model-row"><div class="model-row-label">OneWord</div><div class="model-row-value"><div class="model-words"><span class="model-word">FLOW</span><span class="model-word">CLEAR</span><span class="model-word">BREATHE</span></div></div></div>
+      </div>
+
+      <div class="model">
+        <div class="model-head"><span class="model-emoji">✈️</span><span class="model-name">Airplane</span></div>
+        <div class="model-row"><div class="model-row-label">Pieces</div><div class="model-row-value">Fuselage · 2 wings · tail fin · nose cone</div></div>
+        <div class="model-row"><div class="model-row-label">OnShape</div><div class="model-row-value">Revolve the fuselage from a profile sketch. Use the Mirror feature for symmetric wings. Wing slots are cut as subtractive extrudes on the fuselage. Snap tabs added to wing roots.</div></div>
+        <div class="model-row"><div class="model-row-label">OneWord</div><div class="model-row-value"><div class="model-words"><span class="model-word">RISE</span><span class="model-word">BREATHE</span><span class="model-word">MIGRATE</span><span class="model-word">SHINE</span></div></div></div>
+      </div>
+
+      <div class="model">
+        <div class="model-head"><span class="model-emoji">🚁</span><span class="model-name">Helicopter</span></div>
+        <div class="model-row"><div class="model-row-label">Pieces</div><div class="model-row-value">Body · rotor hub · 2 rotor blades · tail boom · tail rotor</div></div>
+        <div class="model-row"><div class="model-row-label">OnShape</div><div class="model-row-value">Extrude the body. Create rotor hub socket as a circular cut. Blades use a thin extrude with a snap tab at the root. Tail boom uses a dovetail slot connection.</div></div>
+        <div class="model-row"><div class="model-row-label">OneWord</div><div class="model-row-value"><div class="model-words"><span class="model-word">RISE</span><span class="model-word">FLOW</span><span class="model-word">CONNECT</span></div></div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MECHANICAL -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-emoji">⚙️</div>
+      <div class="cat-name">Mechanical Items</div>
+    </div>
+    <div class="model-grid">
+
+      <div class="model">
+        <div class="model-head"><span class="model-emoji">⚙️</span><span class="model-name">Gear Set</span></div>
+        <div class="model-row"><div class="model-row-label">Pieces</div><div class="model-row-value">Base plate · 2 large gears · 1 small gear · 3 axle pins</div></div>
+        <div class="model-row"><div class="model-row-label">OnShape</div><div class="model-row-value">Use OnShape's built-in gear feature (Toolbox) to generate spur gears. Set module and tooth count. Create axle pin holes on the base plate. Axle pins are press-fit cylinders.</div></div>
+        <div class="model-row"><div class="model-row-label">OneWord</div><div class="model-row-value"><div class="model-words"><span class="model-word">CYCLE</span><span class="model-word">CONNECT</span><span class="model-word">TRANSFORM</span><span class="model-word">BALANCE</span></div></div></div>
+      </div>
+
+      <div class="model">
+        <div class="model-head"><span class="model-emoji">🌀</span><span class="model-name">Windmill</span></div>
+        <div class="model-row"><div class="model-row-label">Pieces</div><div class="model-row-value">Base · tower · hub · 4 blades · cap</div></div>
+        <div class="model-row"><div class="model-row-label">OnShape</div><div class="model-row-value">Extrude the weighted base. Tower uses a circular extrude with a snap socket at the top. Blades use a thin extrude at an angle — use the Circular Pattern feature for all four blades.</div></div>
+        <div class="model-row"><div class="model-row-label">OneWord</div><div class="model-row-value"><div class="model-words"><span class="model-word">FLOW</span><span class="model-word">BREATHE</span><span class="model-word">RENEW</span><span class="model-word">SHINE</span></div></div></div>
+      </div>
+
+      <div class="model">
+        <div class="model-head"><span class="model-emoji">🔩</span><span class="model-name">Lever &amp; Fulcrum</span></div>
+        <div class="model-row"><div class="model-row-label">Pieces</div><div class="model-row-value">Base · fulcrum post · lever arm · 2 load platforms</div></div>
+        <div class="model-row"><div class="model-row-label">OnShape</div><div class="model-row-value">Extrude the base with a fulcrum socket cut. Fulcrum post has a snap peg at the base. Lever arm has a center slot that fits over the fulcrum. Load platforms snap onto lever arm ends.</div></div>
+        <div class="model-row"><div class="model-row-label">OneWord</div><div class="model-row-value"><div class="model-words"><span class="model-word">BALANCE</span><span class="model-word">SUSTAIN</span><span class="model-word">RISE</span></div></div></div>
+      </div>
+
+      <div class="model">
+        <div class="model-head"><span class="model-emoji">🪝</span><span class="model-name">Pulley System</span></div>
+        <div class="model-row"><div class="model-row-label">Pieces</div><div class="model-row-value">Frame · axle · pulley wheel · 2 frame clips</div></div>
+        <div class="model-row"><div class="model-row-label">OnShape</div><div class="model-row-value">Extrude the rectangular frame. Use a Hole feature for the axle slot. Pulley wheel is a revolved profile. Frame clips use a cantilever snap feature — thin wall with a locking hook.</div></div>
+        <div class="model-row"><div class="model-row-label">OneWord</div><div class="model-row-value"><div class="model-words"><span class="model-word">CONNECT</span><span class="model-word">RISE</span><span class="model-word">FLOW</span><span class="model-word">TRANSFORM</span></div></div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NATURE -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <div class="cat-emoji">🦋</div>
+      <div class="cat-name">Nature-Inspired</div>
+    </div>
+    <div class="model-grid">
+
+      <div class="model">
+        <div class="model-head"><span class="model-emoji">🦋</span><span class="model-name">Butterfly</span></div>
+        <div class="model-row"><div class="model-row-label">Pieces</div><div class="model-row-value">Body · 2 upper wings · 2 lower wings · 2 antennae</div></div>
+        <div class="model-row"><div class="model-row-label">OnShape</div><div class="model-row-value">Sketch wing profiles using spline curves for organic shapes. Extrude wings thin (1.5mm). Body uses a lofted extrude between two ellipse profiles. Antennae are thin cylinder extrudes.</div></div>
+        <div class="model-row"><div class="model-row-label">OneWord</div><div class="model-row-value"><div class="model-words"><span class="model-word">BLOOM</span><span class="model-word">EMERGE</span><span class="model-word">TRANSFORM</span><span class="model-word">BREATHE</span></div></div></div>
+      </div>
+
+      <div class="model">
+        <div class="model-head"><span class="model-emoji">🐢</span><span class="model-name">Turtle</span></div>
+        <div class="model-row"><div class="model-row-label">Pieces</div><div class="model-row-value">Shell top · shell bottom · head · 4 legs · tail</div></div>
+        <div class="model-row"><div class="model-row-label">OnShape</div><div class="model-row-value">Shell top uses a dome — revolve a quarter-circle profile. Shell bottom is a flat offset shell. Head uses a snap pin joint for rotation. Legs and tail use socket connections on shell bottom.</div></div>
+        <div class="model-row"><div class="model-row-label">OneWord</div><div class="model-row-value"><div class="model-words"><span class="model-word">PERSIST</span><span class="model-word">ADAPT</span><span class="model-word">ROOT</span><span class="model-word">SUSTAIN</span></div></div></div>
+      </div>
+
+      <div class="model">
+        <div class="model-head"><span class="model-emoji">🐟</span><span class="model-name">Fish</span></div>
+        <div class="model-row"><div class="model-row-label">Pieces</div><div class="model-row-value">Body · dorsal fin · tail fin · 2 pectoral fins · eye disc</div></div>
+        <div class="model-row"><div class="model-row-label">OnShape</div><div class="model-row-value">Loft the fish body from ellipse cross-sections. Fins use thin extrudes with snap tabs. Eye disc is a shallow cylinder. Body stand is a separate part with a slot that the body snaps into.</div></div>
+        <div class="model-row"><div class="model-row-label">OneWord</div><div class="model-row-value"><div class="model-words"><span class="model-word">FLOW</span><span class="model-word">ADAPT</span><span class="model-word">MIGRATE</span><span class="model-word">CLEAR</span></div></div></div>
+      </div>
+
+      <div class="model">
+        <div class="model-head"><span class="model-emoji">🦎</span><span class="model-name">Gecko</span></div>
+        <div class="model-row"><div class="model-row-label">Pieces</div><div class="model-row-value">Body · head · 4 legs · tail</div></div>
+        <div class="model-row"><div class="model-row-label">OnShape</div><div class="model-row-value">Extrude the flat body profile from a sketch. Head uses a snap rotation joint. Legs use angled socket joints on the body underside. Tail has a snap socket at the rear of the body.</div></div>
+        <div class="model-row"><div class="model-row-label">OneWord</div><div class="model-row-value"><div class="model-words"><span class="model-word">ADAPT</span><span class="model-word">PERSIST</span><span class="model-word">CONNECT</span><span class="model-word">ANCHOR</span></div></div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== SNAP-FIT ========== -->
+<section>
+  <div class="section-num">03 · Snap-Fit Design</div>
+  <h2 class="section-title">Make Pieces That Click</h2>
+  <p class="section-sub">OnShape's parametric tools make snap-fit design more precise than drag-and-drop editors. Use sketch constraints and dimensions to control clearance exactly.</p>
+
+  <div class="golden-rule">
+    <div class="golden-rule-label">⚡ The Golden Rule</div>
+    <p>Add <strong>0.3–0.5mm of clearance</strong> between mating parts. In OnShape: dimension your tab at <code>5mm</code>, dimension the slot at <code>5.3–5.5mm</code>. Use the Offset Plane or Shell feature to maintain consistent wall thickness. <strong>Always print a test piece before printing the full kit.</strong></p>
+  </div>
+
+  <table class="joint-table">
+    <thead>
+      <tr>
+        <th style="width:20%">Joint Type</th>
+        <th style="width:28%">Best For</th>
+        <th>OnShape Approach</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="joint-name">Tab &amp; Slot</td>
+        <td class="joint-best">Fins, wings, panels</td>
+        <td>Sketch a rectangular tab. Use an Extrude (Add) on one part. Use Extrude (Remove) + offset dimension on the mating part.</td>
+      </tr>
+      <tr>
+        <td class="joint-name">Pin &amp; Socket</td>
+        <td class="joint-best">Rotating joints, heads, wheels</td>
+        <td>Sketch a circle for the pin. Extrude (Add). On mating part, use Extrude (Remove) with diameter + 0.4mm for the socket.</td>
+      </tr>
+      <tr>
+        <td class="joint-name">Press-Fit Tube</td>
+        <td class="joint-best">Axles, pegs, masts</td>
+        <td>Extrude a cylinder peg. Use Hole feature on the socket part — set hole diameter 0.3mm smaller than peg for friction fit.</td>
+      </tr>
+      <tr>
+        <td class="joint-name">Cantilever Clip</td>
+        <td class="joint-best">Covers, lids, deck plates</td>
+        <td>Sketch a thin arm profile with a hook at the end. Extrude thin (1.5–2mm). Use Shell to control wall thickness uniformly.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========== STEPS ========== -->
+<section>
+  <div class="section-num">04 · Process</div>
+  <h2 class="section-title">Step-by-Step in OnShape</h2>
+  <p class="section-sub">Follow these eight steps from concept to printed kit.</p>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Choose Your Model &amp; Plan Your Part Studios</div>
+        <div class="step-text">Pick one model from the library. In OnShape, each part will live in its own Part Studio — plan one Part Studio per piece. <strong>Sketch all pieces on paper first</strong> — label each part and mark connection points. Decide which joint type you will use for each connection before opening OnShape.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Create a New OnShape Document</div>
+        <div class="step-text">Go to <strong>onshape.com</strong> and create a new document. Name it: <em>[Last Name] — [Model Name] Kit</em>. Create a Part Studio for your largest/main piece first. Use the Rename option to label each Part Studio clearly (e.g. 'Body', 'Wing Left').</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Build Each Piece with Parametric Sketches</div>
+        <div class="step-text">Start each part with a <strong>fully constrained sketch</strong> — all lines black, no blue (underconstrained) lines. Use the Dimension tool to set all sizes precisely. Apply geometric constraints (horizontal, vertical, parallel, tangent) as needed. Extrude, revolve, or loft from your sketch. Use the Mirror feature for symmetric parts — wings, legs, fins, wheels.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">Add Snap-Fit Connections</div>
+        <div class="step-text">On the connecting piece: sketch and extrude your tab, pin, or peg (Add). On the receiving piece: sketch and extrude a slightly larger slot or socket (Remove). Use the Dimension tool to set clearance precisely — <strong>tab + 0.4mm = slot</strong>. Keep all snap features at least 3mm thick for clean printing. Use the Measure tool in OnShape to verify your clearance before exporting.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-title">Assemble in the Assembly Tab</div>
+        <div class="step-text">Create a new Assembly tab in your document. Insert all Part Studio parts into the Assembly. Use <strong>Fastened mates</strong> for fixed connections, <strong>Revolute mates</strong> for rotating joints. Check that all pieces fit together visually. Use the Interference Detection tool to catch overlapping geometry.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <div class="step-title">Test Your Tolerances</div>
+        <div class="step-text">Export just one connection pair as STL — one tab piece and one slot piece. Right-click the part in the Parts list → Export → STL → Fine resolution. Print the test pieces and try snapping them together. <strong>Too tight:</strong> increase slot dimension by 0.2mm and re-export. <strong>Too loose:</strong> decrease slot dimension by 0.2mm. Once the fit is right, apply the same clearance to all other connections.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">7</div>
+      <div class="step-body">
+        <div class="step-title">Add the Optional OneWord</div>
+        <div class="step-text">Create a new sketch on a visible face of your chosen part. Use the <strong>Text tool</strong> in OnShape's sketch environment. Set text height to 8–10mm. Set extrude depth to 1mm (Add) for raised text. Position where the child will see it when the kit is assembled. <em>This step is optional — your kit is complete without it.</em></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">8</div>
+      <div class="step-body">
+        <div class="step-title">Export STL Files &amp; Submit</div>
+        <div class="step-text">For each part: right-click in the Parts list → Export → STL → Fine resolution. Name each file: <em>[LastName]_[ModelName]_[PartName].stl</em>. Share your OnShape document: <strong>Share → Anyone with the link → Can view</strong>. Submit your share link via the Smile Bags submission form. Upload your STL files to the class Google Drive folder.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== CHECKLIST ========== -->
+<section>
+  <div class="section-num">05 · Final Check</div>
+  <h2 class="section-title">Submission Checklist</h2>
+  <p class="section-sub">Click each item to mark it complete. Make sure every box is checked before you submit.</p>
+
+  <div class="checklist">
+    <div class="checklist-label">Before You Submit</div>
+    <div class="check-item" onclick="this.classList.toggle('done')"><div class="check-box"></div><div class="check-text">Document named <em>[Last Name] — [Model Name] Kit</em></div></div>
+    <div class="check-item" onclick="this.classList.toggle('done')"><div class="check-box"></div><div class="check-text">Model type chosen — vehicle, mechanical, or nature</div></div>
+    <div class="check-item" onclick="this.classList.toggle('done')"><div class="check-box"></div><div class="check-text">Kit has 5–8 pieces total</div></div>
+    <div class="check-item" onclick="this.classList.toggle('done')"><div class="check-box"></div><div class="check-text">All sketches are fully constrained (no blue lines)</div></div>
+    <div class="check-item" onclick="this.classList.toggle('done')"><div class="check-box"></div><div class="check-text">All pieces have snap-fit connections — no glue or tools needed</div></div>
+    <div class="check-item" onclick="this.classList.toggle('done')"><div class="check-box"></div><div class="check-text">Snap clearance is 0.3–0.5mm on all mating connections</div></div>
+    <div class="check-item" onclick="this.classList.toggle('done')"><div class="check-box"></div><div class="check-text">Assembly tab created — all parts fit together with no interference</div></div>
+    <div class="check-item" onclick="this.classList.toggle('done')"><div class="check-box"></div><div class="check-text">Test piece printed and fit confirmed before full print</div></div>
+    <div class="check-item" onclick="this.classList.toggle('done')"><div class="check-box"></div><div class="check-text">Optional OneWord added to a visible surface (if chosen)</div></div>
+    <div class="check-item" onclick="this.classList.toggle('done')"><div class="check-box"></div><div class="check-text">All STL files exported at Fine resolution and named correctly</div></div>
+    <div class="check-item" onclick="this.classList.toggle('done')"><div class="check-box"></div><div class="check-text">OnShape document shared: Anyone with the link can view</div></div>
+    <div class="check-item" onclick="this.classList.toggle('done')"><div class="check-box"></div><div class="check-text">Share link and STL files submitted per teacher instructions</div></div>
+  </div>
+</section>
+
+<!-- ========== CLOSING ========== -->
+<div class="closing">
+  <div class="closing-label">After Printing</div>
+  <p>Your kit will be printed in orange PLA on the Bambu Lab printer. Pieces will be bagged together and placed in a Smile Bag. A child will open the bag, find the pieces, and build your model.</p>
+  <em>The moment they click the last piece into place is the moment your engineering becomes their joy.</em>
+</div>
+
+<footer>
+  Smile Bags · A Word &amp; Wonder Experience · Engineering · Beamer · Spring 2026
+</footer>
+
+</div>
+
+</body>
+</html>
