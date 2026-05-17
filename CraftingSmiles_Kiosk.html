@@ -37,9 +37,6 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
 .field-label{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#1B7A78;display:block;margin-bottom:8px;}
 .field-inp{width:100%;padding:13px 16px;border:3px solid #C8E6C9;border-radius:12px;font-family:'Nunito',sans-serif;font-size:18px;outline:none;transition:border-color .2s;margin-bottom:14px;}
 .field-inp:focus{border-color:#1B7A78;}
-.toggle-row{display:flex;gap:10px;margin-bottom:16px;}
-.toggle-btn{flex:1;padding:12px;border:3px solid #C8E6C9;border-radius:12px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;background:#fff;color:#888;transition:all .2s;text-align:center;}
-.toggle-btn.sel{background:#1B7A78;border-color:#1B7A78;color:#fff;}
 .word-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
 .word-card{background:#fff;border:3px solid #C8E6C9;border-radius:12px;padding:10px 6px;cursor:pointer;text-align:center;transition:all .2s;}
 .word-card:hover{border-color:#1B7A78;transform:translateY(-1px);}
@@ -69,11 +66,11 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
 .hint{background:#E8F5E9;border-left:4px solid #1B7A78;border-radius:0 10px 10px 0;padding:10px 14px;font-size:13px;color:#0F4F4E;line-height:1.6;margin-bottom:14px;}
 .bk-preview-wrap{display:flex;justify-content:center;padding:16px 0;}
 .spinner-wrap{display:flex;justify-content:center;align-items:center;flex-direction:column;gap:14px;padding:16px 0;}
-.spinner-disc{width:180px;height:180px;border-radius:50%;position:relative;box-shadow:0 4px 20px rgba(0,0,0,.18);}
-.sp-top{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;}
-.sp-bot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100px;height:100px;border-radius:50%;z-index:1;}
-.sp-ctr{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid rgba(0,0,0,.2);z-index:3;}
-.sp-div{display:none;}
+.spinner-disc{width:180px;height:180px;border-radius:50%;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.18);}
+.sp-top{position:absolute;top:0;left:0;width:100%;height:50%;}
+.sp-bot{position:absolute;bottom:0;left:0;width:100%;height:50%;}
+.sp-ctr{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid rgba(0,0,0,.2);z-index:2;}
+.sp-div{position:absolute;top:50%;left:0;width:100%;height:3px;background:rgba(255,255,255,.6);transform:translateY(-50%);z-index:1;}
 .sp-legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
 .lg-item{display:flex;align-items:center;gap:6px;font-size:13px;color:#444;font-weight:700;}
 .lg-dot{width:16px;height:16px;border-radius:50%;border:2px solid rgba(0,0,0,.15);}
@@ -145,16 +142,8 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
   <div class="white-card">
     <label class="field-label">Your first name</label>
     <input class="field-inp" id="iName" type="text" placeholder="Type your name here..."/>
-
-    <label class="field-label">Are you here with a class or a club?</label>
-    <div class="toggle-row">
-      <button class="toggle-btn sel" id="togClass" onclick="setGroup('class')">&#127979; Class</button>
-      <button class="toggle-btn" id="togClub" onclick="setGroup('club')">&#127381; Club</button>
-    </div>
-
-    <div id="grpClass">
-      <label class="field-label">Your teacher</label>
-      <select class="field-inp" id="iTeacher" style="cursor:pointer;">
+    <label class="field-label">Your teacher</label>
+    <select class="field-inp" id="iTeacher" style="cursor:pointer;">
 <option value="">-- Select your teacher --</option>
 <option value="Acikgoz, Sehriban">Acikgoz, Sehriban</option>
 <option value="Aiello, Patrick">Aiello, Patrick</option>
@@ -259,19 +248,8 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
 <option value="Willoughby, Amanda">Willoughby, Amanda</option>
 <option value="Young, Elizabeth">Young, Elizabeth</option>
 <option value="Zanetti, Steven">Zanetti, Steven</option>
-      </select>
-    </div><!-- end grpClass -->
-
-    <div id="grpClub" style="display:none;">
-      <label class="field-label">Your club sponsor</label>
-      <select class="field-inp" id="iSponsor" style="cursor:pointer;">
-        <option value="">-- Select your sponsor --</option>
-        <option value="Manco, Teresa (Bible Club)">Bible Club &mdash; Manco, Teresa</option>
-        <option value="Evans, Angie (Speech Club)">Speech Club &mdash; Evans, Angie</option>
-      </select>
-    </div><!-- end grpClub -->
-
-    <label class="field-label" style="margin-top:4px;">Your grade (optional)</label>
+    </select>
+    <label class="field-label" style="margin-top:14px;">Your grade (optional)</label>
     <input class="field-inp" id="iGrade" type="text" placeholder="e.g. 10th grade"/>
   </div>
   <div class="nav-row">
@@ -304,13 +282,13 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
     </div>
   </div>
   <div id="sp-colors" style="display:none;">
-    <div class="hint">The outer ring and inner disc each print in a different color. That is what creates the illusion when it spins!</div>
+    <div class="hint">Top half and bottom half each print in a different color. That is what creates the illusion when it spins!</div>
     <div class="white-card">
-      <div class="section-lbl">Outer Ring Color</div>
+      <div class="section-lbl">Top Half Color</div>
       <div class="color-grid" id="topGrid"></div>
     </div>
     <div class="white-card">
-      <div class="section-lbl">Inner Circle Color</div>
+      <div class="section-lbl">Bottom Half Color</div>
       <div class="color-grid" id="botGrid"></div>
     </div>
   </div>
@@ -338,14 +316,15 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
     <div class="white-card">
       <div class="hint">The Magic Illusion Spinner prints in two halves that snap together. Your two colors create a mesmerizing optical effect when it spins!</div>
       <div class="spinner-wrap">
-        <svg id="spinnerSVG" width="180" height="180" viewBox="0 0 180 180">
-          <circle cx="90" cy="90" r="88" id="spOuter" fill="#808080"/>
-          <circle cx="90" cy="90" r="52" id="spInner" fill="#CC0000"/>
-          <circle cx="90" cy="90" r="10" fill="#fff" stroke="rgba(0,0,0,.2)" stroke-width="2"/>
-        </svg>
+        <div class="spinner-disc">
+          <div class="sp-top" id="spTop"></div>
+          <div class="sp-bot" id="spBot"></div>
+          <div class="sp-div"></div>
+          <div class="sp-ctr"></div>
+        </div>
         <div class="sp-legend">
-          <div class="lg-item"><div class="lg-dot" id="lgTop"></div><span id="lgTopLbl">Outer ring</span></div>
-          <div class="lg-item"><div class="lg-dot" id="lgBot"></div><span id="lgBotLbl">Inner circle</span></div>
+          <div class="lg-item"><div class="lg-dot" id="lgTop"></div><span id="lgTopLbl">Top half</span></div>
+          <div class="lg-item"><div class="lg-dot" id="lgBot"></div><span id="lgBotLbl">Bottom half</span></div>
         </div>
         <p style="font-size:11px;color:#aaa;font-style:italic;text-align:center;margin-top:6px;">Model by AeroDesigns &middot; MakerWorld &middot; makerworld.com/en/models/2247117</p>
       </div>
@@ -373,19 +352,20 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
   <div id="sp-final" class="white-card" style="display:none;">
     <div class="section-lbl">Your Spinner</div>
     <div class="spinner-wrap">
-      <svg id="spinnerSVGFinal" width="180" height="180" viewBox="0 0 180 180">
-        <circle cx="90" cy="90" r="88" id="spOuterF" fill="#808080"/>
-        <circle cx="90" cy="90" r="52" id="spInnerF" fill="#CC0000"/>
-        <circle cx="90" cy="90" r="10" fill="#fff" stroke="rgba(0,0,0,.2)" stroke-width="2"/>
-      </svg>
+      <div class="spinner-disc">
+        <div class="sp-top" id="spTopF"></div>
+        <div class="sp-bot" id="spBotF"></div>
+        <div class="sp-div"></div>
+        <div class="sp-ctr"></div>
+      </div>
       <div class="sp-legend">
-        <div class="lg-item"><div class="lg-dot" id="lgTopF"></div><span id="lgTopLblF">Outer ring</span></div>
-        <div class="lg-item"><div class="lg-dot" id="lgBotF"></div><span id="lgBotLblF">Inner circle</span></div>
+        <div class="lg-item"><div class="lg-dot" id="lgTopF"></div><span id="lgTopLblF">Top half</span></div>
+        <div class="lg-item"><div class="lg-dot" id="lgBotF"></div><span id="lgBotLblF">Bottom half</span></div>
       </div>
     </div>
     <div class="det-grid">
-      <div class="det-cell"><div class="det-lbl">Outer Ring</div><div class="det-val" id="dTop"></div></div>
-      <div class="det-cell"><div class="det-lbl">Inner Circle</div><div class="det-val" id="dBot"></div></div>
+      <div class="det-cell"><div class="det-lbl">Top Half</div><div class="det-val" id="dTop"></div></div>
+      <div class="det-cell"><div class="det-lbl">Bottom Half</div><div class="det-val" id="dBot"></div></div>
     </div>
     <div class="hint" style="margin-top:14px;">Print: 2-color AMS &middot; Model by AeroDesigns on MakerWorld &middot; No supports &middot; Snap fit, light glue recommended</div>
   </div>
@@ -410,7 +390,7 @@ body{font-family:'Nunito',sans-serif;background:#F7F5F0;min-height:100vh;padding
 </div>
 
 <script>
-var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwqvVWBEVKSLFqQhz0NRGDVJQd92j0Pv2PgijptQjKps8Y-PFx7PqeoO2A1hL_ygVBEJQ/exec";
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxc-432B2kr24fuP4pb_fTc8CBpGa2a_Ohu0Sjs6i0k_-xPhOMgR5WwD0IulZ5A94-A/exec";
 
 var WORDS = [
   {word:"ABSORB",meaning:"Taking in everything around you"},
@@ -459,22 +439,13 @@ var EMOJIS = ["star","heart","rainbow","butterfly","blossom","sunflower","paw","
 var EMOJI_HTML = ["&#11088;","&#10084;&#65039;","&#127752;","&#129419;","&#127800;","&#127803;","&#128062;","&#128079;","&#9889;","&#127882;","&#128293;","&#127919;","&#128142;","&#127775;","&#129409;","&#128588;","&#128034;","&#127956;","&#128640;","&#127793;","&#127942;","&#128161;","&#10024;","&#128149;"];
 
 var selPath=null, selWord=null, selPair=null, selTC=null, selBC=null;
-var sTeacher="", sSponsor="";
+var sTeacher="";
 var selEmojiIdx=0;
 var sName="", sGrade="";
-var _group="class";
 
 document.addEventListener("DOMContentLoaded",function(){
   buildWordGrid(); buildPairGrid(); buildColorGrid("topGrid","top"); buildColorGrid("botGrid","bot"); buildEmojiGrid();
 });
-
-function setGroup(g){
-  _group=g;
-  document.getElementById("grpClass").style.display=g==="class"?"block":"none";
-  document.getElementById("grpClub").style.display=g==="club"?"block":"none";
-  document.getElementById("togClass").classList.toggle("sel",g==="class");
-  document.getElementById("togClub").classList.toggle("sel",g==="club");
-}
 
 function pickPath(p,el){
   document.querySelectorAll(".path-card").forEach(function(c){c.classList.remove("sel");});
@@ -520,14 +491,14 @@ function buildColorGrid(gridId,which){
       el.classList.add("sel");el.style.borderColor=(cl.h==="#F5F5F5")?"#999":cl.h;
       if(w==="top"){
         selTC=cl;
-        var si=document.getElementById("spInner");if(si)si.setAttribute("fill",cl.h);
+        document.getElementById("spTop").style.background=cl.h;
         document.getElementById("lgTop").style.background=cl.h;
-        document.getElementById("lgTopLbl").textContent="Inner - "+cl.n;
+        document.getElementById("lgTopLbl").textContent="Top half - "+cl.n;
       } else {
         selBC=cl;
-        var so=document.getElementById("spOuter");if(so)so.setAttribute("fill",cl.h);
+        document.getElementById("spBot").style.background=cl.h;
         document.getElementById("lgBot").style.background=cl.h;
-        document.getElementById("lgBotLbl").textContent="Outer - "+cl.n;
+        document.getElementById("lgBotLbl").textContent="Bottom half - "+cl.n;
       }
     };})(col,c,which);
     g.appendChild(c);
@@ -547,6 +518,7 @@ function buildEmojiGrid(){
   });
 }
 
+// Navigation helpers
 function toName(){
   if(!selPath){alert("Please choose what you would like to make!");return;}
   sName=document.getElementById("iName").value.trim()||"";
@@ -556,17 +528,10 @@ function toName(){
 
 function toWord(){
   sName=document.getElementById("iName").value.trim()||"Student";
+  sTeacher=document.getElementById("iTeacher").value.trim()||"";
   sGrade=document.getElementById("iGrade").value.trim()||"";
-  if(_group==="class"){
-    sTeacher=document.getElementById("iTeacher").value.trim()||"";
-    sSponsor="";
-    if(!sTeacher){alert("Please select your teacher!");return;}
-  } else {
-    sSponsor=document.getElementById("iSponsor").value.trim()||"";
-    sTeacher="";
-    if(!sSponsor){alert("Please select your club sponsor!");return;}
-  }
-  if(selPath==="spinner"){toColors();}else{nav(2);}
+  if(!sTeacher){alert("Please select your teacher!");return;}
+  if(selPath==="spinner"){nav(3);}else{nav(2);}
 }
 
 function toColors(){
@@ -587,8 +552,8 @@ function toDesign(){
   document.getElementById("sp-design").style.display=selPath==="spinner"?"block":"none";
   if(selPath==="bookmark")drawBK("bkSVG");
   if(selPath==="spinner"){
-    if(selTC){document.getElementById("spInner").setAttribute("fill",selTC.h);document.getElementById("lgTop").style.background=selTC.h;document.getElementById("lgTopLbl").textContent="Inner - "+selTC.n;}
-    if(selBC){document.getElementById("spOuter").setAttribute("fill",selBC.h);document.getElementById("lgBot").style.background=selBC.h;document.getElementById("lgBotLbl").textContent="Outer - "+selBC.n;}
+    if(selTC){document.getElementById("spTop").style.background=selTC.h;document.getElementById("lgTop").style.background=selTC.h;document.getElementById("lgTopLbl").textContent="Top half - "+selTC.n;}
+    if(selBC){document.getElementById("spBot").style.background=selBC.h;document.getElementById("lgBot").style.background=selBC.h;document.getElementById("lgBotLbl").textContent="Bottom half - "+selBC.n;}
   }
   nav(4);
 }
@@ -607,10 +572,6 @@ function nav(n){
     if(i<n)pd.classList.add("done");
     else if(i===n){pd.classList.add("active");pl.classList.add("active");}
   }
-  if(n===3){
-    document.getElementById("bk-colors").style.display=selPath==="bookmark"?"block":"none";
-    document.getElementById("sp-colors").style.display=selPath==="spinner"?"block":"none";
-  }
   window.scrollTo(0,0);
 }
 
@@ -620,8 +581,10 @@ function drawBK(svgId){
   var c1=selPair.c1.h,c2=selPair.c2.h;
   var word=selWord?selWord.word:"SMILE";
   var em=EMOJI_HTML[selEmojiIdx]||EMOJI_HTML[0];
+  // Larger, more realistic bookmark proportions
   var W=220, cx=110, R=72, cy=R+10;
   var stemTop=cy, stemH=320, totalH=cy+stemH+16;
+  // Large font — scales down only for very long words
   var len=word.length;
   var fs=len<=5?38:len<=8?32:len<=10?26:len<=12?22:18;
   svg.setAttribute("viewBox","0 0 "+W+" "+totalH);
@@ -647,8 +610,8 @@ function buildFinal(){
   } else {
     document.getElementById("bk-final").style.display="none";
     document.getElementById("sp-final").style.display="block";
-    if(selTC){document.getElementById("spInnerF").setAttribute("fill",selTC.h);document.getElementById("lgTopF").style.background=selTC.h;document.getElementById("lgTopLblF").textContent="Inner - "+selTC.n;}
-    if(selBC){document.getElementById("spOuterF").setAttribute("fill",selBC.h);document.getElementById("lgBotF").style.background=selBC.h;document.getElementById("lgBotLblF").textContent="Outer - "+selBC.n;}
+    if(selTC){document.getElementById("spTopF").style.background=selTC.h;document.getElementById("lgTopF").style.background=selTC.h;document.getElementById("lgTopLblF").textContent="Top half - "+selTC.n;}
+    if(selBC){document.getElementById("spBotF").style.background=selBC.h;document.getElementById("lgBotF").style.background=selBC.h;document.getElementById("lgBotLblF").textContent="Bottom half - "+selBC.n;}
     document.getElementById("dTop").textContent=selTC?selTC.n:"";
     document.getElementById("dBot").textContent=selBC?selBC.n:"";
   }
@@ -657,15 +620,7 @@ function buildFinal(){
 function doSubmit(){
   var tok="KSB-"+Math.random().toString(36).substring(2,6).toUpperCase();
   document.getElementById("tokCode").textContent=tok;
-  var payload={
-    action:selPath,
-    studentName:sName,
-    studentGrade:sGrade,
-    teacher:sTeacher||"",
-    sponsor:sSponsor||"",
-    groupType:_group,
-    token:tok
-  };
+  var payload={action:selPath,studentName:sName,studentGrade:sGrade,teacher:sTeacher,token:tok};
   if(selPath==="bookmark"){
     payload.word=selWord?selWord.word:"";
     payload.wordMeaning=selWord?selWord.meaning:"";
