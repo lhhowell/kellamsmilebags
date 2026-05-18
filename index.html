@@ -95,7 +95,37 @@
   .section-label{font-family:'Courier New',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#8A8070;margin-bottom:12px;text-align:center}
   .section-title{font-family:Georgia,serif;font-size:36px;font-weight:700;color:#1A1A2E;margin-bottom:8px;text-align:center}
   .section-intro{font-size:16px;color:#8A8070;font-weight:300;line-height:1.7;max-width:580px;margin-bottom:48px;text-align:center;margin-left:auto;margin-right:auto}
-  .cards{display:flex;flex-direction:column;gap:20px}
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+  .cards-section-header{grid-column:1/-1;padding:24px 0 4px;border-top:1px solid rgba(26,26,46,.08);margin-top:8px;display:flex;align-items:center;gap:14px}
+  .cards-section-header:first-child{border-top:none;margin-top:0;padding-top:8px}
+  .cards-section-header .dept-label{font-family:'Courier New',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#1B7A78;font-weight:700}
+  .cards-section-header .dept-line{flex:1;height:1px;background:rgba(27,122,120,.2)}
+
+  /* ── FEATURED ROW (ITS + Brand, Galleries) ── */
+  .featured-section{max-width:1100px;margin:0 auto;padding:48px 40px 0}
+  .featured-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-bottom:20px}
+
+  /* ── ONEWORD BAND (replaces ow-strip + ow-panel) ── */
+  .oneword-band{background:#6B3FA0;padding:42px 32px;text-align:center;border-top:3px solid #C8860A;border-bottom:3px solid rgba(200,134,10,.3);margin-top:20px}
+  .oneword-band-inner{max-width:1100px;margin:0 auto}
+  .oneword-band-label{font-family:'Courier New',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#F5C28E;margin-bottom:14px;font-weight:700}
+  .oneword-band-title{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,3vw,28px);color:#fff;font-weight:500;margin-bottom:14px;font-style:italic}
+  .oneword-band-words{font-family:'Allura',cursive;color:#FAEFD8;line-height:1.4;max-width:980px;margin:0 auto;font-size:0}
+  .oneword-band-word{display:inline-block;margin:0 12px;font-size:clamp(28px,4vw,40px);transition:all .2s}
+  .oneword-band-word.lg{font-size:clamp(36px,5vw,52px);color:#fff}
+  .oneword-band-word.accent{color:#ED9F4A}
+  .oneword-band-sep{display:inline-block;margin:0 6px;color:rgba(250,239,216,.4);font-size:clamp(20px,3vw,28px);vertical-align:middle}
+  .oneword-band-cta{margin-top:18px}
+  .oneword-band-cta a{font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#FAEFD8;border:1px solid rgba(250,239,216,.4);padding:8px 18px;border-radius:20px;text-decoration:none;transition:all .2s}
+  .oneword-band-cta a:hover{background:rgba(250,239,216,.15)}
+
+  @media(max-width:720px){
+    .cards{grid-template-columns:1fr}
+    .featured-grid{grid-template-columns:1fr}
+    .featured-section{padding:32px 24px 0}
+    .oneword-band-word{margin:0 6px;font-size:24px}
+    .oneword-band-word.lg{font-size:32px}
+  }
   .card{background:#fff;border-radius:16px;overflow:hidden;display:grid;grid-template-columns:8px 1fr;box-shadow:0 2px 16px rgba(26,26,46,.06);transition:box-shadow .25s,transform .25s;animation:fadeUp .5s ease both}
   .card:hover{box-shadow:0 8px 32px rgba(26,26,46,.12);transform:translateY(-2px)}
   .card-body{padding:22px 26px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start}
@@ -240,34 +270,29 @@
   <p class="hero-sub">A student-driven service initiative focused on spreading kindness and meeting community needs in meaningful ways. Through this work, technology becomes a pathway for empathy, connection, and positive social impact.</p>
 </header>
 
-<!-- ── SIGNATURE STICKER KIOSK ── -->
-<div class="sticker-kiosk">
-  <div class="sticker-kiosk-inner">
-    <div class="sticker-label">&#127991; Smile Bags Signature Collection</div>
-    <h2 class="sticker-title">25 OneWord Signature Stickers</h2>
-    <p class="sticker-sub">Every visitor &middot; every class &middot; every bag recipient. One word. One sticker. Yours to keep &mdash; place it anywhere.</p>
-    <div class="sticker-controls">
-      <select class="sticker-select" id="stickerWord" onchange="updateSticker()"></select>
-      <div class="sticker-style-btns">
-        <button class="sticker-btn active" id="btnBright" onclick="setStickerStyle('chatgpt')">&#9728; Bright</button>
-        <button class="sticker-btn" id="btnVintage" onclick="setStickerStyle('copilot')">&#9790; Vintage</button>
-      </div>
-    </div>
-    <div class="sticker-preview-ring">
-      <img id="stickerPreview" src="" alt="Sticker preview" onerror="this.style.opacity='.3'"/>
-    </div>
-    <div>
-      <a id="stickerDownload" href="#" download class="sticker-dl-btn">&#8595; Download My Sticker</a>
-    </div>
-    <div class="sticker-meta">Free &middot; No login required &middot; Print &amp; stick anywhere</div>
-    <div class="sticker-preview-row" id="stickerMiniRow"></div>
-  </div>
-</div>
+<!-- ── FEATURED ROW 1: ITS + The Brand Library ── -->
+<section class="featured-section">
+  <div class="featured-grid">
 
-<div class="mission">
-  <span class="mission-icon">&#127757;</span>
-  <p>At Kellam High School in Virginia Beach, Virginia, students are building Smile Bags. Items in the bag are <strong>student-made</strong>, intentionally designed, and built around <strong>one shared word.</strong></p>
-</div>
+    <!-- ITS Card (simplified — brand items moved to Brand Library) -->
+    <div class="card theme-dark"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Instructional Technology</div><h2>Smile Bags Founder &amp; Project Architect</h2><div class="card-teacher">Laura Howell &middot; Instructional Technology Specialist &middot; Word &amp; Wonder Founder</div><p class="card-desc">Laura Howell is the founder and architect of the Smile Bags project. She designed the OneWord framework and built the kiosks, Apps Script backend, print system, management tools, and website infrastructure that participating teachers use to bring their classes into the project. Each class card on this site represents a teacher and their students bringing their curriculum into a shared framework she designed. The full set of brand assets &mdash; signature stickers, OneWord experiences, the 25 OneWords lexicon, and print libraries &mdash; lives in <strong>The Brand Library</strong>.</p><div class="card-contribution"><span>&#127912;</span> Contribution: Project architecture &middot; Word &amp; Wonder framework &middot; OneWord DNA System</div></div><div class="card-links"><div class="card-links-label">Quick Links</div><a href="https://lhhowell.github.io/kellamsmilebags/Brand_Library.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127991;</span><span class="doc-link-text">The Brand Library<span class="doc-link-type">Stickers &middot; Experiences &middot; Lexicon &middot; HTML</span></span></a></div></div></div>
+
+    <!-- The Brand Library card -->
+    <div class="card theme-gold"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Brand Assets &middot; Howell</div><h2>The Brand Library</h2><div class="card-teacher">25 Signature Stickers &middot; 5 OneWord Experiences &middot; The 25 OneWords Lexicon &middot; Cards &amp; Posters</div><p class="card-desc">A single hub for project brand assets. Download a signature sticker for any of the 25 OneWords, open the OneWord Trading Card Kiosk, browse the 225-page Coloring Book, hear each word in Compose It!, meet the cast in The OneWord Journey, or read the full 25-word lexicon connecting environmental science to social-emotional well-being.</p><div class="card-contribution"><span>&#127807;</span> Includes: Signature Stickers &middot; OneWord Journey &middot; Meet the Team &middot; Compose It! &middot; Trading Cards &middot; Coloring Book &middot; Lexicon</div></div><div class="card-links"><div class="card-links-label">Library Gateway</div><a href="https://lhhowell.github.io/kellamsmilebags/Brand_Library.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Open the Library<span class="doc-link-type">All Brand Assets &middot; HTML</span></span></a></div></div></div>
+
+  </div>
+
+  <!-- ── FEATURED ROW 2: Galleries (existing + new placeholder) ── -->
+  <div class="featured-grid">
+
+    <!-- Photo Gallery card (existing Artifacts gallery) -->
+    <div class="card theme-teal"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Photo Gallery 01</div><h2>The Artifacts Gallery</h2><div class="card-teacher">Student-Created &middot; Student-Customized &middot; Brand Universe</div><p class="card-desc">A walking tour of the Smile Bags project &mdash; three categories, one ecosystem. Original student work, kiosk-supported student creations, and the brand universe (mascots, the Knights, the W&amp;W aesthetic) that ties everything together.</p><div class="card-contribution"><span>&#128247;</span> Three categories &middot; One ecosystem</div></div><div class="card-links"><div class="card-links-label">Open the Gallery</div><a href="https://lhhowell.github.io/kellamsmilebags/Artifacts_Gallery.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127912;</span><span class="doc-link-text">Browse the Artifacts<span class="doc-link-type">Walking Tour &middot; HTML</span></span></a></div></div></div>
+
+    <!-- Inside the Bags placeholder (Photo Gallery 02 — Coming Soon) -->
+    <div class="card theme-purple"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Photo Gallery 02 &middot; Coming Soon</div><h2>Inside the Bags</h2><div class="card-teacher">Final Packaged Smile Bags &middot; Item List &middot; Cost Transparency</div><p class="card-desc">Photos of the final packaged bags alongside a detailed item list with prices &mdash; so anyone wanting to do something similar will not be blindsided by the cost. Launches with the bag-packing photos and the cost breakdown from the Purchased Items spreadsheet.</p><div class="card-contribution"><span>&#128722;</span> Coming Soon &middot; Launching at Expo &middot; May 30, 2026</div></div><div class="card-links"><div class="card-links-label">Status</div><a href="#" class="doc-link" style="opacity:.6;pointer-events:none"><span class="doc-link-icon">&#128338;</span><span class="doc-link-text">Inside the Bags<span class="doc-link-type">Coming Soon &middot; HTML</span></span></a></div></div></div>
+
+  </div>
+</section>
 
 <!-- ── OneWord Button Strip ── -->
 <div class="ow-strip">
@@ -301,6 +326,11 @@
   </div>
 </div>
 
+<div class="mission">
+  <span class="mission-icon">&#127757;</span>
+  <p>At Kellam High School in Virginia Beach, Virginia, students are building Smile Bags. Items in the bag are <strong>student-made</strong>, intentionally designed, and built around <strong>one shared word.</strong></p>
+</div>
+
 <!-- ── Who Receives a Smile Bag ── -->
 <div style="background:#1A1A2E;margin:0;">
   <div style="max-width:1100px;margin:0 auto;padding:48px 40px;">
@@ -327,9 +357,6 @@
 
   <div class="cards">
    
- <!-- ITS CARD — Laura Howell -->
-    <div class="card theme-dark"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Instructional Technology</div> <h2>Smile Bags Mascot Sticker, Hidden Picture Activities &amp; OneWord DNA System</h2><div class="card-teacher">Laura Howell &middot; Instructional Technology Specialist &middot; Smile Bags Founder &amp; Project Architect &middot; Word &amp; Wonder Founder</div><p class="card-desc">Laura Howell is the founder and architect of the Smile Bags project. She designed the OneWord framework and built the kiosks, Apps Script backend, print system, management tools, and website infrastructure that participating teachers use to bring their classes into the project. Each class card on this site represents a teacher and their students bringing their curriculum into a shared framework she designed. Beyond designing the system itself, the ITS also designed the official Smile Bags mascot sticker and 25 OneWord hidden picture activities &mdash; one for each of the project's 25 shared words. The mascot serves as the signature identity of the project, appearing on documents, the website, and as a sticker placed in every smile bag. The ITS also invented the <strong>OneWord DNA System</strong> &mdash; a one-of-a-kind music activity called <em>Compose It!</em> where each OneWord's letters become musical notes, giving every word its own unique Voice for students to hear and build upon. The <strong>OneWord Trading Card Kiosk</strong> lets any student select a word, choose their grade level, and print a stunning inspirational card-style collectible card paired with an inspirational quote &mdash; ready to keep, trade, or tuck into a Smile Bag. The <strong>OneWord Coloring Book</strong> showcases 225 AI-generated coloring pages across 9 distinct art styles &mdash; scenic, cartoon, woodcut, artistic, K&ndash;4 icon, nature poster, fine line botanical, nature journal, and modern line &mdash; created across ChatGPT, CoPilot, and Gemini — with the Secondary Hub's 225 game activities architected and built in partnership with Claude. <strong>The OneWord Journey</strong> brings all 25 words to life through original stories, illustrated group scenes, hidden picture activities, coloring pages, and an interactive Secondary Hub &mdash; all in one experience.</p><div class="card-contribution"><span>&#127912;</span> Contribution: Mascot sticker &middot; 25 OneWord hidden picture activities &middot; &#127925; OneWord DNA System (Compose It!) &middot; &#127912; OneWord Coloring Book &middot; &#127760; The OneWord Journey</div></div><div class="card-links"><div class="card-links-label">Guide Packages</div><a href="https://lhhowell.github.io/kellamsmilebags/KSB_Stories_Kiosk.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">The OneWord Journey<span class="doc-link-type">Stories, Art &amp; Adventures &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/KSB_MeetTheTeam.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#128155;</span><span class="doc-link-text">Meet the Team<span class="doc-link-type">Knights &amp; Mascots &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/ComposeIt_Voice.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127925;</span><span class="doc-link-text">Compose It! &mdash; OneWord DNA System<span class="doc-link-type">Music Activity &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/ITS_TradingCard_Kiosk.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127183;</span><span class="doc-link-text">OneWord Trading Card Kiosk<span class="doc-link-type">Interactive Kiosk &middot; HTML</span></span></a><a href="https://lhhowell.github.io/kellamsmilebags/oneword_coloring_book.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127912;</span><span class="doc-link-text">OneWord Coloring Book<span class="doc-link-type">225 Pages &middot; 9 Art Styles &middot; HTML</span></span></a></div></div></div>
-
     <!-- DIGITAL ARTS CARD — Kayla Gau -->
     <div class="card theme-art"><div class="card-accent"></div><div class="card-body"><div class="card-left"><div class="card-class-tag">&#9679; Digital Arts</div><h2>AI Art Styles &middot; Stencil Set &middot; Jigsaw Puzzle &middot; Signature Sticker Design</h2><div class="card-teacher"><a href="https://lhhowell.github.io/kellamsmilebags/empathy_design_framework.html" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">Kayla Gau</a> &middot; Virginia Visual Arts SOL AI.1 &middot; AI.2 &middot; AII.7 &middot; AII.10</div><p class="card-desc">Explore AI art styles, build color skills, design stencils, create puzzles, and design original stickers &mdash; all connected to one shared OneWord for a child who needs it. Future Ready: <strong>Problem Solvers &amp; Value Creators</strong>; <strong>Personally &amp; Socially Responsible</strong>.</p><div class="card-contribution"><span>&#127912;</span> Contribution: AI art coloring prints &middot; OneWord stencil set &middot; laminated jigsaw puzzle &middot; 2.8&Prime; Smile Mirror sticker</div></div><div class="card-links"><div class="card-links-label">Class Resources</div><a href="https://lhhowell.github.io/kellamsmilebags/DigitalArts_Menu.html" target="_blank" class="doc-link"><span class="doc-link-icon">&#127760;</span><span class="doc-link-text">Digital Arts Kiosk Hub<span class="doc-link-type">Gateway &middot; HTML</span></span></a><a href="https://script.google.com/macros/s/AKfycby3MYEhjGVvEk5qAWJOEMWTYmflIfJ-R4XdVyfznPH8SARo3IL6zq9asDz6R94hc_xctA/exec" target="_blank" class="doc-link"><span class="doc-link-icon">&#127912;</span><span class="doc-link-text">Speed Palette<span class="doc-link-type">Apps Script &middot; School-Friendly</span></span></a><a href="https://drive.google.com/file/d/1jSHJUXnvaAmyScR0qJ3ILMRvuOc0w8P2/view?usp=sharing" target="_blank" class="doc-link"><span class="doc-link-icon">&#129690;</span><span class="doc-link-text">Smile Mirror Sticker<span class="doc-link-type">Student Guide &middot; PDF</span></span></a></div></div></div>
 
