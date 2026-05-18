@@ -105,6 +105,13 @@
   .ow-description{margin-bottom:24px}
   .ow-description p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin-bottom:12px;max-width:780px}
   .ow-description strong{color:#c9a84c}
+  .ow-section-toggle{display:inline-flex;align-items:center;gap:10px;background:#2a2a2a;border:1.5px solid #4caf82;color:#4caf82;padding:14px 28px;border-radius:50px;font-family:Georgia,serif;font-size:16px;cursor:pointer;transition:all .2s;margin-top:8px}
+  .ow-section-toggle:hover{background:#4caf82;color:#0d0d1a}
+  .ow-section-toggle.open{background:#4caf82;color:#0d0d1a}
+  .ow-section-toggle .ow-toggle-arrow{font-size:11px;transition:transform .2s;display:inline-block}
+  .ow-section-toggle.open .ow-toggle-arrow{transform:rotate(180deg)}
+  .ow-section-content{margin-top:24px}
+  .ow-section-content[hidden]{display:none}
   .ow-table-header{padding:18px 0;border-bottom:1px solid #333;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
   .ow-table-title{font-family:'Cormorant Garamond',serif;font-size:22px;color:#fff;font-weight:600}
   .ow-count{display:inline-block;background:#4caf82;color:#0d0d1a;padding:2px 10px;border-radius:12px;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;margin-left:8px}
@@ -255,6 +262,10 @@
     <div class="ow-description">
       <p>At the heart of Smile Bags are <strong>25 OneWords</strong> &mdash; a shared set of words that connect environmental science concepts to social emotional well-being. From <strong>Absorb</strong> to <strong>Transform</strong>, these words remind us that the same forces that sustain ecosystems &mdash; balance, flow, renewal, resilience &mdash; are the forces that sustain people too.</p>
     </div>
+    <button class="ow-section-toggle" id="owSectionToggle" onclick="toggleSection()">
+      &#128218; <span id="owSectionToggleLabel">Browse all 25 words</span> <span class="ow-toggle-arrow">&#9660;</span>
+    </button>
+    <div class="ow-section-content" id="owSectionContent" hidden>
     <div class="ow-table-header">
       <span class="ow-table-title">&#127807; The 25 OneWords <span class="ow-count" id="wordCount">25</span></span>
       <span class="ow-table-subtitle">Environmental Science &middot; Social Emotional Well-Being</span>
@@ -268,6 +279,7 @@
       <button class="ow-ctrl-btn" onclick="toggleAll(false)">Collapse All</button>
     </div>
     <div class="ow-grid" id="owGrid"></div>
+    </div>
   </div>
 </section>
 
@@ -425,6 +437,21 @@ function toggleAll(open) {
     if (open) c.classList.add('open');
     else c.classList.remove('open');
   });
+}
+
+function toggleSection() {
+  const content = document.getElementById('owSectionContent');
+  const toggle = document.getElementById('owSectionToggle');
+  const label = document.getElementById('owSectionToggleLabel');
+  if (content.hidden) {
+    content.hidden = false;
+    toggle.classList.add('open');
+    label.textContent = 'Hide the 25 words';
+  } else {
+    content.hidden = true;
+    toggle.classList.remove('open');
+    label.textContent = 'Browse all 25 words';
+  }
 }
 
 // INIT
