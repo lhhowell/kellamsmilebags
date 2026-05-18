@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Friendly Math · a Word & Wonder build</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   FRIENDLY MATH · A Word & Wonder build · v1.1
+   © 2025–2026 Laura Howell · All rights reserved
+   
+   CONFIGURATION (search for "CONFIG-" to find spots to edit):
+   1. CONFIG-CALCULATOR-URL — paste the Dyscalculia Calculator
+      deployment URL into the const CALCULATOR_URL near top of JS.
+   2. CONFIG-SUBMISSION-URL — paste the GAS submission endpoint
+      into const SUBMISSION_URL once that backend is built.
+   3. CONFIG-SUBMISSION-SECRET — paste the matching shared secret
+      into const SUBMISSION_SECRET once known.
+============================================================ */
+  :root {
+    --bg:        #3b1260;
+    --bg-card:   #4a1d75;
+    --bg-deep:   #2a0c47;
+    --bg-paper:  #f8f4fc;
+    --paper-warm:#fdf9f2;
+    --cream:     #f8f4fc;
+    --cream-dim: #d9cde6;
+    --ink:       #2a0c47;
+    --ink-soft:  #4a3866;
+    --sage:      #88b074;
+    --sage-deep: #4e7f47;
+    --sage-glow: #c9e1bb;
+    --peach:     #ed9f4a;
+    --peach-dim: #c47e36;
+    --peach-soft:#fce6c8;
+    --border:    rgba(248, 244, 252, 0.18);
+    --border-ink: rgba(42, 12, 71, 0.12);
+    --correct:   #4e7f47;
+    --tryagain:  #c47e36;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(136, 176, 116, 0.10) 0%, transparent 45%),
+      radial-gradient(circle at 85% 92%, rgba(237, 159, 74, 0.08) 0%, transparent 45%);
+  }
+
+  /* ── KIOSK HEADER ── */
+  .kiosk-header {
+    background: var(--bg-deep);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+  }
+  .kiosk-header-row {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .kiosk-brand { display: flex; flex-direction: column; line-height: 1; }
+  .kiosk-brand-mark { font-family: 'Allura', cursive; font-size: 22px; color: var(--peach); }
+  .kiosk-brand-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px; font-weight: 600; color: var(--cream); margin-top: -2px;
+  }
+  .oneword-display { text-align: center; }
+  .oneword-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--cream-dim); margin-bottom: 4px;
+  }
+  .oneword-word {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px; font-weight: 700; letter-spacing: 6px;
+    color: var(--peach); line-height: 1;
+  }
+  .oneword-theme {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; font-style: italic; color: var(--sage); margin-top: 4px;
+  }
+
+  /* ── PATH TOGGLE ── */
+  .path-toggle-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+  .path-toggle-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--cream-dim);
+  }
+  .path-toggle {
+    display: inline-flex; gap: 4px;
+    background: rgba(0,0,0,0.3); padding: 5px;
+    border-radius: 999px; border: 1px solid var(--border);
+  }
+  .path-btn {
+    padding: 9px 18px; border-radius: 999px;
+    font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500;
+    color: var(--cream-dim); background: transparent; border: none; cursor: pointer;
+    transition: all 0.18s ease; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .path-btn:hover { color: var(--cream); }
+  .path-btn.active {
+    background: var(--sage-deep); color: var(--cream);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  /* ── STAGE / OneWord selector (test only) ── */
+  .stage { max-width: 1100px; margin: 0 auto; padding: 32px 32px 48px; }
+  .oneword-selector {
+    background: rgba(0,0,0,0.25);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin-bottom: 22px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--cream-dim);
+    letter-spacing: 0.05em;
+  }
+  .oneword-selector strong {
+    color: var(--peach); font-weight: 600; font-family: 'Inter', sans-serif;
+    text-transform: uppercase; letter-spacing: 0.15em;
+  }
+  .oneword-selector a {
+    color: var(--sage-glow); text-decoration: none; margin: 0 4px;
+    padding: 3px 9px; border-radius: 4px;
+    background: rgba(136,176,116,0.12);
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em;
+  }
+  .oneword-selector a:hover { background: rgba(136,176,116,0.28); }
+  .oneword-selector a.current {
+    background: var(--sage-deep); color: var(--cream);
+  }
+
+  /* ── STEP CRUMB ── */
+  .step-crumb { text-align: center; margin-bottom: 26px; }
+  .step-crumb-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--peach); margin-bottom: 4px;
+  }
+  .step-crumb-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px; font-weight: 500; font-style: italic; color: var(--cream); line-height: 1.1;
+  }
+  .step-dots { display: inline-flex; gap: 8px; margin-top: 14px; }
+  .step-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(248,244,252,0.25); transition: all 0.2s ease;
+  }
+  .step-dot.active { background: var(--peach); width: 28px; border-radius: 4px; }
+  .step-dot.done { background: var(--sage); }
+
+  /* ── SCENARIO CARD ── */
+  .scenario-card {
+    background: var(--bg-paper); color: var(--ink);
+    border-radius: 14px; padding: 32px 36px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.30);
+    position: relative; overflow: hidden;
+  }
+  .scenario-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 100%; height: 5px;
+    background: linear-gradient(90deg, var(--sage-deep) 0%, var(--peach) 100%);
+  }
+  .scenario-prompt {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px; font-weight: 500; color: var(--ink); line-height: 1.45;
+    margin-bottom: 26px; text-align: center;
+    max-width: 720px; margin-left: auto; margin-right: auto;
+  }
+  .scenario-prompt strong { color: var(--sage-deep); font-weight: 700; }
+
+  /* ── DUAL DISPLAY ── */
+  .dual-display {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 22px;
+    margin-bottom: 26px; transition: all 0.35s ease;
+  }
+  .display-cell {
+    background: var(--paper-warm);
+    border: 1px solid var(--border-ink);
+    border-radius: 10px; padding: 22px;
+    transition: all 0.35s ease;
+    min-height: 320px;
+    display: flex; flex-direction: column;
+  }
+  .display-cell-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+    font-weight: 600; margin-bottom: 14px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .display-cell.pic { border-top: 3px solid var(--sage-deep); }
+  .display-cell.pic .display-cell-label { color: var(--sage-deep); }
+  .display-cell.num { border-top: 3px solid var(--peach-dim); }
+  .display-cell.num .display-cell-label { color: var(--peach-dim); }
+
+  /* Mode behavior */
+  body.mode-pic .display-cell.num { opacity: 0.30; transform: scale(0.97); }
+  body.mode-num .display-cell.pic { opacity: 0.30; transform: scale(0.97); }
+
+  /* ── PICTURE PATH visuals (generic) ── */
+  .picture-stage {
+    flex: 1;
+    display: flex; justify-content: space-around; align-items: flex-end;
+    padding: 12px 4px;
+  }
+  .group-stack { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .group-stack.split { padding: 0 14px; }
+  .group-items {
+    display: grid; gap: 6px; padding: 8px;
+    background: rgba(248,244,252,0.45);
+    border-radius: 6px;
+    min-width: 70px;
+    justify-content: center;
+  }
+  .group-base {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12px; font-style: italic; color: var(--ink-soft);
+    margin-top: 6px;
+  }
+  .visual-caption {
+    text-align: center; margin-top: 12px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px; font-style: italic; color: var(--ink-soft);
+  }
+  .visual-caption strong { color: var(--sage-deep); }
+
+  /* Icon shapes (CSS-only) */
+  .icon { width: 22px; height: 22px; display: inline-block; }
+  .icon-leaf {
+    width: 22px; height: 26px;
+    background: var(--sage); border-radius: 0 100% 0 100%;
+    transform: rotate(-15deg);
+    box-shadow: inset -2px -3px 4px rgba(0,0,0,0.15);
+  }
+  .icon-drop {
+    width: 18px; height: 24px;
+    background: #4a90c2; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    box-shadow: inset -2px -2px 3px rgba(0,0,0,0.2);
+  }
+  .icon-fish {
+    width: 26px; height: 14px;
+    background: #4a90c2; border-radius: 50% 0 0 50%;
+    position: relative;
+  }
+  .icon-fish::after {
+    content: ''; position: absolute;
+    right: -6px; top: 1px;
+    width: 0; height: 0;
+    border-top: 6px solid transparent; border-bottom: 6px solid transparent;
+    border-left: 8px solid #4a90c2;
+  }
+  .icon-goose {
+    width: 0; height: 0;
+    border-top: 14px solid transparent;
+    border-bottom: 14px solid transparent;
+    border-left: 16px solid #5a5a7a;
+    transform: rotate(-15deg);
+  }
+  .icon-flower {
+    width: 22px; height: 22px; position: relative;
+    background: var(--peach); border-radius: 50%;
+  }
+  .icon-flower::before {
+    content: ''; position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 8px; height: 8px;
+    background: #fcde94; border-radius: 50%;
+  }
+  .icon-root {
+    width: 18px; height: 18px;
+    background: #8b6f4e; border-radius: 50%; position: relative;
+  }
+  .icon-root::after {
+    content: ''; position: absolute;
+    top: 100%; left: 50%; transform: translateX(-50%);
+    width: 2px; height: 12px;
+    background: #8b6f4e;
+  }
+
+  /* Group base / connector visuals (the "branch", "stream", etc.) */
+  .group-base-bar {
+    width: 60px; height: 6px;
+    background: linear-gradient(to right, transparent, var(--ink-soft) 20%, var(--ink-soft) 80%, transparent);
+    border-radius: 3px; opacity: 0.45;
+  }
+  .group-base-bar.balance { background: linear-gradient(to right, transparent, #8b6f4e 20%, #8b6f4e 80%, transparent); }
+  .group-base-bar.flow { background: linear-gradient(to right, transparent, #4a90c2 20%, #4a90c2 80%, transparent); opacity: 0.6; }
+  .group-base-bar.migrate { background: transparent; height: 0; }
+  .group-base-bar.bloom { background: linear-gradient(to right, transparent, #6b4f2a 20%, #6b4f2a 80%, transparent); }
+  .group-base-bar.connect { background: linear-gradient(to right, transparent, #6b4f2a 20%, #6b4f2a 80%, transparent); }
+
+  /* ── NUMBER PATH ── */
+  .number-stage {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    padding: 8px 0;
+  }
+  .equation-display {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px; font-weight: 600; color: var(--ink);
+    letter-spacing: 4px; margin: 4px 0;
+  }
+  .equation-display .op { color: var(--peach-dim); margin: 0 6px; }
+  .equation-display .blank {
+    display: inline-block; min-width: 54px;
+    border-bottom: 3px solid var(--peach);
+    text-align: center; color: var(--peach);
+  }
+  .calc-frame {
+    width: 100%; flex: 1; min-height: 180px;
+    background: #fff;
+    border: 2px dashed var(--peach-dim);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; color: var(--ink-soft);
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    padding: 16px;
+    overflow: hidden;
+  }
+  .calc-frame iframe { width: 100%; height: 100%; border: 0; }
+  .calc-frame-placeholder { max-width: 80%; }
+  .calc-frame-placeholder .title { font-size: 18px; color: var(--ink); margin-bottom: 6px; font-style: normal; font-weight: 600; }
+  .calc-frame-placeholder .note { font-size: 12px; color: var(--ink-soft); line-height: 1.5; }
+  .calc-frame-placeholder code {
+    background: #eee; padding: 1px 5px; border-radius: 3px;
+    font-size: 11px; font-style: normal;
+  }
+
+  /* ── ANSWER BAR ── */
+  .answer-bar {
+    background: var(--paper-warm); border: 1px solid var(--border-ink);
+    border-radius: 10px; padding: 18px 22px;
+    display: flex; align-items: center; gap: 14px;
+    justify-content: center; flex-wrap: wrap;
+  }
+  .answer-bar-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px; font-style: italic; color: var(--ink);
+  }
+  .answer-input {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 600; color: var(--sage-deep);
+    background: #fff; border: 2px solid var(--sage-deep);
+    border-radius: 8px; padding: 6px 14px;
+    width: 90px; text-align: center;
+  }
+  .answer-input:focus { outline: none; box-shadow: 0 0 0 3px var(--sage-glow); }
+  .check-btn {
+    background: var(--sage-deep); color: var(--cream); border: none;
+    padding: 12px 24px; border-radius: 8px;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+    letter-spacing: 0.05em; cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .check-btn:hover { background: #406b3b; transform: translateY(-1px); }
+  .check-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* ── FEEDBACK ── */
+  .feedback {
+    text-align: center; margin-top: 12px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-style: italic;
+    min-height: 26px;
+    transition: all 0.2s ease;
+  }
+  .feedback.correct { color: var(--correct); font-weight: 600; }
+  .feedback.tryagain { color: var(--tryagain); }
+
+  /* ── FOOTER NAV ── */
+  .foot-nav {
+    max-width: 1100px; margin: 24px auto 0;
+    padding: 20px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--border);
+  }
+  .nav-btn {
+    background: transparent; color: var(--cream-dim);
+    border: 1px solid var(--border);
+    padding: 10px 18px; border-radius: 6px;
+    font-family: 'Inter', sans-serif; font-size: 13px; cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.05); color: var(--cream); }
+  .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .nav-btn.primary {
+    background: var(--peach); color: var(--ink); border-color: var(--peach);
+    font-weight: 600;
+  }
+  .nav-btn.primary:hover { background: #f0b066; }
+  .foot-meta {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 14px; color: var(--cream-dim);
+  }
+
+  /* ── WRAP-UP SCREEN ── */
+  .wrapup-card {
+    background: var(--bg-paper); color: var(--ink);
+    border-radius: 14px; padding: 40px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.30);
+    position: relative; overflow: hidden;
+    text-align: center;
+  }
+  .wrapup-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 100%; height: 5px;
+    background: linear-gradient(90deg, var(--sage-deep) 0%, var(--peach) 100%);
+  }
+  .wrapup-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px; font-weight: 600; color: var(--ink); margin-bottom: 10px;
+  }
+  .wrapup-subtitle {
+    font-family: 'Allura', cursive; font-size: 32px; color: var(--peach);
+    margin-bottom: 24px;
+  }
+  .wrapup-summary {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+    margin: 24px auto; max-width: 720px;
+  }
+  .wrap-cell {
+    background: var(--paper-warm); padding: 18px 14px;
+    border-radius: 10px; border: 1px solid var(--border-ink);
+  }
+  .wrap-cell-label {
+    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--peach-dim); font-weight: 600; margin-bottom: 6px;
+  }
+  .wrap-cell-title {
+    font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .wrap-cell-result {
+    font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600;
+    color: var(--sage-deep);
+  }
+  .wrap-cell-result.missed { color: var(--peach-dim); }
+  .name-row {
+    display: flex; align-items: center; gap: 12px; justify-content: center;
+    margin: 24px 0 12px; flex-wrap: wrap;
+  }
+  .name-row label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-style: italic; color: var(--ink);
+  }
+  .name-input {
+    font-family: 'Inter', sans-serif; font-size: 16px;
+    color: var(--ink); background: #fff;
+    border: 2px solid var(--sage-deep); border-radius: 8px;
+    padding: 8px 14px; min-width: 220px;
+  }
+  .name-input:focus { outline: none; box-shadow: 0 0 0 3px var(--sage-glow); }
+  .wrap-actions {
+    display: flex; gap: 12px; justify-content: center; margin-top: 18px;
+    flex-wrap: wrap;
+  }
+  .action-btn {
+    background: var(--sage-deep); color: var(--cream); border: none;
+    padding: 14px 24px; border-radius: 8px;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+    letter-spacing: 0.05em; cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .action-btn:hover { background: #406b3b; transform: translateY(-1px); }
+  .action-btn.peach { background: var(--peach); color: var(--ink); }
+  .action-btn.peach:hover { background: #f0b066; }
+  .action-btn.outline {
+    background: transparent; color: var(--ink);
+    border: 1.5px solid var(--ink-soft);
+  }
+  .action-btn.outline:hover { background: rgba(0,0,0,0.05); }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center; padding: 30px 24px 50px;
+    border-top: 1px solid var(--border); margin-top: 40px;
+  }
+  .footer-brand {
+    font-family: 'Allura', cursive; font-size: 24px;
+    color: var(--peach); display: block; margin-bottom: 4px;
+  }
+  .footer-line { font-size: 11px; color: var(--cream-dim); letter-spacing: 0.05em; }
+
+  /* ── PRINT STYLES ── */
+  @media print {
+    body { background: white; color: black; }
+    .kiosk-header, .foot-nav, .footer, .oneword-selector, .wrap-actions { display: none !important; }
+    .stage { padding: 20px; }
+    .wrapup-card { box-shadow: none; border: 1px solid #ccc; }
+    .scenario-card { box-shadow: none; border: 1px solid #ccc; }
+    body.mode-pic .display-cell.num,
+    body.mode-num .display-cell.pic { opacity: 1; transform: none; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 760px) {
+    .kiosk-header-row { flex-direction: column; align-items: stretch; gap: 18px; }
+    .dual-display { grid-template-columns: 1fr; }
+    .step-crumb-title { font-size: 26px; }
+    .oneword-word { font-size: 30px; letter-spacing: 4px; }
+    .scenario-prompt { font-size: 18px; }
+    .wrapup-summary { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body class="mode-pic">
+
+<!-- ── Kiosk Header ── -->
+<header class="kiosk-header">
+  <div class="kiosk-header-row">
+    <div class="kiosk-brand">
+      <span class="kiosk-brand-mark">a Word &amp; Wonder build</span>
+      <span class="kiosk-brand-title">Friendly Math</span>
+    </div>
+    <div class="oneword-display">
+      <div class="oneword-label">Today's OneWord</div>
+      <div class="oneword-word" id="word-display">BALANCE</div>
+      <div class="oneword-theme" id="theme-display">scales · equal weights · harmony</div>
+    </div>
+    <div class="path-toggle-wrap">
+      <span class="path-toggle-label">How would you like to work it out?</span>
+      <div class="path-toggle" role="tablist">
+        <button class="path-btn active" data-mode="pic" onclick="setMode('pic')"><span>👁️</span> Pictures</button>
+        <button class="path-btn" data-mode="num" onclick="setMode('num')"><span>🔢</span> Numbers</button>
+        <button class="path-btn" data-mode="both" onclick="setMode('both')"><span>🪞</span> Both</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── Main Stage ── -->
+<main class="stage" id="stage">
+  <!-- Content rendered by JS -->
+</main>
+
+<!-- ── Footer Nav (hidden during wrap-up) ── -->
+<div class="foot-nav" id="foot-nav">
+  <button class="nav-btn" id="prev-btn" onclick="goPrev()">← Previous</button>
+  <div class="foot-meta" id="foot-meta">Step 1 of 5</div>
+  <button class="nav-btn primary" id="next-btn" onclick="goNext()">Next →</button>
+</div>
+
+<!-- ── Footer ── -->
+<footer class="footer">
+  <span class="footer-brand">Friendly Math</span>
+  <span class="footer-line">a Word &amp; Wonder build · Created by Laura Howell · © 2025–2026</span>
+</footer>
+
+<script>
+/* ============================================================
+   CONFIG — fill these in once values are available
+============================================================ */
+
+// CONFIG-CALCULATOR-URL — paste the Dyscalculia Calculator deployment URL here.
+// Leave empty string to show the styled placeholder instead.
+const CALCULATOR_URL = 'https://script.google.com/macros/s/AKfycbxCB-utbiaKZzU62sW4Qbe05RYFYcbl0UqmoziigttB9wwSeUV3WywtVbFSG_CZmbXl/exec';
+
+// CONFIG-SUBMISSION-URL — paste the GAS submission endpoint here once built.
+const SUBMISSION_URL = '';
+
+// CONFIG-SUBMISSION-SECRET — matching shared secret for the GAS endpoint.
+const SUBMISSION_SECRET = '';
+
+/* ============================================================
+   ONEWORD SCENARIO DATA
+   5 OneWords × 3 activities each = 15 scenarios
+   
+   Activity types:
+     'grouping' = multiplication (N groups × M items)
+     'share'    = division (total ÷ N groups)
+     'goal'     = multiplication with target (N groups × M required)
+============================================================ */
+const SCENARIOS = {
+  BALANCE: {
+    theme: 'scales · equal weights · harmony',
+    icon: 'leaf',
+    baseClass: 'balance',
+    baseLabel: 'branch',
+    activities: [
+      {
+        title: 'The Balanced Branches',
+        type: 'grouping', groups: 3, per: 4, answer: 12,
+        prompt: 'There are <strong>3 tree branches</strong>. On each branch, <strong>4 leaves</strong> rest in balance. How many leaves are balanced in total?',
+        caption: 'Count the leaves <strong>group by group</strong> — or all together.'
+      },
+      {
+        title: 'The Two-Pan Scale',
+        type: 'share', total: 12, groups: 2, answer: 6,
+        prompt: 'A scale has two pans. We have <strong>12 acorns</strong> to balance between them. How many acorns go on each side?',
+        caption: 'Share the acorns <strong>equally</strong> between the two pans.'
+      },
+      {
+        title: 'Stones for Steadiness',
+        type: 'goal', groups: 3, per: 5, answer: 15,
+        prompt: 'Each scale needs <strong>5 stones</strong> to balance perfectly. We have <strong>3 scales</strong> to balance. How many stones do we need to gather?',
+        caption: 'How many stones for <strong>all three scales</strong> together?'
+      },
+      {
+        title: 'Feathers on the Small Scales',
+        type: 'grouping', groups: 4, per: 2, answer: 8,
+        prompt: 'There are <strong>4 small scales</strong>. On each scale, <strong>2 feathers</strong> rest in perfect balance. How many feathers are balanced in all?',
+        caption: 'Count the feathers <strong>scale by scale</strong>.'
+      },
+      {
+        title: 'Sharing the Pebbles',
+        type: 'share', total: 20, groups: 4, answer: 5,
+        prompt: 'We have <strong>20 smooth pebbles</strong> and <strong>4 balance jars</strong>. We want each jar to weigh the same. How many pebbles in each jar?',
+        caption: 'Share the pebbles <strong>evenly</strong> among the four jars.'
+      }
+    ]
+  },
+  FLOW: {
+    theme: 'water · streams · gentle motion',
+    icon: 'fish',
+    baseClass: 'flow',
+    baseLabel: 'stream',
+    activities: [
+      {
+        title: 'Fish in Streams',
+        type: 'grouping', groups: 3, per: 4, answer: 12,
+        prompt: '<strong>Three streams</strong> flow through the meadow. In each stream, <strong>4 fish</strong> are swimming. How many fish flow through the meadow in all?',
+        caption: 'Count the fish <strong>stream by stream</strong>.'
+      },
+      {
+        title: 'Drops Find Their Path',
+        type: 'share', total: 8, groups: 2, answer: 4,
+        prompt: '<strong>Eight water drops</strong> flow toward <strong>two streams</strong>. The same number of drops goes into each stream. How many drops in each?',
+        caption: 'The drops split <strong>evenly</strong> between the streams.'
+      },
+      {
+        title: 'Filling the Riverbed',
+        type: 'goal', groups: 3, per: 6, answer: 18,
+        prompt: 'Each stream needs <strong>6 drops</strong> before it can flow. We are starting <strong>3 streams</strong>. How many drops will we need in total?',
+        caption: 'How many drops for <strong>all three streams</strong>?'
+      },
+      {
+        title: 'Frogs in the Ponds',
+        type: 'grouping', groups: 5, per: 3, answer: 15,
+        prompt: 'There are <strong>5 quiet ponds</strong> along the path. In each pond, <strong>3 frogs</strong> float gently. How many frogs in all the ponds together?',
+        caption: 'Count the frogs <strong>pond by pond</strong>.'
+      },
+      {
+        title: 'Raindrops to Puddles',
+        type: 'share', total: 24, groups: 4, answer: 6,
+        prompt: '<strong>24 raindrops</strong> fall into <strong>4 puddles</strong>. The drops fall evenly. How many raindrops landed in each puddle?',
+        caption: 'The raindrops split <strong>evenly</strong> among the puddles.'
+      }
+    ]
+  },
+  MIGRATE: {
+    theme: 'flocks · journeys · moving together',
+    icon: 'goose',
+    baseClass: 'migrate',
+    baseLabel: 'flock',
+    activities: [
+      {
+        title: 'Flocks in the Sky',
+        type: 'grouping', groups: 3, per: 5, answer: 15,
+        prompt: '<strong>Three flocks</strong> of geese are migrating south. Each flock has <strong>5 geese</strong> flying in a V. How many geese are migrating in all?',
+        caption: 'Count the geese <strong>flock by flock</strong>.'
+      },
+      {
+        title: 'Splitting the Flock',
+        type: 'share', total: 10, groups: 2, answer: 5,
+        prompt: 'A flock of <strong>10 geese</strong> reaches a fork in the sky. They split equally into <strong>2 smaller flocks</strong>. How many geese in each new flock?',
+        caption: 'The flock splits <strong>equally</strong>.'
+      },
+      {
+        title: 'Gathering the Flock',
+        type: 'goal', groups: 3, per: 4, answer: 12,
+        prompt: 'Each migration needs <strong>4 geese</strong> to lead the way. We are starting <strong>3 migrations</strong> this season. How many lead geese do we need?',
+        caption: 'How many lead geese for <strong>all three migrations</strong>?'
+      },
+      {
+        title: 'Larger Flocks in Formation',
+        type: 'grouping', groups: 4, per: 6, answer: 24,
+        prompt: '<strong>Four large flocks</strong> are crossing the sky. Each flock has <strong>6 birds</strong> in formation. How many birds are migrating together?',
+        caption: 'Count the birds <strong>flock by flock</strong>.'
+      },
+      {
+        title: 'Resting Spots Along the Way',
+        type: 'share', total: 16, groups: 4, answer: 4,
+        prompt: '<strong>16 birds</strong> stop to rest at <strong>4 spots</strong> along their journey. The same number stops at each spot. How many birds at each rest stop?',
+        caption: 'The birds settle <strong>evenly</strong> at each spot.'
+      }
+    ]
+  },
+  BLOOM: {
+    theme: 'flowers · gardens · opening into color',
+    icon: 'flower',
+    baseClass: 'bloom',
+    baseLabel: 'bed',
+    activities: [
+      {
+        title: 'The Garden Beds',
+        type: 'grouping', groups: 3, per: 4, answer: 12,
+        prompt: 'There are <strong>3 garden beds</strong>. In each bed, <strong>4 flowers</strong> are blooming. How many flowers are blooming in the whole garden?',
+        caption: 'Count the flowers <strong>bed by bed</strong>.'
+      },
+      {
+        title: 'Seeds in the Soil',
+        type: 'share', total: 6, groups: 2, answer: 3,
+        prompt: 'You have <strong>6 flower seeds</strong> and <strong>2 garden beds</strong>. You want each bed to have the same number of seeds. How many seeds in each bed?',
+        caption: 'Share the seeds <strong>equally</strong>.'
+      },
+      {
+        title: 'A Full Bloom',
+        type: 'goal', groups: 3, per: 5, answer: 15,
+        prompt: 'Each garden bed needs <strong>5 flowers</strong> to look full. We are planting <strong>3 beds</strong> today. How many flowers will we need?',
+        caption: 'How many flowers for <strong>all three beds</strong>?'
+      },
+      {
+        title: 'Petals on the Flowers',
+        type: 'grouping', groups: 4, per: 6, answer: 24,
+        prompt: 'In the garden, <strong>4 flowers</strong> are blooming. Each flower has <strong>6 petals</strong> opened to the sun. How many petals are open in all?',
+        caption: 'Count the petals <strong>flower by flower</strong>.'
+      },
+      {
+        title: 'Stems for the Vases',
+        type: 'goal', groups: 5, per: 4, answer: 20,
+        prompt: 'Each vase needs <strong>4 stems</strong> to look full. We are filling <strong>5 vases</strong>. How many stems do we need to gather?',
+        caption: 'How many stems for <strong>all five vases</strong>?'
+      }
+    ]
+  },
+  CONNECT: {
+    theme: 'roots · networks · things that link',
+    icon: 'root',
+    baseClass: 'connect',
+    baseLabel: 'tree',
+    activities: [
+      {
+        title: 'The Root System',
+        type: 'grouping', groups: 3, per: 4, answer: 12,
+        prompt: '<strong>Three trees</strong> grow close together. Each tree has <strong>4 main roots</strong> connecting underground. How many root connections in total?',
+        caption: 'Count the connections <strong>tree by tree</strong>.'
+      },
+      {
+        title: 'Leaves to Stems',
+        type: 'share', total: 8, groups: 2, answer: 4,
+        prompt: 'A plant has <strong>8 leaves</strong> and <strong>2 main stems</strong>. The leaves connect equally to both stems. How many leaves connect to each stem?',
+        caption: 'The leaves connect <strong>equally</strong> to both stems.'
+      },
+      {
+        title: 'Building the Network',
+        type: 'goal', groups: 3, per: 6, answer: 18,
+        prompt: 'Each tree needs <strong>6 root connections</strong> to feel strong. We are growing <strong>3 trees</strong>. How many connections will the forest need?',
+        caption: 'How many connections for <strong>all three trees</strong>?'
+      },
+      {
+        title: 'Messages Through the Hubs',
+        type: 'share', total: 21, groups: 3, answer: 7,
+        prompt: '<strong>21 messages</strong> travel through <strong>3 connecting hubs</strong>. The messages route evenly through each hub. How many messages travel through each hub?',
+        caption: 'The messages route <strong>evenly</strong> through the three hubs.'
+      },
+      {
+        title: 'Stones for the Paths',
+        type: 'goal', groups: 5, per: 4, answer: 20,
+        prompt: 'Each stone path needs <strong>4 stepping stones</strong> to connect across the stream. We are building <strong>5 paths</strong>. How many stepping stones will we need?',
+        caption: 'How many stones for <strong>all five paths</strong>?'
+      }
+    ]
+  }
+};
+
+const WORD_LIST = Object.keys(SCENARIOS); // ['BALANCE','FLOW','MIGRATE','BLOOM','CONNECT']
+
+/* ============================================================
+   STATE
+============================================================ */
+const state = {
+  word: 'BALANCE',
+  stepIndex: 0,            // 0..activityCount-1 for activities, then activityCount for wrap-up
+  answers: [],             // initialized below based on word's activity count
+  correct: [],
+  mode: 'pic'              // 'pic' | 'num' | 'both'
+};
+
+/* Helpers — keep step count dynamic so adding scenarios per word "just works" */
+function activityCount(word) {
+  return SCENARIOS[word || state.word].activities.length;
+}
+function freshAnswers(word) { return new Array(activityCount(word)).fill(null); }
+function freshCorrect(word) { return new Array(activityCount(word)).fill(false); }
+
+state.answers = freshAnswers();
+state.correct = freshCorrect();
+
+/* ============================================================
+   URL PARAM HANDLING
+============================================================ */
+(function readUrlParam() {
+  const params = new URLSearchParams(window.location.search);
+  const w = (params.get('word') || '').toUpperCase();
+  if (WORD_LIST.includes(w)) state.word = w;
+})();
+
+/* ============================================================
+   TOGGLE
+============================================================ */
+function setMode(mode) {
+  state.mode = mode;
+  document.body.classList.remove('mode-pic', 'mode-num', 'mode-both');
+  document.body.classList.add('mode-' + mode);
+  document.querySelectorAll('.path-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.mode === mode);
+  });
+}
+
+/* ============================================================
+   ONEWORD SWITCHING (for testing without a teacher kiosk)
+============================================================ */
+function switchWord(newWord) {
+  if (!WORD_LIST.includes(newWord)) return;
+  state.word = newWord;
+  state.stepIndex = 0;
+  state.answers = freshAnswers(newWord);
+  state.correct = freshCorrect(newWord);
+  document.getElementById('word-display').textContent = newWord;
+  document.getElementById('theme-display').textContent = SCENARIOS[newWord].theme;
+  render();
+}
+
+/* ============================================================
+   NAVIGATION
+============================================================ */
+function goNext() {
+  if (state.stepIndex < activityCount()) state.stepIndex++;
+  render();
+}
+function goPrev() {
+  if (state.stepIndex > 0) state.stepIndex--;
+  render();
+}
+
+/* ============================================================
+   ICON HTML
+============================================================ */
+function iconHtml(icon, count) {
+  const html = [];
+  for (let i = 0; i < count; i++) {
+    html.push('<span class="icon icon-' + icon + '"></span>');
+  }
+  return html.join('');
+}
+
+/* Determine an even grid for N items: max 2 cols if <=4, else 3 cols */
+function gridCols(count) {
+  if (count <= 2) return 1;
+  if (count <= 4) return 2;
+  return 3;
+}
+
+/* ============================================================
+   RENDER
+============================================================ */
+function render() {
+  const stage = document.getElementById('stage');
+  const word = state.word;
+  const data = SCENARIOS[word];
+
+  // Update header
+  document.getElementById('word-display').textContent = word;
+  document.getElementById('theme-display').textContent = data.theme;
+
+  // Wrap-up?
+  if (state.stepIndex >= 3) {
+    renderWrapup(stage, word, data);
+    document.getElementById('foot-nav').style.display = 'none';
+    return;
+  } else {
+    document.getElementById('foot-nav').style.display = 'flex';
+  }
+
+  const act = data.activities[state.stepIndex];
+  const stepNum = state.stepIndex + 1;
+
+  // Build picture stage
+  let picStage = '';
+  if (act.type === 'grouping' || act.type === 'goal') {
+    // N groups of M items
+    const cols = gridCols(act.per);
+    for (let g = 0; g < act.groups; g++) {
+      picStage += '<div class="group-stack">';
+      picStage += '<div class="group-items" style="grid-template-columns:repeat(' + cols + ',1fr);">';
+      picStage += iconHtml(data.icon, act.per);
+      picStage += '</div>';
+      picStage += '<div class="group-base-bar ' + data.baseClass + '"></div>';
+      picStage += '<div class="group-base">' + data.baseLabel.charAt(0).toUpperCase() + data.baseLabel.slice(1) + ' ' + (g+1) + '</div>';
+      picStage += '</div>';
+    }
+  } else if (act.type === 'share') {
+    // Show total split into N piles (after-share visualization)
+    const per = act.answer;
+    const cols = gridCols(per);
+    for (let g = 0; g < act.groups; g++) {
+      picStage += '<div class="group-stack split">';
+      picStage += '<div class="group-items" style="grid-template-columns:repeat(' + cols + ',1fr);">';
+      picStage += iconHtml(data.icon, per);
+      picStage += '</div>';
+      picStage += '<div class="group-base-bar ' + data.baseClass + '"></div>';
+      picStage += '<div class="group-base">' + data.baseLabel.charAt(0).toUpperCase() + data.baseLabel.slice(1) + ' ' + (g+1) + '</div>';
+      picStage += '</div>';
+    }
+  }
+
+  // Build equation display
+  let equationHtml = '';
+  if (act.type === 'grouping' || act.type === 'goal') {
+    equationHtml = act.groups + ' <span class="op">×</span> ' + act.per + ' <span class="op">=</span> <span class="blank">?</span>';
+  } else if (act.type === 'share') {
+    equationHtml = act.total + ' <span class="op">÷</span> ' + act.groups + ' <span class="op">=</span> <span class="blank">?</span>';
+  }
+
+  // Build calc frame
+  let calcFrame;
+  if (CALCULATOR_URL) {
+    calcFrame = '<iframe src="' + CALCULATOR_URL + '" title="Dyscalculia Calculator"></iframe>';
+  } else {
+    calcFrame = '<div class="calc-frame-placeholder">' +
+                  '<div class="title">Dyscalculia Calculator</div>' +
+                  '<div class="note">Paste your Calculator deployment URL into <code>CALCULATOR_URL</code> at the top of the script to embed the live calculator here.</div>' +
+                '</div>';
+  }
+
+  // Step dots
+  let dots = '';
+  for (let i = 0; i < 3; i++) {
+    let cls = 'step-dot';
+    if (i === state.stepIndex) cls += ' active';
+    else if (i < state.stepIndex || state.correct[i]) cls += ' done';
+    dots += '<span class="' + cls + '"></span>';
+  }
+
+  // OneWord selector strip (test-only — for production, remove this block)
+  let selector = '<div class="oneword-selector">' +
+    '<strong>Test selector:</strong> ' +
+    WORD_LIST.map(w => '<a href="#" onclick="switchWord(\'' + w + '\');return false;"' +
+      (w === word ? ' class="current"' : '') + '>' + w + '</a>').join('') +
+    ' <em style="display:block;margin-top:6px;font-style:italic;font-size:11px;color:#888;">' +
+    'In production, the OneWord is set by URL parameter ?word=BALANCE or by the companion teacher kiosk. Remove this strip when ready.</em></div>';
+
+  // Stitch together
+  stage.innerHTML = selector +
+    '<div class="step-crumb">' +
+      '<div class="step-crumb-label">Step ' + stepNum + ' of ' + activityCount() + ' · ' +
+        (act.type === 'grouping' ? 'Grouping' : act.type === 'share' ? 'Fair Share' : 'Goal Building') +
+      '</div>' +
+      '<div class="step-crumb-title">' + act.title + '</div>' +
+      '<div class="step-dots">' + dots + '</div>' +
+    '</div>' +
+    '<section class="scenario-card">' +
+      '<p class="scenario-prompt">' + act.prompt + '</p>' +
+      '<div class="dual-display">' +
+        '<div class="display-cell pic">' +
+          '<div class="display-cell-label"><span>👁️</span> Pictures</div>' +
+          '<div class="picture-stage">' + picStage + '</div>' +
+          '<div class="visual-caption">' + act.caption + '</div>' +
+        '</div>' +
+        '<div class="display-cell num">' +
+          '<div class="display-cell-label"><span>🔢</span> Numbers</div>' +
+          '<div class="number-stage">' +
+            '<div class="equation-display">' + equationHtml + '</div>' +
+            '<div class="calc-frame">' + calcFrame + '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="answer-bar">' +
+        '<span class="answer-bar-label">Your answer:</span>' +
+        '<input type="text" inputmode="numeric" class="answer-input" id="answer-input" placeholder="?" ' +
+          (state.answers[state.stepIndex] !== null ? 'value="' + state.answers[state.stepIndex] + '"' : '') + '>' +
+        '<button class="check-btn" onclick="checkAnswer()">Check My Answer</button>' +
+      '</div>' +
+      '<div class="feedback" id="feedback">' +
+        (state.correct[state.stepIndex] ? '✓ You got it! Nice work.' : '') +
+      '</div>' +
+    '</section>';
+
+  // Update foot nav
+  document.getElementById('prev-btn').disabled = (state.stepIndex === 0);
+  document.getElementById('next-btn').textContent = (state.stepIndex === activityCount() - 1 ? 'See My Work →' : 'Next →');
+  document.getElementById('foot-meta').textContent = 'Step ' + stepNum + ' of ' + activityCount() + ' · ' + word;
+
+  // Restore feedback class
+  if (state.correct[state.stepIndex]) {
+    document.getElementById('feedback').className = 'feedback correct';
+  }
+
+  // Focus input
+  setTimeout(() => {
+    const inp = document.getElementById('answer-input');
+    if (inp) inp.focus();
+  }, 50);
+}
+
+/* ============================================================
+   ANSWER CHECK
+============================================================ */
+function checkAnswer() {
+  const data = SCENARIOS[state.word];
+  const act = data.activities[state.stepIndex];
+  const inp = document.getElementById('answer-input');
+  const raw = (inp.value || '').trim();
+  const parsed = parseInt(raw, 10);
+  state.answers[state.stepIndex] = parsed;
+  const fb = document.getElementById('feedback');
+  if (!raw) {
+    fb.className = 'feedback tryagain';
+    fb.textContent = 'Type a number first.';
+    return;
+  }
+  if (parsed === act.answer) {
+    state.correct[state.stepIndex] = true;
+    fb.className = 'feedback correct';
+    fb.textContent = '✓ You got it! Nice work.';
+    // Update step dot
+    const dots = document.querySelectorAll('.step-dot');
+    if (dots[state.stepIndex]) dots[state.stepIndex].classList.add('done');
+  } else {
+    state.correct[state.stepIndex] = false;
+    fb.className = 'feedback tryagain';
+    fb.textContent = 'Not quite — give it another try. You can use the Calculator or count the picture.';
+  }
+}
+
+/* Enter key on input triggers Check */
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.activeElement && document.activeElement.id === 'answer-input') {
+    checkAnswer();
+  }
+});
+
+/* ============================================================
+   WRAP-UP SCREEN
+============================================================ */
+function renderWrapup(stage, word, data) {
+  const correctCount = state.correct.filter(c => c).length;
+  let cells = '';
+  data.activities.forEach((act, i) => {
+    const ans = state.answers[i];
+    const ok = state.correct[i];
+    cells += '<div class="wrap-cell">' +
+      '<div class="wrap-cell-label">Step ' + (i+1) + ' · ' +
+        (act.type === 'grouping' ? 'Grouping' : act.type === 'share' ? 'Fair Share' : 'Goal Building') +
+      '</div>' +
+      '<div class="wrap-cell-title">' + act.title + '</div>' +
+      '<div class="wrap-cell-result' + (ok ? '' : ' missed') + '">' +
+        (ok ? '✓ ' + act.answer : (ans !== null && !isNaN(ans) ? 'Your answer: ' + ans : 'Skipped')) +
+      '</div>' +
+    '</div>';
+  });
+
+  stage.innerHTML =
+    '<section class="wrapup-card">' +
+      '<div class="wrapup-title">Beautiful Math, Mathematician.</div>' +
+      '<div class="wrapup-subtitle">a Word &amp; Wonder build</div>' +
+      '<p style="font-family:Cormorant Garamond,serif;font-size:18px;font-style:italic;color:#4a3866;max-width:600px;margin:0 auto 8px;">' +
+        'You worked through <strong>' + correctCount + ' of ' + activityCount() + '</strong> activities on the word <strong style="color:#4e7f47;">' + word + '</strong> — ' +
+        (correctCount === activityCount() ? 'all of them right.' : 'and that is real practice.') +
+      '</p>' +
+      '<div class="wrapup-summary">' + cells + '</div>' +
+      '<div class="name-row">' +
+        '<label for="name-input">Your name:</label>' +
+        '<input type="text" id="name-input" class="name-input" placeholder="Type your first name and last initial" maxlength="40">' +
+      '</div>' +
+      '<div class="wrap-actions">' +
+        '<button class="action-btn outline" onclick="window.print()"><span>🖨️</span> Print my Smile Bag insert</button>' +
+        '<button class="action-btn peach" onclick="submitWork()"><span>🌱</span> Submit my work</button>' +
+        '<button class="action-btn" onclick="resetAll()"><span>↺</span> Try another OneWord</button>' +
+      '</div>' +
+      '<div id="submit-feedback" style="margin-top:14px;font-family:Cormorant Garamond,serif;font-style:italic;color:#4e7f47;min-height:20px;"></div>' +
+    '</section>';
+}
+
+/* ============================================================
+   SUBMIT (stub — wire to GAS once SUBMISSION_URL is configured)
+============================================================ */
+function submitWork() {
+  const name = (document.getElementById('name-input').value || '').trim();
+  const fb = document.getElementById('submit-feedback');
+  if (!name) {
+    fb.style.color = '#c47e36';
+    fb.textContent = 'Please type your name first.';
+    return;
+  }
+  const payload = {
+    activity: 'friendlyMath',
+    studentName: name,
+    word: state.word,
+    answers: state.answers,
+    correct: state.correct,
+    mode: state.mode,
+    timestamp: new Date().toISOString(),
+    secret: SUBMISSION_SECRET
+  };
+
+  if (!SUBMISSION_URL) {
+    fb.style.color = '#4e7f47';
+    fb.textContent = '✓ Submission ready (backend not yet wired — payload printed to console for verification)';
+    console.log('[Friendly Math · would submit]', payload);
+    return;
+  }
+
+  // Real submission via no-cors POST (matches Standard #11)
+  fetch(SUBMISSION_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    body: JSON.stringify(payload)
+  }).then(() => {
+    fb.style.color = '#4e7f47';
+    fb.textContent = '✓ Submitted — great work, ' + name + '!';
+  }).catch(err => {
+    fb.style.color = '#c47e36';
+    fb.textContent = 'Something went wrong. Ask your teacher for help.';
+    console.error('[Friendly Math submit error]', err);
+  });
+}
+
+/* ============================================================
+   RESET (try another OneWord)
+============================================================ */
+function resetAll() {
+  state.stepIndex = 0;
+  state.answers = freshAnswers();
+  state.correct = freshCorrect();
+  render();
+}
+
+/* ============================================================
+   BOOT
+============================================================ */
+render();
+</script>
+</body>
+</html>
