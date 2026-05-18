@@ -24,7 +24,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--dark);color:#fff;min-heig
 
 /* ── HEADER ── */
 .hdr{background:linear-gradient(135deg,var(--dark) 0%,#0A1506 100%);border-bottom:2px solid var(--forest);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;}
-.hdr::after{content:'';position:absolute;top:0;right:0;width:300px;height:100%;background:radial-gradient(ellipse at 100% 50%,rgba(200,168,75,.08) 0%,transparent 70%);pointer-events:none;}
+.hdr::after{content:'';position:absolute;top:0;right:0;width:300px;height:100%;background:radial-gradient(ellipse at 100% 50%,rgba(200,168,75,.08) 0%,transparent 70%);}
 .hdr-left h1{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--gold-light);letter-spacing:.5px;}
 .hdr-left p{font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:.5px;}
 .back-btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--border);border-radius:50px;padding:8px 18px;font-family:'Fredoka One',cursive;font-size:11px;color:var(--muted);text-decoration:none;transition:all .2s;letter-spacing:.5px;}
@@ -189,6 +189,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--dark);color:#fff;min-heig
   </div>
   <button type="button" onclick="window.location.href='DigitalArts_Menu.html'" class="back-btn" style="background:transparent;cursor:pointer;">🏠 Return to Main Menu</button>
 </div>
+
+<!-- ══ FEATURED · SpeedPalette (standalone GAS activity) ══ -->
+<a href="https://script.google.com/macros/s/AKfycbye0b0109_FqYBRZASC5GfeDiaSvE0tSDf2mPWLmSBBp5FPRIKqeWCoNzFACOr8y_DTdw/exec" target="_blank" style="display:block;background:linear-gradient(135deg,#1B4332,#40916C);padding:14px 24px;color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.12);font-family:'Nunito',sans-serif;transition:all .2s;" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter=''">
+  <div style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;font-size:13px;letter-spacing:.5px;">
+    <span style="background:#FFD040;color:#1B4332;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:1.5px;padding:3px 10px;border-radius:999px;text-transform:uppercase;">New</span>
+    <span style="font-family:'Fredoka One',cursive;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:#FFD040;">🎨 SpeedPalette</span>
+    <span style="opacity:.9;">30-second color matching challenge — print your palette for a Smile Bag</span>
+    <span style="font-family:'Fredoka One',cursive;font-size:12px;letter-spacing:1px;color:#FFD040;">Launch →</span>
+  </div>
+</a>
 
 <div class="tab-bar">
   <button class="tab-btn active" onclick="showTab('wheel',this)">🎨 Color Mixer</button>
