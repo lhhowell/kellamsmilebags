@@ -184,6 +184,7 @@
   /* ── DUAL DISPLAY ── */
   .dual-display {
     display: grid; grid-template-columns: 1fr 1fr; gap: 22px;
+    align-items: start;
     margin-bottom: 26px; transition: all 0.35s ease;
   }
   .display-cell {
@@ -212,7 +213,7 @@
   /* ── PICTURE PATH visuals (generic) ── */
   .picture-stage {
     flex: 1;
-    display: flex; justify-content: space-around; align-items: flex-end;
+    display: flex; justify-content: space-around; align-items: flex-start;
     padding: 12px 4px;
   }
   .group-stack { display: flex; flex-direction: column; align-items: center; gap: 6px; }
@@ -235,6 +236,14 @@
     font-size: 16px; font-style: italic; color: var(--ink-soft);
   }
   .visual-caption strong { color: var(--sage-deep); }
+  .pic-mascot {
+    display: block;
+    margin: 24px auto 0;
+    max-width: 240px;
+    width: 80%;
+    height: auto;
+    opacity: 0.95;
+  }
 
   /* Icon shapes (CSS-only) */
   .icon { width: 22px; height: 22px; display: inline-block; }
@@ -968,6 +977,7 @@ function render() {
           '<div class="display-cell-label"><span>👁️</span> Pictures</div>' +
           '<div class="picture-stage">' + picStage + '</div>' +
           '<div class="visual-caption">' + act.caption + '</div>' +
+          '<img src="sbcalculator.png" alt="Smile Bags math mascot" class="pic-mascot">' +
         '</div>' +
         '<div class="display-cell num">' +
           '<div class="display-cell-label"><span>🔢</span> Numbers</div>' +
