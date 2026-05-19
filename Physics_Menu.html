@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spinning Tops Lab · Smile Bags · Word &amp; Wonder</title>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  /* Spinning Tops palette — purple, peach, sage on cream/dune */
+  --bg:#1a1530;          /* deep night purple background */
+  --bg2:#241b40;
+  --bg3:#0f0a1c;
+  --purple:#9A6FD9;      /* primary accent */
+  --purple-light:#C2A6E8;
+  --purple-deep:#6B3FA0;
+  --peach:#ED9F4A;       /* warm accent */
+  --peach-light:#F5BC7E;
+  --peach-deep:#C8860A;
+  --sage:#7FB05F;        /* nature accent */
+  --sage-light:#A8CC8B;
+  --sage-deep:#5C8A4A;
+  --cream:#FAEFD8;
+  --gold:#E8C470;
+  --opt-a:#6B3FA0;       /* Designer Roster — purple */
+  --opt-b:#5C8A4A;       /* Lesson — sage */
+  --opt-c:#C8860A;       /* Rubric — peach-deep */
+  --opt-d:#7B5BB5;       /* AI Evaluation — light purple */
+  --opt-e:#ED9F4A;       /* Trading Cards — peach */
+  --radius:18px;
+}
+
+html,body{height:100%;overflow-x:hidden;}
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--bg3);
+  min-height:100vh;
+  display:flex;flex-direction:column;
+}
+
+/* Background texture */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse at 15% 20%, rgba(154,111,217,.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 80%, rgba(237,159,74,.07) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(127,176,95,.04) 0%, transparent 60%);
+  pointer-events:none;z-index:0;
+}
+
+/* ── HEADER ── */
+.hdr{
+  position:relative;z-index:10;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 28px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  background:rgba(15,10,28,.7);
+  backdrop-filter:blur(10px);
+}
+.hdr-left{display:flex;align-items:center;gap:14px;}
+.hdr-logo{
+  font-family:'Fredoka One',cursive;
+  font-size:1.1rem;color:var(--purple);
+  letter-spacing:.04em;
+}
+.hdr-divider{width:1px;height:28px;background:rgba(255,255,255,.12);}
+.hdr-sub{font-size:.62rem;color:rgba(255,255,255,.35);font-weight:700;text-transform:uppercase;letter-spacing:.12em;}
+.hdr-right{display:flex;align-items:center;gap:8px;}
+.hdr-badge{
+  background:rgba(154,111,217,.15);border:1px solid rgba(154,111,217,.3);
+  color:var(--purple-light);font-size:.58rem;font-weight:800;
+  text-transform:uppercase;letter-spacing:.1em;
+  padding:6px 12px;border-radius:14px;
+}
+
+/* ── HERO ── */
+.hero{
+  position:relative;z-index:10;
+  text-align:center;padding:48px 24px 32px;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  margin-bottom:20px;
+  font-family:'Fredoka One',cursive;
+  font-size:.62rem;letter-spacing:.18em;
+  color:var(--peach);text-transform:uppercase;
+}
+.hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--peach);}
+.hero-title{
+  font-family:'Baloo 2',cursive;
+  font-size:clamp(2rem,5.5vw,3.5rem);
+  font-weight:900;color:#fff;
+  line-height:1.05;margin-bottom:12px;
+  letter-spacing:-.01em;
+}
+.hero-title span{color:var(--purple-light);}
+.hero-sub{
+  font-family:'Allura',cursive;
+  font-size:clamp(2.4rem,5vw,3.2rem);
+  color:var(--peach);
+  line-height:1;margin-bottom:14px;
+}
+.hero-desc{
+  font-size:.92rem;color:rgba(255,255,255,.6);
+  font-weight:500;max-width:580px;margin:0 auto;
+  line-height:1.6;
+}
+
+/* ── MISSION STRIP ── */
+.mission{
+  position:relative;z-index:10;
+  background:rgba(237,159,74,.10);
+  border-top:3px solid var(--peach);
+  border-bottom:1px solid rgba(237,159,74,.18);
+  padding:22px 48px;
+  display:flex;align-items:center;gap:20px;
+}
+.mission-icon{font-size:26px;flex-shrink:0;}
+.mission-text{font-size:15px;color:rgba(255,255,255,.85);line-height:1.65;font-weight:300;}
+.mission-text strong{color:#fff;font-weight:700;}
+
+/* ── ONEWORD STRIP ── */
+.ow-strip{
+  position:relative;z-index:10;
+  background:rgba(15,10,28,.85);
+  border-top:1px solid rgba(154,111,217,.15);
+  padding:22px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;flex-wrap:wrap;
+}
+.ow-strip p{
+  font-size:15px;color:rgba(255,255,255,.85);
+  font-weight:400;line-height:1.5;max-width:640px;
+}
+.ow-strip p strong{color:var(--peach);font-weight:700;}
+.ow-feature{
+  display:inline-flex;align-items:center;gap:10px;
+  background:rgba(154,111,217,.12);
+  border:1.5px solid rgba(154,111,217,.4);
+  color:var(--purple-light);
+  font-family:'Allura',cursive;font-size:1.6rem;
+  padding:6px 28px;border-radius:30px;
+  white-space:nowrap;
+}
+
+/* ── FEATURED SUBMIT ── */
+.featured-submit{
+  position:relative;z-index:10;
+  max-width:960px;margin:36px auto 28px;padding:0 20px;
+}
+.fs-card{
+  background:linear-gradient(135deg,rgba(36,27,64,.95) 60%,rgba(154,111,217,.15));
+  border:2px solid rgba(154,111,217,.35);
+  border-radius:20px;
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:280px 1fr;
+  gap:0;
+  align-items:stretch;
+}
+.fs-image-wrap{
+  background:rgba(250,239,216,.04);
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;
+  border-right:1px solid rgba(154,111,217,.2);
+}
+.fs-image-wrap img{max-width:100%;height:auto;max-height:280px;}
+.fs-content{padding:28px 32px 26px;display:flex;flex-direction:column;}
+.fs-eyebrow{
+  font-family:'Fredoka One',cursive;
+  font-size:.6rem;letter-spacing:.18em;
+  color:var(--peach);text-transform:uppercase;
+  margin-bottom:10px;
+}
+.fs-title{
+  font-family:'Baloo 2',cursive;
+  font-size:1.7rem;font-weight:900;
+  color:#fff;line-height:1.15;
+  margin-bottom:8px;
+}
+.fs-tagline{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1rem;color:var(--peach-light);
+  margin-bottom:14px;
+}
+.fs-desc{
+  font-size:.86rem;color:rgba(255,255,255,.7);
+  line-height:1.65;margin-bottom:18px;flex:1;
+}
+.fs-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  background:var(--purple-deep);color:#fff;
+  font-family:'Nunito',sans-serif;font-weight:900;
+  font-size:.92rem;letter-spacing:.03em;
+  padding:14px 24px;border-radius:14px;
+  text-decoration:none;
+  transition:all .18s;
+  align-self:flex-start;
+}
+.fs-btn:hover{background:var(--purple);transform:translateX(2px);}
+.fs-btn-arrow{font-size:1.1rem;transition:transform .18s;}
+.fs-btn:hover .fs-btn-arrow{transform:translateX(4px);}
+
+/* ── DIVIDER ── */
+.section-divider{
+  position:relative;z-index:10;
+  display:flex;align-items:center;gap:12px;
+  max-width:960px;margin:8px auto 20px;
+  padding:0 20px;
+}
+.divider-line{flex:1;height:1px;background:rgba(255,255,255,.08);}
+.divider-text{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.3);}
+
+/* ── OPTIONS ── */
+.options-section{
+  position:relative;z-index:10;
+  max-width:1200px;margin:0 auto;padding:0 20px 32px;
+}
+.options-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:16px;
+}
+.opt-card{
+  position:relative;
+  background:rgba(36,27,64,.6);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:24px 22px 22px;
+  overflow:hidden;
+  text-decoration:none;
+  display:flex;flex-direction:column;
+  transition:transform .25s,border-color .25s;
+}
+.opt-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.18);}
+.opt-content{position:relative;z-index:2;display:flex;flex-direction:column;flex:1;}
+.opt-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.opt-letter-badge{
+  font-family:'Fredoka One',cursive;
+  font-size:.65rem;letter-spacing:.1em;
+  padding:4px 10px;border-radius:20px;
+  font-weight:400;
+}
+.opt-a .opt-letter-badge{background:rgba(107,63,160,.25);color:#C5A8E8;border:1px solid rgba(107,63,160,.4);}
+.opt-b .opt-letter-badge{background:rgba(92,138,74,.25);color:#A8CC8B;border:1px solid rgba(92,138,74,.4);}
+.opt-c .opt-letter-badge{background:rgba(200,134,10,.25);color:#F5BC7E;border:1px solid rgba(200,134,10,.4);}
+.opt-d .opt-letter-badge{background:rgba(123,91,181,.25);color:#C2A6E8;border:1px solid rgba(123,91,181,.4);}
+.opt-e .opt-letter-badge{background:rgba(237,159,74,.25);color:#F5C28E;border:1px solid rgba(237,159,74,.45);}
+
+.opt-icon-wrap{
+  width:48px;height:48px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;
+}
+.opt-a .opt-icon-wrap{background:rgba(107,63,160,.18);}
+.opt-b .opt-icon-wrap{background:rgba(92,138,74,.18);}
+.opt-c .opt-icon-wrap{background:rgba(200,134,10,.18);}
+.opt-d .opt-icon-wrap{background:rgba(123,91,181,.18);}
+.opt-e .opt-icon-wrap{background:rgba(237,159,74,.18);}
+
+.opt-title{
+  font-family:'Baloo 2',cursive;
+  font-size:1.2rem;font-weight:900;
+  color:white;line-height:1.15;margin-bottom:6px;
+}
+.opt-tagline{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.84rem;margin-bottom:10px;line-height:1.5;
+}
+.opt-a .opt-tagline{color:rgba(197,168,232,.85);}
+.opt-b .opt-tagline{color:rgba(168,204,139,.85);}
+.opt-c .opt-tagline{color:rgba(245,188,126,.85);}
+.opt-d .opt-tagline{color:rgba(194,166,232,.85);}
+.opt-e .opt-tagline{color:rgba(245,194,142,.9);}
+
+.opt-desc{
+  font-size:.78rem;color:rgba(255,255,255,.5);
+  font-weight:500;line-height:1.6;
+  margin-bottom:18px;flex:1;
+}
+
+.opt-btn{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;border-radius:12px;
+  font-family:'Nunito',sans-serif;font-weight:900;font-size:.82rem;
+  letter-spacing:.03em;border:none;cursor:pointer;
+  transition:all .18s;width:100%;
+}
+.opt-a .opt-btn{background:var(--opt-a);color:white;}
+.opt-b .opt-btn{background:var(--opt-b);color:white;}
+.opt-c .opt-btn{background:var(--opt-c);color:white;}
+.opt-d .opt-btn{background:var(--opt-d);color:white;}
+.opt-e .opt-btn{background:var(--opt-e);color:#3D2D20;}
+.opt-btn:hover{filter:brightness(1.15);}
+.opt-btn-arrow{font-size:1rem;transition:transform .18s;}
+.opt-card:hover .opt-btn-arrow{transform:translateX(4px);}
+
+.opt-corner{
+  position:absolute;bottom:-20px;right:-20px;
+  width:90px;height:90px;border-radius:50%;
+  opacity:.08;z-index:1;transition:opacity .3s,transform .3s;
+}
+.opt-card:hover .opt-corner{opacity:.16;transform:scale(1.1);}
+.opt-a .opt-corner{background:var(--opt-a);}
+.opt-b .opt-corner{background:var(--opt-b);}
+.opt-c .opt-corner{background:var(--opt-c);}
+.opt-d .opt-corner{background:var(--opt-d);}
+.opt-e .opt-corner{background:var(--opt-e);}
+
+/* ── UTILITY ── */
+.utility-pills{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:12px;
+  padding:20px 20px 28px;position:relative;z-index:10;
+}
+.util-pill{
+  display:inline-flex;align-items:center;gap:10px;
+  background:rgba(36,27,64,.7);
+  border:1.5px solid rgba(255,255,255,.1);
+  border-radius:50px;padding:11px 22px;
+  text-decoration:none;
+  font-family:'Fredoka One',cursive;font-size:.85rem;
+  color:#fff;transition:all .18s;
+}
+.util-pill:hover{border-color:rgba(154,111,217,.5);background:rgba(36,27,64,.9);}
+.util-tag{
+  font-size:.62rem;background:var(--purple-deep);color:#fff;
+  padding:3px 10px;border-radius:18px;
+  font-family:'Nunito',sans-serif;font-weight:900;letter-spacing:.04em;
+}
+
+/* ── FOOTER ── */
+.footer{
+  position:relative;z-index:10;
+  text-align:center;padding:20px 24px;
+  border-top:1px solid rgba(255,255,255,.05);
+  background:rgba(0,0,0,.25);
+  margin-top:auto;
+}
+.footer-brand{
+  font-family:'Fredoka One',cursive;
+  font-size:.85rem;color:rgba(154,111,217,.55);
+  letter-spacing:.06em;margin-bottom:4px;
+}
+.footer-sub{font-size:.6rem;color:rgba(255,255,255,.25);font-weight:600;letter-spacing:.08em;}
+.footer-copyright{font-size:.55rem;color:rgba(255,255,255,.18);font-weight:600;letter-spacing:.06em;margin-top:8px;}
+
+/* ── RESPONSIVE ── */
+@media (max-width:720px){
+  .fs-card{grid-template-columns:1fr;}
+  .fs-image-wrap{border-right:none;border-bottom:1px solid rgba(154,111,217,.2);padding:18px;}
+  .fs-image-wrap img{max-height:200px;}
+  .mission,.ow-strip{padding:20px 22px;}
+  .hero{padding:36px 20px 24px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-left">
+    <div class="hdr-logo">🎯 Smile Bags</div>
+    <div class="hdr-divider"></div>
+    <div class="hdr-sub">Word &amp; Wonder · Spring 2026</div>
+  </div>
+  <div class="hdr-right">
+    <div class="hdr-badge">Physics</div>
+    <a href="Spinning_Tops_Lesson.html" target="_blank" class="hdr-badge" style="background:rgba(127,176,95,.15);border-color:rgba(127,176,95,.35);color:#A8CC8B;text-decoration:none;cursor:pointer;">Mr. Acikgoz</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">
+    <div class="hero-eyebrow-dot"></div>
+    <div class="hero-eyebrow-text">Engineering Lab · 4 Resources · 1 OneWord</div>
+    <div class="hero-eyebrow-dot"></div>
+  </div>
+  <h1 class="hero-title">Spinning Tops <span>Lab</span></h1>
+  <p class="hero-sub">Balance</p>
+  <p class="hero-desc">An engineering journey from CAD to spin test. Explore the AI evaluation, the rubric, and the lesson — then submit your own design for AI feedback.</p>
+</section>
+
+<!-- MISSION STRIP -->
+<div class="mission">
+  <span class="mission-icon">🎯</span>
+  <p class="mission-text">In Mr. Acikgoz's physics class, <strong>students designed spinning tops in Tinkercad</strong> — pushing the limits of <strong>weight, balance, sharpness, and symmetry</strong>. Some spun beautifully. Some failed in the print bed. Some surprised everyone. Each design became a lesson in physics meeting feeling.</p>
+</div>
+
+<!-- ONEWORD STRIP -->
+<div class="ow-strip">
+  <p><strong>One OneWord shaped this lab:</strong> Balance &mdash; what holds the spin together. The same word that anchors an ecosystem, anchors a child finding their footing, anchors a top that keeps its axis. Physics meets feeling.</p>
+  <span class="ow-feature">Balance</span>
+</div>
+
+<!-- FEATURED SUBMIT -->
+<div class="featured-submit">
+  <div class="fs-card">
+    <div class="fs-image-wrap">
+      <img src="spinningtop_1.png" alt="Celebrated tall flared dome spinning top design">
+    </div>
+    <div class="fs-content">
+      <div class="fs-eyebrow">Submit Your Top &middot; AI Feedback</div>
+      <h2 class="fs-title">Design a Spinning Top. Get AI Feedback.</h2>
+      <p class="fs-tagline">Design in Tinkercad. Submit your link and a screenshot. Our AI evaluator scores it against the same 4-question rubric used in the lab &mdash; then suggests one thing to change for Round 2.</p>
+      <p class="fs-desc">Bring your own design built in Tinkercad. Share the public link plus a screenshot of your model. The AI reads your design and returns: a score out of 12, a predicted spin time, what&rsquo;s strong, and what to refine. Use the feedback to redesign and submit again.</p>
+      <a class="fs-btn" href="https://forms.gle/P594ajA7Lr7Es4kR8" target="_blank" rel="noopener">
+        Submit Your Top
+        <span class="fs-btn-arrow">&rarr;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- DIVIDER -->
+<div class="section-divider">
+  <div class="divider-line"></div>
+  <div class="divider-text">Explore the Lab</div>
+  <div class="divider-line"></div>
+</div>
+
+<!-- OPTIONS -->
+<section class="options-section">
+  <div class="options-grid">
+
+    <!-- OPTION B -->
+    <a class="opt-card opt-b" href="Spinning_Tops_Lesson.html">
+      <div class="opt-corner"></div>
+      <div class="opt-content">
+        <div class="opt-top">
+          <span class="opt-letter-badge">The Lab</span>
+          <div class="opt-icon-wrap">🔬</div>
+        </div>
+        <div class="opt-title">The Spinning Tops Lab</div>
+        <div class="opt-tagline">Predict &middot; Test &middot; Compare &middot; Redesign.</div>
+        <div class="opt-desc">The full lesson behind the lab: the physics of spin, the fair-test rules, the four-phase activity, and the path to a Round 2 redesign.</div>
+        <button class="opt-btn">
+          Read the Lesson
+          <span class="opt-btn-arrow">&rarr;</span>
+        </button>
+      </div>
+    </a>
+
+    <!-- OPTION C -->
+    <a class="opt-card opt-c" href="Top_Rubric_Card.html">
+      <div class="opt-corner"></div>
+      <div class="opt-content">
+        <div class="opt-top">
+          <span class="opt-letter-badge">The Rubric</span>
+          <div class="opt-icon-wrap">📐</div>
+        </div>
+        <div class="opt-title">The 4-Question Rubric</div>
+        <div class="opt-tagline">Score every top with the same four questions.</div>
+        <div class="opt-desc">Weight. Point. Balance. Smoothness. The reference card students used to score every design before testing &mdash; and the framework our AI uses too.</div>
+        <button class="opt-btn">
+          See the Rubric
+          <span class="opt-btn-arrow">&rarr;</span>
+        </button>
+      </div>
+    </a>
+
+    <!-- OPTION D -->
+    <a class="opt-card opt-d" href="AI_Evaluation_17_Tops.html">
+      <div class="opt-corner"></div>
+      <div class="opt-content">
+        <div class="opt-top">
+          <span class="opt-letter-badge">AI Gallery</span>
+          <div class="opt-icon-wrap">✨</div>
+        </div>
+        <div class="opt-title">AI Evaluation Gallery</div>
+        <div class="opt-tagline">The forecast before the spin.</div>
+        <div class="opt-desc">Walk through how AI evaluates a spinning top &mdash; score, predicted spin time, what&rsquo;s strong, and what to redesign. See the 4-question rubric in action.</div>
+        <button class="opt-btn">
+          Open the Gallery
+          <span class="opt-btn-arrow">&rarr;</span>
+        </button>
+      </div>
+    </a>
+
+    <!-- OPTION E -->
+    <a class="opt-card opt-e" href="Balance_TradingCard_Kiosk.html">
+      <div class="opt-corner"></div>
+      <div class="opt-content">
+        <div class="opt-top">
+          <span class="opt-letter-badge">The Card Kiosk</span>
+          <div class="opt-icon-wrap">🃏</div>
+        </div>
+        <div class="opt-title">Balance Trading Cards</div>
+        <div class="opt-tagline">Pick a design &middot; pick a quote &middot; sign &middot; print.</div>
+        <div class="opt-desc">An interactive kiosk: students choose a spinning top design, pair it with a Balance quote, sign the card, and print 2 copies for Smile Bags.</div>
+        <button class="opt-btn">
+          Open the Kiosk
+          <span class="opt-btn-arrow">&rarr;</span>
+        </button>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- UTILITY PILLS -->
+<div class="utility-pills">
+  <a href="#" class="util-pill" id="kioskPill" target="_blank" rel="noopener" style="opacity:.55;" onclick="alert('Spinning Tops Lab Kiosk URL goes here — share with Ms. Howell to wire up.');return false;">
+    🎯 Spinning Tops Lab Kiosk
+    <span class="util-tag">Live</span>
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-brand">🎯 Smile Bags &middot; A Word &amp; Wonder Experience</div>
+  <div class="footer-sub">Physics &middot; Mr. Acikgoz &middot; Spring 2026</div>
+  <div class="footer-copyright">Created by Laura Howell &middot; © 2025–2026</div>
+</footer>
+
+</body>
+</html>
