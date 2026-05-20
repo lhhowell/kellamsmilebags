@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Hub · a Word & Wonder space</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   MATH HUB · A Word & Wonder space · v1.0
+   © 2025–2026 Laura Howell · All rights reserved
+
+   This is the index page for the Math kiosks at
+   lhhowell.github.io/kellamsmilebags/Math/
+   Deploy this file as: /Math/index.html
+============================================================ */
+
+:root {
+  --bg:        #3b1260;
+  --bg-card:   #4a1d75;
+  --bg-deep:   #2a0c47;
+  --bg-paper:  #f8f4fc;
+  --paper-warm:#fdf9f2;
+  --cream:     #f8f4fc;
+  --cream-dim: #d9cde6;
+  --cream-soft: rgba(248, 244, 252, 0.7);
+  --ink:       #2a0c47;
+  --ink-soft:  #4a3866;
+  --ink-faint: #6b5587;
+  --sage:      #88b074;
+  --sage-deep: #4e7f47;
+  --sage-glow: #c9e1bb;
+  --peach:     #ed9f4a;
+  --peach-dim: #c47e36;
+  --peach-soft:#fce6c8;
+  --border:    rgba(248, 244, 252, 0.18);
+  --border-ink: rgba(42, 12, 71, 0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  background-image:
+    radial-gradient(circle at 15% 8%, rgba(136, 176, 116, 0.10) 0%, transparent 45%),
+    radial-gradient(circle at 85% 92%, rgba(237, 159, 74, 0.08) 0%, transparent 45%);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HUB HEADER ── */
+.hub-header {
+  background: var(--bg-deep);
+  border-bottom: 1px solid var(--border);
+  padding: 24px 32px;
+}
+.hub-header-row {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.hub-brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+.hub-brand-mark {
+  font-family: 'Allura', cursive;
+  font-size: 24px;
+  color: var(--peach);
+}
+.hub-brand-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--cream);
+  margin-top: -2px;
+  letter-spacing: 0.5px;
+}
+.hub-meta {
+  text-align: right;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  line-height: 1.7;
+}
+.hub-meta strong {
+  color: var(--peach);
+  font-weight: 600;
+}
+
+/* ── STAGE ── */
+.stage {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 40px 32px 56px;
+}
+
+/* ── INTRO ── */
+.intro {
+  text-align: center;
+  margin-bottom: 42px;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.intro-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--peach);
+  margin-bottom: 12px;
+}
+.intro-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 42px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.intro-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-style: italic;
+  color: var(--cream-soft);
+  line-height: 1.55;
+}
+.intro-body strong {
+  font-style: normal;
+  color: var(--sage-glow);
+  font-weight: 600;
+}
+
+/* ── KIOSK GRID ── */
+.kiosk-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 36px;
+}
+
+/* ── KIOSK CARD ── */
+.kiosk-card {
+  background: var(--bg-paper);
+  color: var(--ink);
+  border-radius: 14px;
+  padding: 0;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.30);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+}
+.kiosk-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.40);
+}
+.kiosk-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 5px;
+  background: linear-gradient(90deg, var(--sage-deep) 0%, var(--peach) 100%);
+}
+
+.kiosk-card-inner {
+  padding: 28px 28px 22px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* OneWord badge */
+.kiosk-oneword {
+  text-align: center;
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed rgba(42, 12, 71, 0.15);
+}
+.kiosk-oneword-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--peach-dim);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.kiosk-oneword-word {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  color: var(--sage-deep);
+  line-height: 1;
+}
+.kiosk-oneword-word.multi {
+  font-style: italic;
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: var(--ink-soft);
+}
+
+/* Title & meta */
+.kiosk-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 6px;
+  text-align: center;
+}
+.kiosk-subject {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--peach-dim);
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+/* Teacher credits — originator first */
+.kiosk-credits {
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed rgba(42, 12, 71, 0.12);
+}
+.kiosk-credits .teacher-1 {
+  font-weight: 700;
+  color: var(--ink);
+}
+.kiosk-credits .amp {
+  color: var(--peach-dim);
+  margin: 0 6px;
+}
+.kiosk-credits .teacher-2 {
+  font-style: italic;
+}
+.kiosk-credits .role-note {
+  display: block;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--ink-faint);
+  margin-top: 4px;
+}
+
+/* Description */
+.kiosk-description {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+/* Special callout (Jennings 100% rating) */
+.kiosk-callout {
+  background: rgba(78, 127, 71, 0.12);
+  border-left: 3px solid var(--sage-deep);
+  border-radius: 0 4px 4px 0;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.45;
+}
+.kiosk-callout strong {
+  font-style: normal;
+  color: var(--sage-deep);
+  font-weight: 700;
+}
+
+/* Enter button */
+.kiosk-enter {
+  margin-top: auto;
+  background: var(--sage-deep);
+  color: var(--cream);
+  text-align: center;
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background 0.18s ease;
+}
+.kiosk-card:hover .kiosk-enter {
+  background: var(--peach);
+  color: var(--ink);
+}
+
+/* ── FOOTER ── */
+.hub-footer {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 32px 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  line-height: 1.8;
+}
+.hub-footer .footer-mark {
+  font-family: 'Allura', cursive;
+  font-size: 20px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--peach);
+  display: block;
+  margin-bottom: 4px;
+}
+.hub-footer a {
+  color: var(--sage-glow);
+  text-decoration: none;
+}
+.hub-footer a:hover {
+  color: var(--peach);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 940px) {
+  .kiosk-grid { grid-template-columns: 1fr; gap: 18px; }
+  .intro-title { font-size: 32px; }
+  .intro-body { font-size: 16px; }
+  .hub-brand-title { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+  <!-- ════════ HUB HEADER ════════ -->
+  <header class="hub-header">
+    <div class="hub-header-row">
+      <div class="hub-brand">
+        <span class="hub-brand-mark">a Word &amp; Wonder space</span>
+        <span class="hub-brand-title">Math Hub</span>
+      </div>
+      <div class="hub-meta">
+        <strong>Spring 2026</strong>
+      </div>
+    </div>
+  </header>
+
+  <!-- ════════ STAGE ════════ -->
+  <main class="stage">
+
+    <!-- Intro -->
+    <section class="intro">
+      <div class="intro-eyebrow">Math Hub · Smile Bags Spring 2026</div>
+      <h1 class="intro-title">Three kiosks. Three collaborations. One framework.</h1>
+      <p class="intro-body">
+        These are collaboration projects between Kellam teachers and the ITS Coach, converted into kiosk activities for the
+        <strong>Smile Bags STEAM Boxes</strong> project. Each one started with a teacher who said yes, a lesson that already worked, and a question: <em>what would this become if it could run itself?</em>
+      </p>
+    </section>
+
+    <!-- Kiosk grid -->
+    <section class="kiosk-grid">
+
+      <!-- ─── CARD 1 · Friendly Math ─── -->
+      <a class="kiosk-card" href="./FriendlyMath.html">
+        <div class="kiosk-card-inner">
+
+          <div class="kiosk-oneword">
+            <div class="kiosk-oneword-label">OneWord</div>
+            <div class="kiosk-oneword-word multi">four words</div>
+          </div>
+
+          <h2 class="kiosk-title">Friendly Math</h2>
+          <div class="kiosk-subject">Elementary &amp; Middle School Math</div>
+
+          <div class="kiosk-credits">
+            <span class="teacher-1">Howell</span><span class="amp">&amp;</span><span class="teacher-2">Polhemus</span>
+            <span class="role-note">built by Howell · evaluated by Polhemus</span>
+          </div>
+
+          <p class="kiosk-description">
+            Designed for self-contained students. Pictures and Numbers side-by-side, with a built-in <strong>Dyscalculator</strong> for visual learners. The calculator was redesigned smaller to fit Chromebook screens based on Polhemus's classroom feedback.
+          </p>
+
+          <div class="kiosk-enter">Enter Kiosk →</div>
+        </div>
+      </a>
+
+      <!-- ─── CARD 2 · Sudan Server Simulation ─── -->
+      <a class="kiosk-card" href="./SudanServerSim_Kiosk.html">
+        <div class="kiosk-card-inner">
+
+          <div class="kiosk-oneword">
+            <div class="kiosk-oneword-label">OneWord</div>
+            <div class="kiosk-oneword-word">CONNECT</div>
+          </div>
+
+          <h2 class="kiosk-title">Sudan Server Simulation</h2>
+          <div class="kiosk-subject">AP Computer Science</div>
+
+          <div class="kiosk-credits">
+            <span class="teacher-1">Jennings</span><span class="amp">&amp;</span><span class="teacher-2">Howell</span>
+            <span class="role-note">Jennings shared a premade source lesson · Howell built the kiosk</span>
+          </div>
+
+          <p class="kiosk-description">
+            A simulation exploring what happens when internet infrastructure is cut off mid-conflict. Students feel the cost of disconnection by walking through the technical and human consequences.
+          </p>
+
+          <div class="kiosk-callout">
+            <strong>Student-rated 100%.</strong> The source lesson was delivered in Jennings' AP CS class and received a perfect rating from students before this kiosk version was built.
+          </div>
+
+          <div class="kiosk-enter">Enter Kiosk →</div>
+        </div>
+      </a>
+
+      <!-- ─── CARD 3 · Confidence Interval Simulation ─── -->
+      <a class="kiosk-card" href="./ConfidenceInterval_Sim_Kiosk.html">
+        <div class="kiosk-card-inner">
+
+          <div class="kiosk-oneword">
+            <div class="kiosk-oneword-label">OneWord</div>
+            <div class="kiosk-oneword-word">ANCHOR</div>
+          </div>
+
+          <h2 class="kiosk-title">Confidence Interval Simulation</h2>
+          <div class="kiosk-subject">AP Statistics</div>
+
+          <div class="kiosk-credits">
+            <span class="teacher-1">Ferebee</span><span class="amp">&amp;</span><span class="teacher-2">Howell</span>
+            <span class="role-note">Ferebee shared the lesson · Howell enhanced and built the kiosk</span>
+          </div>
+
+          <p class="kiosk-description">
+            An interactive simulation of 100 confidence intervals at once. Drag a slider, watch the intervals shift, and discover what "95% confident" actually means. The dashed black line — the true value — is the anchor.
+          </p>
+
+          <div class="kiosk-enter">Enter Kiosk →</div>
+        </div>
+      </a>
+
+    </section>
+
+  </main>
+
+  <!-- ════════ FOOTER ════════ -->
+  <footer class="hub-footer">
+    <span class="footer-mark">a Word &amp; Wonder space</span>
+    Math Hub · Smile Bags · Spring 2026<br>
+    Curated by Laura Howell, ITS Coach · © 2025–2026
+  </footer>
+
+</body>
+</html>
