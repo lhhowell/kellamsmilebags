@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AP Statistics · Confidence Intervals · Lesson Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Special+Elite&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Caveat:wght@600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:        #fdf8ec;
+  --paper-deep:   #f5ecd9;
+  --paper-edge:   #ebe0c8;
+  --ink:          #2a1a45;
+  --ink-soft:     rgba(42,26,69,.72);
+  --ink-faint:    rgba(42,26,69,.45);
+  --ink-trace:    rgba(42,26,69,.18);
+  --peach:        #b85a3e;
+  --peach-bright: #d97757;
+  --gold:         #a88830;
+  --gold-bright:  #c9a84c;
+  --teal:         #2d6e6e;
+  --rule:         rgba(42,26,69,.18);
+  --code-bg:      #2a1a45;
+  --code-ink:     #f5ecd9;
+  --code-accent:  #c9a84c;
+  --bg-screen:    #1a1530;
+  --capture-blue: #2E86AB;
+  --miss-red:     #E84855;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg-screen);
+  min-height: 100vh;
+  padding: 40px 24px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.screen-note {
+  max-width: 700px;
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  color: rgba(245,236,217,.6);
+  font-size: 14px;
+  line-height: 1.7;
+  font-style: italic;
+}
+.screen-note .head {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 3px;
+  color: #f5ecd9;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  font-style: normal;
+}
+.print-btn {
+  display: inline-block;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 14px 26px;
+  background: var(--peach-bright);
+  border: 1px solid var(--peach-bright);
+  color: var(--bg-screen);
+  cursor: pointer;
+  border-radius: 2px;
+  margin-top: 14px;
+}
+.print-btn:hover { background: #f5ecd9; }
+
+.hub {
+  width: 8.5in;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Cormorant Garamond', serif;
+  box-shadow: 0 30px 80px rgba(0,0,0,.6);
+}
+
+.section {
+  padding: 0.75in 0.85in;
+  min-height: 11in;
+  position: relative;
+  border-bottom: 1px dashed var(--ink-trace);
+}
+.section:last-child { border-bottom: 0; }
+
+.masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 14px;
+  margin-bottom: 26px;
+  border-bottom: 1px solid var(--rule);
+}
+.masthead .brand {
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--peach);
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+.masthead .brand .line2 {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: var(--ink);
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+.masthead .page-marker {
+  text-align: right;
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+.masthead .page-marker .pm-label { color: var(--gold); }
+
+.cover-eyebrow {
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--peach);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.cover-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 52px;
+  letter-spacing: 5px;
+  color: var(--ink);
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.05;
+  margin-bottom: 14px;
+}
+.cover-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 22px;
+  color: var(--ink-soft);
+  text-align: center;
+  margin-bottom: 36px;
+  letter-spacing: 1px;
+}
+.collab-badge {
+  margin: 0 auto 40px;
+  padding: 22px 32px;
+  border: 2px solid var(--ink);
+  background: rgba(255,255,255,.4);
+  max-width: 5.5in;
+  text-align: center;
+  position: relative;
+}
+.collab-badge::before {
+  content: '·  COLLABORATION  ·';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--peach);
+  background: var(--paper);
+  padding: 0 12px;
+}
+.collab-names {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 2.5px;
+  color: var(--ink);
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+.collab-names .amp {
+  color: var(--peach);
+  margin: 0 12px;
+  font-weight: 400;
+}
+.collab-roles {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin-top: 8px;
+}
+
+.cover-meta {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 0 auto 30px;
+  max-width: 6.5in;
+}
+.cover-meta-cell {
+  text-align: center;
+  padding: 14px 8px;
+  border: 1px solid var(--rule);
+  background: rgba(255,255,255,.35);
+}
+.cover-meta-cell .key {
+  font-family: 'Special Elite', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--peach);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.cover-meta-cell .val {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+
+.section-eyebrow {
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--peach);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: 3px;
+  color: var(--ink);
+  text-transform: uppercase;
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+.section-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--ink-soft);
+  margin-bottom: 26px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--rule);
+}
+
+h3 {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 2.5px;
+  color: var(--ink);
+  text-transform: uppercase;
+  margin: 22px 0 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px dashed var(--rule);
+}
+h3:first-child { margin-top: 0; }
+
+h4 {
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  color: var(--peach);
+  text-transform: uppercase;
+  margin: 16px 0 6px;
+}
+
+p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13pt;
+  line-height: 1.6;
+  color: var(--ink);
+  margin-bottom: 11px;
+}
+
+ul, ol {
+  margin: 0 0 14px 20px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13pt;
+  line-height: 1.55;
+  color: var(--ink);
+}
+ul li, ol li { margin-bottom: 6px; }
+
+strong { font-weight: 700; color: var(--ink); }
+
+em.term {
+  font-style: normal;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5pt;
+  color: var(--peach);
+  background: rgba(184,90,62,.08);
+  padding: 1px 6px;
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+.glance {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.glance-card {
+  padding: 16px 18px;
+  background: rgba(255,255,255,.45);
+  border-left: 3px solid var(--peach);
+  border-radius: 0 4px 4px 0;
+}
+.glance-card.gold { border-left-color: var(--gold); }
+.glance-card.teal { border-left-color: var(--teal); }
+.glance-card.ink  { border-left-color: var(--ink); }
+.glance-card .label {
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--peach);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.glance-card.gold .label { color: var(--gold); }
+.glance-card.teal .label { color: var(--teal); }
+.glance-card.ink  .label { color: var(--ink-soft); }
+.glance-card ul { margin: 0 0 0 18px; font-size: 11.5pt; line-height: 1.5; }
+.glance-card p { font-size: 11.5pt; margin-bottom: 6px; }
+
+.vocab-block {
+  margin-top: 14px;
+  padding: 16px 18px;
+  background: rgba(42,26,69,.04);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+}
+.vocab-block .label {
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--peach);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.vocab-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.vocab-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5pt;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+.callout {
+  margin: 14px 0;
+  padding: 14px 18px;
+  background: rgba(168,136,48,.1);
+  border-left: 4px solid var(--gold);
+  border-radius: 0 4px 4px 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12.5pt;
+  line-height: 1.55;
+  font-style: italic;
+}
+.callout strong {
+  font-style: normal;
+  font-family: 'Special Elite', monospace;
+  font-size: 10pt;
+  letter-spacing: 2px;
+  color: var(--peach);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+  font-weight: normal;
+}
+
+.code-block {
+  margin: 14px 0;
+  background: var(--code-bg);
+  color: var(--code-ink);
+  padding: 18px 22px;
+  border-radius: 4px;
+  position: relative;
+  box-shadow: 0 4px 16px rgba(0,0,0,.25);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10pt;
+  line-height: 1.55;
+  overflow-x: auto;
+}
+.code-block .code-label {
+  position: absolute;
+  top: -8px;
+  left: 18px;
+  background: var(--code-accent);
+  color: var(--ink);
+  font-family: 'Special Elite', monospace;
+  font-size: 9.5pt;
+  letter-spacing: 2px;
+  padding: 3px 12px;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-radius: 2px;
+}
+.code-block .kw { color: #c9a84c; }
+.code-block .str { color: #7eb863; }
+.code-block .num { color: #d97757; }
+.code-block .com { color: rgba(245,236,217,.45); font-style: italic; }
+
+.handout-marker {
+  display: inline-block;
+  font-family: 'Special Elite', monospace;
+  font-size: 9pt;
+  letter-spacing: 2px;
+  background: var(--peach);
+  color: var(--paper);
+  padding: 3px 12px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.handout-marker.teacher { background: var(--teal); }
+.handout-marker.gold { background: var(--gold); }
+
+.five-ways {
+  margin: 18px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.way-card {
+  padding: 12px 14px;
+  background: rgba(255,255,255,.45);
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--peach);
+  border-radius: 0 0 3px 3px;
+}
+.way-card:nth-child(2) { border-top-color: var(--gold); }
+.way-card:nth-child(3) { border-top-color: var(--teal); }
+.way-card:nth-child(4) { border-top-color: var(--ink); }
+.way-card:nth-child(5) { border-top-color: var(--peach-bright); }
+.way-card .way-num {
+  font-family: 'Special Elite', monospace;
+  font-size: 9pt;
+  letter-spacing: 1.5px;
+  color: var(--peach);
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.way-card:nth-child(2) .way-num { color: var(--gold); }
+.way-card:nth-child(3) .way-num { color: var(--teal); }
+.way-card:nth-child(4) .way-num { color: var(--ink-soft); }
+.way-card:nth-child(5) .way-num { color: var(--peach-bright); }
+.way-card .way-name {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 11.5pt;
+  letter-spacing: 1px;
+  color: var(--ink);
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.way-card .way-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10.5pt;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.lab-q {
+  margin: 14px 0;
+  padding: 14px 16px 12px;
+  background: rgba(255,255,255,.45);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  page-break-inside: avoid;
+}
+.lab-q .q-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.lab-q .q-num {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 18pt;
+  color: var(--peach);
+  line-height: 1;
+}
+.lab-q .q-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 13pt;
+  letter-spacing: 1.5px;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+.lab-q .q-prompt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5pt;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 8px 12px;
+  border-radius: 3px;
+  margin: 8px 0;
+  line-height: 1.5;
+}
+.lab-q .q-prompt::before {
+  content: 'Prompt → ';
+  color: var(--code-accent);
+  font-weight: 700;
+}
+.lab-q .q-question {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12pt;
+  line-height: 1.55;
+  color: var(--ink);
+  margin-top: 8px;
+}
+.lab-q .q-question::before {
+  content: 'Question — ';
+  font-family: 'Special Elite', monospace;
+  font-size: 10pt;
+  letter-spacing: 1.5px;
+  color: var(--peach);
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.lab-q .answer-space {
+  margin-top: 10px;
+  border-bottom: 1px solid var(--rule);
+  border-bottom-style: dashed;
+  padding-bottom: 28px;
+}
+.lab-q .answer-space.tall { padding-bottom: 44px; }
+
+.rubric {
+  margin: 18px 0;
+  border-collapse: collapse;
+  width: 100%;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11pt;
+  line-height: 1.45;
+  background: rgba(255,255,255,.5);
+}
+.rubric caption {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: var(--ink);
+  text-transform: uppercase;
+  text-align: left;
+  padding: 8px 0 14px;
+  caption-side: top;
+}
+.rubric th, .rubric td {
+  border: 1px solid var(--rule);
+  padding: 10px 12px;
+  vertical-align: top;
+  text-align: left;
+}
+.rubric thead th {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 10.5pt;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.rubric thead th:first-child { background: var(--peach); }
+.rubric tbody td:first-child {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 10.5pt;
+  letter-spacing: 1px;
+  color: var(--ink);
+  text-transform: uppercase;
+  background: rgba(184,90,62,.08);
+}
+.rubric tbody tr:nth-child(even) { background: rgba(168,136,48,.05); }
+.rubric .q-tag {
+  font-family: 'Special Elite', monospace;
+  font-size: 8.5pt;
+  letter-spacing: 1px;
+  color: var(--gold);
+  display: block;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+
+.exit-card {
+  margin: 16px 0;
+  padding: 16px 18px;
+  background: rgba(255,255,255,.5);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+}
+.exit-card .exit-num {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 16pt;
+  color: var(--peach);
+  margin-right: 8px;
+}
+.exit-card .exit-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 13pt;
+  letter-spacing: 1.5px;
+  color: var(--ink);
+  text-transform: uppercase;
+  display: inline;
+}
+.exit-card .exit-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12pt;
+  line-height: 1.55;
+  color: var(--ink);
+  margin-top: 8px;
+}
+.exit-card .answer-key {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: rgba(74,136,71,.1);
+  border-left: 3px solid #4a8847;
+  border-radius: 0 3px 3px 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11.5pt;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.exit-card .answer-key strong {
+  font-family: 'Special Elite', monospace;
+  font-size: 9.5pt;
+  letter-spacing: 2px;
+  color: #4a8847;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+  font-weight: normal;
+}
+
+.pba-hero {
+  margin: 18px 0 22px;
+  padding: 26px 28px;
+  background: linear-gradient(135deg, rgba(168,136,48,.18), rgba(184,90,62,.12));
+  border: 2px solid var(--ink);
+  position: relative;
+}
+.pba-hero::before {
+  content: '· EXTENSION · THE CONFIDENCE AUDIT ·';
+  position: absolute;
+  top: -10px;
+  left: 24px;
+  background: var(--paper);
+  font-family: 'Special Elite', monospace;
+  font-size: 10pt;
+  letter-spacing: 2.5px;
+  color: var(--peach);
+  padding: 0 12px;
+}
+.pba-hero .pba-tag {
+  font-family: 'Special Elite', monospace;
+  font-size: 10pt;
+  letter-spacing: 2px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.pba-hero .pba-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: 2.5px;
+  color: var(--ink);
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+.pba-hero .pba-lead {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 14pt;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.pba-phases {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 18px 0;
+}
+.pba-phase {
+  padding: 12px 14px;
+  background: rgba(255,255,255,.5);
+  border: 1px solid var(--ink-trace);
+  border-top: 3px solid var(--peach);
+  border-radius: 0 0 3px 3px;
+}
+.pba-phase:nth-child(2) { border-top-color: var(--gold); }
+.pba-phase:nth-child(3) { border-top-color: var(--teal); }
+.pba-phase:nth-child(4) { border-top-color: var(--ink); }
+.pba-phase .phase-num {
+  font-family: 'Special Elite', monospace;
+  font-size: 9pt;
+  letter-spacing: 1.5px;
+  color: var(--peach);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.pba-phase:nth-child(2) .phase-num { color: var(--gold); }
+.pba-phase:nth-child(3) .phase-num { color: var(--teal); }
+.pba-phase:nth-child(4) .phase-num { color: var(--ink-soft); }
+.pba-phase .phase-name {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 11.5pt;
+  letter-spacing: 1px;
+  color: var(--ink);
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.pba-phase .phase-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10.5pt;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.doc-footer {
+  margin-top: 32px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  text-align: center;
+  font-family: 'Special Elite', monospace;
+  font-size: 9pt;
+  letter-spacing: 2px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  line-height: 1.7;
+}
+.doc-footer .credit-line {
+  color: var(--peach);
+  margin-top: 4px;
+}
+
+@media print {
+  body { background: white; padding: 0; }
+  .screen-note, .print-btn { display: none; }
+  .hub { box-shadow: none; margin: 0; }
+  .section {
+    page-break-before: always;
+    page-break-inside: avoid;
+    border-bottom: 0;
+  }
+  .section:first-child { page-break-before: avoid; }
+  .lab-q { page-break-inside: avoid; }
+  @page { size: letter portrait; margin: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="screen-note">
+  <div class="head">AP Statistics Lesson Hub · Confidence Intervals</div>
+  <div>A four-part AI-integrated AP Statistics lab on confidence intervals for proportions. Teacher background, student handouts, rubric, exit ticket, and PBA extension all in one printable document. Each major section prints as its own page.</div>
+  <button class="print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+</div>
+
+<div class="hub">
+
+<!-- ════════════════════ COVER ════════════════════ -->
+<div class="section">
+
+  <div class="masthead">
+    <div class="brand">
+      A Word &amp; Wonder Experience
+      <div class="line2">AP Statistics · Math Hub</div>
+    </div>
+    <div class="page-marker">
+      <span class="pm-label">Lesson Hub</span><br>
+      Spring 2026
+    </div>
+  </div>
+
+  <div class="cover-eyebrow">Inference for Proportions · Confidence Intervals</div>
+  <div class="cover-title">A Visual Inquiry<br>Into Confidence</div>
+  <div class="cover-subtitle">What does "95% confident" actually mean? A simulation lab that makes the abstract concrete.</div>
+
+  <div class="collab-badge">
+    <div class="collab-names">
+      <span>Ferebee</span>
+      <span class="amp">&amp;</span>
+      <span>Ms. Howell</span>
+    </div>
+    <div class="collab-roles">Content teacher · ITS Coach</div>
+  </div>
+
+  <div class="cover-meta">
+    <div class="cover-meta-cell">
+      <div class="key">Grade</div>
+      <div class="val">11–12</div>
+    </div>
+    <div class="cover-meta-cell">
+      <div class="key">Length</div>
+      <div class="val">60 min</div>
+    </div>
+    <div class="cover-meta-cell">
+      <div class="key">Topic</div>
+      <div class="val">CI (Proportion)</div>
+    </div>
+    <div class="cover-meta-cell">
+      <div class="key">AI Tool</div>
+      <div class="val">Gemini</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 32px;">Lesson at a Glance</h3>
+
+  <div class="glance">
+    <div class="glance-card">
+      <div class="label">Primary Learning Target</div>
+      <p>I can interpret a confidence interval correctly, explain what the confidence level means, and predict how changes in sample size and confidence level affect the margin of error.</p>
+    </div>
+    <div class="glance-card gold">
+      <div class="label">AP Stats Standards</div>
+      <ul>
+        <li>Unit 6 · Inference for Proportions</li>
+        <li>UNC-4 · Statistical inference makes claims about a population using sample data</li>
+        <li>UNC-4.D · Identify the conditions for valid CI</li>
+        <li>UNC-4.E · Interpret CI in context</li>
+      </ul>
+    </div>
+    <div class="glance-card teal">
+      <div class="label">Materials</div>
+      <ul>
+        <li>Gemini access (1 device per student or pair)</li>
+        <li>Lab handout (this document · pages 3–6)</li>
+        <li>Optional: CI Simulation Kiosk in the Math Hub for instant parameter changes</li>
+        <li>Exit ticket (page 8)</li>
+      </ul>
+    </div>
+    <div class="glance-card ink">
+      <div class="label">Pre-Lesson</div>
+      <p>Students have already learned the formula for a one-proportion z-interval and the three conditions (Random, 10%, Large Counts). Today is about <em>what the confidence level actually means</em>.</p>
+    </div>
+  </div>
+
+  <div class="vocab-block">
+    <div class="label">Target Vocabulary</div>
+    <div class="vocab-pills">
+      <span class="vocab-pill">confidence interval</span>
+      <span class="vocab-pill">confidence level</span>
+      <span class="vocab-pill">margin of error</span>
+      <span class="vocab-pill">z*</span>
+      <span class="vocab-pill">standard error</span>
+      <span class="vocab-pill">p̂</span>
+      <span class="vocab-pill">coverage rate</span>
+      <span class="vocab-pill">capture</span>
+      <span class="vocab-pill">Large Counts Condition</span>
+      <span class="vocab-pill">Law of Large Numbers</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════ TEACHER BACKGROUND ════════════════════ -->
+<div class="section">
+
+  <div class="masthead">
+    <div class="brand">
+      A Word &amp; Wonder Experience
+      <div class="line2">Confidence Intervals · Teacher Background</div>
+    </div>
+    <div class="page-marker">
+      <span class="pm-label">Teacher Reference</span><br>
+      Before You Teach
+    </div>
+  </div>
+
+  <div class="handout-marker teacher">Teacher Reference</div>
+  <div class="section-eyebrow">Why This Lesson Works</div>
+  <div class="section-title">From Plug-and-Chug to Genuine Understanding</div>
+  <div class="section-subtitle">A 60-minute lab that uses AI to make the most-misunderstood concept in AP Statistics visible.</div>
+
+  <p>The "95%" in a 95% confidence interval is the single most misinterpreted phrase in AP Statistics. Students plug numbers into the formula correctly, then describe the interval as containing the parameter "with 95% probability." Year after year, this misconception sinks otherwise strong inference responses on the AP exam.</p>
+
+  <p>This lesson treats the misconception head-on by making confidence visible. Students don't just compute one interval — they watch <strong>100 intervals appear at once</strong> on a graph, color-coded by which ones capture the true parameter and which ones miss. The abstract phrase "95% of intervals will capture the true value" becomes the literal coverage rate at the top of the chart.</p>
+
+  <h3>The Five Ways to Integrate AI Here</h3>
+
+  <p>This lesson implements <strong>Way #2 (Simulation Coder)</strong> as its core. The other four are listed below as available variations or extensions. The PBA at the end of this Hub combines several.</p>
+
+  <div class="five-ways">
+    <div class="way-card">
+      <div class="way-num">Way 1 · Auditor</div>
+      <div class="way-name">Skeptical Auditor</div>
+      <div class="way-desc">Students convince the AI that conditions (Random, 10%, Large Counts) are met. Forces explicit calculation, not hand-waving.</div>
+    </div>
+    <div class="way-card">
+      <div class="way-num">Way 2 · This Lab</div>
+      <div class="way-name">Simulation Coder</div>
+      <div class="way-desc">AI runs a Python simulation showing 100 confidence intervals. Coverage rate becomes literal. Used in this 60-minute lab.</div>
+    </div>
+    <div class="way-card">
+      <div class="way-num">Way 3 · Context</div>
+      <div class="way-name">Context Generator</div>
+      <div class="way-desc">AI generates three plausible real-world scenarios for the same numbers. Defect rate vs. mortality rate carries different stakes.</div>
+    </div>
+    <div class="way-card">
+      <div class="way-num">Way 4 · Bust</div>
+      <div class="way-name">Misconception Buster</div>
+      <div class="way-desc">AI predictably produces a wrong CI interpretation. Students catch it and rewrite using correct AP language.</div>
+    </div>
+    <div class="way-card">
+      <div class="way-num">Way 5 · Refiner</div>
+      <div class="way-name">Wording Refiner</div>
+      <div class="way-desc">Students draft their CI conclusion, AI checks for AP-required precision (population? context? probability vs. confidence?).</div>
+    </div>
+  </div>
+
+  <h3>What This Lesson Does (and Doesn't) Replace</h3>
+  <p>This lab does <strong>not</strong> replace the formula derivation or condition-checking work that happens before students get here. It assumes students can already calculate a one-proportion z-interval. What it replaces is the moment in a traditional lecture where the teacher tries to <em>explain</em> what "95% confident" means with words alone. The simulation lets students see it.</p>
+
+  <div class="callout">
+    <strong>The pedagogical move</strong>
+    Students who watched the simulation will rarely write "there is a 95% probability the true proportion is in this interval" again. Once you've watched five red intervals appear next to the true value line, you understand viscerally that some intervals just miss — and that the 95% refers to the method, not any single interval.
+  </div>
+
+  <h3>The Data: x = 107, n = 1560</h3>
+  <p>The default values give <em class="term">p̂ ≈ 0.0686</em>, a small proportion. This is deliberate: small proportions challenge the Large Counts Condition and produce visibly narrow intervals. You can later switch to <em class="term">p = 0.50</em> (Question 7) to demonstrate the worst-case margin of error — the symmetry is striking.</p>
+
+  <h3>Why 60 Minutes</h3>
+  <p>A traditional version of this content typically takes 90+ minutes split across two lessons (concept day + practice day). The AI-integrated version compresses both because the simulation handles the visualization work that would otherwise require board diagrams and verbal explanation. Students iterate parameters in seconds and see the effects immediately.</p>
+
+</div>
+
+<!-- ════════════════════ PART 1: SETUP ════════════════════ -->
+<div class="section">
+
+  <div class="masthead">
+    <div class="brand">
+      A Word &amp; Wonder Experience
+      <div class="line2">Confidence Intervals · Part 1: Setup</div>
+    </div>
+    <div class="page-marker">
+      <span class="pm-label">Student Handout</span><br>
+      Part 1 · 5 min
+    </div>
+  </div>
+
+  <div class="handout-marker">Student Handout · Part 1</div>
+  <div class="section-eyebrow">5 minutes · Setup</div>
+  <div class="section-title">The Setup</div>
+  <div class="section-subtitle">Get Gemini ready to run the simulation. You'll use this same chat window for the rest of the lab.</div>
+
+  <h3>What You'll Need</h3>
+  <ul>
+    <li>A device with Gemini access</li>
+    <li>This lab handout (for the ten questions in Part 2)</li>
+    <li>A pen or pencil for answers</li>
+  </ul>
+
+  <h3>Step 1 · Open Gemini and paste this message</h3>
+
+  <div class="code-block">
+    <div class="code-label">Initial Message</div>
+"Please run the following Python simulation for me. After you run it, I will ask you to change some of the parameters (like confidence level or sample size) and re-run it."
+  </div>
+
+  <h3>Step 2 · Paste the Python code that follows</h3>
+
+  <div class="code-block">
+    <div class="code-label">Python · Simulation Code</div>
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> matplotlib.patches <span class="kw">as</span> mpatches
+<span class="kw">from</span> scipy.stats <span class="kw">import</span> norm
+
+<span class="kw">def</span> <span class="num">run_ci_simulation</span>(true_p=<span class="num">107</span>/<span class="num">1560</span>, n=<span class="num">1560</span>, num_sims=<span class="num">100</span>, conf_level=<span class="num">0.95</span>):
+    z_star = norm.ppf(<span class="num">1</span> - (<span class="num">1</span> - conf_level) / <span class="num">2</span>)
+    np.random.seed()
+    successes = np.random.binomial(n=n, p=true_p, size=num_sims)
+    p_hats = successes / n
+    margins = z_star * np.sqrt(p_hats * (<span class="num">1</span> - p_hats) / n)
+    lower, upper = p_hats - margins, p_hats + margins
+    captures = (lower &lt;= true_p) &amp; (upper &gt;= true_p)
+    num_captured = captures.sum()
+
+    fig, ax = plt.subplots(figsize=(<span class="num">10</span>, <span class="num">6</span>))
+    <span class="kw">for</span> i <span class="kw">in</span> range(num_sims):
+        color = <span class="str">"#2E86AB"</span> <span class="kw">if</span> captures[i] <span class="kw">else</span> <span class="str">"#E84855"</span>
+        ax.plot([lower[i], upper[i]], [i, i], color=color, linewidth=<span class="num">1.4</span>, alpha=<span class="num">0.85</span>)
+        ax.plot(p_hats[i], i, <span class="str">"o"</span>, color=color, markersize=<span class="num">2.5</span>)
+    ax.axvline(true_p, color=<span class="str">"black"</span>, linewidth=<span class="num">1.8</span>, linestyle=<span class="str">"--"</span>, label=f<span class="str">"True p = {true_p:.4f}"</span>)
+    ax.set_title(f<span class="str">"{conf_level*100:.0f}% Confidence Intervals ({num_sims} Samples, n={n})\nActual Coverage: {num_captured/num_sims*100:.1f}%"</span>, fontweight=<span class="str">"bold"</span>)
+    ax.set_yticks([])
+    ax.set_xlim(true_p - (margins.mean()*<span class="num">2.5</span>), true_p + (margins.mean()*<span class="num">2.5</span>))
+    plt.show()
+
+run_ci_simulation()
+  </div>
+
+  <h3>Step 3 · Confirm the first graph appears</h3>
+  <p>Gemini will run the code and produce a graph showing 100 confidence intervals. You should see mostly <span style="color: var(--capture-blue); font-weight: 700;">blue intervals</span> (which captured the true proportion) with a few <span style="color: var(--miss-red); font-weight: 700;">red intervals</span> mixed in (which missed). A dashed black vertical line marks the true value <em class="term">p = 107/1560 ≈ 0.0686</em>.</p>
+
+  <div class="callout">
+    <strong>Faster option · Math Hub kiosk</strong>
+    If you have access to the <strong>CI Simulation Kiosk</strong> in the Math Hub, you can use that instead of asking Gemini to re-run Python on every parameter change. The kiosk has sliders for confidence level, sample size, and number of simulations — drag a slider, see the graph update instantly. Same simulation, much faster iteration.
+  </div>
+
+  <p>Once your first graph is on screen, turn to Part 2 and work through the ten questions in order.</p>
+
+</div>
+
+<!-- ════════════════════ PART 2: 10 QUESTIONS ════════════════════ -->
+<div class="section">
+
+  <div class="masthead">
+    <div class="brand">
+      A Word &amp; Wonder Experience
+      <div class="line2">Confidence Intervals · Part 2: The Lab</div>
+    </div>
+    <div class="page-marker">
+      <span class="pm-label">Student Handout</span><br>
+      Part 2 · 40 min
+    </div>
+  </div>
+
+  <div class="handout-marker">Student Handout · Part 2</div>
+  <div class="section-eyebrow">40 minutes · The Ten Questions</div>
+  <div class="section-title">Simulation Prompts &amp; Inquiry</div>
+  <div class="section-subtitle">Type each prompt into your Gemini chat. Observe how the graph changes. Answer the question below.</div>
+
+  <div class="lab-q">
+    <div class="q-head"><span class="q-num">01</span><span class="q-title">The Baseline Observation</span></div>
+    <div class="q-prompt">Run the confidence interval simulation with the default settings (95% confidence, 100 simulations).</div>
+    <div class="q-question">What does the "Coverage rate" at the top of the graph actually mean in the context of this simulation?</div>
+    <div class="answer-space tall"></div>
+  </div>
+
+  <div class="lab-q">
+    <div class="q-head"><span class="q-num">02</span><span class="q-title">Increasing Confidence</span></div>
+    <div class="q-prompt">Run the simulation again, but change the confidence level to 99%.</div>
+    <div class="q-question">Look closely at the graph. What happened to the width of the intervals, and why did this mathematical change occur?</div>
+    <div class="answer-space tall"></div>
+  </div>
+
+  <div class="lab-q">
+    <div class="q-head"><span class="q-num">03</span><span class="q-title">Decreasing Confidence</span></div>
+    <div class="q-prompt">Now run the simulation with an 80% confidence level.</div>
+    <div class="q-question">What trade-off did we make by lowering our confidence?</div>
+    <div class="answer-space tall"></div>
+  </div>
+
+  <div class="lab-q">
+    <div class="q-head"><span class="q-num">04</span><span class="q-title">Sample Size (Smaller)</span></div>
+    <div class="q-prompt">Change the sample size down to n = 100, but keep the confidence level at 95%.</div>
+    <div class="q-question">What happens to the margin of error compared to when n = 1560? Explain mathematically why this happens using the standard error formula: <em class="term">SE = √(p̂(1−p̂) / n)</em></div>
+    <div class="answer-space tall"></div>
+  </div>
+
+  <div class="lab-q">
+    <div class="q-head"><span class="q-num">05</span><span class="q-title">Sample Size (Larger)</span></div>
+    <div class="q-prompt">Let's go the other way. Change the sample size to n = 5000 (keep 95% confidence).</div>
+    <div class="q-question">Describe what the intervals look like now. Why might a statistician prefer this sample size?</div>
+    <div class="answer-space tall"></div>
+  </div>
+
+</div>
+
+<!-- Continuation of Part 2 -->
+<div class="section">
+
+  <div class="masthead">
+    <div class="brand">
+      A Word &amp; Wonder Experience
+      <div class="line2">Confidence Intervals · Part 2 (continued)</div>
+    </div>
+    <div class="page-marker">
+      <span class="pm-label">Student Handout</span><br>
+      Questions 6–10
+    </div>
+  </div>
+
+  <div class="handout-marker">Student Handout · Part 2 (continued)</div>
+
+  <div class="lab-q">
+    <div class="q-head"><span class="q-num">06</span><span class="q-title">The Law of Large Numbers</span></div>
+    <div class="q-prompt">Set the confidence level back to 95% and n = 1560. Change the number of simulations to 1000.</div>
+    <div class="q-question">How does the coverage rate compare to when we only ran 100 simulations? Why does this happen?</div>
+    <div class="answer-space tall"></div>
+  </div>
+
+  <div class="lab-q">
+    <div class="q-head"><span class="q-num">07</span><span class="q-title">The Worst-Case Margin</span></div>
+    <div class="q-prompt">Keep n = 1560 and 95% confidence, but change the true population proportion to p = 0.50.</div>
+    <div class="q-question">Are the intervals wider or narrower than when p = 0.0686? Why?</div>
+    <div class="answer-space tall"></div>
+  </div>
+
+  <div class="lab-q">
+    <div class="q-head"><span class="q-num">08</span><span class="q-title">Analyzing the "Misses"</span></div>
+    <div class="q-prompt">Look at one of the red intervals on your graph.</div>
+    <div class="q-question">Did Gemini make a math error when calculating that specific interval? Explain what a red interval actually represents.</div>
+    <div class="answer-space tall"></div>
+  </div>
+
+  <div class="lab-q">
+    <div class="q-head"><span class="q-num">09</span><span class="q-title">The Great CI Misconception</span></div>
+    <div class="q-prompt">Pick one specific blue (successful) interval on your graph.</div>
+    <div class="q-question">Is there a 95% chance that the true proportion is inside that specific interval? Explain what "95% confident" actually means.</div>
+    <div class="answer-space tall"></div>
+  </div>
+
+  <div class="lab-q">
+    <div class="q-head"><span class="q-num">10</span><span class="q-title">The Ultimate Trade-off</span></div>
+    <div class="q-prompt" style="background: var(--ink-soft); font-style: italic;">(No prompt — think it through.)</div>
+    <div class="q-question">If a researcher wants an interval that is very narrow (highly precise) BUT they also refuse to compromise and demand 99% confidence, what is the only way they can achieve both?</div>
+    <div class="answer-space tall"></div>
+  </div>
+
+</div>
+
+<!-- ════════════════════ RUBRIC ════════════════════ -->
+<div class="section">
+
+  <div class="masthead">
+    <div class="brand">
+      A Word &amp; Wonder Experience
+      <div class="line2">Confidence Intervals · Rubric</div>
+    </div>
+    <div class="page-marker">
+      <span class="pm-label">Teacher Reference</span><br>
+      Assessment
+    </div>
+  </div>
+
+  <div class="handout-marker teacher">Teacher Reference</div>
+  <div class="section-eyebrow">Grading Criteria · 12 Points Total</div>
+  <div class="section-title">Lab Rubric</div>
+  <div class="section-subtitle">Four conceptual domains drawn from the ten questions. Each domain graded on a 3-point scale.</div>
+
+  <table class="rubric">
+    <thead>
+      <tr>
+        <th>Domain</th>
+        <th>Developing · 1 pt</th>
+        <th>Proficient · 2 pts</th>
+        <th>Exemplary · 3 pts</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Coverage &amp; Method
+          <span class="q-tag">Qs 1, 6, 8</span></td>
+        <td>Describes the coverage rate as the percent of intervals shown, without connecting it to method reliability.</td>
+        <td>Explains that the coverage rate measures how often the method captures the true value, and that red intervals are method misses (not math errors).</td>
+        <td>Connects coverage to the <strong>Law of Large Numbers</strong>: as the number of simulations grows, the empirical coverage converges to the stated confidence level. Names red intervals as inevitable outcomes of correct procedure.</td>
+      </tr>
+      <tr>
+        <td>Confidence Level Effects
+          <span class="q-tag">Qs 2, 3</span></td>
+        <td>Notices that higher confidence makes intervals wider, but cannot explain the cause.</td>
+        <td>Connects wider intervals to a larger <em>z*</em> critical value. Identifies the trade-off: precision vs. reliability.</td>
+        <td>Articulates the full trade-off explicitly: confidence and precision pull against each other. References that <em>z* = 1.96</em> for 95% becomes <em>2.576</em> for 99%, multiplying the standard error and widening the margin.</td>
+      </tr>
+      <tr>
+        <td>Sample Size &amp; SE
+          <span class="q-tag">Qs 4, 5, 10</span></td>
+        <td>Notes that smaller samples produce wider intervals but doesn't use the SE formula.</td>
+        <td>Uses the formula <em class="term">SE = √(p̂(1−p̂)/n)</em> to show that <em>n</em> in the denominator causes SE (and margin of error) to shrink as <em>n</em> grows.</td>
+        <td>Resolves Q10 (the precision-confidence paradox) cleanly: the <strong>only</strong> way to get both higher confidence and narrower intervals is to increase the sample size. Recognizes <em>n</em> is the lever that doesn't trade away anything.</td>
+      </tr>
+      <tr>
+        <td>Interpretation &amp; Misconception
+          <span class="q-tag">Qs 7, 9</span></td>
+        <td>States that there is a 95% probability that the parameter falls in a specific interval.</td>
+        <td>Recognizes the interpretation is about the method, but uses imprecise language. Identifies that <em>p = 0.5</em> produces the widest possible intervals.</td>
+        <td>Writes the AP-correct interpretation: "<em>We are 95% confident that the interval captures the true proportion.</em>" Explains that for a specific computed interval, the true value is either in it (100%) or not (0%) — the 95% refers to the long-run success rate of the procedure. Connects <em>p = 0.5</em> to the maximum of <em>p(1−p)</em>.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>Where to look for the misconception</strong>
+    Question 9 is the highest-stakes question in the lab. Read student responses carefully — many will write "there is a 95% chance the true value is in this interval" even <em>after</em> watching the simulation. The exit ticket (next page) targets the same misconception. If a student gets Q9 wrong but the exit-ticket Q1 right, they understood the simulation late but they got there.
+  </div>
+
+</div>
+
+<!-- ════════════════════ EXIT TICKET ════════════════════ -->
+<div class="section">
+
+  <div class="masthead">
+    <div class="brand">
+      A Word &amp; Wonder Experience
+      <div class="line2">Confidence Intervals · Exit Ticket</div>
+    </div>
+    <div class="page-marker">
+      <span class="pm-label">Closure</span><br>
+      Final 5 min
+    </div>
+  </div>
+
+  <div class="handout-marker">Student Handout · Exit Ticket</div>
+  <div class="section-eyebrow">5 minutes · Final assessment</div>
+  <div class="section-title">Exit Ticket</div>
+  <div class="section-subtitle">Three questions on the AP Stats CI essentials. Submit before leaving class.</div>
+
+  <div class="exit-card">
+    <span class="exit-num">01</span><span class="exit-title">The Classic Trap</span>
+    <div class="exit-body">A student calculates a 95% confidence interval for the proportion of students who prefer a 4-day school week and gets (0.62, 0.74). The student states: <em>"There is a 95% probability that the true proportion of students who prefer a 4-day school week is between 0.62 and 0.74."</em> Is this interpretation correct? Explain why or why not based on what you saw in today's simulation.</div>
+    <div style="border-bottom: 1px dashed var(--rule); padding-bottom: 50px; margin-top: 10px;"></div>
+  </div>
+
+  <div class="exit-card">
+    <span class="exit-num">02</span><span class="exit-title">Manipulating the Margin of Error</span>
+    <div class="exit-body">If the student wanted a narrower interval, name two specific mathematical changes they could make to their study design or their calculations.</div>
+    <div style="border-bottom: 1px dashed var(--rule); padding-bottom: 50px; margin-top: 10px;"></div>
+  </div>
+
+  <div class="exit-card">
+    <span class="exit-num">03</span><span class="exit-title">The True Meaning</span>
+    <div class="exit-body">In your own words, what does the "95%" in a 95% confidence interval actually refer to?</div>
+    <div style="border-bottom: 1px dashed var(--rule); padding-bottom: 50px; margin-top: 10px;"></div>
+  </div>
+
+</div>
+
+<!-- ════════════════════ EXIT TICKET ANSWER KEY ════════════════════ -->
+<div class="section">
+
+  <div class="masthead">
+    <div class="brand">
+      A Word &amp; Wonder Experience
+      <div class="line2">Confidence Intervals · Answer Key</div>
+    </div>
+    <div class="page-marker">
+      <span class="pm-label">Teacher Reference</span><br>
+      Exit Ticket Key
+    </div>
+  </div>
+
+  <div class="handout-marker gold">Teacher Answer Key</div>
+  <div class="section-eyebrow">Expected Answers</div>
+  <div class="section-title">Exit Ticket Key</div>
+  <div class="section-subtitle">What to look for in each response.</div>
+
+  <div class="exit-card">
+    <span class="exit-num">01</span><span class="exit-title">The Classic Trap</span>
+    <div class="answer-key">
+      <strong>Expected answer</strong>
+      No, this is incorrect. (This is the most heavily tested CI concept on the AP Exam.) Once the interval is calculated, the true proportion is either in it (100% probability) or it isn't (0% probability). The 95% refers to the <em>creation method</em>, not a single calculated interval. A better interpretation: "<em>We are 95% confident that the interval from 0.62 to 0.74 captures the true proportion of students who prefer a 4-day school week.</em>"
+    </div>
+  </div>
+
+  <div class="exit-card">
+    <span class="exit-num">02</span><span class="exit-title">Manipulating the Margin of Error</span>
+    <div class="answer-key">
+      <strong>Expected answer</strong>
+      Two valid changes:
+      <ol style="margin-top: 8px; margin-left: 22px;">
+        <li><strong>Decrease the confidence level</strong> (e.g., drop from 95% to 90%), which uses a smaller <em>z*</em> critical value.</li>
+        <li><strong>Increase the sample size (n)</strong>, which decreases the standard error.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="exit-card">
+    <span class="exit-num">03</span><span class="exit-title">The True Meaning</span>
+    <div class="answer-key">
+      <strong>Expected answer</strong>
+      The 95% refers to the success rate of the <em>method</em>. It means that if we were to take many random samples of the same size from this population and calculate a confidence interval for each one, about 95% of those intervals would successfully capture the true population proportion.
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════ PBA EXTENSION ════════════════════ -->
+<div class="section">
+
+  <div class="masthead">
+    <div class="brand">
+      A Word &amp; Wonder Experience
+      <div class="line2">Confidence Intervals · PBA Extension</div>
+    </div>
+    <div class="page-marker">
+      <span class="pm-label">Optional Extension</span><br>
+      2–3 weeks
+    </div>
+  </div>
+
+  <div class="handout-marker">PBA Extension · Optional</div>
+
+  <div class="pba-hero">
+    <div class="pba-tag">Performance-Based Assessment · Extension Project</div>
+    <div class="pba-title">The Confidence Audit</div>
+    <div class="pba-lead">Pick a published statistical claim — a poll, a clinical trial, a market study, a defect rate. Audit it from every angle the AI can help you with. End with a refined interpretation defensible to any AP reader.</div>
+  </div>
+
+  <h3>The Driving Question</h3>
+  <p><em>When a published study reports "95% confident," what is being claimed — and what is being assumed? Take a real claim apart, simulate it, and write the interpretation you wish the original authors had.</em></p>
+
+  <h3>Student Deliverables</h3>
+  <ul>
+    <li><strong>Source claim with citation</strong> (1 page). A real published proportion estimate with its confidence interval. News article, peer-reviewed study, polling org, FDA filing.</li>
+    <li><strong>Skeptical Auditor transcript</strong>. Students prompt Gemini to play a skeptical statistician, and prove that conditions (Random, 10%, Large Counts) are satisfied with explicit numbers from the source claim.</li>
+    <li><strong>Simulation results</strong>. Students run the CI simulation (or use the Math Hub kiosk) with the source's <em>n</em> and <em>p̂</em>. Annotate the resulting plot.</li>
+    <li><strong>Three real-world contexts</strong>. Students use Gemini to generate three alternative scenarios with the same numbers but different consequences. (Defect rate vs. mortality rate vs. polling.) Compare the stakes.</li>
+    <li><strong>Misconception correction</strong>. Students prompt Gemini for a plain-English explanation of the original confidence interval. Predict where Gemini will get it wrong, then correct it using AP language.</li>
+    <li><strong>Refined interpretation</strong> (~250 words). The student's final, AP-defensible sentence about what the original study actually showed — and what it didn't.</li>
+  </ul>
+
+  <h3>The Four Phases</h3>
+
+  <div class="pba-phases">
+    <div class="pba-phase">
+      <div class="phase-num">Phase 1 · Week 1</div>
+      <div class="phase-name">Find &amp; Audit</div>
+      <div class="phase-desc">Locate a real claim. Run the Skeptical Auditor (Way #1). Document the conditions check with numbers.</div>
+    </div>
+    <div class="pba-phase">
+      <div class="phase-num">Phase 2 · Week 1–2</div>
+      <div class="phase-name">Simulate</div>
+      <div class="phase-desc">Replicate the study's parameters in the simulation kiosk. Capture the plot and the coverage rate.</div>
+    </div>
+    <div class="pba-phase">
+      <div class="phase-num">Phase 3 · Week 2</div>
+      <div class="phase-name">Context</div>
+      <div class="phase-desc">Use Way #3 to generate three different real-world contexts. Argue which interpretation matters most.</div>
+    </div>
+    <div class="pba-phase">
+      <div class="phase-num">Phase 4 · Week 3</div>
+      <div class="phase-name">Refine</div>
+      <div class="phase-desc">Use Way #4 and #5 to catch and correct AI's predictable misinterpretation. Write the refined claim.</div>
+    </div>
+  </div>
+
+  <h3>The AI Move</h3>
+  <p>This PBA folds <strong>all five</strong> AI integration strategies into one project. The student moves through them sequentially, learning that AI is most useful when used as a <em>partner to interrogate</em> — Skeptical Auditor, Simulation Coder, Context Generator, Misconception Buster, Wording Refiner — rather than as an oracle to defer to.</p>
+
+  <div class="callout">
+    <strong>What excellence looks like</strong>
+    The strongest projects don't just describe the original study — they argue that the original interpretation was either correct, slightly wrong, or seriously misleading, citing the simulation evidence. The "refined interpretation" at the end should be one sentence the student is genuinely proud of.
+  </div>
+
+  <div class="doc-footer">
+    Confidence Intervals · AP Statistics · Unit 6 · 60-Minute Lesson Hub<br>
+    <span class="credit-line">A collaboration between Ferebee &amp; Ms. Howell, ITS Coach · Word &amp; Wonder · © 2025–2026</span>
+  </div>
+
+</div>
+
+</div>
+
+</body>
+</html>

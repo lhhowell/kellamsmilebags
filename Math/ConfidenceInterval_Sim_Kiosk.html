@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confidence Interval Simulation · Interactive Kiosk</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Special+Elite&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:        #f5ecd9;
+  --paper-deep:   #ebe0c8;
+  --plot-bg:      #fdfaf2;
+  --ink:          #2a1a45;
+  --ink-soft:     rgba(42,26,69,.72);
+  --ink-faint:    rgba(42,26,69,.45);
+  --ink-trace:    rgba(42,26,69,.18);
+  --peach:        #b85a3e;
+  --peach-bright: #d97757;
+  --gold:         #a88830;
+  --gold-bright:  #c9a84c;
+  --teal:         #2d6e6e;
+  --rule:         rgba(42,26,69,.2);
+
+  /* Lab-matching colors (from Python code) */
+  --capture-blue: #2E86AB;
+  --miss-red:     #E84855;
+  --capture-soft: rgba(46,134,171,.12);
+  --miss-soft:    rgba(232,72,85,.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--paper);
+  background-image:
+    radial-gradient(ellipse at top left, rgba(168,136,48,.05) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(184,90,62,.04) 0%, transparent 50%);
+  min-height: 100vh;
+  font-family: 'Cormorant Garamond', serif;
+  color: var(--ink);
+  padding: 28px 22px 60px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app { max-width: 1080px; margin: 0 auto; }
+
+/* ════════ Header ════════ */
+.brand-header {
+  text-align: center;
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--rule);
+}
+.eyebrow {
+  font-family: 'Special Elite', monospace;
+  font-size: 10pt;
+  letter-spacing: 3px;
+  color: var(--peach);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: clamp(26px, 4vw, 38px);
+  letter-spacing: 5px;
+  color: var(--ink);
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+.subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 15pt;
+  color: var(--ink-soft);
+  margin-top: 6px;
+}
+.subline {
+  font-family: 'Special Elite', monospace;
+  font-size: 10pt;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+
+/* ════════ Control Panel ════════ */
+.control-panel {
+  background: rgba(255,255,255,.55);
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  padding: 18px 22px;
+  margin-bottom: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 24px;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.control-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.control-label {
+  font-family: 'Special Elite', monospace;
+  font-size: 10pt;
+  letter-spacing: 2px;
+  color: var(--peach);
+  text-transform: uppercase;
+}
+.control-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 16pt;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.control-value .unit {
+  font-size: 10pt;
+  color: var(--ink-faint);
+  margin-left: 4px;
+  font-weight: 500;
+}
+
+/* Slider */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--paper-deep);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  background: var(--peach-bright);
+  border: 2px solid var(--paper);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(184,90,62,.4);
+  transition: transform .15s;
+}
+.slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
+.slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  background: var(--peach-bright);
+  border: 2px solid var(--paper);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(184,90,62,.4);
+}
+
+.slider-marks {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9pt;
+  color: var(--ink-faint);
+  margin-top: 2px;
+  letter-spacing: 0.3px;
+}
+
+/* Confidence level button group */
+.conf-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  background: var(--paper-deep);
+  padding: 4px;
+  border-radius: 4px;
+}
+.conf-btn {
+  background: transparent;
+  border: 0;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 11.5pt;
+  letter-spacing: 1px;
+  color: var(--ink-soft);
+  padding: 8px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all .15s;
+  font-variant-numeric: tabular-nums;
+}
+.conf-btn:hover { background: rgba(184,90,62,.1); color: var(--ink); }
+.conf-btn.active {
+  background: var(--peach-bright);
+  color: var(--paper);
+  box-shadow: 0 2px 6px rgba(184,90,62,.3);
+}
+
+/* ════════ Action bar ════════ */
+.action-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding: 12px 18px;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 4px;
+  flex-wrap: wrap;
+}
+.coverage-display {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.coverage-display .cv-label {
+  font-family: 'Special Elite', monospace;
+  font-size: 10pt;
+  letter-spacing: 2px;
+  color: rgba(245,236,217,.55);
+  text-transform: uppercase;
+}
+.coverage-display .cv-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 18pt;
+  color: var(--gold-bright);
+  font-variant-numeric: tabular-nums;
+}
+.coverage-display .cv-fraction {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11pt;
+  color: rgba(245,236,217,.65);
+}
+
+.action-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.action-btn {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 10pt;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 9px 16px;
+  background: transparent;
+  border: 1px solid rgba(245,236,217,.4);
+  color: var(--paper);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all .15s;
+}
+.action-btn:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.action-btn.primary {
+  background: var(--peach-bright);
+  border-color: var(--peach-bright);
+  color: var(--paper);
+}
+.action-btn.primary:hover { background: var(--gold-bright); border-color: var(--gold-bright); color: var(--ink); }
+
+/* ════════ Plot ════════ */
+.plot-container {
+  background: var(--plot-bg);
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  padding: 16px 18px 14px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 16px rgba(42,26,69,.08);
+}
+.plot-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 13pt;
+  letter-spacing: 1.5px;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+.plot-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10pt;
+  color: var(--ink-soft);
+  text-align: center;
+  margin-bottom: 12px;
+}
+.plot-subtitle .truep { color: var(--ink); font-weight: 700; }
+
+.plot-svg {
+  width: 100%;
+  height: auto;
+  background: var(--plot-bg);
+}
+
+.plot-legend {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10pt;
+  color: var(--ink-soft);
+}
+.plot-legend .legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.plot-legend .swatch {
+  width: 18px;
+  height: 3px;
+  border-radius: 1px;
+}
+.plot-legend .swatch.true-p {
+  background: transparent;
+  border-top: 2px dashed black;
+  height: 0;
+}
+
+/* ════════ Quick-jump panel for the 10 questions ════════ */
+.tour-panel {
+  background: rgba(255,255,255,.55);
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  padding: 18px 22px;
+  margin-bottom: 18px;
+}
+.tour-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--rule);
+}
+.tour-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 12pt;
+  letter-spacing: 2px;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+.tour-hint {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 11pt;
+  color: var(--ink-soft);
+}
+.tour-buttons {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+.tour-btn {
+  background: var(--paper-deep);
+  border: 1px solid var(--rule);
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 9.5pt;
+  letter-spacing: 0.5px;
+  color: var(--ink);
+  padding: 8px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all .15s;
+  text-align: center;
+  line-height: 1.25;
+}
+.tour-btn .tour-num {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9pt;
+  color: var(--peach);
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+.tour-btn:hover {
+  background: var(--peach-bright);
+  color: var(--paper);
+  border-color: var(--peach-bright);
+}
+.tour-btn:hover .tour-num { color: rgba(245,236,217,.7); }
+
+.tour-callout {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: rgba(168,136,48,.1);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 3px 3px 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-style: italic;
+  display: none;
+}
+.tour-callout.show { display: block; animation: appear .3s ease-out; }
+@keyframes appear {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.tour-callout strong {
+  font-style: normal;
+  font-family: 'Special Elite', monospace;
+  font-size: 10pt;
+  letter-spacing: 2px;
+  color: var(--peach);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+  font-weight: normal;
+}
+
+/* ════════ Footer ════════ */
+.app-footer {
+  margin-top: 30px;
+  text-align: center;
+  font-family: 'Special Elite', monospace;
+  font-size: 9pt;
+  letter-spacing: 2px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  line-height: 1.7;
+}
+.app-footer .credit { color: var(--peach); margin-top: 4px; }
+
+@media (max-width: 720px) {
+  .control-panel { grid-template-columns: 1fr; gap: 14px; }
+  .tour-buttons { grid-template-columns: repeat(3, 1fr); }
+  .action-bar { flex-direction: column; align-items: stretch; gap: 10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ════════ Brand chrome ════════ -->
+  <div class="brand-header">
+    <div class="eyebrow">A Word &amp; Wonder Experience · Math Hub</div>
+    <div class="title">Confidence Interval<br>Simulation</div>
+    <div class="subtitle">Drag a slider. Watch the intervals shift. See what "95% confident" actually means.</div>
+    <div class="subline">AP Statistics · Inference for Proportions</div>
+  </div>
+
+  <!-- ════════ Control Panel ════════ -->
+  <div class="control-panel">
+
+    <div class="control-group" style="grid-column: 1 / -1;">
+      <div class="control-label-row">
+        <span class="control-label">Confidence Level</span>
+        <span class="control-value"><span id="conf-display">95</span><span class="unit">%</span></span>
+      </div>
+      <div class="conf-buttons">
+        <button class="conf-btn" data-conf="0.80">80%</button>
+        <button class="conf-btn" data-conf="0.90">90%</button>
+        <button class="conf-btn active" data-conf="0.95">95%</button>
+        <button class="conf-btn" data-conf="0.99">99%</button>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <div class="control-label-row">
+        <span class="control-label">Sample Size · n</span>
+        <span class="control-value" id="n-display">1560</span>
+      </div>
+      <input class="slider" type="range" id="slider-n" min="50" max="5000" step="10" value="1560">
+      <div class="slider-marks">
+        <span>50</span>
+        <span>1560</span>
+        <span>5000</span>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <div class="control-label-row">
+        <span class="control-label">Number of Simulations</span>
+        <span class="control-value" id="sims-display">100</span>
+      </div>
+      <input class="slider" type="range" id="slider-sims" min="20" max="1000" step="10" value="100">
+      <div class="slider-marks">
+        <span>20</span>
+        <span>100</span>
+        <span>1000</span>
+      </div>
+    </div>
+
+    <div class="control-group" style="grid-column: 1 / -1;">
+      <div class="control-label-row">
+        <span class="control-label">True Proportion · p</span>
+        <span class="control-value" id="p-display">0.0686</span>
+      </div>
+      <input class="slider" type="range" id="slider-p" min="0.01" max="0.99" step="0.01" value="0.07">
+      <div class="slider-marks">
+        <span>0.01</span>
+        <span>0.0686 <span style="color: var(--ink-faint); font-size: 8pt;">(107/1560)</span></span>
+        <span>0.50</span>
+        <span>0.99</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ════════ Action bar with coverage stat ════════ -->
+  <div class="action-bar">
+    <div class="coverage-display">
+      <span class="cv-label">Actual Coverage</span>
+      <span class="cv-val" id="coverage-pct">—</span>
+      <span class="cv-fraction" id="coverage-fraction">—</span>
+    </div>
+    <div class="action-btns">
+      <button class="action-btn" onclick="resetDefaults()">↻ Reset to Defaults</button>
+      <button class="action-btn primary" onclick="rerun()">▶ Re-Sample</button>
+    </div>
+  </div>
+
+  <!-- ════════ The plot ════════ -->
+  <div class="plot-container">
+    <div class="plot-title" id="plot-title">95% Confidence Intervals · 100 samples · n=1560</div>
+    <div class="plot-subtitle">True p = <span class="truep" id="plot-truep">0.0686</span> (vertical dashed line)</div>
+    <div id="plot-canvas"></div>
+    <div class="plot-legend">
+      <div class="legend-item"><span class="swatch" style="background: var(--capture-blue);"></span><span>Captures true p</span></div>
+      <div class="legend-item"><span class="swatch" style="background: var(--miss-red);"></span><span>Misses</span></div>
+      <div class="legend-item"><span class="swatch true-p"></span><span>True proportion</span></div>
+    </div>
+  </div>
+
+  <!-- ════════ Quick-jump tour of the 10 lab questions ════════ -->
+  <div class="tour-panel">
+    <div class="tour-header">
+      <div class="tour-title">Lab Question Quick-Jump</div>
+      <div class="tour-hint">Tap a question number to set the simulation to those parameters.</div>
+    </div>
+    <div class="tour-buttons">
+      <button class="tour-btn" onclick="jumpTo(1)"><span class="tour-num">Q1</span>Baseline</button>
+      <button class="tour-btn" onclick="jumpTo(2)"><span class="tour-num">Q2</span>99% Conf</button>
+      <button class="tour-btn" onclick="jumpTo(3)"><span class="tour-num">Q3</span>80% Conf</button>
+      <button class="tour-btn" onclick="jumpTo(4)"><span class="tour-num">Q4</span>n=100</button>
+      <button class="tour-btn" onclick="jumpTo(5)"><span class="tour-num">Q5</span>n=5000</button>
+      <button class="tour-btn" onclick="jumpTo(6)"><span class="tour-num">Q6</span>1000 sims</button>
+      <button class="tour-btn" onclick="jumpTo(7)"><span class="tour-num">Q7</span>p=0.50</button>
+      <button class="tour-btn" onclick="jumpTo(8)"><span class="tour-num">Q8</span>Find a miss</button>
+      <button class="tour-btn" onclick="jumpTo(9)"><span class="tour-num">Q9</span>Pick a capture</button>
+      <button class="tour-btn" onclick="jumpTo(10)"><span class="tour-num">Q10</span>Trade-off</button>
+    </div>
+    <div class="tour-callout" id="tour-callout"></div>
+  </div>
+
+  <div class="app-footer">
+    Confidence Interval Simulation · AP Statistics · Unit 6 · Math Hub<br>
+    <span class="credit">A collaboration between Ferebee &amp; Ms. Howell, ITS Coach · Word &amp; Wonder · © 2025–2026</span>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// State
+// ═══════════════════════════════════════════════════════════
+const state = {
+  truP: 107 / 1560,
+  n: 1560,
+  numSims: 100,
+  confLevel: 0.95
+};
+
+const DEFAULTS = { ...state };
+
+// z* critical values for common confidence levels
+const Z_STAR = {
+  0.80: 1.2816,
+  0.90: 1.6449,
+  0.95: 1.9600,
+  0.99: 2.5758
+};
+
+// Question-specific configurations and explanation callouts
+const TOUR_PRESETS = {
+  1: {
+    state: { truP: 107/1560, n: 1560, numSims: 100, confLevel: 0.95 },
+    text: '<strong>Q1 · Baseline.</strong> Default settings. The Coverage rate at the top tells you how many of these 100 intervals captured the true proportion. Should be close to (but not always exactly) 95%.'
+  },
+  2: {
+    state: { truP: 107/1560, n: 1560, numSims: 100, confLevel: 0.99 },
+    text: '<strong>Q2 · Increasing Confidence.</strong> Notice the intervals are visibly wider. The z* critical value grew from 1.96 to 2.576 — multiplying the margin of error.'
+  },
+  3: {
+    state: { truP: 107/1560, n: 1560, numSims: 100, confLevel: 0.80 },
+    text: '<strong>Q3 · Decreasing Confidence.</strong> Intervals are now narrower (z* = 1.282). The trade-off: you gain precision but lose reliability — far more red intervals miss the true value.'
+  },
+  4: {
+    state: { truP: 107/1560, n: 100, numSims: 100, confLevel: 0.95 },
+    text: '<strong>Q4 · Smaller n.</strong> With n=100, intervals are dramatically wider. SE = √(p̂(1−p̂)/n) — smaller n means larger denominator effect, larger SE, larger margin.'
+  },
+  5: {
+    state: { truP: 107/1560, n: 5000, numSims: 100, confLevel: 0.95 },
+    text: '<strong>Q5 · Larger n.</strong> Intervals are now tight and clustered around the true value. Statisticians want this precision — but it costs sampling effort.'
+  },
+  6: {
+    state: { truP: 107/1560, n: 1560, numSims: 1000, confLevel: 0.95 },
+    text: '<strong>Q6 · Law of Large Numbers.</strong> With 1000 simulations, the coverage rate converges much closer to 95%. The more we repeat, the more empirical coverage matches the stated confidence.'
+  },
+  7: {
+    state: { truP: 0.50, n: 1560, numSims: 100, confLevel: 0.95 },
+    text: '<strong>Q7 · Worst-case Margin.</strong> At p=0.50, the intervals are at their widest. The product p̂(1−p̂) is maximized at p̂=0.5 → biggest standard error possible for this n.'
+  },
+  8: {
+    state: { truP: 107/1560, n: 1560, numSims: 100, confLevel: 0.95 },
+    text: '<strong>Q8 · Analyzing the Misses.</strong> Find a red interval. The math wasn\'t wrong — it followed the formula correctly. The interval just happened to be built from a sample that didn\'t represent the population well. <strong>Red = method miss, not math error.</strong>'
+  },
+  9: {
+    state: { truP: 107/1560, n: 1560, numSims: 100, confLevel: 0.95 },
+    text: '<strong>Q9 · The Great Misconception.</strong> Pick a specific blue interval. Is there a 95% probability the true p is inside it? <strong>No.</strong> That specific interval either contains p (100%) or doesn\'t (0%). The 95% describes the method\'s long-run success rate — not any single interval.'
+  },
+  10: {
+    state: { truP: 107/1560, n: 5000, numSims: 100, confLevel: 0.99 },
+    text: '<strong>Q10 · The Ultimate Trade-off.</strong> Want narrow intervals AND high confidence? The only lever that doesn\'t trade something away is <strong>sample size</strong>. Here: n=5000 with 99% confidence — narrow AND reliable.'
+  }
+};
+
+// ═══════════════════════════════════════════════════════════
+// Math
+// ═══════════════════════════════════════════════════════════
+
+// Box-Muller for standard normal random
+function randNormal() {
+  let u1 = Math.random();
+  while (u1 === 0) u1 = Math.random(); // avoid log(0)
+  const u2 = Math.random();
+  return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+}
+
+// Binomial sampling: normal approximation when conditions hold, exact for small n
+function sampleBinomial(n, p) {
+  if (n * p >= 10 && n * (1 - p) >= 10) {
+    const mean = n * p;
+    const std = Math.sqrt(n * p * (1 - p));
+    const draw = Math.round(mean + randNormal() * std);
+    return Math.max(0, Math.min(n, draw));
+  }
+  let count = 0;
+  for (let i = 0; i < n; i++) {
+    if (Math.random() < p) count++;
+  }
+  return count;
+}
+
+// Full simulation matching the Python lab code
+function runSimulation(truP, n, numSims, confLevel) {
+  const zStar = Z_STAR[confLevel];
+  const intervals = [];
+  let captured = 0;
+
+  for (let i = 0; i < numSims; i++) {
+    const successes = sampleBinomial(n, truP);
+    const pHat = successes / n;
+    const se = Math.sqrt(pHat * (1 - pHat) / n);
+    const margin = zStar * se;
+    const lower = pHat - margin;
+    const upper = pHat + margin;
+    const captures = lower <= truP && upper >= truP;
+    if (captures) captured++;
+    intervals.push({ pHat, lower, upper, captures, margin });
+  }
+
+  const avgMargin = intervals.reduce((s, iv) => s + iv.margin, 0) / numSims;
+  return { intervals, captured, coverage: captured / numSims, avgMargin };
+}
+
+// ═══════════════════════════════════════════════════════════
+// Rendering
+// ═══════════════════════════════════════════════════════════
+const W = 1000;
+const H = 500;
+const M = { top: 20, right: 30, bottom: 50, left: 30 };
+const PLOT_W = W - M.left - M.right;
+const PLOT_H = H - M.top - M.bottom;
+
+function renderPlot(result) {
+  const { intervals, avgMargin } = result;
+  const numSims = intervals.length;
+
+  // X scale - clamp to [0, 1] but try to center on true_p with reasonable padding
+  const truP = state.truP;
+  let halfRange = Math.max(avgMargin * 2.5, 0.005);
+  let xMin = Math.max(0, truP - halfRange);
+  let xMax = Math.min(1, truP + halfRange);
+  if (xMax - xMin < 0.01) {
+    xMin = Math.max(0, truP - 0.01);
+    xMax = Math.min(1, truP + 0.01);
+  }
+
+  const xRange = xMax - xMin;
+  const xScale = (x) => M.left + ((x - xMin) / xRange) * PLOT_W;
+  const yScale = (i) => M.top + (i / Math.max(numSims - 1, 1)) * PLOT_H;
+
+  const strokeWidth = numSims > 300 ? 0.7 : (numSims > 150 ? 1.0 : 1.4);
+  const dotRadius = numSims > 300 ? 0.7 : (numSims > 150 ? 1.2 : 2.0);
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" class="plot-svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
+
+  // X axis ticks
+  const tickCount = 5;
+  const tickColor = 'rgba(42,26,69,0.4)';
+  for (let i = 0; i <= tickCount; i++) {
+    const tickX = xMin + (i / tickCount) * xRange;
+    const tx = xScale(tickX);
+    svg += `<line x1="${tx}" y1="${M.top + PLOT_H}" x2="${tx}" y2="${M.top + PLOT_H + 5}" stroke="${tickColor}" stroke-width="1"/>`;
+    svg += `<text x="${tx}" y="${M.top + PLOT_H + 22}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="${tickColor}">${tickX.toFixed(3)}</text>`;
+  }
+
+  // Axis baseline
+  svg += `<line x1="${M.left}" y1="${M.top + PLOT_H}" x2="${M.left + PLOT_W}" y2="${M.top + PLOT_H}" stroke="${tickColor}" stroke-width="1"/>`;
+
+  // Intervals
+  for (let i = 0; i < numSims; i++) {
+    const iv = intervals[i];
+    const y = yScale(i);
+    const lx = xScale(Math.max(xMin, iv.lower));
+    const ux = xScale(Math.min(xMax, iv.upper));
+    const px = xScale(Math.max(xMin, Math.min(xMax, iv.pHat)));
+    const color = iv.captures ? '#2E86AB' : '#E84855';
+    svg += `<line x1="${lx}" y1="${y}" x2="${ux}" y2="${y}" stroke="${color}" stroke-width="${strokeWidth}" stroke-linecap="round" opacity="0.85"/>`;
+    svg += `<circle cx="${px}" cy="${y}" r="${dotRadius}" fill="${color}"/>`;
+  }
+
+  // True p line - drawn ON TOP so it's visible
+  const truPX = xScale(truP);
+  svg += `<line x1="${truPX}" y1="${M.top}" x2="${truPX}" y2="${M.top + PLOT_H}" stroke="#000" stroke-width="2" stroke-dasharray="8 4"/>`;
+  svg += `<text x="${truPX}" y="${M.top - 6}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#000">p = ${truP.toFixed(4)}</text>`;
+
+  // X axis label
+  svg += `<text x="${W/2}" y="${H - 8}" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-size="13" fill="rgba(42,26,69,0.7)">Sample Proportion (p̂)</text>`;
+
+  svg += `</svg>`;
+
+  document.getElementById('plot-canvas').innerHTML = svg;
+}
+
+// ═══════════════════════════════════════════════════════════
+// UI update
+// ═══════════════════════════════════════════════════════════
+function updateStatsAndTitle(result) {
+  const pct = (result.coverage * 100).toFixed(1);
+  document.getElementById('coverage-pct').textContent = pct + '%';
+  document.getElementById('coverage-fraction').textContent = '(' + result.captured + ' / ' + result.intervals.length + ')';
+
+  document.getElementById('plot-title').textContent =
+    Math.round(state.confLevel * 100) + '% Confidence Intervals · ' +
+    result.intervals.length + ' samples · n=' + state.n;
+  document.getElementById('plot-truep').textContent = state.truP.toFixed(4);
+}
+
+function updateControlDisplays() {
+  document.getElementById('conf-display').textContent = Math.round(state.confLevel * 100);
+  document.getElementById('n-display').textContent = state.n;
+  document.getElementById('sims-display').textContent = state.numSims;
+  document.getElementById('p-display').textContent = state.truP.toFixed(4);
+  document.getElementById('slider-n').value = state.n;
+  document.getElementById('slider-sims').value = state.numSims;
+  document.getElementById('slider-p').value = state.truP;
+  document.querySelectorAll('.conf-btn').forEach(b => {
+    b.classList.toggle('active', parseFloat(b.dataset.conf) === state.confLevel);
+  });
+}
+
+function runAndRender() {
+  const result = runSimulation(state.truP, state.n, state.numSims, state.confLevel);
+  renderPlot(result);
+  updateStatsAndTitle(result);
+}
+
+// ═══════════════════════════════════════════════════════════
+// Event handling
+// ═══════════════════════════════════════════════════════════
+document.querySelectorAll('.conf-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.confLevel = parseFloat(btn.dataset.conf);
+    updateControlDisplays();
+    runAndRender();
+    hideTourCallout();
+  });
+});
+
+// Sliders: 'input' updates the display, 'change' (release) runs sim
+function bindSlider(id, key, parser) {
+  const el = document.getElementById(id);
+  el.addEventListener('input', () => {
+    const v = parser(el.value);
+    state[key] = v;
+    if (id === 'slider-p') document.getElementById('p-display').textContent = v.toFixed(4);
+    else if (id === 'slider-n') document.getElementById('n-display').textContent = v;
+    else if (id === 'slider-sims') document.getElementById('sims-display').textContent = v;
+  });
+  el.addEventListener('change', () => {
+    runAndRender();
+    hideTourCallout();
+  });
+}
+bindSlider('slider-n', 'n', v => parseInt(v));
+bindSlider('slider-sims', 'numSims', v => parseInt(v));
+bindSlider('slider-p', 'truP', v => parseFloat(v));
+
+function rerun() {
+  runAndRender();
+}
+
+function resetDefaults() {
+  Object.assign(state, DEFAULTS);
+  updateControlDisplays();
+  runAndRender();
+  hideTourCallout();
+}
+
+function jumpTo(qNum) {
+  const preset = TOUR_PRESETS[qNum];
+  if (!preset) return;
+  Object.assign(state, preset.state);
+  updateControlDisplays();
+  runAndRender();
+  showTourCallout(preset.text);
+}
+
+function showTourCallout(html) {
+  const el = document.getElementById('tour-callout');
+  el.innerHTML = html;
+  el.classList.add('show');
+}
+function hideTourCallout() {
+  document.getElementById('tour-callout').classList.remove('show');
+}
+
+// ═══════════════════════════════════════════════════════════
+// Init
+// ═══════════════════════════════════════════════════════════
+updateControlDisplays();
+runAndRender();
+</script>
+
+</body>
+</html>

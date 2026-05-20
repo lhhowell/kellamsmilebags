@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sudan Server Simulation · Interactive Kiosk</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Special+Elite&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:        #f5ecd9;
+  --paper-deep:   #ebe0c8;
+  --ink:          #2a1a45;
+  --ink-soft:     rgba(42,26,69,.72);
+  --ink-faint:    rgba(42,26,69,.45);
+  --peach:        #b85a3e;
+  --peach-bright: #d97757;
+  --gold:         #a88830;
+  --gold-bright:  #c9a84c;
+  --rule:         rgba(42,26,69,.2);
+
+  --term-bg:      #0e0a18;
+  --term-bg-soft: #1a1430;
+  --term-border:  #3a2a5c;
+  --term-cream:   #f5ecd9;
+  --term-dim:     rgba(245,236,217,.5);
+  --term-mute:    rgba(245,236,217,.35);
+  --term-gold:    #c9a84c;
+  --term-peach:   #d97757;
+  --term-red:     #d85a3a;
+  --term-green:   #7eb863;
+  --term-cyan:    #6bb5b5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--paper);
+  background-image:
+    radial-gradient(ellipse at top left, rgba(168,136,48,.04) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(184,90,62,.04) 0%, transparent 50%);
+  min-height: 100vh;
+  font-family: 'Cormorant Garamond', serif;
+  color: var(--ink);
+  padding: 32px 24px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ───── W&W brand chrome (header) ───── */
+.brand-header {
+  text-align: center;
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--rule);
+}
+.eyebrow {
+  font-family: 'Special Elite', monospace;
+  font-size: 10pt;
+  letter-spacing: 3px;
+  color: var(--peach);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: clamp(26px, 4vw, 38px);
+  letter-spacing: 5px;
+  color: var(--ink);
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+.subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 16pt;
+  color: var(--ink-soft);
+  margin-top: 6px;
+}
+.subline {
+  font-family: 'Special Elite', monospace;
+  font-size: 10pt;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+
+/* ───── Intro card (Stage 0) ───── */
+.intro-card {
+  background: rgba(255,255,255,.5);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 28px 32px;
+  margin-bottom: 18px;
+}
+.intro-card.hidden { display: none; }
+.intro-card .intro-label {
+  font-family: 'Special Elite', monospace;
+  font-size: 10pt;
+  letter-spacing: 2px;
+  color: var(--peach);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.intro-card .intro-heading {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 22pt;
+  letter-spacing: 1.5px;
+  color: var(--ink);
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.intro-card p {
+  font-size: 13.5pt;
+  line-height: 1.6;
+  margin-bottom: 11px;
+  color: var(--ink);
+}
+.intro-card .objective {
+  background: rgba(168,136,48,.1);
+  border-left: 3px solid var(--gold);
+  padding: 12px 16px;
+  margin: 14px 0;
+  font-style: italic;
+  font-size: 13pt;
+  line-height: 1.55;
+  color: var(--ink);
+  border-radius: 0 3px 3px 0;
+}
+.intro-card .objective strong {
+  font-style: normal;
+  font-family: 'Special Elite', monospace;
+  font-size: 10pt;
+  letter-spacing: 2px;
+  color: var(--peach);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+  font-weight: normal;
+}
+.start-btn {
+  display: block;
+  margin: 18px auto 4px;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 16px 36px;
+  background: var(--peach-bright);
+  border: 1px solid var(--peach-bright);
+  color: var(--paper);
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all .2s;
+}
+.start-btn:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+/* ───── Terminal window ───── */
+.terminal-shell {
+  background: var(--term-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(14,10,24,.6), 0 0 0 1px var(--term-border);
+  margin-bottom: 18px;
+}
+.terminal-shell.hidden { display: none; }
+
+.term-titlebar {
+  background: linear-gradient(180deg, #1a1430, #14102a);
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--term-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.term-titlebar .lights {
+  display: flex;
+  gap: 6px;
+}
+.term-titlebar .light {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--term-mute);
+}
+.term-titlebar .light.live { background: var(--term-red); animation: pulse-light 2s ease-in-out infinite; }
+@keyframes pulse-light {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.term-titlebar .host {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11pt;
+  color: var(--term-cream);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+.term-titlebar .host .host-loc {
+  color: var(--term-gold);
+  margin-left: 8px;
+}
+.term-titlebar .meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10pt;
+  color: var(--term-dim);
+  letter-spacing: 0.5px;
+}
+.term-titlebar .meta span {
+  color: var(--term-cream);
+  margin-left: 4px;
+}
+
+.term-statusbar {
+  background: #07050d;
+  padding: 8px 18px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  border-bottom: 1px solid var(--term-border);
+}
+.status-cell {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5pt;
+  color: var(--term-dim);
+  letter-spacing: 0.5px;
+}
+.status-cell .s-label {
+  color: var(--term-mute);
+  text-transform: uppercase;
+  font-size: 8.5pt;
+  display: block;
+  margin-bottom: 2px;
+  letter-spacing: 1px;
+}
+.status-cell .s-val {
+  color: var(--term-cream);
+  font-weight: 500;
+}
+.status-cell .s-val.elapsed { color: var(--term-gold); }
+.status-cell .s-val.warning { color: var(--term-red); }
+
+.term-body {
+  background: var(--term-bg);
+  padding: 20px 22px 18px;
+  min-height: 420px;
+  max-height: 60vh;
+  overflow-y: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5pt;
+  line-height: 1.75;
+  color: var(--term-cream);
+}
+
+/* Log line styles */
+.log-line {
+  display: grid;
+  grid-template-columns: 72px 24px 1fr;
+  gap: 8px;
+  margin-bottom: 4px;
+  animation: appear .3s ease-out;
+}
+@keyframes appear {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.log-line .ts {
+  color: var(--term-mute);
+  font-size: 10.5pt;
+}
+.log-line .arrow {
+  color: var(--term-cyan);
+  font-weight: 700;
+}
+.log-line .text { word-break: break-word; }
+
+.log-line.server .arrow { color: var(--term-gold); }
+.log-line.server .text { color: var(--term-cream); }
+
+.log-line.system .arrow { color: var(--term-cyan); }
+.log-line.system .text { color: var(--term-dim); font-style: italic; }
+
+.log-line.client .arrow { color: var(--term-peach); }
+.log-line.client .text { color: var(--term-peach); font-weight: 500; }
+
+.log-line.alert .arrow { color: var(--term-red); }
+.log-line.alert .text { color: var(--term-red); font-weight: 500; }
+
+.log-line.success .arrow { color: var(--term-green); }
+.log-line.success .text { color: var(--term-green); }
+
+/* Latency wait bar */
+.latency-bar {
+  margin: 6px 0 10px;
+  padding: 10px 14px;
+  background: rgba(184,90,62,.1);
+  border: 1px solid rgba(217,119,87,.3);
+  border-radius: 3px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+.latency-bar .lb-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5pt;
+  color: var(--term-peach);
+}
+.latency-bar .lb-track {
+  height: 6px;
+  background: rgba(217,119,87,.15);
+  border-radius: 3px;
+  overflow: hidden;
+  grid-column: 1 / -1;
+  margin-top: 4px;
+}
+.latency-bar .lb-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--term-peach), var(--term-gold));
+  width: 0%;
+  transition: width .1s linear;
+}
+.latency-bar .lb-counter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5pt;
+  color: var(--term-gold);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Input prompt */
+.term-input-area {
+  background: #07050d;
+  padding: 14px 22px 16px;
+  border-top: 1px solid var(--term-border);
+  display: none;
+}
+.term-input-area.active { display: block; }
+.term-input-hint {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10pt;
+  color: var(--term-gold);
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+.term-input-hint .hint-arrow { color: var(--term-peach); margin-right: 6px; }
+.term-input-row {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 8px;
+  align-items: center;
+  background: var(--term-bg-soft);
+  border: 1px solid var(--term-border);
+  border-radius: 3px;
+  padding: 8px 12px;
+}
+.term-input-row .prompt-glyph {
+  color: var(--term-peach);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14pt;
+  font-weight: 700;
+}
+.term-input-row input {
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: var(--term-cream);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12pt;
+  width: 100%;
+  caret-color: var(--term-peach);
+  font-weight: 500;
+}
+.term-input-row input::placeholder { color: var(--term-mute); font-style: italic; }
+.term-input-error {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5pt;
+  color: var(--term-red);
+  margin-top: 6px;
+  display: none;
+  letter-spacing: 0.5px;
+}
+.term-input-error.show { display: block; animation: shake .4s; }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* ───── Summary card ───── */
+.summary-card {
+  background: rgba(255,255,255,.6);
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  padding: 28px 32px;
+  margin-bottom: 18px;
+  display: none;
+}
+.summary-card.show { display: block; animation: appear .4s ease-out; }
+
+.summary-card .sc-eyebrow {
+  font-family: 'Special Elite', monospace;
+  font-size: 10pt;
+  letter-spacing: 3px;
+  color: var(--peach);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 6px;
+}
+.summary-card .sc-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 28pt;
+  letter-spacing: 4px;
+  color: var(--ink);
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+.summary-card .sc-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 15pt;
+  color: var(--ink-soft);
+  text-align: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.summary-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 22px;
+}
+.stat-card {
+  text-align: center;
+  padding: 18px 14px;
+  background: rgba(168,136,48,.08);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+}
+.stat-card .stat-label {
+  font-family: 'Special Elite', monospace;
+  font-size: 9pt;
+  letter-spacing: 2px;
+  color: var(--peach);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.stat-card .stat-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 26pt;
+  color: var(--ink);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.stat-card .stat-unit {
+  font-family: 'Special Elite', monospace;
+  font-size: 11pt;
+  color: var(--ink-soft);
+  margin-top: 4px;
+}
+.stat-card.total {
+  background: rgba(184,90,62,.12);
+  border-color: var(--peach);
+}
+.stat-card.total .stat-label { color: var(--peach-bright); }
+
+.summary-card h3 {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 14pt;
+  letter-spacing: 2px;
+  color: var(--ink);
+  text-transform: uppercase;
+  margin: 22px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--rule);
+}
+.summary-card .reflect-questions {
+  background: rgba(168,136,48,.08);
+  border-left: 3px solid var(--gold);
+  padding: 14px 18px;
+  border-radius: 0 3px 3px 0;
+}
+.summary-card .reflect-questions ol {
+  margin-left: 18px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13pt;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.summary-card .reflect-questions li {
+  margin-bottom: 10px;
+}
+.summary-card .reflect-questions li:last-child { margin-bottom: 0; }
+
+.summary-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+.action-btn {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 11pt;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  padding: 13px 26px;
+  border: 1.5px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all .2s;
+}
+.action-btn:hover { background: var(--ink); color: var(--paper); }
+.action-btn.primary {
+  background: var(--peach-bright);
+  border-color: var(--peach-bright);
+  color: var(--paper);
+}
+.action-btn.primary:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+/* Footer */
+.app-footer {
+  margin-top: 30px;
+  text-align: center;
+  font-family: 'Special Elite', monospace;
+  font-size: 9pt;
+  letter-spacing: 2px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  line-height: 1.7;
+}
+.app-footer .credit { color: var(--peach); margin-top: 4px; }
+
+/* Scrollbar styling for terminal */
+.term-body::-webkit-scrollbar { width: 8px; }
+.term-body::-webkit-scrollbar-track { background: var(--term-bg); }
+.term-body::-webkit-scrollbar-thumb {
+  background: var(--term-border);
+  border-radius: 4px;
+}
+.term-body::-webkit-scrollbar-thumb:hover { background: #5a4a8c; }
+
+@media (max-width: 700px) {
+  .term-statusbar { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .summary-stats { grid-template-columns: 1fr; }
+  .log-line { grid-template-columns: 56px 18px 1fr; gap: 6px; font-size: 10.5pt; }
+  .stat-card .stat-val { font-size: 22pt; }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ════════ Brand chrome ════════ -->
+  <div class="brand-header">
+    <div class="eyebrow">A Word &amp; Wonder Experience · Math Hub</div>
+    <div class="title">The Sudan Server<br>Simulation</div>
+    <div class="subtitle">Feel the latency. Track the wait. Audit the protocol.</div>
+    <div class="subline">AP Computer Science Principles · Unit 6.2–6.3</div>
+  </div>
+
+  <!-- ════════ Intro card (before simulation starts) ════════ -->
+  <div class="intro-card" id="intro-card">
+    <div class="intro-label">Before You Begin</div>
+    <div class="intro-heading">You are a client trying to download a 5-slice pizza from a server in Sudan.</div>
+    <p>The server has <strong>2000ms of latency</strong> on every message. You'll go through a Three-Way Handshake, receive five slices (one of which will be lost in transit), and request retransmission of the lost packet. Track your time. The wait is the point.</p>
+
+    <div class="objective">
+      <strong>Goal</strong>
+      Experience how the <em>reliability</em> of TCP becomes a <em>hurdle</em> in a high-latency environment. Record your timing data and bring it to the Ethical Brief.
+    </div>
+
+    <p style="font-size: 11.5pt; color: var(--ink-soft); font-style: italic;">When prompted, you'll need to type the correct TCP response (SYN-ACK, ACK, or a retransmission request). Hints appear above each input. Take it seriously — Omar in Sudan doesn't get to skip the wait.</p>
+
+    <button class="start-btn" onclick="startSim()">▶ Begin Simulation</button>
+  </div>
+
+  <!-- ════════ Terminal ════════ -->
+  <div class="terminal-shell hidden" id="terminal">
+
+    <div class="term-titlebar">
+      <div class="lights">
+        <span class="light"></span>
+        <span class="light"></span>
+        <span class="light live"></span>
+      </div>
+      <div class="host">
+        khartoum-server.sd
+        <span class="host-loc">▸ Omdurman, Sudan</span>
+      </div>
+      <div class="meta">tcp/ip <span>v6.2</span></div>
+    </div>
+
+    <div class="term-statusbar">
+      <div class="status-cell">
+        <span class="s-label">Latency</span>
+        <span class="s-val warning">2000 ms</span>
+      </div>
+      <div class="status-cell">
+        <span class="s-label">Connection</span>
+        <span class="s-val" id="conn-status">Initiating...</span>
+      </div>
+      <div class="status-cell">
+        <span class="s-label">Slices Received</span>
+        <span class="s-val" id="slice-count">0 / 5</span>
+      </div>
+      <div class="status-cell">
+        <span class="s-label">Elapsed</span>
+        <span class="s-val elapsed" id="elapsed">+0.0 s</span>
+      </div>
+    </div>
+
+    <div class="term-body" id="term-body"></div>
+
+    <div class="term-input-area" id="input-area">
+      <div class="term-input-hint">
+        <span class="hint-arrow">→</span>
+        <span id="input-hint">Waiting...</span>
+      </div>
+      <div class="term-input-row">
+        <span class="prompt-glyph">$</span>
+        <input type="text" id="user-input" placeholder="" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="term-input-error" id="input-error"></div>
+    </div>
+
+  </div>
+
+  <!-- ════════ Summary card ════════ -->
+  <div class="summary-card" id="summary-card">
+    <div class="sc-eyebrow">Simulation Complete</div>
+    <div class="sc-title">Your Timing Data</div>
+    <div class="sc-sub">Write these numbers in your Lab Log. You'll cite them in the Ethical Brief.</div>
+
+    <div class="summary-stats">
+      <div class="stat-card">
+        <div class="stat-label">Three-Way Handshake</div>
+        <div class="stat-val" id="stat-handshake">—</div>
+        <div class="stat-unit">seconds</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Slice #3 Recovery</div>
+        <div class="stat-val" id="stat-slice3">—</div>
+        <div class="stat-unit">seconds</div>
+      </div>
+      <div class="stat-card total">
+        <div class="stat-label">Total Download Time</div>
+        <div class="stat-val" id="stat-total">—</div>
+        <div class="stat-unit">seconds for 5 slices</div>
+      </div>
+    </div>
+
+    <h3>Reflection — bring this to the Ethical Brief</h3>
+    <div class="reflect-questions">
+      <ol>
+        <li><strong>The Time Cost.</strong> How many seconds were "wasted" just waiting for messages to travel back and forth? What part of that wait is latency, and what part is the protocol's design?</li>
+        <li><strong>TCP vs. UDP.</strong> If you were using UDP (no acknowledgments) instead of TCP, how would the Slice #3 situation have been handled differently? What would the trade-off be?</li>
+        <li><strong>The Divide.</strong> Why does a <em>reliable</em> protocol like TCP make the Internet feel <em>broken</em> for a student in Sudan, rather than just "slow"?</li>
+      </ol>
+    </div>
+
+    <div class="summary-actions">
+      <button class="action-btn" onclick="window.print()">🖨 Print This Page</button>
+      <button class="action-btn primary" onclick="runAgain()">▶ Run Again</button>
+    </div>
+  </div>
+
+  <div class="app-footer">
+    Sudan Server Simulation · AP Computer Science Principles · Unit 6.2–6.3<br>
+    <span class="credit">A collaboration between [AP CS Teacher] &amp; Ms. Howell, ITS Coach · Word &amp; Wonder · © 2025–2026</span>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// State & Configuration
+// ═══════════════════════════════════════════════════════════
+const LATENCY_MS = 2000;
+const FAST_MODE = new URLSearchParams(location.search).has('fast');
+const WAIT_MS = FAST_MODE ? 200 : LATENCY_MS;
+
+const state = {
+  started: false,
+  startTime: null,
+  handshakeStart: null,
+  handshakeEnd: null,
+  slice3LossTime: null,
+  slice3RecoveredTime: null,
+  slicesReceived: 0,
+  stepIndex: 0
+};
+
+// The full simulation script as a sequence of steps
+const steps = [
+  // ─── Handshake ───
+  { type: 'system', msg: 'Initiating TCP connection to khartoum-server.sd...' },
+  { type: 'mark', mark: 'handshakeStart' },
+  { type: 'wait', label: 'Server sending SYN packet across 2000ms latency', duration: WAIT_MS },
+  { type: 'server', msg: 'SYN received from server. Three-Way Handshake initiated.' },
+  { type: 'input',
+    hint: 'Type SYN-ACK to respond to the server\'s handshake request.',
+    placeholder: 'SYN-ACK',
+    expected: ['SYN-ACK', 'SYNACK', 'SYN ACK'],
+    errorMsg: 'TCP requires you to respond with SYN-ACK to complete the handshake.' },
+  { type: 'wait', label: 'Transmitting SYN-ACK to Sudan (2000ms latency)', duration: WAIT_MS },
+  { type: 'server', msg: 'SYN-ACK received by server. Sending final ACK...' },
+  { type: 'wait', label: 'Server transmitting ACK (2000ms latency)', duration: WAIT_MS },
+  { type: 'mark', mark: 'handshakeEnd' },
+  { type: 'success', msg: '✓ Three-Way Handshake complete. Connection established.' },
+  { type: 'status', conn: 'Established' },
+  { type: 'system', msg: 'Pizza ordered. Server preparing to send 5 slices via TCP.' },
+
+  // ─── Slice 1 ───
+  { type: 'wait', label: 'Server sending Slice 1/5 (2000ms latency)', duration: WAIT_MS },
+  { type: 'server', msg: '🍕 SLICE 1/5 arrived. Server is waiting for your ACK (Flow Control).' },
+  { type: 'slice', n: 1 },
+  { type: 'input',
+    hint: 'Type ACK to acknowledge receipt of Slice 1.',
+    placeholder: 'ACK',
+    expected: ['ACK'],
+    errorMsg: 'Server expects ACK before it will send the next slice.' },
+
+  // ─── Slice 2 ───
+  { type: 'wait', label: 'ACK received. Server sending Slice 2/5 (2000ms latency)', duration: WAIT_MS },
+  { type: 'server', msg: '🍕 SLICE 2/5 arrived. Awaiting ACK.' },
+  { type: 'slice', n: 2 },
+  { type: 'input',
+    hint: 'Type ACK to acknowledge receipt of Slice 2.',
+    placeholder: 'ACK',
+    expected: ['ACK'],
+    errorMsg: 'Server expects ACK before it will send the next slice.' },
+
+  // ─── Slice 3 (LOST) ───
+  { type: 'wait', label: 'ACK received. Server sending Slice 3/5 (2000ms latency)', duration: WAIT_MS },
+  { type: 'mark', mark: 'slice3Loss' },
+  { type: 'alert', msg: '⚠ PACKET LOSS DETECTED. Slice 3 was lost in transit. You did NOT receive it.' },
+  { type: 'system', msg: 'You cannot ACK what you did not get. Request retransmission.' },
+  { type: 'input',
+    hint: 'Type "Requesting Retransmission of Slice #3" (or just "retransmit") to ask for the lost packet.',
+    placeholder: 'Requesting Retransmission of Slice #3',
+    expected: ['REQUESTING RETRANSMISSION OF SLICE #3', 'REQUESTING RETRANSMISSION OF SLICE 3', 'RETRANSMIT', 'RETRANSMISSION'],
+    looseMatch: 'RETRANSMIT',
+    errorMsg: 'You need to request retransmission of the lost slice before the connection can continue.' },
+  { type: 'wait', label: 'Server received request. Resending Slice 3 (2000ms latency)', duration: WAIT_MS },
+  { type: 'server', msg: '🍕 SLICE 3/5 arrived (retransmitted). Awaiting ACK.' },
+  { type: 'slice', n: 3 },
+  { type: 'mark', mark: 'slice3Recovered' },
+  { type: 'input',
+    hint: 'Type ACK to confirm receipt of the retransmitted Slice 3.',
+    placeholder: 'ACK',
+    expected: ['ACK'],
+    errorMsg: 'Server expects ACK before it will send the next slice.' },
+
+  // ─── Slice 4 ───
+  { type: 'wait', label: 'ACK received. Server sending Slice 4/5 (2000ms latency)', duration: WAIT_MS },
+  { type: 'server', msg: '🍕 SLICE 4/5 arrived. Awaiting ACK.' },
+  { type: 'slice', n: 4 },
+  { type: 'input',
+    hint: 'Type ACK to acknowledge receipt of Slice 4.',
+    placeholder: 'ACK',
+    expected: ['ACK'],
+    errorMsg: 'Server expects ACK before it will send the next slice.' },
+
+  // ─── Slice 5 ───
+  { type: 'wait', label: 'ACK received. Server sending Slice 5/5 (2000ms latency)', duration: WAIT_MS },
+  { type: 'server', msg: '🍕 SLICE 5/5 arrived. Awaiting final ACK.' },
+  { type: 'slice', n: 5 },
+  { type: 'input',
+    hint: 'Type ACK to complete the download.',
+    placeholder: 'ACK',
+    expected: ['ACK'],
+    errorMsg: 'Server expects ACK to close the connection.' },
+
+  // ─── Done ───
+  { type: 'wait', label: 'Closing connection...', duration: WAIT_MS / 2 },
+  { type: 'success', msg: '✓ Download complete. All 5 slices received. Connection closed.' },
+  { type: 'status', conn: 'Closed' },
+  { type: 'finish' }
+];
+
+// ═══════════════════════════════════════════════════════════
+// DOM refs
+// ═══════════════════════════════════════════════════════════
+const termBody = document.getElementById('term-body');
+const inputArea = document.getElementById('input-area');
+const inputHint = document.getElementById('input-hint');
+const userInput = document.getElementById('user-input');
+const inputError = document.getElementById('input-error');
+const elapsedEl = document.getElementById('elapsed');
+const connStatusEl = document.getElementById('conn-status');
+const sliceCountEl = document.getElementById('slice-count');
+
+// ═══════════════════════════════════════════════════════════
+// Elapsed-time ticker
+// ═══════════════════════════════════════════════════════════
+let elapsedInterval = null;
+function startElapsedTicker() {
+  elapsedInterval = setInterval(() => {
+    if (!state.startTime) return;
+    const elapsed = (Date.now() - state.startTime) / 1000;
+    elapsedEl.textContent = '+' + elapsed.toFixed(1) + ' s';
+  }, 100);
+}
+function stopElapsedTicker() {
+  if (elapsedInterval) clearInterval(elapsedInterval);
+}
+
+// ═══════════════════════════════════════════════════════════
+// Log line rendering
+// ═══════════════════════════════════════════════════════════
+function getTimestamp() {
+  if (!state.startTime) return '+0.0s';
+  return '+' + ((Date.now() - state.startTime) / 1000).toFixed(1) + 's';
+}
+
+function logLine(kind, text) {
+  const line = document.createElement('div');
+  line.className = 'log-line ' + kind;
+
+  let arrow = '>';
+  if (kind === 'client') arrow = '<';
+  if (kind === 'system') arrow = '·';
+  if (kind === 'alert') arrow = '!';
+  if (kind === 'success') arrow = '✓';
+
+  line.innerHTML = `
+    <span class="ts">[${getTimestamp()}]</span>
+    <span class="arrow">${arrow}</span>
+    <span class="text">${text}</span>
+  `;
+  termBody.appendChild(line);
+  termBody.scrollTop = termBody.scrollHeight;
+}
+
+function logLatencyBar(label, duration) {
+  return new Promise(resolve => {
+    const bar = document.createElement('div');
+    bar.className = 'latency-bar';
+    bar.innerHTML = `
+      <span class="lb-label">${label}</span>
+      <span class="lb-counter">0 / ${duration}ms</span>
+      <div class="lb-track"><div class="lb-fill"></div></div>
+    `;
+    termBody.appendChild(bar);
+    termBody.scrollTop = termBody.scrollHeight;
+
+    const fill = bar.querySelector('.lb-fill');
+    const counter = bar.querySelector('.lb-counter');
+    const start = Date.now();
+    const tick = setInterval(() => {
+      const passed = Date.now() - start;
+      const pct = Math.min(100, (passed / duration) * 100);
+      fill.style.width = pct + '%';
+      counter.textContent = Math.min(duration, passed) + ' / ' + duration + 'ms';
+      if (passed >= duration) {
+        clearInterval(tick);
+        fill.style.width = '100%';
+        counter.textContent = duration + ' / ' + duration + 'ms ✓';
+        setTimeout(resolve, 80);
+      }
+    }, 50);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// Input handling
+// ═══════════════════════════════════════════════════════════
+let inputResolver = null;
+function awaitInput(step) {
+  return new Promise(resolve => {
+    inputHint.textContent = step.hint;
+    userInput.placeholder = step.placeholder || 'type here...';
+    userInput.value = '';
+    inputError.classList.remove('show');
+    inputArea.classList.add('active');
+    userInput.focus();
+
+    inputResolver = (value) => {
+      const normalized = value.trim().toUpperCase();
+      const matchesExact = step.expected.some(exp => exp.toUpperCase() === normalized);
+      const matchesLoose = step.looseMatch && normalized.includes(step.looseMatch);
+
+      if (matchesExact || matchesLoose) {
+        // Echo their input
+        logLine('client', value.trim());
+        inputArea.classList.remove('active');
+        inputResolver = null;
+        resolve();
+      } else {
+        inputError.textContent = '✗ ' + step.errorMsg;
+        inputError.classList.add('show');
+        userInput.focus();
+        userInput.select();
+      }
+    };
+  });
+}
+userInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && inputResolver) {
+    inputResolver(userInput.value);
+  }
+});
+
+// ═══════════════════════════════════════════════════════════
+// Main runner
+// ═══════════════════════════════════════════════════════════
+async function startSim() {
+  document.getElementById('intro-card').classList.add('hidden');
+  document.getElementById('terminal').classList.remove('hidden');
+  document.getElementById('summary-card').classList.remove('show');
+
+  state.started = true;
+  state.startTime = Date.now();
+  state.slicesReceived = 0;
+  state.handshakeStart = null;
+  state.handshakeEnd = null;
+  state.slice3LossTime = null;
+  state.slice3RecoveredTime = null;
+  termBody.innerHTML = '';
+  connStatusEl.textContent = 'Initiating...';
+  sliceCountEl.textContent = '0 / 5';
+  startElapsedTicker();
+
+  for (const step of steps) {
+    if (step.type === 'system')   logLine('system',  step.msg);
+    else if (step.type === 'server')   logLine('server',  step.msg);
+    else if (step.type === 'alert')    logLine('alert',   step.msg);
+    else if (step.type === 'success')  logLine('success', step.msg);
+    else if (step.type === 'wait')     await logLatencyBar(step.label, step.duration);
+    else if (step.type === 'input')    await awaitInput(step);
+    else if (step.type === 'mark')     state[step.mark] = Date.now();
+    else if (step.type === 'slice')    {
+      state.slicesReceived = step.n;
+      sliceCountEl.textContent = step.n + ' / 5';
+    }
+    else if (step.type === 'status')   connStatusEl.textContent = step.conn;
+    else if (step.type === 'finish')   showSummary();
+  }
+}
+
+function showSummary() {
+  stopElapsedTicker();
+  const total = (Date.now() - state.startTime) / 1000;
+  const handshake = state.handshakeEnd && state.handshakeStart
+    ? (state.handshakeEnd - state.handshakeStart) / 1000
+    : 0;
+  const slice3 = state.slice3RecoveredTime && state.slice3LossTime
+    ? (state.slice3RecoveredTime - state.slice3LossTime) / 1000
+    : 0;
+
+  document.getElementById('stat-handshake').textContent = handshake.toFixed(1);
+  document.getElementById('stat-slice3').textContent    = slice3.toFixed(1);
+  document.getElementById('stat-total').textContent     = total.toFixed(1);
+
+  document.getElementById('summary-card').classList.add('show');
+  setTimeout(() => {
+    document.getElementById('summary-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 200);
+}
+
+function runAgain() {
+  document.getElementById('summary-card').classList.remove('show');
+  document.getElementById('terminal').classList.add('hidden');
+  document.getElementById('intro-card').classList.remove('hidden');
+  termBody.innerHTML = '';
+  state.startTime = null;
+  state.started = false;
+  elapsedEl.textContent = '+0.0 s';
+  connStatusEl.textContent = 'Initiating...';
+  sliceCountEl.textContent = '0 / 5';
+  stopElapsedTicker();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>

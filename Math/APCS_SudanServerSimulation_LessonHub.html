@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AP CSP · The Sudan Server Simulation · Lesson Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Special+Elite&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Caveat:wght@600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:        #fdf8ec;
+  --paper-deep:   #f5ecd9;
+  --paper-edge:   #ebe0c8;
+  --ink:          #2a1a45;
+  --ink-soft:     rgba(42,26,69,.72);
+  --ink-faint:    rgba(42,26,69,.45);
+  --ink-trace:    rgba(42,26,69,.18);
+  --peach:        #b85a3e;
+  --peach-bright: #d97757;
+  --gold:         #a88830;
+  --gold-bright:  #c9a84c;
+  --teal:         #2d6e6e;
+  --rule:         rgba(42,26,69,.18);
+  --tbd-bg:       rgba(168,136,48,.18);
+  --code-bg:      #2a1a45;
+  --code-ink:     #f5ecd9;
+  --code-accent:  #c9a84c;
+  --bg-screen:    #1a1530;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg-screen);
+  min-height: 100vh;
+  padding: 40px 24px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.screen-note {
+  max-width: 700px;
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  color: rgba(245,236,217,.6);
+  font-size: 14px;
+  line-height: 1.7;
+  font-style: italic;
+}
+.screen-note .head {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 3px;
+  color: #f5ecd9;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  font-style: normal;
+}
+.print-btn {
+  display: inline-block;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 14px 26px;
+  background: var(--peach-bright);
+  border: 1px solid var(--peach-bright);
+  color: var(--bg-screen);
+  cursor: pointer;
+  border-radius: 2px;
+  margin-top: 14px;
+}
+.print-btn:hover { background: #f5ecd9; }
+
+/* ───── The lesson hub document ───── */
+.hub {
+  width: 8.5in;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Cormorant Garamond', serif;
+  box-shadow: 0 30px 80px rgba(0,0,0,.6);
+}
+
+/* Each major section is a "page" */
+.section {
+  padding: 0.75in 0.85in;
+  min-height: 11in;
+  position: relative;
+  border-bottom: 1px dashed var(--ink-trace);
+}
+.section:last-child { border-bottom: 0; }
+
+/* Masthead repeated on every section */
+.masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 14px;
+  margin-bottom: 26px;
+  border-bottom: 1px solid var(--rule);
+}
+.masthead .brand {
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--peach);
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+.masthead .brand .line2 {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: var(--ink);
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+.masthead .page-marker {
+  text-align: right;
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+.masthead .page-marker .pm-label {
+  color: var(--gold);
+}
+
+/* ═══════════════ COVER ═══════════════ */
+.cover-eyebrow {
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--peach);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.cover-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 56px;
+  letter-spacing: 6px;
+  color: var(--ink);
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.05;
+  margin-bottom: 14px;
+}
+.cover-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 22px;
+  color: var(--ink-soft);
+  text-align: center;
+  margin-bottom: 36px;
+  letter-spacing: 1px;
+}
+.collab-badge {
+  margin: 0 auto 40px;
+  padding: 22px 32px;
+  border: 2px solid var(--ink);
+  background: rgba(255,255,255,.4);
+  max-width: 5.5in;
+  text-align: center;
+  position: relative;
+}
+.collab-badge::before {
+  content: '·  COLLABORATION  ·';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--peach);
+  background: var(--paper);
+  padding: 0 12px;
+}
+.collab-names {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 2.5px;
+  color: var(--ink);
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+.collab-names .amp {
+  color: var(--peach);
+  margin: 0 12px;
+  font-weight: 400;
+}
+.collab-roles {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin-top: 8px;
+}
+
+.cover-meta {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 0 auto 30px;
+  max-width: 6.5in;
+}
+.cover-meta-cell {
+  text-align: center;
+  padding: 14px 8px;
+  border: 1px solid var(--rule);
+  background: rgba(255,255,255,.35);
+}
+.cover-meta-cell .key {
+  font-family: 'Special Elite', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--peach);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.cover-meta-cell .val {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+
+.cover-arc {
+  margin: 28px auto 0;
+  max-width: 6.7in;
+}
+.cover-arc-label {
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--peach);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 14px;
+}
+.cover-arc-flow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  gap: 8px;
+  align-items: center;
+}
+.cover-arc-step {
+  text-align: center;
+  padding: 12px 10px;
+  border: 1.5px solid var(--ink);
+  background: rgba(255,255,255,.4);
+}
+.cover-arc-step .num {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 16px;
+  color: var(--peach);
+}
+.cover-arc-step .label {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--ink);
+  text-transform: uppercase;
+  margin: 4px 0 2px;
+  line-height: 1.25;
+}
+.cover-arc-step .time {
+  font-family: 'Special Elite', monospace;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+.cover-arc-arrow {
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  color: var(--peach);
+}
+
+/* ═══════════════ TYPOGRAPHY ═══════════════ */
+.section-eyebrow {
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--peach);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: 3px;
+  color: var(--ink);
+  text-transform: uppercase;
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+.section-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--ink-soft);
+  margin-bottom: 26px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--rule);
+}
+
+h3 {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 2.5px;
+  color: var(--ink);
+  text-transform: uppercase;
+  margin: 22px 0 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px dashed var(--rule);
+}
+h3:first-child { margin-top: 0; }
+
+h4 {
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  color: var(--peach);
+  text-transform: uppercase;
+  margin: 16px 0 6px;
+}
+
+p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13pt;
+  line-height: 1.6;
+  color: var(--ink);
+  margin-bottom: 11px;
+}
+
+ul, ol {
+  margin: 0 0 14px 20px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13pt;
+  line-height: 1.55;
+  color: var(--ink);
+}
+ul li, ol li { margin-bottom: 6px; }
+
+strong {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+em.term {
+  font-style: normal;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5pt;
+  color: var(--peach);
+  background: rgba(184,90,62,.08);
+  padding: 1px 6px;
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+/* ═══════════════ GLANCE GRID ═══════════════ */
+.glance {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.glance-card {
+  padding: 16px 18px;
+  background: rgba(255,255,255,.45);
+  border-left: 3px solid var(--peach);
+  border-radius: 0 4px 4px 0;
+}
+.glance-card.gold { border-left-color: var(--gold); }
+.glance-card.teal { border-left-color: var(--teal); }
+.glance-card.ink  { border-left-color: var(--ink); }
+.glance-card .label {
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--peach);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.glance-card.gold .label { color: var(--gold); }
+.glance-card.teal .label { color: var(--teal); }
+.glance-card.ink  .label { color: var(--ink-soft); }
+.glance-card ul {
+  margin: 0 0 0 18px;
+  font-size: 11.5pt;
+  line-height: 1.5;
+}
+.glance-card p {
+  font-size: 11.5pt;
+  margin-bottom: 6px;
+}
+
+.vocab-block {
+  margin-top: 14px;
+  padding: 16px 18px;
+  background: rgba(42,26,69,.04);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+}
+.vocab-block .label {
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--peach);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.vocab-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.vocab-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5pt;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+/* ═══════════════ CALLOUTS ═══════════════ */
+.callout {
+  margin: 14px 0;
+  padding: 14px 18px;
+  background: rgba(168,136,48,.1);
+  border-left: 4px solid var(--gold);
+  border-radius: 0 4px 4px 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12.5pt;
+  line-height: 1.55;
+  font-style: italic;
+}
+.callout strong {
+  font-style: normal;
+  font-family: 'Special Elite', monospace;
+  font-size: 10pt;
+  letter-spacing: 2px;
+  color: var(--peach);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+  font-weight: normal;
+}
+
+/* ═══════════════ GEMINI PROMPT BLOCK ═══════════════ */
+.prompt-block {
+  margin: 16px 0;
+  background: var(--code-bg);
+  color: var(--code-ink);
+  padding: 20px 22px;
+  border-radius: 4px;
+  position: relative;
+  box-shadow: 0 4px 16px rgba(0,0,0,.25);
+}
+.prompt-block .prompt-label {
+  position: absolute;
+  top: -8px;
+  left: 18px;
+  background: var(--code-accent);
+  color: var(--ink);
+  font-family: 'Special Elite', monospace;
+  font-size: 9.5pt;
+  letter-spacing: 2px;
+  padding: 3px 12px;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-radius: 2px;
+}
+.prompt-block .prompt-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11pt;
+  line-height: 1.7;
+  margin-top: 6px;
+}
+.prompt-block .copy-hint {
+  font-family: 'Special Elite', monospace;
+  font-size: 9pt;
+  letter-spacing: 1.5px;
+  color: var(--code-accent);
+  text-transform: uppercase;
+  margin-top: 12px;
+  text-align: right;
+}
+
+/* ═══════════════ LAB STEPS ═══════════════ */
+.lab-steps {
+  margin: 14px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.lab-step {
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  gap: 14px;
+  padding: 12px 16px;
+  background: rgba(255,255,255,.45);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+}
+.lab-step .step-num {
+  text-align: center;
+}
+.lab-step .step-num .n {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 22px;
+  color: var(--peach);
+  line-height: 1;
+}
+.lab-step .step-num .n-label {
+  font-family: 'Special Elite', monospace;
+  font-size: 8pt;
+  letter-spacing: 1.5px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.lab-step .step-body .step-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  color: var(--ink);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.lab-step .step-body p,
+.lab-step .step-body ul {
+  font-size: 11.5pt;
+  margin-bottom: 4px;
+}
+.lab-step .step-body .action {
+  font-family: 'Special Elite', monospace;
+  font-size: 10pt;
+  letter-spacing: 1.5px;
+  color: var(--peach);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+.lab-step .step-body .action-input {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11pt;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 3px 10px;
+  border-radius: 3px;
+  font-weight: 500;
+  display: inline-block;
+  margin: 2px 0;
+}
+
+/* ═══════════════ LOG WORKSHEET ═══════════════ */
+.log-sheet {
+  margin: 16px 0;
+  padding: 18px 22px;
+  border: 2px solid var(--ink);
+  background: rgba(255,255,255,.5);
+  border-radius: 2px;
+}
+.log-sheet .log-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 2.5px;
+  color: var(--ink);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--rule);
+}
+.log-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 14px;
+  align-items: end;
+  margin-bottom: 12px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12pt;
+}
+.log-row .log-q { color: var(--ink); }
+.log-row .log-blank {
+  display: inline-block;
+  width: 2.4in;
+  border-bottom: 1.5px solid var(--ink);
+  padding-bottom: 16px;
+}
+
+/* ═══════════════ REFLECTION QUESTIONS ═══════════════ */
+.reflection {
+  margin: 16px 0;
+}
+.reflection ol {
+  list-style: none;
+  counter-reset: rq;
+  margin: 0;
+  padding: 0;
+}
+.reflection ol li {
+  counter-increment: rq;
+  margin-bottom: 14px;
+  padding: 12px 16px;
+  border: 1px solid var(--rule);
+  background: rgba(255,255,255,.4);
+  border-radius: 3px;
+  position: relative;
+  padding-left: 50px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12pt;
+  line-height: 1.55;
+}
+.reflection ol li::before {
+  content: counter(rq, decimal-leading-zero);
+  position: absolute;
+  left: 14px;
+  top: 12px;
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 14px;
+  color: var(--peach);
+}
+.reflection ol li strong {
+  font-family: 'Cinzel', serif;
+  font-size: 11pt;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+  color: var(--ink);
+}
+
+/* ═══════════════ HANDOUT MARKER ═══════════════ */
+.handout-marker {
+  display: inline-block;
+  font-family: 'Special Elite', monospace;
+  font-size: 9pt;
+  letter-spacing: 2px;
+  background: var(--peach);
+  color: var(--paper);
+  padding: 3px 12px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.handout-marker.teacher {
+  background: var(--teal);
+}
+
+/* ═══════════════ RUBRIC TABLES ═══════════════ */
+.rubric {
+  margin: 18px 0;
+  border-collapse: collapse;
+  width: 100%;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11pt;
+  line-height: 1.45;
+  background: rgba(255,255,255,.5);
+}
+.rubric caption {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: var(--ink);
+  text-transform: uppercase;
+  text-align: left;
+  padding: 8px 0 14px;
+  caption-side: top;
+}
+.rubric th, .rubric td {
+  border: 1px solid var(--rule);
+  padding: 10px 12px;
+  vertical-align: top;
+  text-align: left;
+}
+.rubric thead th {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 10.5pt;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.rubric thead th:first-child {
+  background: var(--peach);
+}
+.rubric tbody td:first-child {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 11pt;
+  letter-spacing: 1px;
+  color: var(--ink);
+  text-transform: uppercase;
+  background: rgba(184,90,62,.08);
+}
+.rubric tbody tr:nth-child(even) {
+  background: rgba(168,136,48,.05);
+}
+
+/* ═══════════════ PBA EXTENSION ═══════════════ */
+.pba-hero {
+  margin: 18px 0 22px;
+  padding: 26px 28px;
+  background: linear-gradient(135deg, rgba(168,136,48,.18), rgba(184,90,62,.12));
+  border: 2px solid var(--ink);
+  position: relative;
+}
+.pba-hero::before {
+  content: '· EXTENSION · OMAR\'S VOICE ·';
+  position: absolute;
+  top: -10px;
+  left: 24px;
+  background: var(--paper);
+  font-family: 'Special Elite', monospace;
+  font-size: 10pt;
+  letter-spacing: 2.5px;
+  color: var(--peach);
+  padding: 0 12px;
+}
+.pba-hero .pba-tag {
+  font-family: 'Special Elite', monospace;
+  font-size: 10pt;
+  letter-spacing: 2px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.pba-hero .pba-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: 2.5px;
+  color: var(--ink);
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+.pba-hero .pba-lead {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 14pt;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.pba-phases {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 18px 0;
+}
+.pba-phase {
+  padding: 12px 14px;
+  background: rgba(255,255,255,.5);
+  border: 1px solid var(--ink-trace);
+  border-top: 3px solid var(--peach);
+  border-radius: 0 0 3px 3px;
+}
+.pba-phase:nth-child(2) { border-top-color: var(--gold); }
+.pba-phase:nth-child(3) { border-top-color: var(--teal); }
+.pba-phase:nth-child(4) { border-top-color: var(--ink); }
+.pba-phase .phase-num {
+  font-family: 'Special Elite', monospace;
+  font-size: 9pt;
+  letter-spacing: 1.5px;
+  color: var(--peach);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.pba-phase:nth-child(2) .phase-num { color: var(--gold); }
+.pba-phase:nth-child(3) .phase-num { color: var(--teal); }
+.pba-phase:nth-child(4) .phase-num { color: var(--ink-soft); }
+.pba-phase .phase-name {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 11.5pt;
+  letter-spacing: 1px;
+  color: var(--ink);
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.pba-phase .phase-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10.5pt;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+/* ═══════════════ FOOTER ═══════════════ */
+.doc-footer {
+  margin-top: 32px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  text-align: center;
+  font-family: 'Special Elite', monospace;
+  font-size: 9pt;
+  letter-spacing: 2px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  line-height: 1.7;
+}
+.doc-footer .credit-line {
+  color: var(--peach);
+  margin-top: 4px;
+}
+
+/* ═══════════════ PRINT ═══════════════ */
+@media print {
+  body { background: white; padding: 0; }
+  .screen-note, .print-btn { display: none; }
+  .hub { box-shadow: none; margin: 0; }
+  .section {
+    page-break-before: always;
+    page-break-inside: avoid;
+    border-bottom: 0;
+  }
+  .section:first-child { page-break-before: avoid; }
+  @page { size: letter portrait; margin: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="screen-note">
+  <div class="head">AP CSP Lesson Hub · The Sudan Server Simulation</div>
+  <div>A 60-minute, four-part AP Computer Science Principles lesson on TCP/IP, networking, and the Digital Divide. Each major section prints as its own page. Teacher reference, student handouts, rubrics, and PBA extension all in one document.</div>
+  <button class="print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+</div>
+
+<div class="hub">
+
+<!-- ═════════════════════════ SECTION 1: COVER + AT-A-GLANCE ═════════════════════════ -->
+<div class="section">
+
+  <div class="masthead">
+    <div class="brand">
+      A Word &amp; Wonder Experience
+      <div class="line2">AP Computer Science Principles</div>
+    </div>
+    <div class="page-marker">
+      <span class="pm-label">Lesson Hub</span><br>
+      Spring 2026 · 60 min
+    </div>
+  </div>
+
+  <div class="cover-eyebrow">Unit 6.2–6.3 · Communication Through the Internet</div>
+  <div class="cover-title">The Sudan Server<br>Simulation</div>
+  <div class="cover-subtitle">A four-part inquiry into TCP/IP, latency, and the global Digital Divide.</div>
+
+  <div class="collab-badge">
+    <div class="collab-names">
+      <span>Jennings</span>
+      <span class="amp">&amp;</span>
+      <span>Ms. Howell</span>
+    </div>
+    <div class="collab-roles">Content teacher · ITS Coach</div>
+  </div>
+
+  <div class="cover-meta">
+    <div class="cover-meta-cell">
+      <div class="key">Grade</div>
+      <div class="val">11–12</div>
+    </div>
+    <div class="cover-meta-cell">
+      <div class="key">Length</div>
+      <div class="val">60 min</div>
+    </div>
+    <div class="cover-meta-cell">
+      <div class="key">Block</div>
+      <div class="val">1 of 1</div>
+    </div>
+    <div class="cover-meta-cell">
+      <div class="key">AI Tool</div>
+      <div class="val">Gemini</div>
+    </div>
+  </div>
+
+  <div class="cover-arc">
+    <div class="cover-arc-label">The Four-Part Arc</div>
+    <div class="cover-arc-flow">
+      <div class="cover-arc-step">
+        <div class="num">01</div>
+        <div class="label">Lunch Line<br>Audit</div>
+        <div class="time">10 min</div>
+      </div>
+      <div class="cover-arc-arrow">→</div>
+      <div class="cover-arc-step">
+        <div class="num">02</div>
+        <div class="label">Sudan<br>Simulation</div>
+        <div class="time">20 min</div>
+      </div>
+      <div class="cover-arc-arrow">→</div>
+      <div class="cover-arc-step">
+        <div class="num">03</div>
+        <div class="label">Ethical<br>Brief</div>
+        <div class="time">15 min</div>
+      </div>
+      <div class="cover-arc-arrow">→</div>
+      <div class="cover-arc-step">
+        <div class="num">04</div>
+        <div class="label">Closing<br>Reflection</div>
+        <div class="time">5 min</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 32px;">Lesson at a Glance</h3>
+
+  <div class="glance">
+    <div class="glance-card">
+      <div class="label">Primary Learning Target</div>
+      <p>I can explain how the Internet works (TCP/IP) <em>and</em> describe how those technical rules contribute to the global Digital Divide.</p>
+    </div>
+    <div class="glance-card gold">
+      <div class="label">Sub-Targets</div>
+      <ul>
+        <li>How devices cooperate in a network</li>
+        <li>The "inner machinery" of the Internet</li>
+        <li>The Digital Divide beyond access</li>
+        <li>Ethics in standardized protocols</li>
+      </ul>
+    </div>
+    <div class="glance-card teal">
+      <div class="label">Materials</div>
+      <ul>
+        <li>Prior knowledge activation video</li>
+        <li>Student lab handout (printed)</li>
+        <li>Gemini access (1 device per student or pair)</li>
+        <li>Simulation Log worksheet</li>
+        <li>Ethical Brief template</li>
+      </ul>
+    </div>
+    <div class="glance-card ink">
+      <div class="label">Pre-Lesson</div>
+      <p>Students watch a short video on how the Internet works before class — covers Internet vs. WWW, open standards, client/server, bandwidth, and latency. Serves as prior knowledge activation.</p>
+    </div>
+  </div>
+
+  <div class="vocab-block">
+    <div class="label">Target Vocabulary</div>
+    <div class="vocab-pills">
+      <span class="vocab-pill">protocol</span>
+      <span class="vocab-pill">bandwidth</span>
+      <span class="vocab-pill">latency</span>
+      <span class="vocab-pill">packet</span>
+      <span class="vocab-pill">TCP</span>
+      <span class="vocab-pill">client/server</span>
+      <span class="vocab-pill">ACK</span>
+      <span class="vocab-pill">retransmission</span>
+      <span class="vocab-pill">handshake</span>
+      <span class="vocab-pill">packet loss</span>
+      <span class="vocab-pill">digital divide</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═════════════════════════ SECTION 2: TEACHER BACKGROUND ═════════════════════════ -->
+<div class="section">
+
+  <div class="masthead">
+    <div class="brand">
+      A Word &amp; Wonder Experience
+      <div class="line2">Sudan Server Simulation · Teacher Background</div>
+    </div>
+    <div class="page-marker">
+      <span class="pm-label">Teacher Reference</span><br>
+      Before You Teach
+    </div>
+  </div>
+
+  <div class="handout-marker teacher">Teacher Reference</div>
+  <div class="section-eyebrow">Why This Lesson Works</div>
+  <div class="section-title">The Triple-Threat Lesson</div>
+  <div class="section-subtitle">One lab. Four learning targets. A standards-aligned bridge between technical content and ethical reasoning.</div>
+
+  <p>The Sudan Server Simulation hits all four of the unit's learning targets simultaneously. Rather than teaching each in isolation, the lab lets students <em>experience</em> the technical concepts (handshake, ACKs, retransmission) and then immediately confront their <em>ethical</em> implications (the Digital Divide).</p>
+
+  <h3>How the Lab Hits Each Target</h3>
+
+  <h4>Devices Working Together in a Network</h4>
+  <p>Students see that the "Web Server" and the "Client" aren't just sending files — they're in a constant, synchronized dialogue. If the Server doesn't hear from the Client (the <em class="term">ACK</em>), it stops working. Networking is <strong>cooperation</strong>, not just transmission.</p>
+
+  <h4>How the Internet Actually Works</h4>
+  <p>By acting out the <em class="term">Three-Way Handshake</em> and <em class="term">Retransmission</em>, students move past the "Internet as a cloud" mental model and see it as a series of specific, rigid steps: SYN, ACK, Checksum. The machinery becomes visible.</p>
+
+  <h4>The Digital Divide, Beyond Access</h4>
+  <p>The core of the simulation. Students learn that the Digital Divide isn't just about "having a computer" — it's about <em class="term">latency</em>. The same protocol that works perfectly in a high-speed city becomes a barrier to entry in a high-latency region.</p>
+
+  <h4>Ethical Concerns in Computing</h4>
+  <p>The closing question: if our global standards (TCP) are designed for high-speed infrastructure, are we accidentally locking out developing nations from the modern economy? Students see the <strong>bias built into technical protocols</strong>.</p>
+
+  <div class="callout">
+    <strong>The pedagogical move</strong>
+    The lesson uses an AI-generated analogy (the "Lunch Line Protocol") that is <em>deliberately flawed</em> as the entry point. Students audit it, find the errors, and then run a real simulation. This positions AI as a <strong>tool to interrogate</strong>, not a tool to obey — which is the exact disposition AP CSP wants students to develop toward computing innovations generally.
+  </div>
+
+  <h3>Why 60 Minutes?</h3>
+  <p>The source curriculum (Mobile CSP Unit 6.2–6.3) allocates 1.5 blocks (~135 minutes) for this content. The AI-integrated version condenses it to one 60-minute block because the Gemini role-play accomplishes in 20 minutes what a static reading + worksheet would take 40+ minutes to achieve. Students <em>feel</em> the latency rather than reading about it.</p>
+
+  <h3>What's Different About This Version</h3>
+  <ul>
+    <li><strong>The simulation is experiential, not abstract.</strong> The Gemini server makes students wait. The wait is the point.</li>
+    <li><strong>The AI is a partner, not an answer key.</strong> Students audit its first explanation and then use it to model a system. They are positioned as auditors, not consumers.</li>
+    <li><strong>The Digital Divide is named, not implied.</strong> Omar's story (next pages) gives the divide a face. Ethics moves from abstract to concrete in one prompt.</li>
+  </ul>
+
+</div>
+
+<!-- ═════════════════════════ SECTION 3: PART 1 — LUNCH LINE AUDIT ═════════════════════════ -->
+<div class="section">
+
+  <div class="masthead">
+    <div class="brand">
+      A Word &amp; Wonder Experience
+      <div class="line2">Sudan Server Simulation · Part 1</div>
+    </div>
+    <div class="page-marker">
+      <span class="pm-label">Student Handout</span><br>
+      Part 1 of 4 · 10 min
+    </div>
+  </div>
+
+  <div class="handout-marker">Student Handout · Part 1</div>
+  <div class="section-eyebrow">10 minutes · Pair work</div>
+  <div class="section-title">The Lunch Line Audit</div>
+  <div class="section-subtitle">Find what the AI got wrong about how the Internet actually works.</div>
+
+  <h3>Learning Target</h3>
+  <p><em>I can analyze a technical analogy to identify inaccuracies in how computing devices work together in a network.</em></p>
+
+  <h3>The Scenario</h3>
+  <p>An AI was asked to explain the <em class="term">TCP (Transmission Control Protocol)</em> using a high school cafeteria analogy. The result reads smoothly — but the AI simplified the rules of the Internet too much. Your job is to act as a <strong>Lead Network Engineer</strong> and audit the analogy for technical inaccuracies.</p>
+
+  <h3>The Analogy: The "Lunch Line" Protocol</h3>
+  <div class="callout">
+    <strong>The AI's explanation</strong>
+    <strong style="font-family: 'Cinzel', serif; font-size: 11pt; letter-spacing: 1px; margin-top: 4px;">The Handshake.</strong> In the cafeteria, stepping into the back of the line is the handshake. By joining the line, you signal: "I am ready to receive data (pizza)."<br><br>
+    <strong style="font-family: 'Cinzel', serif; font-size: 11pt; letter-spacing: 1px;">Error Recovery.</strong> If the lunch lady tells you, "We're out of chocolate milk," you decide to wait for a new batch or choose an alternative (like water).<br><br>
+    <strong style="font-family: 'Cinzel', serif; font-size: 11pt; letter-spacing: 1px;">Acknowledgment.</strong> The cashier scans your ID, you get a receipt at the end. This confirms the transaction is complete.
+  </div>
+
+  <h3>Find the Flaws</h3>
+  <p>Locate <strong>three technical inaccuracies</strong> in the analogy above. For each, write what the analogy says, what the technical reality is, and your correction.</p>
+
+  <div class="reflection">
+    <ol>
+      <li><strong>The Handshake</strong>
+        Why is "joining the line" not a complete handshake? (Hint: think about the three-way conversation between SYN, SYN-ACK, and ACK.) Write your correction below.</li>
+      <li><strong>Error Recovery</strong>
+        Does TCP let you swap data if a packet is lost? What does it actually do? Write your correction below.</li>
+      <li><strong>Acknowledgment</strong>
+        When do <em class="term">ACKs</em> actually happen — at the end of a transaction, or somewhere else? Write your correction below.</li>
+    </ol>
+  </div>
+
+  <div class="callout">
+    <strong>Why this matters</strong>
+    If we used this AI's "Lunch Line" rules to send a photo of your cat to a friend, and the cat's ear was lost in transit — what would the final photo look like under the AI's Error Recovery rule? (Hint: a cat with a glass of water where its ear should be.)
+  </div>
+
+  <h3>Next Step</h3>
+  <p>Keep this sheet on your desk. You'll need your corrections to survive the <strong>Sudan Server Simulation</strong> coming up next.</p>
+
+</div>
+
+<!-- ═════════════════════════ SECTION 4: PART 2 — SUDAN SIMULATION ═════════════════════════ -->
+<div class="section">
+
+  <div class="masthead">
+    <div class="brand">
+      A Word &amp; Wonder Experience
+      <div class="line2">Sudan Server Simulation · Part 2</div>
+    </div>
+    <div class="page-marker">
+      <span class="pm-label">Student Handout</span><br>
+      Part 2 of 4 · 20 min
+    </div>
+  </div>
+
+  <div class="handout-marker">Student Handout · Part 2</div>
+  <div class="section-eyebrow">20 minutes · Individual or pair · Requires Gemini</div>
+  <div class="section-title">The Sudan Server Simulation</div>
+  <div class="section-subtitle">Feel the latency. Track the wait. Audit the protocol.</div>
+
+  <h3>Learning Target</h3>
+  <p><em>I can explain how computing devices work together in a network and how latency affects communication.</em></p>
+
+  <h3>Goal</h3>
+  <p>Experience how the reliability of <em class="term">TCP</em> becomes a hurdle in a high-latency environment. You will role-play a client trying to download a 5-slice pizza from a server in Sudan, with 2000ms of latency on every step.</p>
+
+  <div class="prompt-block">
+    <div class="prompt-label">Copy this prompt into Gemini</div>
+    <div class="prompt-text">Act as a web server in Sudan with a high Latency of 2000ms. I am trying to "download" a 5-slice pizza using the TCP Protocol. For every slice of pizza you "send" me, stop and wait for me to type "ACK" before you send the next one. Also, for slice #3, pretend it was "lost" (Packet Loss) and tell me I have to ask for it again. Start the simulation now by initiating the Three-Way Handshake (SYN).</div>
+    <div class="copy-hint">→ Paste into Gemini, then follow the steps below.</div>
+  </div>
+
+  <h3>Lab Steps</h3>
+
+  <div class="lab-steps">
+
+    <div class="lab-step">
+      <div class="step-num">
+        <div class="n">01</div>
+        <div class="n-label">Step</div>
+      </div>
+      <div class="step-body">
+        <div class="step-title">The Handshake (The "Hello" Delay)</div>
+        <p>Gemini sends you a <em class="term">SYN</em>. Reply with <em class="term">SYN-ACK</em>. Count to 4 slowly after you hit enter — that represents the time your message takes to reach Sudan and the server's response to come back.</p>
+        <div class="action">Your move:</div>
+        <span class="action-input">SYN-ACK</span>
+      </div>
+    </div>
+
+    <div class="lab-step">
+      <div class="step-num">
+        <div class="n">02</div>
+        <div class="n-label">Step</div>
+      </div>
+      <div class="step-body">
+        <div class="step-title">The Data Stream (Slices 1 &amp; 2)</div>
+        <p>Gemini sends Slice #1 and waits. Reply with <em class="term">ACK</em>. The protocol forces the server to stop for every single slice — this is <strong>Flow Control</strong>.</p>
+        <div class="action">Your move:</div>
+        <span class="action-input">ACK</span>
+      </div>
+    </div>
+
+    <div class="lab-step">
+      <div class="step-num">
+        <div class="n">03</div>
+        <div class="n-label">Step</div>
+      </div>
+      <div class="step-body">
+        <div class="step-title">The Packet Loss (The "Black Hole")</div>
+        <p>Gemini sends Slice #3, then tells you it was lost in transit. You cannot ACK what you didn't receive. You must request retransmission. In Omar's world, this single lost packet adds seconds of waiting.</p>
+        <div class="action">Your move:</div>
+        <span class="action-input">Requesting Retransmission of Slice #3</span>
+      </div>
+    </div>
+
+    <div class="lab-step">
+      <div class="step-num">
+        <div class="n">04</div>
+        <div class="n-label">Step</div>
+      </div>
+      <div class="step-body">
+        <div class="step-title">The Finish Line (Slices 4 &amp; 5)</div>
+        <p>Complete the download. Look at the clock. A 5-slice pizza took nearly a minute. A real website has hundreds of slices.</p>
+        <div class="action">Your move:</div>
+        <span class="action-input">ACK</span>
+      </div>
+    </div>
+
+  </div>
+
+  <h3>Simulation Log</h3>
+
+  <div class="log-sheet">
+    <div class="log-title">Record Your Numbers</div>
+    <div class="log-row">
+      <span class="log-q">Time spent on the Three-Way Handshake:</span>
+      <span class="log-blank">&nbsp;&nbsp;&nbsp;&nbsp;sec</span>
+    </div>
+    <div class="log-row">
+      <span class="log-q">Time spent recovering Slice #3:</span>
+      <span class="log-blank">&nbsp;&nbsp;&nbsp;&nbsp;sec</span>
+    </div>
+    <div class="log-row">
+      <span class="log-q">Total time for all 5 slices to arrive:</span>
+      <span class="log-blank">&nbsp;&nbsp;&nbsp;&nbsp;sec</span>
+    </div>
+  </div>
+
+  <h3>Reflection — The "Audit"</h3>
+
+  <div class="reflection">
+    <ol>
+      <li><strong>The Time Cost</strong>
+        How many seconds were "wasted" just waiting for messages to travel back and forth? What part of that wait is latency, and what part is the protocol's design?</li>
+      <li><strong>TCP vs. UDP</strong>
+        If you were using <em class="term">UDP</em> (no acknowledgments) instead of TCP, how would the Slice #3 situation have been handled differently? What would the trade-off be?</li>
+      <li><strong>The Divide</strong>
+        Why does a <em>reliable</em> protocol like TCP make the Internet feel <em>broken</em> for a student in Sudan, rather than just "slow"?</li>
+    </ol>
+  </div>
+
+</div>
+
+<!-- ═════════════════════════ SECTION 5: PART 3 — ETHICAL BRIEF ═════════════════════════ -->
+<div class="section">
+
+  <div class="masthead">
+    <div class="brand">
+      A Word &amp; Wonder Experience
+      <div class="line2">Sudan Server Simulation · Part 3</div>
+    </div>
+    <div class="page-marker">
+      <span class="pm-label">Student Handout</span><br>
+      Part 3 of 4 · 15 min
+    </div>
+  </div>
+
+  <div class="handout-marker">Student Handout · Part 3</div>
+  <div class="section-eyebrow">15 minutes · Individual writing</div>
+  <div class="section-title">The Ethical Brief</div>
+  <div class="section-subtitle">Translate the technical experience into ethical reasoning.</div>
+
+  <h3>Learning Target</h3>
+  <p><em>I can explain how the use of computing can raise legal and ethical concerns, specifically regarding the Digital Divide.</em></p>
+
+  <h3>The Scenario</h3>
+  <div class="callout">
+    <strong>Meet Omar</strong>
+    Omar is a high school student in Sudan taking a <strong>timed</strong> SAT prep test online. The test software is built using <em class="term">TCP</em>. Every time he clicks "Next Question," the server waits for an <em class="term">ACK</em> to confirm he received the data. Because his connection has high latency and packets are occasionally lost, his test times out and locks him out before he can finish.<br><br>
+    He worked toward this for months. The page just refreshed.
+  </div>
+
+  <h3>Your Task</h3>
+  <p>Write a structured response to the question below. Use at least <strong>three technical terms</strong> from the vocabulary list (<em class="term">Latency</em>, <em class="term">TCP</em>, <em class="term">ACK</em>, <em class="term">Retransmission</em>, <em class="term">Handshake</em>, <em class="term">Packet Loss</em>). Reference specific data from your Simulation Log.</p>
+
+  <div class="callout" style="border-left-color: var(--peach); background: rgba(184,90,62,.08);">
+    <strong>The question</strong>
+    In Omar's case, is this a failure of his computer or local internet — or is it an <em>ethical failure</em> in how the test's digital rules were designed? Who is responsible for fixing this Digital Divide?
+  </div>
+
+  <h3>Brief Structure (suggested)</h3>
+  <ol>
+    <li><strong>Open with the technical reality.</strong> What's actually happening to Omar in TCP terms? (Use 2–3 vocabulary terms here.)</li>
+    <li><strong>Cite the simulation.</strong> Reference a specific time from your Simulation Log to show why this isn't a small inconvenience.</li>
+    <li><strong>Make the ethical move.</strong> Whose responsibility is the failure — Omar's, his ISP's, the test designer's, or the protocol designers'? Defend your answer.</li>
+    <li><strong>Propose.</strong> What would a fairer system look like? (Different protocol? Different test design? Different infrastructure investment?)</li>
+  </ol>
+
+  <h3>What Excellence Looks Like</h3>
+  <ul>
+    <li>Uses three or more technical terms <em>correctly</em> to explain causation</li>
+    <li>Connects the protocol's <strong>standardization</strong> to the unfairness — TCP works the same everywhere, which is precisely the problem</li>
+    <li>References a specific number from the Simulation Log as evidence</li>
+    <li>Names a clear party as responsible — and explains <em>why</em></li>
+  </ul>
+
+  <h3>Closing Reflection (5 minutes)</h3>
+  <p>Pair-share one insight from your brief with a partner. Be ready to share with the class: <em>"The thing the simulation taught me that I didn't get from the reading was…"</em></p>
+
+</div>
+
+<!-- ═════════════════════════ SECTION 6: RUBRICS ═════════════════════════ -->
+<div class="section">
+
+  <div class="masthead">
+    <div class="brand">
+      A Word &amp; Wonder Experience
+      <div class="line2">Sudan Server Simulation · Rubrics</div>
+    </div>
+    <div class="page-marker">
+      <span class="pm-label">Teacher Reference</span><br>
+      Assessment
+    </div>
+  </div>
+
+  <div class="handout-marker teacher">Teacher Reference</div>
+  <div class="section-eyebrow">Grading Criteria</div>
+  <div class="section-title">Rubrics</div>
+  <div class="section-subtitle">Two rubrics — one for the AI Audit, one for the Ethical Brief. Designed to differentiate the student who copied a definition from the one who understands the logic of the protocol.</div>
+
+  <table class="rubric">
+    <caption>Rubric 1 · The AI Audit (Part 1)</caption>
+    <thead>
+      <tr>
+        <th>Concept</th>
+        <th>Developing · 1 pt</th>
+        <th>Proficient · 2 pts</th>
+        <th>Exemplary Auditor · 3 pts</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>The Handshake</td>
+        <td>Says the AI is wrong because it's not just "standing in line."</td>
+        <td>Mentions that it requires a "back-and-forth" conversation to start.</td>
+        <td>Specifically identifies the <strong>SYN → SYN-ACK → ACK</strong> sequence. Explains that without this, the connection isn't established.</td>
+      </tr>
+      <tr>
+        <td>Error Recovery</td>
+        <td>Says you don't "pick a different drink" if the milk is gone.</td>
+        <td>Explains that the server has to send the missing data again.</td>
+        <td>Uses the term <strong>Retransmission</strong>. Explains that TCP is "reliable" and cannot move to the next slice until the missing/corrupted one is fixed.</td>
+      </tr>
+      <tr>
+        <td>Acknowledgment</td>
+        <td>Says the receipt shouldn't be at the very end.</td>
+        <td>Explains that the student has to "nod" or "confirm" after every few bites.</td>
+        <td>Connects ACKs to <strong>Flow Control</strong>. Explains that if the server doesn't get an ACK, it stops sending (as seen in the Sudan simulation).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="rubric">
+    <caption>Rubric 2 · The Ethical Brief (Part 3)</caption>
+    <thead>
+      <tr>
+        <th>Criteria</th>
+        <th>Beginning · 1 pt</th>
+        <th>Developing · 2 pts</th>
+        <th>Proficient · 3 pts</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Technical Integration</td>
+        <td>Mentions the internet is "slow" but uses no technical networking terms.</td>
+        <td>Uses 1–2 terms correctly but lacks a full explanation of the "wait time."</td>
+        <td>Uses 3+ terms correctly to explain why the "Time Out" happened (e.g., Latency + ACKs).</td>
+      </tr>
+      <tr>
+        <td>Ethical Reasoning</td>
+        <td>States that Omar just needs better internet or a faster computer.</td>
+        <td>Identifies that the situation is unfair but doesn't connect it to the design of the software.</td>
+        <td>Explains how <strong>standardized protocols</strong> create an unfair barrier for users in low-infrastructure areas.</td>
+      </tr>
+      <tr>
+        <td>Simulation Evidence</td>
+        <td>Does not reference the simulation experience.</td>
+        <td>Mentions that the simulation was slow but provides no specific data.</td>
+        <td>References specific data from the Lab Log (e.g., "It took 26 seconds for 5 slices").</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>Scoring note</strong>
+    The "Exemplary Auditor" column on the AI Audit rubric distinguishes the student who copied vocabulary from the one who understands the <em>logic</em> of why the protocol is designed that way. Look for explanations that connect WHY a TCP rule exists (reliability, ordering, flow control) — not just naming the rule.
+  </div>
+
+</div>
+
+<!-- ═════════════════════════ SECTION 7: PBA EXTENSION ═════════════════════════ -->
+<div class="section">
+
+  <div class="masthead">
+    <div class="brand">
+      A Word &amp; Wonder Experience
+      <div class="line2">Sudan Server Simulation · PBA Extension</div>
+    </div>
+    <div class="page-marker">
+      <span class="pm-label">Optional Extension</span><br>
+      2–3 weeks
+    </div>
+  </div>
+
+  <div class="handout-marker">PBA Extension · Optional</div>
+
+  <div class="pba-hero">
+    <div class="pba-tag">Performance-Based Assessment · Extension Project</div>
+    <div class="pba-title">Omar's Voice</div>
+    <div class="pba-lead">Omar's story is one story. Your students each find another — a high school student in a different country with their own version of the infrastructure hike, the timed-out heartbreak, the digital ghost hunt. The PBA invites them to learn one voice and tell us what they hear.</div>
+  </div>
+
+  <h3>The Driving Question</h3>
+  <p><em>How does a country's digital infrastructure shape the daily life of a teenager trying to participate in the global online economy — and what would a more just protocol look like?</em></p>
+
+  <h3>Student Deliverables</h3>
+  <ul>
+    <li><strong>A persona narrative</strong> (~500 words). Student picks a country with a documented digital divide (Sudan, Yemen, Madagascar, rural Bolivia, etc.) and writes a first-person account from a teenager there — modeled on Omar's voice. Generated with Gemini's help, then <em>verified against real infrastructure data</em>.</li>
+    <li><strong>An infrastructure data brief</strong> (1 page). Internet penetration rate, dominant connection type (2G/3G/4G/5G), average latency, average cost per GB as a percent of household income. Cited sources.</li>
+    <li><strong>An ethical argument</strong> (~750 words). Whose responsibility is the divide? Protocol designers? Governments? International bodies? Tech companies? The student takes a defensible position.</li>
+    <li><strong>A protocol proposal</strong> (1 page + diagram). What would a "Digital Divide–Aware" protocol look like? Could be a real one (HTTP/3, QUIC) or an imagined modification.</li>
+  </ul>
+
+  <h3>The Four Phases</h3>
+
+  <div class="pba-phases">
+    <div class="pba-phase">
+      <div class="phase-num">Phase 1 · Week 1</div>
+      <div class="phase-name">Voice</div>
+      <div class="phase-desc">Choose a country. Generate persona narrative with Gemini. Critique it for stereotyping or inaccuracy.</div>
+    </div>
+    <div class="pba-phase">
+      <div class="phase-num">Phase 2 · Week 1–2</div>
+      <div class="phase-name">Data</div>
+      <div class="phase-desc">Research real infrastructure conditions. Verify or revise the narrative against actual data.</div>
+    </div>
+    <div class="pba-phase">
+      <div class="phase-num">Phase 3 · Week 2</div>
+      <div class="phase-name">Argument</div>
+      <div class="phase-desc">Develop and defend an ethical position on responsibility for the Digital Divide.</div>
+    </div>
+    <div class="pba-phase">
+      <div class="phase-num">Phase 4 · Week 3</div>
+      <div class="phase-name">Proposal</div>
+      <div class="phase-desc">Design or research a protocol modification that would reduce the barrier. Present to the class.</div>
+    </div>
+  </div>
+
+  <h3>The AI Move</h3>
+  <p>The PBA teaches students to use AI <strong>responsibly</strong> — as a draft partner whose output must be <em>verified</em>, not consumed. Phase 1 produces a Gemini-drafted persona. Phase 2 forces students to fact-check it. The gap between what Gemini imagined and what the data shows becomes part of the ethical argument in Phase 3.</p>
+
+  <div class="callout">
+    <strong>Connecting to AP CSP standards</strong>
+    This PBA aligns to Big Idea 5 (Impact of Computing) and supports the Create Performance Task's emphasis on a student-developed computational artifact. The protocol proposal in Phase 4 satisfies the artifact requirement; the ethical argument satisfies the impact requirement.
+  </div>
+
+  <h3>Why This Extension Matters</h3>
+  <p>The 60-minute lesson gives students a vivid, embodied understanding of latency and packet loss. The PBA gives them <strong>time</strong> — time to learn one country deeply, sit with one voice, and develop a defensible position on a real ethical question. The simulation lit the fire. The PBA lets it become a craft.</p>
+
+  <div class="doc-footer">
+    Sudan Server Simulation · AP Computer Science Principles · Unit 6.2–6.3 · 60-Minute Lesson Hub<br>
+    <span class="credit-line">A collaboration between Jennings &amp; Ms. Howell, ITS Coach · Word &amp; Wonder · © 2025–2026</span>
+  </div>
+
+</div>
+
+</div>
+
+</body>
+</html>
