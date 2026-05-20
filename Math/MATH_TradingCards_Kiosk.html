@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Six Ways to Spell MATH · Take-Home Kiosk · Math Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cinzel:wght@500;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #3b1260;
+  --bg-card:   #4a1d75;
+  --bg-deep:   #2a0c47;
+  --bg-paper:  #fdf8ec;
+  --cream:     #f8f4fc;
+  --cream-dim: #d9cde6;
+  --cream-soft: rgba(248, 244, 252, 0.7);
+  --ink:       #2a1a45;
+  --ink-soft:  #4a3866;
+  --ink-faint: rgba(42,26,69,.45);
+  --ink-trace: rgba(42,26,69,.18);
+  --sage:      #88b074;
+  --sage-deep: #4e7f47;
+  --sage-glow: #c9e1bb;
+  --peach:     #ed9f4a;
+  --peach-dim: #c47e36;
+  --peach-soft:#fce6c8;
+  --peach-ink: #b85a3e;
+  --gold:      #a88830;
+  --gold-bright: #c9a84c;
+  --rule:      rgba(42,26,69,.18);
+  --border:    rgba(248, 244, 252, 0.18);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  background-image:
+    radial-gradient(circle at 15% 8%, rgba(136, 176, 116, 0.10) 0%, transparent 45%),
+    radial-gradient(circle at 85% 92%, rgba(237, 159, 74, 0.08) 0%, transparent 45%);
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 120px;
+}
+
+/* ── HEADER ── */
+.hub-header {
+  background: var(--bg-deep);
+  border-bottom: 1px solid var(--border);
+  padding: 22px 32px;
+}
+.hub-header-row {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.hub-brand { display: flex; flex-direction: column; line-height: 1; }
+.hub-brand-mark {
+  font-family: 'Allura', cursive;
+  font-size: 22px;
+  color: var(--peach);
+}
+.hub-brand-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--cream);
+  margin-top: -2px;
+  letter-spacing: 0.5px;
+}
+.back-link {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+.back-link:hover { color: var(--peach); }
+.back-link::before { content: '← '; }
+
+/* ── INTRO ── */
+.stage {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 36px 32px 12px;
+}
+.intro {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.intro-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--peach);
+  margin-bottom: 10px;
+}
+.intro-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 38px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+.intro-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--cream-soft);
+  line-height: 1.55;
+  max-width: 680px;
+  margin: 0 auto 18px;
+}
+
+/* The math reveal — Fundamental Counting Principle on display */
+.math-reveal {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 22px;
+  background: rgba(248,244,252,0.05);
+  border: 1px dashed rgba(201,168,76,0.4);
+  border-radius: 8px;
+  margin: 0 auto 18px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.reveal-piece {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Cinzel', serif;
+  color: var(--cream);
+  line-height: 1;
+}
+.reveal-letter {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--sage-glow);
+}
+.reveal-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--cream-soft);
+  margin-top: 4px;
+  letter-spacing: 0.15em;
+}
+.reveal-op {
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--peach);
+}
+.reveal-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-left: 1px solid rgba(248,244,252,0.2);
+  padding-left: 14px;
+  margin-left: 4px;
+}
+.reveal-equals {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cream-soft);
+  margin-bottom: 2px;
+}
+.reveal-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 32px;
+  font-style: italic;
+  color: var(--peach);
+  line-height: 1;
+}
+
+.instructions {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--cream-soft);
+  margin-bottom: 8px;
+}
+.instructions strong {
+  color: var(--sage-glow);
+  font-weight: 600;
+}
+
+/* ── GALLERY ── */
+.gallery {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 12px 32px 36px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+  justify-items: center;
+}
+
+.card {
+  width: 2.5in;
+  min-width: 240px;
+  height: 3.5in;
+  min-height: 336px;
+  background: var(--bg-paper);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 0.15in 0.18in 0.12in;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--peach-ink) 0%, var(--gold) 100%);
+}
+
+/* Gallery interaction modifiers */
+.gallery .card {
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, outline 0.18s ease;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.30);
+  outline: 0 solid transparent;
+  outline-offset: 4px;
+}
+.gallery .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 36px rgba(0,0,0,0.40);
+}
+.gallery .card.selected {
+  outline: 4px solid var(--peach);
+  outline-offset: 4px;
+  transform: translateY(-4px);
+}
+
+/* Sticker row at top */
+.card-stickers {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  margin-top: 4px;
+  margin-bottom: 6px;
+  padding-bottom: 5px;
+  border-bottom: 1px dashed var(--rule);
+}
+.sticker-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.sticker-cell img {
+  width: 0.42in;
+  height: 0.42in;
+  object-fit: contain;
+  display: block;
+}
+.sticker-cell .label {
+  font-family: 'Special Elite', monospace;
+  font-size: 5.5pt;
+  letter-spacing: 0.5px;
+  color: var(--peach-ink);
+  text-transform: uppercase;
+  line-height: 1;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Acrostic block */
+.card-acrostic { margin-bottom: 6px; }
+.acrostic-label {
+  font-family: 'Special Elite', monospace;
+  font-size: 6pt;
+  letter-spacing: 1.5px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  text-align: center;
+}
+.acrostic-line {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 8.5pt;
+  line-height: 1.35;
+  color: var(--ink);
+  margin-bottom: 1px;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+.acrostic-line .initial {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 11pt;
+  color: var(--peach-ink);
+  line-height: 1;
+}
+
+/* Haiku */
+.card-haiku {
+  margin-top: auto;
+  padding-top: 5px;
+  border-top: 1px dashed var(--rule);
+}
+.haiku-label {
+  font-family: 'Special Elite', monospace;
+  font-size: 6pt;
+  letter-spacing: 1.5px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 3px;
+  text-align: center;
+}
+.haiku-line {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 8.5pt;
+  line-height: 1.32;
+  color: var(--ink);
+  text-align: center;
+}
+
+/* Card footer */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: 4px;
+  margin-top: 4px;
+  border-top: 1px solid var(--ink-trace);
+  font-family: 'Special Elite', monospace;
+  font-size: 5pt;
+  letter-spacing: 1px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+.card-footer .mark { color: var(--peach-ink); }
+.card-footer .num { color: var(--gold); font-weight: bold; }
+
+/* ── ACTION BAR (sticky at bottom) ── */
+.action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-deep);
+  border-top: 1px solid var(--border);
+  padding: 18px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  z-index: 50;
+}
+.action-bar-info {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--cream-dim);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.action-bar-info strong {
+  color: var(--sage-glow);
+  font-weight: 600;
+}
+.action-bar-info .nothing {
+  color: var(--cream-soft);
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 15px;
+}
+
+.print-btn {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  background: var(--sage-deep);
+  color: var(--cream);
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.15s ease;
+}
+.print-btn:hover:not(:disabled) {
+  background: var(--peach);
+  color: var(--ink);
+  transform: translateY(-2px);
+}
+.print-btn:disabled {
+  background: rgba(248,244,252,0.12);
+  color: var(--cream-soft);
+  cursor: not-allowed;
+}
+
+/* ── HIDDEN PRINT AREA ── */
+.print-area { display: none; }
+
+/* ── PRINT RULES ── */
+@media print {
+  body { background: white; padding: 0; }
+  body * { visibility: hidden; }
+  .print-area, .print-area * { visibility: visible; }
+  .print-area {
+    display: flex !important;
+    flex-direction: row;
+    gap: 0.3in;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 3.5in;
+    left: 0;
+    right: 0;
+    width: 8.5in;
+    margin: 0 auto;
+  }
+  .print-area .card {
+    box-shadow: none !important;
+    outline: 0.5pt dashed rgba(0,0,0,0.4) !important;
+    outline-offset: 0 !important;
+    transform: none !important;
+  }
+  @page { size: letter portrait; margin: 0; }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .gallery { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .intro-title { font-size: 28px; }
+  .reveal-letter { font-size: 22px; }
+}
+@media (max-width: 580px) {
+  .gallery { grid-template-columns: 1fr; }
+  .action-bar { flex-direction: column; align-items: stretch; gap: 12px; padding: 14px 18px; }
+  .action-bar-info { text-align: center; }
+  .print-btn { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+  <!-- ═══════ HEADER ═══════ -->
+  <header class="hub-header">
+    <div class="hub-header-row">
+      <div class="hub-brand">
+        <span class="hub-brand-mark">a Word &amp; Wonder space</span>
+        <span class="hub-brand-title">Six Ways to Spell MATH</span>
+      </div>
+      <a href="./" class="back-link">Back to Math Hub</a>
+    </div>
+  </header>
+
+  <!-- ═══════ INTRO ═══════ -->
+  <main class="stage">
+    <section class="intro">
+      <div class="intro-eyebrow">Take Home · Smile Bags Spring 2026</div>
+      <h1 class="intro-title">How many ways can you spell MATH<br>with just one OneWord per letter?</h1>
+      <p class="intro-body">
+        Of the 25 OneWords, one starts with <strong style="color:var(--sage-glow); font-style:normal;">M</strong>,
+        three start with <strong style="color:var(--sage-glow); font-style:normal;">A</strong>,
+        two start with <strong style="color:var(--sage-glow); font-style:normal;">T</strong>,
+        and one starts with <strong style="color:var(--sage-glow); font-style:normal;">H</strong>.
+        That's the Fundamental Counting Principle in its tidiest form:
+      </p>
+
+      <div class="math-reveal">
+        <div class="reveal-piece">
+          <span class="reveal-letter">M</span>
+          <span class="reveal-count">1 word</span>
+        </div>
+        <span class="reveal-op">×</span>
+        <div class="reveal-piece">
+          <span class="reveal-letter">A</span>
+          <span class="reveal-count">3 words</span>
+        </div>
+        <span class="reveal-op">×</span>
+        <div class="reveal-piece">
+          <span class="reveal-letter">T</span>
+          <span class="reveal-count">2 words</span>
+        </div>
+        <span class="reveal-op">×</span>
+        <div class="reveal-piece">
+          <span class="reveal-letter">H</span>
+          <span class="reveal-count">1 word</span>
+        </div>
+        <div class="reveal-result">
+          <span class="reveal-equals">= six ways</span>
+          <span class="reveal-number">6</span>
+        </div>
+      </div>
+
+      <p class="instructions">
+        Tap a card to select one. Then click <strong>Print my card</strong> to take home two copies — keep one, share one.
+      </p>
+    </section>
+  </main>
+
+  <!-- ═══════ GALLERY · 6 CARDS ═══════ -->
+  <section class="gallery">
+
+    <!-- ──── CARD 1 · MIGRATE · ABSORB · THRIVE · HEAL ──── -->
+    <div class="card" data-id="1" onclick="selectCard(1)">
+      <div class="card-stickers">
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/migrate.png" alt="MIGRATE"><span class="label">Migrate</span></div>
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/absorb.png" alt="ABSORB"><span class="label">Absorb</span></div>
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/thrive.png" alt="THRIVE"><span class="label">Thrive</span></div>
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/heal.png" alt="HEAL"><span class="label">Heal</span></div>
+      </div>
+      <div class="card-acrostic">
+        <div class="acrostic-label">— Acrostic —</div>
+        <div class="acrostic-line"><span class="initial">M</span><span>igrate when the season tells you to move</span></div>
+        <div class="acrostic-line"><span class="initial">A</span><span>bsorb the light that finds you on the way</span></div>
+        <div class="acrostic-line"><span class="initial">T</span><span>hrive in the soil that feeds your roots</span></div>
+        <div class="acrostic-line"><span class="initial">H</span><span>eal slowly — the body knows how</span></div>
+      </div>
+      <div class="card-haiku">
+        <div class="haiku-label">— Haiku —</div>
+        <div class="haiku-line">Geese turn toward the warm</div>
+        <div class="haiku-line">Soft earth takes in rain and time</div>
+        <div class="haiku-line">The wound finds its end</div>
+      </div>
+      <div class="card-footer">
+        <span class="mark">Word &amp; Wonder · Spring 2026</span>
+        <span class="num">1 / 6</span>
+      </div>
+    </div>
+
+    <!-- ──── CARD 2 · MIGRATE · ABSORB · TRANSFORM · HEAL ──── -->
+    <div class="card" data-id="2" onclick="selectCard(2)">
+      <div class="card-stickers">
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/migrate.png" alt="MIGRATE"><span class="label">Migrate</span></div>
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/absorb.png" alt="ABSORB"><span class="label">Absorb</span></div>
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/transform.png" alt="TRANSFORM"><span class="label">Transform</span></div>
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/heal.png" alt="HEAL"><span class="label">Heal</span></div>
+      </div>
+      <div class="card-acrostic">
+        <div class="acrostic-label">— Acrostic —</div>
+        <div class="acrostic-line"><span class="initial">M</span><span>igrate forward when the path feels uncertain</span></div>
+        <div class="acrostic-line"><span class="initial">A</span><span>bsorb the wisdom each season offers</span></div>
+        <div class="acrostic-line"><span class="initial">T</span><span>ransform what is hard into something soft</span></div>
+        <div class="acrostic-line"><span class="initial">H</span><span>eal in the rest between the rising</span></div>
+      </div>
+      <div class="card-haiku">
+        <div class="haiku-label">— Haiku —</div>
+        <div class="haiku-line">Wings know where to go</div>
+        <div class="haiku-line">Take in the light, take the rain</div>
+        <div class="haiku-line">Caterpillar wakes</div>
+      </div>
+      <div class="card-footer">
+        <span class="mark">Word &amp; Wonder · Spring 2026</span>
+        <span class="num">2 / 6</span>
+      </div>
+    </div>
+
+    <!-- ──── CARD 3 · MIGRATE · ADAPT · THRIVE · HEAL (Ms. Howell's) ──── -->
+    <div class="card" data-id="3" onclick="selectCard(3)">
+      <div class="card-stickers">
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/migrate.png" alt="MIGRATE"><span class="label">Migrate</span></div>
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/adapt.png" alt="ADAPT"><span class="label">Adapt</span></div>
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/thrive.png" alt="THRIVE"><span class="label">Thrive</span></div>
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/heal.png" alt="HEAL"><span class="label">Heal</span></div>
+      </div>
+      <div class="card-acrostic">
+        <div class="acrostic-label">— Acrostic —</div>
+        <div class="acrostic-line"><span class="initial">M</span><span>igrate forward with purpose</span></div>
+        <div class="acrostic-line"><span class="initial">A</span><span>dapt and absorb what you learn</span></div>
+        <div class="acrostic-line"><span class="initial">T</span><span>hrive and transform through change</span></div>
+        <div class="acrostic-line"><span class="initial">H</span><span>eal, regenerate, and grow</span></div>
+      </div>
+      <div class="card-haiku">
+        <div class="haiku-label">— Haiku —</div>
+        <div class="haiku-line">Birds turn with the wind</div>
+        <div class="haiku-line">The willow bends, holds, then springs</div>
+        <div class="haiku-line">New skin, new green leaf</div>
+      </div>
+      <div class="card-footer">
+        <span class="mark">Word &amp; Wonder · Spring 2026</span>
+        <span class="num">3 / 6</span>
+      </div>
+    </div>
+
+    <!-- ──── CARD 4 · MIGRATE · ADAPT · TRANSFORM · HEAL ──── -->
+    <div class="card" data-id="4" onclick="selectCard(4)">
+      <div class="card-stickers">
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/migrate.png" alt="MIGRATE"><span class="label">Migrate</span></div>
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/adapt.png" alt="ADAPT"><span class="label">Adapt</span></div>
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/transform.png" alt="TRANSFORM"><span class="label">Transform</span></div>
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/heal.png" alt="HEAL"><span class="label">Heal</span></div>
+      </div>
+      <div class="card-acrostic">
+        <div class="acrostic-label">— Acrostic —</div>
+        <div class="acrostic-line"><span class="initial">M</span><span>igrate when staying is no longer growing</span></div>
+        <div class="acrostic-line"><span class="initial">A</span><span>dapt — your roots remember water</span></div>
+        <div class="acrostic-line"><span class="initial">T</span><span>ransform like seed to stem to wing</span></div>
+        <div class="acrostic-line"><span class="initial">H</span><span>eal in the quiet you make for yourself</span></div>
+      </div>
+      <div class="card-haiku">
+        <div class="haiku-label">— Haiku —</div>
+        <div class="haiku-line">Wings cross the gray sky</div>
+        <div class="haiku-line">The reed bends but does not break</div>
+        <div class="haiku-line">Slow, the wound finds rest</div>
+      </div>
+      <div class="card-footer">
+        <span class="mark">Word &amp; Wonder · Spring 2026</span>
+        <span class="num">4 / 6</span>
+      </div>
+    </div>
+
+    <!-- ──── CARD 5 · MIGRATE · ANCHOR · THRIVE · HEAL ──── -->
+    <div class="card" data-id="5" onclick="selectCard(5)">
+      <div class="card-stickers">
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/migrate.png" alt="MIGRATE"><span class="label">Migrate</span></div>
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/anchor.png" alt="ANCHOR"><span class="label">Anchor</span></div>
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/thrive.png" alt="THRIVE"><span class="label">Thrive</span></div>
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/heal.png" alt="HEAL"><span class="label">Heal</span></div>
+      </div>
+      <div class="card-acrostic">
+        <div class="acrostic-label">— Acrostic —</div>
+        <div class="acrostic-line"><span class="initial">M</span><span>igrate far when the world is calling</span></div>
+        <div class="acrostic-line"><span class="initial">A</span><span>nchor deep when the storms come through</span></div>
+        <div class="acrostic-line"><span class="initial">T</span><span>hrive in places that feed your roots</span></div>
+        <div class="acrostic-line"><span class="initial">H</span><span>eal where you feel safe enough to rest</span></div>
+      </div>
+      <div class="card-haiku">
+        <div class="haiku-label">— Haiku —</div>
+        <div class="haiku-line">Wings open and fold</div>
+        <div class="haiku-line">Old oak holds against the wind</div>
+        <div class="haiku-line">Time mends what time tore</div>
+      </div>
+      <div class="card-footer">
+        <span class="mark">Word &amp; Wonder · Spring 2026</span>
+        <span class="num">5 / 6</span>
+      </div>
+    </div>
+
+    <!-- ──── CARD 6 · MIGRATE · ANCHOR · TRANSFORM · HEAL ──── -->
+    <div class="card" data-id="6" onclick="selectCard(6)">
+      <div class="card-stickers">
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/migrate.png" alt="MIGRATE"><span class="label">Migrate</span></div>
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/anchor.png" alt="ANCHOR"><span class="label">Anchor</span></div>
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/transform.png" alt="TRANSFORM"><span class="label">Transform</span></div>
+        <div class="sticker-cell"><img src="https://lhhowell.github.io/kellamsmilebags/Cards/heal.png" alt="HEAL"><span class="label">Heal</span></div>
+      </div>
+      <div class="card-acrostic">
+        <div class="acrostic-label">— Acrostic —</div>
+        <div class="acrostic-line"><span class="initial">M</span><span>igrate or stay — both can be brave</span></div>
+        <div class="acrostic-line"><span class="initial">A</span><span>nchor in what does not shift</span></div>
+        <div class="acrostic-line"><span class="initial">T</span><span>ransform what is heavy into wings</span></div>
+        <div class="acrostic-line"><span class="initial">H</span><span>eal — and then heal again</span></div>
+      </div>
+      <div class="card-haiku">
+        <div class="haiku-label">— Haiku —</div>
+        <div class="haiku-line">Geese rise from the lake</div>
+        <div class="haiku-line">Roots hold stone, leaves let go</div>
+        <div class="haiku-line">Wounds become the bark</div>
+      </div>
+      <div class="card-footer">
+        <span class="mark">Word &amp; Wonder · Spring 2026</span>
+        <span class="num">6 / 6</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════ STICKY ACTION BAR ═══════ -->
+  <div class="action-bar">
+    <div class="action-bar-info" id="action-info">
+      <span class="nothing">No card selected yet — tap one above</span>
+    </div>
+    <button class="print-btn" id="print-btn" onclick="printCard()" disabled>
+      🖨️ Print my card →
+    </button>
+  </div>
+
+  <!-- ═══════ HIDDEN PRINT AREA ═══════ -->
+  <div class="print-area" id="print-area"></div>
+
+<script>
+let selectedCardId = null;
+
+function selectCard(id) {
+  // Remove .selected from any previously selected card
+  document.querySelectorAll('.gallery .card').forEach(c => c.classList.remove('selected'));
+  // Mark this one
+  const card = document.querySelector(`.gallery .card[data-id="${id}"]`);
+  card.classList.add('selected');
+  selectedCardId = id;
+
+  // Update action bar
+  document.getElementById('action-info').innerHTML =
+    `Selected: <strong>Card ${id} of 6</strong>`;
+
+  // Enable print button
+  document.getElementById('print-btn').disabled = false;
+}
+
+function printCard() {
+  if (!selectedCardId) return;
+
+  // Get the selected card
+  const original = document.querySelector(`.gallery .card[data-id="${selectedCardId}"]`);
+
+  // Clone it twice for 2-up print
+  const printArea = document.getElementById('print-area');
+  printArea.innerHTML = '';
+
+  const clone1 = original.cloneNode(true);
+  const clone2 = original.cloneNode(true);
+  // Strip gallery-specific classes from clones
+  clone1.classList.remove('selected');
+  clone2.classList.remove('selected');
+  // Remove onclick handlers
+  clone1.removeAttribute('onclick');
+  clone2.removeAttribute('onclick');
+
+  printArea.appendChild(clone1);
+  printArea.appendChild(clone2);
+
+  // Trigger print after a tiny delay so the DOM is ready
+  setTimeout(() => window.print(), 100);
+}
+
+// Optional: clear print area after printing finishes
+window.addEventListener('afterprint', () => {
+  document.getElementById('print-area').innerHTML = '';
+});
+</script>
+
+</body>
+</html>
