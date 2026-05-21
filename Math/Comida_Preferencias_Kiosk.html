@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comida y Preferencias · Food &amp; Preferences · Bilingual Kiosk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cinzel:wght@500;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=Special+Elite&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #3b1260;
+  --bg-card:   #4a1d75;
+  --bg-deep:   #2a0c47;
+  --bg-paper:  #fdf8ec;
+  --cream:     #f8f4fc;
+  --cream-dim: #d9cde6;
+  --cream-soft: rgba(248, 244, 252, 0.7);
+  --ink:       #2a1a45;
+  --ink-soft:  #4a3866;
+  --ink-faint: rgba(42,26,69,.55);
+  --ink-trace: rgba(42,26,69,.18);
+  --sage:      #88b074;
+  --sage-deep: #4e7f47;
+  --sage-glow: #c9e1bb;
+  --peach:     #ed9f4a;
+  --peach-dim: #c47e36;
+  --peach-soft:#fce6c8;
+  --peach-ink: #b85a3e;
+  --gold:      #a88830;
+  --gold-bright: #c9a84c;
+  --rule:      rgba(42,26,69,.18);
+  --border:    rgba(248, 244, 252, 0.18);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  background-image:
+    radial-gradient(circle at 15% 8%, rgba(136, 176, 116, 0.10) 0%, transparent 45%),
+    radial-gradient(circle at 85% 92%, rgba(237, 159, 74, 0.08) 0%, transparent 45%);
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 60px;
+}
+
+/* ═══════ HEADER ═══════ */
+.hub-header {
+  background: var(--bg-deep);
+  border-bottom: 1px solid var(--border);
+  padding: 22px 32px;
+}
+.hub-header-row {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.hub-brand { display: flex; flex-direction: column; line-height: 1.05; }
+.hub-brand-mark {
+  font-family: 'Allura', cursive;
+  font-size: 22px;
+  color: var(--peach);
+}
+.hub-brand-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--cream);
+  margin-top: -2px;
+  letter-spacing: 0.5px;
+}
+.hub-brand-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--cream-soft);
+  margin-top: 2px;
+}
+.back-link {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+.back-link:hover { color: var(--peach); }
+.back-link::before { content: '← '; }
+
+/* ═══════ INTRO ═══════ */
+.stage {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 32px 32px 0;
+}
+.intro {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.intro-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--peach);
+  margin-bottom: 10px;
+}
+.intro-title-es {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1.15;
+  margin-bottom: 4px;
+}
+.intro-title-en {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--peach);
+  letter-spacing: 0.05em;
+  margin-bottom: 14px;
+}
+.intro-body-es {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1.55;
+  max-width: 680px;
+  margin: 0 auto 4px;
+}
+.intro-body-en {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--cream-soft);
+  line-height: 1.5;
+  max-width: 680px;
+  margin: 0 auto 18px;
+  font-style: italic;
+}
+
+.ai-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(136,176,116,0.12);
+  border: 1px dashed rgba(136,176,116,0.4);
+  border-radius: 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: var(--sage-glow);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+.ai-mark-icon { font-size: 14px; }
+
+/* ═══════ TABS ═══════ */
+.tabs {
+  max-width: 1180px;
+  margin: 0 auto 24px;
+  padding: 0 32px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.tab {
+  background: rgba(248,244,252,0.05);
+  border: 1px solid rgba(248,244,252,0.15);
+  color: var(--cream-soft);
+  padding: 14px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  font-family: 'Inter', sans-serif;
+  text-align: center;
+  min-width: 200px;
+}
+.tab:hover {
+  background: rgba(248,244,252,0.10);
+  border-color: rgba(248,244,252,0.30);
+}
+.tab.active {
+  background: var(--sage-deep);
+  border-color: var(--sage-deep);
+  color: var(--cream);
+}
+.tab-es {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-weight: 600;
+  display: block;
+  line-height: 1.1;
+}
+.tab-en {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-style: italic;
+  letter-spacing: 0.05em;
+  margin-top: 3px;
+  opacity: 0.85;
+  display: block;
+}
+
+/* ═══════ MODE PANELS ═══════ */
+.mode {
+  display: none;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 32px;
+  animation: fadeIn 0.3s ease;
+}
+.mode.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════ MENU CARDS GRID ═══════ */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+  margin-bottom: 32px;
+}
+.menu-card {
+  background: var(--bg-paper);
+  color: var(--ink);
+  border-radius: 12px;
+  padding: 18px 18px 14px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.menu-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.30);
+}
+.menu-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--peach) 0%, var(--gold) 100%);
+}
+.menu-card-emoji {
+  font-size: 32px;
+  display: block;
+  text-align: center;
+  margin-bottom: 6px;
+}
+.menu-card-es {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  text-align: center;
+  line-height: 1.1;
+}
+.menu-card-article {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--peach-ink);
+  font-size: 16px;
+}
+.menu-card-en {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--ink-faint);
+  text-align: center;
+  margin-top: 2px;
+  letter-spacing: 0.02em;
+}
+.menu-card-cat {
+  font-family: 'Special Elite', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-align: center;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--ink-trace);
+}
+.menu-card-cat-en {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  font-size: 10px;
+  color: var(--ink-faint);
+  margin-top: 1px;
+}
+.menu-card-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--ink-trace);
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+.stat-label {
+  font-family: 'Special Elite', monospace;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.stat-label-en {
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 8px;
+  display: block;
+}
+.stat-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--peach-ink);
+}
+.stat-value.pop {
+  color: var(--sage-deep);
+}
+
+/* ═══════ EXPLORE MODE ═══════ */
+.controls {
+  background: rgba(248,244,252,0.05);
+  border: 1px solid rgba(248,244,252,0.12);
+  border-radius: 12px;
+  padding: 22px 24px;
+  margin-bottom: 24px;
+}
+.controls-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--peach);
+  margin-bottom: 14px;
+  display: block;
+}
+.sort-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.sort-btn {
+  background: rgba(248,244,252,0.04);
+  border: 1px solid rgba(248,244,252,0.18);
+  color: var(--cream);
+  padding: 14px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  text-align: left;
+  font-family: 'Inter', sans-serif;
+}
+.sort-btn:hover {
+  background: rgba(237,159,74,0.15);
+  border-color: var(--peach);
+  transform: translateY(-1px);
+}
+.sort-btn.active {
+  background: var(--peach);
+  color: var(--ink);
+  border-color: var(--peach);
+}
+.sort-btn-es {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-weight: 600;
+  display: block;
+  line-height: 1.1;
+}
+.sort-btn-en {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-style: italic;
+  opacity: 0.78;
+  margin-top: 3px;
+  display: block;
+}
+
+.category-filter {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.category-filter-label {
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cream-soft);
+  margin-right: 8px;
+}
+.cat-btn {
+  background: rgba(248,244,252,0.04);
+  border: 1px solid rgba(248,244,252,0.15);
+  color: var(--cream-soft);
+  padding: 7px 14px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-weight: 500;
+}
+.cat-btn:hover {
+  background: rgba(248,244,252,0.12);
+  border-color: rgba(248,244,252,0.30);
+}
+.cat-btn.active {
+  background: var(--sage-deep);
+  color: var(--cream);
+  border-color: var(--sage-deep);
+}
+.cat-btn .en {
+  font-family: 'Inter', sans-serif;
+  font-style: italic;
+  font-size: 10px;
+  opacity: 0.7;
+  margin-left: 4px;
+}
+
+/* ═══════ GENERATED SENTENCE ═══════ */
+.sentence-output {
+  background: var(--bg-paper);
+  color: var(--ink);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  min-height: 120px;
+  display: none;
+}
+.sentence-output.show {
+  display: block;
+  animation: fadeIn 0.4s ease;
+}
+.sentence-output::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: linear-gradient(90deg, var(--sage-deep) 0%, var(--peach) 100%);
+}
+.sentence-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sage-deep);
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sentence-es {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+.sentence-es .highlight {
+  color: var(--peach-ink);
+  font-weight: 700;
+  font-style: italic;
+}
+.sentence-en {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--ink-faint);
+  line-height: 1.45;
+}
+
+/* ═══════ BUILD MODE ═══════ */
+.build-panel {
+  background: rgba(248,244,252,0.05);
+  border: 1px solid rgba(248,244,252,0.12);
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 28px;
+}
+.build-row {
+  margin-bottom: 22px;
+}
+.build-row:last-child { margin-bottom: 0; }
+.build-row-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--peach);
+  display: block;
+  margin-bottom: 12px;
+}
+.build-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px;
+}
+.build-opt {
+  background: rgba(248,244,252,0.04);
+  border: 1px solid rgba(248,244,252,0.18);
+  color: var(--cream);
+  padding: 12px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+.build-opt:hover {
+  background: rgba(237,159,74,0.15);
+  border-color: var(--peach);
+}
+.build-opt.active {
+  background: var(--peach);
+  color: var(--ink);
+  border-color: var(--peach);
+}
+.build-opt-es {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-weight: 600;
+  display: block;
+}
+.build-opt-en {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-style: italic;
+  opacity: 0.75;
+  margin-top: 2px;
+  display: block;
+}
+
+/* ═══════ FOOTER NOTE ═══════ */
+.footer-note {
+  max-width: 1180px;
+  margin: 36px auto 0;
+  padding: 24px 32px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+}
+.footer-note .mark {
+  font-family: 'Allura', cursive;
+  font-size: 20px;
+  color: var(--peach);
+  display: block;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-bottom: 10px;
+}
+.footer-note .tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--cream-soft);
+  margin-top: 4px;
+}
+
+/* ═══════ RESPONSIVE ═══════ */
+@media (max-width: 720px) {
+  .intro-title-es { font-size: 26px; }
+  .sentence-es { font-size: 22px; }
+  .tab { min-width: 0; flex: 1; padding: 10px 14px; }
+  .tab-es { font-size: 14px; }
+  .tab-en { font-size: 9px; }
+}
+</style>
+</head>
+<body>
+
+  <!-- ═══════ HEADER ═══════ -->
+  <header class="hub-header">
+    <div class="hub-header-row">
+      <div class="hub-brand">
+        <span class="hub-brand-mark">a Word &amp; Wonder space</span>
+        <span class="hub-brand-title">Comida y Preferencias</span>
+        <span class="hub-brand-subtitle">Food &amp; Preferences · Spanish I</span>
+      </div>
+      <a href="./" class="back-link">Back to Math Hub</a>
+    </div>
+  </header>
+
+  <!-- ═══════ INTRO ═══════ -->
+  <main class="stage">
+    <section class="intro">
+      <div class="intro-eyebrow">Spanish · Math Integration · Smile Bags Spring 2026</div>
+      <h1 class="intro-title-es">¿Cómo hablamos de las preferencias de comida?</h1>
+      <p class="intro-title-en">How do we talk about food preferences in Spanish?</p>
+      <p class="intro-body-es">
+        Eres dueño de un restaurante. Explora el menú de 10 comidas y bebidas, descubre <em>cuál es la más popular</em>, y crea tus propias frases — usando los datos como evidencia.
+      </p>
+      <p class="intro-body-en">
+        You're the owner of a restaurant. Explore the 10-item menu, discover which is the most popular, and build your own Spanish sentences — using the data as evidence.
+      </p>
+      <div class="ai-mark">
+        <span class="ai-mark-icon">🤖</span>
+        AI-Powered Bilingual Sentence Generation
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══════ TABS ═══════ -->
+  <nav class="tabs">
+    <button class="tab active" onclick="switchMode('menu')">
+      <span class="tab-es">📋 El Menú</span>
+      <span class="tab-en">The Menu</span>
+    </button>
+    <button class="tab" onclick="switchMode('explore')">
+      <span class="tab-es">📊 Explora los Datos</span>
+      <span class="tab-en">Explore the Data</span>
+    </button>
+    <button class="tab" onclick="switchMode('build')">
+      <span class="tab-es">✏️ Crea tu Frase</span>
+      <span class="tab-en">Build Your Sentence</span>
+    </button>
+  </nav>
+
+  <!-- ═══════ MODE 1: EL MENÚ ═══════ -->
+  <section id="mode-menu" class="mode active">
+    <div class="menu-grid" id="menu-grid-display"></div>
+  </section>
+
+  <!-- ═══════ MODE 2: EXPLORA LOS DATOS ═══════ -->
+  <section id="mode-explore" class="mode">
+
+    <div class="controls">
+      <label class="controls-label">Ordena los datos · Sort the data</label>
+      <div class="sort-buttons" id="sort-buttons">
+        <button class="sort-btn" data-sort="most-popular">
+          <span class="sort-btn-es">⭐ La más popular</span>
+          <span class="sort-btn-en">The most popular</span>
+        </button>
+        <button class="sort-btn" data-sort="least-popular">
+          <span class="sort-btn-es">📉 La menos popular</span>
+          <span class="sort-btn-en">The least popular</span>
+        </button>
+        <button class="sort-btn" data-sort="most-expensive">
+          <span class="sort-btn-es">💰 La más cara</span>
+          <span class="sort-btn-en">The most expensive</span>
+        </button>
+        <button class="sort-btn" data-sort="cheapest">
+          <span class="sort-btn-es">🪙 La más barata</span>
+          <span class="sort-btn-en">The cheapest</span>
+        </button>
+      </div>
+
+      <div class="category-filter" id="category-filter">
+        <span class="category-filter-label">Filtrar · Filter:</span>
+        <button class="cat-btn active" data-cat="Todo">Todo <span class="en">All</span></button>
+        <button class="cat-btn" data-cat="Aperitivo">Aperitivo <span class="en">Appetizer</span></button>
+        <button class="cat-btn" data-cat="Plato Principal">Plato Principal <span class="en">Main</span></button>
+        <button class="cat-btn" data-cat="Postre">Postre <span class="en">Dessert</span></button>
+        <button class="cat-btn" data-cat="Bebida">Bebida <span class="en">Drink</span></button>
+      </div>
+    </div>
+
+    <div class="sentence-output" id="sentence-output">
+      <div class="sentence-eyebrow">
+        <span>🤖 AI-generated sentence · Frase generada</span>
+      </div>
+      <div class="sentence-es" id="sentence-es"></div>
+      <div class="sentence-en" id="sentence-en"></div>
+    </div>
+
+    <div class="menu-grid" id="explore-grid-display"></div>
+  </section>
+
+  <!-- ═══════ MODE 3: CREA TU FRASE ═══════ -->
+  <section id="mode-build" class="mode">
+
+    <div class="build-panel">
+      <div class="build-row">
+        <span class="build-row-label">1 · Elige una frase · Pick a sentence frame</span>
+        <div class="build-options" id="frame-options">
+          <button class="build-opt active" data-frame="me-gusta">
+            <span class="build-opt-es">Me gusta…</span>
+            <span class="build-opt-en">I like…</span>
+          </button>
+          <button class="build-opt" data-frame="no-me-gusta">
+            <span class="build-opt-es">No me gusta…</span>
+            <span class="build-opt-en">I don't like…</span>
+          </button>
+          <button class="build-opt" data-frame="te-gusta">
+            <span class="build-opt-es">¿Te gusta…?</span>
+            <span class="build-opt-en">Do you like…?</span>
+          </button>
+          <button class="build-opt" data-frame="elijo">
+            <span class="build-opt-es">Elijo… porque es popular.</span>
+            <span class="build-opt-en">I choose… because it's popular.</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="build-row">
+        <span class="build-row-label">2 · Elige una comida · Pick a food</span>
+        <div class="build-options" id="food-options"></div>
+      </div>
+    </div>
+
+    <div class="sentence-output show" id="build-output">
+      <div class="sentence-eyebrow">
+        <span>🤖 Tu frase · Your sentence</span>
+      </div>
+      <div class="sentence-es" id="build-sentence-es">— Elige una comida —</div>
+      <div class="sentence-en" id="build-sentence-en">Pick a food to build your sentence.</div>
+    </div>
+  </section>
+
+  <!-- ═══════ FOOTER ═══════ -->
+  <footer class="footer-note">
+    <span class="mark">a Word &amp; Wonder space</span>
+    Comida y Preferencias · Smile Bags · Spring 2026<br>
+    Created by Laura Howell · © 2025–2026
+    <div class="tagline">"La comida es lenguaje. The data is the evidence."</div>
+  </footer>
+
+<script>
+// ═══════ DATA ═══════
+const menu = [
+  { id: 1,  es: 'Pollo',       en: 'Chicken',      article: 'el', cat_es: 'Plato Principal', cat_en: 'Main Dish',  precio: 10.99, popularidad: 4.5, emoji: '🍗' },
+  { id: 2,  es: 'Ensalada',    en: 'Salad',        article: 'la', cat_es: 'Aperitivo',       cat_en: 'Appetizer',  precio:  6.49, popularidad: 3.8, emoji: '🥗' },
+  { id: 3,  es: 'Hamburguesa', en: 'Hamburger',    article: 'la', cat_es: 'Plato Principal', cat_en: 'Main Dish',  precio:  9.99, popularidad: 4.7, emoji: '🍔' },
+  { id: 4,  es: 'Pan de Ajo',  en: 'Garlic Bread', article: 'el', cat_es: 'Aperitivo',       cat_en: 'Appetizer',  precio:  4.99, popularidad: 4.3, emoji: '🥖' },
+  { id: 5,  es: 'Pizza',       en: 'Pizza',        article: 'la', cat_es: 'Plato Principal', cat_en: 'Main Dish',  precio: 11.49, popularidad: 4.8, emoji: '🍕' },
+  { id: 6,  es: 'Helado',      en: 'Ice Cream',    article: 'el', cat_es: 'Postre',          cat_en: 'Dessert',    precio:  5.49, popularidad: 4.9, emoji: '🍦' },
+  { id: 7,  es: 'Pastel',      en: 'Cake',         article: 'el', cat_es: 'Postre',          cat_en: 'Dessert',    precio:  5.99, popularidad: 4.6, emoji: '🍰' },
+  { id: 8,  es: 'Café',        en: 'Coffee',       article: 'el', cat_es: 'Bebida',          cat_en: 'Drink',      precio:  2.49, popularidad: 3.5, emoji: '☕' },
+  { id: 9,  es: 'Limonada',    en: 'Lemonade',     article: 'la', cat_es: 'Bebida',          cat_en: 'Drink',      precio:  2.99, popularidad: 4.2, emoji: '🍋' },
+  { id: 10, es: 'Refresco',    en: 'Soda',         article: 'el', cat_es: 'Bebida',          cat_en: 'Drink',      precio:  2.29, popularidad: 4.0, emoji: '🥤' },
+];
+
+// ═══════ MODE SWITCHING ═══════
+function switchMode(mode) {
+  document.querySelectorAll('.mode').forEach(m => m.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('mode-' + mode).classList.add('active');
+  // Find the tab via attribute match
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(t => {
+    if (t.getAttribute('onclick').includes("'" + mode + "'")) t.classList.add('active');
+  });
+}
+
+// ═══════ RENDER MENU CARDS ═══════
+function renderMenuCard(item) {
+  return `
+    <div class="menu-card" data-id="${item.id}">
+      <span class="menu-card-emoji">${item.emoji}</span>
+      <div class="menu-card-es">
+        <span class="menu-card-article">${item.article}</span> ${item.es}
+      </div>
+      <div class="menu-card-en">${item.en}</div>
+      <div class="menu-card-cat">
+        ${item.cat_es}
+        <span class="menu-card-cat-en">${item.cat_en}</span>
+      </div>
+      <div class="menu-card-stats">
+        <div class="stat">
+          <span class="stat-label">Precio <span class="stat-label-en">Price</span></span>
+          <span class="stat-value">$${item.precio.toFixed(2)}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Popular <span class="stat-label-en">Popularity</span></span>
+          <span class="stat-value pop">${item.popularidad}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderMenuGrid(containerId, items) {
+  document.getElementById(containerId).innerHTML = items.map(renderMenuCard).join('');
+}
+
+// Initial render
+renderMenuGrid('menu-grid-display', menu);
+renderMenuGrid('explore-grid-display', menu);
+
+// ═══════ SORT LOGIC ═══════
+let currentSort = null;
+let currentCategory = 'Todo';
+
+function applyExploreFilters() {
+  let filtered = (currentCategory === 'Todo')
+    ? [...menu]
+    : menu.filter(i => i.cat_es === currentCategory);
+
+  if (currentSort) {
+    if (currentSort === 'most-popular')   filtered.sort((a,b) => b.popularidad - a.popularidad);
+    if (currentSort === 'least-popular')  filtered.sort((a,b) => a.popularidad - b.popularidad);
+    if (currentSort === 'most-expensive') filtered.sort((a,b) => b.precio - a.precio);
+    if (currentSort === 'cheapest')       filtered.sort((a,b) => a.precio - b.precio);
+  }
+
+  renderMenuGrid('explore-grid-display', filtered);
+
+  if (currentSort && filtered.length > 0) {
+    generateSentence(currentSort, filtered[0]);
+  }
+}
+
+// ═══════ SENTENCE GENERATION ═══════
+function generateSentence(type, item) {
+  // Decide noun type — "comida" (food) or "bebida" (drink)
+  const isDrink = item.cat_es === 'Bebida';
+  const noun_es = isDrink ? 'bebida' : 'comida';
+  const noun_es_article = isDrink ? 'La bebida' : 'La comida';
+  const noun_en = isDrink ? 'drink' : 'food';
+
+  let es = '';
+  let en = '';
+
+  if (type === 'most-popular') {
+    es = `${noun_es_article} más popular es <span class="highlight">${item.article} ${item.es}</span> (${item.popularidad}).`;
+    en = `The most popular ${noun_en} is <em>${item.en}</em> (rated ${item.popularidad}/5).`;
+  } else if (type === 'least-popular') {
+    es = `${noun_es_article} menos popular es <span class="highlight">${item.article} ${item.es}</span> (${item.popularidad}).`;
+    en = `The least popular ${noun_en} is <em>${item.en}</em> (rated ${item.popularidad}/5).`;
+  } else if (type === 'most-expensive') {
+    es = `${noun_es_article} más cara es <span class="highlight">${item.article} ${item.es}</span> ($${item.precio.toFixed(2)}).`;
+    en = `The most expensive ${noun_en} is <em>${item.en}</em> ($${item.precio.toFixed(2)}).`;
+  } else if (type === 'cheapest') {
+    es = `${noun_es_article} más barata es <span class="highlight">${item.article} ${item.es}</span> ($${item.precio.toFixed(2)}).`;
+    en = `The cheapest ${noun_en} is <em>${item.en}</em> ($${item.precio.toFixed(2)}).`;
+  }
+
+  document.getElementById('sentence-es').innerHTML = es;
+  document.getElementById('sentence-en').innerHTML = en;
+  document.getElementById('sentence-output').classList.add('show');
+}
+
+// ═══════ SORT BUTTON HANDLERS ═══════
+document.querySelectorAll('.sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentSort = btn.dataset.sort;
+    applyExploreFilters();
+  });
+});
+
+// ═══════ CATEGORY FILTER HANDLERS ═══════
+document.querySelectorAll('.cat-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCategory = btn.dataset.cat;
+    applyExploreFilters();
+  });
+});
+
+// ═══════ BUILD MODE ═══════
+// Render food options
+const foodOptionsHTML = menu.map(item => `
+  <button class="build-opt" data-food-id="${item.id}">
+    <span class="build-opt-es">${item.emoji} ${item.es}</span>
+    <span class="build-opt-en">${item.en}</span>
+  </button>
+`).join('');
+document.getElementById('food-options').innerHTML = foodOptionsHTML;
+
+let currentFrame = 'me-gusta';
+let currentFoodId = null;
+
+function buildSentence() {
+  if (!currentFoodId) {
+    document.getElementById('build-sentence-es').textContent = '— Elige una comida —';
+    document.getElementById('build-sentence-en').textContent = 'Pick a food to build your sentence.';
+    return;
+  }
+
+  const item = menu.find(i => i.id === currentFoodId);
+  let es = '';
+  let en = '';
+
+  if (currentFrame === 'me-gusta') {
+    es = `Me gusta <span class="highlight">${item.article} ${item.es}</span>.`;
+    en = `I like <em>${item.en.toLowerCase()}</em>.`;
+  } else if (currentFrame === 'no-me-gusta') {
+    es = `No me gusta <span class="highlight">${item.article} ${item.es}</span>.`;
+    en = `I don't like <em>${item.en.toLowerCase()}</em>.`;
+  } else if (currentFrame === 'te-gusta') {
+    es = `¿Te gusta <span class="highlight">${item.article} ${item.es}</span>?`;
+    en = `Do you like <em>${item.en.toLowerCase()}</em>?`;
+  } else if (currentFrame === 'elijo') {
+    es = `Elijo <span class="highlight">${item.article} ${item.es}</span> porque es popular (${item.popularidad}/5).`;
+    en = `I choose <em>${item.en.toLowerCase()}</em> because it's popular (${item.popularidad}/5).`;
+  }
+
+  document.getElementById('build-sentence-es').innerHTML = es;
+  document.getElementById('build-sentence-en').innerHTML = en;
+}
+
+document.querySelectorAll('#frame-options .build-opt').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#frame-options .build-opt').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFrame = btn.dataset.frame;
+    buildSentence();
+  });
+});
+
+document.getElementById('food-options').addEventListener('click', (e) => {
+  const btn = e.target.closest('.build-opt');
+  if (!btn) return;
+  document.querySelectorAll('#food-options .build-opt').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentFoodId = parseInt(btn.dataset.foodId, 10);
+  buildSentence();
+});
+</script>
+
+</body>
+</html>
