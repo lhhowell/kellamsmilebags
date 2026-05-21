@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comida y Preferencias · Lesson Hub · Teacher Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cinzel:wght@500;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=Special+Elite&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:       #fdf8ec;
+  --paper-deep:  #f5ecd9;
+  --ink:         #2a1a45;
+  --ink-soft:    rgba(42,26,69,.72);
+  --ink-faint:   rgba(42,26,69,.55);
+  --ink-trace:  rgba(42,26,69,.18);
+  --peach:       #b85a3e;
+  --peach-bright:#d97757;
+  --peach-soft:  #fce6c8;
+  --gold:        #a88830;
+  --gold-bright: #c9a84c;
+  --gold-soft:   #f4e8c5;
+  --sage:        #4e7f47;
+  --sage-soft:   #e0eddc;
+  --teal:        #2d6e6e;
+  --rule:        rgba(42,26,69,.18);
+  --bg-screen:   #1a1530;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg-screen);
+  font-family: 'Cormorant Garamond', serif;
+  color: var(--ink);
+  min-height: 100vh;
+  padding: 40px 24px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.print-btn-wrap {
+  max-width: 8.5in;
+  margin: 0 auto 24px;
+  text-align: right;
+}
+.print-btn {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 12px 22px;
+  background: var(--peach-bright);
+  color: var(--paper);
+  border: 0;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.print-btn:hover { background: var(--peach); }
+
+.doc {
+  background: var(--paper);
+  max-width: 8.5in;
+  margin: 0 auto;
+  padding: 0.6in 0.7in 0.5in;
+  box-shadow: 0 30px 80px rgba(0,0,0,.6);
+}
+
+/* ── HEADER ── */
+.doc-header {
+  border-bottom: 2px solid var(--peach);
+  padding-bottom: 18px;
+  margin-bottom: 24px;
+  position: relative;
+}
+.doc-mark {
+  font-family: 'Allura', cursive;
+  font-size: 22px;
+  color: var(--peach);
+  line-height: 1;
+}
+.doc-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.05;
+  margin-top: 4px;
+}
+.doc-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--ink-soft);
+  margin-top: 4px;
+}
+.doc-meta {
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: right;
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  line-height: 1.5;
+}
+.doc-meta strong {
+  display: block;
+  font-size: 11px;
+  color: var(--peach);
+  font-weight: bold;
+}
+
+/* ── COURSE BAND ── */
+.course-band {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  background: var(--paper-deep);
+  padding: 12px 16px;
+  border-left: 4px solid var(--gold);
+  margin-bottom: 26px;
+}
+.course-cell {
+  text-align: center;
+}
+.course-cell .label {
+  font-family: 'Special Elite', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+}
+.course-cell .value {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+  margin-top: 2px;
+  display: block;
+  line-height: 1.2;
+}
+
+/* ── SECTION HEADERS ── */
+.section {
+  margin-bottom: 22px;
+  page-break-inside: avoid;
+}
+.section-eyebrow {
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--peach);
+  margin-bottom: 6px;
+}
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--rule);
+}
+.section-title .es {
+  color: var(--sage);
+}
+.section-title .en {
+  color: var(--ink-soft);
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 0;
+  margin-left: 8px;
+}
+
+/* ── EQ CALLOUT ── */
+.eq-callout {
+  background: linear-gradient(180deg, var(--peach-soft) 0%, var(--gold-soft) 100%);
+  border-left: 4px solid var(--peach);
+  padding: 18px 22px;
+  margin-bottom: 22px;
+  page-break-inside: avoid;
+}
+.eq-label {
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--peach);
+  margin-bottom: 6px;
+}
+.eq-es {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 22px;
+  color: var(--ink);
+  line-height: 1.25;
+  margin-bottom: 4px;
+}
+.eq-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+/* ── BODY TEXT ── */
+.body-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13.5pt;
+  line-height: 1.55;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+.body-text em {
+  color: var(--peach);
+  font-weight: 500;
+}
+.body-text strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* ── BULLET LISTS ── */
+.body-list {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13pt;
+  line-height: 1.55;
+  color: var(--ink);
+  margin: 4px 0 12px 0;
+  padding-left: 22px;
+}
+.body-list li {
+  margin-bottom: 4px;
+}
+.body-list li::marker {
+  color: var(--peach);
+}
+
+/* ── TARGET LANGUAGE TABLE ── */
+.lang-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 14px;
+  font-family: 'Cormorant Garamond', serif;
+}
+.lang-table th,
+.lang-table td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+}
+.lang-table th {
+  background: var(--sage-soft);
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sage);
+  font-weight: bold;
+}
+.lang-table td.es {
+  font-weight: 600;
+  font-size: 14pt;
+  color: var(--ink);
+  width: 45%;
+}
+.lang-table td.en {
+  font-style: italic;
+  font-size: 12pt;
+  color: var(--ink-soft);
+}
+
+/* ── LESSON FLOW TABLE ── */
+.flow-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 14px;
+}
+.flow-table th,
+.flow-table td {
+  padding: 9px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.flow-table th {
+  background: var(--paper-deep);
+  font-family: 'Special Elite', monospace;
+  font-size: 9.5pt;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--peach);
+  font-weight: bold;
+}
+.flow-table td {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11.5pt;
+  color: var(--ink);
+}
+.flow-table td.time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5pt;
+  color: var(--gold);
+  font-weight: bold;
+  width: 90px;
+}
+.flow-table td.activity {
+  font-weight: 600;
+  font-size: 12pt;
+}
+.flow-table td.activity span {
+  display: block;
+  font-weight: 400;
+  font-size: 10pt;
+  font-style: italic;
+  color: var(--ink-faint);
+  letter-spacing: 0.02em;
+}
+
+/* ── MODULE BLOCKS ── */
+.module {
+  margin-bottom: 18px;
+  page-break-inside: avoid;
+}
+.module-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+.module-num {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--peach);
+  line-height: 1;
+}
+.module-titles {
+  flex: 1;
+}
+.module-title-es {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 16pt;
+  color: var(--ink);
+  line-height: 1.1;
+}
+.module-title-en {
+  font-family: 'Inter', sans-serif;
+  font-size: 10.5pt;
+  font-style: italic;
+  color: var(--sage);
+  letter-spacing: 0.02em;
+}
+.module-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10pt;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+}
+
+/* ── TIP CALLOUTS ── */
+.tip {
+  background: var(--sage-soft);
+  border-left: 3px solid var(--sage);
+  padding: 10px 14px;
+  margin: 10px 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 11.5pt;
+  line-height: 1.45;
+  color: var(--ink);
+}
+.tip strong {
+  font-style: normal;
+  color: var(--sage);
+  font-family: 'Special Elite', monospace;
+  font-size: 9.5pt;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* ── EXPECTED ANSWERS ── */
+.answers-box {
+  background: var(--paper-deep);
+  border: 1px dashed var(--gold);
+  padding: 14px 18px;
+  margin: 10px 0 14px;
+}
+.answers-box .label {
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: bold;
+  margin-bottom: 8px;
+  display: block;
+}
+.answers-list {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12.5pt;
+  list-style: none;
+  padding: 0;
+}
+.answers-list li {
+  padding: 4px 0;
+  border-bottom: 1px dotted var(--rule);
+}
+.answers-list li:last-child { border-bottom: 0; }
+.answers-list li strong {
+  color: var(--peach);
+  font-weight: 700;
+  font-style: italic;
+}
+
+/* ── KIOSK INTEGRATION BOX ── */
+.kiosk-box {
+  background: linear-gradient(180deg, var(--peach-soft) 0%, var(--paper) 100%);
+  border: 1px solid var(--peach);
+  padding: 16px 20px;
+  margin: 14px 0;
+  border-radius: 4px;
+}
+.kiosk-box .label {
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--peach);
+  font-weight: bold;
+  margin-bottom: 6px;
+  display: block;
+}
+.kiosk-box .title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 14pt;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.kiosk-box .desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11.5pt;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+.kiosk-box .url {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5pt;
+  color: var(--peach);
+  margin-top: 6px;
+  word-break: break-all;
+}
+
+/* ── TWO COL ── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+.col-box {
+  background: var(--paper-deep);
+  padding: 12px 16px;
+  border-radius: 2px;
+  border-left: 3px solid var(--teal);
+}
+.col-box.support { border-color: var(--sage); }
+.col-box.extension { border-color: var(--peach); }
+.col-box .label {
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--teal);
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+.col-box.support .label { color: var(--sage); }
+.col-box.extension .label { color: var(--peach); }
+.col-box ul {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11.5pt;
+  line-height: 1.4;
+  padding-left: 18px;
+}
+.col-box ul li { margin-bottom: 3px; }
+
+/* ── PRONUNCIATION GRID ── */
+.pron-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.pron-cell {
+  background: var(--gold-soft);
+  padding: 10px 12px;
+  text-align: center;
+  border-radius: 3px;
+  border: 1px solid rgba(168,136,48,0.3);
+}
+.pron-cell .rule {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 13pt;
+  color: var(--ink);
+}
+.pron-cell .ex {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 11pt;
+  color: var(--peach);
+  margin-top: 4px;
+}
+.pron-cell .ex strong {
+  font-style: normal;
+  color: var(--gold);
+}
+
+/* ── FOOTER ── */
+.doc-footer {
+  margin-top: 28px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  text-align: center;
+  font-family: 'Special Elite', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.doc-footer .mark {
+  font-family: 'Allura', cursive;
+  font-size: 18px;
+  color: var(--peach);
+  display: block;
+  letter-spacing: 0;
+  text-transform: none;
+  margin-bottom: 6px;
+}
+
+/* ── PRINT ── */
+@media print {
+  body { background: white; padding: 0; }
+  .print-btn-wrap { display: none; }
+  .doc {
+    box-shadow: none;
+    margin: 0;
+    padding: 0.4in 0.5in;
+    max-width: 100%;
+  }
+  @page {
+    size: letter portrait;
+    margin: 0.4in 0.5in;
+  }
+  .module, .section, .eq-callout { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<div class="print-btn-wrap">
+  <button class="print-btn" onclick="window.print()">🖨️ Print Lesson Hub</button>
+</div>
+
+<div class="doc">
+
+  <!-- ════ HEADER ════ -->
+  <div class="doc-header">
+    <div class="doc-mark">a Word &amp; Wonder space</div>
+    <h1 class="doc-title">Comida y Preferencias</h1>
+    <p class="doc-subtitle">Food &amp; Preferences · Spanish I · Teacher Lesson Hub</p>
+    <div class="doc-meta">
+      <strong>Lesson Hub</strong>
+      Smile Bags<br>
+      Spring 2026
+    </div>
+  </div>
+
+  <!-- ════ COURSE BAND ════ -->
+  <div class="course-band">
+    <div class="course-cell"><span class="label">Course</span><span class="value">Spanish I</span></div>
+    <div class="course-cell"><span class="label">Grade</span><span class="value">9 – 12</span></div>
+    <div class="course-cell"><span class="label">Time</span><span class="value">60 – 75 min</span></div>
+    <div class="course-cell"><span class="label">Focus</span><span class="value">Food &amp; Preferences</span></div>
+  </div>
+
+  <!-- ════ EQ ════ -->
+  <div class="eq-callout">
+    <div class="eq-label">🎯 Essential Question · Pregunta Esencial</div>
+    <div class="eq-es">¿Cómo hablamos de las preferencias de comida en español?</div>
+    <div class="eq-en">How do we talk about food preferences in Spanish — using data as our evidence?</div>
+  </div>
+
+  <!-- ════ OBJECTIVES ════ -->
+  <div class="section">
+    <h2 class="section-title">📋 Learning Objectives</h2>
+    <p class="body-text">Students will:</p>
+    <ul class="body-list">
+      <li>Use Spanish vocabulary for foods and drinks accurately.</li>
+      <li>Express likes and dislikes using <em>Me gusta</em> and <em>No me gusta</em>.</li>
+      <li>Ask and answer simple questions using <em>¿Te gusta…?</em></li>
+      <li>Read a Spanish menu dataset and use it as evidence in their own sentences.</li>
+      <li>Apply correct articles (<em>el / la</em>) to food vocabulary.</li>
+    </ul>
+  </div>
+
+  <!-- ════ TARGET LANGUAGE ════ -->
+  <div class="section">
+    <h2 class="section-title">🗣️ Target Language Structures</h2>
+    <table class="lang-table">
+      <thead>
+        <tr><th>Spanish · Español</th><th>English</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="es">Me gusta el / la _______.</td><td class="en">I like _______.</td></tr>
+        <tr><td class="es">No me gusta el / la _______.</td><td class="en">I don't like _______.</td></tr>
+        <tr><td class="es">¿Te gusta el / la _______?</td><td class="en">Do you like _______?</td></tr>
+        <tr><td class="es">Sí, me gusta. / No, no me gusta.</td><td class="en">Yes, I like it. / No, I don't.</td></tr>
+        <tr><td class="es">La comida más popular es _______.</td><td class="en">The most popular food is _______.</td></tr>
+        <tr><td class="es">Elijo _______ porque es popular.</td><td class="en">I choose _______ because it's popular.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ════ MATERIALS ════ -->
+  <div class="section">
+    <h2 class="section-title">📂 Materials</h2>
+    <ul class="body-list">
+      <li><strong>Comida_Preferencias_Worksheet.docx</strong> — print one per student (7 parts).</li>
+      <li><strong>Comida_Preferencias_Workbook.xlsx</strong> — share via Google Classroom (3 tabs: Bienvenido, Datos, Mi Restaurante).</li>
+      <li>Chromebook or laptop with Google Sheets.</li>
+      <li>Projector for warm-up and the partner share-out.</li>
+    </ul>
+
+    <div class="kiosk-box">
+      <span class="label">🤖 NEW · Bilingual Data Kiosk</span>
+      <div class="title">Comida y Preferencias · AI-Powered Kiosk</div>
+      <div class="desc">An interactive kiosk where students explore the menu dataset and watch real-time AI-generated Spanish sentences appear — with English translations underneath. Three modes: El Menú · Explora los Datos · Crea tu Frase. Use as a class demonstration, a learning station, or for absent-student make-up work.</div>
+      <div class="url">lhhowell.github.io/kellamsmilebags/Math/Comida_Preferencias_Kiosk.html</div>
+    </div>
+
+    <div class="tip">
+      <strong>📌 Setup Before Class</strong>
+      Drop the workbook into your Google Classroom assignment as "Make a copy for each student." Print the worksheet, or assign as a digital fillable PDF. Have the Bienvenido tab projected before students walk in.
+    </div>
+  </div>
+
+  <!-- ════ LESSON FLOW ════ -->
+  <div class="section">
+    <h2 class="section-title">⏱️ Lesson Flow · Plan de la Lección</h2>
+    <table class="flow-table">
+      <thead>
+        <tr><th>Time</th><th>Activity</th><th>What students do</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="time">5–10 min</td><td class="activity">Warm-Up <span>Calentamiento</span></td><td>Predict, share favorite foods</td></tr>
+        <tr><td class="time">10–15 min</td><td class="activity">Mini-Lesson <span>Me gusta / No me gusta</span></td><td>Listen, repeat, take notes</td></tr>
+        <tr><td class="time">10–15 min</td><td class="activity">Vocabulary &amp; Frames <span>Worksheet Parts 1–2</span></td><td>Match words, practice frames</td></tr>
+        <tr><td class="time">10–15 min</td><td class="activity">Partner Interview <span>Worksheet Part 3</span></td><td>¿Te gusta…? with a partner</td></tr>
+        <tr><td class="time">10–15 min</td><td class="activity">Data Activity <span>Worksheet Parts 4–5</span></td><td>Read dataset, use frames</td></tr>
+        <tr><td class="time">15–20 min</td><td class="activity">Mi Restaurante <span>Worksheet Part 6</span></td><td>Build menu, write 5 sentences</td></tr>
+        <tr><td class="time">5 min</td><td class="activity">Exit Ticket <span>Boleto de Salida (Part 7)</span></td><td>One like + one dislike</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ════ MODULES ════ -->
+  <div class="section">
+    <h2 class="section-title">🔹 Module Breakdown</h2>
+
+    <div class="module">
+      <div class="module-head">
+        <div class="module-num">1</div>
+        <div class="module-titles">
+          <div class="module-title-es">Warm-Up · Calentamiento</div>
+          <div class="module-title-en">5 – 10 minutes</div>
+        </div>
+      </div>
+      <p class="body-text">Project this on the screen: <em>"What's the BEST food in the world? ¿Cuál es la mejor comida del mundo?"</em> Cold-call 4–5 students. Ask in English; they answer in Spanish using whatever they know. Write responses on the board with English glosses. Validate any attempt — even "Me gusta hamburger."</p>
+      <div class="tip">
+        <strong>Teacher Tip</strong>
+        Don't correct article errors yet (la pizza vs el pizza). Goal: participation. Articles come in Module 2.
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="module-head">
+        <div class="module-num">2</div>
+        <div class="module-titles">
+          <div class="module-title-es">Mini-Lesson · Me gusta / No me gusta</div>
+          <div class="module-title-en">10 – 15 minutes</div>
+        </div>
+      </div>
+      <p class="body-text">Write on the board: <strong>Me gusta</strong> = I like (literally: "It pleases me."). <strong>No me gusta</strong> = I don't like. Model pronunciation: <em>meh GOOS-tah</em>. Chorus 3 times. Then teach <strong>el / la</strong>: words ending in -a usually take <em>la</em>; words ending in -o usually take <em>el</em>. Don't dwell on exceptions in Spanish I.</p>
+      <p class="body-text">Run 5 rounds of choral practice: <em>¿Te gusta el pollo? Sí, me gusta. ¿Te gusta la ensalada? No, no me gusta.</em></p>
+    </div>
+
+    <div class="module">
+      <div class="module-head">
+        <div class="module-num">3</div>
+        <div class="module-titles">
+          <div class="module-title-es">Vocabulary &amp; Frames · Worksheet Parts 1–2</div>
+          <div class="module-title-en">10 – 15 minutes</div>
+        </div>
+      </div>
+      <p class="body-text">Students match each Spanish word with its English meaning (Part 1), then read the sentence frames in Part 2. These frames are the tools they'll use for the rest of the lesson — name them as such: <em>"These are your tools."</em></p>
+      <div class="tip">
+        <strong>Differentiation</strong>
+        Heritage / advanced speakers: add 2 of their own foods to the vocabulary list. Beginners: say each word out loud three times with a partner.
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="module-head">
+        <div class="module-num">4</div>
+        <div class="module-titles">
+          <div class="module-title-es">Partner Interview · Worksheet Part 3</div>
+          <div class="module-title-en">10 – 15 minutes</div>
+        </div>
+      </div>
+      <p class="body-text">Pair students. Each writes their partner's name in the blank. Take turns asking the 5 questions and marking ✔️ Sí or ❌ No. Walk-around look-fors: Are students using <em>¿Te gusta…?</em> in question form? Are they responding in full phrases? Don't correct mid-flow — note for whole-class feedback.</p>
+      <p class="body-text">Quick share-out (2 min): cold-call 2 students. <em>"A mi compañera Kayla le gusta la pizza, pero no le gusta el café."</em> (Previews 3rd person — extension only.)</p>
+    </div>
+
+    <div class="module">
+      <div class="module-head">
+        <div class="module-num">5</div>
+        <div class="module-titles">
+          <div class="module-title-es">Data Activity · Worksheet Parts 4–5</div>
+          <div class="module-title-en">10 – 15 minutes</div>
+        </div>
+      </div>
+      <p class="body-text">Now students use the menu data as evidence for their Spanish sentences. <strong>This is the bridge between language and analysis.</strong> Show how to sort: Data &gt; Sort range &gt; Column E (Popularidad) Z→A for most popular; Column D (Precio) Z→A for most expensive; filter to Bebida + sort Column D A→Z for cheapest drink.</p>
+
+      <div class="answers-box">
+        <span class="label">✅ Expected Answers · Respuestas Esperadas</span>
+        <ul class="answers-list">
+          <li>1. La comida más popular es <strong>el helado</strong> (4.9).</li>
+          <li>2. La comida más cara es <strong>la pizza</strong> ($11.49).</li>
+          <li>3. La bebida más barata es <strong>el refresco</strong> ($2.29).</li>
+        </ul>
+      </div>
+
+      <div class="tip">
+        <strong>Beautiful Moment</strong>
+        Watch for students who realize they can use the sentence frames AS-IS — they just slot in the answer. That's the whole point. Frames are training wheels for production.
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="module-head">
+        <div class="module-num">6</div>
+        <div class="module-titles">
+          <div class="module-title-es">Mi Restaurante · Worksheet Part 6</div>
+          <div class="module-title-en">15 – 20 minutes</div>
+        </div>
+      </div>
+      <p class="body-text">Students design their own restaurant menu — pulling items from the dataset (or adding their own Spanish words) — then write 5 sentences about it. Required sentences:</p>
+      <ul class="body-list">
+        <li><em>En mi restaurante hay _______, _______, y _______.</em></li>
+        <li><em>Me gusta el / la _______ porque _______.</em></li>
+        <li><em>No me gusta el / la _______ porque _______.</em></li>
+        <li><em>Elijo _______ porque es popular.</em> ← uses dataset evidence</li>
+        <li><em>La comida más cara en mi menú es _______.</em></li>
+      </ul>
+    </div>
+
+    <div class="module">
+      <div class="module-head">
+        <div class="module-num">7</div>
+        <div class="module-titles">
+          <div class="module-title-es">Exit Ticket · Boleto de Salida</div>
+          <div class="module-title-en">5 minutes</div>
+        </div>
+      </div>
+      <p class="body-text">Students write one thing they like and one thing they don't like, in Spanish. Collect as exit ticket. Strong responses use the full sentence frame: <em>Me gusta la pizza. No me gusta el café.</em></p>
+    </div>
+  </div>
+
+  <!-- ════ DIFFERENTIATION ════ -->
+  <div class="section">
+    <h2 class="section-title">🟢🔵 Differentiation &amp; Extensions</h2>
+    <div class="two-col">
+      <div class="col-box support">
+        <span class="label">🟢 Support</span>
+        <ul>
+          <li>Provide a printed vocabulary list with images.</li>
+          <li>Pre-fill the article (el/la) in worksheet blanks.</li>
+          <li>Pair beginner with proficient partner for Part 3.</li>
+          <li>Use the kiosk as a Spanish-only "answer checker."</li>
+        </ul>
+      </div>
+      <div class="col-box extension">
+        <span class="label">🔵 Extension · Heritage Speakers</span>
+        <ul>
+          <li>Add 5 foods of their own to the dataset in Spanish.</li>
+          <li>Use 3rd person: <em>A mi compañera le gusta…</em></li>
+          <li>Write 3 reasons in Spanish for menu choices.</li>
+          <li>Translate one classmate's menu into English.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ PRONUNCIATION ════ -->
+  <div class="section">
+    <h2 class="section-title">💡 Pronunciation Tips</h2>
+    <div class="pron-grid">
+      <div class="pron-cell">
+        <div class="rule">ll = "y"</div>
+        <div class="ex"><strong>pollo</strong> = POH-yo</div>
+      </div>
+      <div class="pron-cell">
+        <div class="rule">h is silent</div>
+        <div class="ex"><strong>helado</strong> = eh-LAH-doh</div>
+      </div>
+      <div class="pron-cell">
+        <div class="rule">rr is rolled</div>
+        <div class="ex"><strong>refresco</strong> = rrre-FRES-coh</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ FOOTER ════ -->
+  <div class="doc-footer">
+    <span class="mark">a Word &amp; Wonder space</span>
+    Comida y Preferencias · Lesson Hub · Smile Bags Spring 2026<br>
+    Curated by Laura Howell, ITS Coach · © 2025–2026
+  </div>
+
+</div>
+
+</body>
+</html>

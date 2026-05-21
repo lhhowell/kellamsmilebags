@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Culinary Data Lab · Lesson Hub · Teacher Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cinzel:wght@500;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=Special+Elite&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:       #fdf8ec;
+  --paper-deep:  #f5ecd9;
+  --ink:         #2a1a45;
+  --ink-soft:    rgba(42,26,69,.72);
+  --ink-faint:   rgba(42,26,69,.55);
+  --ink-trace:   rgba(42,26,69,.18);
+  --peach:       #b85a3e;
+  --peach-bright:#d97757;
+  --peach-soft:  #fce6c8;
+  --gold:        #a88830;
+  --gold-bright: #c9a84c;
+  --gold-soft:   #f4e8c5;
+  --sage:        #4e7f47;
+  --sage-soft:   #e0eddc;
+  --teal:        #2d6e6e;
+  --rule:        rgba(42,26,69,.18);
+  --bg-screen:   #1a1530;
+  --star:        #c9a84c;
+  --puzzle:      #b85a3e;
+  --plowhorse:   #4e7f47;
+  --dog:         #6b5b8a;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg-screen);
+  font-family: 'Cormorant Garamond', serif;
+  color: var(--ink);
+  min-height: 100vh;
+  padding: 40px 24px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.print-btn-wrap { max-width: 8.5in; margin: 0 auto 24px; text-align: right; }
+.print-btn {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 12px 22px;
+  background: var(--peach-bright);
+  color: var(--paper);
+  border: 0;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.print-btn:hover { background: var(--peach); }
+
+.doc {
+  background: var(--paper);
+  max-width: 8.5in;
+  margin: 0 auto;
+  padding: 0.6in 0.7in 0.5in;
+  box-shadow: 0 30px 80px rgba(0,0,0,.6);
+}
+
+.doc-header {
+  border-bottom: 2px solid var(--peach);
+  padding-bottom: 18px;
+  margin-bottom: 24px;
+  position: relative;
+}
+.doc-mark { font-family: 'Allura', cursive; font-size: 22px; color: var(--peach); line-height: 1; }
+.doc-title { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 700; color: var(--ink); line-height: 1.05; margin-top: 4px; }
+.doc-subtitle { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px; color: var(--ink-soft); margin-top: 4px; }
+.doc-meta {
+  position: absolute; top: 0; right: 0; text-align: right;
+  font-family: 'Special Elite', monospace; font-size: 10px;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); line-height: 1.5;
+}
+.doc-meta strong { display: block; font-size: 11px; color: var(--peach); font-weight: bold; }
+
+.course-band {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+  background: var(--paper-deep); padding: 12px 16px;
+  border-left: 4px solid var(--gold); margin-bottom: 26px;
+}
+.course-cell { text-align: center; }
+.course-cell .label { font-family: 'Special Elite', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); display: block; }
+.course-cell .value { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 14px; color: var(--ink); margin-top: 2px; display: block; line-height: 1.2; }
+
+.section { margin-bottom: 22px; page-break-inside: avoid; }
+.section-title {
+  font-family: 'Cinzel', serif; font-weight: 700; font-size: 18px;
+  color: var(--ink); letter-spacing: 0.04em; margin-bottom: 10px;
+  padding-bottom: 4px; border-bottom: 1px solid var(--rule);
+}
+
+.eq-callout {
+  background: linear-gradient(180deg, var(--peach-soft) 0%, var(--gold-soft) 100%);
+  border-left: 4px solid var(--peach);
+  padding: 18px 22px; margin-bottom: 22px; page-break-inside: avoid;
+}
+.eq-label { font-family: 'Special Elite', monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--peach); margin-bottom: 6px; }
+.eq-text { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-style: italic; font-size: 22px; color: var(--ink); line-height: 1.25; }
+
+.body-text { font-family: 'Cormorant Garamond', serif; font-size: 13.5pt; line-height: 1.55; color: var(--ink); margin-bottom: 10px; }
+.body-text em { color: var(--peach); font-weight: 500; }
+.body-text strong { color: var(--ink); font-weight: 700; }
+.body-text code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11pt;
+  background: var(--gold-soft);
+  color: var(--ink);
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid rgba(168,136,48,0.3);
+}
+
+.body-list { font-family: 'Cormorant Garamond', serif; font-size: 13pt; line-height: 1.55; color: var(--ink); margin: 4px 0 12px 0; padding-left: 22px; }
+.body-list li { margin-bottom: 4px; }
+.body-list li::marker { color: var(--peach); }
+
+/* ── PROFIT FORMULA BOX ── */
+.formula-box {
+  background: var(--ink);
+  color: var(--gold-soft);
+  padding: 18px 24px;
+  border-radius: 4px;
+  margin: 12px 0 16px;
+  text-align: center;
+  page-break-inside: avoid;
+}
+.formula-box .label {
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--peach-bright);
+  margin-bottom: 8px;
+}
+.formula-box .equation {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 22px;
+  color: var(--paper);
+  margin-bottom: 6px;
+}
+.formula-box .equation em {
+  color: var(--gold-bright);
+  font-style: italic;
+  font-weight: 600;
+}
+.formula-box .excel {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--peach-bright);
+  background: rgba(255,255,255,0.05);
+  padding: 6px 12px;
+  border-radius: 3px;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+/* ── FLOW TABLE ── */
+.flow-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; }
+.flow-table th, .flow-table td { padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.flow-table th { background: var(--paper-deep); font-family: 'Special Elite', monospace; font-size: 9.5pt; letter-spacing: 0.15em; text-transform: uppercase; color: var(--peach); font-weight: bold; }
+.flow-table td { font-family: 'Cormorant Garamond', serif; font-size: 11.5pt; color: var(--ink); }
+.flow-table td.time { font-family: 'JetBrains Mono', monospace; font-size: 10.5pt; color: var(--gold); font-weight: bold; width: 90px; }
+.flow-table td.activity { font-weight: 600; font-size: 12pt; }
+.flow-table td.activity span { display: block; font-weight: 400; font-size: 10pt; font-style: italic; color: var(--ink-faint); letter-spacing: 0.02em; }
+
+/* ── MODULES ── */
+.module { margin-bottom: 18px; page-break-inside: avoid; }
+.module-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px; }
+.module-num { font-family: 'Cinzel', serif; font-weight: 700; font-size: 28px; color: var(--peach); line-height: 1; }
+.module-titles { flex: 1; }
+.module-title { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 16pt; color: var(--ink); line-height: 1.1; }
+.module-subtitle { font-family: 'Inter', sans-serif; font-size: 10.5pt; font-style: italic; color: var(--sage); letter-spacing: 0.02em; }
+
+.tip { background: var(--sage-soft); border-left: 3px solid var(--sage); padding: 10px 14px; margin: 10px 0; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 11.5pt; line-height: 1.45; color: var(--ink); }
+.tip strong { font-style: normal; color: var(--sage); font-family: 'Special Elite', monospace; font-size: 9.5pt; letter-spacing: 0.15em; text-transform: uppercase; display: block; margin-bottom: 4px; }
+
+/* ── MENU ENGINEERING MATRIX ── */
+.matrix {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 14px 0;
+  page-break-inside: avoid;
+}
+.quadrant {
+  padding: 14px 16px;
+  border-radius: 4px;
+  position: relative;
+  border: 1px solid var(--rule);
+}
+.quadrant.star      { background: linear-gradient(180deg, var(--gold-soft) 0%, var(--paper) 100%); border-color: var(--star); }
+.quadrant.puzzle    { background: linear-gradient(180deg, var(--peach-soft) 0%, var(--paper) 100%); border-color: var(--puzzle); }
+.quadrant.plowhorse { background: linear-gradient(180deg, var(--sage-soft) 0%, var(--paper) 100%); border-color: var(--plowhorse); }
+.quadrant.dog       { background: linear-gradient(180deg, rgba(107,91,138,0.15) 0%, var(--paper) 100%); border-color: var(--dog); }
+
+.quadrant-name {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 14pt;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+.quadrant.star .quadrant-name      { color: var(--star); }
+.quadrant.puzzle .quadrant-name    { color: var(--puzzle); }
+.quadrant.plowhorse .quadrant-name { color: var(--plowhorse); }
+.quadrant.dog .quadrant-name       { color: var(--dog); }
+
+.quadrant-cond {
+  font-family: 'Special Elite', monospace;
+  font-size: 9pt;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+.quadrant-strat {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 11pt;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.quadrant-examples {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10.5pt;
+  color: var(--ink-soft);
+  padding-top: 6px;
+  border-top: 1px dashed var(--rule);
+}
+.quadrant-examples strong { color: var(--ink); font-weight: 600; }
+
+/* ── ANSWER KEY TABLE ── */
+.answer-key {
+  margin: 14px 0;
+  page-break-inside: avoid;
+}
+.answer-key-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10.5pt;
+}
+.answer-key-table th,
+.answer-key-table td {
+  padding: 5px 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+}
+.answer-key-table th {
+  background: var(--ink);
+  color: var(--gold-soft);
+  font-family: 'Special Elite', monospace;
+  font-size: 9pt;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.answer-key-table td.cat {
+  color: var(--peach);
+  font-style: italic;
+  font-size: 9.5pt;
+}
+.answer-key-table td.item { font-weight: 600; }
+.answer-key-table td.money { font-family: 'JetBrains Mono', monospace; font-size: 10pt; color: var(--ink-soft); }
+.answer-key-table td.profit { font-family: 'JetBrains Mono', monospace; font-size: 10pt; color: var(--sage); font-weight: bold; }
+.answer-key-table tr.highlight { background: var(--gold-soft); }
+.answer-key-table tr.lowlight  { background: rgba(184,90,62,0.08); }
+
+.highlights {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11.5pt;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: var(--paper-deep);
+  border-left: 3px solid var(--gold);
+}
+.highlights strong { color: var(--peach); font-weight: 700; }
+
+/* ── TWO-COL ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 14px; }
+.col-box { background: var(--paper-deep); padding: 12px 16px; border-radius: 2px; border-left: 3px solid var(--teal); }
+.col-box.support { border-color: var(--sage); }
+.col-box.extension { border-color: var(--peach); }
+.col-box.ai { border-color: var(--teal); }
+.col-box .label { font-family: 'Special Elite', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--teal); font-weight: bold; margin-bottom: 6px; }
+.col-box.support .label { color: var(--sage); }
+.col-box.extension .label { color: var(--peach); }
+.col-box.ai .label { color: var(--teal); }
+.col-box ul { font-family: 'Cormorant Garamond', serif; font-size: 11.5pt; line-height: 1.4; padding-left: 18px; }
+.col-box ul li { margin-bottom: 3px; }
+
+/* ── EXTENSION CALLOUT ── */
+.extension-box {
+  background: linear-gradient(180deg, rgba(45,110,110,0.10) 0%, var(--paper) 100%);
+  border: 1px solid var(--teal);
+  padding: 16px 20px;
+  margin: 14px 0;
+  border-radius: 4px;
+}
+.extension-box .label {
+  font-family: 'Special Elite', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal);
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+.extension-box .title { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 14pt; color: var(--ink); margin-bottom: 4px; }
+.extension-box .desc { font-family: 'Cormorant Garamond', serif; font-size: 11.5pt; color: var(--ink-soft); line-height: 1.45; }
+
+/* ── FOOTER ── */
+.doc-footer { margin-top: 28px; padding-top: 14px; border-top: 1px solid var(--rule); text-align: center; font-family: 'Special Elite', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint); }
+.doc-footer .mark { font-family: 'Allura', cursive; font-size: 18px; color: var(--peach); display: block; letter-spacing: 0; text-transform: none; margin-bottom: 6px; }
+
+/* ── PRINT ── */
+@media print {
+  body { background: white; padding: 0; }
+  .print-btn-wrap { display: none; }
+  .doc { box-shadow: none; margin: 0; padding: 0.4in 0.5in; max-width: 100%; }
+  @page { size: letter portrait; margin: 0.4in 0.5in; }
+  .module, .section, .eq-callout, .matrix, .answer-key { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<div class="print-btn-wrap">
+  <button class="print-btn" onclick="window.print()">🖨️ Print Lesson Hub</button>
+</div>
+
+<div class="doc">
+
+  <!-- ════ HEADER ════ -->
+  <div class="doc-header">
+    <div class="doc-mark">a Word &amp; Wonder space</div>
+    <h1 class="doc-title">🍽️ Culinary Data Lab</h1>
+    <p class="doc-subtitle">Restaurant Menu Analysis · Culinary Arts · Teacher Lesson Hub</p>
+    <div class="doc-meta">
+      <strong>Lesson Hub</strong>
+      Smile Bags<br>
+      Spring 2026
+    </div>
+  </div>
+
+  <!-- ════ COURSE BAND ════ -->
+  <div class="course-band">
+    <div class="course-cell"><span class="label">Course</span><span class="value">Culinary Arts</span></div>
+    <div class="course-cell"><span class="label">Grade</span><span class="value">9 – 12</span></div>
+    <div class="course-cell"><span class="label">Time</span><span class="value">60 – 90 min</span></div>
+    <div class="course-cell"><span class="label">Focus</span><span class="value">Costing &amp; Profit</span></div>
+  </div>
+
+  <!-- ════ EQ ════ -->
+  <div class="eq-callout">
+    <div class="eq-label">🎯 Essential Question</div>
+    <div class="eq-text">How do restaurants use data to decide what stays on the menu?</div>
+  </div>
+
+  <!-- ════ OBJECTIVES ════ -->
+  <div class="section">
+    <h2 class="section-title">📋 Learning Objectives</h2>
+    <p class="body-text">Students will:</p>
+    <ul class="body-list">
+      <li>Analyze a real-world restaurant dataset using a spreadsheet.</li>
+      <li>Calculate <em>Profit</em> using the formula <code>Profit = Menu Price − Cost to Make</code>.</li>
+      <li>Apply <em>menu engineering</em> — classify items as Stars, Puzzles, Plowhorses, or Dogs.</li>
+      <li>Justify data-driven decisions about pricing, removal, and new menu items.</li>
+    </ul>
+  </div>
+
+  <!-- ════ PROFIT FORMULA ════ -->
+  <div class="section">
+    <h2 class="section-title">💰 The Profit Formula</h2>
+    <div class="formula-box">
+      <div class="label">The core calculation</div>
+      <div class="equation"><em>Profit</em> = <em>Menu Price</em> − <em>Cost to Make</em></div>
+      <div class="excel">In cell J2: <strong>=G2-F2</strong></div>
+    </div>
+    <p class="body-text">Walk through it live on the projector. Click cell J1, type <code>Profit</code>. Click J2, type <code>=G2-F2</code>, press Enter. Double-click the small square at the bottom-right of J2 to fill the formula down all 16 rows.</p>
+    <div class="tip">
+      <strong>Common Stumble</strong>
+      Students often forget the equals sign. If Sheets shows <code>=G2-F2</code> as text instead of a number, that's the giveaway. Have them delete and retype starting with the <strong>=</strong> sign.
+    </div>
+  </div>
+
+  <!-- ════ MATERIALS ════ -->
+  <div class="section">
+    <h2 class="section-title">📂 Materials</h2>
+    <ul class="body-list">
+      <li><strong>Culinary_Data_Lab_Worksheet.docx</strong> — print one per student (6 parts).</li>
+      <li><strong>Culinary_Data_Lab_Workbook.xlsx</strong> — share via Google Classroom as "Make a copy" (3 tabs: Welcome, Menu Data, Workspace).</li>
+      <li><strong>Comparing_Restaurants_Worksheet.docx</strong> — optional 45-min team extension.</li>
+      <li>Chromebook with Google Sheets or Excel.</li>
+      <li>Projector for the Hook discussion and Fix-This-Restaurant share-out.</li>
+    </ul>
+    <div class="tip">
+      <strong>Setup Before Class</strong>
+      Drop the workbook into your Google Classroom assignment as "Make a copy for each student." Print the worksheet, or assign as a digital fillable PDF.
+    </div>
+  </div>
+
+  <!-- ════ LESSON FLOW ════ -->
+  <div class="section">
+    <h2 class="section-title">⏱️ Lesson Flow</h2>
+    <table class="flow-table">
+      <thead>
+        <tr><th>Time</th><th>Activity</th><th>What students do</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="time">5–10 min</td><td class="activity">Hook <span>Why do menus change?</span></td><td>Predict, share, discuss</td></tr>
+        <tr><td class="time">10–15 min</td><td class="activity">Mini-Lesson <span>Cost, price, profit</span></td><td>Watch demo, take notes</td></tr>
+        <tr><td class="time">15–20 min</td><td class="activity">Guided Practice <span>Worksheet Parts 1–2</span></td><td>Add a Profit column</td></tr>
+        <tr><td class="time">20–25 min</td><td class="activity">Application <span>Menu Engineering · Parts 3–4</span></td><td>Classify items</td></tr>
+        <tr><td class="time">20–25 min</td><td class="activity">Real-World <span>Fix This Restaurant · Part 5</span></td><td>Make 3 decisions</td></tr>
+        <tr><td class="time">5 min</td><td class="activity">Exit Ticket <span>Part 6</span></td><td>One takeaway</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ════ MENU ENGINEERING MATRIX ════ -->
+  <div class="section">
+    <h2 class="section-title">🎯 Menu Engineering Matrix</h2>
+    <p class="body-text">Project this 2×2 grid in Module 4. Every item in the dataset belongs in one quadrant based on its profit + popularity.</p>
+
+    <div class="matrix">
+      <div class="quadrant star">
+        <div class="quadrant-name">⭐ STAR</div>
+        <div class="quadrant-cond">High profit + High popularity</div>
+        <div class="quadrant-strat"><em>Strategy:</em> Keep &amp; feature.</div>
+        <div class="quadrant-examples"><strong>Examples:</strong> Cheeseburger (4.8 / $8.64), Chicken Alfredo (4.7 / $10.39), Chocolate Cake (4.9 / $4.99)</div>
+      </div>
+      <div class="quadrant puzzle">
+        <div class="quadrant-name">💰 PUZZLE</div>
+        <div class="quadrant-cond">High profit + Low popularity</div>
+        <div class="quadrant-strat"><em>Strategy:</em> Rename, reposition, market.</div>
+        <div class="quadrant-examples"><strong>Examples:</strong> House Salad (4.2 / $4.39 — solid profit but order count lags)</div>
+      </div>
+      <div class="quadrant plowhorse">
+        <div class="quadrant-name">❤️ PLOWHORSE</div>
+        <div class="quadrant-cond">Low profit + High popularity</div>
+        <div class="quadrant-strat"><em>Strategy:</em> Raise price slightly or pair with high-margin sides.</div>
+        <div class="quadrant-examples"><strong>Examples:</strong> Soda (4.2 / $2.09 — popular but low absolute profit)</div>
+      </div>
+      <div class="quadrant dog">
+        <div class="quadrant-name">❌ DOG</div>
+        <div class="quadrant-cond">Low profit + Low popularity</div>
+        <div class="quadrant-strat"><em>Strategy:</em> Remove from menu.</div>
+        <div class="quadrant-examples"><strong>Examples:</strong> Iced Tea (4.0 / $1.94), Veggie Stir Fry (4.1 / lowest entree popularity)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ MODULES ════ -->
+  <div class="section">
+    <h2 class="section-title">🔹 Module Breakdown</h2>
+
+    <div class="module">
+      <div class="module-head">
+        <div class="module-num">1</div>
+        <div class="module-titles">
+          <div class="module-title">Hook · Why do menus change?</div>
+          <div class="module-subtitle">5 – 10 minutes</div>
+        </div>
+      </div>
+      <p class="body-text">Project: <em>"Why do some menu items stay on a restaurant's menu forever, while others disappear after a few months?"</em> Cold-call discussion. Prompts: Why has the cheeseburger been on the menu since the 1960s? What happens to a salad almost no one orders? If a restaurant LOSES money on every order of a popular item, do they keep it?</p>
+      <div class="tip">
+        <strong>Land the Bridge</strong>
+        "Restaurants don't just cook — they analyze data. Today you ARE that analyst. You'll look at one restaurant's actual menu and use the data to decide what stays, what goes, what costs more, and what to add."
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="module-head">
+        <div class="module-num">2</div>
+        <div class="module-titles">
+          <div class="module-title">Mini-Lesson · Cost, Price, Profit</div>
+          <div class="module-subtitle">10 – 15 minutes</div>
+        </div>
+      </div>
+      <p class="body-text">Walk through each column in the Menu Data tab: <strong>Cost to Make</strong> (what the restaurant spends), <strong>Menu Price</strong> (what the customer pays), <strong>Popularity Rating</strong> (avg on a 1–5 scale), <strong>Prep Time</strong> (minutes per plate). Then model the Profit formula live — <code>=G2-F2</code> in J2, double-click the fill handle.</p>
+    </div>
+
+    <div class="module">
+      <div class="module-head">
+        <div class="module-num">3</div>
+        <div class="module-titles">
+          <div class="module-title">Guided Practice · Worksheet Parts 1–2</div>
+          <div class="module-subtitle">15 – 20 minutes</div>
+        </div>
+      </div>
+      <p class="body-text">Students work through Parts 1–2 on their own. Look for: definitions in their own words; a working Profit column (J2:J17) with values between $1.50 and $10.50; identification of most/least profitable items.</p>
+    </div>
+
+    <div class="module">
+      <div class="module-head">
+        <div class="module-num">4</div>
+        <div class="module-titles">
+          <div class="module-title">Application · Menu Engineering · Parts 3–4</div>
+          <div class="module-subtitle">20 – 25 minutes</div>
+        </div>
+      </div>
+      <p class="body-text">Project the matrix. Students classify each of the 16 items into one of the four quadrants based on profit + popularity. They justify each placement.</p>
+    </div>
+
+    <div class="module">
+      <div class="module-head">
+        <div class="module-num">5</div>
+        <div class="module-titles">
+          <div class="module-title">Real-World Challenge · Fix This Restaurant · Part 5</div>
+          <div class="module-subtitle">20 – 25 minutes</div>
+        </div>
+      </div>
+      <p class="body-text">Students play consultant. They must: <strong>Remove 2 items</strong> (justify each with data); <strong>Change the price of 2 items</strong> (justify with profit + popularity); <strong>Add 1 NEW item</strong> (defend using the menu engineering matrix).</p>
+      <div class="tip">
+        <strong>Strong-Evidence Look-Fors</strong>
+        Did they cite specific numbers? ("I removed Iced Tea because profit is only $1.94 and popularity is the lowest at 4.0.") Are price changes proportional ($0.20 on a Plowhorse, not $5)? Does the new item fill a gap? (No vegetarian appetizer? No healthy entree under 500 cal? No premium dessert?)
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="module-head">
+        <div class="module-num">6</div>
+        <div class="module-titles">
+          <div class="module-title">Exit Ticket · Reflection · Part 6</div>
+          <div class="module-subtitle">5 minutes</div>
+        </div>
+      </div>
+      <p class="body-text">One sentence: a takeaway about data-driven decisions. Strong reflections sound like: <em>"Popular doesn't always mean profitable. Soda is everywhere but barely earns anything."</em> Or: <em>"You can't just remove cheap items — sometimes they're what brings people in."</em></p>
+    </div>
+  </div>
+
+  <!-- ════ ANSWER KEY ════ -->
+  <div class="section">
+    <h2 class="section-title">✅ Answer Key · Profit Values</h2>
+    <div class="answer-key">
+      <table class="answer-key-table">
+        <thead>
+          <tr><th>#</th><th>Category</th><th>Item</th><th>Cost</th><th>Price</th><th>Profit</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td class="cat">Appetizer</td><td class="item">Garlic Bread</td><td class="money">$0.75</td><td class="money">$4.99</td><td class="profit">$4.24</td></tr>
+          <tr><td>2</td><td class="cat">Appetizer</td><td class="item">Mozzarella Sticks</td><td class="money">$1.20</td><td class="money">$6.99</td><td class="profit">$5.79</td></tr>
+          <tr><td>3</td><td class="cat">Appetizer</td><td class="item">House Salad</td><td class="money">$1.10</td><td class="money">$5.49</td><td class="profit">$4.39</td></tr>
+          <tr><td>4</td><td class="cat">Entree</td><td class="item">Grilled Chicken Plate</td><td class="money">$3.25</td><td class="money">$12.99</td><td class="profit">$9.74</td></tr>
+          <tr><td>5</td><td class="cat">Entree</td><td class="item">Cheeseburger</td><td class="money">$2.85</td><td class="money">$11.49</td><td class="profit">$8.64</td></tr>
+          <tr><td>6</td><td class="cat">Entree</td><td class="item">Spaghetti Marinara</td><td class="money">$1.95</td><td class="money">$9.99</td><td class="profit">$8.04</td></tr>
+          <tr class="highlight"><td>7</td><td class="cat">Entree</td><td class="item">Chicken Alfredo ⭐</td><td class="money">$3.10</td><td class="money">$13.49</td><td class="profit">$10.39</td></tr>
+          <tr><td>8</td><td class="cat">Entree</td><td class="item">Veggie Stir Fry</td><td class="money">$2.40</td><td class="money">$10.99</td><td class="profit">$8.59</td></tr>
+          <tr><td>9</td><td class="cat">Entree</td><td class="item">Fish Tacos</td><td class="money">$2.75</td><td class="money">$12.49</td><td class="profit">$9.74</td></tr>
+          <tr><td>10</td><td class="cat">Dessert</td><td class="item">Chocolate Cake</td><td class="money">$1.50</td><td class="money">$6.49</td><td class="profit">$4.99</td></tr>
+          <tr><td>11</td><td class="cat">Dessert</td><td class="item">Ice Cream Sundae</td><td class="money">$1.25</td><td class="money">$5.99</td><td class="profit">$4.74</td></tr>
+          <tr><td>12</td><td class="cat">Dessert</td><td class="item">Apple Pie</td><td class="money">$1.40</td><td class="money">$5.49</td><td class="profit">$4.09</td></tr>
+          <tr><td>13</td><td class="cat">Beverage</td><td class="item">Soda</td><td class="money">$0.40</td><td class="money">$2.49</td><td class="profit">$2.09</td></tr>
+          <tr><td>14</td><td class="cat">Beverage</td><td class="item">Lemonade</td><td class="money">$0.60</td><td class="money">$2.99</td><td class="profit">$2.39</td></tr>
+          <tr><td>15</td><td class="cat">Beverage</td><td class="item">Iced Tea</td><td class="money">$0.35</td><td class="money">$2.29</td><td class="profit">$1.94</td></tr>
+          <tr class="lowlight"><td>16</td><td class="cat">Beverage</td><td class="item">Coffee ❌</td><td class="money">$0.30</td><td class="money">$2.19</td><td class="profit">$1.89</td></tr>
+        </tbody>
+      </table>
+      <div class="highlights">
+        <strong>Most profitable:</strong> Chicken Alfredo at $10.39 · <strong>Least profitable:</strong> Coffee at $1.89 (Iced Tea close at $1.94) · <strong>Most popular:</strong> Chocolate Cake (4.9) · <strong>Longest prep time:</strong> Grilled Chicken Plate (18 min)
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ DIFFERENTIATION + AI ════ -->
+  <div class="section">
+    <h2 class="section-title">🟢🔵 Differentiation, Extensions &amp; AI Integration</h2>
+    <div class="two-col">
+      <div class="col-box support">
+        <span class="label">🟢 Support</span>
+        <ul>
+          <li>Pre-fill the Profit formula in cell J2 before sharing.</li>
+          <li>Highlight columns to use (yellow on Cost, Price, Popularity).</li>
+          <li>Sentence frame: <em>"I removed ___ because the profit is ___ and the popularity is ___."</em></li>
+        </ul>
+      </div>
+      <div class="col-box extension">
+        <span class="label">🔵 Extension</span>
+        <ul>
+          <li>Calculate profit margin (%) — <code>=J2/G2</code>.</li>
+          <li>Build bar charts of profit by item, then by category.</li>
+          <li>Use <code>=AVERAGEIF()</code> to compare categories.</li>
+          <li>Design "Healthy Menu Section" (under 500 cal) and "High Energy Athlete Meal" (700+ cal).</li>
+          <li>Scatter plot: prep time vs popularity.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-box ai" style="margin-top:14px;">
+      <span class="label">🤖 AI Integration · Aligned with VBCPS Rollout</span>
+      <ul>
+        <li>Have students use AI to suggest a new menu item that fits a <strong>Star</strong> profile (high profit + high popularity).</li>
+        <li>Use AI to brainstorm ways to revive a <strong>Dog</strong> item — a name change, recipe tweak, or better description.</li>
+        <li><em>Critical rule:</em> Students must verify any AI suggestion against the actual data before accepting it. Use the AI for ideas, the data for evidence.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ════ EXTENSION ════ -->
+  <div class="section">
+    <h2 class="section-title">🍽️ Optional Team Extension</h2>
+    <div class="extension-box">
+      <span class="label">📂 Comparing Restaurants Worksheet · 45 minutes · 3-Student Teams</span>
+      <div class="title">Three Restaurants, One Dataset</div>
+      <div class="desc">Each student owns one of three restaurants — 🍔 Fast Food, 🍝 Casual Dining, 🌱 Healthy Café — and types their 5-row dataset into a shared Google Sheet. The team picks a comparison (price, calories, or popularity), builds a chart in Sheets, copies it into a 3-slide deck (Title · Chart · Findings), and presents 2–3 data-backed conclusions. A natural follow-up if your students finish the main lesson early or as a separate Day 2.</div>
+    </div>
+  </div>
+
+  <!-- ════ FOOTER ════ -->
+  <div class="doc-footer">
+    <span class="mark">a Word &amp; Wonder space</span>
+    Culinary Data Lab · Lesson Hub · Smile Bags Spring 2026<br>
+    Curated by Laura Howell, ITS Coach · © 2025–2026
+  </div>
+
+</div>
+
+</body>
+</html>
