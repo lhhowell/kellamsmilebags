@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Culinary Data Lab · Menu Engineering Kiosk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cinzel:wght@500;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=Special+Elite&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #3b1260;
+  --bg-deep:   #2a0c47;
+  --bg-paper:  #fdf8ec;
+  --cream:     #f8f4fc;
+  --cream-dim: #d9cde6;
+  --cream-soft: rgba(248, 244, 252, 0.7);
+  --ink:       #2a1a45;
+  --ink-soft:  #4a3866;
+  --ink-faint: rgba(42,26,69,.55);
+  --ink-trace: rgba(42,26,69,.18);
+  --sage:      #88b074;
+  --sage-deep: #4e7f47;
+  --sage-glow: #c9e1bb;
+  --peach:     #ed9f4a;
+  --peach-dim: #c47e36;
+  --peach-ink: #b85a3e;
+  --gold:      #a88830;
+  --gold-bright: #c9a84c;
+  --rule:      rgba(42,26,69,.18);
+  --border:    rgba(248, 244, 252, 0.18);
+  --star:      #c9a84c;
+  --puzzle:    #b85a3e;
+  --plowhorse: #4e7f47;
+  --dog:       #6b5b8a;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  background-image:
+    radial-gradient(circle at 15% 8%, rgba(136, 176, 116, 0.10) 0%, transparent 45%),
+    radial-gradient(circle at 85% 92%, rgba(237, 159, 74, 0.08) 0%, transparent 45%);
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 60px;
+}
+
+/* ═══ HEADER ═══ */
+.hub-header { background: var(--bg-deep); border-bottom: 1px solid var(--border); padding: 22px 32px; }
+.hub-header-row { max-width: 1180px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.hub-brand { display: flex; flex-direction: column; line-height: 1.05; }
+.hub-brand-mark { font-family: 'Allura', cursive; font-size: 22px; color: var(--peach); }
+.hub-brand-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600; color: var(--cream); margin-top: -2px; letter-spacing: 0.5px; }
+.hub-brand-subtitle { font-family: 'Cormorant Garamond', serif; font-size: 14px; font-style: italic; color: var(--cream-soft); margin-top: 2px; }
+.back-link { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cream-dim); text-decoration: none; transition: color 0.18s ease; }
+.back-link:hover { color: var(--peach); }
+.back-link::before { content: '← '; }
+
+/* ═══ INTRO ═══ */
+.stage { max-width: 1180px; margin: 0 auto; padding: 32px 32px 0; }
+.intro { text-align: center; margin-bottom: 28px; }
+.intro-eyebrow { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--peach); margin-bottom: 10px; }
+.intro-title { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 500; font-style: italic; color: var(--cream); line-height: 1.15; margin-bottom: 14px; }
+.intro-body { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-style: italic; color: var(--cream); line-height: 1.55; max-width: 720px; margin: 0 auto 18px; }
+.ai-mark { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: rgba(136,176,116,0.12); border: 1px dashed rgba(136,176,116,0.4); border-radius: 20px; font-family: 'Inter', sans-serif; font-size: 11px; color: var(--sage-glow); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 8px; }
+
+/* ═══ TABS ═══ */
+.tabs { max-width: 1180px; margin: 0 auto 24px; padding: 0 32px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.tab { background: rgba(248,244,252,0.05); border: 1px solid rgba(248,244,252,0.15); color: var(--cream-soft); padding: 14px 22px; border-radius: 8px; cursor: pointer; transition: all 0.18s ease; font-family: 'Inter', sans-serif; text-align: center; min-width: 200px; }
+.tab:hover { background: rgba(248,244,252,0.10); border-color: rgba(248,244,252,0.30); }
+.tab.active { background: var(--sage-deep); border-color: var(--sage-deep); color: var(--cream); }
+.tab-title { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 600; display: block; line-height: 1.1; }
+.tab-sub { font-family: 'Inter', sans-serif; font-size: 11px; font-style: italic; letter-spacing: 0.05em; margin-top: 3px; opacity: 0.85; display: block; }
+
+/* ═══ MODE PANELS ═══ */
+.mode { display: none; max-width: 1180px; margin: 0 auto; padding: 0 32px; animation: fadeIn 0.3s ease; }
+.mode.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ═══ MENU CARDS ═══ */
+.menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px; }
+.menu-card { background: var(--bg-paper); color: var(--ink); border-radius: 12px; padding: 16px; position: relative; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.18); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.menu-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,0.30); }
+.menu-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--peach) 0%, var(--gold) 100%); }
+.menu-card.star::before { background: var(--star); }
+.menu-card.puzzle::before { background: var(--puzzle); }
+.menu-card.plowhorse::before { background: var(--plowhorse); }
+.menu-card.dog::before { background: var(--dog); }
+
+.menu-card-emoji { font-size: 32px; display: block; text-align: center; margin-bottom: 4px; }
+.menu-card-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; color: var(--ink); text-align: center; line-height: 1.15; margin-bottom: 4px; }
+.menu-card-cat { font-family: 'Special Elite', monospace; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); text-align: center; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px dashed var(--ink-trace); }
+.menu-card-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.stat-cell { display: flex; flex-direction: column; align-items: center; padding: 4px 2px; }
+.stat-label { font-family: 'Special Elite', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); }
+.stat-value { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 14px; color: var(--peach-ink); }
+.stat-value.profit { color: var(--sage-deep); }
+.stat-value.pop { color: var(--peach); }
+
+.menu-card-badge {
+  display: none;
+  margin-top: 10px;
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.menu-card.show-badge .menu-card-badge { display: block; }
+.menu-card.star .menu-card-badge      { background: var(--star); color: var(--ink); }
+.menu-card.puzzle .menu-card-badge    { background: var(--puzzle); color: var(--cream); }
+.menu-card.plowhorse .menu-card-badge { background: var(--plowhorse); color: var(--cream); }
+.menu-card.dog .menu-card-badge       { background: var(--dog); color: var(--cream); }
+
+.menu-card-reason {
+  display: none;
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: rgba(168,136,48,0.08);
+  border-left: 3px solid var(--gold);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11.5px;
+  font-style: italic;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+.menu-card.show-reason .menu-card-reason { display: block; }
+
+/* ═══ CONTROLS ═══ */
+.controls { background: rgba(248,244,252,0.05); border: 1px solid rgba(248,244,252,0.12); border-radius: 12px; padding: 22px 24px; margin-bottom: 24px; }
+.controls-label { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--peach); margin-bottom: 14px; display: block; }
+.sort-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.sort-btn { background: rgba(248,244,252,0.04); border: 1px solid rgba(248,244,252,0.18); color: var(--cream); padding: 14px 16px; border-radius: 8px; cursor: pointer; transition: all 0.16s ease; text-align: left; font-family: 'Inter', sans-serif; }
+.sort-btn:hover { background: rgba(237,159,74,0.15); border-color: var(--peach); transform: translateY(-1px); }
+.sort-btn.active { background: var(--peach); color: var(--ink); border-color: var(--peach); }
+.sort-btn-title { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 600; display: block; line-height: 1.1; }
+.sort-btn-sub { font-family: 'Inter', sans-serif; font-size: 11px; font-style: italic; opacity: 0.78; margin-top: 3px; display: block; }
+
+/* ═══ INSIGHT SENTENCE ═══ */
+.sentence-output { background: var(--bg-paper); color: var(--ink); border-radius: 12px; padding: 24px 28px; margin-bottom: 28px; position: relative; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.25); display: none; }
+.sentence-output.show { display: block; animation: fadeIn 0.4s ease; }
+.sentence-output::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--sage-deep) 0%, var(--peach) 100%); }
+.sentence-eyebrow { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--sage-deep); font-weight: 600; margin-bottom: 12px; }
+.sentence-main { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 500; line-height: 1.35; color: var(--ink); }
+.sentence-main .highlight { color: var(--peach-ink); font-weight: 700; font-style: italic; }
+.sentence-main .number { font-family: 'JetBrains Mono', monospace; color: var(--sage-deep); font-weight: 700; font-size: 22px; }
+
+/* ═══ MATRIX (Mode 3) ═══ */
+.matrix-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.quadrant {
+  padding: 22px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+}
+.quadrant:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,0.30); }
+.quadrant.active { border-color: var(--cream); box-shadow: 0 10px 30px rgba(0,0,0,0.40); }
+.quadrant.star      { background: linear-gradient(135deg, rgba(201,168,76,0.30) 0%, rgba(201,168,76,0.10) 100%); }
+.quadrant.puzzle    { background: linear-gradient(135deg, rgba(184,90,62,0.30) 0%, rgba(184,90,62,0.10) 100%); }
+.quadrant.plowhorse { background: linear-gradient(135deg, rgba(78,127,71,0.30) 0%, rgba(78,127,71,0.10) 100%); }
+.quadrant.dog       { background: linear-gradient(135deg, rgba(107,91,138,0.30) 0%, rgba(107,91,138,0.10) 100%); }
+.quadrant-name { font-family: 'Cinzel', serif; font-weight: 700; font-size: 22px; letter-spacing: 0.06em; margin-bottom: 4px; }
+.quadrant.star .quadrant-name      { color: var(--star); }
+.quadrant.puzzle .quadrant-name    { color: var(--peach); }
+.quadrant.plowhorse .quadrant-name { color: var(--sage-glow); }
+.quadrant.dog .quadrant-name       { color: #b8a8d0; }
+.quadrant-cond { font-family: 'Special Elite', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cream-soft); margin-bottom: 8px; }
+.quadrant-strat { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; color: var(--cream); line-height: 1.4; }
+.quadrant-count {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--cream);
+  background: rgba(0,0,0,0.30);
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.show-all-btn {
+  display: block;
+  margin: 0 auto 20px;
+  background: rgba(248,244,252,0.08);
+  border: 1px solid rgba(248,244,252,0.20);
+  color: var(--cream);
+  padding: 10px 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.show-all-btn:hover { background: rgba(248,244,252,0.18); }
+
+/* ═══ FOOTER ═══ */
+.footer-note { max-width: 1180px; margin: 36px auto 0; padding: 24px 32px; border-top: 1px solid var(--border); text-align: center; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-dim); }
+.footer-note .mark { font-family: 'Allura', cursive; font-size: 20px; color: var(--peach); display: block; text-transform: none; letter-spacing: 0; margin-bottom: 10px; }
+.footer-note .tagline { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; letter-spacing: 0.04em; text-transform: none; color: var(--cream-soft); margin-top: 4px; }
+
+@media (max-width: 720px) {
+  .intro-title { font-size: 26px; }
+  .tab { min-width: 0; flex: 1; padding: 10px 14px; }
+  .tab-title { font-size: 14px; }
+  .matrix-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="hub-header">
+    <div class="hub-header-row">
+      <div class="hub-brand">
+        <span class="hub-brand-mark">a Word &amp; Wonder space</span>
+        <span class="hub-brand-title">🍽️ Culinary Data Lab</span>
+        <span class="hub-brand-subtitle">Restaurant Menu Analysis · Menu Engineering</span>
+      </div>
+      <a href="./" class="back-link">Back to Math Hub</a>
+    </div>
+  </header>
+
+  <!-- ═══ INTRO ═══ -->
+  <main class="stage">
+    <section class="intro">
+      <div class="intro-eyebrow">Culinary Arts · Math Integration · Smile Bags Spring 2026</div>
+      <h1 class="intro-title">How do restaurants use data to decide what stays on the menu?</h1>
+      <p class="intro-body">
+        Step into the role of restaurant consultant. Explore a 16-item dataset, watch profit get calculated in real time, and discover which items are Stars, Puzzles, Plowhorses, or Dogs — and why. Data, not taste, drives every decision.
+      </p>
+      <div class="ai-mark">
+        <span>🤖</span> AI-Powered Data Insights · Menu Engineering Reveal
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══ TABS ═══ -->
+  <nav class="tabs">
+    <button class="tab active" onclick="switchMode('menu')">
+      <span class="tab-title">📋 The Menu</span>
+      <span class="tab-sub">All 16 items</span>
+    </button>
+    <button class="tab" onclick="switchMode('numbers')">
+      <span class="tab-title">📊 The Numbers</span>
+      <span class="tab-sub">Sort &amp; analyze</span>
+    </button>
+    <button class="tab" onclick="switchMode('engineering')">
+      <span class="tab-title">🎯 Menu Engineering</span>
+      <span class="tab-sub">Classify each item</span>
+    </button>
+  </nav>
+
+  <!-- ═══ MODE 1: THE MENU ═══ -->
+  <section id="mode-menu" class="mode active">
+    <div class="menu-grid" id="menu-display"></div>
+  </section>
+
+  <!-- ═══ MODE 2: THE NUMBERS ═══ -->
+  <section id="mode-numbers" class="mode">
+    <div class="controls">
+      <label class="controls-label">Sort the data · Discover the patterns</label>
+      <div class="sort-buttons">
+        <button class="sort-btn" data-sort="most-profit">
+          <span class="sort-btn-title">💰 Most Profitable</span>
+          <span class="sort-btn-sub">Profit = Price − Cost</span>
+        </button>
+        <button class="sort-btn" data-sort="least-profit">
+          <span class="sort-btn-title">📉 Least Profitable</span>
+          <span class="sort-btn-sub">Bottom of the menu</span>
+        </button>
+        <button class="sort-btn" data-sort="most-popular">
+          <span class="sort-btn-title">⭐ Most Popular</span>
+          <span class="sort-btn-sub">Highest customer rating</span>
+        </button>
+        <button class="sort-btn" data-sort="longest-prep">
+          <span class="sort-btn-title">⏱️ Longest Prep Time</span>
+          <span class="sort-btn-sub">Kitchen bottlenecks</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="sentence-output" id="numbers-output">
+      <div class="sentence-eyebrow">🤖 AI-generated insight from the data</div>
+      <div class="sentence-main" id="numbers-sentence"></div>
+    </div>
+
+    <div class="menu-grid" id="numbers-display"></div>
+  </section>
+
+  <!-- ═══ MODE 3: MENU ENGINEERING ═══ -->
+  <section id="mode-engineering" class="mode">
+
+    <div class="controls">
+      <label class="controls-label">Click a quadrant to see which items belong there — and why</label>
+      <div class="matrix-grid" id="matrix-grid">
+        <div class="quadrant star" data-q="star">
+          <span class="quadrant-count" id="count-star">5</span>
+          <div class="quadrant-name">⭐ STAR</div>
+          <div class="quadrant-cond">High Profit + High Popularity</div>
+          <div class="quadrant-strat">Keep and feature. These are the menu anchors.</div>
+        </div>
+        <div class="quadrant puzzle" data-q="puzzle">
+          <span class="quadrant-count" id="count-puzzle">5</span>
+          <div class="quadrant-name">💰 PUZZLE</div>
+          <div class="quadrant-cond">High Profit + Low Popularity</div>
+          <div class="quadrant-strat">Rename, reposition, market. Hidden gems.</div>
+        </div>
+        <div class="quadrant plowhorse" data-q="plowhorse">
+          <span class="quadrant-count" id="count-plowhorse">4</span>
+          <div class="quadrant-name">❤️ PLOWHORSE</div>
+          <div class="quadrant-cond">Low Profit + High Popularity</div>
+          <div class="quadrant-strat">Raise price slightly. Pair with high-margin sides.</div>
+        </div>
+        <div class="quadrant dog" data-q="dog">
+          <span class="quadrant-count" id="count-dog">2</span>
+          <div class="quadrant-name">❌ DOG</div>
+          <div class="quadrant-cond">Low Profit + Low Popularity</div>
+          <div class="quadrant-strat">Strong removal candidates.</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="show-all-btn" onclick="filterQuadrant(null)">Show All Items</button>
+
+    <div class="menu-grid" id="engineering-display"></div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer-note">
+    <span class="mark">a Word &amp; Wonder space</span>
+    Culinary Data Lab · Smile Bags · Spring 2026<br>
+    Created by Laura Howell · © 2025–2026
+    <div class="tagline">"Restaurants don't just cook — they analyze data."</div>
+  </footer>
+
+<script>
+// ═══ DATA ═══
+const menu = [
+  { id: 1,  name: 'Garlic Bread',         emoji: '🥖', cat: 'Appetizer', cost: 0.75, price: 4.99, calories: 220, prep: 8,  pop: 4.5,
+    q: 'plowhorse', reason: 'Popular and reliable but low absolute profit ($4.24). Pair with high-margin entrees for a bundle play.' },
+  { id: 2,  name: 'Mozzarella Sticks',    emoji: '🧀', cat: 'Appetizer', cost: 1.20, price: 6.99, calories: 450, prep: 10, pop: 4.7,
+    q: 'star',      reason: 'Strong profit ($5.79) AND high popularity (4.7). A reliable Star — keep and feature.' },
+  { id: 3,  name: 'House Salad',          emoji: '🥗', cat: 'Appetizer', cost: 1.10, price: 5.49, calories: 180, prep: 6,  pop: 4.2,
+    q: 'puzzle',    reason: 'Solid profit ($4.39) but order count lags. A Puzzle — try a new name, premium toppings, or a wellness story.' },
+  { id: 4,  name: 'Grilled Chicken Plate',emoji: '🍗', cat: 'Entree',    cost: 3.25, price: 12.99, calories: 550, prep: 18, pop: 4.6,
+    q: 'star',      reason: 'High profit ($9.74) and high popularity (4.6). A signature entree — feature on the menu and in marketing.' },
+  { id: 5,  name: 'Cheeseburger',         emoji: '🍔', cat: 'Entree',    cost: 2.85, price: 11.49, calories: 780, prep: 15, pop: 4.8,
+    q: 'star',      reason: 'Profit champion at $8.64 AND top-3 popularity (4.8). Menu anchor since the 1960s for a reason.' },
+  { id: 6,  name: 'Spaghetti Marinara',   emoji: '🍝', cat: 'Entree',    cost: 1.95, price: 9.99, calories: 620, prep: 14, pop: 4.3,
+    q: 'puzzle',    reason: 'Strong profit ($8.04) but lower popularity (4.3). A Puzzle — better photography and menu placement could turn this into a Star.' },
+  { id: 7,  name: 'Chicken Alfredo',      emoji: '🍝', cat: 'Entree',    cost: 3.10, price: 13.49, calories: 850, prep: 16, pop: 4.7,
+    q: 'star',      reason: 'Highest profit on the menu ($10.39) AND high popularity (4.7). The model item — this is what every Star looks like.' },
+  { id: 8,  name: 'Veggie Stir Fry',      emoji: '🥬', cat: 'Entree',    cost: 2.40, price: 10.99, calories: 500, prep: 12, pop: 4.1,
+    q: 'puzzle',    reason: 'Strong profit ($8.59) but lowest entree popularity (4.1). A Puzzle — rename, market the wellness angle, or remove if it does not improve.' },
+  { id: 9,  name: 'Fish Tacos',           emoji: '🌮', cat: 'Entree',    cost: 2.75, price: 12.49, calories: 540, prep: 13, pop: 4.4,
+    q: 'puzzle',    reason: 'High profit ($9.74) but only mid popularity (4.4). A Puzzle with star potential — invest in marketing.' },
+  { id: 10, name: 'Chocolate Cake',       emoji: '🍰', cat: 'Dessert',   cost: 1.50, price: 6.49, calories: 600, prep: 5,  pop: 4.9,
+    q: 'star',      reason: 'Decent profit ($4.99) AND highest popularity on the menu (4.9). The crowd favorite — a true Star.' },
+  { id: 11, name: 'Ice Cream Sundae',     emoji: '🍨', cat: 'Dessert',   cost: 1.25, price: 5.99, calories: 450, prep: 4,  pop: 4.6,
+    q: 'plowhorse', reason: 'Low absolute profit ($4.74) but high popularity (4.6). Consider a $0.50 price increase — Plowhorses can absorb small bumps.' },
+  { id: 12, name: 'Apple Pie',            emoji: '🥧', cat: 'Dessert',   cost: 1.40, price: 5.49, calories: 500, prep: 6,  pop: 4.5,
+    q: 'plowhorse', reason: 'Modest profit ($4.09), stable popularity (4.5). Could be a Star with seasonal positioning (fall menu, holiday push).' },
+  { id: 13, name: 'Soda',                 emoji: '🥤', cat: 'Beverage',  cost: 0.40, price: 2.49, calories: 150, prep: 1,  pop: 4.2,
+    q: 'plowhorse', reason: 'Lowest profit drink ($2.09) but consistently popular (4.2). A classic Plowhorse — bundle with entrees, never advertise alone.' },
+  { id: 14, name: 'Lemonade',             emoji: '🍋', cat: 'Beverage',  cost: 0.60, price: 2.99, calories: 180, prep: 2,  pop: 4.4,
+    q: 'puzzle',    reason: 'Low profit ($2.39) and mid popularity (4.4). A specialty drink Puzzle — market the "fresh-squeezed" story to lift orders.' },
+  { id: 15, name: 'Iced Tea',             emoji: '🧊', cat: 'Beverage',  cost: 0.35, price: 2.29, calories: 0,   prep: 2,  pop: 4.0,
+    q: 'dog',       reason: 'Lowest profit ($1.94) AND lowest popularity (4.0). A Dog — strongest removal candidate on the menu.' },
+  { id: 16, name: 'Coffee',               emoji: '☕', cat: 'Beverage',  cost: 0.30, price: 2.19, calories: 5,   prep: 3,  pop: 4.3,
+    q: 'dog',       reason: 'Lowest profit on the menu ($1.89). Keep only if it brings repeat traffic in the morning — otherwise remove.' },
+];
+
+// Add profit to each
+menu.forEach(item => item.profit = +(item.price - item.cost).toFixed(2));
+
+const quadrantNames = {
+  star:      { name: '⭐ STAR',       desc: 'High Profit + High Popularity' },
+  puzzle:    { name: '💰 PUZZLE',     desc: 'High Profit + Low Popularity' },
+  plowhorse: { name: '❤️ PLOWHORSE',  desc: 'Low Profit + High Popularity' },
+  dog:       { name: '❌ DOG',        desc: 'Low Profit + Low Popularity' },
+};
+
+// ═══ MODE SWITCHING ═══
+function switchMode(mode) {
+  document.querySelectorAll('.mode').forEach(m => m.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('mode-' + mode).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => {
+    if (t.getAttribute('onclick').includes("'" + mode + "'")) t.classList.add('active');
+  });
+}
+
+// ═══ RENDER MENU CARD ═══
+function renderCard(item, opts = {}) {
+  const showBadge  = opts.showBadge  ? 'show-badge'  : '';
+  const showReason = opts.showReason ? 'show-reason' : '';
+  return `
+    <div class="menu-card ${item.q} ${showBadge} ${showReason}" data-id="${item.id}">
+      <span class="menu-card-emoji">${item.emoji}</span>
+      <div class="menu-card-name">${item.name}</div>
+      <div class="menu-card-cat">${item.cat}</div>
+      <div class="menu-card-stats">
+        <div class="stat-cell"><span class="stat-label">Cost</span><span class="stat-value">$${item.cost.toFixed(2)}</span></div>
+        <div class="stat-cell"><span class="stat-label">Price</span><span class="stat-value">$${item.price.toFixed(2)}</span></div>
+        <div class="stat-cell"><span class="stat-label">Profit</span><span class="stat-value profit">$${item.profit.toFixed(2)}</span></div>
+        <div class="stat-cell"><span class="stat-label">Pop</span><span class="stat-value pop">${item.pop}</span></div>
+        <div class="stat-cell"><span class="stat-label">Prep</span><span class="stat-value" style="color:var(--gold)">${item.prep}m</span></div>
+        <div class="stat-cell"><span class="stat-label">Cal</span><span class="stat-value" style="color:var(--ink-soft)">${item.calories}</span></div>
+      </div>
+      <div class="menu-card-badge">${quadrantNames[item.q].name}</div>
+      <div class="menu-card-reason">${item.reason}</div>
+    </div>
+  `;
+}
+
+function renderGrid(containerId, items, opts = {}) {
+  document.getElementById(containerId).innerHTML = items.map(i => renderCard(i, opts)).join('');
+}
+
+// Initial renders
+renderGrid('menu-display', menu);
+renderGrid('numbers-display', menu);
+renderGrid('engineering-display', menu, { showBadge: true, showReason: true });
+
+// ═══ MODE 2 · SORT + GENERATE SENTENCE ═══
+document.querySelectorAll('.sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const sort = btn.dataset.sort;
+    let sorted = [...menu];
+
+    if (sort === 'most-profit')   sorted.sort((a,b) => b.profit - a.profit);
+    if (sort === 'least-profit')  sorted.sort((a,b) => a.profit - b.profit);
+    if (sort === 'most-popular')  sorted.sort((a,b) => b.pop - a.pop);
+    if (sort === 'longest-prep')  sorted.sort((a,b) => b.prep - a.prep);
+
+    renderGrid('numbers-display', sorted);
+
+    const top = sorted[0];
+    let sentence = '';
+    if (sort === 'most-profit') {
+      sentence = `The most profitable item is <span class="highlight">${top.name}</span> at <span class="number">$${top.profit.toFixed(2)}</span> per plate — a textbook ${quadrantNames[top.q].name}.`;
+    } else if (sort === 'least-profit') {
+      sentence = `The least profitable item is <span class="highlight">${top.name}</span> at just <span class="number">$${top.profit.toFixed(2)}</span> per serving — a candidate for the ${quadrantNames[top.q].name} quadrant.`;
+    } else if (sort === 'most-popular') {
+      sentence = `The most popular item is <span class="highlight">${top.name}</span> with a <span class="number">${top.pop}/5</span> rating — earning <span class="number">$${top.profit.toFixed(2)}</span> profit per plate.`;
+    } else if (sort === 'longest-prep') {
+      sentence = `The kitchen bottleneck is <span class="highlight">${top.name}</span> at <span class="number">${top.prep} minutes</span> per plate — kitchen flow planning matters here.`;
+    }
+
+    document.getElementById('numbers-sentence').innerHTML = sentence;
+    document.getElementById('numbers-output').classList.add('show');
+  });
+});
+
+// ═══ MODE 3 · QUADRANT FILTER ═══
+function filterQuadrant(q) {
+  document.querySelectorAll('.quadrant').forEach(el => el.classList.remove('active'));
+  if (q === null) {
+    renderGrid('engineering-display', menu, { showBadge: true, showReason: true });
+    return;
+  }
+  document.querySelector(`.quadrant[data-q="${q}"]`).classList.add('active');
+  const filtered = menu.filter(i => i.q === q);
+  renderGrid('engineering-display', filtered, { showBadge: true, showReason: true });
+}
+
+document.querySelectorAll('.quadrant').forEach(el => {
+  el.addEventListener('click', () => filterQuadrant(el.dataset.q));
+});
+</script>
+
+</body>
+</html>
