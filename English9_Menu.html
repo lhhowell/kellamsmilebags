@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OneWord Literary Lens &#8212; English 9 &#8212; Smile Bags</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Arial,sans-serif;background:#F7F5F0;color:#1A1A2E;overflow-x:hidden;line-height:1.6}
+  a{color:inherit}
+
+  /* ── Top nav strip ── */
+  .topnav{background:#1A1A2E;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .topnav-brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-family:Georgia,serif;font-size:18px;font-weight:700}
+  .topnav-brand-mark{color:#c9a84c}
+  .topnav-meta{font-family:'Courier New',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+
+  /* ── Hero ── */
+  .hero{position:relative;overflow:visible;background:#1A1A2E;background-image:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(181,68,110,.32) 0%,transparent 70%),radial-gradient(ellipse 40% 60% at 10% 80%,rgba(107,63,158,.25) 0%,transparent 60%),radial-gradient(ellipse 30% 40% at 50% 10%,rgba(201,168,76,.18) 0%,transparent 60%);padding:64px 40px 56px;text-align:center;animation:fadeUp .6s ease both}
+  .hero-tag{display:inline-block;font-family:'Courier New',monospace;font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:#fff;background:rgba(255,255,255,.13);padding:6px 18px;border-radius:20px;border:1px solid rgba(255,255,255,.28);margin-bottom:24px}
+  .hero-teacher{font-family:'Courier New',monospace;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#F5C28E;margin-bottom:24px}
+  .hero-teacher a{color:#F5C28E;text-decoration:none;border-bottom:1px dotted rgba(245,194,142,.4);transition:border-color .2s}
+  .hero-teacher a:hover{border-bottom-color:#F5C28E}
+  .hero h1{font-family:Georgia,serif;font-size:clamp(48px,7vw,88px);font-weight:900;line-height:1.05;color:#fff;margin-bottom:18px}
+  .hero h1 em{font-style:italic;color:#F5C28E;font-weight:400}
+  .hero-sub{font-size:17px;font-weight:300;color:rgba(255,255,255,.7);max-width:620px;margin:0 auto 44px;line-height:1.75}
+  .hero-sub strong{color:rgba(255,255,255,.95);font-weight:600}
+  .hero-meta{display:flex;justify-content:center;border-top:1px solid rgba(255,255,255,.12);padding-top:32px;max-width:880px;margin:0 auto}
+  .hero-meta-item{flex:1;display:flex;flex-direction:column;gap:6px;padding:0 18px;border-right:1px solid rgba(255,255,255,.1)}
+  .hero-meta-item:last-child{border-right:none}
+  .hero-meta-label{font-family:'Courier New',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+  .hero-meta-value{font-size:15px;font-weight:600;color:rgba(255,255,255,.92);line-height:1.3}
+
+  /* ── Mission band ── */
+  .mission{background:#B5446E;padding:28px 60px;display:flex;align-items:center;gap:20px;animation:fadeUp .6s .1s ease both}
+  .mission-icon{font-size:28px;flex-shrink:0}
+  .mission p{font-size:15px;color:rgba(255,255,255,.95);line-height:1.65;font-weight:300}
+  .mission strong{font-weight:600;color:#fff}
+
+  /* ── Activity intro ── */
+  .intro-section{max-width:920px;margin:0 auto;padding:64px 40px 32px}
+  .intro-label{font-family:'Courier New',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#B5446E;margin-bottom:12px;font-weight:700}
+  .intro-title{font-family:Georgia,serif;font-size:clamp(28px,4vw,40px);font-weight:700;color:#1A1A2E;margin-bottom:18px;line-height:1.15}
+  .intro-title em{font-style:italic;color:#B5446E;font-weight:500}
+  .intro-body{font-size:16px;color:#4A4A5A;line-height:1.8;margin-bottom:14px}
+  .intro-body strong{color:#1A1A2E;font-weight:600}
+
+  /* ── Two-track callout ── */
+  .tracks{max-width:920px;margin:32px auto 0;padding:0 40px;display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+  .track{background:#fff;border-radius:14px;padding:24px 26px;border-top:4px solid #B5446E;box-shadow:0 2px 16px rgba(26,26,46,.06)}
+  .track:last-child{border-top-color:#6B3F9E}
+  .track-label{font-family:'Courier New',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8A8070;margin-bottom:6px;font-weight:700}
+  .track-name{font-family:Georgia,serif;font-size:20px;font-weight:700;color:#1A1A2E;margin-bottom:8px;line-height:1.2}
+  .track-audience{font-size:12px;color:#B5446E;font-style:italic;margin-bottom:10px;font-family:'Courier New',monospace;letter-spacing:.04em}
+  .track:last-child .track-audience{color:#6B3F9E}
+  .track-desc{font-size:13px;color:#4A4A5A;line-height:1.6}
+
+  /* ── Featured art ── */
+  .featured{max-width:920px;margin:64px auto 0;padding:0 40px}
+  .featured-img-wrap{background:#fff;border-radius:18px;padding:28px;box-shadow:0 4px 32px rgba(26,26,46,.08);text-align:center;border-top:3px solid #B5446E}
+  .featured-img{max-width:100%;max-height:480px;width:auto;height:auto;display:inline-block}
+  .featured-caption{margin-top:20px;padding-top:18px;border-top:1px solid #EBEBEB;font-family:Georgia,serif;font-style:italic;font-size:15px;color:#1A1A2E;line-height:1.6}
+  .featured-caption em{color:#B5446E;font-style:normal;font-family:'Courier New',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;display:block;margin-top:8px;font-style:normal}
+
+  /* ── Explore section header ── */
+  .explore-header{max-width:1100px;margin:80px auto 36px;padding:0 40px;text-align:center}
+  .explore-label{font-family:'Courier New',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#B5446E;margin-bottom:12px;font-weight:700}
+  .explore-title{font-family:Georgia,serif;font-size:36px;font-weight:700;color:#1A1A2E;margin-bottom:10px}
+  .explore-intro{font-size:15px;color:#8A8070;font-weight:300;line-height:1.7;max-width:560px;margin:0 auto}
+
+  /* ── Four tiles ── */
+  .tile-grid{max-width:1100px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .tile{background:#fff;border-radius:14px;padding:24px 26px 32px;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(26,26,46,.06);transition:box-shadow .25s,transform .25s;border-left:6px solid #B5446E;position:relative;display:flex;flex-direction:column;gap:10px;animation:fadeUp .5s ease both;min-height:200px}
+  .tile:hover{box-shadow:0 8px 28px rgba(26,26,46,.14);transform:translateY(-2px)}
+  .tile-icon{font-size:28px;margin-bottom:4px}
+  .tile-tag{display:inline-block;align-self:flex-start;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:3px 10px;border-radius:12px;font-weight:600;background:#FDE8EF;color:#B5446E}
+  .tile-name{font-family:Georgia,serif;font-size:20px;font-weight:700;line-height:1.2;color:#1A1A2E}
+  .tile-tagline{font-size:13px;color:#4A4A5A;line-height:1.55;font-style:italic;margin-bottom:6px}
+  .tile-desc{font-size:13px;color:#4A4A5A;line-height:1.6;flex:1}
+  .tile-cta{display:inline-block;margin-top:8px;font-family:'Courier New',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#B5446E;font-weight:700}
+  .tile-cta::after{content:" →"}
+  .tile-purple{border-left-color:#6B3F9E}
+  .tile-purple .tile-tag{background:#EDE4F7;color:#6B3F9E}
+  .tile-purple .tile-cta{color:#6B3F9E}
+  .tile-gold{border-left-color:#C8860A}
+  .tile-gold .tile-tag{background:#FFF3D6;color:#C8860A}
+  .tile-gold .tile-cta{color:#C8860A}
+  .tile-teal{border-left-color:#1B7A78}
+  .tile-teal .tile-tag{background:#D6EEEE;color:#0F4F4E}
+  .tile-teal .tile-cta{color:#1B7A78}
+
+  /* ── Gallery ── */
+  .gallery-section{background:#1A1A2E;background-image:radial-gradient(ellipse 50% 60% at 50% 0%,rgba(181,68,110,.25) 0%,transparent 60%);margin-top:80px;padding:72px 40px 80px}
+  .gallery-inner{max-width:1100px;margin:0 auto}
+  .gallery-header{text-align:center;margin-bottom:48px}
+  .gallery-label{font-family:'Courier New',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#F5C28E;margin-bottom:12px;font-weight:700}
+  .gallery-title{font-family:Georgia,serif;font-size:36px;font-weight:700;color:#fff;margin-bottom:12px}
+  .gallery-title em{font-style:italic;color:#F5C28E;font-weight:400}
+  .gallery-intro{font-size:15px;color:rgba(255,255,255,.65);font-weight:300;line-height:1.7;max-width:560px;margin:0 auto}
+  .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .gallery-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.3);display:flex;flex-direction:column;transition:transform .25s}
+  .gallery-card:hover{transform:translateY(-3px)}
+  .gallery-card img{width:100%;height:auto;display:block;background:#fff}
+  .gallery-card-meta{padding:14px 18px 16px;background:#fff;border-top:1px solid #EBEBEB}
+  .gallery-card-act{font-family:'Courier New',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#B5446E;font-weight:700;margin-bottom:4px}
+  .gallery-card-scene{font-family:Georgia,serif;font-size:14px;font-weight:600;color:#1A1A2E;line-height:1.3}
+
+  /* ── Submit section ── */
+  .submit{background:#fff;padding:64px 24px;text-align:center;border-top:1px solid #f0ede8}
+  .submit-inner{max-width:620px;margin:0 auto}
+  .submit-icon{font-size:48px;margin-bottom:14px}
+  .submit-title{font-family:Georgia,serif;font-size:30px;color:#B5446E;margin-bottom:14px;font-weight:700}
+  .submit-body{font-size:15px;color:#555;line-height:1.75}
+  .submit-btn{display:inline-block;margin-top:26px;padding:14px 44px;background:linear-gradient(135deg,#B5446E,#D06A91);color:#fff;border-radius:50px;font-family:Georgia,serif;font-size:18px;text-decoration:none;box-shadow:0 6px 24px rgba(181,68,110,.3);transition:all .2s}
+  .submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(181,68,110,.4)}
+  .submit-meta{margin-top:12px;font-size:12px;color:#aaa;letter-spacing:.5px}
+
+  /* ── Footer ── */
+  .footer{background:#1A1A2E;padding:40px 60px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+  .footer-left p{font-family:Georgia,serif;font-size:20px;color:#fff;font-weight:700;margin-bottom:4px}
+  .footer-left span{font-size:13px;color:rgba(255,255,255,.4);font-weight:300}
+  .footer-copyright{display:block;font-size:11px;color:rgba(255,255,255,.3);font-weight:300;margin-top:8px;letter-spacing:.02em}
+  .footer-dots{display:flex;gap:8px}
+  .footer-dot{width:12px;height:12px;border-radius:50%}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+  @media(max-width:900px){
+    .gallery-grid{grid-template-columns:repeat(2,1fr)}
+    .tile-grid{grid-template-columns:1fr}
+    .tracks{grid-template-columns:1fr}
+  }
+  @media(max-width:720px){
+    .hero{padding:48px 24px 44px}
+    .hero-meta{flex-direction:column;gap:18px}
+    .hero-meta-item{border-right:none;border-bottom:1px solid rgba(255,255,255,.1);padding:0 0 14px}
+    .hero-meta-item:last-child{border-bottom:none;padding-bottom:0}
+    .mission{padding:22px 24px}
+    .intro-section,.featured,.explore-header,.tile-grid,.tracks{padding-left:24px;padding-right:24px}
+    .gallery-section{padding:48px 24px 56px}
+    .gallery-grid{grid-template-columns:1fr}
+    .footer{padding:32px 28px}
+    .topnav{padding:12px 24px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Top nav ── -->
+<nav class="topnav">
+  <a href="https://lhhowell.github.io/kellamsmilebags/" class="topnav-brand">
+    <span class="topnav-brand-mark">🎯</span> Smile Bags
+  </a>
+  <span class="topnav-meta">Word &amp; Wonder · Spring 2026</span>
+</nav>
+
+<!-- ── Hero ── -->
+<header class="hero">
+  <span class="hero-tag">English 9</span>
+  <div class="hero-teacher">
+    <a href="OneWord_English9_Lesson_Plan.pdf">Ms. Howell + Ms. Evans</a>
+  </div>
+  <h1>The OneWord <em>Literary Lens</em></h1>
+  <p class="hero-sub">
+    Each student is assigned a word from the 25 OneWord vocabulary. They use it <strong>twice</strong> —
+    once to look inward at <em>Romeo &amp; Juliet</em>, and once to look outward at a child
+    they will never meet. The word is the bridge.
+  </p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Course</span>
+      <span class="hero-meta-value">English 9</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Standards</span>
+      <span class="hero-meta-value">VA SOL 9.5 · 9.6 · 9.7</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Required Text</span>
+      <span class="hero-meta-value">Romeo &amp; Juliet</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">OneWord</span>
+      <span class="hero-meta-value">One word, your lens</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── Mission band ── -->
+<section class="mission">
+  <span class="mission-icon">📖</span>
+  <p>
+    <strong>An English 9 collaboration.</strong>
+    Students use a single OneWord as a critical lens for <em>Romeo &amp; Juliet</em> —
+    and as the seed for a story or poem that goes to a child recovering from cleft lip and palate surgery
+    through Operation Smiles.
+  </p>
+</section>
+
+<!-- ── Activity intro ── -->
+<section class="intro-section">
+  <div class="intro-label">The Activity</div>
+  <h2 class="intro-title">One word. <em>Two audiences.</em> A bridge between them.</h2>
+  <p class="intro-body">
+    In this unit, every student is assigned one of <strong>25 OneWords</strong> — words like PERSIST,
+    BLOOM, FLOW, ANCHOR, RENEW. The word becomes a lens. Students look through it twice: first at the
+    book they have been studying, then at a child they will never meet.
+  </p>
+  <p class="intro-body">
+    The literary analysis stays in school. The coloring page goes in a smile bag, headed to a child in
+    recovery from surgery. <strong>The word is the only thing that links the two pieces</strong> —
+    which is exactly the point.
+  </p>
+</section>
+
+<!-- ── Two-track callout ── -->
+<section class="tracks">
+  <div class="track">
+    <div class="track-label">Track 1</div>
+    <div class="track-name">Literary Analysis One-Pager</div>
+    <div class="track-audience">Audience · the teacher</div>
+    <div class="track-desc">
+      Where does your word live in Romeo &amp; Juliet? Four zones: the word, the literary connection,
+      the analysis, the creative response. Stays in school.
+    </div>
+  </div>
+  <div class="track">
+    <div class="track-label">Track 2</div>
+    <div class="track-name">Coloring Book Page</div>
+    <div class="track-audience">Audience · a child in recovery</div>
+    <div class="track-desc">
+      A short story or poem, a child-friendly line illustration, and a "what happens next?" starter for
+      the child to finish. Goes into the smile bag.
+    </div>
+  </div>
+</section>
+
+<!-- ── Featured art ── -->
+<section class="featured">
+  <div class="featured-img-wrap">
+    <img src="rj_lovers_garden.png" alt="Romeo and Juliet holding hands in a garden of roses" class="featured-img">
+    <p class="featured-caption">
+      "What's in a name? That which we call a rose / by any other name would smell as sweet."
+      <em>Romeo &amp; Juliet · Act II</em>
+    </p>
+  </div>
+</section>
+
+<!-- ── Explore section header ── -->
+<section class="explore-header">
+  <div class="explore-label">Explore the Unit</div>
+  <h2 class="explore-title">Four Resources</h2>
+  <p class="explore-intro">
+    The full unit lives in four pieces — a lesson plan for the teacher, a writing coach for the student,
+    a tool for the literary analysis, and a workspace for the coloring page that goes in the bag.
+  </p>
+</section>
+
+<!-- ── Four tiles ── -->
+<section class="tile-grid">
+
+  <!-- TILE 1 · The Lesson -->
+  <a href="OneWord_English9_Lesson_Plan.pdf" class="tile">
+    <div class="tile-icon">📘</div>
+    <span class="tile-tag">The Lesson</span>
+    <div class="tile-name">OneWord &amp; Romeo &amp; Juliet</div>
+    <div class="tile-tagline">The full three-day teacher plan.</div>
+    <div class="tile-desc">
+      Day 1 introduces the OneWord lens and the mentor texts. Day 2 is independent drafting. Day 3 is
+      peer edit and finalize. SOL-aligned, rubric included, mentor-text driven.
+    </div>
+    <span class="tile-cta">Open the Lesson</span>
+  </a>
+
+  <!-- TILE 2 · Writing Coach Gem -->
+  <a href="#PLACEHOLDER_GEMINI_GEM_URL" class="tile tile-purple">
+    <div class="tile-icon">✨</div>
+    <span class="tile-tag">The Writing Coach</span>
+    <div class="tile-name">OneWord Gemini Gem</div>
+    <div class="tile-tagline">Reads your draft. Asks one question. Pushes you deeper.</div>
+    <div class="tile-desc">
+      A conversational coach that supports both tracks. Tell it your word and which assignment you're
+      working on, paste your draft, and it responds like a trusted reader — never as a ghostwriter.
+    </div>
+    <span class="tile-cta">Open the Gem</span>
+  </a>
+
+  <!-- TILE 3 · Literary Analysis Builder -->
+  <a href="#PLACEHOLDER_BUILDER_URL" class="tile tile-gold">
+    <div class="tile-icon">🪶</div>
+    <span class="tile-tag">Track 1 · Analysis</span>
+    <div class="tile-name">Literary Analysis Builder</div>
+    <div class="tile-tagline">Fill in the four zones. Print your one-pager.</div>
+    <div class="tile-desc">
+      An interactive workspace for the literary analysis: the word, the literary connection, the
+      analysis, and your creative response. Save as you go. Print a clean one-pager when complete.
+    </div>
+    <span class="tile-cta">Build Your One-Pager</span>
+  </a>
+
+  <!-- TILE 4 · Coloring Book Page -->
+  <a href="https://script.google.com/macros/s/AKfycbzNOK7GGWL3lEJiAAltDt5Kx1LWiIB2q8B1H5XTVaVQ7UrlbggSEfBikCYPbOGzBS9xlQ/exec" class="tile tile-teal">
+    <div class="tile-icon">🎨</div>
+    <span class="tile-tag">Track 2 · Coloring</span>
+    <div class="tile-name">Coloring Book Page</div>
+    <div class="tile-tagline">A page for a child. Story, illustration, invitation.</div>
+    <div class="tile-desc">
+      A Canva template with the four-zone layout: your word, your story or poem, your line-art
+      illustration, and a story starter for the child to finish in their own words.
+    </div>
+    <span class="tile-cta">Open the Template</span>
+  </a>
+
+</section>
+
+<!-- ── Gallery ── -->
+<section class="gallery-section">
+  <div class="gallery-inner">
+    <div class="gallery-header">
+      <div class="gallery-label">Visual Identity</div>
+      <h2 class="gallery-title">Six Scenes from <em>Romeo &amp; Juliet</em></h2>
+      <p class="gallery-intro">
+        Visual reference for the unit, generated with ChatGPT and Copilot. Use them as inspiration
+        for the literary side — the coloring page that goes in the bag is the student's own line art,
+        designed for a young child.
+      </p>
+    </div>
+
+    <div class="gallery-grid">
+
+      <div class="gallery-card">
+        <img src="rj_act1_ball.png" alt="The Capulet Ball — Romeo and Juliet meet">
+        <div class="gallery-card-meta">
+          <div class="gallery-card-act">Act I · Scene 5</div>
+          <div class="gallery-card-scene">The Capulet Ball</div>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <img src="rj_act1_masquerade.png" alt="Romeo and Juliet at the masquerade">
+        <div class="gallery-card-meta">
+          <div class="gallery-card-act">Act I · Scene 5</div>
+          <div class="gallery-card-scene">The Masquerade</div>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <img src="rj_act2_balcony.png" alt="Romeo at Juliet's balcony">
+        <div class="gallery-card-meta">
+          <div class="gallery-card-act">Act II · Scene 2</div>
+          <div class="gallery-card-scene">The Balcony</div>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <img src="rj_act3_mercutio.png" alt="Mercutio falls in the streets of Verona">
+        <div class="gallery-card-meta">
+          <div class="gallery-card-act">Act III · Scene 1</div>
+          <div class="gallery-card-scene">Mercutio's Fall</div>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <img src="rj_act4_potion.png" alt="Juliet contemplates the potion">
+        <div class="gallery-card-meta">
+          <div class="gallery-card-act">Act IV · Scene 3</div>
+          <div class="gallery-card-scene">The Potion</div>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <img src="rj_act5_tomb.png" alt="Romeo finds Juliet in the tomb">
+        <div class="gallery-card-meta">
+          <div class="gallery-card-act">Act V · Scene 3</div>
+          <div class="gallery-card-scene">The Tomb</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Submit / CTA ── -->
+<section class="submit">
+  <div class="submit-inner">
+    <div class="submit-icon">📝</div>
+    <h2 class="submit-title">Submit Your Coloring Page</h2>
+    <p class="submit-body">
+      When your story or poem is ready and your illustration is final, submit a PDF of your finished page.
+      The teacher prints, assembles, and pairs each page with the matching OneWord bookmark before the
+      smile bag is sealed.
+    </p>
+    <a href="#PLACEHOLDER_SUBMISSION_FORM_URL" class="submit-btn">Submit Your Page →</a>
+    <div class="submit-meta">PDF · US Letter · 8.5 × 11 inches · Line art only</div>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer class="footer">
+  <div class="footer-left">
+    <p>🎯 Smile Bags &middot; A Word &amp; Wonder Experience</p>
+    <span>English 9 &middot; Ms. Howell + Ms. Evans &middot; Spring 2026</span>
+    <span class="footer-copyright">Created by Laura Howell &middot; &copy; 2025&ndash;2026</span>
+  </div>
+  <div class="footer-dots">
+    <span class="footer-dot" style="background:#B5446E"></span>
+    <span class="footer-dot" style="background:#6B3F9E"></span>
+    <span class="footer-dot" style="background:#C8860A"></span>
+    <span class="footer-dot" style="background:#1B7A78"></span>
+  </div>
+</footer>
+
+</body>
+</html>
