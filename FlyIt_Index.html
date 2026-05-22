@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base target="_top">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fly It! · A Word &amp; Wonder Challenge</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Arial,sans-serif;background:#F7F5F0;color:#1A1A2E;line-height:1.5;-webkit-tap-highlight-color:transparent;min-height:100vh}
+
+  /* ── HERO ── */
+  .hero{background:#1A1A2E;background-image:radial-gradient(ellipse 70% 80% at 80% 50%,rgba(27,111,191,.48) 0%,transparent 65%),radial-gradient(ellipse 45% 65% at 12% 80%,rgba(120,200,230,.22) 0%,transparent 60%);padding:34px 28px 28px;text-align:center;position:relative;overflow:hidden}
+  .hero-tag{display:inline-block;font-family:'Courier New',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#fff;background:rgba(255,255,255,.13);padding:5px 16px;border-radius:20px;border:1px solid rgba(255,255,255,.28);margin-bottom:14px}
+  .hero h1{font-family:Georgia,serif;font-size:clamp(30px,5.5vw,46px);font-weight:900;color:#fff;line-height:1.05;margin-bottom:8px;letter-spacing:-0.5px}
+  .hero h1 em{font-style:italic;color:#7CB9E8;font-weight:400}
+  .hero h1 span{display:block;font-size:.5em;letter-spacing:.18em;font-weight:300;font-style:normal;color:rgba(255,255,255,.6);text-transform:uppercase;margin-top:6px;font-family:'Courier New',monospace}
+  .hero p{font-size:14px;color:rgba(255,255,255,.7);max-width:560px;margin:10px auto 0;line-height:1.6}
+
+  /* ── BLUE BAND ── */
+  .mission{background:#1B6FBF;padding:13px 28px;text-align:center;color:#fff;font-size:13px;font-weight:300;line-height:1.5}
+  .mission strong{font-weight:700}
+
+  /* ── CONTAINER ── */
+  .container{max-width:680px;margin:0 auto;padding:28px 18px 40px}
+
+  /* ── SCREENS ── */
+  .screen{display:none}
+  .screen.active{display:block}
+
+  /* ── HOME ── */
+  .mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+  @media(max-width:560px){.mode-grid{grid-template-columns:1fr}}
+  .mode-card{background:#fff;border:none;border-radius:14px;padding:24px 20px;cursor:pointer;text-align:left;box-shadow:0 2px 12px rgba(26,26,46,.06);border-left:5px solid;transition:all .2s;display:flex;flex-direction:column;gap:8px;min-height:160px}
+  .mode-card:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(26,26,46,.1)}
+  .mode-card-lookup{border-left-color:#C8860A}
+  .mode-card-upload{border-left-color:#1B6FBF}
+  .mode-icon{font-size:32px;line-height:1}
+  .mode-title{font-family:Georgia,serif;font-size:19px;font-weight:700;color:#1A1A2E;line-height:1.2}
+  .mode-card-lookup .mode-title em{color:#C8860A;font-style:italic;font-weight:400}
+  .mode-card-upload .mode-title em{color:#1B6FBF;font-style:italic;font-weight:400}
+  .mode-desc{font-size:13px;color:#666;line-height:1.5;margin-top:auto}
+
+  /* ── FORM CARDS ── */
+  .form-card{background:#fff;border-radius:14px;padding:24px 24px 20px;box-shadow:0 2px 16px rgba(26,26,46,.06);border-left:5px solid #1B6FBF}
+  .form-card-lookup{border-left-color:#C8860A}
+  .form-card h2{font-family:Georgia,serif;font-size:22px;font-weight:700;color:#1A1A2E;margin-bottom:6px}
+  .form-card h2 em{color:#1B6FBF;font-style:italic;font-weight:400}
+  .form-card-lookup h2 em{color:#C8860A}
+  .form-intro{font-size:13px;color:#666;font-style:italic;margin-bottom:18px;line-height:1.55}
+  .field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+  .field-label{font-family:'Courier New',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#8A8070;font-weight:700}
+  .field-label .req{color:#1B6FBF}
+  .field-input{font-family:Georgia,serif;font-size:15px;color:#1A1A2E;padding:10px 13px;border:1.5px solid #E0DACD;border-radius:8px;background:#FBF8F1;transition:border-color .15s,background .15s;width:100%}
+  .field-input:focus{outline:none;border-color:#1B6FBF;background:#fff}
+  .field-input.lookup-input{font-family:'Courier New',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;text-align:center}
+
+  /* ── PHOTO UPLOAD ── */
+  .photo-zone{border:2px dashed #1B6FBF;border-radius:12px;padding:24px 18px;text-align:center;background:#F2F7FC;cursor:pointer;transition:all .15s;margin-bottom:14px}
+  .photo-zone:hover{background:#E5EFFA}
+  .photo-zone.has-image{padding:12px;background:#fff}
+  .photo-zone-icon{font-size:36px;margin-bottom:8px;line-height:1}
+  .photo-zone-text{font-size:14px;color:#1B6FBF;font-weight:700}
+  .photo-zone-sub{font-size:12px;color:#888;margin-top:4px}
+  .photo-preview{max-width:100%;max-height:280px;border-radius:8px;display:block;margin:0 auto}
+  .photo-actions{display:flex;gap:10px;margin-top:12px;justify-content:center;flex-wrap:wrap}
+  .photo-btn{padding:6px 14px;background:#fff;border:1.5px solid #E0DACD;border-radius:50px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:#8A8070;cursor:pointer;transition:all .15s}
+  .photo-btn:hover{border-color:#1B6FBF;color:#1B6FBF}
+
+  /* ── BUTTONS ── */
+  .btn{display:inline-block;padding:13px 28px;background:linear-gradient(135deg,#1B6FBF,#3491D9);color:#fff;border:none;border-radius:50px;font-family:Georgia,serif;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 5px 18px rgba(27,111,191,.3);transition:all .2s;text-decoration:none;text-align:center}
+  .btn-lookup{background:linear-gradient(135deg,#C8860A,#E0A030);box-shadow:0 5px 18px rgba(200,134,10,.3)}
+  .btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 26px rgba(27,111,191,.4)}
+  .btn-lookup:hover:not(:disabled){box-shadow:0 8px 26px rgba(200,134,10,.4)}
+  .btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+  .btn-secondary{background:#fff;color:#8A8070;border:1.5px solid #E0DACD;box-shadow:none;padding:11px 22px;font-size:14px}
+  .btn-secondary:hover:not(:disabled){border-color:#1A1A2E;color:#1A1A2E;transform:none}
+  .btn-row{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+
+  /* ── LOADING ── */
+  .loading-card{background:#fff;border-radius:14px;padding:48px 24px;text-align:center;box-shadow:0 2px 16px rgba(26,26,46,.06);border-left:5px solid #1B6FBF}
+  .spinner{width:60px;height:60px;border:5px solid #E5EFFA;border-top-color:#1B6FBF;border-radius:50%;margin:0 auto 18px;animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .loading-text{font-family:Georgia,serif;font-size:18px;color:#1A1A2E;font-weight:700;margin-bottom:5px}
+  .loading-sub{font-size:13px;color:#666;font-style:italic}
+
+  /* ── RESULTS ── */
+  .result-card{background:#fff;border-radius:14px;padding:0;overflow:hidden;box-shadow:0 2px 16px rgba(26,26,46,.06);border-left:5px solid #1B6FBF}
+  .result-image{width:100%;max-height:320px;object-fit:contain;background:#FBF8F1;display:block}
+  .result-body{padding:24px 24px 22px}
+  .result-time-block{text-align:center;margin-bottom:20px;padding-bottom:18px;border-bottom:1.5px solid #F0EBE0}
+  .result-time-label{font-family:'Courier New',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8A8070;font-weight:700;margin-bottom:6px}
+  .result-time{font-family:Georgia,serif;font-size:64px;font-weight:900;color:#1B6FBF;line-height:1;letter-spacing:-1px}
+  .result-time-unit{font-size:.4em;color:#8A8070;font-weight:400;font-style:italic;margin-left:4px}
+  .result-section{margin-bottom:14px}
+  .result-section-label{font-family:'Courier New',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#8A8070;font-weight:700;margin-bottom:5px}
+  .result-reasoning{font-family:Georgia,serif;font-size:15px;color:#1A1A2E;line-height:1.55;font-style:italic}
+  .result-challenge{background:linear-gradient(135deg,#E5EFFA,#F2F7FC);border-radius:10px;padding:14px 16px;font-family:Georgia,serif;font-size:15px;color:#1A1A2E;line-height:1.55;border-left:3px solid #1B6FBF}
+  .result-id{font-family:'Courier New',monospace;font-size:11px;color:#B8AE9A;text-align:center;margin-top:18px;letter-spacing:.05em}
+
+  /* ── STATUS ── */
+  .status{margin-top:14px;padding:11px 16px;border-radius:10px;font-size:13px;line-height:1.5;display:none}
+  .status.show{display:block}
+  .status-error{background:#FFEAEA;border:1.5px solid #B52020;color:#7A1414}
+  .status-success{background:#E8F5E9;border:1.5px solid #2D5016;color:#1B4D1B}
+
+  /* ── ADMIN ── */
+  .admin-banner{background:#1A1A2E;color:#7CB9E8;padding:10px 18px;border-radius:8px;font-family:'Courier New',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;text-align:center;margin-bottom:18px;font-weight:700}
+  .admin-codes{background:#FBF8F1;border-radius:10px;padding:14px 16px;margin-top:14px;border:1.5px solid #E0DACD}
+  .admin-codes-title{font-family:'Courier New',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#8A8070;font-weight:700;margin-bottom:8px}
+  .admin-code-row{display:flex;justify-content:space-between;padding:5px 0;font-size:13px;color:#1A1A2E;border-bottom:1px dashed #E0DACD}
+  .admin-code-row:last-child{border-bottom:none}
+  .admin-code-name{font-family:'Courier New',monospace;font-weight:700;color:#1B6FBF}
+
+  /* ── FOOTER ── */
+  .foot{background:#1A1A2E;padding:20px 28px;text-align:center;margin-top:30px}
+  .foot p{font-family:Georgia,serif;font-size:13px;color:#fff;font-weight:700;margin-bottom:3px}
+  .foot span{font-size:11px;color:rgba(255,255,255,.4)}
+  .foot .copy{display:block;font-size:10px;color:rgba(255,255,255,.3);margin-top:6px}
+
+  .file-hidden{position:absolute;left:-9999px;width:1px;height:1px}
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<header class="hero">
+  <span class="hero-tag">Visitor Challenge · 3D-Printed Planes</span>
+  <h1>Fly <em>It!</em> <span>A Word &amp; Wonder Challenge</span></h1>
+  <p>How long will it stay airborne? Let the AI take a look — then try to beat the time.</p>
+</header>
+
+<section class="mission">
+  <strong>Two ways to play:</strong> &nbsp;Try a plane from the display &nbsp;·&nbsp; Or upload your own
+</section>
+
+<!-- ── MAIN ── -->
+<div class="container">
+
+  <!-- HOME -->
+  <div id="homeScreen" class="screen active">
+    <div id="adminBanner" class="admin-banner" style="display:none">⚡ ADMIN MODE — pre-stage planes for the Expo</div>
+
+    <div class="mode-grid">
+      <button type="button" class="mode-card mode-card-lookup" onclick="showScreen('lookup')">
+        <div class="mode-icon">🔍</div>
+        <div class="mode-title">Try one from the <em>display</em></div>
+        <div class="mode-desc">Pick a plane from the table, find its code, and see what the AI predicts.</div>
+      </button>
+      <button type="button" class="mode-card mode-card-upload" onclick="showScreen('upload')">
+        <div class="mode-icon">📷</div>
+        <div class="mode-title">Upload your <em>own</em></div>
+        <div class="mode-desc">Got your own 3D-printed plane? Photograph it and the AI will give it a flight estimate.</div>
+      </button>
+    </div>
+
+    <div id="adminEntry" style="display:none;margin-top:14px">
+      <button type="button" class="mode-card mode-card-upload" onclick="showScreen('admin')" style="border-left-color:#1A1A2E;background:#FBF8F1">
+        <div class="mode-icon">🔧</div>
+        <div class="mode-title">Admin: <em>Stage a code</em></div>
+        <div class="mode-desc">Upload a display plane and assign it a code (PLANE-01, PLANE-02, etc.) for the lookup table.</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- LOOKUP -->
+  <div id="lookupScreen" class="screen">
+    <div class="form-card form-card-lookup">
+      <h2>Enter the <em>code</em></h2>
+      <p class="form-intro">Find the code card next to your favorite plane on the display — like <strong>PLANE-03</strong> — and enter it below.</p>
+
+      <div class="field">
+        <label class="field-label" for="lookupCode">Plane Code <span class="req">*</span></label>
+        <input type="text" id="lookupCode" class="field-input lookup-input" placeholder="PLANE-03" maxlength="20" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="lookupName">Your Name (optional)</label>
+        <input type="text" id="lookupName" class="field-input" placeholder="So the challenge can be personal" autocomplete="off">
+      </div>
+
+      <div class="btn-row" style="margin-top:18px">
+        <button type="button" class="btn btn-secondary" onclick="showScreen('home')">← Back</button>
+        <button type="button" id="lookupBtn" class="btn btn-lookup">Reveal estimate →</button>
+      </div>
+      <div id="lookupStatus" class="status"></div>
+    </div>
+  </div>
+
+  <!-- UPLOAD -->
+  <div id="uploadScreen" class="screen">
+    <div class="form-card">
+      <h2>Upload your <em>plane</em></h2>
+      <p class="form-intro">Snap a clear photo of your 3D-printed plane — daylight is friendlier than overhead bulbs. The AI will analyze the design and estimate how long it'll stay in the air.</p>
+
+      <div class="field">
+        <label class="field-label" for="uploadName">Your Name <span class="req">*</span></label>
+        <input type="text" id="uploadName" class="field-input" placeholder="First name is fine" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <label class="field-label">Photo <span class="req">*</span></label>
+        <input type="file" id="uploadFile" class="file-hidden" accept="image/*" capture="environment">
+        <div id="uploadZone" class="photo-zone" onclick="document.getElementById('uploadFile').click()">
+          <div class="photo-zone-icon">📷</div>
+          <div class="photo-zone-text">Tap to take a photo or choose one</div>
+          <div class="photo-zone-sub">A side view showing wings and tail works best</div>
+        </div>
+      </div>
+
+      <div class="btn-row" style="margin-top:8px">
+        <button type="button" class="btn btn-secondary" onclick="showScreen('home')">← Back</button>
+        <button type="button" id="uploadBtn" class="btn">Evaluate my plane →</button>
+      </div>
+      <div id="uploadStatus" class="status"></div>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div id="loadingScreen" class="screen">
+    <div class="loading-card">
+      <div class="spinner"></div>
+      <div class="loading-text" id="loadingText">Analyzing your plane…</div>
+      <div class="loading-sub">The AI is looking at the design.</div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="resultsScreen" class="screen">
+    <div class="result-card">
+      <img id="resultImage" class="result-image" src="" alt="Plane photo">
+      <div class="result-body">
+        <div class="result-time-block">
+          <div class="result-time-label">Estimated flight time</div>
+          <div class="result-time"><span id="resultTime">—</span><span class="result-time-unit">seconds</span></div>
+        </div>
+        <div class="result-section">
+          <div class="result-section-label">What the AI noticed</div>
+          <div class="result-reasoning" id="resultReasoning">—</div>
+        </div>
+        <div class="result-section">
+          <div class="result-section-label">Your challenge</div>
+          <div class="result-challenge" id="resultChallenge">—</div>
+        </div>
+        <div class="result-id" id="resultId">—</div>
+      </div>
+    </div>
+
+    <div class="btn-row" style="justify-content:center;margin-top:20px">
+      <button type="button" class="btn btn-secondary" onclick="resetAndGoHome()">↻ Try another</button>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="adminScreen" class="screen">
+    <div class="form-card">
+      <div class="admin-banner">⚡ ADMIN — Stage a Display Plane</div>
+      <h2>Add to <em>lookup table</em></h2>
+      <p class="form-intro">Upload a photo of a display plane and assign it a code. The AI will evaluate it once; visitors retrieve that evaluation instantly via the code.</p>
+
+      <div class="field">
+        <label class="field-label" for="adminPasscode">Passcode <span class="req">*</span></label>
+        <input type="password" id="adminPasscode" class="field-input" placeholder="From Script Properties" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="adminCode">Code to Assign <span class="req">*</span></label>
+        <input type="text" id="adminCode" class="field-input lookup-input" placeholder="PLANE-01" maxlength="20" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <label class="field-label">Photo <span class="req">*</span></label>
+        <input type="file" id="adminFile" class="file-hidden" accept="image/*">
+        <div id="adminUploadZone" class="photo-zone" onclick="document.getElementById('adminFile').click()">
+          <div class="photo-zone-icon">📷</div>
+          <div class="photo-zone-text">Tap to choose a photo</div>
+          <div class="photo-zone-sub">A side view showing wing profile works best</div>
+        </div>
+      </div>
+
+      <div class="btn-row" style="margin-top:8px">
+        <button type="button" class="btn btn-secondary" onclick="showScreen('home')">← Back</button>
+        <button type="button" id="adminSaveBtn" class="btn">Save to lookup →</button>
+      </div>
+      <div id="adminStatus" class="status"></div>
+
+      <div class="admin-codes">
+        <div class="admin-codes-title">Currently staged</div>
+        <div id="adminCodesList">Loading…</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── FOOTER ── -->
+<footer class="foot">
+  <p>🎯 Smile Bags · A Word &amp; Wonder Experience</p>
+  <span>Visitor Challenge · Spring 2026</span>
+  <span class="copy">Created by Laura Howell · © 2025–2026</span>
+</footer>
+
+<script>
+const state = { uploadImageData: null, adminImageData: null };
+
+// Apps Script serves HTML in a sandboxed iframe, so window.location.search
+// doesn't see parent URL params. Use google.script.url.getLocation instead.
+if (typeof google !== 'undefined' && google.script && google.script.url) {
+  google.script.url.getLocation(function(location) {
+    if (location.parameter && location.parameter.admin === 'true') {
+      document.getElementById('adminBanner').style.display = 'block';
+      document.getElementById('adminEntry').style.display = 'block';
+      refreshCodesList();
+    }
+  });
+}
+
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const map = { home: 'homeScreen', lookup: 'lookupScreen', upload: 'uploadScreen',
+                loading: 'loadingScreen', results: 'resultsScreen', admin: 'adminScreen' };
+  const el = document.getElementById(map[name]);
+  if (el) el.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (name === 'admin') refreshCodesList();
+}
+
+function resetAndGoHome() {
+  document.getElementById('lookupCode').value = '';
+  document.getElementById('lookupName').value = '';
+  document.getElementById('uploadName').value = '';
+  document.getElementById('adminCode').value = '';
+  state.uploadImageData = null;
+  state.adminImageData = null;
+  resetPhotoZone('uploadZone');
+  resetPhotoZone('adminUploadZone');
+  hideStatus('lookupStatus'); hideStatus('uploadStatus'); hideStatus('adminStatus');
+  showScreen('home');
+}
+
+function compressImage(file, maxDim, quality) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width, h = img.height;
+        const scale = Math.min(1, maxDim / Math.max(w, h));
+        w = Math.round(w * scale); h = Math.round(h * scale);
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = () => reject(new Error('Image load failed'));
+      img.src = e.target.result;
+    };
+    reader.onerror = () => reject(new Error('File read failed'));
+    reader.readAsDataURL(file);
+  });
+}
+
+document.getElementById('uploadFile').addEventListener('change', (e) => handlePhoto(e, 'upload'));
+document.getElementById('adminFile').addEventListener('change', (e) => handlePhoto(e, 'admin'));
+
+async function handlePhoto(e, mode) {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const dataUrl = await compressImage(file, 1024, 0.85);
+    if (mode === 'upload') state.uploadImageData = dataUrl;
+    else state.adminImageData = dataUrl;
+    showPhotoPreview(mode === 'upload' ? 'uploadZone' : 'adminUploadZone', dataUrl);
+  } catch (err) {
+    showStatus(mode === 'upload' ? 'uploadStatus' : 'adminStatus', 'error',
+      'Photo failed to load. Try another image.');
+  }
+}
+
+function showPhotoPreview(zoneId, dataUrl) {
+  const zone = document.getElementById(zoneId);
+  zone.classList.add('has-image');
+  zone.innerHTML =
+    '<img src="' + dataUrl + '" class="photo-preview" alt="Plane photo">' +
+    '<div class="photo-actions">' +
+      '<button type="button" class="photo-btn" onclick="event.stopPropagation();retakePhoto(\'' + zoneId + '\')">Replace photo</button>' +
+    '</div>';
+}
+
+function retakePhoto(zoneId) {
+  resetPhotoZone(zoneId);
+  if (zoneId === 'uploadZone') {
+    state.uploadImageData = null;
+    document.getElementById('uploadFile').value = '';
+    document.getElementById('uploadFile').click();
+  } else {
+    state.adminImageData = null;
+    document.getElementById('adminFile').value = '';
+    document.getElementById('adminFile').click();
+  }
+}
+
+function resetPhotoZone(zoneId) {
+  const zone = document.getElementById(zoneId);
+  zone.classList.remove('has-image');
+  zone.innerHTML =
+    '<div class="photo-zone-icon">📷</div>' +
+    '<div class="photo-zone-text">Tap to take a photo or choose one</div>' +
+    '<div class="photo-zone-sub">A side view showing wings and tail works best</div>';
+}
+
+document.getElementById('lookupBtn').addEventListener('click', () => {
+  const code = document.getElementById('lookupCode').value.trim().toUpperCase();
+  const name = document.getElementById('lookupName').value.trim();
+  if (!code) {
+    showStatus('lookupStatus', 'error', 'Please enter a code (like PLANE-03).');
+    return;
+  }
+  hideStatus('lookupStatus');
+  document.getElementById('loadingText').textContent = 'Finding ' + code + '…';
+  showScreen('loading');
+
+  google.script.run
+    .withSuccessHandler((result) => {
+      if (result && result.ok) renderResults(result, false);
+      else {
+        showScreen('lookup');
+        showStatus('lookupStatus', 'error', (result && result.error) || 'Lookup failed.');
+      }
+    })
+    .withFailureHandler((err) => {
+      showScreen('lookup');
+      showStatus('lookupStatus', 'error', 'Connection issue: ' + (err.message || err));
+    })
+    .lookupCodeServer({ code: code, visitorName: name });
+});
+
+document.getElementById('uploadBtn').addEventListener('click', () => {
+  const name = document.getElementById('uploadName').value.trim();
+  if (!name) {
+    showStatus('uploadStatus', 'error', 'Please enter your name.');
+    return;
+  }
+  if (!state.uploadImageData) {
+    showStatus('uploadStatus', 'error', 'Please add a photo of your plane.');
+    return;
+  }
+  hideStatus('uploadStatus');
+  document.getElementById('loadingText').textContent = 'Analyzing your plane, ' + name + '…';
+  showScreen('loading');
+
+  google.script.run
+    .withSuccessHandler((result) => {
+      if (result && result.ok) renderResults(result, true);
+      else {
+        showScreen('upload');
+        showStatus('uploadStatus', 'error', (result && result.error) || 'Evaluation failed.');
+      }
+    })
+    .withFailureHandler((err) => {
+      showScreen('upload');
+      showStatus('uploadStatus', 'error', 'Connection issue: ' + (err.message || err));
+    })
+    .evaluateUploadServer({ visitorName: name, imageBase64: state.uploadImageData });
+});
+
+function renderResults(result, isUpload) {
+  document.getElementById('resultTime').textContent = result.flightTime || '?';
+  document.getElementById('resultReasoning').textContent = result.reasoning || '';
+  document.getElementById('resultChallenge').textContent = result.challenge || '';
+  document.getElementById('resultId').textContent = result.submissionId || '';
+  const imgEl = document.getElementById('resultImage');
+  if (isUpload && state.uploadImageData) imgEl.src = state.uploadImageData;
+  else if (result.imageUrl) imgEl.src = result.imageUrl;
+  else imgEl.src = '';
+  showScreen('results');
+}
+
+document.getElementById('adminSaveBtn').addEventListener('click', () => {
+  const passcode = document.getElementById('adminPasscode').value;
+  const code = document.getElementById('adminCode').value.trim().toUpperCase();
+  if (!passcode) { showStatus('adminStatus', 'error', 'Passcode required.'); return; }
+  if (!code) { showStatus('adminStatus', 'error', 'Code required (e.g., PLANE-01).'); return; }
+  if (!state.adminImageData) { showStatus('adminStatus', 'error', 'Photo required.'); return; }
+  hideStatus('adminStatus');
+
+  document.getElementById('adminSaveBtn').disabled = true;
+  document.getElementById('adminSaveBtn').textContent = 'Saving…';
+
+  google.script.run
+    .withSuccessHandler((result) => {
+      document.getElementById('adminSaveBtn').disabled = false;
+      document.getElementById('adminSaveBtn').textContent = 'Save to lookup →';
+      if (result && result.ok) {
+        showStatus('adminStatus', 'success',
+          '✓ ' + (result.action === 'updated' ? 'Updated' : 'Added') + ' ' + result.code +
+          ' — ' + result.flightTime + 's estimated.');
+        document.getElementById('adminCode').value = '';
+        state.adminImageData = null;
+        resetPhotoZone('adminUploadZone');
+        document.getElementById('adminFile').value = '';
+        refreshCodesList();
+      } else {
+        showStatus('adminStatus', 'error', (result && result.error) || 'Save failed.');
+      }
+    })
+    .withFailureHandler((err) => {
+      document.getElementById('adminSaveBtn').disabled = false;
+      document.getElementById('adminSaveBtn').textContent = 'Save to lookup →';
+      showStatus('adminStatus', 'error', 'Connection issue: ' + (err.message || err));
+    })
+    .adminSaveCodeServer({ passcode: passcode, code: code, imageBase64: state.adminImageData });
+});
+
+function refreshCodesList() {
+  const target = document.getElementById('adminCodesList');
+  if (!target) return;
+  target.textContent = 'Loading…';
+  google.script.run
+    .withSuccessHandler((result) => {
+      if (result && result.ok && result.codes.length > 0) {
+        target.innerHTML = result.codes.map(c =>
+          '<div class="admin-code-row"><span class="admin-code-name">' + c.code +
+          '</span><span>' + c.flightTime + 's</span></div>'
+        ).join('');
+      } else {
+        target.innerHTML = '<div style="color:#888;font-style:italic;font-size:12px">No codes staged yet.</div>';
+      }
+    })
+    .withFailureHandler(() => { target.textContent = 'Could not load.'; })
+    .listCodesServer();
+}
+
+function showStatus(id, type, msg) {
+  const el = document.getElementById(id);
+  el.className = 'status show status-' + type;
+  el.textContent = msg;
+  if (type === 'error') setTimeout(() => el.classList.remove('show'), 6000);
+}
+function hideStatus(id) { document.getElementById(id).classList.remove('show'); }
+</script>
+
+</body>
+</html>
