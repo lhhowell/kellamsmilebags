@@ -154,7 +154,7 @@
       </button>
     </div>
 
-    <div id="adminEntry" style="display:none;margin-top:14px">
+    <div id="adminEntry" style="margin-top:14px">
       <button type="button" class="mode-card mode-card-upload" onclick="showScreen('admin')" style="border-left-color:#1A1A2E;background:#FBF8F1">
         <div class="mode-icon">🔧</div>
         <div class="mode-title">Admin: <em>Stage a code</em></div>
@@ -303,17 +303,8 @@
 <script>
 const state = { uploadImageData: null, adminImageData: null };
 
-// Apps Script serves HTML in a sandboxed iframe, so window.location.search
-// doesn't see parent URL params. Use google.script.url.getLocation instead.
-if (typeof google !== 'undefined' && google.script && google.script.url) {
-  google.script.url.getLocation(function(location) {
-    if (location.parameter && location.parameter.admin === 'true') {
-      document.getElementById('adminBanner').style.display = 'block';
-      document.getElementById('adminEntry').style.display = 'block';
-      refreshCodesList();
-    }
-  });
-}
+// Admin entry card is always visible on home screen — the passcode
+// (stored in Script Properties) is what actually gates write access.
 
 function showScreen(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
