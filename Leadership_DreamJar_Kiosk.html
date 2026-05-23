@@ -326,7 +326,8 @@
     </div>
     <div style="max-width:480px;margin:0 auto 24px;padding:16px;background:rgba(0,0,0,0.05);border-radius:8px;">
   <label for="studentName" style="display:block;font-weight:700;margin-bottom:8px;font-size:13px;letter-spacing:1px;text-transform:uppercase;">Your Name (required)</label>
-  <input type="text" id="studentName" placeholder="Enter your name to begin..." style="width:100%;padding:10px 12px;border-radius:6px;border:2px solid #ccc;background:#fff;color:#333;font-size:15px;font-family:inherit;"/>
+  <input type="text" id="studentName" placeholder="Enter your name to begin..." style="width:100%;padding:10px 12px;border-radius:6px;border:2px solid #ccc;background:#fff;color:#333;font-size:15px;font-family:inherit;" oninput="document.getElementById('nameError').style.display='none';this.style.borderColor='#ccc';"/>
+  <div id="nameError" role="alert" aria-live="polite" style="display:none;margin-top:10px;padding:9px 13px;background:#FFEBEE;border-left:3px solid #C62828;border-radius:4px;color:#C62828;font-size:13px;font-weight:600;line-height:1.4;">✋ Please enter your name above before picking a OneWord.</div>
 </div>
     <div class="word-grid" id="wordGrid"></div>
   </section>
@@ -878,6 +879,19 @@ function renderWords(){
 
 /* ========== FLOW ========== */
 function pickWord(w){
+  // Option A: block screen advancement until name is provided
+  const nameEl = document.getElementById('studentName');
+  const name = nameEl ? (nameEl.value || '').trim() : '';
+  if (!name) {
+    const err = document.getElementById('nameError');
+    if (err) err.style.display = 'block';
+    if (nameEl) {
+      nameEl.style.borderColor = '#C62828';
+      nameEl.focus();
+      nameEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    return;
+  }
   state.word = w;
   document.getElementById('chosenWord').textContent = w;
   document.getElementById('crumbWord1').textContent = w;
