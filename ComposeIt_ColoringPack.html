@@ -164,20 +164,29 @@
     .instr-fact { color: #555; }
     .instr-img-wrap { margin: 0 10px; }
 
-    /* ── Print-one mode: hide every card except the .print-target ── */
+    /* ── Print-one mode: hide every card except .print-target ── */
     body.print-one-mode .instr-card:not(.print-target) { display: none !important; }
+    body.print-one-mode .grid { grid-template-columns: 1fr; gap: 0; }
     body.print-one-mode .instr-card.print-target {
-      page-break-after: avoid;
-      break-inside: avoid;
-      max-width: 100%;
+      display: block;            /* override flex column from screen rules */
       width: 100%;
+      max-width: 100%;
       border: none;
+      box-shadow: none;
+      break-inside: avoid;
+      page-break-after: avoid;
+    }
+    body.print-one-mode .instr-card.print-target .instr-img-wrap {
+      flex: 0 0 auto;            /* CRITICAL: override flex:1 — keeps image visible */
+      margin: 0;
+      overflow: visible;
     }
     body.print-one-mode .instr-card.print-target .instr-img {
+      display: block;
+      width: 100%;
       max-width: 100%;
       height: auto;
     }
-    body.print-one-mode .grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -271,7 +280,6 @@
 <script>
 function printOne(name, btn) {
   // CSS-class approach: no popup, no race condition with base64 images.
-  // Tag the card to print, let @media print rules hide the rest, print current window.
   const card = btn.closest('.instr-card');
   if (!card) return;
   document.body.classList.add('print-one-mode');
@@ -279,7 +287,6 @@ function printOne(name, btn) {
   const originalTitle = document.title;
   document.title = name + ' Coloring Sheet';
   window.print();
-  // Clean up after print dialog has snapshotted
   setTimeout(function() {
     document.body.classList.remove('print-one-mode');
     card.classList.remove('print-target');
