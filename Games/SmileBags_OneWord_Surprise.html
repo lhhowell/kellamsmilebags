@@ -71,8 +71,36 @@
   .btn:hover{background:#FFF3D6;transform:translateY(-1px);}
   .btn-surprise{border-color:#FF6B6B;color:#B2454C;font-size:12pt;font-weight:700;}
   .btn-surprise:hover{background:#FFE8E8;}
+  .btn-newplayer{
+    border-color:#6FCF97;color:#1E5A30;font-size:12pt;font-weight:700;
+    background:linear-gradient(135deg,#fff 0%,#F1F8E9 100%);
+  }
+  .btn-newplayer:hover{background:linear-gradient(135deg,#F1F8E9 0%,#D8EDC4 100%);}
   .btn-reset{border-color:#888;color:#666;font-size:10pt;}
   .btn-reset:hover{background:#EFEFEF;}
+
+  /* New player hint banner */
+  .new-player-hint{
+    text-align:center;font-family:'Quicksand',sans-serif;font-size:10pt;
+    color:#5A4818;background:#FFF8E8;border:1.5px dashed #C8860A;
+    border-radius:10px;padding:0.55rem 0.85rem;margin:0.4rem 0 1rem;
+    line-height:1.4;
+  }
+  .new-player-hint strong{color:#1E5A30;font-weight:700;}
+
+  /* Ticket pulse animation (plays when ticket regenerates) */
+  @keyframes ticketPulse {
+    0%   { box-shadow:0 0 0 0 rgba(200,134,10,0.6), 0 4px 12px rgba(200,134,10,0.2); }
+    50%  { box-shadow:0 0 0 14px rgba(200,134,10,0), 0 4px 12px rgba(200,134,10,0.2); }
+    100% { box-shadow:0 0 0 0 rgba(200,134,10,0), 0 4px 12px rgba(200,134,10,0.2); }
+  }
+  .ticket-bar.pulse{animation:ticketPulse 0.9s ease-out;}
+  @keyframes numberFlash {
+    0%   { color:#1A2744; transform:scale(1); }
+    30%  { color:#6FCF97; transform:scale(1.08); }
+    100% { color:#1A2744; transform:scale(1); }
+  }
+  .ticket-number.flash{animation:numberFlash 0.8s ease-out;}
 
   .counter{
     font-family:'Fredoka','Quicksand',sans-serif;font-size:12pt;font-weight:600;
@@ -209,9 +237,13 @@
   </div>
 
   <div class="controls">
+    <button class="btn btn-newplayer" id="btn-newplayer">🙋  New Player</button>
     <button class="btn btn-surprise" id="btn-surprise">🎲  Surprise me</button>
     <span class="counter" id="counter">Discovered: 0 / 24</span>
-    <button class="btn btn-reset" id="btn-reset">↻  Start over</button>
+  </div>
+
+  <div class="new-player-hint">
+    💡 Sharing this device? Tap <strong>🙋 New Player</strong> first &mdash; that gives you your own ticket number.
   </div>
 
   <div class="legend">
@@ -755,9 +787,11 @@ function generateTicket() {
   return "OW-" + code;
 }
 
-const TICKET = generateTicket();
-document.getElementById("ticket-number").textContent = TICKET;
-document.getElementById("big-ticket-number").textContent = TICKET;
+let TICKET = generateTicket();
+const ticketNumberEl = document.getElementById("ticket-number");
+const bigTicketNumberEl = document.getElementById("big-ticket-number");
+ticketNumberEl.textContent = TICKET;
+bigTicketNumberEl.textContent = TICKET;
 
 const discovered = new Set();
 const grid = document.getElementById("grid");
@@ -766,6 +800,32 @@ const cardBody = document.getElementById("card-body");
 const counter = document.getElementById("counter");
 const ticketOverlay = document.getElementById("ticket-overlay");
 const ticketBar = document.getElementById("ticket-bar");
+
+// IDLE AUTO-RESET — if no interaction for 3 min, reset for next player
+const IDLE_TIMEOUT_MS = 3 * 60 * 1000;
+let idleTimer = null;
+function resetIdleTimer() {
+  if (idleTimer) clearTimeout(idleTimer);
+  idleTimer = setTimeout(function() { newPlayer(true); }, IDLE_TIMEOUT_MS);
+}
+
+// NEW PLAYER — regenerate ticket, clear state, pulse animation to show change
+function newPlayer(isAuto) {
+  TICKET = generateTicket();
+  ticketNumberEl.textContent = TICKET;
+  bigTicketNumberEl.textContent = TICKET;
+  discovered.clear();
+  document.querySelectorAll(".chip").forEach(function(c) { c.classList.remove("discovered"); });
+  updateCounter();
+  closeCard();
+  closeTicket();
+  ticketBar.classList.remove("pulse");
+  ticketNumberEl.classList.remove("flash");
+  void ticketBar.offsetWidth;
+  ticketBar.classList.add("pulse");
+  ticketNumberEl.classList.add("flash");
+  resetIdleTimer();
+}
 
 function pickSurprise(wordData) {
   const fc = wordData.fc;
@@ -846,10 +906,8 @@ function surpriseMe() {
 }
 
 function resetGame() {
-  discovered.clear();
-  document.querySelectorAll(".chip").forEach(c => c.classList.remove("discovered"));
-  updateCounter();
-  closeCard();
+  // Legacy alias — calls newPlayer for full reset
+  newPlayer(false);
 }
 
 // Build chips
@@ -867,7 +925,7 @@ WORDS.forEach(w => {
 
 // Events
 document.getElementById("btn-surprise").addEventListener("click", surpriseMe);
-document.getElementById("btn-reset").addEventListener("click", resetGame);
+document.getElementById("btn-newplayer").addEventListener("click", function() { newPlayer(false); });
 document.getElementById("card-close").addEventListener("click", closeCard);
 ticketBar.addEventListener("click", showTicket);
 ticketBar.addEventListener("keypress", (e) => { if(e.key === "Enter" || e.key === " "){ e.preventDefault(); showTicket(); }});
@@ -878,6 +936,12 @@ ticketOverlay.addEventListener("click", (e) => { if (e.target === ticketOverlay)
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") { closeCard(); closeTicket(); }
 });
+
+// Reset idle timer on any user interaction
+["click","keydown","touchstart"].forEach(function(evt) {
+  document.addEventListener(evt, resetIdleTimer, {passive: true});
+});
+resetIdleTimer();  // initialize
 
 updateCounter();
 </script>
