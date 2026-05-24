@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OneWord Periodic Table · Smile Bags STEAM Box</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  body{
+    font-family:'Quicksand',-apple-system,sans-serif;
+    background:#F5F1E8;
+    color:#2A2A3E;
+    min-height:100vh;
+    padding:1.5rem 1rem 2rem;
+  }
+
+  .page{
+    max-width:1000px;
+    margin:0 auto;
+    background:#FFFEF9;
+    border:2px dashed #C8860A;
+    border-radius:14px;
+    padding:1.5rem 1.25rem 1.25rem;
+    box-shadow:0 6px 24px rgba(0,0,0,0.06);
+  }
+
+  /* HEADER */
+  .head{text-align:center;border-bottom:2px dotted #C8860A;padding-bottom:0.85rem;margin-bottom:1rem;}
+  .brand-tag{
+    font-family:'Quicksand',sans-serif;
+    font-size:9pt;font-weight:600;letter-spacing:0.28em;text-transform:uppercase;
+    color:#C8860A;margin-bottom:0.25rem;
+  }
+  .title{
+    font-family:'Fredoka','Quicksand',sans-serif;
+    font-size:30pt;font-weight:700;line-height:1;color:#1A2744;letter-spacing:-0.02em;
+  }
+  .title em{font-style:normal;color:#FF6B6B;}
+  .subtitle{
+    font-family:'Fredoka','Quicksand',sans-serif;
+    font-size:13pt;font-weight:500;color:#6B3FA0;margin-top:0.2rem;
+  }
+  .sub-meta{
+    font-family:'Quicksand',sans-serif;
+    font-size:8pt;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;
+    color:#8A8070;margin-top:0.4rem;
+  }
+
+  /* CONTROLS */
+  .controls{
+    display:flex;justify-content:center;gap:0.6rem;margin:0.85rem 0 1rem;
+    flex-wrap:wrap;
+  }
+  .btn{
+    font-family:'Quicksand',sans-serif;
+    font-size:10.5pt;font-weight:600;
+    padding:0.55rem 1rem;
+    background:#fff;
+    border:1.5px solid #C8860A;
+    color:#7A5408;
+    border-radius:999px;
+    cursor:pointer;
+    transition:all 0.15s;
+  }
+  .btn:hover{background:#FFF3D6;transform:translateY(-1px);}
+  .btn:active{transform:translateY(0);}
+  .btn.btn-print{border-color:#6B3FA0;color:#6B3FA0;}
+  .btn.btn-print:hover{background:#F1E8F8;}
+  .btn.btn-random{border-color:#FF6B6B;color:#B2454C;}
+  .btn.btn-random:hover{background:#FFE8E8;}
+
+  /* GRID */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:0.4rem;
+    margin-bottom:1rem;
+  }
+
+  .tile{
+    position:relative;
+    aspect-ratio:1;
+    background:#fff;
+    border:1.5px solid #ccc;
+    border-radius:10px;
+    cursor:pointer;
+    padding:0.3rem;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-family:'Quicksand',sans-serif;
+    transition:transform 0.12s,box-shadow 0.15s;
+    overflow:hidden;
+  }
+  .tile:hover{transform:translateY(-2px);box-shadow:0 4px 10px rgba(0,0,0,0.1);}
+  .tile .atomic{position:absolute;top:4px;left:6px;font-size:8.5pt;font-weight:500;opacity:0.6;}
+  .tile .symbol{font-family:'Fredoka','Quicksand',sans-serif;font-size:22pt;font-weight:600;line-height:1;margin-top:2px;}
+  .tile .word{
+    font-size:7.5pt;font-weight:700;
+    letter-spacing:0.06em;
+    margin-top:3px;line-height:1;
+  }
+  .tile .element{font-size:6.5pt;font-weight:500;opacity:0.7;margin-top:2px;line-height:1;}
+
+  .tile.cat-growth { background:#E8F5DC; border-color:#6FCF97; color:#2D5016; }
+  .tile.cat-growth.active { background:#6FCF97; color:#fff; box-shadow: 0 0 0 3px #E8F5DC; }
+  .tile.cat-change { background:#E2F0FB; border-color:#4A90E2; color:#1A4D8C; }
+  .tile.cat-change.active { background:#4A90E2; color:#fff; box-shadow: 0 0 0 3px #E2F0FB; }
+  .tile.cat-strength { background:#FFF2D6; border-color:#F0B84A; color:#7A4E0A; }
+  .tile.cat-strength.active { background:#F0B84A; color:#fff; box-shadow: 0 0 0 3px #FFF2D6; }
+  .tile.cat-inner { background:#D6EEEE; border-color:#1B7A78; color:#0E4948; }
+  .tile.cat-inner.active { background:#1B7A78; color:#fff; box-shadow: 0 0 0 3px #D6EEEE; }
+  .tile.cat-light { background:#FFE1DC; border-color:#FF6B6B; color:#8B2828; }
+  .tile.cat-light.active { background:#FF6B6B; color:#fff; box-shadow: 0 0 0 3px #FFE1DC; }
+
+  /* DETAIL PANEL */
+  .detail{
+    background:#FFF8E8;
+    border:1.5px solid #C8860A;
+    border-radius:12px;
+    padding:1.1rem 1.25rem;
+    margin-bottom:1rem;
+    min-height:120px;
+    transition:background 0.2s,border-color 0.2s;
+  }
+  .detail.empty{
+    background:#F5F1E8;border-color:#D6D0C0;border-style:dashed;
+    text-align:center;color:#8A8070;font-style:italic;font-size:10.5pt;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .detail-top{display:flex;align-items:baseline;gap:0.85rem;flex-wrap:wrap;margin-bottom:0.55rem;}
+  .detail-symbol{font-family:'Fredoka','Quicksand',sans-serif;font-size:38pt;font-weight:700;line-height:1;}
+  .detail-element{font-size:14pt;color:#555;font-weight:500;}
+  .detail-atomic{margin-left:auto;font-size:9pt;color:#888;letter-spacing:0.05em;text-transform:uppercase;font-weight:600;}
+  .detail-word{
+    font-family:'Fredoka','Quicksand',sans-serif;
+    font-size:18pt;font-weight:700;letter-spacing:0.06em;margin-bottom:0.45rem;
+  }
+  .detail-fact{font-size:11.5pt;line-height:1.5;color:#3A3A4A;}
+
+  /* LEGEND */
+  .legend{
+    display:flex;justify-content:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem;
+  }
+  .legend-chip{
+    display:inline-flex;align-items:center;gap:0.35rem;
+    padding:0.32rem 0.7rem;
+    border-radius:999px;
+    font-family:'Quicksand',sans-serif;font-size:9pt;font-weight:600;
+  }
+  .legend-icon{font-size:11pt;}
+  .legend-label{letter-spacing:0.02em;}
+
+  /* FOOTER */
+  .foot{
+    text-align:center;
+    font-family:'Quicksand',sans-serif;font-size:8.5pt;font-weight:600;
+    letter-spacing:0.18em;text-transform:uppercase;color:#8A8070;
+    border-top:2px dotted #C8860A;padding-top:0.6rem;margin-top:0.4rem;
+  }
+  .foot-quote{
+    font-family:'Fredoka','Quicksand',sans-serif;font-size:10pt;font-weight:500;
+    color:#6B3FA0;text-transform:none;letter-spacing:0;font-style:italic;
+    margin-bottom:0.4rem;
+  }
+
+  /* PRINT — clean static card, one letter sheet */
+  @media print {
+    body{background:#fff;padding:0;}
+    .page{box-shadow:none;border:1.5px dashed #C8860A;border-radius:0;max-width:none;}
+    .controls,.detail{display:none!important;}
+    .grid{gap:0.25rem;}
+    .tile{border-width:1px;}
+    .tile .symbol{font-size:18pt;}
+    .tile .word{font-size:6.5pt;}
+    .tile .element{font-size:5.5pt;}
+    .legend-chip{font-size:8pt;padding:0.2rem 0.5rem;}
+    @page{size:letter portrait;margin:0.4in;}
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="head">
+    <div class="brand-tag">Smile Bags · STEAM Box</div>
+    <div class="title">OneWord <em>Periodic</em> Table</div>
+    <div class="subtitle">25 Words · 25 Elements · One Story</div>
+    <div class="sub-meta">A Word &amp; Wonder Experience · Spring 2026</div>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-random" id="btn-random">🎲  Surprise me</button>
+    <button class="btn" id="btn-reset">↻  Reset</button>
+    <button class="btn btn-print" id="btn-print">🖨  Print this card</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="detail empty" id="detail">
+    Tap any tile to reveal the element and its science connection.
+  </div>
+
+  <div class="legend">
+    <div class="legend-chip" style="background:#E8F5DC;border:1.5px solid #6FCF97;color:#2D5016;">
+      <span class="legend-icon">🌱</span>
+      <span class="legend-label">Growth</span>
+    </div>
+    <div class="legend-chip" style="background:#E2F0FB;border:1.5px solid #4A90E2;color:#1A4D8C;">
+      <span class="legend-icon">🌊</span>
+      <span class="legend-label">Change · Flow</span>
+    </div>
+    <div class="legend-chip" style="background:#FFF2D6;border:1.5px solid #F0B84A;color:#7A4E0A;">
+      <span class="legend-icon">⚓</span>
+      <span class="legend-label">Strength</span>
+    </div>
+    <div class="legend-chip" style="background:#D6EEEE;border:1.5px solid #1B7A78;color:#0E4948;">
+      <span class="legend-icon">🧘</span>
+      <span class="legend-label">Inner · Balance</span>
+    </div>
+    <div class="legend-chip" style="background:#FFE1DC;border:1.5px solid #FF6B6B;color:#8B2828;">
+      <span class="legend-icon">✨</span>
+      <span class="legend-label">Light · Connect</span>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="foot-quote">Every element. Every word. Every kid.</div>
+    Smile Bags · STEAM Box · A Word &amp; Wonder Experience
+  </div>
+
+</div>
+
+<script>
+const ELEMENTS = [{"n": 1, "sym": "H", "el": "Hydrogen", "word": "FLOW", "cat": "change", "fact": "The lightest element. Hydrogen flows through every river as part of water."}, {"n": 2, "sym": "He", "el": "Helium", "word": "CLEAR", "cat": "inner", "fact": "No color, no smell, no taste. Helium is pure clarity."}, {"n": 3, "sym": "Li", "el": "Lithium", "word": "RENEW", "cat": "growth", "fact": "Lithium batteries renew themselves through thousands of charge cycles."}, {"n": 5, "sym": "B", "el": "Boron", "word": "ROOT", "cat": "growth", "fact": "Boron strengthens plant cell walls. Without it, roots can't form."}, {"n": 6, "sym": "C", "el": "Carbon", "word": "ABSORB", "cat": "inner", "fact": "Activated carbon absorbs toxins by trapping them in its porous structure."}, {"n": 7, "sym": "N", "el": "Nitrogen", "word": "CYCLE", "cat": "change", "fact": "78% of every breath. Nitrogen cycles through air, soil, and living things."}, {"n": 8, "sym": "O", "el": "Oxygen", "word": "BREATHE", "cat": "inner", "fact": "Every breath you take is 21% oxygen \u2014 the rest is mostly nitrogen."}, {"n": 10, "sym": "Ne", "el": "Neon", "word": "RISE", "cat": "strength", "fact": "Lighter than air, neon rises \u2014 and glows red when electrified."}, {"n": 11, "sym": "Na", "el": "Sodium", "word": "MIGRATE", "cat": "change", "fact": "Sodium ions migrate across cell membranes to send signals."}, {"n": 12, "sym": "Mg", "el": "Magnesium", "word": "BALANCE", "cat": "inner", "fact": "Magnesium balances electrolytes in muscles and nerves."}, {"n": 14, "sym": "Si", "el": "Silicon", "word": "CONNECT", "cat": "light", "fact": "Silicon chips connect everything in the modern world."}, {"n": 15, "sym": "P", "el": "Phosphorus", "word": "BLOOM", "cat": "growth", "fact": "Phosphorus fuels the energy plants need to flower."}, {"n": 16, "sym": "S", "el": "Sulfur", "word": "SUSTAIN", "cat": "strength", "fact": "Sulfur holds proteins together \u2014 the bonds that sustain life."}, {"n": 19, "sym": "K", "el": "Potassium", "word": "GROW", "cat": "growth", "fact": "Potassium is the K in NPK fertilizer \u2014 essential for plant growth."}, {"n": 20, "sym": "Ca", "el": "Calcium", "word": "RESTORE", "cat": "strength", "fact": "99% of your body's calcium restores and rebuilds your bones."}, {"n": 22, "sym": "Ti", "el": "Titanium", "word": "EMERGE", "cat": "growth", "fact": "Discovered in 1791, titanium emerged as the strength-to-weight champion."}, {"n": 26, "sym": "Fe", "el": "Iron", "word": "ANCHOR", "cat": "strength", "fact": "Iron's density made it the anchor of choice for thousands of years."}, {"n": 29, "sym": "Cu", "el": "Copper", "word": "RETURN", "cat": "change", "fact": "Copper returns to its conductive form even after a thousand uses."}, {"n": 30, "sym": "Zn", "el": "Zinc", "word": "HEAL", "cat": "inner", "fact": "Zinc speeds wound healing and supports immune cells."}, {"n": 47, "sym": "Ag", "el": "Silver", "word": "FILTER", "cat": "light", "fact": "Silver ions kill bacteria \u2014 used in water filters for centuries."}, {"n": 53, "sym": "I", "el": "Iodine", "word": "THRIVE", "cat": "growth", "fact": "The thyroid needs iodine to thrive \u2014 controls every cell's energy."}, {"n": 74, "sym": "W", "el": "Tungsten", "word": "PERSIST", "cat": "strength", "fact": "Tungsten has the highest melting point of any metal \u2014 persistence at 3,422\u00b0C."}, {"n": 78, "sym": "Pt", "el": "Platinum", "word": "TRANSFORM", "cat": "change", "fact": "Platinum catalysts transform pollutants into harmless gases in car exhaust."}, {"n": 79, "sym": "Au", "el": "Gold", "word": "SHINE", "cat": "light", "fact": "Gold never tarnishes \u2014 its shine lasts forever."}, {"n": 80, "sym": "Hg", "el": "Mercury", "word": "ADAPT", "cat": "change", "fact": "The only metal liquid at room temperature, mercury adapts to any container."}];
+const grid = document.getElementById("grid");
+const detail = document.getElementById("detail");
+
+const CATEGORIES = {
+  growth:   {label:"Growth",         ink:"#2D5016"},
+  change:   {label:"Change · Flow",   ink:"#1A4D8C"},
+  strength: {label:"Strength",       ink:"#7A4E0A"},
+  inner:    {label:"Inner · Balance", ink:"#0E4948"},
+  light:    {label:"Light · Connect", ink:"#8B2828"},
+};
+
+function renderTile(d) {
+  const t = document.createElement("button");
+  t.className = "tile cat-" + d.cat;
+  t.dataset.idx = ELEMENTS.indexOf(d);
+  t.innerHTML =
+    '<span class="atomic">' + d.n + '</span>' +
+    '<span class="symbol">' + d.sym + '</span>' +
+    '<span class="word">' + d.word + '</span>' +
+    '<span class="element">' + d.el + '</span>';
+  t.addEventListener("click", () => showDetail(d, t));
+  return t;
+}
+
+function showDetail(d, tileEl) {
+  document.querySelectorAll(".tile").forEach(t => t.classList.remove("active"));
+  if (tileEl) tileEl.classList.add("active");
+  const cat = CATEGORIES[d.cat];
+  detail.classList.remove("empty");
+  detail.style.borderColor = cat.ink;
+  detail.innerHTML =
+    '<div class="detail-top">' +
+      '<span class="detail-symbol" style="color:' + cat.ink + ';">' + d.sym + '</span>' +
+      '<span class="detail-element">' + d.el + '</span>' +
+      '<span class="detail-atomic">Atomic # ' + d.n + '</span>' +
+    '</div>' +
+    '<div class="detail-word" style="color:' + cat.ink + ';">' + d.word + '</div>' +
+    '<div class="detail-fact">' + d.fact + '</div>';
+  if (tileEl) tileEl.scrollIntoView({behavior:"smooth", block:"center"});
+}
+
+function reset() {
+  document.querySelectorAll(".tile").forEach(t => t.classList.remove("active"));
+  detail.className = "detail empty";
+  detail.style.borderColor = "";
+  detail.innerHTML = "Tap any tile to reveal the element and its science connection.";
+}
+
+function random() {
+  const idx = Math.floor(Math.random() * ELEMENTS.length);
+  const tile = grid.children[idx];
+  showDetail(ELEMENTS[idx], tile);
+}
+
+ELEMENTS.forEach(d => grid.appendChild(renderTile(d)));
+document.getElementById("btn-reset").addEventListener("click", reset);
+document.getElementById("btn-random").addEventListener("click", random);
+document.getElementById("btn-print").addEventListener("click", () => window.print());
+</script>
+
+</body>
+</html>
