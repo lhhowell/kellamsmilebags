@@ -1,0 +1,8 @@
+BEFORE typing:
+  kellamsmilebags  /  [ CBC_Lion.webp ]
+
+DURING typing "ColorByCode/":
+  kellamsmilebags  /  ColorByCode  /  [ CBC_Lion.webp ]
+                       ↑               ↑
+                       NEW FOLDER      FILENAME
+                       (auto-created)  (unchanged)
