@@ -4,6 +4,25 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Design the Palette · Digital Arts · Smile Bags</title>
+
+<!-- ── Visitor mode (Expo) ──
+     Activated by ?visitor=1 in the URL. Suppresses class-only UI:
+     class-progress tracker, "Print for Smile Bag" submit panel,
+     and the "Back to Digital Arts Kiosk" teacher-side back button.
+     Synchronous script + CSS so hidden elements never paint. -->
+<script>
+(function(){
+  if (new URLSearchParams(window.location.search).get('visitor') === '1') {
+    document.documentElement.dataset.visitor = '1';
+  }
+})();
+</script>
+<style>
+  html[data-visitor="1"] #spTracker,
+  html[data-visitor="1"] #spPrintArea,
+  html[data-visitor="1"] .back-btn { display: none !important; }
+</style>
+
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -633,7 +652,9 @@ function fetchSpTracker(){
 }
 
 buildWordGrid();
-fetchSpTracker();
+if (document.documentElement.dataset.visitor !== '1') {
+  fetchSpTracker();
+}
 </script>
 </body>
 </html>
