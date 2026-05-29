@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sorting Network · Game & Showdown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --page-bg:#DCE6EE; --slide-bg:#FAEFD8; --peach:#F2C079; --peach-deep:#ED9F4A;
+    --brown:#3D2D20; --green:#5C8A4A; --purple:#6B3FA0;
+    --script:'Allura',cursive; --display:'Cormorant Garamond',serif; --body:'Inter',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:radial-gradient(circle at 50% -10%,#e8f0f6,var(--page-bg));
+       color:var(--brown);font-family:var(--body);min-height:100vh;padding:20px 14px 44px;}
+  .wrap{max-width:760px;margin:0 auto;text-align:center;}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--peach-deep);font-weight:600;margin:0;}
+  .script{font-family:var(--script);font-size:46px;color:var(--green);line-height:.9;margin:2px 0 0;}
+  h1{font-family:var(--display);font-weight:700;font-size:28px;margin:0 0 4px;}
+  .sub{font-size:13.5px;color:#6b5848;margin:0 0 14px;}
+
+  .screen{display:none;} .screen.active{display:block;}
+
+  .btn{font-family:var(--body);font-weight:600;font-size:14px;border:none;border-radius:26px;
+       padding:11px 22px;cursor:pointer;transition:transform .1s,background .15s;}
+  .btn:active{transform:translateY(1px);}
+  .btn:disabled{opacity:.45;cursor:default;}
+  .b-green{background:var(--green);color:#fff;} .b-green:hover:not(:disabled){background:#4d7a3d;}
+  .b-purple{background:var(--purple);color:#fff;} .b-purple:hover:not(:disabled){background:#582f87;}
+  .b-out{background:transparent;color:var(--peach-deep);border:2px solid var(--peach);}
+  .b-out:hover:not(:disabled){background:rgba(242,192,121,.18);}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:10px 0 6px;}
+  .big{font-size:17px;padding:16px 34px;border-radius:30px;}
+
+  .stagewrap{overflow-x:auto;}
+  .stage{position:relative;width:700px;height:360px;margin:6px auto;}
+  .lane{position:absolute;height:3px;left:30px;width:640px;background:#C9A36B;opacity:.5;border-radius:2px;}
+  .bar{position:absolute;width:5px;background:var(--green);border-radius:3px;opacity:.55;transition:opacity .2s,box-shadow .2s,width .2s;}
+  .bar.active{opacity:1;width:7px;box-shadow:0 0 0 3px rgba(92,138,74,.22);}
+  .chip{position:absolute;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;
+        background:#fff;border:3px solid var(--peach-deep);display:flex;align-items:center;justify-content:center;
+        font-family:var(--display);font-weight:700;font-size:22px;color:var(--brown);
+        transition:left .42s cubic-bezier(.4,.1,.2,1),top .42s cubic-bezier(.4,.1,.2,1),border-color .3s,background .3s;
+        box-shadow:0 3px 7px rgba(61,45,32,.16);z-index:2;}
+  .chip.cmp{border-color:var(--purple);box-shadow:0 0 0 4px rgba(107,63,160,.18);}
+  .chip.done{border-color:var(--green);background:#eef6ea;color:var(--green);}
+  .endcap{position:absolute;top:-2px;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#9a8a7b;font-weight:600;}
+
+  .msg{min-height:26px;font-family:var(--display);font-size:20px;color:var(--purple);font-weight:600;margin:6px 0;}
+  .toggle{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:#6b5848;margin:4px 0;cursor:pointer;}
+  .toggle input{width:16px;height:16px;accent-color:var(--purple);}
+
+  .panel{background:var(--slide-bg);border:2px solid var(--peach);border-radius:16px;padding:22px 20px;margin:14px auto;max-width:560px;}
+  .slots,.pool{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+  .slot{width:48px;height:48px;border:2px dashed #b69ed6;border-radius:10px;display:flex;align-items:center;justify-content:center;
+        font-family:var(--display);font-weight:700;font-size:19px;color:var(--purple);cursor:pointer;background:#fff;}
+  .slot.filled{border-style:solid;background:#f3eefb;}
+  .pool{margin-top:12px;}
+  .pchip{width:48px;height:48px;border:2px solid var(--peach-deep);border-radius:50%;background:#fff;
+         display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;font-size:19px;color:var(--brown);cursor:pointer;}
+  .pchip:disabled{opacity:.3;cursor:default;}
+  .lbl{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--purple);font-weight:600;margin:0 0 4px;}
+  .hint{font-size:11.5px;color:#8a7a6b;margin-top:10px;}
+
+  .board{max-width:480px;margin:12px auto;}
+  .prow{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;border-radius:12px;margin:6px 0;
+        background:#fff;border:1px solid #e3d8c4;font-size:15px;}
+  .prow.win{background:#f3eefb;border-color:#cdb6e8;}
+  .prow .nm{font-weight:600;} .prow .sc{font-family:var(--display);font-weight:700;font-size:18px;color:var(--purple);}
+  .pillrow{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:8px 0;}
+  .seg{display:inline-flex;gap:8px;align-items:center;background:#fff;border:1.5px solid var(--peach);border-radius:24px;padding:6px 8px;}
+  .seg button{border:none;background:transparent;font-family:var(--body);font-weight:600;font-size:14px;color:#8a7a6b;border-radius:18px;padding:6px 14px;cursor:pointer;}
+  .seg button.sel{background:var(--green);color:#fff;}
+  .nameInput{font-family:var(--body);font-size:14px;border:1.5px solid var(--peach);border-radius:10px;padding:8px 12px;margin:4px;width:180px;text-align:center;color:var(--brown);}
+
+  .confetti{position:fixed;top:-12px;width:9px;height:13px;border-radius:2px;pointer-events:none;z-index:60;animation:fall linear forwards;}
+  @keyframes fall{to{transform:translateY(105vh) rotate(540deg);opacity:.9;}}
+  @media (prefers-reduced-motion:reduce){.chip{transition:none;}.confetti{display:none;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">Unplugged Computing · made digital</p>
+  <p class="script">the sorting</p>
+  <h1>Sorting Network Game</h1>
+
+  <!-- HOME -->
+  <div class="screen active" id="scHome">
+    <p class="sub">Six numbers walk the network. At each green bar they compare — smaller goes up, larger goes down — and come out sorted. Play on your own, or face off.</p>
+    <div class="controls">
+      <button class="btn b-green big" id="goSolo">▶ Solo Play</button>
+      <button class="btn b-purple big" id="goSD">🏆 Showdown · 2–4 players</button>
+    </div>
+  </div>
+
+  <!-- SOLO -->
+  <div class="screen" id="scSolo">
+    <p class="sub">Step through it or run it. Turn on Challenge to predict the finish order first.</p>
+    <div class="stagewrap"><div class="stage" id="stageSolo"></div></div>
+    <div class="msg" id="soloMsg"></div>
+    <div class="controls">
+      <button class="btn b-out" id="sNew">🎲 New round</button>
+      <button class="btn b-green" id="sStep">👣 Step</button>
+      <button class="btn b-green" id="sRun">▶ Run</button>
+      <button class="btn b-out" id="sReset">↺ Reset</button>
+    </div>
+    <label class="toggle"><input type="checkbox" id="sChk"> Challenge mode — predict the finish order first</label>
+    <div class="panel" id="soloGuess" style="display:none;">
+      <p class="lbl">Your guess · smallest → largest</p>
+      <div class="slots" id="sSlots"></div>
+      <div class="pool" id="sPool"></div>
+      <div class="hint">Tap numbers in the order you think they'll finish. Tap a slot to undo.</div>
+    </div>
+    <div class="controls"><button class="btn b-out" id="sHome">← Home</button></div>
+  </div>
+
+  <!-- SHOWDOWN SETUP -->
+  <div class="screen" id="scSetup">
+    <h1 style="font-size:24px;">Set up the Showdown</h1>
+    <div class="panel">
+      <p class="lbl">How many players?</p>
+      <div class="pillrow"><div class="seg" id="segPlayers">
+        <button data-n="2">2</button><button data-n="3" class="sel">3</button><button data-n="4">4</button>
+      </div></div>
+      <p class="lbl" style="margin-top:14px;">Match length</p>
+      <div class="pillrow"><div class="seg" id="segRounds">
+        <button data-r="3" class="sel">Best of 3</button><button data-r="5">Best of 5</button>
+      </div></div>
+      <div id="nameWrap" style="margin-top:14px;"></div>
+    </div>
+    <div class="controls">
+      <button class="btn b-out" id="setupHome">← Home</button>
+      <button class="btn b-purple" id="startMatch">Start match →</button>
+    </div>
+  </div>
+
+  <!-- SHOWDOWN PREDICT -->
+  <div class="screen" id="scPredict">
+    <p class="lbl" id="roundLbl"></p>
+    <h1 style="font-size:24px;" id="turnLbl"></h1>
+    <div class="panel">
+      <p class="sub" style="margin:0 0 10px;">These six numbers will run the network. Arrange them the way you think they'll <b>finish</b> — smallest to largest.</p>
+      <p class="lbl">Your prediction · smallest → largest</p>
+      <div class="slots" id="pSlots"></div>
+      <div class="pool" id="pPool"></div>
+      <div class="hint">Tap a number to place it · tap a slot to undo.</div>
+    </div>
+    <div class="controls"><button class="btn b-purple" id="lockBtn" disabled>Lock it in 🔒</button></div>
+  </div>
+
+  <!-- PASS GATE -->
+  <div class="screen" id="scPass">
+    <div class="panel" style="padding:40px 20px;">
+      <p class="script" style="font-size:38px;margin:0;">pass the device</p>
+      <h1 style="font-size:26px;margin:6px 0 16px;" id="passName"></h1>
+      <button class="btn b-purple big" id="passBtn">I'm ready →</button>
+    </div>
+  </div>
+
+  <!-- REVEAL -->
+  <div class="screen" id="scReveal">
+    <p class="lbl" id="revRoundLbl"></p>
+    <div class="stagewrap"><div class="stage" id="stageSD"></div></div>
+    <div class="msg" id="revMsg"></div>
+    <div class="controls">
+      <button class="btn b-green big" id="revRun">▶ Run the network</button>
+    </div>
+    <div class="board" id="revBoard" style="display:none;"></div>
+    <div class="controls" id="revNext" style="display:none;"></div>
+  </div>
+
+  <!-- MATCH RESULT -->
+  <div class="screen" id="scResult">
+    <p class="script" style="font-size:40px;margin:0;">the champion</p>
+    <h1 style="font-size:26px;" id="champLbl"></h1>
+    <div class="board" id="finalBoard"></div>
+    <div class="controls">
+      <button class="btn b-purple" id="again">Play again</button>
+      <button class="btn b-out" id="resHome">← Home</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var LANE_Y=[40,96,152,208,264,320], COL_X=[40,150,250,350,450,550,650], BAR_X=[100,200,300,400,500,600];
+  var LAYERS=[[[0,1],[2,3],[4,5]],[[1,2],[3,4]],[[0,1],[2,3],[4,5]],[[1,2],[3,4]],[[0,1],[2,3],[4,5]],[[1,2],[3,4]]];
+  var PAL=['#F2C079','#ED9F4A','#5C8A4A','#6B3FA0'];
+  var $=function(id){return document.getElementById(id);};
+  function show(id){ Array.prototype.forEach.call(document.querySelectorAll('.screen'),function(s){s.classList.remove('active');}); $(id).classList.add('active'); window.scrollTo(0,0); }
+
+  // ---------- shared network engine (bound to a stage element) ----------
+  var stage, chips, order, startOrder, col, running;
+  function buildStatic(st){
+    st.innerHTML='';
+    LANE_Y.forEach(function(y){var d=document.createElement('div');d.className='lane';d.style.top=y+'px';st.appendChild(d);});
+    LAYERS.forEach(function(layer,c){layer.forEach(function(pair){
+      var a=LANE_Y[pair[0]],b=LANE_Y[pair[1]];
+      var bar=document.createElement('div');bar.className='bar';bar.dataset.col=c;
+      bar.style.left=BAR_X[c]+'px';bar.style.top=a+'px';bar.style.height=(b-a)+'px';st.appendChild(bar);
+    });});
+    var s=document.createElement('div');s.className='endcap';s.textContent='Start';s.style.left='22px';st.appendChild(s);
+    var f=document.createElement('div');f.className='endcap';f.textContent='Sorted';f.style.left='628px';st.appendChild(f);
+  }
+  function rand6(){var set={},a=[];while(a.length<6){var n=10+Math.floor(Math.random()*90);if(!set[n]){set[n]=1;a.push(n);}}return a;}
+  function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+  function makeChips(st,vals){
+    chips=[]; vals.forEach(function(v,i){var el=document.createElement('div');el.className='chip';el.textContent=v;st.appendChild(el);chips.push({id:i,val:v,el:el});});
+  }
+  function render(){for(var lane=0;lane<6;lane++){var c=chips[order[lane]];c.el.style.left=COL_X[col]+'px';c.el.style.top=LANE_Y[lane]+'px';}}
+  function clearActive(){Array.prototype.forEach.call(stage.querySelectorAll('.bar'),function(b){b.classList.remove('active');});chips.forEach(function(c){c.el.classList.remove('cmp');});}
+  function load(st,vals){ stage=st; buildStatic(st); var scr=shuffle(vals); makeChips(st,scr); order=chips.map(function(c){return c.id;}); startOrder=order.slice(); col=0; running=false; chips.forEach(function(c){c.el.classList.remove('done');}); render(); }
+  function resetEngine(){clearActive();order=startOrder.slice();col=0;running=false;chips.forEach(function(c){c.el.classList.remove('done');});render();}
+  function step(cb){
+    if(col>=6){if(cb)cb();return;}
+    clearActive();
+    var layer=LAYERS[col];
+    Array.prototype.forEach.call(stage.querySelectorAll('.bar[data-col="'+col+'"]'),function(b){b.classList.add('active');});
+    layer.forEach(function(p){chips[order[p[0]]].el.classList.add('cmp');chips[order[p[1]]].el.classList.add('cmp');});
+    layer.forEach(function(p){if(chips[order[p[0]]].val>chips[order[p[1]]].val){var t=order[p[0]];order[p[0]]=order[p[1]];order[p[1]]=t;}});
+    col++; render();
+    if(cb) setTimeout(cb,500);
+  }
+  function runAll(done){
+    running=true;
+    (function loop(){ if(col>=6){running=false;clearActive();chips.forEach(function(c){c.el.classList.add('done');});if(done)done();return;} step(loop); })();
+  }
+  function finalVals(){ return order.map(function(id){return chips[id].val;}); } // top->bottom ascending
+
+  // ---------- generic predict UI ----------
+  function buildPredict(slotsEl,poolEl,vals,onChange){
+    var guess=[];
+    slotsEl.innerHTML=''; poolEl.innerHTML='';
+    for(var i=0;i<6;i++){var s=document.createElement('div');s.className='slot';s.dataset.idx=i;
+      s.addEventListener('click',function(e){var idx=+e.currentTarget.dataset.idx;if(idx<guess.length){guess.splice(idx,1);redraw();}});slotsEl.appendChild(s);}
+    vals.forEach(function(v){var b=document.createElement('button');b.className='pchip';b.textContent=v;b.dataset.val=v;
+      b.addEventListener('click',function(e){var val=+e.currentTarget.dataset.val;if(guess.indexOf(val)===-1&&guess.length<6){guess.push(val);redraw();}});poolEl.appendChild(b);});
+    function redraw(){
+      var sl=slotsEl.children;
+      for(var i=0;i<6;i++){ if(i<guess.length){sl[i].textContent=guess[i];sl[i].classList.add('filled');} else {sl[i].textContent='';sl[i].classList.remove('filled');} }
+      Array.prototype.forEach.call(poolEl.children,function(b){b.disabled=guess.indexOf(+b.dataset.val)!==-1;});
+      if(onChange) onChange(guess);
+    }
+    redraw();
+    return function(){return guess;};
+  }
+  function score(guess,truth){var s=0;for(var i=0;i<6;i++){if(guess[i]===truth[i])s++;}return s;}
+  function confetti(n){n=n||30;for(var k=0;k<n;k++){(function(){var c=document.createElement('div');c.className='confetti';c.style.left=Math.random()*100+'vw';c.style.background=PAL[Math.floor(Math.random()*PAL.length)];c.style.animationDuration=(1.5+Math.random()*1.3)+'s';document.body.appendChild(c);setTimeout(function(){c.remove();},3200);})();}}
+
+  // ================= SOLO =================
+  var sGetGuess=null;
+  function soloNew(vals){
+    load($('stageSolo'), vals||rand6());
+    $('soloMsg').textContent=''; sBtns(true); $('sStep').disabled=false; $('sRun').disabled=false;
+    if($('sChk').checked){ $('soloGuess').style.display='block'; sGetGuess=buildPredict($('sSlots'),$('sPool'),finalValsUnsorted(),null); }
+    else { $('soloGuess').style.display='none'; sGetGuess=null; }
+  }
+  function finalValsUnsorted(){ return order.map(function(id){return chips[id].val;}); } // current lane values (the scramble)
+  function sBtns(on){ $('sNew').disabled=!on;$('sReset').disabled=!on; }
+  function soloFinish(){
+    if($('sChk').checked && sGetGuess){
+      var g=sGetGuess(); if(g.length<6){return;}
+      var c=score(g, finalVals());
+      $('soloMsg').textContent = c===6?'🎉 Perfect — all six!':('You got '+c+' of 6 right!');
+    } else { $('soloMsg').textContent='✨ Sorted! Smallest at top, largest at bottom.'; }
+    confetti();
+  }
+  $('goSolo').onclick=function(){ show('scSolo'); soloNew([14,27,38,45,59,63]); };
+  $('sHome').onclick=function(){ show('scHome'); };
+  $('sNew').onclick=function(){ soloNew(null); };
+  $('sReset').onclick=function(){ resetEngine(); $('soloMsg').textContent=''; $('sStep').disabled=false;$('sRun').disabled=false; if($('sChk').checked&&sGetGuess){/*keep guess*/} };
+  $('sStep').onclick=function(){ if(running)return; if($('sChk').checked&&sGetGuess&&sGetGuess().length<6){$('soloMsg').textContent='Make your guess first!';return;} step(function(){ if(col>=6){$('sStep').disabled=true;$('sRun').disabled=true;soloFinish();} }); };
+  $('sRun').onclick=function(){ if(running)return; if($('sChk').checked&&sGetGuess&&sGetGuess().length<6){$('soloMsg').textContent='Make your guess first!';return;} sBtns(false);$('sStep').disabled=true;$('sRun').disabled=true; runAll(function(){ sBtns(true); soloFinish(); }); };
+  $('sChk').onchange=function(){ if($('sChk').checked){$('soloGuess').style.display='block';sGetGuess=buildPredict($('sSlots'),$('sPool'),finalValsUnsorted(),null);} else {$('soloGuess').style.display='none';sGetGuess=null;} };
+
+  // ================= SHOWDOWN =================
+  var SD={players:[], rounds:3, round:0, vals:[], truth:[], turn:0, guesses:[], getG:null};
+  function buildNames(){
+    var n=SD.nPlayers, w=$('nameWrap'); w.innerHTML='<p class="lbl">Names (optional)</p>';
+    for(var i=0;i<n;i++){var inp=document.createElement('input');inp.className='nameInput';inp.placeholder='Player '+(i+1);inp.id='nm'+i;w.appendChild(inp);}
+  }
+  $('goSD').onclick=function(){ SD.nPlayers=3; SD.rounds=3; segSel('segPlayers','3','n'); segSel('segRounds','3','r'); buildNames(); show('scSetup'); };
+  $('setupHome').onclick=function(){ show('scHome'); };
+  function segSel(seg,val,attr){ Array.prototype.forEach.call($(seg).children,function(b){ b.classList.toggle('sel', b.dataset[attr]===val); }); }
+  $('segPlayers').onclick=function(e){ if(e.target.dataset.n){ SD.nPlayers=+e.target.dataset.n; segSel('segPlayers',e.target.dataset.n,'n'); buildNames(); } };
+  $('segRounds').onclick=function(e){ if(e.target.dataset.r){ SD.rounds=+e.target.dataset.r; segSel('segRounds',e.target.dataset.r,'r'); } };
+  $('startMatch').onclick=function(){
+    SD.players=[]; for(var i=0;i<SD.nPlayers;i++){var v=($('nm'+i).value||'').trim(); SD.players.push({name:v||('Player '+(i+1)),wins:0});}
+    SD.round=0; startRound();
+  };
+  function startRound(){
+    SD.round++; SD.vals=rand6(); SD.truth=SD.vals.slice().sort(function(a,b){return a-b;});
+    SD.turn=0; SD.guesses=[]; passGate();
+  }
+  function passGate(){
+    $('passName').textContent = SD.players[SD.turn].name + " — your turn";
+    show('scPass');
+  }
+  $('passBtn').onclick=function(){ predictTurn(); };
+  function predictTurn(){
+    $('roundLbl').textContent='Round '+SD.round+' of '+SD.rounds;
+    $('turnLbl').textContent=SD.players[SD.turn].name+", make your prediction";
+    SD.getG=buildPredict($('pSlots'),$('pPool'),SD.vals,function(g){ $('lockBtn').disabled = g.length<6; });
+    $('lockBtn').disabled=true;
+    show('scPredict');
+  }
+  $('lockBtn').onclick=function(){
+    var g=SD.getG(); if(g.length<6)return;
+    SD.guesses.push(g.slice());
+    SD.turn++;
+    if(SD.turn<SD.players.length){ passGate(); } else { reveal(); }
+  };
+  function reveal(){
+    $('revRoundLbl').textContent='Round '+SD.round+' — running the network';
+    load($('stageSD'), SD.vals);
+    $('revMsg').textContent=''; $('revBoard').style.display='none'; $('revNext').style.display='none';
+    $('revRun').disabled=false;
+    show('scReveal');
+  }
+  $('revRun').onclick=function(){
+    if(running)return; $('revRun').disabled=true;
+    runAll(function(){
+      var truth=finalVals(); // ascending
+      var scored=SD.players.map(function(p,i){ return {name:p.name, idx:i, s:score(SD.guesses[i],truth)}; });
+      var best=Math.max.apply(null,scored.map(function(x){return x.s;}));
+      var winners=scored.filter(function(x){return x.s===best;});
+      winners.forEach(function(w){ SD.players[w.idx].wins++; });
+      // board
+      var b=$('revBoard'); b.innerHTML=''; b.style.display='block';
+      scored.sort(function(a,b){return b.s-a.s;}).forEach(function(x){
+        var win = x.s===best;
+        var row=document.createElement('div'); row.className='prow'+(win?' win':'');
+        row.innerHTML='<span class="nm">'+(win?'⭐ ':'')+x.name+'</span><span class="sc">'+x.s+'/6</span>';
+        b.appendChild(row);
+      });
+      $('revMsg').textContent = winners.length===1 ? (winners[0].name+' takes the round!') : ('Round tie — '+winners.map(function(w){return w.name;}).join(' & ')+'!');
+      confetti(36);
+      // next control
+      var nx=$('revNext'); nx.innerHTML=''; nx.style.display='flex';
+      if(SD.round < SD.rounds){
+        var bt=document.createElement('button'); bt.className='btn b-purple'; bt.textContent='Next round →'; bt.onclick=startRound; nx.appendChild(bt);
+      } else {
+        var bt2=document.createElement('button'); bt2.className='btn b-purple'; bt2.textContent='See champion 🏆'; bt2.onclick=matchResult; nx.appendChild(bt2);
+      }
+    });
+  };
+  function matchResult(){
+    var maxW=Math.max.apply(null,SD.players.map(function(p){return p.wins;}));
+    var champs=SD.players.filter(function(p){return p.wins===maxW;});
+    $('champLbl').textContent = champs.length===1 ? champs[0].name+' wins the match!' : ('Tie: '+champs.map(function(c){return c.name;}).join(' & '));
+    var fb=$('finalBoard'); fb.innerHTML='';
+    SD.players.slice().sort(function(a,b){return b.wins-a.wins;}).forEach(function(p){
+      var win=p.wins===maxW;
+      var row=document.createElement('div'); row.className='prow'+(win?' win':'');
+      row.innerHTML='<span class="nm">'+(win?'🏆 ':'')+p.name+'</span><span class="sc">'+p.wins+(p.wins===1?' round':' rounds')+'</span>';
+      fb.appendChild(row);
+    });
+    confetti(60); show('scResult');
+  }
+  $('again').onclick=function(){ buildNames(); show('scSetup'); };
+  $('resHome').onclick=function(){ show('scHome'); };
+})();
+</script>
+</body>
+</html>
