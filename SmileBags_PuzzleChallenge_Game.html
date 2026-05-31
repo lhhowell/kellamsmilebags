@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Puzzle Challenge · Smile Bags</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page-bg:#DCE6EE;--slide:#FAEFD8;--peach:#F2C079;--peach-deep:#ED9F4A;
+  --brown:#3D2D20;--green:#5C8A4A;--purple:#6B3FA0;
+  --display:'Cormorant Garamond',serif;--script:'Allura',cursive;--body:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--page-bg);color:var(--brown);min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;padding:18px 14px 40px}
+.head{text-align:center;margin-bottom:10px}
+.eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--peach-deep);font-weight:700}
+h1{font-family:var(--display);font-weight:700;font-size:30px;color:var(--brown);line-height:1}
+.head .sub{font-size:13px;color:#6b5848;margin-top:3px}
+
+.panel{width:100%;max-width:600px;background:#fff;border:1px solid #eadfce;border-radius:16px;
+  padding:14px 16px;box-shadow:0 6px 22px rgba(61,45,32,.09);margin-bottom:14px}
+.prow{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end}
+.fld{display:flex;flex-direction:column;gap:5px}
+.fld label{font-size:10.5px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:#9a8a76}
+select{padding:9px 12px;border:1.5px solid #e0d3bf;border-radius:9px;background:var(--slide);
+  font-size:15px;font-weight:600;color:var(--brown);min-width:150px;cursor:pointer;font-family:var(--body)}
+.diffs{display:flex;gap:7px;flex-wrap:wrap}
+.diff{border:1.5px solid #e0d3bf;background:var(--slide);border-radius:9px;padding:8px 13px;cursor:pointer;
+  font-family:var(--body);font-weight:700;font-size:13px;color:#9a8a76;text-align:center;line-height:1.1}
+.diff small{display:block;font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+.diff.active{background:var(--peach-deep);border-color:var(--peach-deep);color:#fff}
+.go{margin-left:auto;border:0;background:var(--green);color:#fff;font-weight:700;font-size:13.5px;
+  padding:11px 20px;border-radius:26px;cursor:pointer;transition:filter .15s}
+.go:hover{filter:brightness(1.07)}
+
+.stats{display:flex;gap:10px;max-width:600px;width:100%;margin-bottom:10px}
+.stat{flex:1;background:#fff;border:1px solid #eadfce;border-radius:12px;padding:9px 6px;text-align:center}
+.stat b{display:block;font-family:var(--display);font-weight:700;font-size:21px;color:var(--purple)}
+.stat span{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#9a8a76;font-weight:600}
+
+.boardwrap{position:relative;background:#fff;border:3px solid var(--peach);border-radius:16px;
+  padding:10px;box-shadow:0 10px 30px rgba(61,45,32,.13);touch-action:none}
+canvas{display:block;border-radius:8px;cursor:grab;max-width:100%}
+canvas:active{cursor:grabbing}
+.toolbar{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.tbtn{border:1.5px solid var(--peach);background:transparent;color:var(--peach-deep);border-radius:22px;
+  padding:7px 16px;font-family:var(--body);font-weight:600;font-size:12.5px;cursor:pointer}
+.tbtn:hover{background:rgba(242,192,121,.18)}
+.tbtn.on{background:var(--peach-deep);color:#fff;border-color:var(--peach-deep)}
+
+.win{position:absolute;inset:0;background:rgba(250,239,216,.96);border-radius:13px;display:none;
+  flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
+.win.show{display:flex;animation:pop .35s ease}
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+.win .done-k{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--peach-deep);font-weight:700}
+.win .word{font-family:var(--script);font-size:58px;color:var(--purple);line-height:.95;margin:2px 0 6px}
+.win .res{font-family:var(--display);font-size:19px;color:var(--brown)}
+.win .res b{color:var(--green)}
+.win .again{margin-top:16px;display:flex;gap:10px}
+.foot{font-size:11px;color:#8a7a6b;margin-top:18px;text-align:center}
+.loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:18px;color:#9a8a76}
+.err{color:#b5532a}
+</style>
+</head>
+<body>
+<div class="head">
+  <div class="eyebrow">Smile Bags · A Word &amp; Wonder Experience</div>
+  <h1>Puzzle Challenge</h1>
+  <div class="sub">Pick a OneWord, scramble it, and race to put it back together.</div>
+</div>
+
+<div class="panel">
+  <div class="prow">
+    <div class="fld">
+      <label for="word">OneWord</label>
+      <select id="word"></select>
+    </div>
+    <div class="fld">
+      <label>Difficulty</label>
+      <div class="diffs" id="diffs"></div>
+    </div>
+    <button class="go" onclick="start()">Scramble &amp; play ▸</button>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b id="sLeft">–</b><span>Pieces left</span></div>
+  <div class="stat"><b id="sMoves">0</b><span>Moves</span></div>
+  <div class="stat"><b id="sTime">0:00</b><span>Time</span></div>
+</div>
+
+<div class="boardwrap" id="boardwrap">
+  <canvas id="cv" width="520" height="700"></canvas>
+  <div class="loading" id="loading">Pick a word and press “Scramble &amp; play”.</div>
+  <div class="win" id="win">
+    <div class="done-k">Puzzle solved!</div>
+    <div class="word" id="winWord">Shine</div>
+    <div class="res">in <b id="winTime">0:00</b> · <b id="winMoves">0</b> moves</div>
+    <div class="again">
+      <button class="tbtn on" onclick="start()">Play again</button>
+    </div>
+  </div>
+</div>
+
+<div class="toolbar">
+  <button class="tbtn" id="peekBtn" onclick="togglePeek()">👁 Peek at picture</button>
+  <button class="tbtn" onclick="start()">↺ Scramble</button>
+</div>
+
+<div class="foot">Smile Bags · A Word &amp; Wonder Experience · Created by Laura Howell · © 2025–2026</div>
+
+<script>
+const BASE = "https://lhhowell.github.io/kellamsmilebags/Jigsawpuzzles/";
+// OneWord -> available piece counts
+const WORDS = {
+  Anchor:[12,18,24], Balance:[20], Bloom:[16,24], Clear:[16,20,24],
+  Cycle:[8,16,24], Filter:[8,16,24], Renew:[12,18,24], Restore:[8,16,24],
+  Rise:[12,18,24], Shine:[12,18,24], Sustain:[8,16,24]
+};
+// piece count -> [cols, rows]
+const GRID = {8:[2,4],12:[3,4],16:[4,4],18:[3,6],20:[4,5],24:[4,6]};
+const tierName = n => n<=12 ? "Starter" : (n<=18 ? "Medium" : "Tricky");
+const pad2 = n => (n<10?"0":"")+n;
+
+// ---- populate controls ----
+const wordSel=document.getElementById('word');
+Object.keys(WORDS).forEach(w=>{const o=document.createElement('option');o.value=w;o.textContent=w;wordSel.appendChild(o);});
+let curWord='Filter', curCount=WORDS['Filter'][0];
+function buildDiffs(){
+  const box=document.getElementById('diffs'); box.innerHTML='';
+  WORDS[curWord].forEach(n=>{
+    const b=document.createElement('button'); b.className='diff'+(n===curCount?' active':'');
+    b.innerHTML=n+'<small>'+tierName(n)+'</small>';
+    b.onclick=()=>{curCount=n;[...box.children].forEach(c=>c.classList.remove('active'));b.classList.add('active');};
+    box.appendChild(b);
+  });
+}
+wordSel.value='Filter';
+wordSel.onchange=()=>{curWord=wordSel.value; if(!WORDS[curWord].includes(curCount)) curCount=WORDS[curWord][0]; buildDiffs();};
+// optional deep-link ?word=Filter&pieces=24
+const qp=new URLSearchParams(location.search);
+if(qp.get('word') && WORDS[qp.get('word')]){curWord=qp.get('word'); wordSel.value=curWord;}
+if(qp.get('pieces') && WORDS[curWord].includes(+qp.get('pieces'))) curCount=+qp.get('pieces');
+buildDiffs();
+
+// ---- game state ----
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+let img=null, cols=4, rows=6, pw=0, ph=0, pieces=[], drag=null, ox=0, oy=0;
+let moves=0, started=false, t0=0, timer=null, peek=false, won=false;
+
+function start(){
+  const word=curWord, count=curCount;
+  [cols,rows]=GRID[count];
+  document.getElementById('win').classList.remove('show'); won=false;
+  document.getElementById('loading').style.display='flex';
+  document.getElementById('loading').classList.remove('err');
+  document.getElementById('loading').textContent='Loading '+word+'…';
+  const im=new Image();
+  im.onload=()=>{ img=im; setup(); document.getElementById('loading').style.display='none'; };
+  im.onerror=()=>{ document.getElementById('loading').classList.add('err');
+    document.getElementById('loading').textContent='Could not load '+word+' ('+count+'). Check it is uploaded.'; };
+  im.src=BASE+word+'_'+pad2(count)+'piece.jpg';
+}
+function setup(){
+  // fit board to viewport: portrait image
+  const maxW=Math.min(document.querySelector('.boardwrap').clientWidth-20, 520);
+  const ar=img.naturalHeight/img.naturalWidth;
+  const W=Math.round(maxW), H=Math.round(maxW*ar);
+  cv.width=W; cv.height=H;
+  pw=W/cols; ph=H/rows;
+  pieces=[];
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+    pieces.push({c,r, hx:c*pw, hy:r*ph,
+      x:Math.random()*(W-pw), y:Math.random()*(H-ph), placed:false});
+  }
+  // shuffle z-order
+  pieces.sort(()=>Math.random()-0.5);
+  moves=0; started=false; won=false; clearInterval(timer); t0=0;
+  document.getElementById('sMoves').textContent=0;
+  document.getElementById('sTime').textContent='0:00';
+  document.getElementById('sLeft').textContent=pieces.length;
+  draw();
+}
+function draw(){
+  if(!img){return;}
+  ctx.clearRect(0,0,cv.width,cv.height);
+  // faint ghost of finished picture
+  ctx.globalAlpha = peek ? 0.42 : 0.07;
+  ctx.drawImage(img,0,0,cv.width,cv.height);
+  ctx.globalAlpha=1;
+  // slot grid guide
+  ctx.strokeStyle='rgba(61,45,32,.13)'; ctx.lineWidth=1;
+  for(let c=1;c<cols;c++){ctx.beginPath();ctx.moveTo(c*pw,0);ctx.lineTo(c*pw,cv.height);ctx.stroke();}
+  for(let r=1;r<rows;r++){ctx.beginPath();ctx.moveTo(0,r*ph);ctx.lineTo(cv.width,r*ph);ctx.stroke();}
+  const sw=img.naturalWidth/cols, sh=img.naturalHeight/rows;
+  const order=pieces.filter(p=>p!==drag); if(drag) order.push(drag);
+  order.forEach(p=>{
+    ctx.save();
+    ctx.shadowColor = p.placed?'rgba(92,138,74,.0)':'rgba(0,0,0,.28)';
+    ctx.shadowBlur = p.placed?0:7;
+    ctx.drawImage(img, p.c*sw, p.r*sh, sw, sh, p.x, p.y, pw, ph);
+    ctx.restore();
+    ctx.lineWidth = p.placed?1:2;
+    ctx.strokeStyle = p.placed?'rgba(92,138,74,.55)':'rgba(255,255,255,.85)';
+    ctx.strokeRect(p.x+1,p.y+1,pw-2,ph-2);
+  });
+}
+function pos(e){ const r=cv.getBoundingClientRect(); const t=e.touches?e.touches[0]:e;
+  return {x:(t.clientX-r.left)*(cv.width/r.width), y:(t.clientY-r.top)*(cv.height/r.height)}; }
+function pick(x,y){
+  for(let i=pieces.length-1;i>=0;i--){const p=pieces[i];
+    if(!p.placed && x>=p.x && x<=p.x+pw && y>=p.y && y<=p.y+ph){
+      drag=p; ox=x-p.x; oy=y-p.y; pieces.splice(i,1); pieces.push(p);
+      if(!started){started=true; t0=Date.now(); timer=setInterval(tick,500);} return;
+    }
+  }
+}
+function moveTo(x,y){ if(drag){drag.x=x-ox; drag.y=y-oy; draw();} }
+function drop(){
+  if(!drag) return;
+  const snap=Math.min(pw,ph)*0.4;
+  if(Math.abs(drag.x-drag.hx)<snap && Math.abs(drag.y-drag.hy)<snap){
+    drag.x=drag.hx; drag.y=drag.hy; drag.placed=true;
+  }
+  moves++; document.getElementById('sMoves').textContent=moves;
+  const left=pieces.filter(p=>!p.placed).length;
+  document.getElementById('sLeft').textContent=left;
+  drag=null; draw();
+  if(left===0) win();
+}
+function tick(){ const s=Math.floor((Date.now()-t0)/1000);
+  document.getElementById('sTime').textContent=Math.floor(s/60)+':'+(s%60<10?'0':'')+(s%60); }
+function win(){
+  won=true; clearInterval(timer);
+  document.getElementById('winWord').textContent=curWord;
+  document.getElementById('winTime').textContent=document.getElementById('sTime').textContent;
+  document.getElementById('winMoves').textContent=moves;
+  document.getElementById('win').classList.add('show');
+}
+function togglePeek(){ peek=!peek; document.getElementById('peekBtn').classList.toggle('on',peek); draw(); }
+
+// pointer + touch
+cv.addEventListener('mousedown',e=>{const p=pos(e);pick(p.x,p.y);});
+cv.addEventListener('mousemove',e=>{if(drag){const p=pos(e);moveTo(p.x,p.y);}});
+window.addEventListener('mouseup',drop);
+cv.addEventListener('touchstart',e=>{const p=pos(e);pick(p.x,p.y);e.preventDefault();},{passive:false});
+cv.addEventListener('touchmove',e=>{if(drag){const p=pos(e);moveTo(p.x,p.y);}e.preventDefault();},{passive:false});
+cv.addEventListener('touchend',e=>{drop();e.preventDefault();},{passive:false});
+window.addEventListener('resize',()=>{ if(img && !won) setup(); });
+</script>
+</body>
+</html>
