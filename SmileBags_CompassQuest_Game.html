@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compass Quest · Smile Bags</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#DCE6EE; --slide:#FAEFD8; --peach:#F2C079; --peachd:#ED9F4A;
+    --brown:#3D2D20; --green:#5C8A4A; --purple:#6B3FA0; --gold:#C8860A; --rose:#B5446E;
+    --script:'Allura',cursive; --display:'Cormorant Garamond',serif; --body:'Inter',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:var(--body);color:var(--brown);padding:20px 14px 50px;}
+  .wrap{max-width:880px;margin:0 auto;}
+  .head{text-align:center;margin-bottom:10px;}
+  .script{font-family:var(--script);font-size:34px;color:var(--green);line-height:.8;}
+  .eyebrow{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--peachd);font-weight:700;margin-top:2px;}
+  h1{font-family:var(--display);font-weight:700;font-size:34px;color:var(--brown);line-height:1;margin-top:3px;}
+  .sub{font-size:13px;color:#6b5848;margin-top:5px;max-width:560px;margin-left:auto;margin-right:auto;}
+  .levels{display:flex;gap:10px;justify-content:center;margin:14px 0 16px;}
+  .lvl{font-family:var(--body);font-weight:600;font-size:14px;border:2px solid var(--peach);background:#fff;color:#6b5848;border-radius:30px;padding:9px 22px;cursor:pointer;transition:.15s;}
+  .lvl.active{background:var(--green);border-color:var(--green);color:#fff;}
+  .lvl .tag{font-size:10px;opacity:.8;font-weight:500;}
+  .game{display:flex;gap:22px;align-items:flex-start;justify-content:center;flex-wrap:wrap;}
+  /* map */
+  .mapcard{background:var(--slide);border:2.5px solid var(--peach);border-radius:16px;padding:16px;}
+  .grid{position:relative;display:grid;background:#FBF3E0;border-radius:8px;}
+  .cell{border:1px solid #E3D4B5;display:flex;align-items:center;justify-content:center;
+    font-family:var(--display);font-weight:700;color:#3D2D20;}
+  .cell.alt{background:#F6ECD6;}
+  .cell.trail{background:rgba(107,63,160,.16);}
+  .cell.stop{background:rgba(92,138,74,.22);}
+  .cell .let{opacity:0;transform:scale(.4);transition:.3s;}
+  .cell.reveal .let{opacity:1;transform:scale(1);}
+  .cell.start{background:var(--green);color:#fff;font-family:var(--body);font-weight:700;}
+  .cell.finish{background:var(--peach);color:#7a5a10;font-family:var(--body);font-weight:700;box-shadow:inset 0 0 0 2px var(--gold);}
+  .cell.finish.reveal{font-family:var(--display);color:#3D2D20;}
+  #token{position:absolute;border-radius:50%;background:var(--rose);box-shadow:0 2px 6px rgba(0,0,0,.3);
+    transition:left .42s ease,top .42s ease;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;z-index:5;pointer-events:none;}
+  /* panel */
+  .panel{flex:1;min-width:280px;max-width:360px;}
+  .box{background:var(--slide);border:1.5px solid var(--peach);border-radius:14px;padding:14px 16px;margin-bottom:14px;}
+  .step-label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--peachd);font-weight:700;}
+  .bearing{font-family:var(--display);font-weight:700;font-size:42px;color:var(--purple);line-height:1;margin:2px 0;}
+  .bearing small{font-size:18px;color:var(--brown);font-weight:600;}
+  .spaces{font-size:14px;color:#6b5848;}
+  .rose{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px auto 4px;max-width:240px;}
+  .dirbtn{aspect-ratio:1;border:2px solid var(--peach);background:#fff;border-radius:12px;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:var(--brown);transition:.12s;}
+  .dirbtn .deg{font-size:10px;color:var(--purple);font-weight:600;}
+  .dirbtn:hover{background:#FBF3E0;}
+  .dirbtn:active{transform:scale(.94);}
+  .rose .mid{border:none;background:transparent;cursor:default;color:var(--rose);font-size:24px;}
+  .rose .mid:hover{background:transparent;}
+  .feedback{min-height:20px;text-align:center;font-size:13px;font-weight:600;margin-top:6px;}
+  .feedback.bad{color:var(--rose);}
+  .feedback.good{color:var(--green);}
+  .tray{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:4px;}
+  .slot{width:26px;height:32px;border-bottom:2.5px solid var(--peachd);display:flex;align-items:center;justify-content:center;
+    font-family:var(--display);font-weight:700;font-size:22px;color:var(--green);}
+  .stats{display:flex;justify-content:space-between;font-size:12px;color:#8a7a6b;margin-top:10px;}
+  .reset{display:block;margin:8px auto 0;background:transparent;border:2px solid var(--peach);color:var(--peachd);
+    font-weight:600;font-size:13px;border-radius:24px;padding:8px 20px;cursor:pointer;}
+  .reset:hover{background:rgba(242,192,121,.18);}
+  /* win */
+  .scrim{position:fixed;inset:0;background:rgba(40,30,20,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;}
+  .scrim.show{display:flex;}
+  .win{background:#FFF8EE;border-radius:20px;padding:30px 28px;max-width:420px;text-align:center;border:3px solid var(--peach);animation:pop .35s ease;}
+  @keyframes pop{from{transform:scale(.8);opacity:0;}to{transform:scale(1);opacity:1;}}
+  .win .spark{font-size:34px;}
+  .win h2{font-family:var(--display);font-weight:700;font-size:26px;color:var(--green);margin:4px 0;}
+  .win .word{font-family:var(--display);font-weight:700;font-size:40px;letter-spacing:.14em;color:var(--purple);margin:8px 0 4px;}
+  .win .reflect{font-size:14px;color:#6b5848;font-style:italic;margin-bottom:12px;}
+  .win .sum{font-size:13px;color:#8a7a6b;margin-bottom:16px;}
+  .win .acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+  .win .acts button{font-family:var(--body);font-weight:600;font-size:13px;border:none;border-radius:24px;padding:10px 20px;cursor:pointer;}
+  .b-green{background:var(--green);color:#fff;}
+  .b-out{background:transparent;border:2px solid var(--peach)!important;color:var(--peachd);}
+  .foot{text-align:center;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9a8a7b;margin-top:18px;}
+  @media(max-width:560px){.bearing{font-size:36px;}.script{font-size:30px;}h1{font-size:28px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="script">Smile Bags</div>
+    <div class="eyebrow">A Word &amp; Wonder Experience</div>
+    <h1>Compass Quest</h1>
+    <p class="sub">Read each bearing, tap the matching point on the rose, and watch your trail unfold. Every stop reveals a letter — reach FINISH to uncover the hidden word.</p>
+  </div>
+
+  <div class="levels">
+    <button class="lvl active" data-key="starter" onclick="startGame('starter')">Trail 1 <span class="tag">· Starter</span></button>
+    <button class="lvl" data-key="advanced" onclick="startGame('advanced')">Trail 2 <span class="tag">· Advanced</span></button>
+  </div>
+
+  <div class="game">
+    <div class="mapcard"><div class="grid" id="grid"></div></div>
+    <div class="panel">
+      <div class="box">
+        <div class="step-label" id="stepLabel">Step 1</div>
+        <div class="bearing" id="bearing">0°</div>
+        <div class="spaces" id="spaces">move 2 spaces</div>
+        <div class="rose" id="rose"></div>
+        <div class="feedback" id="feedback">Tap the bearing on the rose to move.</div>
+      </div>
+      <div class="box">
+        <div class="step-label" style="text-align:center;margin-bottom:6px;">Word so far</div>
+        <div class="tray" id="tray"></div>
+        <div class="stats"><span id="timer">⏱ 0:00</span><span id="wrong">Wrong turns: 0</span></div>
+      </div>
+      <button class="reset" onclick="startGame(CURRENT)">↺ Restart this trail</button>
+    </div>
+  </div>
+  <div class="foot">Smile Bags · A Word &amp; Wonder Experience · Spring 2026</div>
+</div>
+
+<div class="scrim" id="scrim">
+  <div class="win">
+    <div class="spark">🧭 ✦</div>
+    <h2>You reached FINISH!</h2>
+    <div class="word" id="winWord">BALANCE</div>
+    <div class="reflect" id="winReflect"></div>
+    <div class="sum" id="winSum"></div>
+    <div class="acts">
+      <button class="b-green" onclick="startGame(CURRENT)">Play again</button>
+      <button class="b-out" onclick="startGame(OTHER)">Try the other trail</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const TRAILS={
+    starter:{N:8,start:[1,6],moves:[['N',2],['NE',2],['E',2],['S',3],['E',1],['N',2],['NE',1]],word:'BALANCE',reflect:'Steady steps keep you on course.'},
+    advanced:{N:10,start:[1,8],moves:[['N',3],['NE',2],['E',2],['N',2],['E',3],['SE',1],['S',3],['SW',2],['W',3]],word:'TRANSFORM',reflect:'Every journey changes the traveler.'}
+  };
+  const DIRV={N:[0,-1],S:[0,1],E:[1,0],W:[-1,0],NE:[1,-1],NW:[-1,-1],SE:[1,1],SW:[-1,1]};
+  const BEAR={N:0,NE:45,E:90,SE:135,S:180,SW:225,W:270,NW:315};
+  const ROSE_ORDER=[['NW','N','NE'],['W','mid','E'],['SW','S','SE']];
+
+  let CURRENT='starter', OTHER='advanced';
+  let data, N, cur, stepIdx, collected, wrong, t0, timerId, cell, stops, finishCell, over;
+
+  function computeStops(d){
+    let p=d.start.slice(), s=[];
+    d.moves.forEach(([dir,steps])=>{const[dc,dr]=DIRV[dir];p=[p[0]+dc*steps,p[1]+dr*steps];s.push(p.slice());});
+    return s;
+  }
+  function key(c,r){return c+'-'+r;}
+
+  function startGame(k){
+    CURRENT=k; OTHER = k==='starter'?'advanced':'starter';
+    document.querySelectorAll('.lvl').forEach(b=>b.classList.toggle('active',b.dataset.key===k));
+    document.getElementById('scrim').classList.remove('show');
+    data=TRAILS[k]; N=data.N; cur=data.start.slice(); stepIdx=0; collected=''; wrong=0; over=false;
+    stops=computeStops(data); finishCell=stops[stops.length-1];
+    buildGrid(); buildRose(); buildTray();
+    moveToken(cur,true);
+    document.getElementById('wrong').textContent='Wrong turns: 0';
+    clearInterval(timerId); t0=Date.now(); timerId=setInterval(tick,1000); tick();
+    renderStep(); feedback('Tap the bearing on the rose to move.','');
+  }
+
+  function buildGrid(){
+    cell=Math.floor((N<=8?400:420)/N);
+    const g=document.getElementById('grid');
+    g.style.gridTemplateColumns=`repeat(${N},${cell}px)`;
+    g.style.width=(N*cell)+'px'; g.style.height=(N*cell)+'px';
+    g.innerHTML='';
+    for(let r=0;r<N;r++)for(let c=0;c<N;c++){
+      const d=document.createElement('div');
+      d.className='cell'+((c+r)%2?' alt':''); d.id=key(c,r);
+      d.style.fontSize=Math.round(cell*0.42)+'px';
+      if(c===data.start[0]&&r===data.start[1]){d.classList.add('start');d.textContent='START';d.style.fontSize='9px';}
+      else if(c===finishCell[0]&&r===finishCell[1]){d.classList.add('finish');d.innerHTML='<span style="font-size:9px">FINISH</span>';}
+      else{d.innerHTML='<span class="let"></span>';}
+      g.appendChild(d);
+    }
+    let tk=document.getElementById('token');
+    if(!tk){tk=document.createElement('div');tk.id='token';tk.textContent='●';g.appendChild(tk);}
+    else g.appendChild(tk);
+    const ts=Math.round(cell*0.58); tk.style.width=ts+'px'; tk.style.height=ts+'px';
+  }
+  function moveToken([c,r],instant){
+    const tk=document.getElementById('token');
+    const ts=parseInt(tk.style.width);
+    if(instant)tk.style.transition='none'; else tk.style.transition='';
+    tk.style.left=(c*cell+cell/2-ts/2)+'px';
+    tk.style.top=(r*cell+cell/2-ts/2)+'px';
+    if(instant)requestAnimationFrame(()=>{tk.style.transition='';});
+  }
+  function buildRose(){
+    const ro=document.getElementById('rose'); ro.innerHTML='';
+    ROSE_ORDER.flat().forEach(d=>{
+      const b=document.createElement('button');
+      if(d==='mid'){b.className='dirbtn mid';b.textContent='✦';}
+      else{b.className='dirbtn';b.dataset.dir=d;b.innerHTML=`${d}<span class="deg">${BEAR[d]}°</span>`;b.onclick=()=>pressDir(d);}
+      ro.appendChild(b);
+    });
+  }
+  function buildTray(){
+    const t=document.getElementById('tray'); t.innerHTML='';
+    for(let i=0;i<data.word.length;i++){const s=document.createElement('div');s.className='slot';s.id='slot'+i;t.appendChild(s);}
+  }
+  function renderStep(){
+    if(stepIdx>=data.moves.length){return;}
+    const [dir,steps]=data.moves[stepIdx];
+    document.getElementById('stepLabel').textContent=`Step ${stepIdx+1} of ${data.moves.length}`;
+    const showCardinal = CURRENT==='starter';
+    document.getElementById('bearing').innerHTML = BEAR[dir]+'°'+(showCardinal?` <small>(${dir})</small>`:'');
+    document.getElementById('spaces').textContent=`move ${steps} space${steps>1?'s':''}`;
+  }
+  function pressDir(dir){
+    if(over) return;
+    const [td,ts]=data.moves[stepIdx];
+    if(dir===td){
+      const [dc,dr]=DIRV[dir];
+      for(let kk=1;kk<=ts;kk++){
+        const nc=cur[0]+dc*kk, nr=cur[1]+dr*kk;
+        const el=document.getElementById(key(nc,nr));
+        if(el&&!el.classList.contains('finish')&&!el.classList.contains('start')) el.classList.add(kk===ts?'stop':'trail');
+      }
+      cur=[cur[0]+dc*ts, cur[1]+dr*ts];
+      const land=document.getElementById(key(cur[0],cur[1]));
+      const letter=data.word[stepIdx];
+      const span=land.querySelector('.let');
+      if(span){span.textContent=letter;} else {land.innerHTML='<span class="let">'+letter+'</span>';}
+      land.classList.add('reveal');
+      collected+=letter;
+      document.getElementById('slot'+stepIdx).textContent=letter;
+      moveToken(cur);
+      stepIdx++;
+      feedback('Nice — '+BEAR[dir]+'° it is!','good');
+      if(stepIdx>=data.moves.length){ setTimeout(win,500); } else { renderStep(); }
+    } else {
+      wrong++; document.getElementById('wrong').textContent='Wrong turns: '+wrong;
+      feedback(CURRENT==='starter' ? `That's ${BEAR[dir]}° (${dir}) — you want ${BEAR[td]}°.` : 'Not quite — check the rose and try again.','bad');
+    }
+  }
+  function feedback(msg,cls){const f=document.getElementById('feedback');f.textContent=msg;f.className='feedback'+(cls?' '+cls:'');}
+  function tick(){const s=Math.floor((Date.now()-t0)/1000);document.getElementById('timer').textContent='⏱ '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+  function win(){
+    over=true; clearInterval(timerId);
+    const s=Math.floor((Date.now()-t0)/1000);
+    document.getElementById('winWord').textContent=data.word;
+    document.getElementById('winReflect').textContent=data.word+' — '+data.reflect;
+    document.getElementById('winSum').textContent=`Solved in ${Math.floor(s/60)}:${String(s%60).padStart(2,'0')} · ${wrong} wrong turn${wrong===1?'':'s'}`;
+    document.getElementById('scrim').classList.add('show');
+  }
+  const h=location.hash.toLowerCase();
+  startGame((h.includes('adv')||h.includes('2'))?'advanced':'starter');
+</script>
+</body>
+</html>
