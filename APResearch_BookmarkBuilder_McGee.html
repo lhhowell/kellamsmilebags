@@ -269,6 +269,7 @@ var currentWord = null;
 
 // Build word grid
 var grid = document.getElementById('wordGrid');
+grid.innerHTML = '';  // remove any hardcoded buttons so only wired buttons remain
 WORD_LIST.forEach(function(w){
   var btn = document.createElement('button');
   btn.className = 'word-btn';
@@ -284,13 +285,13 @@ function selectWord(w){
   // Update active button
   document.querySelectorAll('.word-btn').forEach(function(b){ b.classList.remove('active'); });
   document.getElementById('wbtn-' + w).classList.add('active');
-  // Clear fields — students research and write their own content
-  document.getElementById('editFact').value = '';
-  document.getElementById('editSupplies').value = '';
-  document.getElementById('editStep1').value = '';
-  document.getElementById('editStep2').value = '';
-  document.getElementById('editStep3').value = '';
-  document.getElementById('editMessage').value = '';
+  // Auto-fill fields from the OneWord data — students can still edit any field
+  document.getElementById('editFact').value = d.fact || '';
+  document.getElementById('editSupplies').value = d.supplies || '';
+  document.getElementById('editStep1').value = (d.steps && d.steps[0]) || '';
+  document.getElementById('editStep2').value = (d.steps && d.steps[1]) || '';
+  document.getElementById('editStep3').value = (d.steps && d.steps[2]) || '';
+  document.getElementById('editMessage').value = d.message || '';
   // Update label
   document.getElementById('previewWordLabel').textContent = w;
   // Render bookmark
