@@ -262,7 +262,7 @@ textarea.field-inp { resize:vertical; min-height:70px; }
   <div class="scr-hd">
     <div class="step-pill">Step 4 of 4 · Recipe Card</div>
     <h2>Your Recipe Card! 🎉</h2>
-    <p>Check it over — then print it and submit!</p>
+    <p>Check it over — then print your card!</p>
   </div>
   <div id="printCard">
     <div class="recipe-preview" id="recipePreview"></div>
@@ -285,7 +285,7 @@ textarea.field-inp { resize:vertical; min-height:70px; }
   </div>
   <div class="nav-row" style="margin-top:16px;">
     <button class="btn-back" onclick="goTo(3)">← Change Something</button>
-    <button class="btn-submit" onclick="submitCard()">✅ Submit to Ms. Sayers</button>
+    <button class="btn-submit" onclick="printCard()">🖨️ Print My Recipe Card</button>
   </div>
 </div>
 
@@ -301,9 +301,9 @@ textarea.field-inp { resize:vertical; min-height:70px; }
 <div class="screen" id="scr6">
   <div class="success-wrap">
     <span class="success-icon">🎉</span>
-    <div class="success-title">Card Submitted!</div>
-    <div class="success-msg">Your OneWord Recipe Card has been logged!<br><strong>Request an appointment to print or pickup in D210.</strong> 🍪💛</div>
-    <div style="background:#FFF8EE;border:1.5px solid var(--gold);border-radius:10px;padding:12px 16px;margin:16px 0;font-size:.85rem;color:var(--navy);text-align:center;">💡 Want a copy for yourself? Take a screenshot now &mdash; your card has been submitted!</div>
+    <div class="success-title">Card Printed!</div>
+    <div class="success-msg">Your OneWord Recipe Card is printing — <strong>grab it from the printer!</strong> 🍪💛</div>
+    <div style="background:#FFF8EE;border:1.5px solid var(--gold);border-radius:10px;padding:12px 16px;margin:16px 0;font-size:.85rem;color:var(--navy);text-align:center;">Didn't print? Tap <strong>← Make Another Card</strong> to try again.</div>
     <button class="btn-restart" onclick="restart()">← Make Another Card</button>
     <button class="btn-restart" onclick="window.location.href='Culinary_Menu.html'" style="background:var(--navy);color:var(--gold);border:none;margin-top:10px;">🏠 Back to Main Menu</button>
   </div>
@@ -930,6 +930,24 @@ async function submitCard(){
     timestamp:new Date().toLocaleString('en-US',{timeZone:'America/New_York'})
   };
   try{ await fetch(SUBMIT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); }catch(e){console.warn(e);}
+  goTo(6);
+}
+
+function printCard(){
+  // Silent participation log — kept so you still have a record of who made a card.
+  // To send NOTHING at all, delete this entire try/catch block.
+  try{
+    const r=RECIPES[S.word][S.recipeIdx];
+    const ratingComment = document.getElementById('ratingComment') ? document.getElementById('ratingComment').value : '';
+    const payload={
+      studentName:S.name, teacher:S.teacher, classType:S.classType||'', word:S.word,
+      recipeLevel:r.level, recipeName:r.name, dedication:S.dedication,
+      rating:S_rating, ratingLabel:S_ratingLabels[S_rating]||'', comment:ratingComment,
+      timestamp:new Date().toLocaleString('en-US',{timeZone:'America/New_York'})
+    };
+    fetch(SUBMIT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  }catch(e){console.warn(e);}
+  window.print();
   goTo(6);
 }
 
