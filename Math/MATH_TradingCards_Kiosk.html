@@ -458,6 +458,38 @@ body {
   .action-bar-info { text-align: center; }
   .print-btn { width: 100%; }
 }
+
+/* ── VOTING POLL ── */
+.vote-section{max-width:920px;margin:6px auto 64px;padding:30px 22px;
+  background:rgba(248,244,252,.06);border:1px solid var(--border);border-radius:18px;text-align:center;}
+.vote-section h2{font-size:1.55rem;color:var(--cream);margin:0 0 6px;}
+.vote-sub{color:rgba(248,244,252,.78);font-size:.95rem;margin:0 0 20px;}
+.vote-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:680px){.vote-grid{grid-template-columns:1fr;}}
+.vote-btn{background:var(--cream);color:var(--ink);border:2px solid transparent;border-radius:14px;
+  padding:14px 12px;cursor:pointer;font-family:inherit;transition:all .15s;
+  display:flex;flex-direction:column;gap:5px;align-items:center;}
+.vote-btn:hover{border-color:var(--sage);transform:translateY(-2px);}
+.vote-btn .vb-num{font-weight:800;font-size:1rem;color:var(--bg);}
+.vote-btn .vb-words{font-size:.78rem;line-height:1.35;color:#5a4a72;font-weight:600;}
+.vote-btn:disabled{opacity:.45;cursor:default;transform:none;border-color:transparent;}
+.vote-results{margin-top:10px;text-align:left;}
+.vr-row{display:flex;align-items:center;gap:10px;margin:7px 0;}
+.vr-label{flex:0 0 150px;font-size:.74rem;line-height:1.25;color:var(--cream);font-weight:600;}
+.vr-track{flex:1;height:18px;background:rgba(248,244,252,.12);border-radius:9px;overflow:hidden;}
+.vr-fill{height:100%;background:var(--sage);border-radius:9px;transition:width .4s;}
+.vr-row.leader .vr-fill{background:var(--peach);}
+.vr-count{flex:0 0 32px;text-align:right;color:var(--cream);font-weight:700;font-size:.85rem;}
+.vote-thanks{margin-top:18px;color:var(--peach);font-weight:700;font-size:1.05rem;}
+.vote-thanks b{color:var(--cream);}
+.staff-row{margin-top:24px;}
+.staff-link{font-size:.72rem;color:rgba(248,244,252,.32);cursor:pointer;letter-spacing:1px;}
+.staff-link:hover{color:rgba(248,244,252,.7);}
+.staff-panel{margin-top:12px;padding:14px 16px;background:rgba(0,0,0,.22);border-radius:12px;
+  color:var(--cream);font-size:.82rem;text-align:left;}
+.sp-reset{margin-top:12px;background:var(--peach);color:var(--bg);border:none;border-radius:8px;
+  padding:8px 16px;font-weight:700;cursor:pointer;font-family:inherit;}
+@media print{.vote-section{display:none !important;}}
 </style>
 </head>
 <body>
@@ -698,6 +730,24 @@ body {
   <!-- ═══════ HIDDEN PRINT AREA ═══════ -->
   <div class="print-area" id="print-area"></div>
 
+  <!-- ═══════ VOTING POLL ═══════ -->
+  <section class="vote-section">
+    <h2>🗳️ Vote for Your Favorite</h2>
+    <p class="vote-sub">Tap the card you like best — the class favorite gets printed for everyone!</p>
+    <div class="vote-grid" id="voteGrid">
+      <button class="vote-btn" onclick="castVote(0)"><span class="vb-num">Card 1</span><span class="vb-words">Migrate · Absorb · Thrive · Heal</span></button>
+      <button class="vote-btn" onclick="castVote(1)"><span class="vb-num">Card 2</span><span class="vb-words">Migrate · Absorb · Transform · Heal</span></button>
+      <button class="vote-btn" onclick="castVote(2)"><span class="vb-num">Card 3</span><span class="vb-words">Migrate · Adapt · Thrive · Heal</span></button>
+      <button class="vote-btn" onclick="castVote(3)"><span class="vb-num">Card 4</span><span class="vb-words">Migrate · Adapt · Transform · Heal</span></button>
+      <button class="vote-btn" onclick="castVote(4)"><span class="vb-num">Card 5</span><span class="vb-words">Migrate · Anchor · Thrive · Heal</span></button>
+      <button class="vote-btn" onclick="castVote(5)"><span class="vb-num">Card 6</span><span class="vb-words">Migrate · Anchor · Transform · Heal</span></button>
+    </div>
+    <div class="vote-results" id="voteResults" style="display:none;"></div>
+    <div class="vote-thanks" id="voteThanks" style="display:none;">💛 Thanks for voting! <b>Refresh</b> the page for the next voter.</div>
+    <div class="staff-row"><span class="staff-link" onclick="toggleStaff()">· staff ·</span></div>
+    <div class="staff-panel" id="staffPanel" style="display:none;"></div>
+  </section>
+
 <script>
 let selectedCardId = null;
 
@@ -747,6 +797,64 @@ function printCard() {
 window.addEventListener('afterprint', () => {
   document.getElementById('print-area').innerHTML = '';
 });
+/* ── VOTING POLL ── */
+const VOTE_KEY = 'mathCardVotes_v1';
+const CARD_LABELS = [
+  '1 · Absorb + Thrive',
+  '2 · Absorb + Transform',
+  '3 · Adapt + Thrive',
+  '4 · Adapt + Transform',
+  '5 · Anchor + Thrive',
+  '6 · Anchor + Transform'
+];
+let _memVotes = [0,0,0,0,0,0];
+function loadVotes(){
+  try{ const v = JSON.parse(localStorage.getItem(VOTE_KEY)); if(Array.isArray(v) && v.length===6) return v.map(n=>+n||0); }catch(e){}
+  return _memVotes.slice();
+}
+function saveVotes(v){ _memVotes = v.slice(); try{ localStorage.setItem(VOTE_KEY, JSON.stringify(v)); }catch(e){} }
+function resultsHTML(v){
+  const max = Math.max(1, Math.max.apply(null, v));
+  const lead = Math.max.apply(null, v);
+  return v.map(function(n, idx){
+    const pct = Math.round((n / max) * 100);
+    const isLead = n === lead && n > 0;
+    return '<div class="vr-row' + (isLead ? ' leader' : '') + '">' +
+      '<span class="vr-label">' + CARD_LABELS[idx] + '</span>' +
+      '<span class="vr-track"><span class="vr-fill" style="width:' + pct + '%"></span></span>' +
+      '<span class="vr-count">' + n + '</span></div>';
+  }).join('');
+}
+function castVote(i){
+  const v = loadVotes(); v[i] = (v[i] || 0) + 1; saveVotes(v);
+  document.querySelectorAll('.vote-btn').forEach(function(b){ b.disabled = true; });
+  const r = document.getElementById('voteResults');
+  r.innerHTML = resultsHTML(v); r.style.display = 'block';
+  document.getElementById('voteThanks').style.display = 'block';
+}
+function toggleStaff(){
+  const p = document.getElementById('staffPanel');
+  if(p.style.display === 'none' || !p.style.display){
+    const v = loadVotes();
+    const total = v.reduce(function(a,b){ return a + b; }, 0);
+    p.innerHTML = '<div style="font-weight:700;margin-bottom:8px;">Live tally · ' + total + ' votes</div>' +
+      resultsHTML(v) +
+      '<button class="sp-reset" onclick="resetVotes()">Reset all votes to zero</button>';
+    p.style.display = 'block';
+  } else {
+    p.style.display = 'none';
+  }
+}
+function resetVotes(){
+  if(confirm('Reset ALL votes to zero? This cannot be undone.')){
+    saveVotes([0,0,0,0,0,0]);
+    document.getElementById('staffPanel').style.display = 'none';
+    document.getElementById('voteResults').style.display = 'none';
+    document.getElementById('voteThanks').style.display = 'none';
+    document.querySelectorAll('.vote-btn').forEach(function(b){ b.disabled = false; });
+    alert('Votes reset to zero.');
+  }
+}
 </script>
 
 </body>
