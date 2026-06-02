@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OneWord Randomizer · Smile Bags</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FAEFD8;--navy:#1A2744;--purple:#6B3FA0;--peach:#ED9F4A;
+    --sage:#5C8A4A;--teal:#1B7A78;--gold:#C8860A;--rose:#B5446E;
+    --accent:var(--purple);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{font-family:'Nunito',sans-serif;color:var(--navy);
+    background:radial-gradient(130% 90% at 50% -10%, #fff8ea 0%, var(--cream) 55%, #f4e4c1 100%);
+    min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:24px;overflow:hidden;position:relative;}
+
+  .eyebrow{font-weight:800;letter-spacing:.34em;font-size:13px;color:var(--teal);text-transform:uppercase;}
+  h1{font-family:'Baloo 2',cursive;font-weight:800;font-size:38px;color:var(--navy);margin:6px 0 4px;}
+  .sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:21px;color:#6a5f48;margin-bottom:30px;}
+
+  .stage{position:relative;width:min(560px,92vw);}
+  .card{position:relative;z-index:2;background:#fff;border:5px solid var(--accent);border-radius:28px;
+    padding:48px 28px 40px;text-align:center;box-shadow:0 16px 40px rgba(26,39,68,.18);
+    transition:border-color .25s ease;}
+  .label{font-weight:800;letter-spacing:.28em;font-size:13px;color:var(--accent);text-transform:uppercase;
+    opacity:0;transition:opacity .3s ease;}
+  .label.show{opacity:1;}
+  .emoji{font-size:64px;line-height:1;margin:6px 0 2px;display:block;}
+  .word{font-family:'Baloo 2',cursive;font-weight:800;font-size:74px;line-height:1;color:var(--accent);
+    letter-spacing:.01em;transition:color .25s ease;word-break:break-word;}
+  .card.landed{animation:pop .5s cubic-bezier(.18,1.4,.4,1);}
+  @keyframes pop{0%{transform:scale(.86)}55%{transform:scale(1.06)}100%{transform:scale(1)}}
+  .card.spinning .word{filter:blur(.4px);opacity:.9;}
+
+  .btn{margin-top:30px;background:var(--accent);color:#fff;border:none;border-radius:16px;
+    padding:18px 52px;font-family:'Baloo 2',cursive;font-weight:700;font-size:24px;cursor:pointer;
+    box-shadow:0 6px 0 rgba(0,0,0,.18);transition:transform .08s,box-shadow .08s,background .25s;}
+  .btn:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(0,0,0,.18);}
+  .btn:disabled{opacity:.55;cursor:default;}
+  .hint{margin-top:14px;font-size:13px;color:#8a7c5e;font-weight:700;letter-spacing:.04em;}
+
+  .confetti{position:fixed;inset:0;pointer-events:none;z-index:5;overflow:hidden;}
+  .confetti i{position:absolute;width:11px;height:11px;border-radius:2px;will-change:transform,opacity;}
+
+  .foot{position:fixed;bottom:14px;left:0;right:0;text-align:center;font-size:11px;
+    font-weight:700;color:#a3957a;letter-spacing:.05em;}
+</style>
+</head>
+<body>
+  <div class="eyebrow">Smile Bags · Word &amp; Wonder</div>
+  <h1>Spin Your OneWord</h1>
+  <div class="sub">25 words. One is yours — for now.</div>
+
+  <div class="stage">
+    <div class="card" id="card" onclick="spin()">
+      <div class="label" id="label">Your OneWord is</div>
+      <span class="emoji" id="emoji">🎲</span>
+      <div class="word" id="word">Ready?</div>
+    </div>
+  </div>
+
+  <button class="btn" id="btn" onclick="spin()">Spin!</button>
+  <div class="hint" id="hint">tap the card or press SPACE</div>
+
+  <div class="confetti" id="confetti"></div>
+  <div class="foot">Created by Laura Howell · © 2025–2026</div>
+
+<script>
+  const WORDS = [
+    ["Absorb","💧","--teal"],["Adapt","🦎","--sage"],["Anchor","⚓","--navy"],["Balance","⚖️","--purple"],
+    ["Bloom","🌸","--rose"],["Breathe","🌬️","--teal"],["Clear","💎","--purple"],["Connect","🔗","--gold"],
+    ["Cycle","🔄","--sage"],["Emerge","🐣","--peach"],["Filter","🫧","--teal"],["Flow","🌊","--teal"],
+    ["Grow","🌱","--sage"],["Heal","💚","--sage"],["Migrate","🦅","--gold"],["Persist","💪","--rose"],
+    ["Renew","🌿","--sage"],["Restore","🩹","--rose"],["Return","🏡","--gold"],["Rise","🌄","--peach"],
+    ["Root","🌳","--sage"],["Shine","✨","--gold"],["Sustain","♻️","--teal"],["Thrive","🌻","--gold"],
+    ["Transform","🦋","--purple"]
+  ];
+  const PALETTE = ["#6B3FA0","#1B7A78","#5C8A4A","#C8860A","#ED9F4A","#B5446E","#1A2744"];
+
+  const card=document.getElementById('card'), wordEl=document.getElementById('word'),
+        emojiEl=document.getElementById('emoji'), labelEl=document.getElementById('label'),
+        btn=document.getElementById('btn'), hint=document.getElementById('hint'),
+        root=document.documentElement;
+  let spinning=false, current=0;
+
+  function render(i){
+    const [w,e,c]=WORDS[i];
+    wordEl.textContent=w; emojiEl.textContent=e;
+    root.style.setProperty('--accent', getComputedStyle(root).getPropertyValue(c).trim());
+    current=i;
+  }
+
+  function spin(){
+    if(spinning) return;
+    spinning=true;
+    labelEl.classList.remove('show');
+    card.classList.remove('landed'); card.classList.add('spinning');
+    btn.disabled=true; btn.textContent='Spinning…'; hint.style.visibility='hidden';
+
+    const start=current;
+    const target=Math.floor(Math.random()*WORDS.length);
+    let offset=((target-start)%WORDS.length+WORDS.length)%WORDS.length;
+    let total=WORDS.length+offset;
+    if(offset<12) total+=WORDS.length;        // guarantee a satisfying spin length
+    let k=0;
+
+    function step(){
+      render((start+k)%WORDS.length);
+      if(k>=total){ land(); return; }
+      k++;
+      const t=k/total, ease=1-Math.pow(1-t,3);  // ease-out
+      setTimeout(step, 30+ease*215);
+    }
+    step();
+  }
+
+  function land(){
+    card.classList.remove('spinning'); card.classList.add('landed');
+    labelEl.classList.add('show');
+    burst();
+    btn.disabled=false; btn.textContent='Spin again'; hint.style.visibility='visible';
+    spinning=false;
+  }
+
+  function burst(){
+    const box=document.getElementById('confetti');
+    for(let n=0;n<46;n++){
+      const i=document.createElement('i');
+      const col=PALETTE[n%PALETTE.length];
+      const left=10+Math.random()*80, dur=900+Math.random()*900, drift=(Math.random()-.5)*220;
+      i.style.cssText=`left:${left}%;top:34%;background:${col};opacity:1;`;
+      box.appendChild(i);
+      i.animate([
+        {transform:`translate(0,0) rotate(0deg)`,opacity:1},
+        {transform:`translate(${drift}px, ${300+Math.random()*260}px) rotate(${Math.random()*720}deg)`,opacity:0}
+      ],{duration:dur,easing:'cubic-bezier(.2,.6,.4,1)'}).onfinish=()=>i.remove();
+    }
+  }
+
+  document.addEventListener('keydown',e=>{ if(e.code==='Space'){e.preventDefault();spin();} });
+  render(0);
+</script>
+</body>
+</html>
