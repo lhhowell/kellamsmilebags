@@ -85,6 +85,17 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 .seq-panel.correct{border-color:#4caf82;background:rgba(76,175,130,.08);cursor:default;}
 .seq-panel.wrong{border-color:#D4537E;animation:shake .3s;}
 .seq-panel.selected{border-color:#c9a84c;background:rgba(201,168,76,.14);box-shadow:0 0 0 3px rgba(201,168,76,.35);}
+.seq-panel{cursor:default;}
+.seq-letter{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;
+  background:#c9a84c;color:#0a0f14;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:18px;margin-right:12px;flex:0 0 auto;}
+.seq-inputs{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.seq-inbox{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.seq-inbox label{font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;color:#9fb0a0;letter-spacing:.08em;}
+.seq-in{width:64px;height:64px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:30px;
+  text-transform:uppercase;border:2px solid #2a3b2a;border-radius:12px;background:#0a0f14;color:#eafff0;}
+.seq-in:focus{outline:none;border-color:#c9a84c;}
+.seq-in.correct{border-color:#3FB68B;background:rgba(63,182,139,.18);}
+.seq-in.wrong{border-color:#D4537E;background:rgba(212,83,126,.16);animation:shake .3s;}
 @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);};}
 .seq-drag-handle{font-size:16px;color:#333;flex-shrink:0;margin-top:2px;}
 .seq-panel-text{font-size:13px;color:#c8c4bc;line-height:1.65;flex:1;}
@@ -272,12 +283,12 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
   </div>
 
   <div class="step-card" id="seqDisplay" style="display:none;">
-    <div class="step-num">Step 2 of 2 &mdash; Tap to build the order</div>
+    <div class="step-num">Step 2 of 2 &mdash; Type the order</div>
     <div class="seq-clue" id="seqClue"></div>
-    <div class="seq-label">&#128072; Tap a panel, then tap a numbered slot &mdash; or drag, if you like</div>
-    <div class="seq-panels" id="seqPanels" ondragover="event.preventDefault()" ondrop="dropOnBank(event)"></div>
-    <div class="seq-label" style="margin-top:16px;">&#9679; The order &mdash; 1st through 4th</div>
-    <div class="seq-slots" id="seqSlots"></div>
+    <div class="seq-label">&#128071; Each panel has a letter. Read them, then type the letters in story order below.</div>
+    <div class="seq-panels" id="seqPanels"></div>
+    <div class="seq-label" style="margin-top:16px;">&#9999;&#65039; Type the correct order &mdash; 1st through 4th</div>
+    <div class="seq-inputs" id="seqInputs"></div>
     <div>
       <button class="check-btn" onclick="checkSeq()">&#10003; Check My Order</button>
       <button class="hint-btn" onclick="giveHint()">&#128161; Hint</button>
@@ -331,6 +342,7 @@ var seqWord = '';
 var dragSrc = null;
 var slots = ['','','',''];
 var selectedPanel = null;
+var seqOrder = [0,1,2,3];
 
 // Tier 1 submission endpoint — AP Bio + T.I.D.E. v2 (personal account, auth-protected)
 var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwfI4l_WrGpj2OGifu_dSLiNyLrJ3ZZGNwHHqczA4HbygvPQxJEHJOYRybPh75bd4P8/exec';
@@ -481,38 +493,44 @@ function selectSeqWord(w, btn) {
 function buildSeq() {
   var d = stories[seqWord];
   if(!d) return;
-  selectedPanel = null;
 
   document.getElementById('seqClue').textContent = d.clue;
 
-  // Shuffle panels
+  // Shuffle display order; remember it for checking
   var order = [0,1,2,3];
   for(var i=order.length-1;i>0;i--) { var j=Math.floor(Math.random()*(i+1)); var t=order[i];order[i]=order[j];order[j]=t; }
+  seqOrder = order;
 
   var panelsHtml = '';
   for(var i=0;i<4;i++) {
     var idx = order[i];
-    panelsHtml += '<div class="seq-panel" draggable="true" id="sp'+idx+'" data-idx="'+idx+'" ' +
-      'onclick="selectPanel('+idx+',this)" ondragstart="dragStart(event)" ondragend="dragEnd(event)">' +
-      '<span class="seq-drag-handle">&#8597;</span>' +
+    var letter = String.fromCharCode(65+i);
+    panelsHtml += '<div class="seq-panel">' +
+      '<span class="seq-letter">'+letter+'</span>' +
       '<span class="seq-panel-text">'+d.panels[idx]+'</span>' +
     '</div>';
   }
   document.getElementById('seqPanels').innerHTML = panelsHtml;
 
-  slots = ['','','',''];
-  var slotsHtml = '';
+  var labels = ['1st','2nd','3rd','4th'];
+  var inHtml = '';
   for(var i=0;i<4;i++) {
-    slotsHtml += '<div class="seq-slot" id="slot'+i+'" data-slot="'+i+'" ' +
-      'ondragover="dragOver(event)" ondrop="dropOnSlot(event,'+i+')" onclick="clickSlot('+i+')">' +
-      '<span class="seq-slot-num">'+(i+1)+'</span>' +
-      '<span class="seq-slot-text" id="slotText'+i+'">Tap a panel, then tap here...</span>' +
-    '</div>';
+    inHtml += '<div class="seq-inbox"><label>'+labels[i]+'</label>' +
+      '<input class="seq-in" id="seqIn'+i+'" maxlength="1" autocomplete="off" ' +
+      'oninput="onSeqInput(this,'+i+')"></div>';
   }
-  document.getElementById('seqSlots').innerHTML = slotsHtml;
+  document.getElementById('seqInputs').innerHTML = inHtml;
+
   document.getElementById('celebrate').className='celebrate';
   document.getElementById('seqDisplay').style.display='block';
   document.getElementById('seqDisplay').scrollIntoView({behavior:'smooth'});
+}
+
+function onSeqInput(el, i){
+  var v = (el.value||'').toUpperCase().replace(/[^A-D]/g,'');
+  el.value = v;
+  el.classList.remove('correct','wrong');
+  if(v && i<3){ var nxt=document.getElementById('seqIn'+(i+1)); if(nxt) nxt.focus(); }
 }
 
 function dragStart(e) {
@@ -580,15 +598,14 @@ function checkSeq() {
   var d = stories[seqWord];
   var correct = true;
   for(var i=0;i<4;i++) {
-    var slotEl = document.getElementById('slot'+i);
-    if(slots[i]==='' || slots[i]===undefined) { correct=false; slotEl.className='seq-slot wrong'; continue; }
-    var panelIdx = slots[i];
-    var correctPanelForSlot = d.answer[i]-1;
-    if(panelIdx === correctPanelForSlot) {
-      slotEl.className='seq-slot correct';
+    var el = document.getElementById('seqIn'+i);
+    var typed = (el.value||'').toUpperCase();
+    var correctLetter = String.fromCharCode(65 + seqOrder.indexOf(d.answer[i]-1));
+    if(typed === correctLetter) {
+      el.classList.remove('wrong'); el.classList.add('correct');
     } else {
-      slotEl.className='seq-slot wrong';
-      correct=false;
+      el.classList.remove('correct'); el.classList.add('wrong');
+      correct = false;
     }
   }
   if(correct) {
@@ -602,13 +619,12 @@ function checkSeq() {
 function giveHint() {
   var d = stories[seqWord];
   for(var i=0;i<4;i++) {
-    if(slots[i]==='' || slots[i]===undefined) {
-      var correctPanel = d.answer[i]-1;
-      var panelEl = document.getElementById('sp'+correctPanel);
-      if(panelEl && panelEl.style.display!=='none') {
-        placePanel(correctPanel, i);
-        return;
-      }
+    var el = document.getElementById('seqIn'+i);
+    var correctLetter = String.fromCharCode(65 + seqOrder.indexOf(d.answer[i]-1));
+    if((el.value||'').toUpperCase() !== correctLetter) {
+      el.value = correctLetter;
+      el.classList.remove('wrong'); el.classList.add('correct');
+      return;
     }
   }
 }
