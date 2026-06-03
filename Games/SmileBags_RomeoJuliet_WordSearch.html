@@ -49,6 +49,7 @@
   @media print{
     body{background:#fff;padding:0;} .toolbar{display:none;}
     .sheet{box-shadow:none;margin:0;width:100%;}
+    .count{display:none !important;}
     .cell{background:#fff !important;color:var(--navy) !important;}   /* always print a clean blank puzzle */
     ul.words li{color:var(--navy) !important;text-decoration:none !important;}
     ul.words li .dot{background:#fff !important;border-color:var(--rose) !important;}
@@ -73,7 +74,7 @@
       <div class="side">
         <h2>Find these 15 words</h2>
         <ul class="words" id="wordList"><li data-word="BALCONY"><span class="dot"></span>BALCONY</li><li data-word="BANISHMENT"><span class="dot"></span>BANISHMENT</li><li data-word="CAPULET"><span class="dot"></span>CAPULET</li><li data-word="FEUD"><span class="dot"></span>FEUD</li><li data-word="FRIAR"><span class="dot"></span>FRIAR</li><li data-word="JULIET"><span class="dot"></span>JULIET</li><li data-word="LOVE"><span class="dot"></span>LOVE</li><li data-word="MERCUTIO"><span class="dot"></span>MERCUTIO</li><li data-word="MONTAGUE"><span class="dot"></span>MONTAGUE</li><li data-word="NURSE"><span class="dot"></span>NURSE</li><li data-word="POISON"><span class="dot"></span>POISON</li><li data-word="ROMEO"><span class="dot"></span>ROMEO</li><li data-word="TRAGEDY"><span class="dot"></span>TRAGEDY</li><li data-word="TYBALT"><span class="dot"></span>TYBALT</li><li data-word="VERONA"><span class="dot"></span>VERONA</li></ul>
-        <div class="count" id="count">0 of 15 found</div>
+        <div class="count"><span id="count">0 of 15 found</span> &nbsp;·&nbsp; ⏱ <span id="timer">0:00</span></div>
       </div>
     </div>
 
@@ -93,6 +94,12 @@
   var N = GRID.length;
   var found = {};
   var gridEl = document.getElementById('grid');
+
+  // stopwatch — starts on first grid touch, freezes when all 15 are found
+  var timerStarted=false, timerStart=0, timerInt=null;
+  function fmt(ms){ var s=Math.floor(ms/1000); return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2); }
+  function startTimer(){ timerStarted=true; timerStart=Date.now(); timerInt=setInterval(function(){ document.getElementById('timer').textContent=fmt(Date.now()-timerStart); },500); }
+  function stopTimer(){ if(timerInt){ clearInterval(timerInt); timerInt=null; } }
 
   // render grid
   for(var r=0;r<N;r++){
@@ -140,12 +147,19 @@
     PLACE[w].forEach(function(rc){ cellAt(rc[0],rc[1]).classList.add('found'); });
     var li=document.querySelector('#wordList li[data-word="'+w+'"]'); if(li) li.classList.add('done');
     var n=Object.keys(found).length;
-    document.getElementById('count').textContent = n+' of 15 found' + (n===15?' — solved! 🎉':'');
+    if(n===15){
+      if(timerStarted){ document.getElementById('timer').textContent=fmt(Date.now()-timerStart); }
+      stopTimer();
+      document.getElementById('count').textContent = 'Solved in '+document.getElementById('timer').textContent+'! 🎉';
+    } else {
+      document.getElementById('count').textContent = n+' of 15 found';
+    }
   }
 
   function getCell(t){ return t && t.classList && t.classList.contains('cell') ? t : null; }
   gridEl.addEventListener('pointerdown', function(e){
     var t=getCell(e.target); if(!t) return;
+    if(!timerStarted) startTimer();
     selecting=true; start=[+t.dataset.r,+t.dataset.c];
     clearSel(); t.classList.add('sel'); lineCells=[t];
     e.preventDefault();
