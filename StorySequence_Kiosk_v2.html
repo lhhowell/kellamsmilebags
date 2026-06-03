@@ -45,6 +45,8 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 /* Print section */
 .print-section{display:none;background:#fff;color:#111;border-radius:12px;padding:28px;margin-bottom:4px;position:relative;}
 .print-section.show{display:block;}
+#makeInteractive{display:none;}
+#makeInteractive.show{display:block;}
 .print-section::before{content:'PREVIEW';position:absolute;top:12px;right:16px;font-family:'Fredoka One',cursive;font-size:10px;letter-spacing:2px;color:#eee;pointer-events:none;}
 
 .print-header{text-align:center;margin-bottom:20px;}
@@ -148,7 +150,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 
 @media print{
   body{background:#fff;padding:0;}
-  .hero,.mode-tabs,.workspace .step-card,.workspace .seq-clue,.workspace .seq-panels,.workspace .seq-slots,.check-btn,.hint-btn,.celebrate,.print-btn,.back-btn,.footer,.bag-submit{display:none!important;}
+  .hero,.mode-tabs,.workspace .step-card,.workspace .seq-clue,.workspace .seq-panels,.workspace .seq-slots,.check-btn,.hint-btn,.celebrate,.print-btn,.back-btn,.footer,.bag-submit,#makeInteractive{display:none!important;}
   .print-section{display:block!important;position:static;box-shadow:none;border:none;padding:0;border-radius:0;}
   .print-section::before{display:none;}
   @page{size:letter;margin:.5in;}
@@ -170,7 +172,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
   <button class="mode-tab active" onclick="switchMode('make')">
     <span class="mode-tab-icon">&#128196;</span>
     <span class="mode-tab-title">Make It</span>
-    <span class="mode-tab-desc">Generate a scrambled story sheet to explore on screen</span>
+    <span class="mode-tab-desc">Tap the story panels into order on screen &mdash; or print the sheet</span>
   </button>
   <button class="mode-tab" onclick="switchMode('seq')">
     <span class="mode-tab-icon">&#127922;</span>
@@ -185,8 +187,8 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 <div class="mode-panel active" id="panel-make">
   <div class="step-card" style="margin-top:20px;">
     <div class="step-num">How it works</div>
-    <div class="step-title">Cut, scramble, and reassemble</div>
-    <div class="step-desc">Choose your OneWord. The kiosk generates a short 4-panel story connected to your word, displayed in scrambled order. Read the panels and put the story back in the right sequence in your head &mdash; then scroll down to see the science connection and the answer key.</div>
+    <div class="step-title">Order it on screen &mdash; or print it</div>
+    <div class="step-desc">Choose your OneWord. The kiosk generates a short 4-panel story connected to your word, displayed in scrambled order. Put the panels in the right sequence right here by tapping the letters into order &mdash; or tap <em>Print this sheet</em> to print it out, cut the panels apart, and number them by hand. Either way, the science connection is revealed when you finish.</div>
   </div>
 
   <div class="step-card">
@@ -224,7 +226,30 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
   <div class="step-card">
     <div class="step-num">Step 2 of 2</div>
     <div class="step-title">Generate your Story Sequence Sheet</div>
-    <button class="gen-btn off" id="genBtnMake" onclick="generateMake()">&#128196; Generate My Story Sequence Sheet</button>
+    <button class="gen-btn off" id="genBtnMake" onclick="generateMake()">&#128196; Generate My Story Sequence</button>
+  </div>
+
+  <div id="makeInteractive">
+    <div class="step-card">
+      <div class="step-num">Put it in order &mdash; on screen</div>
+      <div class="seq-label">&#128071; Each panel has a letter. Tap the letters into the boxes in story order &mdash; no keyboard needed.</div>
+      <div class="seq-panels" id="miPanels"></div>
+      <div class="seq-label" style="margin-top:16px;">&#128072; Your order &mdash; 1st through 4th (tap a box to clear it)</div>
+      <div class="seq-slots" id="miSlots"></div>
+      <div class="seq-label" style="margin-top:14px;">Tap a letter:</div>
+      <div class="seq-tray" id="miTray"></div>
+      <div>
+        <button class="check-btn" onclick="checkMake()">&#10003; Check My Order</button>
+        <button class="hint-btn" onclick="hintMake()">&#128161; Hint</button>
+        <button class="print-btn" onclick="window.print()">&#128424;&#65039; Print this sheet instead</button>
+      </div>
+      <div class="celebrate" id="miCelebrate">
+        <span class="celebrate-emoji">&#127881;</span>
+        <div class="celebrate-title">You got it right!</div>
+        <span class="celebrate-word" id="miCelebWord"></span>
+        <div class="celebrate-text" id="miCelebText"></div>
+      </div>
+    </div>
   </div>
 
   <div class="print-section" id="makePrint">
@@ -359,6 +384,8 @@ var slots = ['','','',''];
 var selectedPanel = null;
 var seqOrder = [0,1,2,3];
 var ans = ['','','',''];
+var makeOrder = [0,1,2,3];
+var makeAns = ['','','',''];
 
 // Tier 1 submission endpoint — AP Bio + T.I.D.E. v2 (personal account, auth-protected)
 var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwfI4l_WrGpj2OGifu_dSLiNyLrJ3ZZGNwHHqczA4HbygvPQxJEHJOYRybPh75bd4P8/exec';
@@ -462,21 +489,33 @@ function generateMake() {
   document.getElementById('makeWordLabel').textContent = makeWord;
   document.getElementById('makeWordDisplay').textContent = makeWord;
 
-  // Shuffle panels
-  var shuffled = [];
-  for(var i=0;i<d.panels.length;i++) shuffled.push({text:d.panels[i], correctPos: d.answer.indexOf(i+1)+1 || i+1});
-  // Simple shuffle
-  for(var i=shuffled.length-1;i>0;i--) {
-    var j=Math.floor(Math.random()*(i+1));
-    var t=shuffled[i]; shuffled[i]=shuffled[j]; shuffled[j]=t;
-  }
+  // ONE shared scramble drives both the on-screen activity and the print sheet,
+  // so the panel letters match whichever way the student uses it.
+  var order = [0,1,2,3];
+  for(var i=order.length-1;i>0;i--) { var j=Math.floor(Math.random()*(i+1)); var t=order[i];order[i]=order[j];order[j]=t; }
+  makeOrder = order;
+  makeAns = ['','','',''];
 
   var letters = ['A','B','C','D'];
+
+  // --- on-screen interactive panels (tap to order) ---
+  var miHtml = '';
+  for(var i=0;i<4;i++) {
+    miHtml += '<div class="seq-panel">' +
+      '<span class="seq-letter">'+letters[i]+'</span>' +
+      '<span class="seq-panel-text">'+d.panels[order[i]]+'</span>' +
+    '</div>';
+  }
+  document.getElementById('miPanels').innerHTML = miHtml;
+  renderMake();
+  document.getElementById('miCelebrate').className = 'celebrate';
+
+  // --- printable sheet panels (same order/letters) ---
   var panelsHtml = '';
-  for(var i=0;i<shuffled.length;i++) {
+  for(var i=0;i<4;i++) {
     panelsHtml += '<div class="print-panel scrambled">' +
       '<div class="print-panel-num">'+letters[i]+'</div>' +
-      '<div class="print-panel-text">'+shuffled[i].text+'</div>' +
+      '<div class="print-panel-text">'+d.panels[order[i]]+'</div>' +
     '</div>';
   }
   document.getElementById('makePanels').innerHTML = panelsHtml;
@@ -491,10 +530,74 @@ function generateMake() {
   document.getElementById('makeAnswerBoxes').innerHTML = boxesHtml;
   document.getElementById('makeReveal').textContent = d.reveal;
 
-  document.getElementById('makePrint').classList.add('show');
+  // Show the interactive view on screen. The print sheet (#makePrint) stays
+  // hidden on screen (no .show) and appears only when the page is printed.
+  document.getElementById('makeInteractive').classList.add('show');
   document.getElementById('bagSubmit').classList.add('show');
   resetBagSubmit();
-  document.getElementById('makePrint').scrollIntoView({behavior:'smooth'});
+  document.getElementById('makeInteractive').scrollIntoView({behavior:'smooth'});
+}
+
+function renderMake() {
+  var labels = ['1st','2nd','3rd','4th'];
+  var sh = '';
+  for(var i=0;i<4;i++) {
+    sh += '<div class="ans-slot" onclick="clearMakeSlot('+i+')">' +
+            '<span class="pos">'+labels[i]+'</span>' +
+            '<span class="let">'+(makeAns[i] || '&middot;')+'</span>' +
+          '</div>';
+  }
+  document.getElementById('miSlots').innerHTML = sh;
+  var th = '';
+  for(var i=0;i<4;i++) {
+    var L = String.fromCharCode(65+i);
+    var used = makeAns.indexOf(L) >= 0;
+    th += '<button class="chip" onclick="tapMakeChip(\''+L+'\')"'+(used?' disabled':'')+'>'+L+'</button>';
+  }
+  document.getElementById('miTray').innerHTML = th;
+}
+
+function tapMakeChip(L) {
+  if(makeAns.indexOf(L) >= 0) return;
+  for(var i=0;i<4;i++) { if(!makeAns[i]) { makeAns[i] = L; renderMake(); return; } }
+}
+
+function clearMakeSlot(i) {
+  if(makeAns[i]) { makeAns[i] = ''; renderMake(); }
+}
+
+function checkMake() {
+  var d = stories[makeWord];
+  var correct = true;
+  var slots = document.querySelectorAll('#miSlots .ans-slot');
+  for(var i=0;i<4;i++) {
+    var correctLetter = String.fromCharCode(65 + makeOrder.indexOf(d.answer[i]-1));
+    if(makeAns[i] === correctLetter) {
+      slots[i].classList.remove('wrong'); slots[i].classList.add('correct');
+    } else {
+      slots[i].classList.remove('correct'); slots[i].classList.add('wrong');
+      correct = false;
+    }
+  }
+  if(correct) {
+    document.getElementById('miCelebWord').textContent = makeWord;
+    document.getElementById('miCelebText').textContent = d.reveal;
+    document.getElementById('miCelebrate').className = 'celebrate show';
+    document.getElementById('miCelebrate').scrollIntoView({behavior:'smooth'});
+  }
+}
+
+function hintMake() {
+  var d = stories[makeWord];
+  for(var i=0;i<4;i++) {
+    var correctLetter = String.fromCharCode(65 + makeOrder.indexOf(d.answer[i]-1));
+    if(makeAns[i] !== correctLetter) {
+      var dup = makeAns.indexOf(correctLetter); if(dup >= 0) makeAns[dup] = '';
+      makeAns[i] = correctLetter;
+      renderMake();
+      return;
+    }
+  }
 }
 
 // SEQUENCE IT
