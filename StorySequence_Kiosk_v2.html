@@ -84,13 +84,14 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 .seq-panel.dragging{opacity:.5;border-color:#c9a84c;}
 .seq-panel.correct{border-color:#4caf82;background:rgba(76,175,130,.08);cursor:default;}
 .seq-panel.wrong{border-color:#D4537E;animation:shake .3s;}
+.seq-panel.selected{border-color:#c9a84c;background:rgba(201,168,76,.14);box-shadow:0 0 0 3px rgba(201,168,76,.35);}
 @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);};}
 .seq-drag-handle{font-size:16px;color:#333;flex-shrink:0;margin-top:2px;}
 .seq-panel-text{font-size:13px;color:#c8c4bc;line-height:1.65;flex:1;}
 .seq-panel.correct .seq-panel-text{color:#4caf82;}
 
 .seq-slots{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
-.seq-slot{background:#0a0f14;border:2px dashed #1a2a1a;border-radius:10px;padding:14px 16px;min-height:60px;display:flex;align-items:center;gap:12px;transition:all .2s;}
+.seq-slot{background:#0a0f14;border:2px dashed #1a2a1a;border-radius:10px;padding:14px 16px;min-height:60px;display:flex;align-items:center;gap:12px;transition:all .2s;cursor:pointer;}
 .seq-slot.drag-over{border-color:#c9a84c;background:rgba(201,168,76,.05);}
 .seq-slot-num{font-family:'Fredoka One',cursive;font-size:20px;color:#2a2a0a;width:28px;flex-shrink:0;}
 .seq-slot-text{font-size:13px;color:#c8c4bc;line-height:1.65;flex:1;font-style:italic;}
@@ -150,7 +151,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
   <button class="mode-tab" onclick="switchMode('seq')">
     <span class="mode-tab-icon">&#127922;</span>
     <span class="mode-tab-title">Sequence It</span>
-    <span class="mode-tab-desc">Drag the story panels into the correct order</span>
+    <span class="mode-tab-desc">Tap or drag panels into the correct order</span>
   </button>
 </div>
 
@@ -271,11 +272,11 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
   </div>
 
   <div class="step-card" id="seqDisplay" style="display:none;">
-    <div class="step-num">Step 2 of 2 &mdash; Drag into the correct order</div>
+    <div class="step-num">Step 2 of 2 &mdash; Tap to build the order</div>
     <div class="seq-clue" id="seqClue"></div>
-    <div class="seq-label">&#129354; Drag each panel into the correct slot below</div>
+    <div class="seq-label">&#128072; Tap a panel, then tap a numbered slot &mdash; or drag, if you like</div>
     <div class="seq-panels" id="seqPanels" ondragover="event.preventDefault()" ondrop="dropOnBank(event)"></div>
-    <div class="seq-label" style="margin-top:16px;">&#9679; Drop here in order &mdash; 1st through 4th</div>
+    <div class="seq-label" style="margin-top:16px;">&#9679; The order &mdash; 1st through 4th</div>
     <div class="seq-slots" id="seqSlots"></div>
     <div>
       <button class="check-btn" onclick="checkSeq()">&#10003; Check My Order</button>
@@ -329,6 +330,7 @@ var makeWord = '';
 var seqWord = '';
 var dragSrc = null;
 var slots = ['','','',''];
+var selectedPanel = null;
 
 // Tier 1 submission endpoint — AP Bio + T.I.D.E. v2 (personal account, auth-protected)
 var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwfI4l_WrGpj2OGifu_dSLiNyLrJ3ZZGNwHHqczA4HbygvPQxJEHJOYRybPh75bd4P8/exec';
@@ -479,6 +481,7 @@ function selectSeqWord(w, btn) {
 function buildSeq() {
   var d = stories[seqWord];
   if(!d) return;
+  selectedPanel = null;
 
   document.getElementById('seqClue').textContent = d.clue;
 
@@ -490,7 +493,7 @@ function buildSeq() {
   for(var i=0;i<4;i++) {
     var idx = order[i];
     panelsHtml += '<div class="seq-panel" draggable="true" id="sp'+idx+'" data-idx="'+idx+'" ' +
-      'ondragstart="dragStart(event)" ondragend="dragEnd(event)">' +
+      'onclick="selectPanel('+idx+',this)" ondragstart="dragStart(event)" ondragend="dragEnd(event)">' +
       '<span class="seq-drag-handle">&#8597;</span>' +
       '<span class="seq-panel-text">'+d.panels[idx]+'</span>' +
     '</div>';
@@ -503,7 +506,7 @@ function buildSeq() {
     slotsHtml += '<div class="seq-slot" id="slot'+i+'" data-slot="'+i+'" ' +
       'ondragover="dragOver(event)" ondrop="dropOnSlot(event,'+i+')" onclick="clickSlot('+i+')">' +
       '<span class="seq-slot-num">'+(i+1)+'</span>' +
-      '<span class="seq-slot-text" id="slotText'+i+'">Drop a panel here...</span>' +
+      '<span class="seq-slot-text" id="slotText'+i+'">Tap a panel, then tap here...</span>' +
     '</div>';
   }
   document.getElementById('seqSlots').innerHTML = slotsHtml;
@@ -520,33 +523,36 @@ function dragStart(e) {
 function dragEnd(e) { e.currentTarget.classList.remove('dragging'); }
 function dragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
 
-function dropOnSlot(e, slotIdx) {
-  e.preventDefault();
-  e.currentTarget.classList.remove('drag-over');
-  if(dragSrc === null && dragSrc !== 0) return;
-  var idx = parseInt(dragSrc);
-
+function placePanel(idx, slotIdx) {
   // Remove from any previous slot
   for(var i=0;i<4;i++) {
     if(slots[i]===idx) {
       slots[i]='';
-      document.getElementById('slotText'+i).textContent='Drop a panel here...';
-      var slotEl = document.getElementById('slot'+i);
-      slotEl.className='seq-slot';
+      document.getElementById('slotText'+i).textContent='Tap a panel, then tap here...';
+      document.getElementById('slot'+i).className='seq-slot';
     }
   }
-
-  // Remove the panel from bank if it is there
-  var panelEl = document.getElementById('sp'+idx);
-
   slots[slotIdx] = idx;
   var d = stories[seqWord];
   document.getElementById('slotText'+slotIdx).textContent = d.panels[idx];
-  var slotEl = document.getElementById('slot'+slotIdx);
-  slotEl.className = 'seq-slot';
+  document.getElementById('slot'+slotIdx).className = 'seq-slot';
+  var panelEl = document.getElementById('sp'+idx);
+  if(panelEl) { panelEl.style.display='none'; panelEl.classList.remove('selected'); }
+  selectedPanel = null;
+}
 
-  // Hide from bank
-  if(panelEl) panelEl.style.display='none';
+function selectPanel(idx, el) {
+  if(selectedPanel === idx) { selectedPanel = null; el.classList.remove('selected'); return; }
+  var ps = document.querySelectorAll('#seqPanels .seq-panel');
+  for(var i=0;i<ps.length;i++) ps[i].classList.remove('selected');
+  selectedPanel = idx; el.classList.add('selected');
+}
+
+function dropOnSlot(e, slotIdx) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if(dragSrc === null) return;
+  placePanel(parseInt(dragSrc), slotIdx);
   dragSrc = null;
 }
 
@@ -555,13 +561,19 @@ function dropOnBank(e) {
 }
 
 function clickSlot(slotIdx) {
-  if(slots[slotIdx]==='') return;
-  var idx = slots[slotIdx];
-  slots[slotIdx]='';
-  document.getElementById('slotText'+slotIdx).textContent='Drop a panel here...';
-  document.getElementById('slot'+slotIdx).className='seq-slot';
-  var panelEl = document.getElementById('sp'+idx);
-  if(panelEl) panelEl.style.display='flex';
+  // Filled slot: tapping it returns the panel to the bank
+  if(slots[slotIdx]!=='' && slots[slotIdx]!==undefined) {
+    var idx = slots[slotIdx];
+    slots[slotIdx]='';
+    document.getElementById('slotText'+slotIdx).textContent='Tap a panel, then tap here...';
+    document.getElementById('slot'+slotIdx).className='seq-slot';
+    var panelEl = document.getElementById('sp'+idx);
+    if(panelEl) panelEl.style.display='flex';
+    return;
+  }
+  // Empty slot: drop the currently selected panel in
+  if(selectedPanel === null) return;
+  placePanel(selectedPanel, slotIdx);
 }
 
 function checkSeq() {
@@ -592,12 +604,9 @@ function giveHint() {
   for(var i=0;i<4;i++) {
     if(slots[i]==='' || slots[i]===undefined) {
       var correctPanel = d.answer[i]-1;
-      // Place it
       var panelEl = document.getElementById('sp'+correctPanel);
       if(panelEl && panelEl.style.display!=='none') {
-        slots[i] = correctPanel;
-        document.getElementById('slotText'+i).textContent = d.panels[correctPanel];
-        panelEl.style.display='none';
+        placePanel(correctPanel, i);
         return;
       }
     }
