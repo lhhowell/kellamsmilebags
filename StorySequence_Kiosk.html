@@ -84,13 +84,38 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 .seq-panel.dragging{opacity:.5;border-color:#c9a84c;}
 .seq-panel.correct{border-color:#4caf82;background:rgba(76,175,130,.08);cursor:default;}
 .seq-panel.wrong{border-color:#D4537E;animation:shake .3s;}
+.seq-panel.selected{border-color:#c9a84c;background:rgba(201,168,76,.14);box-shadow:0 0 0 3px rgba(201,168,76,.35);}
+.seq-panel{cursor:default;}
+.seq-letter{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;
+  background:#c9a84c;color:#0a0f14;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:18px;margin-right:12px;flex:0 0 auto;}
+.seq-inputs{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.seq-inbox{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.seq-inbox label{font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;color:#9fb0a0;letter-spacing:.08em;}
+.seq-in{width:64px;height:64px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:30px;
+  text-transform:uppercase;border:2px solid #2a3b2a;border-radius:12px;background:#0a0f14;color:#eafff0;
+  -webkit-user-select:text;user-select:text;touch-action:manipulation;}
+.seq-slots{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.ans-slot{width:66px;height:66px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border:2px solid #2a3b2a;border-radius:12px;background:#0a0f14;color:#eafff0;cursor:pointer;}
+.ans-slot .pos{font-size:10px;color:#9fb0a0;font-weight:800;letter-spacing:.06em;}
+.ans-slot .let{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:28px;line-height:1;}
+.ans-slot.correct{border-color:#3FB68B;background:rgba(63,182,139,.18);}
+.ans-slot.wrong{border-color:#D4537E;background:rgba(212,83,126,.16);animation:shake .3s;}
+.seq-tray{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.chip{width:62px;height:62px;border-radius:14px;border:none;background:#c9a84c;color:#0a0f14;
+  font-family:'JetBrains Mono',monospace;font-weight:700;font-size:28px;cursor:pointer;box-shadow:0 4px 0 #8a6f20;}
+.chip:active{transform:translateY(2px);box-shadow:0 2px 0 #8a6f20;}
+.chip:disabled{opacity:.28;cursor:default;box-shadow:none;}
+.seq-in:focus{outline:none;border-color:#c9a84c;}
+.seq-in.correct{border-color:#3FB68B;background:rgba(63,182,139,.18);}
+.seq-in.wrong{border-color:#D4537E;background:rgba(212,83,126,.16);animation:shake .3s;}
 @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);};}
 .seq-drag-handle{font-size:16px;color:#333;flex-shrink:0;margin-top:2px;}
 .seq-panel-text{font-size:13px;color:#c8c4bc;line-height:1.65;flex:1;}
 .seq-panel.correct .seq-panel-text{color:#4caf82;}
 
 .seq-slots{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
-.seq-slot{background:#0a0f14;border:2px dashed #1a2a1a;border-radius:10px;padding:14px 16px;min-height:60px;display:flex;align-items:center;gap:12px;transition:all .2s;}
+.seq-slot{background:#0a0f14;border:2px dashed #1a2a1a;border-radius:10px;padding:14px 16px;min-height:60px;display:flex;align-items:center;gap:12px;transition:all .2s;cursor:pointer;}
 .seq-slot.drag-over{border-color:#c9a84c;background:rgba(201,168,76,.05);}
 .seq-slot-num{font-family:'Fredoka One',cursive;font-size:20px;color:#2a2a0a;width:28px;flex-shrink:0;}
 .seq-slot-text{font-size:13px;color:#c8c4bc;line-height:1.65;flex:1;font-style:italic;}
@@ -150,7 +175,7 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
   <button class="mode-tab" onclick="switchMode('seq')">
     <span class="mode-tab-icon">&#127922;</span>
     <span class="mode-tab-title">Sequence It</span>
-    <span class="mode-tab-desc">Drag the story panels into the correct order</span>
+    <span class="mode-tab-desc">Type the letters in the correct order</span>
   </button>
 </div>
 
@@ -271,12 +296,14 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
   </div>
 
   <div class="step-card" id="seqDisplay" style="display:none;">
-    <div class="step-num">Step 2 of 2 &mdash; Drag into the correct order</div>
+    <div class="step-num">Step 2 of 2 &mdash; Tap the order</div>
     <div class="seq-clue" id="seqClue"></div>
-    <div class="seq-label">&#129354; Drag each panel into the correct slot below</div>
-    <div class="seq-panels" id="seqPanels" ondragover="event.preventDefault()" ondrop="dropOnBank(event)"></div>
-    <div class="seq-label" style="margin-top:16px;">&#9679; Drop here in order &mdash; 1st through 4th</div>
+    <div class="seq-label">&#128071; Each panel has a letter. Tap the letters in story order &mdash; no keyboard needed.</div>
+    <div class="seq-panels" id="seqPanels"></div>
+    <div class="seq-label" style="margin-top:16px;">&#128072; Your order &mdash; 1st through 4th (tap a box to clear it)</div>
     <div class="seq-slots" id="seqSlots"></div>
+    <div class="seq-label" style="margin-top:14px;">Tap a letter:</div>
+    <div class="seq-tray" id="seqTray"></div>
     <div>
       <button class="check-btn" onclick="checkSeq()">&#10003; Check My Order</button>
       <button class="hint-btn" onclick="giveHint()">&#128161; Hint</button>
@@ -329,9 +356,14 @@ var makeWord = '';
 var seqWord = '';
 var dragSrc = null;
 var slots = ['','','',''];
+var selectedPanel = null;
+var seqOrder = [0,1,2,3];
+var ans = ['','','',''];
 
-// Tier 1 submission endpoint — AP Bio + T.I.D.E. Apps Script (shared with Elena's other kiosks)
-var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzEmRvijoOk21PK_EvB_zT_Dy5GwgFiNdAqv-PYgk23RB929cFs6y1ZkP1YNkiCXQ3-/exec';
+// Tier 1 submission endpoint — AP Bio + T.I.D.E. v2 (personal account, auth-protected)
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwfI4l_WrGpj2OGifu_dSLiNyLrJ3ZZGNwHHqczA4HbygvPQxJEHJOYRybPh75bd4P8/exec';
+var SCRIPT_TOKEN = 'smilebags-obrien-2026-123456'; // matches SHARED_TOKEN in Apps Script Properties
+var SPREADSHEET_ID = '1ruH_Rr60g5XfiPS5-uJwZiKQhyC1wMYzTOEXHNJ-kcA';
 
 function submitToBag() {
   // Standard #7 — safe placeholder check (works whether URL is baked in or template'd)
@@ -357,18 +389,20 @@ function submitToBag() {
   btn.textContent = 'Adding...';
   status.style.display = 'none';
 
-  var payload = {
+  var body = JSON.stringify({
     activity: 'storySequence',
+    token: SCRIPT_TOKEN,
+    spreadsheetId: SPREADSHEET_ID,
     studentName: name,
-    class: 'AP Bio + T.I.D.E.',
-    word: makeWord,
-    token: ''
-  };
+    word: makeWord
+  });
 
   fetch(SCRIPT_URL, {
     method: 'POST',
     mode: 'no-cors',
-    body: JSON.stringify(payload)
+    body: body
+    // No Content-Type header — Apps Script reads e.postData.contents directly,
+    // and setting application/json under no-cors triggers preflight which fails.
   }).then(function() {
     btn.textContent = '\u2713 Added to the Smile Bag!';
     btn.style.background = '#4caf82';
@@ -478,34 +512,55 @@ function buildSeq() {
 
   document.getElementById('seqClue').textContent = d.clue;
 
-  // Shuffle panels
+  // Shuffle display order; remember it for checking
   var order = [0,1,2,3];
   for(var i=order.length-1;i>0;i--) { var j=Math.floor(Math.random()*(i+1)); var t=order[i];order[i]=order[j];order[j]=t; }
+  seqOrder = order;
+  ans = ['','','',''];
 
   var panelsHtml = '';
   for(var i=0;i<4;i++) {
     var idx = order[i];
-    panelsHtml += '<div class="seq-panel" draggable="true" id="sp'+idx+'" data-idx="'+idx+'" ' +
-      'ondragstart="dragStart(event)" ondragend="dragEnd(event)">' +
-      '<span class="seq-drag-handle">&#8597;</span>' +
+    var letter = String.fromCharCode(65+i);
+    panelsHtml += '<div class="seq-panel">' +
+      '<span class="seq-letter">'+letter+'</span>' +
       '<span class="seq-panel-text">'+d.panels[idx]+'</span>' +
     '</div>';
   }
   document.getElementById('seqPanels').innerHTML = panelsHtml;
+  renderSeq();
 
-  slots = ['','','',''];
-  var slotsHtml = '';
-  for(var i=0;i<4;i++) {
-    slotsHtml += '<div class="seq-slot" id="slot'+i+'" data-slot="'+i+'" ' +
-      'ondragover="dragOver(event)" ondrop="dropOnSlot(event,'+i+')" onclick="clickSlot('+i+')">' +
-      '<span class="seq-slot-num">'+(i+1)+'</span>' +
-      '<span class="seq-slot-text" id="slotText'+i+'">Drop a panel here...</span>' +
-    '</div>';
-  }
-  document.getElementById('seqSlots').innerHTML = slotsHtml;
   document.getElementById('celebrate').className='celebrate';
   document.getElementById('seqDisplay').style.display='block';
   document.getElementById('seqDisplay').scrollIntoView({behavior:'smooth'});
+}
+
+function renderSeq() {
+  var labels = ['1st','2nd','3rd','4th'];
+  var sh = '';
+  for(var i=0;i<4;i++) {
+    sh += '<div class="ans-slot" onclick="clearSlot('+i+')">' +
+            '<span class="pos">'+labels[i]+'</span>' +
+            '<span class="let">'+(ans[i] || '&middot;')+'</span>' +
+          '</div>';
+  }
+  document.getElementById('seqSlots').innerHTML = sh;
+  var th = '';
+  for(var i=0;i<4;i++) {
+    var L = String.fromCharCode(65+i);
+    var used = ans.indexOf(L) >= 0;
+    th += '<button class="chip" onclick="tapChip(\''+L+'\')"'+(used?' disabled':'')+'>'+L+'</button>';
+  }
+  document.getElementById('seqTray').innerHTML = th;
+}
+
+function tapChip(L) {
+  if(ans.indexOf(L) >= 0) return;            // each letter used once
+  for(var i=0;i<4;i++) { if(!ans[i]) { ans[i] = L; renderSeq(); return; } }
+}
+
+function clearSlot(i) {
+  if(ans[i]) { ans[i] = ''; renderSeq(); }
 }
 
 function dragStart(e) {
@@ -516,33 +571,36 @@ function dragStart(e) {
 function dragEnd(e) { e.currentTarget.classList.remove('dragging'); }
 function dragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
 
-function dropOnSlot(e, slotIdx) {
-  e.preventDefault();
-  e.currentTarget.classList.remove('drag-over');
-  if(dragSrc === null && dragSrc !== 0) return;
-  var idx = parseInt(dragSrc);
-
+function placePanel(idx, slotIdx) {
   // Remove from any previous slot
   for(var i=0;i<4;i++) {
     if(slots[i]===idx) {
       slots[i]='';
-      document.getElementById('slotText'+i).textContent='Drop a panel here...';
-      var slotEl = document.getElementById('slot'+i);
-      slotEl.className='seq-slot';
+      document.getElementById('slotText'+i).textContent='Tap a panel, then tap here...';
+      document.getElementById('slot'+i).className='seq-slot';
     }
   }
-
-  // Remove the panel from bank if it is there
-  var panelEl = document.getElementById('sp'+idx);
-
   slots[slotIdx] = idx;
   var d = stories[seqWord];
   document.getElementById('slotText'+slotIdx).textContent = d.panels[idx];
-  var slotEl = document.getElementById('slot'+slotIdx);
-  slotEl.className = 'seq-slot';
+  document.getElementById('slot'+slotIdx).className = 'seq-slot';
+  var panelEl = document.getElementById('sp'+idx);
+  if(panelEl) { panelEl.style.display='none'; panelEl.classList.remove('selected'); }
+  selectedPanel = null;
+}
 
-  // Hide from bank
-  if(panelEl) panelEl.style.display='none';
+function selectPanel(idx, el) {
+  if(selectedPanel === idx) { selectedPanel = null; el.classList.remove('selected'); return; }
+  var ps = document.querySelectorAll('#seqPanels .seq-panel');
+  for(var i=0;i<ps.length;i++) ps[i].classList.remove('selected');
+  selectedPanel = idx; el.classList.add('selected');
+}
+
+function dropOnSlot(e, slotIdx) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if(dragSrc === null) return;
+  placePanel(parseInt(dragSrc), slotIdx);
   dragSrc = null;
 }
 
@@ -551,28 +609,32 @@ function dropOnBank(e) {
 }
 
 function clickSlot(slotIdx) {
-  if(slots[slotIdx]==='') return;
-  var idx = slots[slotIdx];
-  slots[slotIdx]='';
-  document.getElementById('slotText'+slotIdx).textContent='Drop a panel here...';
-  document.getElementById('slot'+slotIdx).className='seq-slot';
-  var panelEl = document.getElementById('sp'+idx);
-  if(panelEl) panelEl.style.display='flex';
+  // Filled slot: tapping it returns the panel to the bank
+  if(slots[slotIdx]!=='' && slots[slotIdx]!==undefined) {
+    var idx = slots[slotIdx];
+    slots[slotIdx]='';
+    document.getElementById('slotText'+slotIdx).textContent='Tap a panel, then tap here...';
+    document.getElementById('slot'+slotIdx).className='seq-slot';
+    var panelEl = document.getElementById('sp'+idx);
+    if(panelEl) panelEl.style.display='flex';
+    return;
+  }
+  // Empty slot: drop the currently selected panel in
+  if(selectedPanel === null) return;
+  placePanel(selectedPanel, slotIdx);
 }
 
 function checkSeq() {
   var d = stories[seqWord];
   var correct = true;
+  var slots = document.querySelectorAll('#seqSlots .ans-slot');
   for(var i=0;i<4;i++) {
-    var slotEl = document.getElementById('slot'+i);
-    if(slots[i]==='' || slots[i]===undefined) { correct=false; slotEl.className='seq-slot wrong'; continue; }
-    var panelIdx = slots[i];
-    var correctPanelForSlot = d.answer[i]-1;
-    if(panelIdx === correctPanelForSlot) {
-      slotEl.className='seq-slot correct';
+    var correctLetter = String.fromCharCode(65 + seqOrder.indexOf(d.answer[i]-1));
+    if(ans[i] === correctLetter) {
+      slots[i].classList.remove('wrong'); slots[i].classList.add('correct');
     } else {
-      slotEl.className='seq-slot wrong';
-      correct=false;
+      slots[i].classList.remove('correct'); slots[i].classList.add('wrong');
+      correct = false;
     }
   }
   if(correct) {
@@ -586,16 +648,12 @@ function checkSeq() {
 function giveHint() {
   var d = stories[seqWord];
   for(var i=0;i<4;i++) {
-    if(slots[i]==='' || slots[i]===undefined) {
-      var correctPanel = d.answer[i]-1;
-      // Place it
-      var panelEl = document.getElementById('sp'+correctPanel);
-      if(panelEl && panelEl.style.display!=='none') {
-        slots[i] = correctPanel;
-        document.getElementById('slotText'+i).textContent = d.panels[correctPanel];
-        panelEl.style.display='none';
-        return;
-      }
+    var correctLetter = String.fromCharCode(65 + seqOrder.indexOf(d.answer[i]-1));
+    if(ans[i] !== correctLetter) {
+      var dup = ans.indexOf(correctLetter); if(dup >= 0) ans[dup] = '';
+      ans[i] = correctLetter;
+      renderSeq();
+      return;
     }
   }
 }
