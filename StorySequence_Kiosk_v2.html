@@ -484,8 +484,8 @@ function generateMake() {
   var boxesHtml = '';
   for(var i=0;i<4;i++) {
     boxesHtml += '<div style="text-align:center;">' +
-      '<div style="font-family:Fredoka One,cursive;font-size:11px;color:#c9a84c;margin-bottom:4px;">'+(i+1)+'st '+['','2nd','3rd','4th'][i]+'</div>' +
-      '<div class="print-answer-box">'+letters[i]+'?</div>' +
+      '<div style="font-family:Fredoka One,cursive;font-size:11px;color:#c9a84c;margin-bottom:4px;">'+['1st','2nd','3rd','4th'][i]+'</div>' +
+      '<div class="print-answer-box"></div>' +
     '</div>';
   }
   document.getElementById('makeAnswerBoxes').innerHTML = boxesHtml;
