@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Romeo &amp; Juliet — Word Search Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=JetBrains+Mono:wght@700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#FAEFD8;--navy:#1A2744;--gold:#C8860A;--rose:#B5446E;--teal:#1B7A78;--sage:#5C8A4A;--purple:#6B3FA0;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#DCE6EE;font-family:'Nunito',sans-serif;color:var(--navy);padding:22px;-webkit-user-select:none;user-select:none;}
+  .toolbar{max-width:8in;margin:0 auto 14px;text-align:center;}
+  .toolbar .btn{background:var(--rose);color:#fff;border:none;border-radius:10px;padding:10px 22px;
+    font-family:'Nunito';font-weight:800;font-size:14px;cursor:pointer;box-shadow:0 3px 0 #8a2f52;margin:0 4px;}
+  .toolbar .btn.alt{background:var(--teal);box-shadow:0 3px 0 #115f5d;}
+  .toolbar .btn:active{transform:translateY(2px);}
+
+  .sheet{width:8.5in;min-height:11in;margin:0 auto;background:#fff;padding:.45in .5in;
+    box-shadow:0 6px 22px rgba(0,0,0,.14);display:flex;flex-direction:column;}
+  .eyebrow{text-align:center;font-family:'Nunito';font-weight:800;letter-spacing:.26em;font-size:10px;
+    color:var(--gold);text-transform:uppercase;}
+  h1{text-align:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:30px;color:var(--navy);margin:2px 0 0;}
+  .sub{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--rose);margin-bottom:14px;}
+
+  .area{display:flex;gap:20px;align-items:flex-start;}
+  .grid{display:grid;grid-template-columns:repeat(15, 1fr);gap:0;border:2.5px solid var(--navy);border-radius:8px;overflow:hidden;flex:0 0 auto;}
+  .cell{width:30px;height:30px;display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:16px;color:var(--navy);
+    border:1px solid #e7ddc6;background:#fff;cursor:pointer;}
+  .cell.sel{background:var(--gold);color:#fff;}
+  .cell.found{background:rgba(92,138,74,.30);color:var(--navy);}
+
+  .side{flex:1;}
+  .side h2{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:18px;color:var(--teal);margin-bottom:6px;border-bottom:2px solid #e7ddc6;padding-bottom:3px;}
+  ul.words{list-style:none;columns:2;column-gap:14px;}
+  ul.words li{font-family:'Nunito';font-weight:700;font-size:13px;padding:3px 0;display:flex;align-items:center;gap:7px;color:var(--navy);}
+  ul.words li .dot{width:8px;height:8px;border-radius:50%;border:2px solid var(--rose);flex:0 0 auto;}
+  ul.words li.done{color:#aaa;text-decoration:line-through;}
+  ul.words li.done .dot{background:var(--sage);border-color:var(--sage);}
+  .count{font-family:'Nunito';font-weight:800;font-size:12px;color:var(--rose);margin-top:8px;}
+
+  .challenge{margin-top:18px;background:var(--cream);border-left:5px solid var(--purple);border-radius:0 12px 12px 0;padding:12px 16px;}
+  .challenge .lbl{font-family:'Nunito';font-weight:800;letter-spacing:.1em;font-size:10px;color:var(--purple);text-transform:uppercase;}
+  .challenge .q{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:17px;color:var(--navy);margin-top:3px;line-height:1.3;}
+  .challenge .line{border-bottom:1.5px solid #c3b79a;height:.32in;margin-top:10px;}
+
+  .foot{margin-top:auto;text-align:center;font-family:'Nunito';font-weight:700;font-size:8px;letter-spacing:.1em;color:#a59a86;padding-top:14px;}
+
+  @media print{
+    body{background:#fff;padding:0;} .toolbar{display:none;}
+    .sheet{box-shadow:none;margin:0;width:100%;}
+    .cell{background:#fff !important;color:var(--navy) !important;}   /* always print a clean blank puzzle */
+    ul.words li{color:var(--navy) !important;text-decoration:none !important;}
+    ul.words li .dot{background:#fff !important;border-color:var(--rose) !important;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+  @page{size:letter portrait;margin:0;}
+</style>
+</head>
+<body>
+  <div class="toolbar">
+    <button class="btn" onclick="window.print()">🖨️ Print blank puzzle</button>
+    <button class="btn alt" id="ansBtn" onclick="toggleAnswers()">🔑 Show answers (teacher)</button>
+  </div>
+
+  <div class="sheet">
+    <div class="eyebrow">Smile Bags · A Word &amp; Wonder Experience</div>
+    <h1>Romeo &amp; Juliet — Word Search</h1>
+    <div class="sub">Find all 15 — drag across the letters on screen, or solve with a pencil.</div>
+
+    <div class="area">
+      <div class="grid" id="grid"></div>
+      <div class="side">
+        <h2>Find these 15 words</h2>
+        <ul class="words" id="wordList"><li data-word="BALCONY"><span class="dot"></span>BALCONY</li><li data-word="BANISHMENT"><span class="dot"></span>BANISHMENT</li><li data-word="CAPULET"><span class="dot"></span>CAPULET</li><li data-word="FEUD"><span class="dot"></span>FEUD</li><li data-word="FRIAR"><span class="dot"></span>FRIAR</li><li data-word="JULIET"><span class="dot"></span>JULIET</li><li data-word="LOVE"><span class="dot"></span>LOVE</li><li data-word="MERCUTIO"><span class="dot"></span>MERCUTIO</li><li data-word="MONTAGUE"><span class="dot"></span>MONTAGUE</li><li data-word="NURSE"><span class="dot"></span>NURSE</li><li data-word="POISON"><span class="dot"></span>POISON</li><li data-word="ROMEO"><span class="dot"></span>ROMEO</li><li data-word="TRAGEDY"><span class="dot"></span>TRAGEDY</li><li data-word="TYBALT"><span class="dot"></span>TYBALT</li><li data-word="VERONA"><span class="dot"></span>VERONA</li></ul>
+        <div class="count" id="count">0 of 15 found</div>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="lbl">📖 Challenge Question</div>
+      <div class="q">If you could give Romeo or Juliet one <b>OneWord</b> to change their story, which would you choose — and why?</div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+
+    <div class="foot">SMILE BAGS · A WORD &amp; WONDER EXPERIENCE · CREATED BY LAURA HOWELL · © 2025–2026</div>
+  </div>
+
+<script>
+  var GRID = [["A", "P", "S", "F", "I", "J", "A", "V", "E", "N", "T", "R", "L", "B", "T"], ["S", "K", "E", "W", "Q", "T", "E", "U", "E", "V", "Y", "X", "B", "A", "O"], ["Y", "V", "O", "Z", "R", "R", "M", "U", "M", "P", "B", "M", "M", "N", "D"], ["T", "P", "U", "I", "O", "M", "G", "B", "O", "G", "A", "C", "G", "I", "O"], ["E", "F", "D", "N", "T", "A", "K", "I", "T", "B", "L", "D", "A", "S", "S"], ["L", "E", "A", "R", "T", "U", "S", "D", "L", "T", "T", "A", "C", "H", "G"], ["U", "T", "M", "N", "E", "O", "C", "U", "F", "I", "L", "Y", "T", "M", "N"], ["P", "L", "O", "P", "N", "D", "D", "R", "P", "R", "D", "O", "P", "E", "U"], ["A", "M", "P", "J", "C", "E", "D", "X", "E", "E", "I", "K", "X", "N", "R"], ["C", "B", "A", "L", "C", "O", "N", "Y", "G", "M", "I", "A", "T", "T", "S"], ["D", "U", "E", "F", "P", "W", "F", "A", "Q", "A", "G", "E", "R", "Q", "E"], ["L", "E", "W", "R", "A", "Y", "R", "Q", "J", "U", "I", "C", "W", "I", "Q"], ["O", "E", "M", "O", "R", "T", "L", "F", "L", "L", "Y", "H", "R", "R", "Y"], ["Q", "K", "U", "H", "T", "Z", "Z", "Y", "U", "G", "Z", "H", "M", "X", "Z"], ["H", "G", "L", "O", "V", "E", "Q", "J", "P", "L", "X", "A", "A", "Z", "I"]];
+  var PLACE = {"BANISHMENT": [[0, 13], [1, 13], [2, 13], [3, 13], [4, 13], [5, 13], [6, 13], [7, 13], [8, 13], [9, 13]], "MERCUTIO": [[9, 9], [8, 8], [7, 7], [6, 6], [5, 5], [4, 4], [3, 3], [2, 2]], "MONTAGUE": [[8, 1], [7, 2], [6, 3], [5, 4], [4, 5], [3, 6], [2, 7], [1, 8]], "CAPULET": [[9, 0], [8, 0], [7, 0], [6, 0], [5, 0], [4, 0], [3, 0]], "BALCONY": [[9, 1], [9, 2], [9, 3], [9, 4], [9, 5], [9, 6], [9, 7]], "TRAGEDY": [[12, 5], [11, 6], [10, 7], [9, 8], [8, 9], [7, 10], [6, 11]], "JULIET": [[14, 7], [13, 8], [12, 9], [11, 10], [10, 11], [9, 12]], "TYBALT": [[0, 10], [1, 10], [2, 10], [3, 10], [4, 10], [5, 10]], "VERONA": [[0, 7], [1, 6], [2, 5], [3, 4], [4, 3], [5, 2]], "POISON": [[2, 9], [3, 8], [4, 7], [5, 6], [6, 5], [7, 4]], "ROMEO": [[12, 4], [12, 3], [12, 2], [12, 1], [12, 0]], "NURSE": [[6, 14], [7, 14], [8, 14], [9, 14], [10, 14]], "FRIAR": [[6, 8], [7, 9], [8, 10], [9, 11], [10, 12]], "LOVE": [[14, 2], [14, 3], [14, 4], [14, 5]], "FEUD": [[10, 3], [10, 2], [10, 1], [10, 0]]};
+  var N = GRID.length;
+  var found = {};
+  var gridEl = document.getElementById('grid');
+
+  // render grid
+  for(var r=0;r<N;r++){
+    for(var c=0;c<N;c++){
+      var d=document.createElement('div');
+      d.className='cell'; d.textContent=GRID[r][c];
+      d.dataset.r=r; d.dataset.c=c;
+      gridEl.appendChild(d);
+    }
+  }
+  function cellAt(r,c){ return gridEl.querySelector('.cell[data-r="'+r+'"][data-c="'+c+'"]'); }
+
+  var selecting=false, start=null, lineCells=[];
+  function clearSel(){ lineCells.forEach(function(el){ if(!el.classList.contains('found')) el.classList.remove('sel'); }); lineCells=[]; }
+
+  function lineBetween(r0,c0,r1,c1){
+    var dr=r1-r0, dc=c1-c0;
+    if(!(dr===0 || dc===0 || Math.abs(dr)===Math.abs(dc))) return null;
+    var steps=Math.max(Math.abs(dr),Math.abs(dc));
+    var sr=Math.sign(dr), sc=Math.sign(dc), cells=[];
+    for(var i=0;i<=steps;i++) cells.push([r0+sr*i, c0+sc*i]);
+    return cells;
+  }
+  function preview(r,c){
+    if(!start) return;
+    clearSel();
+    var cells=lineBetween(start[0],start[1],r,c);
+    if(!cells) { var s=cellAt(start[0],start[1]); s.classList.add('sel'); lineCells=[s]; return; }
+    cells.forEach(function(rc){ var el=cellAt(rc[0],rc[1]); el.classList.add('sel'); lineCells.push(el); });
+  }
+  function finalize(r,c){
+    var cells=lineBetween(start[0],start[1],r,c);
+    clearSel();
+    if(!cells){ return; }
+    var key=cells.map(function(x){return x[0]+','+x[1];}).join('|');
+    var rev=cells.slice().reverse().map(function(x){return x[0]+','+x[1];}).join('|');
+    for(var w in PLACE){
+      if(found[w]) continue;
+      var pk=PLACE[w].map(function(x){return x[0]+','+x[1];}).join('|');
+      if(key===pk || rev===pk){ markFound(w); break; }
+    }
+  }
+  function markFound(w){
+    found[w]=true;
+    PLACE[w].forEach(function(rc){ cellAt(rc[0],rc[1]).classList.add('found'); });
+    var li=document.querySelector('#wordList li[data-word="'+w+'"]'); if(li) li.classList.add('done');
+    var n=Object.keys(found).length;
+    document.getElementById('count').textContent = n+' of 15 found' + (n===15?' — solved! 🎉':'');
+  }
+
+  function getCell(t){ return t && t.classList && t.classList.contains('cell') ? t : null; }
+  gridEl.addEventListener('pointerdown', function(e){
+    var t=getCell(e.target); if(!t) return;
+    selecting=true; start=[+t.dataset.r,+t.dataset.c];
+    clearSel(); t.classList.add('sel'); lineCells=[t];
+    e.preventDefault();
+  });
+  gridEl.addEventListener('pointermove', function(e){
+    if(!selecting) return;
+    var el=document.elementFromPoint(e.clientX,e.clientY); var t=getCell(el);
+    if(t) preview(+t.dataset.r,+t.dataset.c);
+  });
+  window.addEventListener('pointerup', function(e){
+    if(!selecting) return; selecting=false;
+    var el=document.elementFromPoint(e.clientX,e.clientY); var t=getCell(el);
+    if(t && start) finalize(+t.dataset.r,+t.dataset.c); else clearSel();
+    start=null;
+  });
+
+  var showing=false;
+  function toggleAnswers(){
+    showing=!showing;
+    for(var w in PLACE){
+      PLACE[w].forEach(function(rc){
+        var el=cellAt(rc[0],rc[1]);
+        if(showing) el.style.outline='2px solid #B5446E';
+        else if(!el.classList.contains('found')) el.style.outline='';
+        else el.style.outline='';
+      });
+    }
+    document.getElementById('ansBtn').textContent = showing ? '🔑 Hide answers' : '🔑 Show answers (teacher)';
+  }
+</script>
+</body>
+</html>
