@@ -162,24 +162,11 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 <div class="hero">
   <div class="hero-brand">Smile Bags &middot; T.I.D.E. Coalition &middot; Creation Kiosk</div>
   <h1 class="hero-title">Story Sequence<br><span>Challenge</span></h1>
-  <p class="hero-sub">A short story connected to your OneWord &mdash; scrambled into panels and waiting to be reassembled. Cut the panels apart, read the clues, and put the story back in the right order. Can you crack the sequence?</p>
+  <p class="hero-sub">A short story connected to your OneWord &mdash; scrambled into panels and waiting to be reassembled. Tap the panels into the right order on screen, or print the sheet to cut and number by hand. Can you crack the sequence?</p>
   <div style="font-family:'Fredoka One',cursive;font-size:11px;color:#c9a84c;letter-spacing:1px;margin-top:14px;">Elena O'Brien · AP Biology + T.I.D.E. · Spring 2026</div>
 </div>
 
 <button type="button" onclick="window.location.href='APBio_TIDE_Kiosk_Menu.html'" class="back-btn">&#8592; Back to Kiosk Menu</button>
-
-<div class="mode-tabs">
-  <button class="mode-tab active" onclick="switchMode('make')">
-    <span class="mode-tab-icon">&#128196;</span>
-    <span class="mode-tab-title">Make It</span>
-    <span class="mode-tab-desc">Tap the story panels into order on screen &mdash; or print the sheet</span>
-  </button>
-  <button class="mode-tab" onclick="switchMode('seq')">
-    <span class="mode-tab-icon">&#127922;</span>
-    <span class="mode-tab-title">Sequence It</span>
-    <span class="mode-tab-desc">Type the letters in the correct order</span>
-  </button>
-</div>
 
 <div class="workspace">
 
@@ -231,7 +218,8 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
 
   <div id="makeInteractive">
     <div class="step-card">
-      <div class="step-num">Put it in order &mdash; on screen</div>
+      <div class="step-num">Put it in order</div>
+      <div class="seq-clue" id="makeClue"></div>
       <div class="seq-label">&#128071; Each panel has a letter. Tap the letters into the boxes in story order &mdash; no keyboard needed.</div>
       <div class="seq-panels" id="miPanels"></div>
       <div class="seq-label" style="margin-top:16px;">&#128072; Your order &mdash; 1st through 4th (tap a box to clear it)</div>
@@ -283,62 +271,6 @@ body{font-family:'Nunito',sans-serif;background:#0a0f14;color:#fff;min-height:10
     <input type="text" id="bagStudentName" class="bag-submit-name" placeholder="Your first name" maxlength="30" autocomplete="off"/>
     <button type="button" id="bagSubmitBtn" class="bag-submit-btn" onclick="submitToBag()">&#9995; Add to the Smile Bag</button>
     <div class="bag-submit-status" id="bagSubmitStatus"></div>
-  </div>
-</div>
-
-<!-- SEQUENCE IT -->
-<div class="mode-panel" id="panel-seq">
-  <div class="step-card" style="margin-top:20px;">
-    <div class="step-num">Step 1 of 2</div>
-    <div class="step-title">Choose a OneWord to sequence</div>
-    <div class="ow-grid">
-      <button class="ow-btn" onclick="selectSeqWord('ABSORB',this)">ABSORB</button>
-      <button class="ow-btn" onclick="selectSeqWord('ADAPT',this)">ADAPT</button>
-      <button class="ow-btn" onclick="selectSeqWord('ANCHOR',this)">ANCHOR</button>
-      <button class="ow-btn" onclick="selectSeqWord('BALANCE',this)">BALANCE</button>
-      <button class="ow-btn" onclick="selectSeqWord('BLOOM',this)">BLOOM</button>
-      <button class="ow-btn" onclick="selectSeqWord('BREATHE',this)">BREATHE</button>
-      <button class="ow-btn" onclick="selectSeqWord('CLEAR',this)">CLEAR</button>
-      <button class="ow-btn" onclick="selectSeqWord('CONNECT',this)">CONNECT</button>
-      <button class="ow-btn" onclick="selectSeqWord('CYCLE',this)">CYCLE</button>
-      <button class="ow-btn" onclick="selectSeqWord('EMERGE',this)">EMERGE</button>
-      <button class="ow-btn" onclick="selectSeqWord('FILTER',this)">FILTER</button>
-      <button class="ow-btn" onclick="selectSeqWord('FLOW',this)">FLOW</button>
-      <button class="ow-btn" onclick="selectSeqWord('GROW',this)">GROW</button>
-      <button class="ow-btn" onclick="selectSeqWord('HEAL',this)">HEAL</button>
-      <button class="ow-btn" onclick="selectSeqWord('MIGRATE',this)">MIGRATE</button>
-      <button class="ow-btn" onclick="selectSeqWord('PERSIST',this)">PERSIST</button>
-      <button class="ow-btn" onclick="selectSeqWord('RENEW',this)">RENEW</button>
-      <button class="ow-btn" onclick="selectSeqWord('RESTORE',this)">RESTORE</button>
-      <button class="ow-btn" onclick="selectSeqWord('RETURN',this)">RETURN</button>
-      <button class="ow-btn" onclick="selectSeqWord('RISE',this)">RISE</button>
-      <button class="ow-btn" onclick="selectSeqWord('ROOT',this)">ROOT</button>
-      <button class="ow-btn" onclick="selectSeqWord('SHINE',this)">SHINE</button>
-      <button class="ow-btn" onclick="selectSeqWord('SUSTAIN',this)">SUSTAIN</button>
-      <button class="ow-btn" onclick="selectSeqWord('THRIVE',this)">THRIVE</button>
-      <button class="ow-btn" onclick="selectSeqWord('TRANSFORM',this)">TRANSFORM</button>
-    </div>
-  </div>
-
-  <div class="step-card" id="seqDisplay" style="display:none;">
-    <div class="step-num">Step 2 of 2 &mdash; Tap the order</div>
-    <div class="seq-clue" id="seqClue"></div>
-    <div class="seq-label">&#128071; Each panel has a letter. Tap the letters in story order &mdash; no keyboard needed.</div>
-    <div class="seq-panels" id="seqPanels"></div>
-    <div class="seq-label" style="margin-top:16px;">&#128072; Your order &mdash; 1st through 4th (tap a box to clear it)</div>
-    <div class="seq-slots" id="seqSlots"></div>
-    <div class="seq-label" style="margin-top:14px;">Tap a letter:</div>
-    <div class="seq-tray" id="seqTray"></div>
-    <div>
-      <button class="check-btn" onclick="checkSeq()">&#10003; Check My Order</button>
-      <button class="hint-btn" onclick="giveHint()">&#128161; Hint</button>
-    </div>
-    <div class="celebrate" id="celebrate">
-      <span class="celebrate-emoji">&#127881;</span>
-      <div class="celebrate-title">You got it right!</div>
-      <span class="celebrate-word" id="celebWord"></span>
-      <div class="celebrate-text" id="celebText"></div>
-    </div>
   </div>
 </div>
 
@@ -465,13 +397,6 @@ function resetBagSubmit() {
   // Note: name value is intentionally preserved so students can submit multiple words back-to-back
 }
 
-function switchMode(mode) {
-  document.getElementById('panel-make').classList.toggle('active', mode==='make');
-  document.getElementById('panel-seq').classList.toggle('active', mode==='seq');
-  var tabs = document.querySelectorAll('.mode-tab');
-  tabs[0].classList.toggle('active', mode==='make');
-  tabs[1].classList.toggle('active', mode==='seq');
-}
 
 function selectMakeWord(w, btn) {
   makeWord = w;
@@ -507,6 +432,7 @@ function generateMake() {
     '</div>';
   }
   document.getElementById('miPanels').innerHTML = miHtml;
+  document.getElementById('makeClue').textContent = d.clue;
   renderMake();
   document.getElementById('miCelebrate').className = 'celebrate';
 
@@ -600,166 +526,6 @@ function hintMake() {
   }
 }
 
-// SEQUENCE IT
-function selectSeqWord(w, btn) {
-  seqWord = w;
-  var bs = document.querySelectorAll('#panel-seq .ow-btn');
-  for(var i=0;i<bs.length;i++) bs[i].className='ow-btn';
-  btn.className='ow-btn on';
-  buildSeq();
-}
-
-function buildSeq() {
-  var d = stories[seqWord];
-  if(!d) return;
-
-  document.getElementById('seqClue').textContent = d.clue;
-
-  // Shuffle display order; remember it for checking
-  var order = [0,1,2,3];
-  for(var i=order.length-1;i>0;i--) { var j=Math.floor(Math.random()*(i+1)); var t=order[i];order[i]=order[j];order[j]=t; }
-  seqOrder = order;
-  ans = ['','','',''];
-
-  var panelsHtml = '';
-  for(var i=0;i<4;i++) {
-    var idx = order[i];
-    var letter = String.fromCharCode(65+i);
-    panelsHtml += '<div class="seq-panel">' +
-      '<span class="seq-letter">'+letter+'</span>' +
-      '<span class="seq-panel-text">'+d.panels[idx]+'</span>' +
-    '</div>';
-  }
-  document.getElementById('seqPanels').innerHTML = panelsHtml;
-  renderSeq();
-
-  document.getElementById('celebrate').className='celebrate';
-  document.getElementById('seqDisplay').style.display='block';
-  document.getElementById('seqDisplay').scrollIntoView({behavior:'smooth'});
-}
-
-function renderSeq() {
-  var labels = ['1st','2nd','3rd','4th'];
-  var sh = '';
-  for(var i=0;i<4;i++) {
-    sh += '<div class="ans-slot" onclick="clearSlot('+i+')">' +
-            '<span class="pos">'+labels[i]+'</span>' +
-            '<span class="let">'+(ans[i] || '&middot;')+'</span>' +
-          '</div>';
-  }
-  document.getElementById('seqSlots').innerHTML = sh;
-  var th = '';
-  for(var i=0;i<4;i++) {
-    var L = String.fromCharCode(65+i);
-    var used = ans.indexOf(L) >= 0;
-    th += '<button class="chip" onclick="tapChip(\''+L+'\')"'+(used?' disabled':'')+'>'+L+'</button>';
-  }
-  document.getElementById('seqTray').innerHTML = th;
-}
-
-function tapChip(L) {
-  if(ans.indexOf(L) >= 0) return;            // each letter used once
-  for(var i=0;i<4;i++) { if(!ans[i]) { ans[i] = L; renderSeq(); return; } }
-}
-
-function clearSlot(i) {
-  if(ans[i]) { ans[i] = ''; renderSeq(); }
-}
-
-function dragStart(e) {
-  dragSrc = e.currentTarget.getAttribute('data-idx');
-  e.currentTarget.classList.add('dragging');
-  e.dataTransfer.effectAllowed = 'move';
-}
-function dragEnd(e) { e.currentTarget.classList.remove('dragging'); }
-function dragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
-
-function placePanel(idx, slotIdx) {
-  // Remove from any previous slot
-  for(var i=0;i<4;i++) {
-    if(slots[i]===idx) {
-      slots[i]='';
-      document.getElementById('slotText'+i).textContent='Tap a panel, then tap here...';
-      document.getElementById('slot'+i).className='seq-slot';
-    }
-  }
-  slots[slotIdx] = idx;
-  var d = stories[seqWord];
-  document.getElementById('slotText'+slotIdx).textContent = d.panels[idx];
-  document.getElementById('slot'+slotIdx).className = 'seq-slot';
-  var panelEl = document.getElementById('sp'+idx);
-  if(panelEl) { panelEl.style.display='none'; panelEl.classList.remove('selected'); }
-  selectedPanel = null;
-}
-
-function selectPanel(idx, el) {
-  if(selectedPanel === idx) { selectedPanel = null; el.classList.remove('selected'); return; }
-  var ps = document.querySelectorAll('#seqPanels .seq-panel');
-  for(var i=0;i<ps.length;i++) ps[i].classList.remove('selected');
-  selectedPanel = idx; el.classList.add('selected');
-}
-
-function dropOnSlot(e, slotIdx) {
-  e.preventDefault();
-  e.currentTarget.classList.remove('drag-over');
-  if(dragSrc === null) return;
-  placePanel(parseInt(dragSrc), slotIdx);
-  dragSrc = null;
-}
-
-function dropOnBank(e) {
-  e.preventDefault();
-}
-
-function clickSlot(slotIdx) {
-  // Filled slot: tapping it returns the panel to the bank
-  if(slots[slotIdx]!=='' && slots[slotIdx]!==undefined) {
-    var idx = slots[slotIdx];
-    slots[slotIdx]='';
-    document.getElementById('slotText'+slotIdx).textContent='Tap a panel, then tap here...';
-    document.getElementById('slot'+slotIdx).className='seq-slot';
-    var panelEl = document.getElementById('sp'+idx);
-    if(panelEl) panelEl.style.display='flex';
-    return;
-  }
-  // Empty slot: drop the currently selected panel in
-  if(selectedPanel === null) return;
-  placePanel(selectedPanel, slotIdx);
-}
-
-function checkSeq() {
-  var d = stories[seqWord];
-  var correct = true;
-  var slots = document.querySelectorAll('#seqSlots .ans-slot');
-  for(var i=0;i<4;i++) {
-    var correctLetter = String.fromCharCode(65 + seqOrder.indexOf(d.answer[i]-1));
-    if(ans[i] === correctLetter) {
-      slots[i].classList.remove('wrong'); slots[i].classList.add('correct');
-    } else {
-      slots[i].classList.remove('correct'); slots[i].classList.add('wrong');
-      correct = false;
-    }
-  }
-  if(correct) {
-    document.getElementById('celebWord').textContent = seqWord;
-    document.getElementById('celebText').textContent = d.reveal;
-    document.getElementById('celebrate').className='celebrate show';
-    document.getElementById('celebrate').scrollIntoView({behavior:'smooth'});
-  }
-}
-
-function giveHint() {
-  var d = stories[seqWord];
-  for(var i=0;i<4;i++) {
-    var correctLetter = String.fromCharCode(65 + seqOrder.indexOf(d.answer[i]-1));
-    if(ans[i] !== correctLetter) {
-      var dup = ans.indexOf(correctLetter); if(dup >= 0) ans[dup] = '';
-      ans[i] = correctLetter;
-      renderSeq();
-      return;
-    }
-  }
-}
 </script>
 </body>
 </html>
