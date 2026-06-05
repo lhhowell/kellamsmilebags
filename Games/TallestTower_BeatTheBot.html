@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tallest Tower · Beat the Bot</title>
+<style>
+  :root{
+    --ink:#2B2D42; --teal:#2EC4B6; --teal-d:#1f9488; --cream:#FBF7F0;
+    --pink:#FF6B9D; --amber:#FBB13C; --line:#E4DCCB;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(1200px 800px at 50% -10%,#eafaf8,var(--cream));
+    color:var(--ink); min-height:100%;
+    display:flex; align-items:center; justify-content:center; padding:24px;
+  }
+  .card{
+    width:min(680px,100%); background:#fff; border-radius:28px; padding:34px 32px 26px;
+    box-shadow:0 24px 60px rgba(43,45,66,.14); text-align:center; position:relative; overflow:hidden;
+  }
+  .eyebrow{letter-spacing:.28em;font-size:13px;font-weight:700;color:var(--teal-d);text-transform:uppercase;}
+  h1{font-size:34px;line-height:1.1;margin:6px 0 2px;}
+  .sub{color:#7a8;color:#8a8f9c;font-size:15px;margin-bottom:18px;}
+  .bot{font-size:78px;line-height:1;margin:6px 0 2px;transition:transform .25s;}
+  .bot.shake{animation:shake .5s;}
+  @keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-10deg)}40%{transform:rotate(8deg)}60%{transform:rotate(-6deg)}80%{transform:rotate(4deg)}}
+  .bubble{
+    position:relative;background:var(--ink);color:#fff;border-radius:18px;padding:16px 20px;
+    font-size:20px;font-weight:600;line-height:1.35;min-height:64px;display:flex;align-items:center;justify-content:center;
+    margin:6px auto 18px;max-width:520px;
+  }
+  .bubble:after{content:"";position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+    border:12px solid transparent;border-bottom-color:var(--ink);border-top:0;}
+  .beat{background:linear-gradient(180deg,#ffe9a8,var(--amber));border-radius:18px;padding:14px;margin-bottom:16px;}
+  .beat .label{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#7a5b12;font-weight:700;}
+  .beat .num{font-size:46px;font-weight:800;color:var(--ink);}
+  .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;}
+  input{
+    font-size:22px;padding:14px 16px;border:2px solid var(--line);border-radius:14px;width:100%;
+    font-family:inherit;text-align:center;color:var(--ink);
+  }
+  input:focus{outline:none;border-color:var(--teal);}
+  .field{flex:1;min-width:150px;text-align:left;}
+  .field label{display:block;font-size:13px;font-weight:700;color:#8a8f9c;margin:0 0 5px 4px;text-transform:uppercase;letter-spacing:.1em;}
+  .btn{
+    font-family:inherit;font-size:22px;font-weight:800;color:#fff;background:var(--teal);
+    border:none;border-radius:16px;padding:18px 22px;width:100%;cursor:pointer;transition:transform .1s,background .2s;
+    box-shadow:0 8px 0 var(--teal-d);
+  }
+  .btn:active{transform:translateY(4px);box-shadow:0 4px 0 var(--teal-d);}
+  .champ{margin-top:18px;font-size:16px;color:#8a8f9c;}
+  .champ b{color:var(--ink);}
+  .crown{font-size:20px;}
+  .reset{position:absolute;top:14px;right:16px;font-size:12px;color:#c3bcaf;background:none;border:none;cursor:pointer;letter-spacing:.1em;}
+  .reset:hover{color:var(--ink);}
+  .foot{margin-top:20px;font-size:11px;letter-spacing:.12em;color:#b8b0a1;text-transform:uppercase;}
+  .confetti{position:absolute;top:-20px;font-size:24px;pointer-events:none;animation:fall 1.6s ease-in forwards;}
+  @keyframes fall{to{transform:translateY(560px) rotate(360deg);opacity:0;}}
+</style>
+</head>
+<body>
+  <div class="card" id="card">
+    <button class="reset" id="reset" title="Teacher reset">RESET DAY</button>
+    <div class="eyebrow">Tallest Tower</div>
+    <h1>Beat the Bot 🤖</h1>
+    <div class="sub">Build it tall · measure with your ruler · type your inches below</div>
+
+    <div class="bot" id="bot">🤖</div>
+    <div class="bubble" id="bubble">I'm the tower champion around here. Think you can top me?</div>
+
+    <div class="beat">
+      <div class="label">Tower to Beat</div>
+      <div class="num"><span id="toBeat">24</span>″</div>
+    </div>
+
+    <div class="row">
+      <div class="field" style="flex:2"><label>Your name</label><input id="name" placeholder="Builder" maxlength="20"></div>
+      <div class="field"><label>Inches</label><input id="height" type="number" inputmode="decimal" step="0.5" min="0" placeholder="0"></div>
+    </div>
+    <button class="btn" id="go">Challenge the Bot!</button>
+
+    <div class="champ" id="champ"></div>
+    <div class="foot">© 2025–2026 Laura Howell · Smile Bags: A Word &amp; Wonder Experience</div>
+  </div>
+
+<script>
+(function(){
+  "use strict";
+  var BOT_BASE = 24;                 // the bot's starting claim (inches)
+  var KEY = "ksb_tower_champ_v1";
+  var champ = null;                  // {name, h}
+  try { var raw = localStorage.getItem(KEY); if(raw) champ = JSON.parse(raw); } catch(e){}
+
+  var loseBrags = [
+    "Pfft — {h}″? My towers scrape the ceiling.",
+    "{h} inches? Adorable. The record is still {rec}″.",
+    "I've crashed harder than that and STILL stood taller.",
+    "Not bad… for a human. Still short of {rec}″ though.",
+    "My circuits aren't even warmed up yet. Try again!",
+    "Beep boop — that's a 'nope' from me. {rec}″ to beat.",
+    "Cute tower. I've seen taller stacks of pancakes."
+  ];
+  var tieBrags = [
+    "A TIE?! Unacceptable. Break it, builder!",
+    "Dead even at {rec}″?! My circuits can't handle a tie — go higher!",
+    "We match at {rec}″. I refuse to share the crown. Again!"
+  ];
+  var winBrags = [
+    "…{h} inches?! Okay, okay — you got me. New champ: {name}! 😤",
+    "RECALIBRATING EGO… fine. {name} wins this round. 👑",
+    "My bolts are RATTLED. All hail {name} at {h}″!",
+    "I demand a rematch! But yeah… {name}, that was impressive.",
+    "Error 404: my pride not found. {name} takes the crown! 👑"
+  ];
+  function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+  function toBeat(){ return Math.max(BOT_BASE, champ ? champ.h : 0); }
+  function fmt(s,d){ return s.replace("{h}",d.h).replace("{rec}",d.rec).replace("{name}",d.name); }
+
+  var elToBeat=document.getElementById("toBeat"),
+      elBubble=document.getElementById("bubble"),
+      elBot=document.getElementById("bot"),
+      elChamp=document.getElementById("champ"),
+      elName=document.getElementById("name"),
+      elHeight=document.getElementById("height"),
+      elCard=document.getElementById("card");
+
+  function render(){
+    elToBeat.textContent = toBeat();
+    if(champ){ elChamp.innerHTML = '<span class="crown">👑</span> Today\'s Champion: <b>'+escapeHtml(champ.name)+'</b> — '+champ.h+'″'; }
+    else { elChamp.textContent = "No champion yet — be the first to beat the bot!"; }
+  }
+  function escapeHtml(s){ return (s||"").replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];}); }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(champ)); }catch(e){} }
+  function confetti(){
+    var em=["🎉","🎊","⭐","🏆","👏"];
+    for(var i=0;i<18;i++){
+      var s=document.createElement("div"); s.className="confetti"; s.textContent=em[i%em.length];
+      s.style.left=(Math.random()*100)+"%"; s.style.animationDelay=(Math.random()*0.4)+"s";
+      elCard.appendChild(s); (function(node){ setTimeout(function(){node.remove();},2000); })(s);
+    }
+  }
+
+  function challenge(){
+    var h = parseFloat(elHeight.value);
+    if(isNaN(h) || h<=0){ elBubble.textContent="Measure your tower first, then type the inches!"; return; }
+    var name = (elName.value||"").trim() || "Mystery Builder";
+    var rec = toBeat();
+    elBot.classList.remove("shake"); void elBot.offsetWidth; elBot.classList.add("shake");
+    if(h > rec){
+      champ = {name:name, h:h}; save();
+      elBubble.textContent = fmt(pick(winBrags), {h:h, rec:rec, name:name});
+      confetti();
+    } else if(h === rec){
+      elBubble.textContent = fmt(pick(tieBrags), {h:h, rec:rec, name:name});
+    } else {
+      elBubble.textContent = fmt(pick(loseBrags), {h:h, rec:rec, name:name});
+    }
+    render();
+    elHeight.value=""; elName.value="";
+  }
+
+  document.getElementById("go").addEventListener("click", challenge);
+  elHeight.addEventListener("keydown", function(e){ if(e.key==="Enter") challenge(); });
+  document.getElementById("reset").addEventListener("click", function(){
+    if(confirm("Reset today's champion? The bot goes back to "+BOT_BASE+"″.")){
+      champ=null; save(); elBubble.textContent="Fresh day, fresh towers. Bring it on! 🤖"; render();
+    }
+  });
+  render();
+})();
+</script>
+</body>
+</html>
