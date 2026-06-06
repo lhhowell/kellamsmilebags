@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compose It! · Play Your Name</title>
+<style>
+  :root{ --ink:#2B2D42; --teal:#2EC4B6; --teal-d:#1f9488; --cream:#FBF7F0; --gold:#FBB13C; --line:#E4DCCB; }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(1200px 820px at 50% -8%,#eafaf8,var(--cream));color:var(--ink);
+    min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px;}
+  .card{width:min(640px,100%);background:#fff;border-radius:28px;padding:30px 28px 24px;text-align:center;
+    box-shadow:0 24px 60px rgba(43,45,66,.14);}
+  .eyebrow{letter-spacing:.28em;font-size:12px;font-weight:800;color:var(--teal-d);text-transform:uppercase;}
+  h1{font-size:30px;margin:4px 0 2px;}
+  .sub{color:#8a8f9c;font-size:14px;margin-bottom:18px;}
+  .controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:8px;}
+  input{font-size:22px;padding:13px 16px;border:2px solid var(--line);border-radius:14px;text-align:center;
+    font-family:inherit;color:var(--ink);width:min(280px,80%);text-transform:uppercase;letter-spacing:.06em;}
+  input:focus{outline:none;border-color:var(--teal);}
+  select{font-family:inherit;font-size:15px;padding:12px;border:2px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);}
+  .btn{font-family:inherit;font-size:20px;font-weight:800;color:#fff;background:var(--teal);border:none;border-radius:16px;
+    padding:14px 30px;cursor:pointer;box-shadow:0 6px 0 var(--teal-d);margin-top:6px;}
+  .btn:active{transform:translateY(3px);box-shadow:0 3px 0 var(--teal-d);}
+  .voice{display:flex;justify-content:center;gap:8px;margin:22px auto 6px;max-width:520px;}
+  .col{flex:1;background:var(--cream);border:2px solid var(--line);border-radius:14px;padding:10px 6px;min-height:120px;transition:all .18s;}
+  .col.lit{background:#fff7e6;border-color:var(--gold);transform:translateY(-4px);box-shadow:0 8px 18px rgba(251,177,60,.3);}
+  .col-head{font-weight:900;font-size:18px;color:var(--teal-d);letter-spacing:.1em;margin-bottom:8px;}
+  .pip{background:#fff;border:1.5px solid var(--line);border-radius:9px;padding:5px 4px;margin:5px 2px;font-size:13px;}
+  .pip .ltr{font-weight:900;font-size:17px;color:var(--ink);}
+  .pip .nt{display:block;font-size:11px;color:#8a8f9c;font-weight:700;}
+  .pip.on{background:var(--gold);border-color:var(--gold);}
+  .pip.on .nt{color:#7a5b12;}
+  .hint{font-size:12.5px;color:#9aa0ac;margin-top:14px;}
+  .foot{margin-top:16px;font-size:11px;letter-spacing:.12em;color:#b8b0a1;text-transform:uppercase;}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="eyebrow">Compose It! · Word DNA</div>
+    <h1>Play Your Name 🎵</h1>
+    <div class="sub">Type your name and hear its <b>Voice</b> — every letter becomes a note, sweeping V → O → I → C → E.</div>
+
+    <div class="controls">
+      <input id="name" placeholder="YOUR NAME" maxlength="24" autocomplete="off">
+      <select id="voiceSel" title="Instrument">
+        <option value="chime">🔔 Chime</option>
+        <option value="bell">🎶 Bell</option>
+        <option value="pluck">🎸 Pluck</option>
+        <option value="pad">🌊 Pad</option>
+      </select>
+    </div>
+    <button class="btn" id="play">🎵 Listen</button>
+
+    <div class="voice" id="voice"></div>
+    <div class="hint">Every name sounds beautiful — the notes come from a <b>pentatonic scale</b>, so there are no wrong notes. ✨</div>
+    <div class="foot">© 2025–2026 Laura Howell · Smile Bags</div>
+  </div>
+<script>
+(function(){
+  "use strict";
+  // ── same note set + DNA rule as ComposeIt_Voice.html ──
+  var NOTES=[
+    {name:'C5',label:'Do↑',freq:523.25},
+    {name:'A4',label:'La', freq:440.00},
+    {name:'G4',label:'Sol',freq:392.00},
+    {name:'E4',label:'Mi', freq:329.63},
+    {name:'D4',label:'Re', freq:293.66},
+    {name:'C4',label:'Do', freq:261.63}
+  ];
+  var COLS=5, TEMPO=96, instrument='chime';
+
+  var _ctx;
+  function getCtx(){ if(!_ctx) _ctx=new (window.AudioContext||window.webkitAudioContext)(); if(_ctx.state==='suspended') _ctx.resume(); return _ctx; }
+
+  // ── synth ported verbatim from ComposeIt_Voice.html ──
+  function playNote(freq, inst, isDNA){
+    var ctx=getCtx(), now=ctx.currentTime, vol=isDNA?0.38:0.28;
+    if(inst==='chime'){
+      var osc=ctx.createOscillator(),osc2=ctx.createOscillator(),gain=ctx.createGain(),g2=ctx.createGain();
+      osc.type='sine';osc.frequency.value=freq; osc2.type='sine';osc2.frequency.value=freq*2.756; g2.gain.value=0.12;
+      osc.connect(gain);osc2.connect(g2);g2.connect(gain);gain.connect(ctx.destination);
+      gain.gain.setValueAtTime(0,now); gain.gain.linearRampToValueAtTime(vol,now+0.012); gain.gain.exponentialRampToValueAtTime(0.001,now+1.8);
+      osc.start(now);osc2.start(now);osc.stop(now+2);osc2.stop(now+2);
+    } else if(inst==='pluck'){
+      var o=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();
+      f.type='lowpass';f.frequency.value=freq*5; o.type='sawtooth';o.frequency.value=freq;
+      o.connect(f);f.connect(g);g.connect(ctx.destination);
+      g.gain.setValueAtTime(vol+0.1,now); g.gain.exponentialRampToValueAtTime(0.001,now+0.55); o.start(now);o.stop(now+0.6);
+    } else if(inst==='bell'){
+      var ratios=[1,2.756,5.404,8.933],amps=[0.25,0.15,0.08,0.04],master=ctx.createGain();master.connect(ctx.destination);
+      ratios.forEach(function(ratio,i){var o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=freq*ratio;
+        o.connect(g);g.connect(master);g.gain.setValueAtTime(amps[i]*(vol/0.3),now);g.gain.exponentialRampToValueAtTime(0.001,now+2.2);o.start(now);o.stop(now+2.3);});
+    } else if(inst==='pad'){
+      var p=ctx.createOscillator(),p2=ctx.createOscillator(),pg=ctx.createGain(),pg2=ctx.createGain();
+      p.type='sine';p.frequency.value=freq; p2.type='sine';p2.frequency.value=freq*1.003; pg2.gain.value=0.35;
+      p.connect(pg);p2.connect(pg2);pg2.connect(pg);pg.connect(ctx.destination);
+      pg.gain.setValueAtTime(0,now);pg.gain.linearRampToValueAtTime(vol,now+0.14);pg.gain.exponentialRampToValueAtTime(0.001,now+1.3);
+      p.start(now);p2.start(now);p.stop(now+1.5);p2.stop(now+1.5);
+    }
+  }
+
+  // letter -> {col, row, note}; col = position%5, row = (char-65)%5  (same as wordDNA)
+  function decode(name){
+    var clean=name.toUpperCase().replace(/[^A-Z]/g,'');
+    var cols=[[],[],[],[],[]];
+    for(var i=0;i<clean.length;i++){
+      var col=i%5, row=(clean.charCodeAt(i)-65)%5;
+      cols[col].push({ltr:clean[i], row:row, note:NOTES[row]});
+    }
+    return cols;
+  }
+
+  var LABELS=['V','O','I','C','E'];
+  var voiceEl=document.getElementById('voice');
+  function render(cols){
+    voiceEl.innerHTML='';
+    for(var c=0;c<COLS;c++){
+      var col=document.createElement('div'); col.className='col'; col.id='col'+c;
+      var h=document.createElement('div'); h.className='col-head'; h.textContent=LABELS[c]; col.appendChild(h);
+      cols[c].forEach(function(p,idx){
+        var pip=document.createElement('div'); pip.className='pip'; pip.id='pip'+c+'_'+idx;
+        pip.innerHTML='<span class="ltr">'+p.ltr+'</span><span class="nt">'+p.note.label+'</span>';
+        col.appendChild(pip);
+      });
+      voiceEl.appendChild(col);
+    }
+  }
+
+  var sweeping=false;
+  function play(){
+    var name=document.getElementById('name').value;
+    if(!name.replace(/[^A-Za-z]/g,'')){ document.getElementById('name').focus(); return; }
+    if(sweeping) return;
+    instrument=document.getElementById('voiceSel').value;
+    var cols=decode(name); render(cols);
+    getCtx(); // unlock audio on the click
+    sweeping=true;
+    var step=60000/TEMPO;
+    for(var c=0;c<COLS;c++){
+      (function(c){
+        setTimeout(function(){
+          var el=document.getElementById('col'+c); if(el) el.classList.add('lit');
+          cols[c].forEach(function(p,idx){
+            playNote(p.note.freq, instrument, true);
+            var pip=document.getElementById('pip'+c+'_'+idx); if(pip) pip.classList.add('on');
+          });
+          setTimeout(function(){ if(el) el.classList.remove('lit'); }, step*0.85);
+          if(c===COLS-1) setTimeout(function(){ sweeping=false; }, step);
+        }, c*step);
+      })(c);
+    }
+  }
+
+  document.getElementById('play').addEventListener('click', play);
+  document.getElementById('name').addEventListener('keydown', function(e){ if(e.key==='Enter') play(); });
+  render([[],[],[],[],[]]); // empty V·O·I·C·E columns to start
+})();
+</script>
+</body>
+</html>
